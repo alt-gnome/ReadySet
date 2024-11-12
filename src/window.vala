@@ -33,6 +33,12 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
 
         add_action_entries (ACTION_ENTRIES, this);
 
+        var locales = Gnome.Languages.get_all_locales ();
+        foreach (var locale in locales) {
+            message (Gnome.Languages.get_language_from_locale (locale, locale));
+            //  message (Gnome.Languages.get_input_source_from_locale (locale, null));
+        }
+
         settings.bind ("window-width", this, "default-width", SettingsBindFlags.DEFAULT);
         settings.bind ("window-height", this, "default-height", SettingsBindFlags.DEFAULT);
         settings.bind ("window-maximized", this, "maximized", SettingsBindFlags.DEFAULT);
