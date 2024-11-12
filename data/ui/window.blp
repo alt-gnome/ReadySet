@@ -1,0 +1,55 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ReadySetWindow : Adw.ApplicationWindow {
+  default-width: 600;
+  default-height: 500;
+  width-request: 360;
+  height-request: 294;
+
+  Adw.Breakpoint {
+    condition ("max-width: 450px")
+    setters {
+      main_label.label: "Narrow";
+    }
+  }
+
+  content: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      [end]
+      MenuButton {
+        icon-name: "open-menu-symbolic";
+        menu-model: primary_menu;
+      }
+      
+      title-widget: Adw.WindowTitle {
+        title: "Hello World!";
+      };
+    }
+
+    content: Adw.Clamp {
+      margin-bottom: 12;
+      margin-end: 12;
+      margin-top: 12;
+      margin-start: 12;
+      maximum-size: 500;
+
+      Gtk.Label main_label {
+        styles [
+          "card"
+        ]
+
+        label: "Wide";
+      }
+    };
+  };
+}
+
+menu primary_menu {
+  section {
+    item (_("Preferences"), "win.preferences")
+    item (_("Keyboard Shortcuts"), "win.show-help-overlay")
+    item (_("About Ready Set"), "win.about")
+  }
+}

@@ -1,0 +1,12 @@
+[Desktop Entry]
+# Translators: app name should be translated
+Name=Ready Set
+Comment=
+# Translators: keep number of ';'
+Keywords=
+Exec=ready-set
+Icon=space.rirusha.ReadySet
+Terminal=false
+Type=Application
+Categories=
+StartupNotify=true

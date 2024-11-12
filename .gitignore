@@ -1,0 +1,18 @@
+# build dir
+builddir*
+
+# Workspaces
+*.code-workspace
+
+# Personal scripts
+my.*
+
+# Poedit db
+*.mo
+
+# flatpak
+.flatpak-builder
+build-dir
+repo
+.flatpak
+_build
