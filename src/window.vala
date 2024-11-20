@@ -33,11 +33,11 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
 
         add_action_entries (ACTION_ENTRIES, this);
 
-        var locales = Gnome.Languages.get_all_locales ();
-        foreach (var locale in locales) {
-            message (Gnome.Languages.get_language_from_locale (locale, locale));
-            //  message (Gnome.Languages.get_input_source_from_locale (locale, null));
-        }
+        var act = Act.UserManager.get_default ();
+
+        act.list_users ();
+        message (act.get_user (Environment.get_user_name ()).user_name);
+
 
         settings.bind ("window-width", this, "default-width", SettingsBindFlags.DEFAULT);
         settings.bind ("window-height", this, "default-height", SettingsBindFlags.DEFAULT);

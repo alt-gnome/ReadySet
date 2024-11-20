@@ -12,11 +12,13 @@ gnome = import('gnome')
 gtk = dependency('gtk4', version: '>= 4.16')
 libadwaita = dependency('libadwaita-1', version: '>= 1.6')
 gnome_desktop = dependency('gnome-desktop-4')
+accountsservice_desktop = dependency('accountsservice')
 
 dependencies = [
   gtk,
   libadwaita,
-  gnome_desktop
+  gnome_desktop,
+  accountsservice_desktop
 ]
 
 add_project_arguments(

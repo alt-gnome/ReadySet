@@ -1,7 +1,8 @@
 # build dir
 builddir*
 
-# Workspaces
+# VSC
+.vscode/settings.json
 *.code-workspace
 
 # Personal scripts
