@@ -38,7 +38,13 @@ endif
 
 blueprints = custom_target('blueprints',
   input: files(
+    'ui/base-page.blp',
     'ui/help-overlay.blp',
+    'ui/language-page.blp',
+    'ui/language-row.blp',
+    'ui/languages-box.blp',
+    'ui/nothing-to-show.blp',
+    'ui/welcome-page.blp',
     'ui/window.blp',
   ),
   output: '.',

@@ -1,0 +1,54 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ReadySetWelcomePage : $ReadySetBasePage {
+  title: _("Welcome");
+  is-ready: true;
+
+  content: ScrolledWindow {
+    propagate-natural-height: true;
+    hscrollbar-policy: never;
+
+    Adw.Clamp clamp {
+      maximum-size: 680;
+      margin-end: 12;
+      margin-top: 12;
+      margin-bottom: 24;
+      margin-start: 12;
+
+      Box {
+        orientation: vertical;
+        spacing: 18;
+        valign: center;
+
+        Image {
+          styles [
+            "icon"
+          ]
+
+          pixel-size: 120;
+          margin-bottom: 24;
+          icon-name: "altmobile-symbolic";
+        }
+
+        Label {
+          styles [
+            "title-1"
+          ]
+
+          label: _("Welcome to ALT Mobile!");
+          wrap: true;
+          hexpand: true;
+          justify: center;
+        }
+
+        Label {
+          label: _("A free mobile operating system for free people");
+          wrap: true;
+          hexpand: true;
+          justify: center;
+        }
+      }
+    }
+  };
+}

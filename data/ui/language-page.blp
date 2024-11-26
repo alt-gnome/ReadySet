@@ -1,0 +1,88 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ReadySetLanguagePage : $ReadySetBasePage {
+  title: _("Language");
+  search-is-possible: true;
+
+  content: Adw.ToolbarView view {
+    [top]
+    Stack title_stack {
+      hhomogeneous: true;
+      vhomogeneous: true;
+      transition-type: crossfade;
+      transition-duration: 200;
+
+      StackPage {
+        name: "title";
+        child: Label {
+          styles [
+            "title-2"
+          ]
+
+          label: _("Let's start by choosing a language…");
+          wrap: true;
+          justify: center;
+          hexpand: true;
+        };
+      }
+
+      StackPage {
+        name: "search";
+        child: Adw.Clamp {
+          maximum-size: 680;
+          margin-end: 12;
+          margin-top: 6;
+          margin-bottom: 6;
+          margin-start: 12;
+
+          SearchEntry search_entry {
+            styles [
+              "card"
+            ]
+            
+            text: bind languages_box.search-query bidirectional;
+            height-request: 48;
+            placeholder-text: _("Search language");
+            hexpand: true;
+          }
+        };
+      }
+    }
+
+    content: ScrolledWindow {
+      propagate-natural-height: true;
+      hscrollbar-policy: never;
+
+      Adw.Clamp {
+        maximum-size: 680;
+        margin-end: 12;
+        margin-top: 12;
+        margin-bottom: 24;
+        margin-start: 12;
+
+        $ReadySetLanguagesBox languages_box {}
+      }
+    };
+
+    [bottom]
+    ListBox bottom_list_box {
+      styles [
+        "boxed-list"
+      ]
+
+      selection-mode: none;
+      margin-start: 12;
+      margin-top: 6;
+      margin-bottom: 12;
+      margin-end: 12;
+
+      Adw.ButtonRow {
+        title: _("Show more languages");
+        start-icon-name: "view-more-symbolic";
+
+        activated => $on_show_more_activated();
+      }
+    }
+  };
+}

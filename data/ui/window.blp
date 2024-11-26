@@ -7,42 +7,11 @@ template $ReadySetWindow : Adw.ApplicationWindow {
   width-request: 360;
   height-request: 294;
 
-  Adw.Breakpoint {
-    condition ("max-width: 450px")
-    setters {
-      main_label.label: "Narrow";
+  content: Adw.NavigationView nav_view {
+    $ReadySetWelcomePage {
+      title: "Welcome";
+      tag: "main";
     }
-  }
-
-  content: Adw.ToolbarView {
-    [top]
-    Adw.HeaderBar {
-      [end]
-      MenuButton {
-        icon-name: "open-menu-symbolic";
-        menu-model: primary_menu;
-      }
-      
-      title-widget: Adw.WindowTitle {
-        title: "Hello World!";
-      };
-    }
-
-    content: Adw.Clamp {
-      margin-bottom: 12;
-      margin-end: 12;
-      margin-top: 12;
-      margin-start: 12;
-      maximum-size: 500;
-
-      Gtk.Label main_label {
-        styles [
-          "card"
-        ]
-
-        label: "Wide";
-      }
-    };
   };
 }
 

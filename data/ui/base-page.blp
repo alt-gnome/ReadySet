@@ -1,0 +1,45 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ReadySetBasePage : Adw.NavigationPage {
+  Adw.ToolbarView toolbar_view {
+    reveal-bottom-bars: bind template.is-ready;
+
+    [top]
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle {
+        title: bind template.title;
+      };
+
+      [end]
+      ToggleButton {
+        icon-name: "system-search-symbolic";
+        active: bind template.search-enabled bidirectional;
+        visible: bind template.search-is-possible;
+      }
+    }
+
+    [bottom]
+    ListBox {
+      styles [
+        "boxed-list"
+      ]
+
+      selection-mode: none;
+      margin-start: 12;
+      margin-top: 6;
+      margin-bottom: 12;
+      margin-end: 12;
+
+      Adw.ButtonRow {
+        styles [
+          "suggested-action",
+        ]
+
+        activated => $apply_clicked();
+
+        title: _("Continue");
+      }
+    }
+  }
+}

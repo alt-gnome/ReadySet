@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
+  <gresource prefix="/space/rirusha/ReadySet/icons/scalable/actions/">
+    <file alias="altmobile-symbolic.svg">assets/icons/altmobile-symbolic.svg</file>
+  </gresource>
   <gresource prefix="/space/rirusha/ReadySet/">
     <file alias="gtk/help-overlay.ui" preprocess="xml-stripblanks">ui/help-overlay.ui</file>
     <file>style.css</file>
+    <file preprocess="xml-stripblanks">ui/base-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/language-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/language-row.ui</file>
+    <file preprocess="xml-stripblanks">ui/languages-box.ui</file>
+    <file preprocess="xml-stripblanks">ui/nothing-to-show.ui</file>
+    <file preprocess="xml-stripblanks">ui/welcome-page.ui</file>
     <file preprocess="xml-stripblanks">ui/window.ui</file>
   </gresource>
 </gresources>

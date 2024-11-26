@@ -1,0 +1,16 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ReadySetLanguagesBox : Adw.Bin {
+  Box {
+    orientation: vertical;
+
+    ListBox languages_listbox {
+      styles [
+        "boxed-list",
+      ]
+
+      selection-mode: none;
+    }
+  }
+}

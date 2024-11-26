@@ -3,9 +3,18 @@ vapi_sources = files(
 )
 
 vala_sources = files(
+  'pages/base-page.vala',
+  'pages/language-page.vala',
+  'pages/welcome-page.vala',
+
+  'widgets/language-row.vala',
+  'widgets/languages-box.vala',
+  'widgets/nothing-to-show.vala',
+
   'about.vala',
   'application.vala',
   'main.vala',
+  'utils.vala',
   'window.vala',
 )
 

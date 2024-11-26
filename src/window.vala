@@ -19,6 +19,9 @@
 [GtkTemplate (ui = "/space/rirusha/ReadySet/ui/window.ui")]
 public sealed class ReadySet.Window: Adw.ApplicationWindow {
 
+    [GtkChild]
+    unowned Adw.NavigationView nav_view;
+
     const ActionEntry[] ACTION_ENTRIES = {
         { "preferences", on_preferences_action },
         { "about", on_about_action },
@@ -28,16 +31,18 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         Object (application: app);
     }
 
+    static construct {
+        typeof (WelcomePage).ensure ();
+        typeof (LanguagesBox).ensure ();
+        typeof (BasePage).ensure ();
+    }
+
     construct {
+        BasePage.root_view = nav_view;
+
         var settings = new Settings (Config.APP_ID);
 
         add_action_entries (ACTION_ENTRIES, this);
-
-        var act = Act.UserManager.get_default ();
-
-        act.list_users ();
-        message (act.get_user (Environment.get_user_name ()).user_name);
-
 
         settings.bind ("window-width", this, "default-width", SettingsBindFlags.DEFAULT);
         settings.bind ("window-height", this, "default-height", SettingsBindFlags.DEFAULT);
