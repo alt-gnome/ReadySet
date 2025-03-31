@@ -7,18 +7,15 @@ template $ReadySetWindow : Adw.ApplicationWindow {
   width-request: 360;
   height-request: 294;
 
-  content: Adw.NavigationView nav_view {
-    $ReadySetWelcomePage {
-      title: "Welcome";
-      tag: "main";
+  content: Stack stack {
+    transition-type: crossfade;
+    transition-duration: 400;
+
+    StackPage {
+      name: "load";
+      child: Adw.Spinner {
+
+      };
     }
   };
-}
-
-menu primary_menu {
-  section {
-    item (_("Preferences"), "win.preferences")
-    item (_("Keyboard Shortcuts"), "win.show-help-overlay")
-    item (_("About Ready Set"), "win.about")
-  }
 }

@@ -1,0 +1,117 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ReadySetStepsMainPage : Adw.Bin {
+  show-steps-list: bind steps_list_button.active bidirectional;
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-back-button: false;
+      margin-bottom: 6;
+
+      [start]
+      ToggleButton steps_list_button {
+        styles ["flat"]
+
+        icon-name: "view-list-symbolic";
+        active: false;
+        valign: start;
+      }
+
+      title-widget: Box {
+        orientation: vertical;
+        spacing: 2;
+
+        Adw.CarouselIndicatorDots {
+          carousel: carousel;
+        }
+
+        $ReadySetCarouselPageTitles {
+          carousel: carousel;
+        }
+      };
+
+      [end]
+      MenuButton menu_button {
+        styles ["flat"]
+
+        icon-name: "open-menu-symbolic";
+        menu-model: primary_menu;
+        valign: start;
+      }
+    }
+
+    content: Adw.Carousel carousel {
+      allow-long-swipes: false;
+      interactive: false;
+      spacing: 64;
+    };
+
+    [bottom]
+    Box {
+      orientation: horizontal;
+      margin-bottom: 12;
+      margin-top: 6;
+      margin-end: 12;
+      margin-start: 12;
+      halign: end;
+      spacing: 12;
+
+      Revealer {
+        transition-type: crossfade;
+        transition-duration: 200;
+        reveal-child: bind template.can-cancel;
+
+        Button cancel_button {
+          styles ["pill"]
+
+          label: _("Back");
+          can-shrink: true;
+
+          clicked => $cancel_clicked();
+        }
+      }
+
+      Stack continue_stack {
+        transition-duration: 200;
+        transition-type: crossfade;
+        hhomogeneous: true;
+        halign: end;
+
+        StackPage {
+          name: "continue";
+          child: Button continue_button {
+            styles ["pill", "suggested-action"]
+
+            sensitive: bind template.is-ready-to-continue;
+            label: _("Next");
+            can-shrink: true;
+
+            clicked => $continue_clicked();
+          };
+        }
+
+        StackPage {
+          name: "finish";
+          child: Button finish_button {
+            styles ["pill", "suggested-action"]
+
+            label: _("Finish");
+            can-shrink: true;
+
+            clicked => $finish_clicked();
+          };
+        }
+      }
+    }
+  }
+}
+
+menu primary_menu {
+  section {
+    item (_("Preferences"), "win.preferences")
+    item (_("Keyboard Shortcuts"), "win.show-help-overlay")
+    item (_("About Ready Set"), "win.about")
+  }
+}

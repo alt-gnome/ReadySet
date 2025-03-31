@@ -2,16 +2,24 @@
 <gresources>
   <gresource prefix="/space/rirusha/ReadySet/icons/scalable/actions/">
     <file alias="altmobile-symbolic.svg">assets/icons/altmobile-symbolic.svg</file>
+    <file alias="language-symbolic.svg">assets/icons/language-symbolic.svg</file>
   </gresource>
   <gresource prefix="/space/rirusha/ReadySet/">
     <file alias="gtk/help-overlay.ui" preprocess="xml-stripblanks">ui/help-overlay.ui</file>
     <file>style.css</file>
+    <file preprocess="xml-stripblanks">ui/base-page-desc.ui</file>
     <file preprocess="xml-stripblanks">ui/base-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/carousel-page-titles.ui</file>
     <file preprocess="xml-stripblanks">ui/language-page.ui</file>
     <file preprocess="xml-stripblanks">ui/language-row.ui</file>
     <file preprocess="xml-stripblanks">ui/languages-box.ui</file>
     <file preprocess="xml-stripblanks">ui/nothing-to-show.ui</file>
+    <file preprocess="xml-stripblanks">ui/step-row.ui</file>
+    <file preprocess="xml-stripblanks">ui/steps-main-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/steps-sidebar.ui</file>
+    <file preprocess="xml-stripblanks">ui/test-page.ui</file>
     <file preprocess="xml-stripblanks">ui/welcome-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/window-content.ui</file>
     <file preprocess="xml-stripblanks">ui/window.ui</file>
   </gresource>
 </gresources>

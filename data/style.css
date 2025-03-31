@@ -1,0 +1,28 @@
+.padding6 {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+basepage > scrolledwindow > viewport > box {
+    margin: 24px 12px;
+    border-spacing: 36px;
+}
+
+basepage > scrolledwindow > viewport > box > clamp > box {
+    border-spacing: 12px;
+}
+
+basepage > scrolledwindow > viewport > box > clamp > box > .icon {
+    color: color-mix(in srgb, currentColor var(--dim-opacity), transparent);
+    -gtk-icon-size: 128px;
+}
+
+basepage > scrolledwindow > viewport > box > clamp > box > .icon:disabled {
+    opacity: var(--disabled-opacity);
+}
+
+basepage > scrolledwindow > viewport > box > clamp > box > .icon:not(:last-child) {
+    margin-bottom: 24px;
+}

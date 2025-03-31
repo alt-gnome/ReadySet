@@ -20,7 +20,7 @@
 public sealed class ReadySet.Window: Adw.ApplicationWindow {
 
     [GtkChild]
-    unowned Adw.NavigationView nav_view;
+    unowned Gtk.Stack stack;
 
     const ActionEntry[] ACTION_ENTRIES = {
         { "preferences", on_preferences_action },
@@ -31,22 +31,30 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         Object (application: app);
     }
 
-    static construct {
-        typeof (WelcomePage).ensure ();
-        typeof (LanguagesBox).ensure ();
-        typeof (BasePage).ensure ();
-    }
-
     construct {
-        BasePage.root_view = nav_view;
+        add_action_entries (ACTION_ENTRIES, this);
 
         var settings = new Settings (Config.APP_ID);
-
-        add_action_entries (ACTION_ENTRIES, this);
 
         settings.bind ("window-width", this, "default-width", SettingsBindFlags.DEFAULT);
         settings.bind ("window-height", this, "default-height", SettingsBindFlags.DEFAULT);
         settings.bind ("window-maximized", this, "maximized", SettingsBindFlags.DEFAULT);
+
+        reload_window ();
+    }
+
+    public void reload_window () {
+        stack.visible_child_name = "load";
+
+        var c = stack.get_child_by_name ("main");
+
+        if (c != null) {
+            stack.remove (c);
+        }
+
+        stack.add_named (new WindowContent (), "main");
+
+        stack.visible_child_name = "main";
     }
 
     void on_preferences_action () {

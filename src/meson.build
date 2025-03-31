@@ -5,16 +5,24 @@ vapi_sources = files(
 vala_sources = files(
   'pages/base-page.vala',
   'pages/language-page.vala',
+  'pages/test-page.vala',
   'pages/welcome-page.vala',
 
+  'widgets/base-page-desc.vala',
+  'widgets/carousel-page-titles.vala',
+  'widgets/lang-select-title.vala',
   'widgets/language-row.vala',
   'widgets/languages-box.vala',
   'widgets/nothing-to-show.vala',
+  'widgets/step-row.vala',
+  'widgets/steps-main-page.vala',
+  'widgets/steps-sidebar.vala',
 
   'about.vala',
   'application.vala',
   'main.vala',
   'utils.vala',
+  'window-content.vala',
   'window.vala',
 )
 
@@ -29,5 +37,6 @@ executable(
   sources,
   include_directories: config_h_dir,
   dependencies: dependencies,
+  link_args: ['-lm'],
   install: true,
 )

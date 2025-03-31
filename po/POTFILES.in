@@ -1,0 +1,15 @@
+data/space.rirusha.ReadySet.desktop.in
+data/space.rirusha.ReadySet-Devel.desktop.in
+data/space.rirusha.ReadySet.metainfo.xml.in
+data/ui/help-overlay.blp
+data/ui/language-page.blp
+data/ui/languages-box.blp
+data/ui/nothing-to-show.blp
+data/ui/steps-main-page.blp
+data/ui/test-page.blp
+data/ui/welcome-page.blp
+data/ui/window-content.blp
+src/about.vala
+src/pages/base-page.vala
+src/widgets/lang-select-title.vala
+src/widgets/steps-sidebar.vala

@@ -17,32 +17,52 @@
  */
 
 [GtkTemplate (ui = "/space/rirusha/ReadySet/ui/base-page.ui")]
-public abstract class ReadySet.BasePage : Adw.NavigationPage {
+public class ReadySet.BasePage : Adw.Bin {
 
     [GtkChild]
-    unowned Adw.ToolbarView toolbar_view;
+    unowned Adw.Bin title_bin;
+    [GtkChild]
+    unowned Adw.Bin child_bin;
+    [GtkChild]
+    unowned Gtk.ScrolledWindow scrolled_window;
 
-    public static Adw.NavigationView root_view { get; set; }
+    public string icon_name { get; set; default = "dialog-error-symbolic"; }
 
-    public Gtk.Widget content {
-        get {
-            return toolbar_view.content;
-        }
-        set {
-            toolbar_view.content = value;
-        }
-    }
+    public string title_header { get; set; default = _("Unknown"); }
+
+    public string title { get; set; default = _("Unknown page"); }
+
+    public string description { get; set; default = _("This page says that your distribution has made a mistake."); }
+
+    public bool passed { get; set; default = false; }
 
     public bool is_ready { get; set; default = false; }
 
-    public bool search_is_possible { get; set; default = false; }
+    public Gtk.Widget title_widget {
+        get {
+            return title_bin.child;
+        }
+        set {
+            title_bin.child = value;
+        }
+    }
 
-    public bool search_enabled { get; set; default = false; }
+    protected Gtk.ScrolledWindow parent_scrolled_window {
+        get {
+            return scrolled_window;
+        }
+    }
 
-    public signal void apply ();
+    public Gtk.Widget content {
+        get {
+            return child_bin.child;
+        }
+        set {
+            child_bin.child = value;
+        }
+    }
 
-    [GtkCallback]
-    void apply_clicked () {
-        apply ();
+    static construct {
+        set_css_name ("basepage");
     }
 }

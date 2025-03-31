@@ -18,6 +18,8 @@
 
 public sealed class ReadySet.Application: Adw.Application {
 
+    public LanguagePageState lang_page_state { get; set; default = { false, 0.0, "" }; }
+
     const ActionEntry[] ACTION_ENTRIES = {
         { "quit", quit },
     };
@@ -29,9 +31,24 @@ public sealed class ReadySet.Application: Adw.Application {
         );
     }
 
+    static construct {
+        typeof (BasePage).ensure ();
+        typeof (BasePageDesc).ensure ();
+        typeof (StepsMainPage).ensure ();
+        typeof (StepsSidebar).ensure ();
+        typeof (StepRow).ensure ();
+        typeof (CarouselPageTitles).ensure ();
+        typeof (LangSelectTitle).ensure ();
+    }
+
     construct {
         add_action_entries (ACTION_ENTRIES, this);
         set_accels_for_action ("app.quit", { "<primary>q" });
+    }
+
+    public void reload_window (LanguagePageState page_state) {
+        this.lang_page_state = page_state;
+        (active_window as ReadySet.Window)?.reload_window ();
     }
 
     public override void activate () {

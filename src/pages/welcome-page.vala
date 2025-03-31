@@ -17,11 +17,4 @@
  */
 
 [GtkTemplate (ui = "/space/rirusha/ReadySet/ui/welcome-page.ui")]
-public sealed class ReadySet.WelcomePage : BasePage {
-
-    construct {
-        apply.connect (() => {
-            root_view.push (new LanguagePage ());
-        });
-    }
-}
+public sealed class ReadySet.WelcomePage : BasePage {}

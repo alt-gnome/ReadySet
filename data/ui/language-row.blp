@@ -3,4 +3,10 @@ using Adw 1;
 
 template $ReadySetLanguageRow : Adw.ActionRow {
   activatable: true;
+
+  [suffix]
+  Image {
+    visible: bind template.is-current-language;
+    icon-name: "object-select-symbolic";
+  }
 }

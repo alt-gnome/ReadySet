@@ -6,18 +6,21 @@ project(
   license: 'GPL-3.0-or-later',
 )
 
+fs = import('fs')
 i18n = import('i18n')
 gnome = import('gnome')
 
 gtk = dependency('gtk4', version: '>= 4.16')
 libadwaita = dependency('libadwaita-1', version: '>= 1.6')
 gnome_desktop = dependency('gnome-desktop-4')
+gee = dependency('gee-0.8')
 accountsservice_desktop = dependency('accountsservice')
 
 dependencies = [
   gtk,
   libadwaita,
   gnome_desktop,
+  gee,
   accountsservice_desktop
 ]
 
@@ -42,6 +45,14 @@ else
   app_id_dyn = app_id
 endif
 
+supported_languages_arr = []
+linguas = fs.read(meson.current_source_dir() / 'po' / 'LINGUAS').split()
+
+foreach lang : linguas
+  supported_languages_arr += [lang]
+endforeach
+supported_languages_arr += ['en']
+
 conf = configuration_data()
 conf.set_quoted('APP_ID', app_id)
 conf.set_quoted('APP_ID_DYN', app_id_dyn)
@@ -52,6 +63,7 @@ conf.set_quoted('GETTEXT_PACKAGE', meson.project_name())
 conf.set_quoted('DATADIR', get_option('prefix') / get_option('datadir'))
 conf.set_quoted('GNOMELOCALEDIR', get_option('prefix') / get_option('localedir'))
 conf.set10('GNOME_DESKTOP_USE_UNSTABLE_API', true)
+conf.set_quoted('SUPPORTED_LANGUAGES', '|'.join(supported_languages_arr))
 
 configure_file(output: 'config.h', configuration: conf)
 config_h_dir = include_directories('.')

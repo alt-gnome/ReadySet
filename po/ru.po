@@ -1,0 +1,137 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the ready-set package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#. Translators: keep number of ';'
+#: data/space.rirusha.ReadySet.desktop.in:5
+#: data/space.rirusha.ReadySet.desktop.in:7
+#: data/space.rirusha.ReadySet-Devel.desktop.in:5
+#: data/space.rirusha.ReadySet-Devel.desktop.in:7
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ready-set\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-31 21:51+0300\n"
+"PO-Revision-Date: 2025-03-31 21:48+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.4\n"
+
+#. Translators: app name should be translated
+#: data/space.rirusha.ReadySet.desktop.in:4
+#: data/space.rirusha.ReadySet.metainfo.xml.in:3
+msgid "Ready Set"
+msgstr "На Старт Внимание"
+
+#. Translators: app name should be translated
+#: data/space.rirusha.ReadySet-Devel.desktop.in:4
+msgid "Ready Set (Devel)"
+msgstr "На Старт Внимание (Разраб.)"
+
+#: data/space.rirusha.ReadySet.metainfo.xml.in:34
+msgid "Vladimir Vaskov"
+msgstr "Владимир Васьков"
+
+#: data/ui/help-overlay.blp:11
+msgid "Main Actions"
+msgstr "Основные действия"
+
+#: data/ui/help-overlay.blp:14
+msgid "Show Shortcuts"
+msgstr "Показать сочетания клавиш"
+
+#: data/ui/help-overlay.blp:19
+msgid "Quit"
+msgstr "Выйти"
+
+#: data/ui/language-page.blp:5
+msgid "Language selection"
+msgstr "Выбор языка"
+
+#: data/ui/languages-box.blp:19
+msgid "Search language"
+msgstr "Пок"
+
+#: data/ui/languages-box.blp:42
+msgid "Show more"
+msgstr "Показать больше"
+
+#: data/ui/nothing-to-show.blp:30
+msgid "Nothing to show"
+msgstr "Нечего показывать"
+
+#: data/ui/steps-main-page.blp:69
+msgid "Back"
+msgstr "Назад"
+
+#: data/ui/steps-main-page.blp:88
+msgid "Next"
+msgstr "Дальше"
+
+#: data/ui/steps-main-page.blp:100
+msgid "Finish"
+msgstr "Завершить"
+
+#: data/ui/steps-main-page.blp:113
+msgid "Preferences"
+msgstr "Настройки"
+
+#: data/ui/steps-main-page.blp:114
+msgid "Keyboard Shortcuts"
+msgstr "Сочетания клавиш"
+
+#: data/ui/steps-main-page.blp:115
+msgid "About Ready Set"
+msgstr "О приложении"
+
+#: data/ui/test-page.blp:5
+msgid "Test"
+msgstr "Тест"
+
+#: data/ui/test-page.blp:6
+msgid "Test page"
+msgstr "Выбор языка"
+
+#: data/ui/welcome-page.blp:4 data/ui/welcome-page.blp:5
+msgid "Welcome"
+msgstr "Добро пожаловать"
+
+#: data/ui/window-content.blp:24
+msgid "All steps"
+msgstr "Все шаги"
+
+#: data/ui/window-content.blp:35
+msgid "Main"
+msgstr "Главная"
+
+#. Translators: NAME <EMAIL.COM> /n NAME <EMAIL.COM>
+#: src/about.vala:27
+msgid "translator-credits"
+msgstr "Vladimir Vaskov <rirusha@altlinux.org>"
+
+#: src/pages/base-page.vala:31
+msgid "Unknown"
+msgstr "Неизвестная"
+
+#: src/pages/base-page.vala:33
+msgid "Unknown page"
+msgstr "Неизвестная страница"
+
+#: src/pages/base-page.vala:35
+msgid "This page says that your distribution has made a mistake."
+msgstr "На этой странице указано, что в вашем дистрибутиве произошла ошибка."
+
+#: src/widgets/lang-select-title.vala:64
+msgid "Hello!"
+msgstr "Привет!"
+
+#: src/widgets/lang-select-title.vala:65
+msgid ""
+"Let's start by choosing the language for the application and for your system."
+msgstr "Давайте начнём с выбора языка для приложения и для Вашей системы."

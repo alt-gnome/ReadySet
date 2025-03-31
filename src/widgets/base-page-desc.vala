@@ -16,21 +16,14 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/language-row.ui")]
-public sealed class ReadySet.LanguageRow : Adw.ActionRow {
+[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/base-page-desc.ui")]
+public sealed class ReadySet.BasePageDesc : Gtk.Box {
 
-    public string language_locale { get; construct set; }
+    public string title { get; set; }
 
-    public bool is_current_language { get; set; default = false; }
+    public string description { get; set; }
 
-    public LanguageRow (string language_locale) {
-        Object (language_locale: language_locale);
-    }
-
-    construct {
-        is_current_language = language_locale == get_current_language ();
-
-        title = Gnome.Languages.get_country_from_locale (language_locale, language_locale);
-        subtitle = Gnome.Languages.get_country_from_locale (language_locale, get_current_language ());
+    public BasePageDesc (string title, string description) {
+        Object (title: title, description: description);
     }
 }

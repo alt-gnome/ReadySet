@@ -1,0 +1,13 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ReadySetTestPage : $ReadySetBasePage {
+  title-header: _("Test");
+  title: _("Test page");
+  icon-name: "zoom-original-symbolic";
+
+  content: Button {
+    label: "Test";
+    clicked => $test_clicked();
+  };
+}

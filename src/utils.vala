@@ -18,9 +18,58 @@
 
 namespace ReadySet {
 
-    public Act.User get_current_user () {
-        var user_manager = Act.UserManager.get_default ();
-        user_manager.list_users ();
-        return user_manager.get_user (Environment.get_user_name ());
+    public struct LanguagePageState {
+        public bool show_more;
+        public double scroll_position;
+        public string search_query;
+    }
+
+    string current_language;
+
+    public void set_msg_locale (string locale) {
+        current_language = locale;
+        Intl.setlocale (LocaleCategory.MESSAGES, locale);
+    }
+
+    public string get_current_language () {
+        if (current_language != null) {
+            return current_language;
+        }
+
+        foreach (string lang in Intl.get_language_names ()) {
+            if (lang.length > 0) {
+                return lang;
+            }
+        }
+
+        return "C";
+    }
+
+    public string[] get_supported_languages () {
+        return Config.SUPPORTED_LANGUAGES.split ("|");
+    }
+
+    public BasePage build_page_by_step_id (string step_id) {
+        BasePage page_content;
+
+        switch (step_id) {
+            case "welcome":
+                page_content = new WelcomePage ();
+                break;
+
+            case "language":
+                page_content = new LanguagePage ();
+                break;
+
+            case "test":
+                page_content = new TestPage ();
+                break;
+
+            default:
+                page_content = new BasePage ();
+                break;
+        }
+
+        return page_content;
     }
 }

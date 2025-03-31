@@ -1,45 +1,61 @@
+/*
+ * Copyright (C) 2025 Vladimir Vaskov <rirusha@altlinux.org>
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see
+ * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
+ * 
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 using Gtk 4.0;
 using Adw 1;
 
-template $ReadySetBasePage : Adw.NavigationPage {
-  Adw.ToolbarView toolbar_view {
-    reveal-bottom-bars: bind template.is-ready;
+template $ReadySetBasePage : Adw.Bin {
+  ScrolledWindow scrolled_window {
+    hscrollbar-policy: never;
+    propagate-natural-height: true;
 
-    [top]
-    Adw.HeaderBar {
-      title-widget: Adw.WindowTitle {
-        title: bind template.title;
-      };
+    child: Box toplevel_box {
+      orientation: vertical;
+      valign: center;
 
-      [end]
-      ToggleButton {
-        icon-name: "system-search-symbolic";
-        active: bind template.search-enabled bidirectional;
-        visible: bind template.search-is-possible;
+      Adw.Clamp {
+        maximum-size: 600;
+
+        child: Box {
+          orientation: vertical;
+          valign: center;
+
+          Image image {
+            accessible-role: presentation;
+            halign: center;
+            icon-name: bind template.icon-name;
+
+            styles [
+              "icon",
+            ]
+          }
+
+          Adw.Bin title_bin {
+            $ReadySetBasePageDesc {
+              title: bind template.title;
+              description: bind template.description;
+            }
+          }
+
+          Adw.Bin child_bin {}
+        };
       }
-    }
-
-    [bottom]
-    ListBox {
-      styles [
-        "boxed-list"
-      ]
-
-      selection-mode: none;
-      margin-start: 12;
-      margin-top: 6;
-      margin-bottom: 12;
-      margin-end: 12;
-
-      Adw.ButtonRow {
-        styles [
-          "suggested-action",
-        ]
-
-        activated => $apply_clicked();
-
-        title: _("Continue");
-      }
-    }
+    };
   }
 }

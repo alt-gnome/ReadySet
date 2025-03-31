@@ -1,0 +1,40 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ReadySetWindowContent : Adw.BreakpointBin {
+  width-request: 360;
+  height-request: 294;
+
+  Adw.Breakpoint {
+    condition ("max-width: 600px")
+    setters {
+      split_view.collapsed: true;
+      split_view.show-sidebar: false;
+    }
+  }
+
+  Adw.OverlaySplitView split_view {
+    collapsed: false;
+    show-sidebar: bind steps_main_page.show-steps-list bidirectional;
+    min-sidebar-width: 240;
+    max-sidebar-width: 320;
+
+    sidebar: Adw.NavigationPage {
+      name: "steps";
+      title: _("All steps");
+
+      child: $ReadySetStepsSidebar steps_sidebar {
+        model: bind steps_main_page.model;
+        show-close-button: bind split_view.collapsed;
+        request-close => $close_sidebar();
+      };
+    };
+
+    content: Adw.NavigationPage {
+      name: "main";
+      title: _("Main");
+
+      child: $ReadySetStepsMainPage steps_main_page {};
+    };
+  }
+}
