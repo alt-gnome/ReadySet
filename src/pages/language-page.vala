@@ -22,7 +22,19 @@ public sealed class ReadySet.LanguagePage : BasePage {
     [GtkChild]
     unowned LanguagesBox languages_box;
 
+    weak LanguagePageState page_state {
+        get {
+            return ((ReadySet.Application) GLib.Application.get_default ()).lang_page_state;
+        }
+    }
+
     construct {
-        
+        root_scrolled_window.vadjustment.value_changed.connect (() => {
+            page_state.scroll_position = root_scrolled_window.vadjustment.value;
+        });
+
+        Idle.add_once (() => {
+            root_scrolled_window.vadjustment.value = page_state.scroll_position;
+        });
     }
 }

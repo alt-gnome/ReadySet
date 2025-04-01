@@ -14,7 +14,7 @@ template $ReadySetWindowContent : Adw.BreakpointBin {
   }
 
   Adw.OverlaySplitView split_view {
-    collapsed: false;
+    pin-sidebar: false;
     show-sidebar: bind steps_main_page.show-steps-list bidirectional;
     min-sidebar-width: 240;
     max-sidebar-width: 320;

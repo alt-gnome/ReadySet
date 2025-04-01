@@ -67,15 +67,4 @@ public class ReadySet.LangSelectTitle : Adw.Bin {
             hexpand = true
         });
     }
-
-    string fix_locale (string locale) {
-        switch (locale) {
-            case "en":
-                return "en_US.UTF-8";
-            case "ru":
-                return "ru_RU.UTF-8";
-            default:
-                return locale;
-        }
-    }
 }

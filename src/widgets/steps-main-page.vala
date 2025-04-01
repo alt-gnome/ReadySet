@@ -73,7 +73,13 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
                 carousel.remove (carousel.get_nth_page (position));
             }
             for (int i = 0; i < added; i++) {
-                carousel.insert ((BasePage) model.get_item (position + added - 1), (int) (position + added - 1));
+                var page = (BasePage) model.get_item (position + added - 1);
+
+                if (carousel.n_pages <= ReadySet.Application.get_default ().last_position) {
+                    page.passed = true;
+                }
+
+                carousel.insert (page, (int) (position + added - 1));
             }
 
             selection_changed ();
@@ -82,6 +88,10 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         model.selection_changed.connect (selection_changed);
 
         carousel.page_changed.connect ((index) => {
+            if (ReadySet.Application.get_default ().last_position < carousel.position) {
+                ReadySet.Application.get_default ().last_position = (uint) carousel.position;
+            }
+
             model.select_item (index, true);
         });
     }

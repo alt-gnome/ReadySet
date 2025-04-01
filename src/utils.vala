@@ -18,10 +18,21 @@
 
 namespace ReadySet {
 
-    public struct LanguagePageState {
-        public bool show_more;
-        public double scroll_position;
-        public string search_query;
+    public class LanguagePageState : Object {
+
+        public bool show_more { get; set; }
+
+        public double scroll_position { get; set; }
+
+        public string search_query { get; set; }
+
+        public LanguagePageState.default () {
+            Object (
+                show_more: false,
+                scroll_position: 0.0,
+                search_query: ""
+            );
+        }
     }
 
     string current_language;
@@ -71,5 +82,16 @@ namespace ReadySet {
         }
 
         return page_content;
+    }
+
+    string fix_locale (string locale) {
+        switch (locale) {
+            case "en":
+                return "en_US.UTF-8";
+            case "ru":
+                return "ru_RU.UTF-8";
+            default:
+                return locale;
+        }
     }
 }

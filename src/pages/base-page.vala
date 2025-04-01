@@ -47,7 +47,7 @@ public class ReadySet.BasePage : Adw.Bin {
         }
     }
 
-    protected Gtk.ScrolledWindow parent_scrolled_window {
+    protected Gtk.ScrolledWindow root_scrolled_window {
         get {
             return scrolled_window;
         }

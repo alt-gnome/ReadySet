@@ -40,12 +40,15 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         settings.bind ("window-height", this, "default-height", SettingsBindFlags.DEFAULT);
         settings.bind ("window-maximized", this, "maximized", SettingsBindFlags.DEFAULT);
 
-        reload_window ();
+        build_content ();
     }
 
     public void reload_window () {
         stack.visible_child_name = "load";
+        Timeout.add_once (300, build_content);
+    }
 
+    void build_content () {
         var c = stack.get_child_by_name ("main");
 
         if (c != null) {

@@ -18,7 +18,11 @@
 
 public sealed class ReadySet.Application: Adw.Application {
 
-    public LanguagePageState lang_page_state { get; set; default = { false, 0.0, "" }; }
+    public uint last_position { get; set; default = 0; }
+
+    public string[] all_steps { get; set; default = {}; }
+
+    public LanguagePageState lang_page_state { get; set; default = new LanguagePageState.default (); }
 
     const ActionEntry[] ACTION_ENTRIES = {
         { "quit", quit },
@@ -44,10 +48,12 @@ public sealed class ReadySet.Application: Adw.Application {
     construct {
         add_action_entries (ACTION_ENTRIES, this);
         set_accels_for_action ("app.quit", { "<primary>q" });
+
+        var settings = new Settings (Config.APP_ID);
+        all_steps = settings.get_strv ("all-steps");
     }
 
-    public void reload_window (LanguagePageState page_state) {
-        this.lang_page_state = page_state;
+    public void reload_window () {
         (active_window as ReadySet.Window)?.reload_window ();
     }
 
@@ -62,5 +68,9 @@ public sealed class ReadySet.Application: Adw.Application {
         } else {
             active_window.present ();
         }
+    }
+
+    public new static ReadySet.Application get_default () {
+        return (ReadySet.Application) GLib.Application.get_default ();
     }
 }

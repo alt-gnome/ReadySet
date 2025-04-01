@@ -35,6 +35,8 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
             if (_show_more) {
                 show_all_languages ();
             }
+
+            page_state.show_more = _show_more;
         }
     }
 
@@ -42,20 +44,14 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
         typeof (LanguageRow).ensure ();
     }
 
-    Gtk.ScrolledWindow scrolled_window {
-        get {
-            return (Gtk.ScrolledWindow) get_parent ().get_parent ().get_parent ().get_parent ().get_parent ().get_parent ();
-        }
-    }
-
-    LanguagePageState page_state {
+    weak LanguagePageState page_state {
         get {
             return ((ReadySet.Application) GLib.Application.get_default ()).lang_page_state;
         }
     }
 
     construct {
-        set_base_languages.begin ();
+        set_supported_languages.begin ();
 
         languages_listbox.set_filter_func ((row) => {
             var action_row = (Adw.ActionRow) row;
@@ -72,39 +68,48 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
             languages_listbox.invalidate_filter ();
         });
 
+        search_entry.changed.connect (() => {
+            page_state.search_query = search_entry.text;
+        });
+
         languages_listbox.row_activated.connect ((row) => {
             var lr = (LanguageRow) row;
+
+            if (lr.language_locale == get_current_language ()) {
+                return;
+            }
+
             set_msg_locale (lr.language_locale);
 
-            ((ReadySet.Application) GLib.Application.get_default ()).reload_window ({
-                show_more,
-                scrolled_window.vadjustment.value,
-                search_entry.text
-            });
+            ReadySet.Application.get_default ().reload_window ();
         });
 
         search_entry.text = page_state.search_query;
         show_more = page_state.show_more;
-        Idle.add_once (() => {
-            scrolled_window.vadjustment.value = page_state.scroll_position;
-        });
 
         Idle.add_once (() => {
             search_entry.can_focus = true;
         });
     }
 
-    async void set_base_languages () {
-        set_languages ({
-            "ru_RU.UTF-8",
-            "en_US.UTF-8",
-            "de_DE.UTF-8",
-            "fr_FR.UTF-8",
-            "es_ES.UTF-8",
-            "zh_CN.UTF-8",
-            "ja_JP.UTF-8",
-            "ar_EG.UTF-8",
-        });
+    async void set_supported_languages () {
+        var lang_arr = new Array<string> ();
+        foreach (string locale in get_supported_languages ()) {
+            lang_arr.append_val (fix_locale (locale));
+        }
+
+        set_languages (lang_arr.data);
+
+        //  set_languages ({
+        //      "ru_RU.UTF-8",
+        //      "en_US.UTF-8",
+        //      "de_DE.UTF-8",
+        //      "fr_FR.UTF-8",
+        //      "es_ES.UTF-8",
+        //      "zh_CN.UTF-8",
+        //      "ja_JP.UTF-8",
+        //      "ar_EG.UTF-8",
+        //  });
     }
 
     public void show_all_languages () {
