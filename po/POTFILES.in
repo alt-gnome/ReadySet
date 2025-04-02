@@ -1,6 +1,7 @@
 data/space.rirusha.ReadySet.desktop.in
 data/space.rirusha.ReadySet-Devel.desktop.in
 data/space.rirusha.ReadySet.metainfo.xml.in
+data/ui/end-page.blp
 data/ui/help-overlay.blp
 data/ui/language-page.blp
 data/ui/languages-box.blp

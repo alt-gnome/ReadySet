@@ -14,7 +14,7 @@ template $ReadySetWindowContent : Adw.BreakpointBin {
   }
 
   Adw.OverlaySplitView split_view {
-    pin-sidebar: false;
+    pin-sidebar: true;
     show-sidebar: bind steps_main_page.show-steps-list bidirectional;
     min-sidebar-width: 240;
     max-sidebar-width: 320;
@@ -27,6 +27,7 @@ template $ReadySetWindowContent : Adw.BreakpointBin {
         model: bind steps_main_page.model;
         show-close-button: bind split_view.collapsed;
         request-close => $close_sidebar();
+        sensitive: bind steps_main_page.dead-end inverted;
       };
     };
 

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-31 21:51+0300\n"
+"POT-Creation-Date: 2025-04-01 21:01+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,8 @@ msgstr ""
 
 #. Translators: app name should be translated
 #: data/space.rirusha.ReadySet.desktop.in:4
-#: data/space.rirusha.ReadySet.metainfo.xml.in:3
+#: data/space.rirusha.ReadySet.metainfo.xml.in:3 data/ui/end-page.blp:5
+#: src/about.vala:22
 msgid "Ready Set"
 msgstr ""
 
@@ -33,8 +34,16 @@ msgstr ""
 msgid "Ready Set (Devel)"
 msgstr ""
 
-#: data/space.rirusha.ReadySet.metainfo.xml.in:34
+#: data/space.rirusha.ReadySet.metainfo.xml.in:34 src/about.vala:24
 msgid "Vladimir Vaskov"
+msgstr ""
+
+#: data/ui/end-page.blp:4
+msgid "Finish"
+msgstr ""
+
+#: data/ui/end-page.blp:7
+msgid "The system is ready for use."
 msgstr ""
 
 #: data/ui/help-overlay.blp:11
@@ -73,19 +82,20 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:100
-msgid "Finish"
-msgstr ""
-
-#: data/ui/steps-main-page.blp:113
-msgid "Preferences"
+#. TRANSLATORS: Last word in "Rady Set ..." sentence
+#: data/ui/steps-main-page.blp:101
+msgid "Go!"
 msgstr ""
 
 #: data/ui/steps-main-page.blp:114
-msgid "Keyboard Shortcuts"
+msgid "Preferences"
 msgstr ""
 
 #: data/ui/steps-main-page.blp:115
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: data/ui/steps-main-page.blp:116
 msgid "About Ready Set"
 msgstr ""
 
@@ -112,6 +122,22 @@ msgstr ""
 #. Translators: NAME <EMAIL.COM> /n NAME <EMAIL.COM>
 #: src/about.vala:27
 msgid "translator-credits"
+msgstr ""
+
+#: src/about.vala:33
+msgid "Cassette"
+msgstr ""
+
+#: src/about.vala:33
+msgid "Unofficial Yandex Music client"
+msgstr ""
+
+#: src/about.vala:34
+msgid "Folder manager"
+msgstr ""
+
+#: src/about.vala:34
+msgid "Folder manager for mobile devices"
 msgstr ""
 
 #: src/pages/base-page.vala:31

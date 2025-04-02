@@ -17,6 +17,7 @@ template $ReadySetStepsMainPage : Adw.Bin {
         icon-name: "view-list-symbolic";
         active: false;
         valign: start;
+        visible: bind template.dead-end inverted;
       }
 
       title-widget: Box {
@@ -62,6 +63,7 @@ template $ReadySetStepsMainPage : Adw.Bin {
         transition-type: crossfade;
         transition-duration: 200;
         reveal-child: bind template.can-cancel;
+        visible: bind template.dead-end inverted;
 
         Button cancel_button {
           styles ["pill"]
@@ -97,7 +99,9 @@ template $ReadySetStepsMainPage : Adw.Bin {
           child: Button finish_button {
             styles ["pill", "suggested-action"]
 
-            label: _("Finish");
+            sensitive: bind template.is-ready-to-continue;
+            // TRANSLATORS: Last word in "Rady Set ..." sentence
+            label: _("Go!");
             can-shrink: true;
 
             clicked => $finish_clicked();

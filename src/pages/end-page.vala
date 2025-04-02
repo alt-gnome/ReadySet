@@ -16,22 +16,26 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/language-page.ui")]
-public sealed class ReadySet.LanguagePage : BasePage {
+[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/end-page.ui")]
+public sealed class ReadySet.EndPage : BasePage {
 
-    weak LanguagePageState page_state {
-        get {
-            return ((ReadySet.Application) GLib.Application.get_default ()).lang_page_state;
-        }
-    }
+    [GtkChild]
+    unowned Gtk.Stack stack;
 
     construct {
-        root_scrolled_window.vadjustment.value_changed.connect (() => {
-            page_state.scroll_position = root_scrolled_window.vadjustment.value;
-        });
+        title += "…";
+    }
 
-        Idle.add_once (() => {
-            root_scrolled_window.vadjustment.value = page_state.scroll_position;
+    public void start_action () {
+        stack.visible_child_name = "load";
+
+        Timeout.add_seconds_once (2, () => {
+            finish_action ();
         });
+    }
+
+    void finish_action () {
+        stack.visible_child_name = "ready";
+        is_ready = true;
     }
 }

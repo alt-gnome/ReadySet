@@ -28,6 +28,8 @@ public class ReadySet.BasePage : Adw.Bin {
 
     public string icon_name { get; set; default = "dialog-error-symbolic"; }
 
+    public Gdk.Paintable paintable { get; set; }
+
     public string title_header { get; set; default = _("Unknown"); }
 
     public string title { get; set; default = _("Unknown page"); }

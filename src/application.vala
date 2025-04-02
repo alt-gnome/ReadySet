@@ -43,6 +43,7 @@ public sealed class ReadySet.Application: Adw.Application {
         typeof (StepRow).ensure ();
         typeof (CarouselPageTitles).ensure ();
         typeof (LangSelectTitle).ensure ();
+        typeof (LanguagesBox).ensure ();
     }
 
     construct {

@@ -4,6 +4,7 @@ vapi_sources = files(
 
 vala_sources = files(
   'pages/base-page.vala',
+  'pages/end-page.vala',
   'pages/language-page.vala',
   'pages/test-page.vala',
   'pages/welcome-page.vala',

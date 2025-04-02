@@ -1,0 +1,27 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ReadySetEndPage : $ReadySetBasePage {
+  title-header: _("Finishing");
+  title: _("Ready Set");
+  icon-name: "space.rirusha.ReadySet-symbolic";
+  description: _("The system is ready for use.");
+
+  title-widget: Stack stack {
+    transition-duration: 300;
+    transition-type: crossfade;
+
+    StackPage {
+      name: "load";
+      child: Adw.Spinner {};
+    }
+
+    StackPage {
+      name: "ready";
+      child: $ReadySetBasePageDesc {
+        title: bind template.title;
+        description: bind template.description;
+      };
+    }
+  };
+}

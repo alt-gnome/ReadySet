@@ -34,6 +34,7 @@ public sealed class ReadySet.WindowContent : Adw.BreakpointBin {
         foreach (string step_id in ReadySet.Application.get_default ().all_steps) {
             steps_main_page.add_page (build_page_by_step_id (step_id));
         }
+        steps_main_page.add_page (build_page_by_step_id ("end"));
     }
 
     [GtkCallback]

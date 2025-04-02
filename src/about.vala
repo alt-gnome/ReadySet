@@ -18,10 +18,10 @@
 
 namespace ReadySet {
     public Adw.AboutDialog build_about () {
-        return new Adw.AboutDialog () {
-            application_name = "Ready Set",
+        var about = new Adw.AboutDialog () {
+            application_name = _("Ready Set"),
             application_icon = Config.APP_ID_DYN,
-            developer_name = "rirusha",
+            developer_name = _("Vladimir Vaskov"),
             version = Config.VERSION,
             // Translators: NAME <EMAIL.COM> /n NAME <EMAIL.COM>
             translator_credits = _("translator-credits"),
@@ -29,5 +29,10 @@ namespace ReadySet {
             copyright = "© 2024 rirusha",
             release_notes_version = Config.VERSION
         };
+
+        about.add_other_app ("space.rirusha.Cassette", _("Cassette"), _("Unofficial Yandex Music client"));
+        about.add_other_app ("org.altlinux.Foldy", _("Folder manager"), _("Folder manager for mobile devices"));
+
+        return about;
     }
 }

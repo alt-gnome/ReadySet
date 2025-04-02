@@ -30,6 +30,8 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     public bool is_ready_to_continue { get; set; }
 
+    public bool dead_end { get; set; default = false; }
+
     BasePage last_current_page;
 
     public BasePage current_page {
@@ -88,11 +90,25 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         model.selection_changed.connect (selection_changed);
 
         carousel.page_changed.connect ((index) => {
-            if (ReadySet.Application.get_default ().last_position < carousel.position) {
-                ReadySet.Application.get_default ().last_position = (uint) carousel.position;
+            if (ReadySet.Application.get_default ().last_position < index) {
+                ReadySet.Application.get_default ().last_position = (uint) index;
             }
 
             model.select_item (index, true);
+        });
+
+        carousel.notify["position"].connect (() => {
+            if (carousel.position > carousel.n_pages - 2) {
+                show_steps_list = false;
+                dead_end = true;
+
+                var end_page = model.get_item (carousel.n_pages - 1) as EndPage;
+                if (end_page != null) {
+                    end_page.start_action ();
+                };
+
+                update_buttons ();
+            }
         });
     }
 
@@ -112,9 +128,9 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     }
 
     void update_buttons () {
-        is_ready_to_continue = model.get_selected () < model.get_n_items () - 1 && current_is_ready_to_continue;
+        is_ready_to_continue = current_is_ready_to_continue;
         is_ready_to_finish = model.get_selected () == model.get_n_items () - 1;
-        can_cancel = model.get_selected () > 0;
+        can_cancel = model.get_selected () > 0 && !dead_end;
     }
 
     public void add_page (BasePage page) {

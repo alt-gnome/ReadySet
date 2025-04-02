@@ -76,8 +76,14 @@ namespace ReadySet {
                 page_content = new TestPage ();
                 break;
 
+            case "end":
+                page_content = new EndPage ();
+                break;
+
             default:
-                page_content = new BasePage ();
+                page_content = new BasePage () {
+                    is_ready = true
+                };
                 break;
         }
 

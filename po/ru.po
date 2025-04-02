@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-31 21:51+0300\n"
-"PO-Revision-Date: 2025-03-31 21:48+0300\n"
+"POT-Creation-Date: 2025-04-01 21:01+0300\n"
+"PO-Revision-Date: 2025-04-01 21:02+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -25,7 +25,8 @@ msgstr ""
 
 #. Translators: app name should be translated
 #: data/space.rirusha.ReadySet.desktop.in:4
-#: data/space.rirusha.ReadySet.metainfo.xml.in:3
+#: data/space.rirusha.ReadySet.metainfo.xml.in:3 data/ui/end-page.blp:5
+#: src/about.vala:22
 msgid "Ready Set"
 msgstr "На Старт Внимание"
 
@@ -34,9 +35,17 @@ msgstr "На Старт Внимание"
 msgid "Ready Set (Devel)"
 msgstr "На Старт Внимание (Разраб.)"
 
-#: data/space.rirusha.ReadySet.metainfo.xml.in:34
+#: data/space.rirusha.ReadySet.metainfo.xml.in:34 src/about.vala:24
 msgid "Vladimir Vaskov"
 msgstr "Владимир Васьков"
+
+#: data/ui/end-page.blp:4
+msgid "Finish"
+msgstr "Завершить"
+
+#: data/ui/end-page.blp:7
+msgid "The system is ready for use."
+msgstr "Система готова к использованию."
 
 #: data/ui/help-overlay.blp:11
 msgid "Main Actions"
@@ -74,19 +83,20 @@ msgstr "Назад"
 msgid "Next"
 msgstr "Дальше"
 
-#: data/ui/steps-main-page.blp:100
-msgid "Finish"
-msgstr "Завершить"
+#. TRANSLATORS: Last word in "Rady Set ..." sentence
+#: data/ui/steps-main-page.blp:101
+msgid "Go!"
+msgstr "Марш!"
 
-#: data/ui/steps-main-page.blp:113
+#: data/ui/steps-main-page.blp:114
 msgid "Preferences"
 msgstr "Настройки"
 
-#: data/ui/steps-main-page.blp:114
+#: data/ui/steps-main-page.blp:115
 msgid "Keyboard Shortcuts"
 msgstr "Сочетания клавиш"
 
-#: data/ui/steps-main-page.blp:115
+#: data/ui/steps-main-page.blp:116
 msgid "About Ready Set"
 msgstr "О приложении"
 
@@ -115,6 +125,22 @@ msgstr "Главная"
 msgid "translator-credits"
 msgstr "Vladimir Vaskov <rirusha@altlinux.org>"
 
+#: src/about.vala:33
+msgid "Cassette"
+msgstr "Кассета"
+
+#: src/about.vala:33
+msgid "Unofficial Yandex Music client"
+msgstr "Неофициальный клиент Яндекс Музыки"
+
+#: src/about.vala:34
+msgid "Folder manager"
+msgstr "Менеджер папок"
+
+#: src/about.vala:34
+msgid "Folder manager for mobile devices"
+msgstr "Менеджер папок для мобильных устройств"
+
 #: src/pages/base-page.vala:31
 msgid "Unknown"
 msgstr "Неизвестная"
@@ -132,6 +158,5 @@ msgid "Hello!"
 msgstr "Привет!"
 
 #: src/widgets/lang-select-title.vala:65
-msgid ""
-"Let's start by choosing the language for the application and for your system."
+msgid "Let's start by choosing the language for the application and for your system."
 msgstr "Давайте начнём с выбора языка для приложения и для Вашей системы."

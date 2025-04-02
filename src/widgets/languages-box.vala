@@ -98,6 +98,10 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
             lang_arr.append_val (fix_locale (locale));
         }
 
+        if (!(get_current_language () in lang_arr.data)) {
+            lang_arr.append_val (get_current_language ());
+        }
+
         set_languages (lang_arr.data);
 
         //  set_languages ({
