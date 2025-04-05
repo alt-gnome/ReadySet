@@ -18,6 +18,8 @@ template $ReadySetWindowContent : Adw.BreakpointBin {
     show-sidebar: bind steps_main_page.show-steps-list bidirectional;
     min-sidebar-width: 240;
     max-sidebar-width: 320;
+    enable-show-gesture: bind steps_main_page.dead-end inverted;
+    enable-hide-gesture: bind steps_main_page.dead-end inverted;
 
     sidebar: Adw.NavigationPage {
       name: "steps";
