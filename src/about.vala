@@ -30,7 +30,6 @@ namespace ReadySet {
             release_notes_version = Config.VERSION
         };
 
-        about.add_other_app ("space.rirusha.Cassette", _("Cassette"), _("Unofficial Yandex Music client"));
         about.add_other_app ("org.altlinux.Foldy", _("Folder manager"), _("Folder manager for mobile devices"));
 
         return about;
