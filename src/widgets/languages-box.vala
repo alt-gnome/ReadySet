@@ -98,8 +98,11 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
             lang_arr.append_val (fix_locale (locale));
         }
 
-        if (!(get_current_language () in lang_arr.data)) {
-            lang_arr.append_val (get_current_language ());
+
+        var cl = get_current_language ();
+
+        if (!(cl in lang_arr.data) && cl != "C" && Gnome.Languages.get_language_from_code (cl, null) != null) {
+            lang_arr.append_val (cl);
         }
 
         set_languages (lang_arr.data);
