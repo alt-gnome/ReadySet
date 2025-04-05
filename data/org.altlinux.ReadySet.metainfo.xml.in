@@ -9,6 +9,13 @@
       
     </p>
   </description>
+  <translation type="gettext">ready-set</translation>
+  <custom>
+    <value key="Purism::form_factor">mobile</value>
+  </custom>
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
   <recommends>
     <control>keyboard</control>
     <control>pointing</control>
@@ -18,9 +25,7 @@
   <screenshots>
     
   </screenshots>
-  <summary>
-
-  </summary>
+  <summary>The utility for configuring the system at the first start</summary>
   <launchable type="desktop-id">org.altlinux.ReadySet.desktop</launchable>
   <releases>
 
@@ -31,4 +36,7 @@
   <developer id="org.altlinux">
     <name>ALT Linux</name>
   </developer>
+  <kudos>
+    <kudo>ModernToolkit</kudo>
+  </kudos>
 </component>
