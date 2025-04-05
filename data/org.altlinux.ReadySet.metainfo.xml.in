@@ -14,9 +14,7 @@
     <control>pointing</control>
     <control>touch</control>
   </recommends>
-  <content_rating type="oars-1.1">
-    <!-- Can be generated here https://hughsie.github.io/oars/generate.html -->
-  </content_rating>
+  <content_rating type="oars-1.1" />
   <screenshots>
     
   </screenshots>
