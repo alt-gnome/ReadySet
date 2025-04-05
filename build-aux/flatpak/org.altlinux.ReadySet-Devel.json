@@ -1,5 +1,5 @@
 {
-    "id" : "space.rirusha.ReadySet-Devel",
+    "id" : "org.altlinux.ReadySet.Devel",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "47",
     "sdk" : "org.gnome.Sdk",

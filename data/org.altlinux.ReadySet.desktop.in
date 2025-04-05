@@ -5,7 +5,7 @@ Comment=
 # Translators: keep number of ';'
 Keywords=
 Exec=ready-set
-Icon=space.rirusha.ReadySet
+Icon=org.altlinux.ReadySet
 Terminal=false
 Type=Application
 Categories=

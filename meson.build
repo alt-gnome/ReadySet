@@ -35,11 +35,11 @@ add_project_arguments(
   language: ['vala']
 )
 
-app_id = 'space.rirusha.ReadySet'
+app_id = 'org.altlinux.ReadySet'
 
 if get_option('is_devel')
   name_postfix = ' (Development)'
-  app_id_dyn = app_id + '-Devel'
+  app_id_dyn = app_id + '.Devel'
 else
   name_postfix = ''
   app_id_dyn = app_id

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="ready-set">
 
-	<schema id="space.rirusha.ReadySet" path="/space/rirusha/ReadySet/">
+	<schema id="org.altlinux.ReadySet" path="/space/rirusha/ReadySet/">
 
 		<key name="window-width" type="i">
 			<default>600</default>

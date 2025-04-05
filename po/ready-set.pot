@@ -4,10 +4,10 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #. Translators: keep number of ';'
-#: data/space.rirusha.ReadySet.desktop.in:5
-#: data/space.rirusha.ReadySet.desktop.in:7
-#: data/space.rirusha.ReadySet-Devel.desktop.in:5
-#: data/space.rirusha.ReadySet-Devel.desktop.in:7
+#: data/org.altlinux.ReadySet.desktop.in:5
+#: data/org.altlinux.ReadySet.desktop.in:7
+#: data/org.altlinux.ReadySet.Devel.desktop.in:5
+#: data/org.altlinux.ReadySet.Devel.desktop.in:7
 #, fuzzy
 msgid ""
 msgstr ""
@@ -23,18 +23,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Translators: app name should be translated
-#: data/space.rirusha.ReadySet.desktop.in:4
-#: data/space.rirusha.ReadySet.metainfo.xml.in:3 data/ui/end-page.blp:5
+#: data/org.altlinux.ReadySet.desktop.in:4
+#: data/org.altlinux.ReadySet.metainfo.xml.in:3 data/ui/end-page.blp:5
 #: src/about.vala:22
 msgid "Ready Set"
 msgstr ""
 
 #. Translators: app name should be translated
-#: data/space.rirusha.ReadySet-Devel.desktop.in:4
+#: data/org.altlinux.ReadySet.Devel.desktop.in:4
 msgid "Ready Set (Devel)"
 msgstr ""
 
-#: data/space.rirusha.ReadySet.metainfo.xml.in:34 src/about.vala:24
+#: data/org.altlinux.ReadySet.metainfo.xml.in:34 src/about.vala:24
 msgid "Vladimir Vaskov"
 msgstr ""
 
