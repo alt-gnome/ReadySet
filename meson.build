@@ -24,17 +24,6 @@ dependencies = [
   accountsservice_desktop
 ]
 
-add_project_arguments(
-  '-include', 'config.h',
-  language: ['c']
-)
-
-add_project_arguments(
-  '--target-glib', '2.76',
-  '--vapidir', meson.current_source_dir(),
-  language: ['vala']
-)
-
 app_id = 'org.altlinux.ReadySet'
 
 if get_option('is_devel')

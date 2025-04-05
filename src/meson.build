@@ -33,11 +33,23 @@ sources = [
   resources,
 ]
 
+c_args = [
+  '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
+  '-DGNOME_DESKTOP_USE_UNSTABLE_API'
+]
+
+vala_args = [
+  '--gresources', resource_files,
+  '--gresourcesdir=data/',
+]
+
 executable(
   'ready-set',
   sources,
   include_directories: config_h_dir,
   dependencies: dependencies,
   link_args: ['-lm'],
+  c_args: c_args,
+  vala_args: vala_args,
   install: true,
 )

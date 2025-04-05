@@ -52,17 +52,17 @@ template $ReadySetStepsMainPage : Adw.Bin {
     };
 
     [bottom]
-    Box {
+    Box button_box {
       orientation: horizontal;
       margin-bottom: 12;
       margin-top: 6;
       margin-end: 12;
       margin-start: 12;
-      halign: end;
+      halign: center;
       spacing: 12;
 
       Revealer {
-        transition-type: crossfade;
+        transition-type: swing_right;
         transition-duration: 200;
         reveal-child: bind template.can-cancel;
         visible: bind template.dead-end inverted;

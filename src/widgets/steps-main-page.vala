@@ -25,6 +25,20 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     unowned Adw.Carousel carousel;
     [GtkChild]
     unowned Gtk.Stack continue_stack;
+    [GtkChild]
+    unowned Gtk.Box button_box;
+
+    bool _centerize_buttons = false;
+    public bool centerize_buttons {
+        get {
+            return _centerize_buttons;
+        }
+        set {
+            _centerize_buttons = value;
+
+            button_box.halign = _centerize_buttons ? Gtk.Align.CENTER : Gtk.Align.END;
+        }
+    }
 
     public bool show_steps_list { get; set; }
 
@@ -153,3 +167,4 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         GLib.Application.get_default ().quit ();
     }
 }
+

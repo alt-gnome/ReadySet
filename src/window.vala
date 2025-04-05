@@ -41,10 +41,6 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         settings.bind ("window-maximized", this, "maximized", SettingsBindFlags.DEFAULT);
 
         build_content ();
-
-        close_request.connect (() => {
-            return true;
-        });
     }
 
     public void reload_window () {
