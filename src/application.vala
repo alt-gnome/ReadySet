@@ -24,9 +24,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
     public LanguagePageState lang_page_state { get; set; default = new LanguagePageState.default (); }
 
-    const ActionEntry[] ACTION_ENTRIES = {
-        { "quit", quit },
-    };
+    const ActionEntry[] ACTION_ENTRIES = {};
 
     public Application () {
         Object (
