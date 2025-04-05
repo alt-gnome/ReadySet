@@ -21,12 +21,12 @@ namespace ReadySet {
         var about = new Adw.AboutDialog () {
             application_name = _("Ready Set"),
             application_icon = Config.APP_ID_DYN,
-            developer_name = _("Vladimir Vaskov"),
+            developer_name = "ALT Linux",
             version = Config.VERSION,
             // Translators: NAME <EMAIL.COM> /n NAME <EMAIL.COM>
             translator_credits = _("translator-credits"),
             license_type = Gtk.License.GPL_3_0,
-            copyright = "© 2024 rirusha",
+            copyright = "© 2024-2025 ALT Linux",
             release_notes_version = Config.VERSION
         };
 
