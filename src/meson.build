@@ -68,4 +68,5 @@ executable(
   c_args: c_args,
   vala_args: vala_args,
   install: true,
+  install_dir: get_option('libexecdir')
 )
