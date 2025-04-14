@@ -16,11 +16,26 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-int main (string[] args) {
-    Intl.bindtextdomain (Config.GETTEXT_PACKAGE, Config.GNOMELOCALEDIR);
-    Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
-    Intl.textdomain (Config.GETTEXT_PACKAGE);
+[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/end-page.ui")]
+public sealed class ReadySet.EndPage : BasePage {
 
-    var app = new ReadySet.Application ();
-    return app.run (args);
+    [GtkChild]
+    unowned Gtk.Stack stack;
+
+    construct {
+        title += "…";
+    }
+
+    public void start_action () {
+        stack.visible_child_name = "load";
+
+        Timeout.add_seconds_once (2, () => {
+            finish_action ();
+        });
+    }
+
+    void finish_action () {
+        stack.visible_child_name = "ready";
+        is_ready = true;
+    }
 }

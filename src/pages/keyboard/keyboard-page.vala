@@ -1,4 +1,4 @@
-/* Copyright 2024 rirusha
+/* Copyright 2025 Vladimir Vaskov <rirusha@altlinux.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,14 +16,23 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/base-page-desc.ui")]
-public sealed class ReadySet.BasePageDesc : Gtk.Box {
+[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/keyboard-page.ui")]
+public sealed class ReadySet.KeyboardPage : BasePage {
 
-    public string title { get; set; }
+    [GtkChild]
+    unowned InputChooser input_chooser;
 
-    public string description { get; set; }
+    construct {
+        input_chooser.changed.connect ((inputs) => {
+            if (inputs.length > 0) {
+                is_ready = true;
+                show_banner = false;
 
-    public BasePageDesc (string title, string description) {
-        Object (title: title, description: description);
+            } else {
+                is_ready = false;
+                show_banner = true;
+                banner_message = _("No input source selected");
+            }
+        });
     }
 }

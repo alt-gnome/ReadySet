@@ -1,4 +1,4 @@
-/* Copyright 2024 rirusha
+/* Copyright 2024-2025 Vladimir Vaskov <rirusha@altlinux.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,5 +16,14 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/welcome-page.ui")]
-public sealed class ReadySet.WelcomePage : BasePage {}
+[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/base-page-desc.ui")]
+public sealed class ReadySet.BasePageDesc : Gtk.Box {
+
+    public string title { get; set; }
+
+    public string description { get; set; }
+
+    public BasePageDesc (string title, string description) {
+        Object (title: title, description: description);
+    }
+}

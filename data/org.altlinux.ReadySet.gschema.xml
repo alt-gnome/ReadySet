@@ -18,9 +18,8 @@
 
 		<key name="all-steps" type="as">
 			<default>[
-				<!-- 'welcome', -->
 				'language',
-				'step-3',
+				'keyboard',
 				'step-4',
 				'step-5',
 				'step-6',

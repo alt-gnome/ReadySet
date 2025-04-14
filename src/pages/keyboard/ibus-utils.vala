@@ -16,11 +16,19 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-int main (string[] args) {
-    Intl.bindtextdomain (Config.GETTEXT_PACKAGE, Config.GNOMELOCALEDIR);
-    Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
-    Intl.textdomain (Config.GETTEXT_PACKAGE);
+#if HAVE_IBUS
+namespace ReadySet {
+    public string? engine_get_display_name(IBus.EngineDesc engine_desc) {
+        string name = engine_desc.get_longname();
+        string language_code = engine_desc.get_language();
+        string language = IBus.get_language_name(language_code);
+        string textdomain = engine_desc.get_textdomain();
 
-    var app = new ReadySet.Application ();
-    return app.run (args);
+        if (textdomain != "" && name != "")
+            name = dgettext(textdomain, name);
+
+        return "%s (%s)".printf(language, name);
+    }
 }
+#endif
+

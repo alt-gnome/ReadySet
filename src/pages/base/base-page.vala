@@ -1,4 +1,4 @@
-/* Copyright 2024 rirusha
+/* Copyright 2024-2025 Vladimir Vaskov <rirusha@altlinux.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  */
 
 [GtkTemplate (ui = "/space/rirusha/ReadySet/ui/base-page.ui")]
-public class ReadySet.BasePage : Adw.Bin {
+public class ReadySet.BasePage : Gtk.Box {
 
     [GtkChild]
     unowned Adw.Bin title_bin;
@@ -25,6 +25,10 @@ public class ReadySet.BasePage : Adw.Bin {
     unowned Adw.Bin child_bin;
     [GtkChild]
     unowned Gtk.ScrolledWindow scrolled_window;
+
+    public bool show_banner { get; set; default = false; }
+
+    public string banner_message { get; set; default = ""; }
 
     public string icon_name { get; set; default = "dialog-error-symbolic"; }
 

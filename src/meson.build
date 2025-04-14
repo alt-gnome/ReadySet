@@ -3,18 +3,28 @@ vapi_sources = files(
 )
 
 vala_sources = files(
-  'pages/base-page.vala',
-  'pages/end-page.vala',
-  'pages/language-page.vala',
-  'pages/test-page.vala',
-  'pages/welcome-page.vala',
+  'pages/base/base-page.vala',
+  'pages/base/base-page-desc.vala',
 
-  'widgets/base-page-desc.vala',
-  'widgets/carousel-page-titles.vala',
-  'widgets/lang-select-title.vala',
-  'widgets/language-row.vala',
-  'widgets/languages-box.vala',
+  'pages/end/end-page.vala',
+
+  'pages/keyboard/ibus-utils.vala',
+  'pages/keyboard/input-chooser.vala',
+  'pages/keyboard/input-row.vala',
+  'pages/keyboard/keyboard-page.vala',
+
+  'pages/language/lang-select-title.vala',
+  'pages/language/language-page.vala',
+  'pages/language/language-row.vala',
+  'pages/language/languages-box.vala',
+
+  'pages/test/test-page.vala',
+
+  'pages/welcome/welcome-page.vala',
+
   'widgets/nothing-to-show.vala',
+  'widgets/pages-indicator.vala',
+  'widgets/positioned-stack.vala',
   'widgets/step-row.vala',
   'widgets/steps-main-page.vala',
   'widgets/steps-sidebar.vala',
@@ -22,6 +32,7 @@ vala_sources = files(
   'about.vala',
   'application.vala',
   'main.vala',
+  'result.vala',
   'utils.vala',
   'window-content.vala',
   'window.vala',
@@ -35,13 +46,18 @@ sources = [
 
 c_args = [
   '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
-  '-DGNOME_DESKTOP_USE_UNSTABLE_API'
+  '-DGNOME_DESKTOP_USE_UNSTABLE_API',
+  '-w'
 ]
 
 vala_args = [
   '--gresources', resource_files,
   '--gresourcesdir=data/',
 ]
+
+if get_option('have_ibus')
+  c_args += ['-DHAVE_IBUS']
+endif
 
 executable(
   'ready-set',

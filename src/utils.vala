@@ -1,4 +1,4 @@
-/* Copyright 2024 rirusha
+/* Copyright 2024-2025 Vladimir Vaskov <rirusha@altlinux.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,37 +18,51 @@
 
 namespace ReadySet {
 
-    public class LanguagePageState : Object {
+    public class InputInfo : Object {
 
-        public bool show_more { get; set; }
+        public string id { get; construct; }
 
-        public double scroll_position { get; set; }
+        public string type_ { get; construct; }
 
-        public string search_query { get; set; }
+        public string format { get; construct; }
 
-        public LanguagePageState.default () {
+        public InputInfo (string type, string id_) {
             Object (
-                show_more: false,
-                scroll_position: 0.0,
-                search_query: ""
+                id: id_,
+                type_: type,
+                format: "%s::%s".printf (type, id_)
             );
+        }
+
+        public uint _hash () {
+            return format.hash ();
+        }
+
+        public static uint hash (InputInfo a) {
+            return a._hash ();
+        }
+
+        public static bool equal (InputInfo a, InputInfo b) {
+            return strcmp (a.format, b.format) == 0;
         }
     }
 
-    string current_language;
-
     public void set_msg_locale (string locale) {
-        current_language = locale;
+        var result = Result.get_instance ();
+
+        result.current_language = locale;
         Intl.setlocale (LocaleCategory.MESSAGES, locale);
     }
 
     public string get_current_language () {
-        if (current_language != null) {
-            return current_language;
+        var result = Result.get_instance ();
+
+        if (result.current_language != null) {
+            return result.current_language;
         }
 
         foreach (string lang in Intl.get_language_names ()) {
-            if (lang.length > 0) {
+            if (Gnome.Languages.parse_locale (lang, null, null, null, null)) {
                 return lang;
             }
         }
@@ -78,6 +92,10 @@ namespace ReadySet {
 
             case "end":
                 page_content = new EndPage ();
+                break;
+
+            case "keyboard":
+                page_content = new KeyboardPage ();
                 break;
 
             default:

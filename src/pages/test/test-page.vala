@@ -1,4 +1,4 @@
-/* Copyright 2024 rirusha
+/* Copyright 2024-2025 Vladimir Vaskov <rirusha@altlinux.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,22 +16,11 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/language-page.ui")]
-public sealed class ReadySet.LanguagePage : BasePage {
+[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/test-page.ui")]
+public sealed class ReadySet.TestPage : BasePage {
 
-    weak LanguagePageState page_state {
-        get {
-            return ((ReadySet.Application) GLib.Application.get_default ()).lang_page_state;
-        }
-    }
-
-    construct {
-        root_scrolled_window.vadjustment.value_changed.connect (() => {
-            page_state.scroll_position = root_scrolled_window.vadjustment.value;
-        });
-
-        Idle.add_once (() => {
-            root_scrolled_window.vadjustment.value = page_state.scroll_position;
-        });
+    [GtkCallback]
+    void test_clicked () {
+        is_ready = true;
     }
 }

@@ -10,7 +10,7 @@ template $ReadySetWindowContent : Adw.BreakpointBin {
     setters {
       split_view.collapsed: true;
       split_view.show-sidebar: false;
-      steps_main_page.centerize-buttons: false;
+      steps_main_page.centerize-buttons: true;
     }
   }
 
@@ -39,7 +39,7 @@ template $ReadySetWindowContent : Adw.BreakpointBin {
       title: _("Main");
 
       child: $ReadySetStepsMainPage steps_main_page {
-        centerize-buttons: true;
+        centerize-buttons: false;
       };
     };
   }

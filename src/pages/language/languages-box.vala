@@ -1,4 +1,4 @@
-/* Copyright 2024 rirusha
+/* Copyright 2024-2025 Vladimir Vaskov <rirusha@altlinux.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,9 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
     [GtkChild]
     unowned Gtk.SearchEntry search_entry;
 
+    static bool saved_show_more = false;
+    static string saved_search_query = "";
+
     bool _show_more = false;
     public bool show_more {
         get {
@@ -36,18 +39,12 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
                 show_all_languages ();
             }
 
-            page_state.show_more = _show_more;
+            saved_show_more = _show_more;
         }
     }
 
     static construct {
         typeof (LanguageRow).ensure ();
-    }
-
-    weak LanguagePageState page_state {
-        get {
-            return ((ReadySet.Application) GLib.Application.get_default ()).lang_page_state;
-        }
     }
 
     construct {
@@ -69,7 +66,7 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
         });
 
         search_entry.changed.connect (() => {
-            page_state.search_query = search_entry.text;
+            saved_search_query = search_entry.text;
         });
 
         languages_listbox.row_activated.connect ((row) => {
@@ -84,8 +81,8 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
             ReadySet.Application.get_default ().reload_window ();
         });
 
-        search_entry.text = page_state.search_query;
-        show_more = page_state.show_more;
+        search_entry.text = saved_search_query;
+        show_more = saved_show_more;
 
         Idle.add_once (() => {
             search_entry.can_focus = true;

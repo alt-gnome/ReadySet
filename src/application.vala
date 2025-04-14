@@ -1,4 +1,4 @@
-/* Copyright 2024 rirusha
+/* Copyright 2024-2025 Vladimir Vaskov <rirusha@altlinux.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,6 @@
 
 public sealed class ReadySet.Application: Adw.Application {
 
-    public uint last_position { get; set; default = 0; }
-
-    public string[] all_steps { get; set; default = {}; }
-
-    public LanguagePageState lang_page_state { get; set; default = new LanguagePageState.default (); }
-
     const ActionEntry[] ACTION_ENTRIES = {};
 
     public Application () {
@@ -39,17 +33,15 @@ public sealed class ReadySet.Application: Adw.Application {
         typeof (StepsMainPage).ensure ();
         typeof (StepsSidebar).ensure ();
         typeof (StepRow).ensure ();
-        typeof (CarouselPageTitles).ensure ();
         typeof (LangSelectTitle).ensure ();
         typeof (LanguagesBox).ensure ();
+        typeof (PagesIndicator).ensure ();
+        typeof (PositionedStack).ensure ();
     }
 
     construct {
         add_action_entries (ACTION_ENTRIES, this);
         set_accels_for_action ("app.quit", { "<primary>q" });
-
-        var settings = new Settings (Config.APP_ID);
-        all_steps = settings.get_strv ("all-steps");
     }
 
     public void reload_window () {

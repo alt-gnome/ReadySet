@@ -1,4 +1,4 @@
-/* Copyright 2024 rirusha
+/* Copyright 2024-2025 Vladimir Vaskov <rirusha@altlinux.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,26 +16,21 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/end-page.ui")]
-public sealed class ReadySet.EndPage : BasePage {
+[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/language-row.ui")]
+public sealed class ReadySet.LanguageRow : Adw.ActionRow {
 
-    [GtkChild]
-    unowned Gtk.Stack stack;
+    public string language_locale { get; construct set; }
+
+    public bool is_current_language { get; set; default = false; }
+
+    public LanguageRow (string language_locale) {
+        Object (language_locale: language_locale);
+    }
 
     construct {
-        title += "…";
-    }
+        is_current_language = language_locale == get_current_language ();
 
-    public void start_action () {
-        stack.visible_child_name = "load";
-
-        Timeout.add_seconds_once (2, () => {
-            finish_action ();
-        });
-    }
-
-    void finish_action () {
-        stack.visible_child_name = "ready";
-        is_ready = true;
+        title = Gnome.Languages.get_country_from_locale (language_locale, language_locale);
+        subtitle = Gnome.Languages.get_country_from_locale (language_locale, get_current_language ());
     }
 }

@@ -22,11 +22,15 @@
 public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     [GtkChild]
-    unowned Adw.Carousel carousel;
+    unowned PositionedStack positioned_stack;
     [GtkChild]
     unowned Gtk.Stack continue_stack;
     [GtkChild]
     unowned Gtk.Box button_box;
+    [GtkChild]
+    unowned PagesIndicator pages_indicator;
+
+    static uint saved_last_position = 0;
 
     bool _centerize_buttons = false;
     public bool centerize_buttons {
@@ -84,52 +88,37 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     construct {
         model = new Gtk.SingleSelection (new ListStore (typeof (BasePage)));
 
-        model.items_changed.connect ((position, removed, added) => {
-            for (int i = 0; i < removed; i++) {
-                carousel.remove (carousel.get_nth_page (position));
-            }
-            for (int i = 0; i < added; i++) {
-                var page = (BasePage) model.get_item (position + added - 1);
-
-                if (carousel.n_pages <= ReadySet.Application.get_default ().last_position) {
-                    page.passed = true;
-                }
-
-                carousel.insert (page, (int) (position + added - 1));
+        pages_indicator.model = model;
+        positioned_stack.bind_model (model, (page, pos) => {
+            if (pos <= saved_last_position) {
+                page.passed = true;
             }
 
-            selection_changed ();
+            return page;
         });
 
         model.selection_changed.connect (selection_changed);
-
-        carousel.page_changed.connect ((index) => {
-            if (ReadySet.Application.get_default ().last_position < index) {
-                ReadySet.Application.get_default ().last_position = (uint) index;
-            }
-
-            model.select_item (index, true);
-        });
-
-        carousel.notify["position"].connect (() => {
-            if (carousel.position > carousel.n_pages - 2) {
-                show_steps_list = false;
-                dead_end = true;
-
-                var end_page = model.get_item (carousel.n_pages - 1) as EndPage;
-                if (end_page != null) {
-                    end_page.start_action ();
-                };
-
-                update_buttons ();
-            }
-        });
     }
 
     void selection_changed () {
-        carousel.scroll_to ((BasePage) model.get_selected_item (), true);
+        var position = model.get_selected ();
+        var n_items = model.get_n_items ();
+
+        if (position == n_items - 1) {
+            var end_page = model.get_item (n_items - 1) as EndPage;
+            if (end_page != null) {
+                show_steps_list = false;
+                dead_end = true;
+
+                end_page.start_action ();
+            };
+        }
 
         update_buttons ();
+
+        if (saved_last_position < position) {
+            saved_last_position = position;
+        }
 
         if (last_current_page != null) {
             last_current_page.notify["is-ready"].connect (update_buttons);
@@ -167,4 +156,3 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         GLib.Application.get_default ().quit ();
     }
 }
-
