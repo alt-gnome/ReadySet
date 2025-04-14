@@ -4,7 +4,7 @@
 	<schema id="org.altlinux.ReadySet" path="/space/rirusha/ReadySet/">
 
 		<key name="show-steps" type="b">
-			<default>false</default>
+			<default>true</default>
 		</key>
 
 		<key name="all-steps" type="as">
