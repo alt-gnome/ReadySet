@@ -33,13 +33,6 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
 
     construct {
         add_action_entries (ACTION_ENTRIES, this);
-
-        var settings = new Settings (Config.APP_ID);
-
-        settings.bind ("window-width", this, "default-width", SettingsBindFlags.DEFAULT);
-        settings.bind ("window-height", this, "default-height", SettingsBindFlags.DEFAULT);
-        settings.bind ("window-maximized", this, "maximized", SettingsBindFlags.DEFAULT);
-
         build_content ();
     }
 
