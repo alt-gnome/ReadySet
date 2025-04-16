@@ -106,13 +106,6 @@ public class ReadySet.PositionedStack : Adw.Bin {
         update ();
     }
 
-    void remove_page (Gtk.Widget widget) {
-        var page = stack.get_page (widget);
-
-        stack.remove (page.child);
-        childs.remove (page);
-    }
-
     void add_page (Gtk.Widget widget, string? title = null) {
         var page = stack.add_titled (widget, Uuid.string_random (), title ?? "UNKNOWN");
         childs.add (page);
