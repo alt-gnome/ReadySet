@@ -33,6 +33,21 @@ public sealed class ReadySet.KeyboardPage : BasePage {
                 show_banner = true;
                 banner_message = _("No input source selected");
             }
+
+            if (is_ready) {
+                apply_input_sources (inputs);
+            }
         });
+    }
+
+    void apply_input_sources (InputInfo[] inputs) {
+        VariantBuilder builer = new VariantBuilder (new VariantType ("a(ss)"));
+
+        foreach (var info in inputs) {
+            builer.add ("(ss)", info.type_, info.id);
+        }
+
+        var settings = new Settings ("org.gnome.desktop.input-sources");
+        settings.set_value ("sources", builer.end ());
     }
 }
