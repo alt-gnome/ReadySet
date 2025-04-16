@@ -4,6 +4,7 @@
     <file alias="altmobile-symbolic.svg">assets/icons/altmobile-symbolic.svg</file>
     <file alias="keyboard-symbolic.svg">assets/icons/keyboard-symbolic.svg</file>
     <file alias="language-symbolic.svg">assets/icons/language-symbolic.svg</file>
+    <file alias="smile-symbolic.svg">assets/icons/smile-symbolic.svg</file>
   </gresource>
   <gresource prefix="/space/rirusha/ReadySet/">
     <file alias="gtk/help-overlay.ui" preprocess="xml-stripblanks">ui/help-overlay.ui</file>
