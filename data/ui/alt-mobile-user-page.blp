@@ -2,7 +2,7 @@ using Gtk 4.0;
 using Adw 1;
 
 template $ReadySetAltMobileUserPage: $ReadySetBasePage {
-  title-header: "User";
+  title-header: _("User");
   title: _("About you");
   icon-name: "system-users-symbolic";
 
@@ -71,7 +71,7 @@ template $ReadySetAltMobileUserPage: $ReadySetBasePage {
           };
 
           row: Adw.PasswordEntryRow password_repeat_entry {
-            title: _("Password repeat");
+            title: _("Repeat password");
             changed => $password_repeat_changed();
           };
         }
@@ -120,7 +120,7 @@ template $ReadySetAltMobileUserPage: $ReadySetBasePage {
           };
 
           row: Adw.PasswordEntryRow root_password_repeat_entry {
-            title: _("Administrator password repeat");
+            title: _("Repeat administrator password");
             sensitive: bind equal_switch_row.active inverted;
             changed => $root_password_repeat_changed();
           };
