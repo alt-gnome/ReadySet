@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2025 Vladimir Vaskov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -116,7 +116,7 @@ namespace ReadySet {
             } else if (!(username[0] >= 'a' && username[0] <= 'z')) {
                 error = _("The username must start with a lower case letter from a-z");
             } else {
-                error = _("The username should only consist of lower case letters from a-z, digits, and the following characters: - _");
+                error = _("The username should only consist of lower case letters from a-z, digits, and the following characters: '-', '_'");
             }
         } else if (empty) {
             error = _("Username cannot be empty");

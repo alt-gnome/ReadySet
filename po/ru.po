@@ -2,74 +2,77 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the ready-set package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# David Sultaniiazov <x1z53@altlinux.org>, 2025.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-22 15:34+0300\n"
-"PO-Revision-Date: 2025-04-01 21:02+0300\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"POT-Creation-Date: 2025-04-22 23:53+0300\n"
+"PO-Revision-Date: 2025-04-22 23:54+0300\n"
+"Last-Translator: David Sultaniiazov <x1z53@altlinux.org>\n"
+"Language-Team: Russian\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Gtranslator 48.0\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: data/ui/alt-mobile-user-page.blp:5
+msgid "User"
+msgstr "Пользователь"
 
 #: data/ui/alt-mobile-user-page.blp:6
 msgid "About you"
-msgstr ""
+msgstr "О Вас"
 
-#: data/ui/alt-mobile-user-page.blp:14
-msgid "Full name"
-msgstr ""
-
-#: data/ui/alt-mobile-user-page.blp:24
+#: data/ui/alt-mobile-user-page.blp:14 data/ui/alt-mobile-user-page.blp:24
 msgid "Full Name"
-msgstr ""
+msgstr "Полное имя"
 
 #: data/ui/alt-mobile-user-page.blp:31 data/ui/alt-mobile-user-page.blp:42
 msgid "Username"
-msgstr ""
+msgstr "Имя пользователя"
 
 #: data/ui/alt-mobile-user-page.blp:32
 msgid "Username will be used to name your home folder and can’t be changed."
 msgstr ""
+"Имя пользователя будет использовано для имени Вашей домашней директории и не "
+"может быть изменено."
 
 #: data/ui/alt-mobile-user-page.blp:49
 msgid "User password"
-msgstr ""
+msgstr "Пароль пользотеля"
 
 #: data/ui/alt-mobile-user-page.blp:59
 msgid "Password"
-msgstr ""
+msgstr "Пароль"
 
 #: data/ui/alt-mobile-user-page.blp:70 data/ui/alt-mobile-user-page.blp:119
 msgid "Passwords do not match"
-msgstr ""
+msgstr "Пароли не совпадают"
 
 #: data/ui/alt-mobile-user-page.blp:74
-msgid "Password repeat"
-msgstr ""
+msgid "Repeat password"
+msgstr "Повторите пароль"
 
 #: data/ui/alt-mobile-user-page.blp:82 data/ui/alt-mobile-user-page.blp:107
 msgid "Administrator password"
-msgstr ""
+msgstr "Пароль администратора"
 
 #: data/ui/alt-mobile-user-page.blp:97
 msgid "Equal to user password"
-msgstr ""
+msgstr "Совпадает с паролем пользователя"
 
 #: data/ui/alt-mobile-user-page.blp:123
-msgid "Administrator password repeat"
-msgstr ""
+msgid "Repeat administrator password"
+msgstr "Повторите пароль администратора"
 
 #: data/ui/end-page.blp:5
-#, fuzzy
 msgid "Finishing"
-msgstr "Завершить"
+msgstr "Завершение"
 
 #: data/ui/end-page.blp:6 src/about.vala:22
 msgid "Ready Set"
@@ -79,34 +82,25 @@ msgstr "На Старт Внимание"
 msgid "The system is ready for use."
 msgstr "Система готова к использованию."
 
-#: data/ui/help-overlay.blp:11
-msgid "Main Actions"
-msgstr "Основные действия"
-
-#: data/ui/help-overlay.blp:14
-msgid "Show Shortcuts"
-msgstr "Показать сочетания клавиш"
-
-#: data/ui/help-overlay.blp:19
-msgid "Quit"
-msgstr "Выйти"
-
 #: data/ui/input-chooser.blp:15
 msgid "Search keyboards and input methods"
-msgstr ""
+msgstr "Поиск раскладок и методов ввода"
 
 #: data/ui/input-chooser.blp:41 data/ui/languages-box.blp:38
 msgid "Show more"
 msgstr "Показать больше"
 
-#: data/ui/keyboard-page.blp:5 data/ui/keyboard-page.blp:6
-#, fuzzy
+#: data/ui/keyboard-page.blp:4
 msgid "Keyboard"
-msgstr "Сочетания клавиш"
+msgstr "Клавиатура"
 
-#: data/ui/keyboard-page.blp:8
+#: data/ui/keyboard-page.blp:5
+msgid "Keyboard settings"
+msgstr "Настройки клавиатуры"
+
+#: data/ui/keyboard-page.blp:7
 msgid "Select your keyboard layout"
-msgstr ""
+msgstr "Выберите раскладку клавиатуры"
 
 #: data/ui/language-page.blp:4
 msgid "Language selection"
@@ -114,7 +108,7 @@ msgstr "Выбор языка"
 
 #: data/ui/languages-box.blp:16
 msgid "Search language"
-msgstr "Пок"
+msgstr "Поиск языка"
 
 #: data/ui/nothing-to-show.blp:30
 msgid "Nothing to show"
@@ -151,7 +145,7 @@ msgstr "Тест"
 
 #: data/ui/test-page.blp:5
 msgid "Test page"
-msgstr "Выбор языка"
+msgstr "Тестошя страница"
 
 #: data/ui/welcome-page.blp:4 data/ui/welcome-page.blp:5
 msgid "Welcome"
@@ -168,7 +162,9 @@ msgstr "Главная"
 #. Translators: NAME <EMAIL.COM> /n NAME <EMAIL.COM>
 #: src/about.vala:27
 msgid "translator-credits"
-msgstr "Vladimir Vaskov <rirusha@altlinux.org>"
+msgstr ""
+"Vladimir Vaskov <rirusha@altlinux.org>\n"
+"David Sultaniiazov <x1z53@altlinux.org>"
 
 #: src/about.vala:33
 msgid "Folder manager"
@@ -180,37 +176,39 @@ msgstr "Менеджер папок для мобильных устройств
 
 #: src/pages/alt-mobile-user/alt-mobile-user-page.vala:92
 msgid "Failed to create user"
-msgstr ""
+msgstr "Не удалось создать пользователя"
 
 #: src/pages/alt-mobile-user/utils.vala:63
 msgid "Name cannot be empty"
-msgstr ""
+msgstr "Имя не может быть пустым"
 
 #: src/pages/alt-mobile-user/utils.vala:113
 msgid "That username isn’t available. Please try another"
-msgstr ""
+msgstr "Это имя пользователя недоступно. Пожалуйста, попробуйте другое"
 
 #: src/pages/alt-mobile-user/utils.vala:115
 msgid "The username is too long"
-msgstr ""
+msgstr "Имя пользователя слишком длинное"
 
 #: src/pages/alt-mobile-user/utils.vala:117
 msgid "The username must start with a lower case letter from a-z"
-msgstr ""
+msgstr "Имя пользователя должно начинаться со строчной буквы от «а» до «я»"
 
 #: src/pages/alt-mobile-user/utils.vala:119
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
-"the following characters: - _"
+"the following characters: '-', '_'"
 msgstr ""
+"Имя пользователя может содержать только строчные буквы от «а» до «я», цифры "
+"и следущие символы: «-», «_»"
 
 #: src/pages/alt-mobile-user/utils.vala:122
 msgid "Username cannot be empty"
-msgstr ""
+msgstr "Имя пользователя не может быть пустым"
 
 #: src/pages/base/base-page.vala:37
 msgid "Unknown"
-msgstr "Неизвестная"
+msgstr "Неизвестно"
 
 #: src/pages/base/base-page.vala:39
 msgid "Unknown page"
@@ -218,11 +216,11 @@ msgstr "Неизвестная страница"
 
 #: src/pages/base/base-page.vala:41
 msgid "This page says that your distribution has made a mistake."
-msgstr "На этой странице указано, что в вашем дистрибутиве произошла ошибка."
+msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
 #: src/pages/keyboard/keyboard-page.vala:34
 msgid "No input source selected"
-msgstr ""
+msgstr "Не выбран источник ввода"
 
 #: src/pages/language/lang-select-title.vala:64
 msgid "Hello!"
@@ -232,6 +230,21 @@ msgstr "Привет!"
 msgid ""
 "Let's start by choosing the language for the application and for your system."
 msgstr "Давайте начнём с выбора языка для приложения и для Вашей системы."
+
+#~ msgid "Password repeat"
+#~ msgstr "Повторите пароль"
+
+#~ msgid "Administrator password repeat"
+#~ msgstr "Повторите пароль администратора"
+
+#~ msgid "Main Actions"
+#~ msgstr "Основные действия"
+
+#~ msgid "Show Shortcuts"
+#~ msgstr "Показать сочетания клавиш"
+
+#~ msgid "Quit"
+#~ msgstr "Выйти"
 
 #~ msgid "Ready Set (Devel)"
 #~ msgstr "На Старт Внимание (Разраб.)"
