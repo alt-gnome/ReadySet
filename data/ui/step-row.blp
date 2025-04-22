@@ -1,11 +1,16 @@
 using Gtk 4.0;
 
-template $ReadySetStepRow : ListBoxRow {
-  styles ["padding6"]
+template $ReadySetStepRow: ListBoxRow {
+  styles [
+    "padding6",
+  ]
+
   sensitive: false;
 
   child: Box {
-    styles ["padding6"]
+    styles [
+      "padding6",
+    ]
 
     orientation: horizontal;
     halign: start;

@@ -16,55 +16,55 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-namespace ReadySet {
+public class ReadySet.ApplyCallback : Object {
 
-    public class ApplyCallback : Object {
+    public weak ApplyFunc func;
 
-        public weak ApplyFunc func;
-
-        public ApplyCallback (ApplyFunc func_) {
-            func = func_;
-        }
-
-        public void apply () throws ApplyError {
-            func ();
-        }
+    public ApplyCallback (ApplyFunc func_) {
+        func = func_;
     }
+
+    public void apply () throws ApplyError {
+        func ();
+    }
+}
+
+public class ReadySet.InputInfo : Object {
+
+    public string id { get; construct; }
+
+    public string type_ { get; construct; }
+
+    public string format { get; construct; }
+
+    public InputInfo (string type, string id_) {
+        Object (
+            id: id_,
+            type_: type,
+            format: "%s::%s".printf (type, id_)
+        );
+    }
+
+    public uint _hash () {
+        return format.hash ();
+    }
+
+    public static uint hash (InputInfo a) {
+        return a._hash ();
+    }
+
+    public static bool equal (InputInfo a, InputInfo b) {
+        return strcmp (a.format, b.format) == 0;
+    }
+}
+
+namespace ReadySet {
 
     public errordomain ApplyError {
         BASE;
     }
 
     public delegate void ApplyFunc () throws ApplyError;
-
-    public class InputInfo : Object {
-
-        public string id { get; construct; }
-
-        public string type_ { get; construct; }
-
-        public string format { get; construct; }
-
-        public InputInfo (string type, string id_) {
-            Object (
-                id: id_,
-                type_: type,
-                format: "%s::%s".printf (type, id_)
-            );
-        }
-
-        public uint _hash () {
-            return format.hash ();
-        }
-
-        public static uint hash (InputInfo a) {
-            return a._hash ();
-        }
-
-        public static bool equal (InputInfo a, InputInfo b) {
-            return strcmp (a.format, b.format) == 0;
-        }
-    }
 
     public void set_msg_locale (string locale) {
         var result = Result.get_instance ();

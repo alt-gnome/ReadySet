@@ -18,17 +18,16 @@
 
 #if HAVE_IBUS
 namespace ReadySet {
-    public string? engine_get_display_name(IBus.EngineDesc engine_desc) {
-        string name = engine_desc.get_longname();
-        string language_code = engine_desc.get_language();
-        string language = IBus.get_language_name(language_code);
-        string textdomain = engine_desc.get_textdomain();
+    public string? engine_get_display_name (IBus.EngineDesc engine_desc) {
+        string name = engine_desc.get_longname ();
+        string language_code = engine_desc.get_language ();
+        string language = IBus.get_language_name (language_code);
+        string textdomain = engine_desc.get_textdomain ();
 
         if (textdomain != "" && name != "")
-            name = dgettext(textdomain, name);
+            name = dgettext (textdomain, name);
 
-        return "%s (%s)".printf(language, name);
+        return "%s (%s)".printf (language, name);
     }
 }
 #endif
-

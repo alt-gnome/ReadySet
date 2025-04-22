@@ -1,6 +1,6 @@
 using Gtk 4.0;
 
-template $ReadySetBasePageDesc : Box {
+template $ReadySetBasePageDesc: Box {
   orientation: vertical;
   spacing: 12;
 
@@ -8,7 +8,6 @@ template $ReadySetBasePageDesc : Box {
     wrap: true;
     wrap-mode: word_char;
     justify: center;
-
     label: bind template.title;
 
     styles [
@@ -21,7 +20,6 @@ template $ReadySetBasePageDesc : Box {
     wrap-mode: word_char;
     justify: center;
     use-markup: true;
-
     label: bind template.description;
 
     styles [

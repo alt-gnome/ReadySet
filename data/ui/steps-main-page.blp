@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $ReadySetStepsMainPage : Adw.Bin {
+template $ReadySetStepsMainPage: Adw.Bin {
   show-steps-list: bind steps_list_button.active bidirectional;
 
   Adw.ToolbarView {
@@ -13,7 +13,9 @@ template $ReadySetStepsMainPage : Adw.Bin {
 
       [start]
       ToggleButton steps_list_button {
-        styles ["flat"]
+        styles [
+          "flat",
+        ]
 
         icon-name: "view-list-symbolic";
         active: false;
@@ -35,7 +37,6 @@ template $ReadySetStepsMainPage : Adw.Bin {
       // [end]
       // MenuButton menu_button {
       //   styles ["flat"]
-
       //   icon-name: "open-menu-symbolic";
       //   menu-model: primary_menu;
       //   valign: start;
@@ -61,11 +62,12 @@ template $ReadySetStepsMainPage : Adw.Bin {
         visible: bind template.dead-end inverted;
 
         Button cancel_button {
-          styles ["pill"]
+          styles [
+            "pill",
+          ]
 
           label: _("Back");
           can-shrink: true;
-
           clicked => $cancel_clicked();
         }
       }
@@ -78,28 +80,34 @@ template $ReadySetStepsMainPage : Adw.Bin {
 
         StackPage {
           name: "continue";
+
           child: Button continue_button {
-            styles ["pill", "suggested-action"]
+            styles [
+              "pill",
+              "suggested-action",
+            ]
 
             sensitive: bind template.is-ready-to-continue;
             visible: bind template.dead-end inverted;
             label: _("Next");
             can-shrink: true;
-
             clicked => $continue_clicked();
           };
         }
 
         StackPage {
           name: "finish";
+
           child: Button finish_button {
-            styles ["pill", "suggested-action"]
+            styles [
+              "pill",
+              "suggested-action",
+            ]
 
             visible: bind template.is-ready-to-continue;
             // TRANSLATORS: Last word in "Ready Set ..." sentence
             label: _("Go!");
             can-shrink: true;
-
             clicked => $finish_clicked();
           };
         }

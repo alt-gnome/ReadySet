@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $ReadySetWindow : Adw.ApplicationWindow {
+template $ReadySetWindow: Adw.ApplicationWindow {
   default-width: 760;
   default-height: 680;
   width-request: 360;
@@ -13,9 +13,8 @@ template $ReadySetWindow : Adw.ApplicationWindow {
 
     StackPage {
       name: "load";
-      child: Adw.Spinner {
 
-      };
+      child: Adw.Spinner {};
     }
   };
 }

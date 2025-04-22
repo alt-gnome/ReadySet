@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $ReadySetAltMobileUserPage : $ReadySetBasePage {
+template $ReadySetAltMobileUserPage: $ReadySetBasePage {
   title-header: "User";
   title: _("About you");
   icon-name: "system-users-symbolic";
@@ -15,12 +15,13 @@ template $ReadySetAltMobileUserPage : $ReadySetBasePage {
 
       $ReadySetContextRow fullname_context_row {
         context: $ReadySetMarginLabel fullname_label {
-          styles ["error"]
+          styles [
+            "error",
+          ]
         };
 
         row: Adw.EntryRow fullname_entry {
           title: _("Full Name");
-
           changed => $fullname_changed();
         };
       }
@@ -32,17 +33,16 @@ template $ReadySetAltMobileUserPage : $ReadySetBasePage {
 
       $ReadySetContextRow username_context_row {
         context: $ReadySetMarginLabel username_label {
-          styles ["error"]
+          styles [
+            "error",
+          ]
         };
 
         row: Adw.EntryRow username_entry {
           title: _("Username");
-
           changed => $username_changed();
         };
       }
-
-      
     }
 
     Adw.PreferencesGroup {
@@ -57,21 +57,21 @@ template $ReadySetAltMobileUserPage : $ReadySetBasePage {
 
           row: Adw.PasswordEntryRow password_entry {
             title: _("Password");
-
             changed => $password_changed();
           };
         }
 
         $ReadySetContextRow password_repeat_context_row {
           context: $ReadySetMarginLabel password_repeat_label {
-            styles ["error"]
+            styles [
+              "error",
+            ]
 
             label: _("Passwords do not match");
           };
 
           row: Adw.PasswordEntryRow password_repeat_entry {
             title: _("Password repeat");
-
             changed => $password_repeat_changed();
           };
         }
@@ -86,7 +86,9 @@ template $ReadySetAltMobileUserPage : $ReadySetBasePage {
         spacing: 6;
 
         ListBox {
-          styles ["boxed-list"]
+          styles [
+            "boxed-list",
+          ]
 
           selection-mode: none;
           margin-bottom: 4;
@@ -94,7 +96,6 @@ template $ReadySetAltMobileUserPage : $ReadySetBasePage {
           Adw.SwitchRow equal_switch_row {
             title: _("Equal to user password");
             active: true;
-
             notify::active => $switch_changed();
           }
         }
@@ -105,14 +106,15 @@ template $ReadySetAltMobileUserPage : $ReadySetBasePage {
           row: Adw.PasswordEntryRow root_password_entry {
             title: _("Administrator password");
             sensitive: bind equal_switch_row.active inverted;
-
             changed => $root_password_changed();
           };
         }
 
         $ReadySetContextRow root_password_repeat_context_row {
           context: $ReadySetMarginLabel root_password_repeat_label {
-            styles ["error"]
+            styles [
+              "error",
+            ]
 
             label: _("Passwords do not match");
           };
@@ -120,7 +122,6 @@ template $ReadySetAltMobileUserPage : $ReadySetBasePage {
           row: Adw.PasswordEntryRow root_password_repeat_entry {
             title: _("Administrator password repeat");
             sensitive: bind equal_switch_row.active inverted;
-
             changed => $root_password_repeat_changed();
           };
         }

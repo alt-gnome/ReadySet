@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $ReadySetMarginLabel : Adw.Bin {
+template $ReadySetMarginLabel: Adw.Bin {
   Label {
     hexpand: true;
     halign: start;
@@ -10,7 +10,6 @@ template $ReadySetMarginLabel : Adw.Bin {
     margin-start: 14;
     margin-top: 4;
     wrap: true;
-
     label: bind template.label;
   }
 }

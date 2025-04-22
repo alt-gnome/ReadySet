@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $ReadySetEndPage : $ReadySetBasePage {
+template $ReadySetEndPage: $ReadySetBasePage {
   title-header: _("Finishing");
   title: _("Ready Set");
   icon-name: "running-symbolic";
@@ -13,11 +13,13 @@ template $ReadySetEndPage : $ReadySetBasePage {
 
     StackPage {
       name: "load";
+
       child: Adw.Spinner {};
     }
 
     StackPage {
       name: "ready";
+
       child: $ReadySetBasePageDesc {
         title: bind template.title;
         description: bind template.description;
@@ -26,6 +28,7 @@ template $ReadySetEndPage : $ReadySetBasePage {
 
     StackPage {
       name: "error";
+
       child: $ReadySetBasePageDesc error_desc {
         title: "Error";
         description: bind template.description;

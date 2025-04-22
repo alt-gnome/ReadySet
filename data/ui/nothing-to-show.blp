@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $ReadySetNothingToShow : Adw.Bin {
+template $ReadySetNothingToShow: Adw.Bin {
   Box {
     orientation: vertical;
     spacing: 18;
@@ -24,7 +24,7 @@ template $ReadySetNothingToShow : Adw.Bin {
 
     Label {
       styles [
-        "title-1"
+        "title-1",
       ]
 
       label: _("Nothing to show");

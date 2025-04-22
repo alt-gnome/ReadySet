@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $ReadySetStepsSidebar : Adw.Bin {
+template $ReadySetStepsSidebar: Adw.Bin {
   Adw.ToolbarView {
     [top]
     Adw.HeaderBar {
@@ -18,9 +18,11 @@ template $ReadySetStepsSidebar : Adw.Bin {
       hscrollbar-policy: never;
 
       ListBox menu_list_box {
-        styles ["navigation-sidebar"]
-        hexpand: true;
+        styles [
+          "navigation-sidebar",
+        ]
 
+        hexpand: true;
         selection-mode: single;
         row-activated => $request_close_sidebar();
       }
