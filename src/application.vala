@@ -47,7 +47,7 @@ public sealed class ReadySet.Application: Adw.Application {
         typeof (EndPage).ensure ();
         typeof (KeyboardPage).ensure ();
         typeof (LanguagePage).ensure ();
-        typeof (UserPage).ensure ();
+        typeof (AltMobileUserPage).ensure ();
         typeof (WelcomePage).ensure ();
     }
 

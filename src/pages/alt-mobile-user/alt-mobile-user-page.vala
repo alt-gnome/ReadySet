@@ -18,8 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/user-page.ui")]
-public sealed class ReadySet.UserPage : BasePage {
+[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/alt-mobile-user-page.ui")]
+public sealed class ReadySet.AltMobileUserPage : BasePage {
 
     [GtkChild]
     unowned ContextRow fullname_context_row;

@@ -5,12 +5,13 @@
     <file alias="document-edit-symbolic.svg">assets/icons/document-edit-symbolic.svg</file>
     <file alias="keyboard-symbolic.svg">assets/icons/keyboard-symbolic.svg</file>
     <file alias="language-symbolic.svg">assets/icons/language-symbolic.svg</file>
-    <file alias="smile-symbolic.svg">assets/icons/smile-symbolic.svg</file>
+    <file alias="running-symbolic.svg">assets/icons/running-symbolic.svg</file>
     <file alias="system-users-symbolic.svg">assets/icons/system-users-symbolic.svg</file>
   </gresource>
   <gresource prefix="/space/rirusha/ReadySet/">
     <file alias="gtk/help-overlay.ui" preprocess="xml-stripblanks">ui/help-overlay.ui</file>
     <file>style.css</file>
+    <file preprocess="xml-stripblanks">ui/alt-mobile-user-page.ui</file>
     <file preprocess="xml-stripblanks">ui/base-page-desc.ui</file>
     <file preprocess="xml-stripblanks">ui/base-page.ui</file>
     <file preprocess="xml-stripblanks">ui/context-row.ui</file>
@@ -29,7 +30,6 @@
     <file preprocess="xml-stripblanks">ui/steps-main-page.ui</file>
     <file preprocess="xml-stripblanks">ui/steps-sidebar.ui</file>
     <file preprocess="xml-stripblanks">ui/test-page.ui</file>
-    <file preprocess="xml-stripblanks">ui/user-page.ui</file>
     <file preprocess="xml-stripblanks">ui/welcome-page.ui</file>
     <file preprocess="xml-stripblanks">ui/window-content.ui</file>
     <file preprocess="xml-stripblanks">ui/window.ui</file>

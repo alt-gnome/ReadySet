@@ -145,7 +145,7 @@ namespace ReadySet {
         var default_steps = new string[] {
             "language",
             "keyboard",
-            "user",
+            "alt-mobile-user",
             "end"
         };
 

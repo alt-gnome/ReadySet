@@ -3,6 +3,12 @@ vapi_sources = files(
 )
 
 vala_sources = files(
+  'pages/alt-mobile-user/context-row.vala',
+  'pages/alt-mobile-user/margin-label.vala',
+  'pages/alt-mobile-user/password-strength.vala',
+  'pages/alt-mobile-user/alt-mobile-user-page.vala',
+  'pages/alt-mobile-user/utils.vala',
+
   'pages/base/base-page.vala',
   'pages/base/base-page-desc.vala',
 
@@ -20,12 +26,6 @@ vala_sources = files(
   'pages/language/locale-data.vala',
 
   'pages/test/test-page.vala',
-
-  'pages/user/context-row.vala',
-  'pages/user/margin-label.vala',
-  'pages/user/password-strength.vala',
-  'pages/user/user-page.vala',
-  'pages/user/utils.vala',
 
   'pages/welcome/welcome-page.vala',
 
