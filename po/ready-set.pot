@@ -3,46 +3,77 @@
 # This file is distributed under the same license as the ready-set package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#. Translators: keep number of ';'
-#: data/org.altlinux.ReadySet.desktop.in:5
-#: data/org.altlinux.ReadySet.desktop.in:7
-#: data/org.altlinux.ReadySet.Devel.desktop.in:5
-#: data/org.altlinux.ReadySet.Devel.desktop.in:7
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-01 21:01+0300\n"
+"POT-Creation-Date: 2025-04-22 15:34+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. Translators: app name should be translated
-#: data/org.altlinux.ReadySet.desktop.in:4
-#: data/org.altlinux.ReadySet.metainfo.xml.in:3 data/ui/end-page.blp:5
-#: src/about.vala:22
+#: data/ui/alt-mobile-user-page.blp:6
+msgid "About you"
+msgstr ""
+
+#: data/ui/alt-mobile-user-page.blp:14
+msgid "Full name"
+msgstr ""
+
+#: data/ui/alt-mobile-user-page.blp:24
+msgid "Full Name"
+msgstr ""
+
+#: data/ui/alt-mobile-user-page.blp:31 data/ui/alt-mobile-user-page.blp:42
+msgid "Username"
+msgstr ""
+
+#: data/ui/alt-mobile-user-page.blp:32
+msgid "Username will be used to name your home folder and can’t be changed."
+msgstr ""
+
+#: data/ui/alt-mobile-user-page.blp:49
+msgid "User password"
+msgstr ""
+
+#: data/ui/alt-mobile-user-page.blp:59
+msgid "Password"
+msgstr ""
+
+#: data/ui/alt-mobile-user-page.blp:70 data/ui/alt-mobile-user-page.blp:119
+msgid "Passwords do not match"
+msgstr ""
+
+#: data/ui/alt-mobile-user-page.blp:74
+msgid "Password repeat"
+msgstr ""
+
+#: data/ui/alt-mobile-user-page.blp:82 data/ui/alt-mobile-user-page.blp:107
+msgid "Administrator password"
+msgstr ""
+
+#: data/ui/alt-mobile-user-page.blp:97
+msgid "Equal to user password"
+msgstr ""
+
+#: data/ui/alt-mobile-user-page.blp:123
+msgid "Administrator password repeat"
+msgstr ""
+
+#: data/ui/end-page.blp:5
+msgid "Finishing"
+msgstr ""
+
+#: data/ui/end-page.blp:6 src/about.vala:22
 msgid "Ready Set"
 msgstr ""
 
-#. Translators: app name should be translated
-#: data/org.altlinux.ReadySet.Devel.desktop.in:4
-msgid "Ready Set (Devel)"
-msgstr ""
-
-#: data/org.altlinux.ReadySet.metainfo.xml.in:34 src/about.vala:24
-msgid "Vladimir Vaskov"
-msgstr ""
-
-#: data/ui/end-page.blp:4
-msgid "Finish"
-msgstr ""
-
-#: data/ui/end-page.blp:7
+#: data/ui/end-page.blp:8
 msgid "The system is ready for use."
 msgstr ""
 
@@ -58,16 +89,28 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
-#: data/ui/language-page.blp:5
+#: data/ui/input-chooser.blp:15
+msgid "Search keyboards and input methods"
+msgstr ""
+
+#: data/ui/input-chooser.blp:41 data/ui/languages-box.blp:38
+msgid "Show more"
+msgstr ""
+
+#: data/ui/keyboard-page.blp:5 data/ui/keyboard-page.blp:6
+msgid "Keyboard"
+msgstr ""
+
+#: data/ui/keyboard-page.blp:8
+msgid "Select your keyboard layout"
+msgstr ""
+
+#: data/ui/language-page.blp:4
 msgid "Language selection"
 msgstr ""
 
-#: data/ui/languages-box.blp:19
+#: data/ui/languages-box.blp:16
 msgid "Search language"
-msgstr ""
-
-#: data/ui/languages-box.blp:42
-msgid "Show more"
 msgstr ""
 
 #: data/ui/nothing-to-show.blp:30
@@ -78,32 +121,32 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:88
+#: data/ui/steps-main-page.blp:92
 msgid "Next"
 msgstr ""
 
-#. TRANSLATORS: Last word in "Rady Set ..." sentence
-#: data/ui/steps-main-page.blp:101
+#. TRANSLATORS: Last word in "Ready Set ..." sentence
+#: data/ui/steps-main-page.blp:109
 msgid "Go!"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:114
+#: data/ui/steps-main-page.blp:121
 msgid "Preferences"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:115
+#: data/ui/steps-main-page.blp:122
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:116
+#: data/ui/steps-main-page.blp:123
 msgid "About Ready Set"
 msgstr ""
 
-#: data/ui/test-page.blp:5
+#: data/ui/test-page.blp:4
 msgid "Test"
 msgstr ""
 
-#: data/ui/test-page.blp:6
+#: data/ui/test-page.blp:5
 msgid "Test page"
 msgstr ""
 
@@ -111,11 +154,11 @@ msgstr ""
 msgid "Welcome"
 msgstr ""
 
-#: data/ui/window-content.blp:24
+#: data/ui/window-content.blp:28
 msgid "All steps"
 msgstr ""
 
-#: data/ui/window-content.blp:35
+#: data/ui/window-content.blp:40
 msgid "Main"
 msgstr ""
 
@@ -125,38 +168,64 @@ msgid "translator-credits"
 msgstr ""
 
 #: src/about.vala:33
-msgid "Cassette"
-msgstr ""
-
-#: src/about.vala:33
-msgid "Unofficial Yandex Music client"
-msgstr ""
-
-#: src/about.vala:34
 msgid "Folder manager"
 msgstr ""
 
-#: src/about.vala:34
+#: src/about.vala:33
 msgid "Folder manager for mobile devices"
 msgstr ""
 
-#: src/pages/base-page.vala:31
+#: src/pages/alt-mobile-user/alt-mobile-user-page.vala:92
+msgid "Failed to create user"
+msgstr ""
+
+#: src/pages/alt-mobile-user/utils.vala:63
+msgid "Name cannot be empty"
+msgstr ""
+
+#: src/pages/alt-mobile-user/utils.vala:113
+msgid "That username isn’t available. Please try another"
+msgstr ""
+
+#: src/pages/alt-mobile-user/utils.vala:115
+msgid "The username is too long"
+msgstr ""
+
+#: src/pages/alt-mobile-user/utils.vala:117
+msgid "The username must start with a lower case letter from a-z"
+msgstr ""
+
+#: src/pages/alt-mobile-user/utils.vala:119
+msgid ""
+"The username should only consist of lower case letters from a-z, digits, and "
+"the following characters: - _"
+msgstr ""
+
+#: src/pages/alt-mobile-user/utils.vala:122
+msgid "Username cannot be empty"
+msgstr ""
+
+#: src/pages/base/base-page.vala:37
 msgid "Unknown"
 msgstr ""
 
-#: src/pages/base-page.vala:33
+#: src/pages/base/base-page.vala:39
 msgid "Unknown page"
 msgstr ""
 
-#: src/pages/base-page.vala:35
+#: src/pages/base/base-page.vala:41
 msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
-#: src/widgets/lang-select-title.vala:64
+#: src/pages/keyboard/keyboard-page.vala:34
+msgid "No input source selected"
+msgstr ""
+
+#: src/pages/language/lang-select-title.vala:64
 msgid "Hello!"
 msgstr ""
 
-#: src/widgets/lang-select-title.vala:65
+#: src/pages/language/lang-select-title.vala:65
 msgid ""
 "Let's start by choosing the language for the application and for your system."
 msgstr ""

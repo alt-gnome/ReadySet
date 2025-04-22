@@ -1,8 +1,8 @@
-data/org.altlinux.ReadySet.desktop.in
-data/org.altlinux.ReadySet.Devel.desktop.in
-data/org.altlinux.ReadySet.metainfo.xml.in
+data/ui/alt-mobile-user-page.blp
 data/ui/end-page.blp
 data/ui/help-overlay.blp
+data/ui/input-chooser.blp
+data/ui/keyboard-page.blp
 data/ui/language-page.blp
 data/ui/languages-box.blp
 data/ui/nothing-to-show.blp
@@ -11,6 +11,11 @@ data/ui/test-page.blp
 data/ui/welcome-page.blp
 data/ui/window-content.blp
 src/about.vala
-src/pages/base-page.vala
-src/widgets/lang-select-title.vala
+src/pages/alt-mobile-user/alt-mobile-user-page.vala
+src/pages/alt-mobile-user/utils.vala
+src/pages/base/base-page.vala
+src/pages/keyboard/keyboard-page.vala
+src/pages/language/lang-select-title.vala
+src/widgets/positioned-stack.vala
 src/widgets/steps-sidebar.vala
+src/window-content.vala
