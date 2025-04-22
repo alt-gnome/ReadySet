@@ -1,0 +1,130 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ReadySetUserPage : $ReadySetBasePage {
+  title-header: "User";
+  title: _("About you");
+  icon-name: "system-users-symbolic";
+
+  content: Box {
+    orientation: vertical;
+    spacing: 18;
+
+    Adw.PreferencesGroup {
+      title: _("Full name");
+
+      $ReadySetContextRow fullname_context_row {
+        context: $ReadySetMarginLabel fullname_label {
+          styles ["error"]
+        };
+
+        row: Adw.EntryRow fullname_entry {
+          title: _("Full Name");
+
+          changed => $fullname_changed();
+        };
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: _("Username");
+      description: _("Username will be used to name your home folder and can’t be changed.");
+
+      $ReadySetContextRow username_context_row {
+        context: $ReadySetMarginLabel username_label {
+          styles ["error"]
+        };
+
+        row: Adw.EntryRow username_entry {
+          title: _("Username");
+
+          changed => $username_changed();
+        };
+      }
+
+      
+    }
+
+    Adw.PreferencesGroup {
+      title: _("User password");
+
+      Box {
+        orientation: vertical;
+        spacing: 6;
+
+        $ReadySetContextRow password_context_row {
+          context: $ReadySetPasswordStrength password_strength {};
+
+          row: Adw.PasswordEntryRow password_entry {
+            title: _("Password");
+
+            changed => $password_changed();
+          };
+        }
+
+        $ReadySetContextRow password_repeat_context_row {
+          context: $ReadySetMarginLabel password_repeat_label {
+            styles ["error"]
+
+            label: _("Passwords do not match");
+          };
+
+          row: Adw.PasswordEntryRow password_repeat_entry {
+            title: _("Password repeat");
+
+            changed => $password_repeat_changed();
+          };
+        }
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: _("Administrator password");
+
+      Box {
+        orientation: vertical;
+        spacing: 6;
+
+        ListBox {
+          styles ["boxed-list"]
+
+          selection-mode: none;
+          margin-bottom: 4;
+
+          Adw.SwitchRow equal_switch_row {
+            title: _("Equal to user password");
+            active: true;
+
+            notify::active => $switch_changed();
+          }
+        }
+
+        $ReadySetContextRow root_password_context_row {
+          context: $ReadySetPasswordStrength root_password_strength {};
+
+          row: Adw.PasswordEntryRow root_password_entry {
+            title: _("Administrator password");
+            sensitive: bind equal_switch_row.active inverted;
+
+            changed => $root_password_changed();
+          };
+        }
+
+        $ReadySetContextRow root_password_repeat_context_row {
+          context: $ReadySetMarginLabel root_password_repeat_label {
+            styles ["error"]
+
+            label: _("Passwords do not match");
+          };
+
+          row: Adw.PasswordEntryRow root_password_repeat_entry {
+            title: _("Administrator password repeat");
+            sensitive: bind equal_switch_row.active inverted;
+
+            changed => $root_password_repeat_changed();
+          };
+        }
+      }
+    }
+  };
+}

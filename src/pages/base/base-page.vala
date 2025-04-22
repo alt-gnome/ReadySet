@@ -71,4 +71,12 @@ public class ReadySet.BasePage : Gtk.Box {
     static construct {
         set_css_name ("basepage");
     }
+
+    construct {
+        ((ReadySet.Application) GLib.Application.get_default ()).add_apply_callback (new ApplyCallback (apply));
+    }
+
+    protected virtual void apply () throws ApplyError {
+        return;
+    }
 }

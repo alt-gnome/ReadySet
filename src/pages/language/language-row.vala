@@ -19,18 +19,32 @@
 [GtkTemplate (ui = "/space/rirusha/ReadySet/ui/language-row.ui")]
 public sealed class ReadySet.LanguageRow : Adw.ActionRow {
 
-    public string language_locale { get; construct set; }
+    [GtkChild]
+    unowned Gtk.Revealer suffix_revealer;
+
+    public LocaleData locale_data { get; construct set; }
 
     public bool is_current_language { get; set; default = false; }
 
-    public LanguageRow (string language_locale) {
-        Object (language_locale: language_locale);
+    public LanguageRow (LocaleData locale_data) {
+        Object (locale_data: locale_data);
     }
 
     construct {
-        is_current_language = language_locale == get_current_language ();
+        suffix_revealer.reveal_child = locale_data.locale == get_current_language ();
 
-        title = Gnome.Languages.get_country_from_locale (language_locale, language_locale);
-        subtitle = Gnome.Languages.get_country_from_locale (language_locale, get_current_language ());
+        title = locale_data.country_loc;
+        subtitle = locale_data.country_cur;
+    }
+
+    [GtkCallback]
+    void row_activated () {
+        if (locale_data.locale == get_current_language ()) {
+            return;
+        }
+
+        set_msg_locale (locale_data.locale);
+
+        ReadySet.Application.get_default ().reload_window ();
     }
 }

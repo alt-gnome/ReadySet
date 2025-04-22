@@ -16,6 +16,8 @@ gnome_desktop_dep = dependency('gnome-desktop-4')
 gee_dep = dependency('gee-0.8')
 accountsservice_desktop_dep = dependency('accountsservice')
 ibus_dep = dependency('ibus-1.0')
+posix_dep = meson.get_compiler('vala').find_library('posix')
+pwquality_dep = dependency('pwquality')
 
 dependencies = [
   gtk_dep,
@@ -24,6 +26,8 @@ dependencies = [
   gee_dep,
   accountsservice_desktop_dep,
   ibus_dep,
+  posix_dep,
+  pwquality_dep,
 ]
 
 app_id = 'org.altlinux.ReadySet'

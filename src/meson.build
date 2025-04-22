@@ -17,8 +17,15 @@ vala_sources = files(
   'pages/language/language-page.vala',
   'pages/language/language-row.vala',
   'pages/language/languages-box.vala',
+  'pages/language/locale-data.vala',
 
   'pages/test/test-page.vala',
+
+  'pages/user/context-row.vala',
+  'pages/user/margin-label.vala',
+  'pages/user/password-strength.vala',
+  'pages/user/user-page.vala',
+  'pages/user/utils.vala',
 
   'pages/welcome/welcome-page.vala',
 
@@ -53,6 +60,7 @@ c_args = [
 vala_args = [
   '--gresources', resource_files,
   '--gresourcesdir=data/',
+  '--vapidir', meson.current_source_dir() / '..' / 'vapi',
 ]
 
 if get_option('have_ibus')

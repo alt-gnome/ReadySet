@@ -18,6 +18,25 @@
 
 namespace ReadySet {
 
+    public class ApplyCallback : Object {
+
+        public weak ApplyFunc func;
+
+        public ApplyCallback (ApplyFunc func_) {
+            func = func_;
+        }
+
+        public void apply () throws ApplyError {
+            func ();
+        }
+    }
+
+    public errordomain ApplyError {
+        BASE;
+    }
+
+    public delegate void ApplyFunc () throws ApplyError;
+
     public class InputInfo : Object {
 
         public string id { get; construct; }
@@ -77,35 +96,38 @@ namespace ReadySet {
     public BasePage build_page_by_step_id (string step_id) {
         BasePage page_content;
 
-        switch (step_id) {
-            case "welcome":
-                page_content = new WelcomePage ();
-                break;
+        var page_type = Type.from_name ("ReadySet%sPage".printf (kebab2pascal (step_id)));
 
-            case "language":
-                page_content = new LanguagePage ();
-                break;
-
-            case "test":
-                page_content = new TestPage ();
-                break;
-
-            case "end":
-                page_content = new EndPage ();
-                break;
-
-            case "keyboard":
-                page_content = new KeyboardPage ();
-                break;
-
-            default:
-                page_content = new BasePage () {
-                    is_ready = true
-                };
-                break;
+        if (page_type == 0) {
+            page_content = new BasePage () {
+                is_ready = true
+            };
+        } else {
+            page_content = (BasePage) Object.new (page_type);
         }
 
         return page_content;
+    }
+
+    string kebab2pascal (string kebab_string) {
+        var builder = new StringBuilder ();
+        bool capitalize = true;
+
+        for (int i = 0; i < kebab_string.length; i++) {
+            char c = kebab_string[i];
+            if (c == '-') {
+                capitalize = true;
+            } else {
+                if (capitalize) {
+                    builder.append_c (c.toupper ());
+                    capitalize = false;
+                } else {
+                    builder.append_c (c);
+                }
+            }
+        }
+
+        return builder.free_and_steal ();
     }
 
     string fix_locale (string locale) {
@@ -116,6 +138,92 @@ namespace ReadySet {
                 return "ru_RU.UTF-8";
             default:
                 return locale;
+        }
+    }
+
+    string[] get_all_steps () {
+        var default_steps = new string[] {
+            "language",
+            "keyboard",
+            "user",
+            "end"
+        };
+
+        File? steps_file = null;
+
+        foreach (var sysconfig_dif in Environment.get_system_config_dirs ()) {
+            steps_file = File.new_build_filename (sysconfig_dif, "ready-set", "steps");
+
+            if (steps_file.query_exists ()) {
+                break;
+            }
+
+            steps_file = null;
+        }
+
+        if (steps_file == null) {
+            return default_steps;
+        }
+
+        try {
+            uint8[] steps_file_content;
+            if (!steps_file.load_contents (null, out steps_file_content, null)) {
+                return default_steps;
+            }
+
+            string[] data = ((string) steps_file_content).split ("\n");
+
+            for (int i = 0; i < data.length; i++) {
+                data[i] = data[i].strip ();
+            };
+
+            var data_arr = new Array<string> ();
+
+            foreach (var line in data) {
+                if (line != "") {
+                    data_arr.append_val (line);
+                }
+            }
+
+            if (data_arr.index (data_arr.length - 1) != "end") {
+                data_arr.append_val ("end");
+            }
+
+            return data_arr.data;
+
+        } catch (Error e) {
+            warning ("Failed to read steps file: %s", e.message);
+            return default_steps;
+        }
+    }
+
+    bool is_username_used (string? username) {
+        if (username == null || username == "") {
+            return false;
+        }
+
+        weak Posix.Passwd? pwent = Posix.getpwnam (username);
+
+        return pwent != null;
+    }
+
+    void create_override (string schema_name, string key, Variant value) {
+        try {
+            var keyfile_file = File.new_build_filename ("/etc/dconf/db/local.d/00-ready-set");
+
+            if (!keyfile_file.query_exists ()) {
+                keyfile_file.create (FileCreateFlags.NONE, null);
+            }
+
+            var keyfile = new KeyFile ();
+            keyfile.load_from_file (keyfile_file.peek_path (), KeyFileFlags.NONE);
+
+            keyfile.set_value (schema_name, key, value.print (false));
+
+            keyfile.save_to_file (keyfile_file.peek_path ());
+
+        } catch (Error e) {
+            warning (e.message);
         }
     }
 }

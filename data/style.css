@@ -5,6 +5,14 @@
     padding-right: 6px;
 }
 
+.zeropadding {
+    padding: 0px;
+}
+
+.context {
+    background-color: var(--view-bg-color);
+}
+
 basepage > scrolledwindow > viewport > box {
     margin: 24px 12px;
     border-spacing: 36px;

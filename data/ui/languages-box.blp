@@ -4,21 +4,18 @@ using Adw 1;
 template $ReadySetLanguagesBox : Adw.Bin {
   Box {
     orientation: vertical;
-    spacing: 6;
+    spacing: 10;
 
-    Revealer {
-      transition-type: swing_up;
-      reveal-child: bind template.show-more;
+    SearchEntry search_entry {
+      styles ["card"]
 
-      SearchEntry search_entry {
-        styles ["card"]
+      can-focus: false;
 
-        can-focus: false;
+      height-request: 48;
+      placeholder-text: _("Search language");
+      hexpand: true;
 
-        height-request: 48;
-        placeholder-text: _("Search language");
-        hexpand: true;
-      }
+      visible: bind template.show-more;
     }
 
     ListBox languages_listbox {
@@ -27,23 +24,18 @@ template $ReadySetLanguagesBox : Adw.Bin {
       selection-mode: none;
     }
 
-    Revealer {
-      transition-type: swing_up;
-      reveal-child: bind template.show-more inverted;
+    ListBox {
+      styles ["boxed-list"]
 
-      ListBox {
-        styles [
-          "boxed-list",
-        ]
+      selection-mode: none;
 
-        selection-mode: none;
+      visible: bind template.show-more inverted;
 
-        Adw.ButtonRow {
-          title: _("Show more");
-          start-icon-name: "view-more-symbolic";
+      Adw.ButtonRow {
+        title: _("Show more");
+        start-icon-name: "view-more-symbolic";
 
-          activated => $show_more_clicked();
-        }
+        activated => $show_more_clicked();
       }
     }
   }

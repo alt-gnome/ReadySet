@@ -50,35 +50,8 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
     construct {
         set_supported_languages.begin ();
 
-        languages_listbox.set_filter_func ((row) => {
-            var action_row = (Adw.ActionRow) row;
-            var search_q_downed = search_entry.text.down ();
-
-            if (search_q_downed in action_row.title.down () || search_q_downed in action_row.subtitle.down ()) {
-                return true;
-            }
-
-            return false;
-        });
-
-        search_entry.search_changed.connect (() => {
-            languages_listbox.invalidate_filter ();
-        });
-
         search_entry.changed.connect (() => {
             saved_search_query = search_entry.text;
-        });
-
-        languages_listbox.row_activated.connect ((row) => {
-            var lr = (LanguageRow) row;
-
-            if (lr.language_locale == get_current_language ()) {
-                return;
-            }
-
-            set_msg_locale (lr.language_locale);
-
-            ReadySet.Application.get_default ().reload_window ();
         });
 
         search_entry.text = saved_search_query;
@@ -87,6 +60,8 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
         Idle.add_once (() => {
             search_entry.can_focus = true;
         });
+
+        languages_listbox.set_placeholder (new Gtk.Label ("ABOBA"));
     }
 
     async void set_supported_languages () {
@@ -94,7 +69,6 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
         foreach (string locale in get_supported_languages ()) {
             lang_arr.append_val (fix_locale (locale));
         }
-
 
         var cl = get_current_language ();
 
@@ -121,10 +95,79 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
     }
 
     void set_languages (string[] language_locales) {
-        languages_listbox.remove_all ();
-        foreach (string locale in language_locales) {
-            languages_listbox.append (new LanguageRow (locale));
+        var model = new ListStore (typeof (LocaleData));
+
+        LocaleData locale_data;
+        foreach (var locale in language_locales) {
+            locale_data = new LocaleData (locale);
+            if (locale_data.country_cur != "" && locale_data.country_cur != "" && locale_data.country_cur != null && locale_data.country_cur != null) {
+                model.append (locale_data);
+            }
         }
+
+        var sort_model = new Gtk.SortListModel (model, get_sorter ());
+        var filter_model = new Gtk.FilterListModel (sort_model, get_filter ());
+
+        languages_listbox.bind_model (
+            filter_model,
+            (obj) => {
+                return new LanguageRow ((LocaleData) obj);
+            }
+        );
+    }
+
+    Gtk.Sorter get_sorter () {
+        var multisorter = new Gtk.MultiSorter ();
+
+        var current_sorter = new Gtk.StringSorter (new Gtk.PropertyExpression (
+            typeof (LocaleData),
+            null,
+            "country-loc"
+        ));
+
+        var local_sorter = new Gtk.StringSorter (new Gtk.PropertyExpression (
+            typeof (LocaleData),
+            null,
+            "country-cur"
+        ));
+
+        multisorter.append (current_sorter);
+        multisorter.append (local_sorter);
+
+        return multisorter;
+    }
+
+    Gtk.Filter get_filter () {
+        var multifilter = new Gtk.AnyFilter ();
+
+        var current_filter = new Gtk.StringFilter (new Gtk.PropertyExpression (
+            typeof (LocaleData),
+            null,
+            "country-cur"
+        ));
+        current_filter.bind_property (
+            "search",
+            search_entry,
+            "text",
+            GLib.BindingFlags.BIDIRECTIONAL
+        );
+
+        var local_filter = new Gtk.StringFilter (new Gtk.PropertyExpression (
+            typeof (LocaleData),
+            null,
+            "country-loc"
+        ));
+        local_filter.bind_property (
+            "search",
+            search_entry,
+            "text",
+            GLib.BindingFlags.BIDIRECTIONAL
+        );
+
+        multifilter.append (current_filter);
+        multifilter.append (local_filter);
+
+        return multifilter;
     }
 
     [GtkCallback]

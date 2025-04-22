@@ -18,35 +18,35 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/window-content.ui")]
-public sealed class ReadySet.WindowContent : Adw.BreakpointBin {
+[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/password-strength.ui")]
+public sealed class ReadySet.PasswordStrength : Gtk.Box {
 
     [GtkChild]
-    unowned Adw.OverlaySplitView split_view;
-    [GtkChild]
-    unowned StepsMainPage steps_main_page;
+    unowned Gtk.ProgressBar progress_bar;
 
-    static string[] saved_all_steps = {};
+    public string label { get; set; }
 
-    construct {
-        GLib.Application.get_default ().bind_property (
-            "show-steps",
-            split_view,
-            "show-sidebar",
-            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
-        );
-
-        if (saved_all_steps.length == 0) {
-            saved_all_steps = get_all_steps ();
+    double _strength;
+    public double strength {
+        get {
+            return _strength;
         }
+        set {
+            _strength = value;
 
-        foreach (string step_id in saved_all_steps) {
-            steps_main_page.add_page (build_page_by_step_id (step_id));
+            progress_bar.fraction = _strength;
         }
     }
 
-    [GtkCallback]
-    void close_sidebar () {
-        split_view.show_sidebar = false;
+    int _strength_level;
+    public int strength_level {
+        get {
+            return _strength_level;
+        }
+        set {
+            _strength_level = value;
+
+            update_css_by_strength (this, _strength_level);
+        }
     }
 }

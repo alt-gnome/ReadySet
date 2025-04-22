@@ -18,35 +18,29 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/window-content.ui")]
-public sealed class ReadySet.WindowContent : Adw.BreakpointBin {
+[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/context-row.ui")]
+public sealed class ReadySet.ContextRow : Gtk.Box {
 
     [GtkChild]
-    unowned Adw.OverlaySplitView split_view;
-    [GtkChild]
-    unowned StepsMainPage steps_main_page;
+    unowned Gtk.ListBox list_box;
 
-    static string[] saved_all_steps = {};
+    public Gtk.Widget context { get; set; }
 
-    construct {
-        GLib.Application.get_default ().bind_property (
-            "show-steps",
-            split_view,
-            "show-sidebar",
-            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
-        );
-
-        if (saved_all_steps.length == 0) {
-            saved_all_steps = get_all_steps ();
+    Gtk.ListBoxRow _row;
+    public Gtk.ListBoxRow row {
+        get {
+            return _row;
         }
+        set {
+            if (_row != null) {
+                list_box.remove (_row);
+            }
 
-        foreach (string step_id in saved_all_steps) {
-            steps_main_page.add_page (build_page_by_step_id (step_id));
+            list_box.append (value);
+
+            _row = value;
         }
     }
 
-    [GtkCallback]
-    void close_sidebar () {
-        split_view.show_sidebar = false;
-    }
+    public bool reveal_context { get; set; default = false; }
 }

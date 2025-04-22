@@ -21,6 +21,8 @@ public sealed class ReadySet.EndPage : BasePage {
 
     [GtkChild]
     unowned Gtk.Stack stack;
+    [GtkChild]
+    unowned BasePageDesc error_desc;
 
     construct {
         title += "…";
@@ -29,9 +31,15 @@ public sealed class ReadySet.EndPage : BasePage {
     public void start_action () {
         stack.visible_child_name = "load";
 
-        Timeout.add_seconds_once (2, () => {
-            finish_action ();
-        });
+        try {
+            ((ReadySet.Application) GLib.Application.get_default ()).apply_all ();
+        } catch (ApplyError error) {
+            stack.visible_child_name = "error";
+            error_desc.description = error.message;
+            is_ready = false;
+        }
+
+        finish_action ();
     }
 
     void finish_action () {

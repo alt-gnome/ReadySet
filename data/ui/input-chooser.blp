@@ -5,19 +5,16 @@ template $ReadySetInputChooser : Box {
   orientation: vertical;
   spacing: 12;
 
-  Revealer {
-    transition-type: swing_up;
-    reveal-child: bind template.show-more;
+  SearchEntry filter_entry {
+    styles ["card"]
 
-    SearchEntry filter_entry {
-      styles ["card"]
+    can-focus: false;
 
-      can-focus: false;
+    height-request: 48;
+    placeholder-text: _("Search keyboards and input methods");
+    hexpand: true;
 
-      height-request: 48;
-      placeholder-text: _("Search keyboards and input methods");
-      hexpand: true;
-    }
+    visible: bind template.show-more;
   }
 
   ListBox input_list {
@@ -32,23 +29,18 @@ template $ReadySetInputChooser : Box {
     row-activated => $row_activated();
   }
 
-  Revealer {
-    transition-type: swing_up;
-    reveal-child: bind template.show-more inverted;
+  ListBox {
+    styles ["boxed-list"]
 
-    ListBox {
-      styles [
-        "boxed-list",
-      ]
+    selection-mode: none;
 
-      selection-mode: none;
+    visible: bind template.show-more inverted;
 
-      Adw.ButtonRow {
-        title: _("Show more");
-        start-icon-name: "view-more-symbolic";
+    Adw.ButtonRow {
+      title: _("Show more");
+      start-icon-name: "view-more-symbolic";
 
-        activated => $show_more_clicked();
-      }
+      activated => $show_more_clicked();
     }
   }
 }

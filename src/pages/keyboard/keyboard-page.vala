@@ -50,4 +50,10 @@ public sealed class ReadySet.KeyboardPage : BasePage {
         var settings = new Settings ("org.gnome.desktop.input-sources");
         settings.set_value ("sources", builer.end ());
     }
+
+    protected override void apply () {
+        var settings = new Settings ("org.gnome.desktop.input-sources");
+
+        create_override ("org.gnome.desktop.input-sources", "sources", settings.get_value ("sources"));
+    }
 }

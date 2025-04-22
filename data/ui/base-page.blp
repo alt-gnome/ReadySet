@@ -7,8 +7,9 @@ template $ReadySetBasePage : Box {
   ScrolledWindow scrolled_window {
     hscrollbar-policy: never;
     propagate-natural-height: true;
+    vexpand: true;
 
-    child: Box toplevel_box {
+    Box toplevel_box {
       orientation: vertical;
       valign: center;
 
@@ -40,7 +41,7 @@ template $ReadySetBasePage : Box {
           Adw.Bin child_bin {}
         };
       }
-    };
+    }
   }
 
   Adw.Banner banner {

@@ -23,5 +23,13 @@ template $ReadySetEndPage : $ReadySetBasePage {
         description: bind template.description;
       };
     }
+
+    StackPage {
+      name: "error";
+      child: $ReadySetBasePageDesc error_desc {
+        title: "Error";
+        description: bind template.description;
+      };
+    }
   };
 }

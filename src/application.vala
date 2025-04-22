@@ -20,6 +20,10 @@ public sealed class ReadySet.Application: Adw.Application {
 
     const ActionEntry[] ACTION_ENTRIES = {};
 
+    public bool show_steps { get; set; default = false; }
+
+    ApplyCallback[] apply_callbacks = {};
+
     public Application () {
         Object (
             application_id: Config.APP_ID_DYN,
@@ -28,20 +32,39 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     static construct {
-        typeof (BasePage).ensure ();
         typeof (BasePageDesc).ensure ();
-        typeof (StepsMainPage).ensure ();
-        typeof (StepsSidebar).ensure ();
-        typeof (StepRow).ensure ();
+        typeof (ContextRow).ensure ();
         typeof (LangSelectTitle).ensure ();
         typeof (LanguagesBox).ensure ();
+        typeof (MarginLabel).ensure ();
         typeof (PagesIndicator).ensure ();
         typeof (PositionedStack).ensure ();
+        typeof (StepRow).ensure ();
+        typeof (StepsMainPage).ensure ();
+        typeof (StepsSidebar).ensure ();
+
+        typeof (BasePage).ensure ();
+        typeof (EndPage).ensure ();
+        typeof (KeyboardPage).ensure ();
+        typeof (LanguagePage).ensure ();
+        typeof (UserPage).ensure ();
+        typeof (WelcomePage).ensure ();
     }
 
     construct {
         add_action_entries (ACTION_ENTRIES, this);
         set_accels_for_action ("app.quit", { "<primary>q" });
+    }
+
+    public void add_apply_callback (ApplyCallback callback) {
+        apply_callbacks.resize (apply_callbacks.length + 1);
+        apply_callbacks[apply_callbacks.length - 1] = callback;
+    }
+
+    public void apply_all () throws ApplyError {
+        foreach (var callback in apply_callbacks) {
+            callback.apply ();
+        }
     }
 
     public void reload_window () {

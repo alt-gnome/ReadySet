@@ -4,10 +4,11 @@ using Adw 1;
 template $ReadySetLanguageRow : Adw.ActionRow {
   activatable: true;
 
+  activated => $row_activated();
+
   [suffix]
-  Revealer {
+  Revealer suffix_revealer {
     transition-type: crossfade;
-    reveal-child: bind template.is-current-language;
 
     Image {
       icon-name: "object-select-symbolic";
