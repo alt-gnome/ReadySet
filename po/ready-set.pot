@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-22 15:34+0300\n"
+"POT-Creation-Date: 2025-04-22 23:53+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: data/ui/alt-mobile-user-page.blp:5
+msgid "User"
+msgstr ""
+
 #: data/ui/alt-mobile-user-page.blp:6
 msgid "About you"
 msgstr ""
 
-#: data/ui/alt-mobile-user-page.blp:14
-msgid "Full name"
-msgstr ""
-
-#: data/ui/alt-mobile-user-page.blp:24
+#: data/ui/alt-mobile-user-page.blp:14 data/ui/alt-mobile-user-page.blp:24
 msgid "Full Name"
 msgstr ""
 
@@ -50,7 +50,7 @@ msgid "Passwords do not match"
 msgstr ""
 
 #: data/ui/alt-mobile-user-page.blp:74
-msgid "Password repeat"
+msgid "Repeat password"
 msgstr ""
 
 #: data/ui/alt-mobile-user-page.blp:82 data/ui/alt-mobile-user-page.blp:107
@@ -62,7 +62,7 @@ msgid "Equal to user password"
 msgstr ""
 
 #: data/ui/alt-mobile-user-page.blp:123
-msgid "Administrator password repeat"
+msgid "Repeat administrator password"
 msgstr ""
 
 #: data/ui/end-page.blp:5
@@ -77,18 +77,6 @@ msgstr ""
 msgid "The system is ready for use."
 msgstr ""
 
-#: data/ui/help-overlay.blp:11
-msgid "Main Actions"
-msgstr ""
-
-#: data/ui/help-overlay.blp:14
-msgid "Show Shortcuts"
-msgstr ""
-
-#: data/ui/help-overlay.blp:19
-msgid "Quit"
-msgstr ""
-
 #: data/ui/input-chooser.blp:15
 msgid "Search keyboards and input methods"
 msgstr ""
@@ -97,11 +85,15 @@ msgstr ""
 msgid "Show more"
 msgstr ""
 
-#: data/ui/keyboard-page.blp:5 data/ui/keyboard-page.blp:6
+#: data/ui/keyboard-page.blp:4
 msgid "Keyboard"
 msgstr ""
 
-#: data/ui/keyboard-page.blp:8
+#: data/ui/keyboard-page.blp:5
+msgid "Keyboard settings"
+msgstr ""
+
+#: data/ui/keyboard-page.blp:7
 msgid "Select your keyboard layout"
 msgstr ""
 
@@ -198,7 +190,7 @@ msgstr ""
 #: src/pages/alt-mobile-user/utils.vala:119
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
-"the following characters: - _"
+"the following characters: '-', '_'"
 msgstr ""
 
 #: src/pages/alt-mobile-user/utils.vala:122
