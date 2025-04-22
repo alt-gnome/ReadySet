@@ -145,7 +145,7 @@ msgstr "Тест"
 
 #: data/ui/test-page.blp:5
 msgid "Test page"
-msgstr "Тестошя страница"
+msgstr "Тестовая страница"
 
 #: data/ui/welcome-page.blp:4 data/ui/welcome-page.blp:5
 msgid "Welcome"
@@ -230,30 +230,3 @@ msgstr "Привет!"
 msgid ""
 "Let's start by choosing the language for the application and for your system."
 msgstr "Давайте начнём с выбора языка для приложения и для Вашей системы."
-
-#~ msgid "Password repeat"
-#~ msgstr "Повторите пароль"
-
-#~ msgid "Administrator password repeat"
-#~ msgstr "Повторите пароль администратора"
-
-#~ msgid "Main Actions"
-#~ msgstr "Основные действия"
-
-#~ msgid "Show Shortcuts"
-#~ msgstr "Показать сочетания клавиш"
-
-#~ msgid "Quit"
-#~ msgstr "Выйти"
-
-#~ msgid "Ready Set (Devel)"
-#~ msgstr "На Старт Внимание (Разраб.)"
-
-#~ msgid "Vladimir Vaskov"
-#~ msgstr "Владимир Васьков"
-
-#~ msgid "Cassette"
-#~ msgstr "Кассета"
-
-#~ msgid "Unofficial Yandex Music client"
-#~ msgstr "Неофициальный клиент Яндекс Музыки"
