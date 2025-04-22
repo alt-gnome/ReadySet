@@ -10,8 +10,8 @@ fs = import('fs')
 i18n = import('i18n')
 gnome = import('gnome')
 
-gtk_dep = dependency('gtk4', version: '>= 4.16')
-libadwaita_dep = dependency('libadwaita-1', version: '>= 1.6')
+gtk_dep = dependency('gtk4', version: '>= 4.18')
+libadwaita_dep = dependency('libadwaita-1', version: '>= 1.7')
 gnome_desktop_dep = dependency('gnome-desktop-4')
 gee_dep = dependency('gee-0.8')
 accountsservice_desktop_dep = dependency('accountsservice')
@@ -48,10 +48,13 @@ foreach lang : linguas
 endforeach
 supported_languages_arr += ['en']
 
+sysconfdir = get_option('prefix') / get_option('sysconfdir')
+
 conf = configuration_data()
 conf.set_quoted('APP_ID', app_id)
 conf.set_quoted('APP_ID_DYN', app_id_dyn)
 conf.set_quoted('G_LOG_DOMAIN', app_id)
+conf.set_quoted('SYSCONFDIR', sysconfdir)
 conf.set10('IS_DEVEL', get_option('is_devel'))
 conf.set_quoted('VERSION', meson.project_version())
 conf.set_quoted('GETTEXT_PACKAGE', meson.project_name())

@@ -142,33 +142,25 @@ namespace ReadySet {
     }
 
     string[] get_all_steps () {
-        var default_steps = new string[] {
-            "language",
-            "keyboard",
-            "alt-mobile-user",
-            "end"
-        };
+        File cur_file;
 
-        File? steps_file = null;
+        var steps_file = File.new_build_filename (Config.SYSCONFDIR, "ready-set", "steps");
+        var default_steps_file = File.new_build_filename (Config.SYSCONFDIR, "ready-set", "default-steps");
 
-        foreach (var sysconfig_dif in Environment.get_system_config_dirs ()) {
-            steps_file = File.new_build_filename (sysconfig_dif, "ready-set", "steps");
-
-            if (steps_file.query_exists ()) {
-                break;
-            }
-
-            steps_file = null;
+        if (steps_file.query_exists ()) {
+            cur_file = steps_file;
+        } else {
+            cur_file = default_steps_file;
         }
 
-        if (steps_file == null) {
-            return default_steps;
+        if (!cur_file.query_exists ()) {
+            return {};
         }
 
         try {
             uint8[] steps_file_content;
-            if (!steps_file.load_contents (null, out steps_file_content, null)) {
-                return default_steps;
+            if (!cur_file.load_contents (null, out steps_file_content, null)) {
+                return { "no-steps" };
             }
 
             string[] data = ((string) steps_file_content).split ("\n");
@@ -193,7 +185,7 @@ namespace ReadySet {
 
         } catch (Error e) {
             warning ("Failed to read steps file: %s", e.message);
-            return default_steps;
+            return { "no-steps" };
         }
     }
 
@@ -209,7 +201,7 @@ namespace ReadySet {
 
     void create_override (string schema_name, string key, Variant value) {
         try {
-            var keyfile_file = File.new_build_filename ("/etc/dconf/db/local.d/00-ready-set");
+            var keyfile_file = File.new_build_filename (Config.SYSCONFDIR, "dconf/db/local.d/00-ready-set");
 
             if (!keyfile_file.query_exists ()) {
                 keyfile_file.create (FileCreateFlags.NONE, null);
