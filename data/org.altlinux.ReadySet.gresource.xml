@@ -9,7 +9,6 @@
     <file alias="system-users-symbolic.svg">assets/icons/system-users-symbolic.svg</file>
   </gresource>
   <gresource prefix="/space/rirusha/ReadySet/">
-    <file alias="gtk/help-overlay.ui" preprocess="xml-stripblanks">ui/help-overlay.ui</file>
     <file>style.css</file>
     <file preprocess="xml-stripblanks">ui/alt-mobile-user-page.ui</file>
     <file preprocess="xml-stripblanks">ui/base-page-desc.ui</file>
