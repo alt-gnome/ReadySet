@@ -172,8 +172,10 @@ namespace ReadySet {
             var data_arr = new Array<string> ();
 
             foreach (var line in data) {
-                if (line != "") {
-                    data_arr.append_val (line);
+                var stripped_line = line.strip ();
+
+                if (stripped_line != "" && !stripped_line.has_prefix ("#")) {
+                    data_arr.append_val (stripped_line);
                 }
             }
 
