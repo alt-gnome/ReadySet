@@ -103,7 +103,7 @@ namespace PasswordQuality {
 		[CCode (cname = "pwquality_default_settings")]
 		public Settings ();
 
-		public PasswordQuality.Error read_config (string cfgfile, out void* auxerror);
+		public PasswordQuality.Error read_config (string? cfgfile, out void* auxerror);
 		public PasswordQuality.Error set_option (string option);
 		public PasswordQuality.Error set_int_value (PasswordQuality.Setting setting, int value);
 		public PasswordQuality.Error set_str_value (PasswordQuality.Setting setting, string value);

@@ -156,16 +156,16 @@ namespace ReadySet {
         return value;
     }
 
-    string pw_generate () {
-        string res;
-        var error = get_pwq ().generate (0, out res);
+    //  string pw_generate () {
+    //      string res;
+    //      var error = get_pwq ().generate (0, out res);
 
-        if (error != PasswordQuality.Error.SUCCESS) {
-            GLib.error (error.to_string ());
-        }
+    //      if (error != PasswordQuality.Error.SUCCESS) {
+    //          GLib.error (error.to_string ());
+    //      }
 
-        return res;
-    }
+    //      return res;
+    //  }
 
     string pw_error_hint (PasswordQuality.Error error) {
         switch (error) {

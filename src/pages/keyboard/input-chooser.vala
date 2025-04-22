@@ -82,6 +82,9 @@ public sealed class ReadySet.InputChooser : Gtk.Box {
     }
 
     public bool get_layout (string type, string id, out string layout, out string variant) {
+        layout = "";
+        variant = "";
+
         if (type == "xkb") {
             xkb_info.get_layout_info (id, null, null, out layout, out variant);
             return true;
@@ -107,8 +110,6 @@ public sealed class ReadySet.InputChooser : Gtk.Box {
         }
 // #endif
 
-        layout = "";
-        variant = "";
         return false;
     }
 
