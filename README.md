@@ -1,11 +1,37 @@
-# Шаблон приложения на языке Vala
+# На старт, Внимание, Марш! (Ready, Set, Go!)
 
-### Не клонируйте репозиторий!
-Просто загрузите его как архив или используйте как шаблон при создании новых репозиториев.
+Утилита для настройки системы при первом запуске
 
+## Установка
+
+### Из репозитория
+
+```sh
+su - -c "apt-get update && apt-get install ready-set"
 ```
-cd vala-application-template
-sh setup-space.sh io.github.SuperDev.ExampleApp
+
+### Сборка из исходников
+
+#### Зависимости
+
+```sh
+su - -c "apt-get update && apt-get install meson vala 'pkgconfig(gtk4) pkgconfig(libadwaita-1) pkgconfig(gnome-desktop-4) pkgconfig(gee-0.8) pkgconfig(accountsservice) pkgconfig(ibus-1.0) pkgconfig(pwquality) pkgconfig(blueprint-compiler)'"
 ```
 
-[Как правильно выбрать ID своего приложения](https://developer.gnome.org/documentation/tutorials/application-id.html)
+#### Сборка
+
+```sh
+meson setup _build
+```
+
+#### Установка
+
+```sh
+meson install -C _build
+```
+
+#### Удаление
+
+```sh
+meson uninstall -C _build
+```
