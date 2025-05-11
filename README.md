@@ -15,7 +15,7 @@ su - -c "apt-get update && apt-get install ready-set"
 #### Зависимости
 
 ```sh
-su - -c "apt-get update && apt-get install meson vala 'pkgconfig(gtk4) pkgconfig(libadwaita-1) pkgconfig(gnome-desktop-4) pkgconfig(gee-0.8) pkgconfig(accountsservice) pkgconfig(ibus-1.0) pkgconfig(pwquality) pkgconfig(blueprint-compiler)'"
+su - -c "apt-get update && apt-get install meson vala 'pkgconfig(gtk4)' 'pkgconfig(libadwaita-1)' 'pkgconfig(gnome-desktop-4)' 'pkgconfig(gee-0.8)' 'pkgconfig(accountsservice)' 'pkgconfig(ibus-1.0)' 'pkgconfig(pwquality)' 'pkgconfig(blueprint-compiler)'"
 ```
 
 #### Сборка
