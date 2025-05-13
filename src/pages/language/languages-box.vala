@@ -60,8 +60,6 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
         Idle.add_once (() => {
             search_entry.can_focus = true;
         });
-
-        languages_listbox.set_placeholder (new Gtk.Label ("ABOBA"));
     }
 
     async void set_supported_languages () {
