@@ -1,0 +1,14 @@
+[Unit]
+Description=OEM
+After=graphical.target
+Requires=graphical.target
+
+[Service]
+TTYPath=/dev/tty1
+StandardInput=tty
+StandardOutput=journal
+ExecStart=/usr/libexec/ready-set-phoc-run
+RemainAfterExit=yes
+
+[Install]
+WantedBy=graphical.target
