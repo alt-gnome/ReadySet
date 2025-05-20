@@ -2,6 +2,13 @@
 
 Утилита для настройки системы при первом запуске
 
+## All possible steps for now:
+
+
+- alt-mobile-user (Setup user with administrator password)
+- keyboard (Choosing layouts)
+- language (Users language)
+
 ## Установка
 
 ### Из репозитория
