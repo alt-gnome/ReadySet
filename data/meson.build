@@ -39,3 +39,5 @@ install_data (
   files('default-steps'),
   install_dir: sysconfdir / 'ready-set'
 )
+
+subdir('startup')
