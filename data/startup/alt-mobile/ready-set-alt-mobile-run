@@ -1,13 +1,2 @@
 #!/bin/bash
-mkdir -p /run/user/0
-chmod 700 /run/user/0
-export XDG_RUNTIME_DIR=/run/user/0
-
-# export WAYLAND_DISPLAY=wayland-1
-
-phoc -C /usr/share/phosh/phoc.ini -E /usr/libexec/ready-set &&
-
-rm -rf /run/user/0/
-
-systemctl disable ready-set-phoc
-systemctl enable --now phosh
+/usr/libexec/ready-set --steps=language,keyboard,alt-mobile-user
