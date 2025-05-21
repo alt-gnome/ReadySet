@@ -1,0 +1,12 @@
+#!/bin/bash
+mkdir -p /run/user/0
+chmod 700 /run/user/0
+
+# export WAYLAND_DISPLAY=wayland-1
+
+phoc -C /usr/share/phosh/phoc.ini -E /usr/libexec/ready-set-alt-mobile-run &&
+
+rm -rf /run/user/0/
+
+systemctl disable ready-set-alt-mobile
+systemctl enable --now phosh

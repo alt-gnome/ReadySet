@@ -1,0 +1,23 @@
+#!/bin/bash
+mkdir -p /run/user/0
+chmod 700 /run/user/0
+export XDG_RUNTIME_DIR=/run/user/0
+
+# export WAYLAND_DISPLAY=wayland-1
+
+cage /usr/libexec/ready-set-ximper-run &&
+# weston -- /usr/libexec/ready-set-ximper-run &&
+# phoc -C /usr/share/phosh/phoc.ini -E /usr/libexec/ready-set-ximper-run &&
+
+rm -rf /run/user/0/
+
+dm_list=("gdm" "sddm" "lightdm" "greetd" "ly")
+
+for dm in "${dm_list[@]}"; do
+    if systemctl list-unit-files | grep -q "^$dm.service"; then
+        echo "Enabling and starting display manager: $dm"
+        systemctl disable ready-set-ximper
+        systemctl enable --now "$dm"
+        break
+    fi
+done
