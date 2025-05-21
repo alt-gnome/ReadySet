@@ -4,7 +4,6 @@
 
 ## All possible steps for now:
 
-
 - alt-mobile-user (Setup user with administrator password)
 - keyboard (Choosing layouts)
 - language (Users language)
