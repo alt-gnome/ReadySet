@@ -35,7 +35,4 @@ resources = gnome.compile_resources(
   c_name: 'ready_set'
 )
 
-install_data (
-  files('default-steps'),
-  install_dir: sysconfdir / 'ready-set'
-)
+subdir('startup')

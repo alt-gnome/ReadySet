@@ -13,6 +13,14 @@
 
 </div>
 
+## All possible steps for now:
+
+App using steps. Curently available steps:
+
+- alt-mobile-user (Setup user with administrator password)
+- keyboard (Choosing layouts)
+- language (Users language)
+
 ## Install
 
 ### ALT Linux

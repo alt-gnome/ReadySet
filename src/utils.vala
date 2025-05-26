@@ -60,6 +60,13 @@ public class ReadySet.InputInfo : Object {
 
 namespace ReadySet {
 
+    const string[] DEFAULT_STEPS = {
+        "language",
+        "keyboard",
+        "alt-mobile-user",
+        "end",
+    };
+
     public errordomain ApplyError {
         BASE;
     }
@@ -142,25 +149,24 @@ namespace ReadySet {
     }
 
     string[] get_all_steps () {
-        File cur_file;
+        var app = ((ReadySet.Application) GLib.Application.get_default ());
 
-        var steps_file = File.new_build_filename (Config.SYSCONFDIR, "ready-set", "steps");
-        var default_steps_file = File.new_build_filename (Config.SYSCONFDIR, "ready-set", "default-steps");
+        var steps_data = new Array<string> ();
 
-        if (steps_file.query_exists ()) {
-            cur_file = steps_file;
-        } else {
-            cur_file = default_steps_file;
-        }
+        if (app.steps_filename != null) {
+            var steps_file = File.new_for_path (app.steps_filename);
 
-        if (!cur_file.query_exists ()) {
-            return {};
-        }
+            if (!steps_file.query_exists ()) {
+                error (_("Steps file doesn't exists"));
+            }
 
-        try {
             uint8[] steps_file_content;
-            if (!cur_file.load_contents (null, out steps_file_content, null)) {
-                return { "no-steps" };
+            try {
+                if (!steps_file.load_contents (null, out steps_file_content, null)) {
+                    error (_("Steps file is empty"));
+                }
+            } catch (Error e) {
+                error (_("Error loading steps file: %s"), e.message);
             }
 
             string[] data = ((string) steps_file_content).split ("\n");
@@ -169,26 +175,28 @@ namespace ReadySet {
                 data[i] = data[i].strip ();
             };
 
-            var data_arr = new Array<string> ();
-
             foreach (var line in data) {
                 var stripped_line = line.strip ();
 
                 if (stripped_line != "" && !stripped_line.has_prefix ("#")) {
-                    data_arr.append_val (stripped_line);
+                    steps_data.append_val (stripped_line);
                 }
             }
 
-            if (data_arr.index (data_arr.length - 1) != "end") {
-                data_arr.append_val ("end");
+        } else if (app.steps != null) {
+            foreach (var step in app.steps) {
+                steps_data.append_val (step);
             }
 
-            return data_arr.data;
-
-        } catch (Error e) {
-            warning ("Failed to read steps file: %s", e.message);
-            return { "no-steps" };
+        } else {
+            return DEFAULT_STEPS;
         }
+
+        if (steps_data.index (steps_data.length - 1) != "end") {
+            steps_data.append_val ("end");
+        }
+
+        return steps_data.data;
     }
 
     bool is_username_used (string? username) {
