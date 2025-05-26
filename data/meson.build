@@ -35,4 +35,5 @@ resources = gnome.compile_resources(
   c_name: 'ready_set'
 )
 
+subdir('icons')
 subdir('startup')

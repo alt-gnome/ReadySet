@@ -5,8 +5,8 @@
     <file alias="document-edit-symbolic.svg">assets/icons/document-edit-symbolic.svg</file>
     <file alias="keyboard-symbolic.svg">assets/icons/keyboard-symbolic.svg</file>
     <file alias="language-symbolic.svg">assets/icons/language-symbolic.svg</file>
-    <file alias="running-symbolic.svg">assets/icons/running-symbolic.svg</file>
     <file alias="system-users-symbolic.svg">assets/icons/system-users-symbolic.svg</file>
+    <file alias="org.altlinux.ReadySet-symbolic.svg">icons/hicolor/symbolic/apps/org.altlinux.ReadySet-symbolic.svg</file>
   </gresource>
   <gresource prefix="/space/rirusha/ReadySet/">
     <file>style.css</file>
