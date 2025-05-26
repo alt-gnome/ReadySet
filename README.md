@@ -1,36 +1,54 @@
-# На старт, Внимание, Марш! (Ready, Set, Go!)
+<div align="center">
 
-Утилита для настройки системы при первом запуске
+  <img
+    src="data/icons/hicolor/scalable/apps/org.altlinux.ReadySet.svg"
+    height="128"
+  />
 
-## Установка
+  <h1>
+    Ready, Set, Go!
+  </h1>
+  
+  <div align="center"><h4>A utility for configuring the system at the first startup</h4></div>
 
-### Из репозитория
+</div>
+
+## Install
+
+### ALT Linux
 
 ```sh
-su - -c "apt-get update && apt-get install ready-set"
+sudo apt-get update && apt-get install ready-set
 ```
 
-### Сборка из исходников
+## Building from sources
 
-#### Зависимости
+#### Dependencies
 
-```sh
-su - -c "apt-get update && apt-get install meson vala 'pkgconfig(gtk4)' 'pkgconfig(libadwaita-1)' 'pkgconfig(gnome-desktop-4)' 'pkgconfig(gee-0.8)' 'pkgconfig(accountsservice)' 'pkgconfig(ibus-1.0)' 'pkgconfig(pwquality)' 'pkgconfig(blueprint-compiler)'"
-```
+- meson
+- vala
+- gtk4
+- libadwaita-1
+- gnome-desktop-4
+- gee-0.8
+- accountsservice
+- ibus-1.0
+- pwquality
+- blueprint-compiler
 
-#### Сборка
+#### Building
 
 ```sh
 meson setup _build
 ```
 
-#### Установка
+#### Installing
 
 ```sh
 meson install -C _build
 ```
 
-#### Удаление
+#### Uninstalling
 
 ```sh
 meson uninstall -C _build
