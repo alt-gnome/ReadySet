@@ -8,7 +8,6 @@ systemd_system_unit_dir = systemd_dep.get_variable(
 # Install bins
 install_data(
   files(
-    'alt-mobile/ready-set-alt-mobile',
     'alt-mobile/ready-set-alt-mobile-run',
     'ximper/ready-set-ximper',
     'ximper/ready-set-ximper-run',
@@ -20,7 +19,6 @@ install_data(
 # Install services
 install_data(
   files(
-    'alt-mobile/ready-set-alt-mobile.service',
     'ximper/ready-set-ximper.service',
   ),
   install_dir: systemd_system_unit_dir
