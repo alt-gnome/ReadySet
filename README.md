@@ -26,7 +26,7 @@ App using steps. Curently available steps:
 ### ALT Linux
 
 ```sh
-sudo apt-get update && apt-get install ready-set
+sudo apt-get update && apt-repo test 382364
 ```
 
 ## Building from sources
