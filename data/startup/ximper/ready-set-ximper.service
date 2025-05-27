@@ -1,14 +1,23 @@
 [Unit]
-Description=OEM
-After=graphical.target
-Requires=graphical.target
+Description=Perform OEM Setup
+Conflicts=getty@tty1.service
+After=multi-user.target
+Requires=multi-user.target
 
 [Service]
-TTYPath=/dev/tty1
+Type=idle
+ExecStart=/usr/libexec/ready-set-ximper
+Restart=on-failure
 StandardInput=tty
 StandardOutput=journal
-ExecStart=/usr/libexec/ready-set-ximper
-RemainAfterExit=yes
+StandardError=journal
+TTYPath=/dev/tty1
+TTYReset=yes
+TTYVHangup=yes
+TTYVTDisallocate=yes
+User=root
+WorkingDirectory=/root
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
 
 [Install]
-WantedBy=graphical.target
+WantedBy=setup.target

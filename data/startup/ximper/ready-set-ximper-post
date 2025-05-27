@@ -1,0 +1,6 @@
+#!/bin/bash
+subst 's/ systemd\.unit=setup\.target//g' /etc/sysconfig/grub2
+update-grub
+
+reboot
+# apt-get uninstall ...

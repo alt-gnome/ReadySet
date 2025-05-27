@@ -11,6 +11,7 @@ install_data(
     'alt-mobile/ready-set-alt-mobile-run',
     'ximper/ready-set-ximper',
     'ximper/ready-set-ximper-run',
+    'ximper/ready-set-ximper-post',
   ),
   install_mode: 'rwxr-xr-x',
   install_dir: get_option('prefix') / get_option('libexecdir')
@@ -20,6 +21,7 @@ install_data(
 install_data(
   files(
     'ximper/ready-set-ximper.service',
+    'ximper/setup.target',
   ),
   install_dir: systemd_system_unit_dir
 )
