@@ -17,3 +17,6 @@ build-dir
 repo
 .flatpak
 _build
+
+# Builder
+.buildconfig
