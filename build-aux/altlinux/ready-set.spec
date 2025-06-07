@@ -26,6 +26,7 @@ BuildRequires: pkgconfig(gee-0.8)
 BuildRequires: pkgconfig(accountsservice)
 BuildRequires: pkgconfig(ibus-1.0)
 BuildRequires: pkgconfig(pwquality)
+BuildRequires: pkgconfig(systemd)
 BuildRequires: blueprint-compiler
 
 %description
