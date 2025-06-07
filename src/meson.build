@@ -3,12 +3,6 @@ vapi_sources = files(
 )
 
 vala_sources = files(
-  'pages/alt-mobile-user/context-row.vala',
-  'pages/alt-mobile-user/margin-label.vala',
-  'pages/alt-mobile-user/password-strength.vala',
-  'pages/alt-mobile-user/alt-mobile-user-page.vala',
-  'pages/alt-mobile-user/utils.vala',
-
   'pages/base/base-page.vala',
   'pages/base/base-page-desc.vala',
 
@@ -27,10 +21,17 @@ vala_sources = files(
 
   'pages/test/test-page.vala',
 
+  'pages/user/user-page.vala',
+
+  'pages/user-with-root/user-with-root-page.vala',
+
   'pages/welcome/welcome-page.vala',
 
+  'widgets/context-row.vala',
+  'widgets/margin-label.vala',
   'widgets/nothing-to-show.vala',
   'widgets/pages-indicator.vala',
+  'widgets/password-strength.vala',
   'widgets/positioned-stack.vala',
   'widgets/step-row.vala',
   'widgets/steps-main-page.vala',
@@ -40,6 +41,7 @@ vala_sources = files(
   'application.vala',
   'main.vala',
   'result.vala',
+  'utils-user.vala',
   'utils.vala',
   'window-content.vala',
   'window.vala',

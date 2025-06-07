@@ -63,7 +63,7 @@ namespace ReadySet {
     const string[] DEFAULT_STEPS = {
         "language",
         "keyboard",
-        "alt-mobile-user",
+        "user",
         "end",
     };
 
@@ -74,14 +74,14 @@ namespace ReadySet {
     public delegate void ApplyFunc () throws ApplyError;
 
     public void set_msg_locale (string locale) {
-        var result = Result.get_instance ();
+        var result = Data.get_instance ();
 
         result.current_language = locale;
         Intl.setlocale (LocaleCategory.MESSAGES, locale);
     }
 
     public string get_current_language () {
-        var result = Result.get_instance ();
+        var result = Data.get_instance ();
 
         if (result.current_language != null) {
             return result.current_language;

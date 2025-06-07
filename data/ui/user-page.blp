@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $ReadySetAltMobileUserPage: $ReadySetBasePage {
+template $ReadySetUserPage: $ReadySetBasePage {
   title-header: _("User");
   title: _("About you");
   icon-name: "system-users-symbolic";
@@ -80,6 +80,7 @@ template $ReadySetAltMobileUserPage: $ReadySetBasePage {
 
     Adw.PreferencesGroup {
       title: _("Administrator password");
+      visible: bind template.with-root-password;
 
       Box {
         orientation: vertical;

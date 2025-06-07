@@ -1,5 +1,5 @@
 #!/bin/bash
-/usr/libexec/ready-set --steps=language,keyboard,user-with-root
+/usr/libexec/ready-set
 
 if [ $? -eq 0 ]; then
     if gsettings list-schemas | grep -q "^mobi.phosh.phrog$"; then

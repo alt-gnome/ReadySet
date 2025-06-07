@@ -18,8 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/alt-mobile-user-page.ui")]
-public sealed class ReadySet.AltMobileUserPage : BasePage {
+[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/user-page.ui")]
+public class ReadySet.UserPage : BasePage {
 
     [GtkChild]
     unowned ContextRow fullname_context_row;
@@ -55,6 +55,8 @@ public sealed class ReadySet.AltMobileUserPage : BasePage {
     unowned ContextRow root_password_repeat_context_row;
     [GtkChild]
     unowned Adw.PasswordEntryRow root_password_repeat_entry;
+
+    public bool with_root_password { get; construct set; default = false; }
 
     static string fullname;
     static string username;

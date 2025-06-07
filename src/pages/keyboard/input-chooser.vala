@@ -134,7 +134,7 @@ public sealed class ReadySet.InputChooser : Gtk.Box {
     }
 
     void sync_all_checkmarks (bool initial = false) {
-        var result = Result.get_instance ();
+        var result = Data.get_instance ();
         bool invalidate = false;
 
         foreach (var entry in input_rows) {
@@ -171,7 +171,7 @@ public sealed class ReadySet.InputChooser : Gtk.Box {
             return;
         }
 
-        var result = Result.get_instance ();
+        var result = Data.get_instance ();
 
         var input_row = (InputRow) row;
         input_row.is_selected = !input_row.is_selected;
@@ -231,7 +231,7 @@ public sealed class ReadySet.InputChooser : Gtk.Box {
         string lang = null;
         string country = null;
 
-        var result = Result.get_instance ();
+        var result = Data.get_instance ();
 
         if (Gnome.Languages.get_input_source_from_locale (get_current_language (), out type, out id)) {
             if (result.current_inputs_info.size == 0) {
@@ -402,7 +402,7 @@ public sealed class ReadySet.InputChooser : Gtk.Box {
         var variant = settings.get_value ("sources");
 
         var iterator = variant.iterator ();
-        var result = Result.get_instance ();
+        var result = Data.get_instance ();
 
         Variant? item;
         while ((item = iterator.next_value ()) != null) {

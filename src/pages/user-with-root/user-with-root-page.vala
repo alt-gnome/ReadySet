@@ -18,22 +18,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public sealed class ReadySet.Data : Object {
+public sealed class ReadySet.UserWithRootPage : UserPage {
 
-    public string current_language { get; set; }
-
-    public Gee.HashSet<InputInfo> current_inputs_info {
-        get; set;
-        default = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
-    }
-
-    static ReadySet.Data instance;
-
-    public static ReadySet.Data get_instance () {
-        if (instance == null) {
-            instance = new ReadySet.Data ();
-        }
-
-        return instance;
+    construct {
+        with_root_password = true;
     }
 }
