@@ -39,8 +39,8 @@ vala_sources = files(
 
   'about.vala',
   'application.vala',
+  'data.vala',
   'main.vala',
-  'result.vala',
   'utils-user.vala',
   'utils.vala',
   'window-content.vala',
