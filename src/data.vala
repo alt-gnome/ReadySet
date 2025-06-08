@@ -20,7 +20,32 @@
 
 public class ReadySet.LanguageData : Object {
 
-    public string? current_language { get; set; }
+    string _current_language;
+    public string current_language {
+        get {
+            if (_current_language == null) {
+                debug ("Languages: %s", string.joinv (", ", Intl.get_language_names ()));
+
+                foreach (string lang in Intl.get_language_names ()) {
+                    if (Gnome.Languages.parse_locale (lang, null, null, null, null)) {
+                        _current_language = lang;
+                        break;
+                    }
+                }
+
+                if (_current_language == null) {
+                    _current_language = "C";
+                }
+            }
+
+            return _current_language;
+        }
+        set {
+            _current_language = value;
+
+            Intl.setlocale (LocaleCategory.MESSAGES, _current_language);
+        }
+    }
 }
 
 public class ReadySet.KeyboardData : Object {

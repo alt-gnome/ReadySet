@@ -77,23 +77,12 @@ namespace ReadySet {
         var result = Data.get_instance ();
 
         result.language.current_language = locale;
-        Intl.setlocale (LocaleCategory.MESSAGES, locale);
     }
 
     public string get_current_language () {
         var result = Data.get_instance ();
 
-        if (result.language.current_language != null) {
-            return result.language.current_language;
-        }
-
-        foreach (string lang in Intl.get_language_names ()) {
-            if (Gnome.Languages.parse_locale (lang, null, null, null, null)) {
-                return lang;
-            }
-        }
-
-        return "C";
+        return result.language.current_language;
     }
 
     public string[] get_supported_languages () {
