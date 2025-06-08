@@ -48,6 +48,10 @@ public class ReadySet.UserData : Object {
     public string repeat_root_password { get; set; default = ""; }
 }
 
+/**
+ * Data class for the ReadySet application.
+ * It handles various data for window reload
+ */
 public sealed class ReadySet.Data : Object {
 
     public LanguageData language { get; default = new LanguageData (); }
