@@ -5,6 +5,4 @@ if [ $? -eq 0 ]; then
     if gsettings list-schemas | grep -q "^mobi.phosh.phrog$"; then
         gsettings set mobi.phosh.phrog first-run ""
     fi
-else
-    
 fi

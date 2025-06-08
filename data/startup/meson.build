@@ -8,7 +8,7 @@ systemd_system_unit_dir = systemd_dep.get_variable(
 # Install bins
 install_data(
   files(
-    'alt-mobile/ready-set-alt-mobile-run',
+    'altlinux/ready-set-altlinux-run',
   ),
   install_mode: 'rwxr-xr-x',
   install_dir: get_option('prefix') / get_option('libexecdir')

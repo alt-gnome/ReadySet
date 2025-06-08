@@ -32,6 +32,17 @@ BuildRequires: blueprint-compiler
 %description
 %summary.
 
+%package run
+Summary: Run script of ReadySet
+Group: Other
+
+Requires: %name = %EVR
+
+%description run
+%summary.
+
+Contain root password setup.
+
 %prep
 %setup
 
@@ -48,5 +59,9 @@ BuildRequires: blueprint-compiler
 
 %files -f %name.lang
 %_libexecdir/%name
-%_sysconfdir/%name
+%_iconsdir/hicolor/*/apps/%app_id.svg
+%_iconsdir/hicolor/*/apps/%app_id-symbolic.svg
 %doc README.md
+
+%files run
+%_libexecdir/%name-altlinux-run
