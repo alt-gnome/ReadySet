@@ -98,7 +98,12 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
         LocaleData locale_data;
         foreach (var locale in language_locales) {
             locale_data = new LocaleData (locale);
-            if (locale_data.country_cur != "" && locale_data.country_cur != "" && locale_data.country_cur != null && locale_data.country_cur != null) {
+            if (
+                locale_data.country_cur != "" &&
+                locale_data.country_cur != "" &&
+                locale_data.country_cur != null &&
+                locale_data.country_cur != null
+            ) {
                 model.append (locale_data);
             }
         }

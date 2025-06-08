@@ -116,7 +116,7 @@ namespace ReadySet {
             } else if (!(username[0] >= 'a' && username[0] <= 'z')) {
                 error = _("The username must start with a lower case letter from a-z");
             } else {
-                error = _("The username should only consist of lower case letters from a-z, digits, and the following characters: '-', '_'");
+                error = _("The username should only consist of lower case letters from a-z, digits, and the following characters: '-', '_'"); // vala-lint=line-length
             }
         } else if (empty) {
             error = _("Username cannot be empty");
@@ -198,7 +198,7 @@ namespace ReadySet {
             case PasswordQuality.Error.MAX_CONSECUTIVE:
                 return "This is a weak password. Try to avoid repeating the same character.";
             case PasswordQuality.Error.MAX_CLASS_REPEAT:
-                return "This is a weak password. Try to avoid repeating the same type of character: you need to mix up letters, numbers and punctuation.";
+                return "This is a weak password. Try to avoid repeating the same type of character: you need to mix up letters, numbers and punctuation."; // vala-lint=line-length
             case PasswordQuality.Error.MAX_SEQUENCE:
                 return "This is a weak password. Try to avoid sequences like 1234 or abcd.";
             case PasswordQuality.Error.MIN_LENGTH:
@@ -210,7 +210,13 @@ namespace ReadySet {
         }
     }
 
-    double pw_strength (string password, string? old_password, string? username, out string hint, out int strength_level) {
+    double pw_strength (
+        string password,
+        string? old_password,
+        string? username,
+        out string hint,
+        out int strength_level
+    ) {
         var rv = get_pwq ().check (password, old_password, username, null);
         int length = password.length;
         double strength = (0.01 * rv).clamp (0.0, 1.0);
