@@ -18,14 +18,43 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public sealed class ReadySet.Data : Object {
+public class ReadySet.LanguageData : Object {
 
-    public string current_language { get; set; }
+    public string? current_language { get; set; }
+}
+
+public class ReadySet.KeyboardData : Object {
 
     public Gee.HashSet<InputInfo> current_inputs_info {
         get; set;
         default = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
     }
+}
+
+public class ReadySet.UserData : Object {
+
+    public string fullname { get; set; default = ""; }
+
+    public string username { get; set; default = ""; }
+
+    public string password { get; set; default = ""; }
+
+    public string repeat_password { get; set; default = ""; }
+
+    public bool equal_to_root { get; set; default = true; }
+
+    public string root_password { get; set; default = ""; }
+
+    public string repeat_root_password { get; set; default = ""; }
+}
+
+public sealed class ReadySet.Data : Object {
+
+    public LanguageData language { get; default = new LanguageData (); }
+
+    public KeyboardData keyboard { get; default = new KeyboardData (); }
+
+    public UserData user { get; default = new UserData (); }
 
     static ReadySet.Data instance;
 

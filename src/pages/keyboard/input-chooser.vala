@@ -140,7 +140,7 @@ public sealed class ReadySet.InputChooser : Gtk.Box {
         foreach (var entry in input_rows) {
             var row_input_info = entry.key;
             var row = entry.value;
-            bool is_selected = row_input_info in result.current_inputs_info;
+            bool is_selected = row_input_info in result.keyboard.current_inputs_info;
 
             row.is_selected = is_selected;
 
@@ -177,14 +177,14 @@ public sealed class ReadySet.InputChooser : Gtk.Box {
         input_row.is_selected = !input_row.is_selected;
 
         if (input_row.is_selected) {
-            result.current_inputs_info.add (input_row.input_info);
+            result.keyboard.current_inputs_info.add (input_row.input_info);
         } else {
-            result.current_inputs_info.remove (input_row.input_info);
+            result.keyboard.current_inputs_info.remove (input_row.input_info);
         }
 
         sync_all_checkmarks ();
 
-        changed (result.current_inputs_info.to_array ());
+        changed (result.keyboard.current_inputs_info.to_array ());
     }
 
     int sort_inputs (Gtk.ListBoxRow a, Gtk.ListBoxRow b) {
@@ -234,8 +234,8 @@ public sealed class ReadySet.InputChooser : Gtk.Box {
         var result = Data.get_instance ();
 
         if (Gnome.Languages.get_input_source_from_locale (get_current_language (), out type, out id)) {
-            if (result.current_inputs_info.size == 0) {
-                result.current_inputs_info.add (new InputInfo (type, id));
+            if (result.keyboard.current_inputs_info.size == 0) {
+                result.keyboard.current_inputs_info.add (new InputInfo (type, id));
             }
 
             add_row_to_list (type, id);
@@ -409,7 +409,7 @@ public sealed class ReadySet.InputChooser : Gtk.Box {
             string input_type, input_id;
 
             item.get ("(ss)", out input_type, out input_id);
-            result.current_inputs_info.add (new InputInfo (input_type, input_id));
+            result.keyboard.current_inputs_info.add (new InputInfo (input_type, input_id));
         }
     }
 }

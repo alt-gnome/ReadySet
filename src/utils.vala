@@ -76,15 +76,15 @@ namespace ReadySet {
     public void set_msg_locale (string locale) {
         var result = Data.get_instance ();
 
-        result.current_language = locale;
+        result.language.current_language = locale;
         Intl.setlocale (LocaleCategory.MESSAGES, locale);
     }
 
     public string get_current_language () {
         var result = Data.get_instance ();
 
-        if (result.current_language != null) {
-            return result.current_language;
+        if (result.language.current_language != null) {
+            return result.language.current_language;
         }
 
         foreach (string lang in Intl.get_language_names ()) {

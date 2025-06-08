@@ -58,37 +58,79 @@ public class ReadySet.UserPage : BasePage {
 
     public bool with_root_password { get; construct set; default = false; }
 
-    static string fullname;
-    static string username;
-    static string password;
-    static string root_password;
+    construct {
+        var data = Data.get_instance ();
+
+        data.user.bind_property (
+            "fullname",
+            fullname_entry,
+            "text",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
+        data.user.bind_property (
+            "username",
+            username_entry,
+            "text",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
+        data.user.bind_property (
+            "password",
+            password_entry,
+            "text",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
+        data.user.bind_property (
+            "repeat-password",
+            password_repeat_entry,
+            "text",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
+        data.user.bind_property (
+            "equal-to-root",
+            equal_switch_row,
+            "active",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
+        data.user.bind_property (
+            "root-password",
+            root_password_entry,
+            "text",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
+        data.user.bind_property (
+            "repeat-root-password",
+            root_password_repeat_entry,
+            "text",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
+    }
 
     void update_is_ready () {
-        fullname = fullname_entry.text;
-        username = username_entry.text;
-        password = password_entry.text;
-        root_password = root_password_entry.text;
+        var data = Data.get_instance ();
 
-        is_ready = fullname_is_correct (fullname, null)
-                   && username_is_correct (username, false, null)
-                   && password_is_correct (password)
-                   && password == password_repeat_entry.text
-                   && (equal_switch_row.active || (!equal_switch_row.active && (password_is_correct (root_password)
-                   && root_password == root_password_repeat_entry.text)));
+        is_ready = fullname_is_correct (data.user.fullname, null) &&
+                   username_is_correct (data.user.username, false, null) &&
+                   password_is_correct (data.user.password) &&
+                   data.user.password == data.user.repeat_password &&
+                   (equal_switch_row.active || (!equal_switch_row.active &&
+                   (password_is_correct (data.user.root_password) &&
+                   data.user.root_password == data.user.repeat_root_password)));
     }
 
     protected override void apply () throws ApplyError {
+        var data = Data.get_instance ();
+
         try {
             var user = Act.UserManager.get_default ().create_user (
-                username,
-                fullname,
+                data.user.username,
+                data.user.fullname,
                 Act.UserAccountType.STANDARD
             );
 
-            user.set_password (password, "");
+            user.set_password (data.user.password, "");
             user.set_language (get_current_language ());
 
-            set_root_password (root_password != "" ? root_password : password);
+            set_root_password (data.user.root_password != "" ? data.user.root_password : data.user.password);
 
         } catch (Error e) {
             throw new ApplyError.BASE (_("Failed to create user"));
@@ -97,8 +139,10 @@ public class ReadySet.UserPage : BasePage {
 
     [GtkCallback]
     void fullname_changed () {
+        var data = Data.get_instance ();
+
         string error;
-        var is_correct = fullname_is_correct (fullname_entry.text, out error);
+        var is_correct = fullname_is_correct (data.user.fullname, out error);
         fullname_context_row.reveal_context = !is_correct;
         fullname_label.label = error;
         fullname_context_row.reveal_context = !is_correct && error != "";
@@ -109,8 +153,10 @@ public class ReadySet.UserPage : BasePage {
 
     [GtkCallback]
     void username_changed () {
+        var data = Data.get_instance ();
+
         string error;
-        var is_correct = username_is_correct (username_entry.text, false, out error);
+        var is_correct = username_is_correct (data.user.username, false, out error);
         username_label.label = error;
         username_context_row.reveal_context = !is_correct && error != "";
         update_correct (username_entry, is_correct);
@@ -120,13 +166,15 @@ public class ReadySet.UserPage : BasePage {
 
     [GtkCallback]
     void password_changed () {
+        var data = Data.get_instance ();
+
         string hint;
         int strength_level;
 
         double strength = pw_strength (
-            password_entry.text,
+            data.user.password,
             null,
-            username_entry.text,
+            data.user.username,
             out hint,
             out strength_level
         );
@@ -143,7 +191,9 @@ public class ReadySet.UserPage : BasePage {
 
     [GtkCallback]
     void password_repeat_changed () {
-        var is_correct = password_entry.text == password_repeat_entry.text;
+        var data = Data.get_instance ();
+
+        var is_correct = data.user.password == data.user.repeat_password;
         password_repeat_context_row.reveal_context = !is_correct;
         update_correct (password_repeat_entry, is_correct);
 
@@ -152,13 +202,15 @@ public class ReadySet.UserPage : BasePage {
 
     [GtkCallback]
     void root_password_changed () {
+        var data = Data.get_instance ();
+
         string hint;
         int strength_level;
 
         double strength = pw_strength (
-            root_password_entry.text,
+            data.user.root_password,
             null,
-            username_entry.text,
+            data.user.username,
             out hint,
             out strength_level
         );
@@ -175,7 +227,9 @@ public class ReadySet.UserPage : BasePage {
 
     [GtkCallback]
     void root_password_repeat_changed () {
-        var is_correct = root_password_entry.text == root_password_repeat_entry.text;
+        var data = Data.get_instance ();
+
+        var is_correct = data.user.root_password == data.user.repeat_root_password;
         root_password_repeat_context_row.reveal_context = !is_correct;
         update_correct (root_password_repeat_entry, is_correct);
 
@@ -184,9 +238,11 @@ public class ReadySet.UserPage : BasePage {
 
     [GtkCallback]
     void switch_changed () {
-        if (equal_switch_row.active) {
-            root_password_entry.text = "";
-            root_password_repeat_entry.text = "";
+        var data = Data.get_instance ();
+
+        if (data.user.equal_to_root) {
+            data.user.root_password = "";
+            data.user.repeat_root_password = "";
 
             root_password_entry.remove_css_class ("error");
             root_password_context_row.reveal_context = false;
