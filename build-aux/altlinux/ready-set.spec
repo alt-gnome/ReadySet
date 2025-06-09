@@ -17,6 +17,7 @@ Source: %name-%version.tar
 Requires: /usr/sbin/chpasswd
 
 BuildRequires(pre): rpm-macros-meson
+BuildRequires(pre): rpm-macros-systemd
 BuildRequires: meson
 BuildRequires: vala
 BuildRequires: pkgconfig(gtk4) >= 4.18
@@ -43,6 +44,15 @@ Requires: %name = %EVR
 
 Contain root password setup.
 
+%package run-ximper
+Summary: Run script of ReadySet for Ximper Linux
+Group: Other
+
+Requires: %name = %EVR
+
+%description run-ximper
+%summary.
+
 %prep
 %setup
 
@@ -65,3 +75,8 @@ Contain root password setup.
 
 %files run
 %_libexecdir/%name-altlinux-run
+
+%files run-ximper
+%_libexecdir/%name-ximper*
+%_unitdir/%name-ximper.service
+%_unitdir/setup.target
