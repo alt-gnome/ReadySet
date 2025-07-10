@@ -57,7 +57,7 @@ Requires: %name = %EVR
 %setup
 
 %build
-%meson
+%meson -Dusername=_greeter
 %meson_build
 
 %install

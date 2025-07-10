@@ -35,5 +35,16 @@ resources = gnome.compile_resources(
   c_name: 'ready_set'
 )
 
+rules_conf = configuration_data()
+conf.set_quoted('USERNAME', get_option('username'))
+
+configure_file(
+  input: 'org.altlinux.ReadySet.rules.in',
+  output: 'org.altlinux.ReadySet.rules',
+  install: true,
+  install_dir: join_paths(get_option('datadir'), 'polkit-1', 'rules.d'),
+  configuration: rules_conf,
+)
+
 subdir('icons')
 subdir('startup')

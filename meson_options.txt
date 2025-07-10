@@ -8,3 +8,7 @@ option(
   type: 'boolean',
   value: true
 )
+option(
+  'username',
+  type: 'string'
+)
