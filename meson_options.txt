@@ -10,5 +10,6 @@ option(
 )
 option(
   'username',
-  type: 'string'
+  type: 'string',
+  value: 'root'
 )

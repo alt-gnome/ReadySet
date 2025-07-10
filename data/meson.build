@@ -36,7 +36,8 @@ resources = gnome.compile_resources(
 )
 
 rules_conf = configuration_data()
-conf.set_quoted('USERNAME', get_option('username'))
+rules_conf.set('USERNAME', get_option('username'))
+rules_conf.set('SYSCONFDIR', sysconfdir)
 
 configure_file(
   input: 'org.altlinux.ReadySet.rules.in',

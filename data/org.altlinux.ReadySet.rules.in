@@ -10,7 +10,7 @@ polkit.addRule(function(action, subject) {
                          action.id.indexOf('org.freedesktop.realmd.') === 0 ||
                          action.id.indexOf('com.endlessm.ParentalControls.') === 0 ||
                          (action.id == "org.freedesktop.filesystem.write" &&
-                          action.lookup("filesystem.path") == "/etc/dconf/db/local.d/00-ready-set");
+                          action.lookup("filesystem.path") == "@SYSCONFDIR@/dconf/db/local.d/00-ready-set");
 
     if (actionMatches) {
         if (subject.local)
