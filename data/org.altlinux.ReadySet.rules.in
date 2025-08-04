@@ -1,16 +1,17 @@
 polkit.addRule(function(action, subject) {
-    if (subject.user !== '@USERNAME@')
-        return undefined;
+    if (subject.user !== "@USERNAME@")
+        return;
 
-    var actionMatches = (action.id.indexOf('org.freedesktop.hostname1.') === 0 ||
-                         action.id.indexOf('org.freedesktop.NetworkManager.') === 0 ||
-                         action.id.indexOf('org.freedesktop.locale1.') === 0 ||
-                         action.id.indexOf('org.freedesktop.accounts.') === 0 ||
-                         action.id.indexOf('org.freedesktop.timedate1.') === 0 ||
-                         action.id.indexOf('org.freedesktop.realmd.') === 0 ||
-                         action.id.indexOf('com.endlessm.ParentalControls.') === 0 ||
-                         (action.id == "org.freedesktop.filesystem.write" &&
-                          action.lookup("filesystem.path") == "@SYSCONFDIR@/dconf/db/local.d/00-ready-set");
+    var actionMatches =
+        action.id.indexOf("org.freedesktop.hostname1.") === 0 ||
+        action.id.indexOf("org.freedesktop.NetworkManager.") === 0 ||
+        action.id.indexOf("org.freedesktop.locale1.") === 0 ||
+        action.id.indexOf("org.freedesktop.accounts.") === 0 ||
+        action.id.indexOf("org.freedesktop.timedate1.") === 0 ||
+        action.id.indexOf("org.freedesktop.realmd.") === 0 ||
+        action.id.indexOf("com.endlessm.ParentalControls.") === 0 ||
+        (action.id === "org.freedesktop.filesystem.write" &&
+         action.lookup("filesystem.path") === "@SYSCONFDIR@/dconf/db/local.d/00-ready-set");
 
     if (actionMatches) {
         if (subject.local)
@@ -19,5 +20,5 @@ polkit.addRule(function(action, subject) {
             return polkit.Result.AUTH_ADMIN;
     }
 
-    return undefined;
+    return;
 });
