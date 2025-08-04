@@ -62,3 +62,8 @@ meson install -C _build
 ```sh
 meson uninstall -C _build
 ```
+
+#### Mentions
+
+- Roman Alifanov <ximper@etersoft.ru>
+- David Sultaniiazov <x1z53@altlinux.org>
