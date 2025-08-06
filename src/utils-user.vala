@@ -110,7 +110,7 @@ namespace ReadySet {
 
         if (!empty && (in_use || too_long || parental_controls_conflict || !valid)) {
             if (in_use || parental_controls_conflict) {
-                error = _("That username isn’t available. Please try another");
+                error = _("That username isn't available. Please try another");
             } else if (too_long) {
                 error = _("The username is too long");
             } else if (!(username[0] >= 'a' && username[0] <= 'z')) {
