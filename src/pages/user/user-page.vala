@@ -240,16 +240,13 @@ public class ReadySet.UserPage : BasePage {
     void switch_changed () {
         var data = Data.get_instance ();
 
-        if (data.user.equal_to_root) {
-            data.user.root_password = "";
-            data.user.repeat_root_password = "";
+        data.user.root_password = "";
+        data.user.repeat_root_password = "";
 
-            root_password_entry.remove_css_class ("error");
-            root_password_context_row.reveal_context = false;
-            root_password_repeat_entry.remove_css_class ("error");
-            root_password_repeat_context_row.reveal_context = false;
-
-        }
+        root_password_entry.remove_css_class ("error");
+        root_password_context_row.reveal_context = false;
+        root_password_repeat_entry.remove_css_class ("error");
+        root_password_repeat_context_row.reveal_context = false;
 
         update_is_ready ();
     }
