@@ -243,7 +243,7 @@ namespace ReadySet {
     bool set_root_password (string password) {
         try {
             var subprocess = new Subprocess.newv (
-                { "/usr/sbin/chpasswd" },
+                { "pkexec", "/usr/sbin/chpasswd" },
                 SubprocessFlags.STDIN_PIPE | SubprocessFlags.STDOUT_SILENCE | SubprocessFlags.STDERR_SILENCE
             );
 
