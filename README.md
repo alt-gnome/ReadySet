@@ -18,7 +18,7 @@
 App using steps. Curently available steps:
 
 - user-with-root (Setup user with administrator password)
-- user (Root password  skips)
+- user (Root password skips)
 - keyboard (Choosing layouts)
 - language (Users language)
 
