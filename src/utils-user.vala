@@ -18,6 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+//  Took from gnome-initial-setup
+
 namespace ReadySet {
 
     static PasswordQuality.Settings? _pwq_settings = null;
@@ -63,6 +65,46 @@ namespace ReadySet {
             error = _ ("Name cannot be empty");
 
         return !is_empty;
+    }
+
+    string correct_username (string username) {
+        const int MAXNAMELEN = 32;
+
+        string uname = username;
+
+        if (uname == "") {
+            return "";
+        }
+        if (uname.length > MAXNAMELEN) {
+            uname = uname[0:MAXNAMELEN];
+        }
+
+        int len = 0;
+        var corrected_uname = new char[uname.length];
+
+        for (int i = 0; i < uname.length; i++) {
+            char ch = username[i];
+
+            if (ch >= 'A' && ch <= 'Z') {
+                corrected_uname[len] = ch.tolower ();
+                len++;
+            } else if (ch >= 'a' && ch <= 'z') {
+                corrected_uname[len] = ch;
+                len++;
+            } else if (ch >= '0' && ch <= '9') {
+                if (len > 0) {
+                    corrected_uname[len] = ch;
+                    len++;
+                }
+            } else if (ch == ' ' || ch == '-' || ch == '_') {
+                if (len > 0) {
+                    corrected_uname[len] = '-';
+                    len++;
+                }
+            }
+        }
+
+        return (string) corrected_uname;
     }
 
     bool username_is_correct (string username, bool parental_controls_enabled, out string error) {

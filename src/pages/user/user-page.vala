@@ -58,6 +58,8 @@ public class ReadySet.UserPage : BasePage {
 
     public bool with_root_password { get; construct set; default = false; }
 
+    bool username_manually_entered = false;
+
     construct {
         var data = Data.get_instance ();
 
@@ -137,9 +139,25 @@ public class ReadySet.UserPage : BasePage {
         }
     }
 
+    string get_auto_username () {
+        var data = Data.get_instance ();
+
+        return correct_username (data.user.fullname);
+    }
+
+    void auto_enter_username () {
+        var data = Data.get_instance ();
+
+        data.user.username = get_auto_username ();
+    }
+
     [GtkCallback]
     void fullname_changed () {
         var data = Data.get_instance ();
+
+        if (!username_manually_entered) {
+            auto_enter_username ();
+        }
 
         string error;
         var is_correct = fullname_is_correct (data.user.fullname, out error);
@@ -154,6 +172,12 @@ public class ReadySet.UserPage : BasePage {
     [GtkCallback]
     void username_changed () {
         var data = Data.get_instance ();
+
+        username_manually_entered = username_entry.text != get_auto_username ();
+
+        if (!username_manually_entered && data.user.username == "") {
+            return;
+        }
 
         string error;
         var is_correct = username_is_correct (data.user.username, false, out error);
