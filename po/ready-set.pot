@@ -8,13 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-06 03:46+0300\n"
+"POT-Creation-Date: 2025-08-06 03:56+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: data/ui/end-page.blp:5
@@ -176,7 +176,7 @@ msgid "Filename with steps"
 msgstr ""
 
 #: src/application.vala:26
-msgid "Steps. e.g: `steps=language,keyboard,end`"
+msgid "Steps. E.g: `steps=language,keyboard,end`"
 msgstr ""
 
 #: src/pages/base/base-page.vala:37
