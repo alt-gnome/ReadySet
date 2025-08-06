@@ -2,15 +2,15 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the ready-set package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# David Sultaniiazov <x1z53@altlinux.org>, 2025.
+# David Sultaniiazov <x1z53@alt-gnome.ru>, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-22 23:53+0300\n"
-"PO-Revision-Date: 2025-04-22 23:54+0300\n"
-"Last-Translator: David Sultaniiazov <x1z53@altlinux.org>\n"
+"POT-Creation-Date: 2025-08-06 03:56+0300\n"
+"PO-Revision-Date: 2025-08-06 03:57+0300\n"
+"Last-Translator: David Sultaniiazov <x1z53@alt-gnome.ru>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -19,56 +19,6 @@ msgstr ""
 "X-Generator: Gtranslator 48.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-
-#: data/ui/alt-mobile-user-page.blp:5
-msgid "User"
-msgstr "Пользователь"
-
-#: data/ui/alt-mobile-user-page.blp:6
-msgid "About you"
-msgstr "О Вас"
-
-#: data/ui/alt-mobile-user-page.blp:14 data/ui/alt-mobile-user-page.blp:24
-msgid "Full Name"
-msgstr "Полное имя"
-
-#: data/ui/alt-mobile-user-page.blp:31 data/ui/alt-mobile-user-page.blp:42
-msgid "Username"
-msgstr "Имя пользователя"
-
-#: data/ui/alt-mobile-user-page.blp:32
-msgid "Username will be used to name your home folder and can’t be changed."
-msgstr ""
-"Имя пользователя будет использовано для имени Вашей домашней директории и не "
-"может быть изменено."
-
-#: data/ui/alt-mobile-user-page.blp:49
-msgid "User password"
-msgstr "Пароль пользотеля"
-
-#: data/ui/alt-mobile-user-page.blp:59
-msgid "Password"
-msgstr "Пароль"
-
-#: data/ui/alt-mobile-user-page.blp:70 data/ui/alt-mobile-user-page.blp:119
-msgid "Passwords do not match"
-msgstr "Пароли не совпадают"
-
-#: data/ui/alt-mobile-user-page.blp:74
-msgid "Repeat password"
-msgstr "Повторите пароль"
-
-#: data/ui/alt-mobile-user-page.blp:82 data/ui/alt-mobile-user-page.blp:107
-msgid "Administrator password"
-msgstr "Пароль администратора"
-
-#: data/ui/alt-mobile-user-page.blp:97
-msgid "Equal to user password"
-msgstr "Совпадает с паролем пользователя"
-
-#: data/ui/alt-mobile-user-page.blp:123
-msgid "Repeat administrator password"
-msgstr "Повторите пароль администратора"
 
 #: data/ui/end-page.blp:5
 msgid "Finishing"
@@ -147,6 +97,56 @@ msgstr "Тест"
 msgid "Test page"
 msgstr "Тестовая страница"
 
+#: data/ui/user-page.blp:5
+msgid "User"
+msgstr "Пользователь"
+
+#: data/ui/user-page.blp:6
+msgid "About you"
+msgstr "О Вас"
+
+#: data/ui/user-page.blp:14 data/ui/user-page.blp:24
+msgid "Full Name"
+msgstr "Полное имя"
+
+#: data/ui/user-page.blp:31 data/ui/user-page.blp:42
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: data/ui/user-page.blp:32
+msgid "Username will be used to name your home folder and can't be changed."
+msgstr ""
+"Имя пользователя будет использовано для имени Вашей домашней директории и не "
+"может быть изменено."
+
+#: data/ui/user-page.blp:49
+msgid "User password"
+msgstr "Пароль пользователя"
+
+#: data/ui/user-page.blp:59
+msgid "Password"
+msgstr "Пароль"
+
+#: data/ui/user-page.blp:70 data/ui/user-page.blp:120
+msgid "Passwords do not match"
+msgstr "Пароли не совпадают"
+
+#: data/ui/user-page.blp:74
+msgid "Repeat password"
+msgstr "Повторите пароль"
+
+#: data/ui/user-page.blp:82 data/ui/user-page.blp:108
+msgid "Administrator password"
+msgstr "Пароль администратора"
+
+#: data/ui/user-page.blp:98
+msgid "Equal to user password"
+msgstr "Совпадает с паролем пользователя"
+
+#: data/ui/user-page.blp:124
+msgid "Repeat administrator password"
+msgstr "Повторите пароль администратора"
+
 #: data/ui/welcome-page.blp:4 data/ui/welcome-page.blp:5
 msgid "Welcome"
 msgstr "Добро пожаловать"
@@ -174,37 +174,17 @@ msgstr "Менеджер папок"
 msgid "Folder manager for mobile devices"
 msgstr "Менеджер папок для мобильных устройств"
 
-#: src/pages/alt-mobile-user/alt-mobile-user-page.vala:92
-msgid "Failed to create user"
-msgstr "Не удалось создать пользователя"
+#: src/application.vala:24
+msgid "Print version information and exit"
+msgstr "Показать информацию о версии и выйти"
 
-#: src/pages/alt-mobile-user/utils.vala:63
-msgid "Name cannot be empty"
-msgstr "Имя не может быть пустым"
+#: src/application.vala:25
+msgid "Filename with steps"
+msgstr "Имя файла с шагами"
 
-#: src/pages/alt-mobile-user/utils.vala:113
-msgid "That username isn’t available. Please try another"
-msgstr "Это имя пользователя недоступно. Пожалуйста, попробуйте другое"
-
-#: src/pages/alt-mobile-user/utils.vala:115
-msgid "The username is too long"
-msgstr "Имя пользователя слишком длинное"
-
-#: src/pages/alt-mobile-user/utils.vala:117
-msgid "The username must start with a lower case letter from a-z"
-msgstr "Имя пользователя должно начинаться со строчной буквы от «а» до «я»"
-
-#: src/pages/alt-mobile-user/utils.vala:119
-msgid ""
-"The username should only consist of lower case letters from a-z, digits, and "
-"the following characters: '-', '_'"
-msgstr ""
-"Имя пользователя может содержать только строчные буквы от «а» до «я», цифры "
-"и следущие символы: «-», «_»"
-
-#: src/pages/alt-mobile-user/utils.vala:122
-msgid "Username cannot be empty"
-msgstr "Имя пользователя не может быть пустым"
+#: src/application.vala:26
+msgid "Steps. E.g: `steps=language,keyboard,end`"
+msgstr "Шаги. К примеру: `steps=language,keyboard,end`"
 
 #: src/pages/base/base-page.vala:37
 msgid "Unknown"
@@ -230,3 +210,48 @@ msgstr "Привет!"
 msgid ""
 "Let's start by choosing the language for the application and for your system."
 msgstr "Давайте начнём с выбора языка для приложения и для Вашей системы."
+
+#: src/pages/user/user-page.vala:136
+msgid "Failed to create user"
+msgstr "Не удалось создать пользователя"
+
+#: src/utils-user.vala:63
+msgid "Name cannot be empty"
+msgstr "Имя не может быть пустым"
+
+#: src/utils-user.vala:113
+msgid "That username isn't available. Please try another"
+msgstr "Это имя пользователя недоступно. Пожалуйста, попробуйте другое"
+
+#: src/utils-user.vala:115
+msgid "The username is too long"
+msgstr "Имя пользователя слишком длинное"
+
+#: src/utils-user.vala:117
+msgid "The username must start with a lower case letter from a-z"
+msgstr "Имя пользователя должно начинаться со строчной буквы от «a» до «z»"
+
+#: src/utils-user.vala:119
+msgid ""
+"The username should only consist of lower case letters from a-z, digits, and "
+"the following characters: '-', '_'"
+msgstr ""
+"Имя пользователя может содержать только строчные буквы от «a» до «z», цифры "
+"и следущие символы: «-», «_»"
+
+#: src/utils-user.vala:122
+msgid "Username cannot be empty"
+msgstr "Имя пользователя не может быть пустым"
+
+#: src/utils.vala:149
+msgid "Steps file doesn't exists"
+msgstr "Файла шагов не существует"
+
+#: src/utils.vala:155
+msgid "Steps file is empty"
+msgstr "Файл шагов пуст"
+
+#: src/utils.vala:158
+#, c-format
+msgid "Error loading steps file: %s"
+msgstr "Ошибка при загрузке файла шагов: %s"
