@@ -93,7 +93,7 @@ template $ReadySetUserPage: $ReadySetBasePage {
 
     Adw.PreferencesGroup {
       title: _("Administrator password");
-      description: _("You can enable this to use non default administrator password");
+      description: _("If this enabled, administrator password will be equal to user password");
       visible: bind template.with-root-password;
 
       [header-suffix]
