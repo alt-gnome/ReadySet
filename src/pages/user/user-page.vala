@@ -44,7 +44,7 @@ public class ReadySet.UserPage : BasePage {
     [GtkChild]
     unowned Adw.PasswordEntryRow password_repeat_entry;
     [GtkChild]
-    unowned Adw.SwitchRow equal_switch_row;
+    unowned Gtk.Switch equal_switch_row;
     [GtkChild]
     unowned ContextRow root_password_context_row;
     [GtkChild]
@@ -193,7 +193,7 @@ public class ReadySet.UserPage : BasePage {
         var data = Data.get_instance ();
 
         string hint;
-        int strength_level;
+        StrengthLevel strength_level;
 
         double strength = pw_strength (
             data.user.password,
@@ -207,7 +207,7 @@ public class ReadySet.UserPage : BasePage {
         password_strength.strength = strength;
         password_strength.label = hint;
         update_css_by_strength (password_entry, strength_level);
-        password_context_row.reveal_context = strength_level < 5;
+        password_context_row.reveal_context = strength_level != GOOD;
 
         password_repeat_changed ();
         update_is_ready ();
@@ -229,7 +229,7 @@ public class ReadySet.UserPage : BasePage {
         var data = Data.get_instance ();
 
         string hint;
-        int strength_level;
+        StrengthLevel strength_level;
 
         double strength = pw_strength (
             data.user.root_password,
@@ -243,7 +243,7 @@ public class ReadySet.UserPage : BasePage {
         root_password_strength.strength = strength;
         root_password_strength.label = hint;
         update_css_by_strength (root_password_entry, strength_level);
-        root_password_context_row.reveal_context = strength_level < 5;
+        root_password_context_row.reveal_context = strength_level != GOOD;
 
         root_password_repeat_changed ();
         update_is_ready ();
@@ -273,5 +273,21 @@ public class ReadySet.UserPage : BasePage {
         root_password_repeat_context_row.reveal_context = false;
 
         update_is_ready ();
+    }
+
+    [GtkCallback]
+    void generate_user_password () {
+        var password = pw_generate ();
+
+        var data = Data.get_instance ();
+        data.user.password = password;
+    }
+
+    [GtkCallback]
+    void generate_root_password () {
+        var password = pw_generate ();
+
+        var data = Data.get_instance ();
+        data.user.root_password = password;
     }
 }

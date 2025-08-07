@@ -22,6 +22,12 @@
 
 namespace ReadySet {
 
+    public enum StrengthLevel {
+        BAD,
+        NOT_BAD,
+        GOOD;
+    }
+
     static PasswordQuality.Settings? _pwq_settings = null;
 
     public void update_correct (Adw.PreferencesRow row, bool is_correct) {
@@ -31,17 +37,22 @@ namespace ReadySet {
             row.remove_css_class ("error");
     }
 
-    public void update_css_by_strength (Gtk.Widget row, int strength) {
+    public void update_css_by_strength (Gtk.Widget row, StrengthLevel strength_level) {
         row.remove_css_class ("error");
         row.remove_css_class ("warning");
         row.remove_css_class ("success");
 
-        if (strength <= 1)
-            row.add_css_class ("error");
-        else if (strength <= 3)
-            row.add_css_class ("warning");
-        else if (strength < 5)
-            row.add_css_class ("success");
+        switch (strength_level) {
+            case StrengthLevel.BAD:
+                row.add_css_class ("error");
+                break;
+            case StrengthLevel.NOT_BAD:
+                row.add_css_class ("warning");
+                break;
+            case StrengthLevel.GOOD:
+                //  row.add_css_class ("success");
+                break;
+        }
     }
 
     bool fullname_is_correct (string fullname, out string error) {
@@ -168,10 +179,10 @@ namespace ReadySet {
     }
 
     bool password_is_correct (string password) {
-        int password_strength;
-        pw_strength (password, null, null, null, out password_strength);
+        StrengthLevel strength_level;
+        pw_strength (password, null, null, null, out strength_level);
 
-        return password_strength >= 4;
+        return strength_level != BAD;
     }
 
     unowned PasswordQuality.Settings get_pwq () {
@@ -187,27 +198,16 @@ namespace ReadySet {
         return _pwq_settings;
     }
 
-    int pw_min_length () {
-        int value;
-        var error = get_pwq ().get_int_value (PasswordQuality.Setting.MIN_LENGTH, out value);
+    string pw_generate () {
+        string res;
+        var error = get_pwq ().generate (0, out res);
 
         if (error != PasswordQuality.Error.SUCCESS) {
             GLib.error (error.to_string ());
         }
 
-        return value;
+        return res;
     }
-
-    //  string pw_generate () {
-    //      string res;
-    //      var error = get_pwq ().generate (0, out res);
-
-    //      if (error != PasswordQuality.Error.SUCCESS) {
-    //          GLib.error (error.to_string ());
-    //      }
-
-    //      return res;
-    //  }
 
     string pw_error_hint (PasswordQuality.Error error) {
         switch (error) {
@@ -257,27 +257,22 @@ namespace ReadySet {
         string? old_password,
         string? username,
         out string hint,
-        out int strength_level
+        out StrengthLevel strength_level
     ) {
         var rv = get_pwq ().check (password, old_password, username, null);
-        int length = password.length;
-        double strength = (0.01 * rv).clamp (0.0, 1.0);
+        double strength = (0.02 * rv).clamp (0.0, 1.0);
 
-        if (rv < 0)
-            strength_level = (length > 0) ? 1 : 0;
-        else if (strength < 0.50)
-            strength_level = 2;
-        else if (strength < 0.75)
-            strength_level = 3;
-        else if (strength < 0.90)
-            strength_level = 4;
-        else
-            strength_level = 5;
+        message (rv.to_string ());
 
-        if (length > 0 && length < pw_min_length ())
-            hint = pw_error_hint (PasswordQuality.Error.MIN_LENGTH);
-        else
-            hint = pw_error_hint (rv);
+        if (rv <= 0) {
+            strength_level = BAD;
+        } else if (rv <= 50) {
+            strength_level = NOT_BAD;
+        } else {
+            strength_level = GOOD;
+        }
+
+        hint = pw_error_hint (rv);
 
         return strength;
     }

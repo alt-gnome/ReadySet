@@ -59,6 +59,18 @@ template $ReadySetUserPage: $ReadySetBasePage {
           row: Adw.PasswordEntryRow password_entry {
             title: _("Password");
             changed => $password_changed();
+
+            [suffix]
+            Button {
+              styles [
+                "flat"
+              ]
+
+              clicked => $generate_user_password();
+              icon-name: "rs-random-symbolic";
+              valign: center;
+              vexpand: true;
+            }
           };
         }
 
@@ -81,51 +93,59 @@ template $ReadySetUserPage: $ReadySetBasePage {
 
     Adw.PreferencesGroup {
       title: _("Administrator password");
+      description: _("You can enable this to use non default administrator password");
       visible: bind template.with-root-password;
 
-      Box {
-        orientation: vertical;
-        spacing: 6;
+      [header-suffix]
+      Switch equal_switch_row {
+        active: true;
+        notify::active => $switch_changed();
+        valign: center;
+        vexpand: false;
+      }
 
-        ListBox {
-          styles [
-            "boxed-list",
-          ]
+      Revealer {
+        reveal-child: bind equal_switch_row.active inverted;
 
-          selection-mode: none;
-          margin-bottom: 4;
+        Box {
+          orientation: vertical;
+          spacing: 6;
 
-          Adw.SwitchRow equal_switch_row {
-            title: _("Equal to user password");
-            active: true;
-            notify::active => $switch_changed();
+          $ReadySetContextRow root_password_context_row {
+            context: $ReadySetPasswordStrength root_password_strength {};
+
+            row: Adw.PasswordEntryRow root_password_entry {
+              title: _("Administrator password");
+              changed => $root_password_changed();
+
+              [suffix]
+              Button {
+                styles [
+                  "flat",
+                ]
+
+                clicked => $generate_root_password();
+                icon-name: "rs-random-symbolic";
+                valign: center;
+                vexpand: true;
+              }
+            };
           }
-        }
 
-        $ReadySetContextRow root_password_context_row {
-          context: $ReadySetPasswordStrength root_password_strength {};
+          $ReadySetContextRow root_password_repeat_context_row {
+            context: $ReadySetMarginLabel root_password_repeat_label {
+              styles [
+                "error",
+              ]
 
-          row: Adw.PasswordEntryRow root_password_entry {
-            title: _("Administrator password");
-            sensitive: bind equal_switch_row.active inverted;
-            changed => $root_password_changed();
-          };
-        }
+              label: _("Passwords do not match");
+            };
 
-        $ReadySetContextRow root_password_repeat_context_row {
-          context: $ReadySetMarginLabel root_password_repeat_label {
-            styles [
-              "error",
-            ]
-
-            label: _("Passwords do not match");
-          };
-
-          row: Adw.PasswordEntryRow root_password_repeat_entry {
-            title: _("Repeat administrator password");
-            sensitive: bind equal_switch_row.active inverted;
-            changed => $root_password_repeat_changed();
-          };
+            row: Adw.PasswordEntryRow root_password_repeat_entry {
+              title: _("Repeat administrator password");
+              changed => $root_password_repeat_changed();
+            };
+          }
         }
       }
     }
