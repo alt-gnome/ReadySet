@@ -264,7 +264,7 @@ namespace ReadySet {
 
         message (rv.to_string ());
 
-        if (rv <= 0) {
+        if (rv <= 20) {
             strength_level = BAD;
         } else if (rv <= 50) {
             strength_level = NOT_BAD;
