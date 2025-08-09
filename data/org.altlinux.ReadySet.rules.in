@@ -10,10 +10,8 @@ polkit.addRule(function(action, subject) {
         action.id.indexOf("org.freedesktop.timedate1.") === 0 ||
         action.id.indexOf("org.freedesktop.realmd.") === 0 ||
         action.id.indexOf("com.endlessm.ParentalControls.") === 0 ||
-        (action.id === "org.freedesktop.filesystem.write" &&
-         action.lookup("filesystem.path") === "@SYSCONFDIR@/dconf/db/local.d/00-ready-set") ||
         (action.id === "org.freedesktop.policykit.exec" &&
-         action.lookup("command") === "/usr/sbin/chpasswd");
+         action.lookup("program") == "/usr/libexec/ready-set-set-root-password");
 
     if (actionMatches) {
         if (subject.local)

@@ -33,17 +33,17 @@ public sealed class ReadySet.EndPage : BasePage {
 
         try {
             ((ReadySet.Application) GLib.Application.get_default ()).apply_all ();
+            stack.visible_child_name = "ready";
+            is_ready = true;
+
         } catch (ApplyError error) {
             stack.visible_child_name = "error";
             error_desc.description = error.message;
             is_ready = false;
         }
-
-        finish_action ();
     }
 
-    void finish_action () {
-        stack.visible_child_name = "ready";
-        is_ready = true;
+    public override void apply () throws ApplyError {
+        return;
     }
 }

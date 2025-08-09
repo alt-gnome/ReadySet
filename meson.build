@@ -18,6 +18,7 @@ accountsservice_desktop_dep = dependency('accountsservice')
 ibus_dep = dependency('ibus-1.0')
 posix_dep = meson.get_compiler('vala').find_library('posix')
 pwquality_dep = dependency('pwquality')
+polkit_dep = dependency('polkit-gobject-1')
 
 dependencies = [
   gtk_dep,
@@ -28,6 +29,7 @@ dependencies = [
   ibus_dep,
   posix_dep,
   pwquality_dep,
+  polkit_dep,
 ]
 
 app_id = 'org.altlinux.ReadySet'

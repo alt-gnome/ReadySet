@@ -277,18 +277,7 @@ namespace ReadySet {
 
     bool set_root_password (string password) {
         try {
-            var subprocess = new Subprocess.newv (
-                { "pkexec", "/usr/sbin/chpasswd" },
-                SubprocessFlags.STDIN_PIPE | SubprocessFlags.STDOUT_SILENCE | SubprocessFlags.STDERR_SILENCE
-            );
-
-            var stdin_stream = new DataOutputStream (subprocess.get_stdin_pipe ());
-
-            stdin_stream.put_string ("root:%s\n".printf (password));
-            stdin_stream.close (); // закрываем stdin
-
-            subprocess.wait_check ();
-
+            pkexec ({ "/usr/libexec/ready-set-set-root-password", password });
             return true;
         } catch (Error e) {
             return false;

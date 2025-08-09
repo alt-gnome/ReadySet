@@ -29,6 +29,38 @@ public class ReadySet.ApplyCallback : Object {
     }
 }
 
+[DBus (name = "org.freedesktop.locale1")]
+public interface Locale1 : Object {
+    public abstract string[] locale { owned get; }
+    public abstract string v_console_toggle { owned get; }
+    public abstract string v_console_keymap_toggle { owned get; }
+    public abstract string x_11_layout { owned get; }
+    public abstract string x_11_model { owned get; }
+    public abstract string x_11_options { owned get; }
+    public abstract string x_11_variant { owned get; }
+
+    public abstract void set_locale (
+        string[] locale,
+        bool interactive
+    ) throws Error;
+
+    public abstract void set_v_console_keyboard (
+        string keymap,
+        string keymap_toggle,
+        bool convert,
+        bool interactive
+    ) throws Error;
+
+    public abstract void set_x_11_keyboard (
+        string layout,
+        string model,
+        string variant,
+        string options,
+        bool convert,
+        bool interactive
+    ) throws Error;
+}
+
 public class ReadySet.InputInfo : Object {
 
     public string id { get; construct; }
@@ -68,7 +100,8 @@ namespace ReadySet {
     };
 
     public errordomain ApplyError {
-        BASE;
+        BASE,
+        NO_PERMISSION;
     }
 
     public delegate void ApplyFunc () throws ApplyError;
@@ -198,23 +231,39 @@ namespace ReadySet {
         return pwent != null;
     }
 
-    void create_override (string schema_name, string key, Variant value) {
+    Locale1 get_locale_proxy () {
         try {
-            var keyfile_file = File.new_build_filename (Config.SYSCONFDIR, "dconf/db/local.d/00-ready-set");
+            var con = Bus.get_sync (BusType.SYSTEM);
 
-            if (!keyfile_file.query_exists ()) {
-                keyfile_file.create (FileCreateFlags.NONE, null);
+            if (con == null) {
+                error ("Failed to connect to bus");
             }
 
-            var keyfile = new KeyFile ();
-            keyfile.load_from_file (keyfile_file.peek_path (), KeyFileFlags.NONE);
-
-            keyfile.set_value (schema_name, key, value.print (false));
-
-            keyfile.save_to_file (keyfile_file.peek_path ());
-
+            return con.get_proxy_sync<Locale1> (
+                "org.freedesktop.locale1",
+                "/org/freedesktop/locale1",
+                DBusProxyFlags.NONE
+            );
         } catch (Error e) {
-            warning (e.message);
+            error (e.message);
         }
+    }
+
+    void pkexec (owned string[] cmd, string? user = null) throws Error {
+        var launcher = new SubprocessLauncher (NONE);
+        var argv = new Gee.ArrayList<string>.wrap ({ "pkexec" });
+
+        if (user != null) {
+            argv.add_all_array ({ "--user", user });
+        }
+
+        argv.add_all_array (cmd);
+
+        //  pkexec won't let us run the program if $SHELL isn't in /etc/shells,
+        //  so remove it from the environment.
+        launcher.unsetenv ("SHELL");
+        var process = launcher.spawnv (argv.to_array ().copy ());
+
+        process.wait_check ();
     }
 }

@@ -88,12 +88,6 @@ public class ReadySet.UserPage : BasePage {
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
         data.user.bind_property (
-            "equal-to-root",
-            equal_switch_row,
-            "active",
-            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN
-        );
-        data.user.bind_property (
             "root-password",
             root_password_entry,
             "text",
@@ -119,7 +113,7 @@ public class ReadySet.UserPage : BasePage {
                    data.user.root_password == data.user.repeat_root_password)));
     }
 
-    protected override void apply () throws ApplyError {
+    public override void apply () throws ApplyError {
         var data = Data.get_instance ();
 
         try {
@@ -132,7 +126,7 @@ public class ReadySet.UserPage : BasePage {
             user.set_password (data.user.password, "");
             user.set_language (get_current_language ());
 
-            set_root_password (data.user.root_password != "" ? data.user.root_password : data.user.password);
+            set_root_password (data.user.equal_to_root ? data.user.password : data.user.root_password);
 
         } catch (Error e) {
             throw new ApplyError.BASE (_("Failed to create user"));
@@ -264,6 +258,7 @@ public class ReadySet.UserPage : BasePage {
     void switch_changed () {
         var data = Data.get_instance ();
 
+        data.user.equal_to_root = !equal_switch_row.active;
         data.user.root_password = "";
         data.user.repeat_root_password = "";
 

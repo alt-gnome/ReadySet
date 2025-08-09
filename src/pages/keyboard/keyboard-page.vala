@@ -51,9 +51,52 @@ public sealed class ReadySet.KeyboardPage : BasePage {
         settings.set_value ("sources", builer.end ());
     }
 
-    protected override void apply () {
-        var settings = new Settings ("org.gnome.desktop.input-sources");
+    public override bool allowed () {
+        try {
+            return new Polkit.Permission.sync ("org.freedesktop.locale1.set-keyboard", null, null).allowed;
+        } catch (Error e) {
+            error (e.message);
+        }
+    }
 
-        create_override ("org.gnome.desktop.input-sources", "sources", settings.get_value ("sources"));
+    public override void apply () throws ApplyError {
+        var proxy = get_locale_proxy ();
+
+        var data = Data.get_instance ();
+        var inputs = data.keyboard.current_inputs_info.to_array ();
+
+        var layouts = new Gee.ArrayList<string> ();
+        var variants = new Gee.ArrayList<string> ();
+
+        foreach (var input in inputs) {
+            var lv = input.id.split ("+");
+
+            string layout;
+            string variant;
+            if (lv.length > 1) {
+                layout = lv[0];
+                variant = lv[1];
+            } else {
+                layout = lv[0];
+                variant = "";
+            }
+
+            layouts.add (layout);
+            variants.add (variant);
+        }
+
+        try {
+            proxy.set_x_11_keyboard (string.joinv (
+                ",",
+                layouts.to_array ()),
+                "",
+                string.joinv (",", variants.to_array ()),
+                "",
+                true,
+                true
+            );
+        } catch (Error e) {
+            throw new ApplyError.BASE (e.message);
+        }
     }
 }

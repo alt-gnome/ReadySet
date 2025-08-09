@@ -30,4 +30,22 @@ public sealed class ReadySet.LanguagePage : BasePage {
             root_scrolled_window.vadjustment.value = saved_scroll_position;
         });
     }
+
+    public override bool allowed () {
+        try {
+            return new Polkit.Permission.sync ("org.freedesktop.locale1.set-locale", null, null).allowed;
+        } catch (Error e) {
+            error (e.message);
+        }
+    }
+
+    public override void apply () throws ApplyError {
+        var proxy = get_locale_proxy ();
+
+        try {
+            proxy.set_locale ({ @"LANG=$(get_current_language ())" }, true);
+        } catch (Error e) {
+            throw new ApplyError.BASE (e.message);
+        }
+    }
 }

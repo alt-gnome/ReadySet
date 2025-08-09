@@ -72,11 +72,12 @@ public class ReadySet.BasePage : Gtk.Box {
         set_css_name ("basepage");
     }
 
-    construct {
-        ((ReadySet.Application) GLib.Application.get_default ()).add_apply_callback (new ApplyCallback (apply));
+    public virtual bool allowed () {
+        return true;
     }
 
-    protected virtual void apply () throws ApplyError {
+    public virtual void apply () throws ApplyError {
+        warning ("Empty 'apply' detected");
         return;
     }
 }
