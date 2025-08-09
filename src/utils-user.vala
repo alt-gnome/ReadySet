@@ -262,8 +262,6 @@ namespace ReadySet {
         var rv = get_pwq ().check (password, old_password, username, null);
         double strength = (0.02 * rv).clamp (0.0, 1.0);
 
-        message (rv.to_string ());
-
         if (rv <= 0) {
             strength_level = BAD;
         } else if (rv <= 50) {

@@ -91,7 +91,7 @@ public class ReadySet.UserPage : BasePage {
             "equal-to-root",
             equal_switch_row,
             "active",
-            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN
         );
         data.user.bind_property (
             "root-password",
@@ -114,7 +114,7 @@ public class ReadySet.UserPage : BasePage {
                    username_is_correct (data.user.username, false, null) &&
                    password_is_correct (data.user.password) &&
                    data.user.password == data.user.repeat_password &&
-                   (equal_switch_row.active || (!equal_switch_row.active &&
+                   (data.user.equal_to_root || (!data.user.equal_to_root &&
                    (password_is_correct (data.user.root_password) &&
                    data.user.root_password == data.user.repeat_root_password)));
     }
