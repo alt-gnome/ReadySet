@@ -126,7 +126,7 @@ public class ReadySet.UserPage : BasePage {
             var user = Act.UserManager.get_default ().create_user (
                 data.user.username,
                 data.user.fullname,
-                Act.UserAccountType.STANDARD
+                Act.UserAccountType.ADMINISTRATOR
             );
 
             user.set_password (data.user.password, "");
