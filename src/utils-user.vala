@@ -212,43 +212,43 @@ namespace ReadySet {
     string pw_error_hint (PasswordQuality.Error error) {
         switch (error) {
             case PasswordQuality.Error.SAME_PASSWORD:
-                return "The new password needs to be different from the old one.";
+                return _("The new password needs to be different from the old one.");
             case PasswordQuality.Error.CASE_CHANGES_ONLY:
             case PasswordQuality.Error.TOO_SIMILAR:
             case PasswordQuality.Error.ROTATED:
-                return "This password is very similar to your last one. Try changing some letters and numbers.";
+                return _("This password is very similar to your last one. Try changing some letters and numbers.");
             case PasswordQuality.Error.USER_CHECK:
-                return "This is a weak password. A password without your user name would be stronger.";
+                return _("This is a weak password. A password without your user name would be stronger.");
             case PasswordQuality.Error.GECOS_CHECK:
-                return "This is a weak password. Try to avoid using your name in the password.";
+                return _("This is a weak password. Try to avoid using your name in the password.");
             case PasswordQuality.Error.BAD_WORDS:
-                return "This is a weak password. Try to avoid some of the words included in the password.";
+                return _("This is a weak password. Try to avoid some of the words included in the password.");
             case PasswordQuality.Error.CRACKLIB_CHECK:
-                return "This is a weak password. Try to avoid common words.";
+                return _("This is a weak password. Try to avoid common words.");
             case PasswordQuality.Error.PALINDROME:
-                return "This is a weak password. Try to avoid reordering existing words.";
+                return _("This is a weak password. Try to avoid reordering existing words.");
             case PasswordQuality.Error.MIN_DIGITS:
-                return "This is a weak password. Try to use more numbers.";
+                return _("This is a weak password. Try to use more numbers.");
             case PasswordQuality.Error.MIN_UPPERS:
-                return "This is a weak password. Try to use more uppercase letters.";
+                return _("This is a weak password. Try to use more uppercase letters.");
             case PasswordQuality.Error.MIN_LOWERS:
-                return "This is a weak password. Try to use more lowercase letters.";
+                return _("This is a weak password. Try to use more lowercase letters.");
             case PasswordQuality.Error.MIN_OTHERS:
-                return "This is a weak password. Try to use more special characters, like punctuation.";
+                return _("This is a weak password. Try to use more special characters, like punctuation.");
             case PasswordQuality.Error.MIN_CLASSES:
-                return "This is a weak password. Try to use a mixture of letters, numbers and punctuation.";
+                return _("This is a weak password. Try to use a mixture of letters, numbers and punctuation.");
             case PasswordQuality.Error.MAX_CONSECUTIVE:
-                return "This is a weak password. Try to avoid repeating the same character.";
+                return _("This is a weak password. Try to avoid repeating the same character.");
             case PasswordQuality.Error.MAX_CLASS_REPEAT:
-                return "This is a weak password. Try to avoid repeating the same type of character: you need to mix up letters, numbers and punctuation."; // vala-lint=line-length
+                return _("This is a weak password. Try to avoid repeating the same type of character: you need to mix up letters, numbers and punctuation."); // vala-lint=line-length
             case PasswordQuality.Error.MAX_SEQUENCE:
-                return "This is a weak password. Try to avoid sequences like 1234 or abcd.";
+                return _("This is a weak password. Try to avoid sequences like 1234 or abcd.");
             case PasswordQuality.Error.MIN_LENGTH:
-                return "This is a weak password. Try to add more letters, numbers and punctuation.";
+                return _("This is a weak password. Try to add more letters, numbers and punctuation.");
             case PasswordQuality.Error.EMPTY_PASSWORD:
-                return "Mix uppercase and lowercase and try to use a number or two.";
+                return _("Mix uppercase and lowercase and try to use a number or two.");
             default:
-                return "Adding more letters, numbers and punctuation will make the password stronger.";
+                return _("Adding more letters, numbers and punctuation will make the password stronger.");
         }
     }
 
