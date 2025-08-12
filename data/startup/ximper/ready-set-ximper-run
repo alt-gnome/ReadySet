@@ -1,2 +1,0 @@
-#!/bin/bash
-/usr/libexec/ready-set --steps=language,keyboard,alt-mobile-user

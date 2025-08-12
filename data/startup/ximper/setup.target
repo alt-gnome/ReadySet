@@ -1,7 +1,0 @@
-[Unit]
-Description=OEM Setup Target
-Requires=ready-set-service.service
-After=multi-user.target
-
-[Install]
-WantedBy=default.target
