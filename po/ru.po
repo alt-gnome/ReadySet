@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-06 03:56+0300\n"
-"PO-Revision-Date: 2025-08-06 03:57+0300\n"
+"POT-Creation-Date: 2025-08-12 01:19+0300\n"
+"PO-Revision-Date: 2025-08-12 01:33+0300\n"
 "Last-Translator: David Sultaniiazov <x1z53@alt-gnome.ru>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -105,45 +105,53 @@ msgstr "Пользователь"
 msgid "About you"
 msgstr "О Вас"
 
-#: data/ui/user-page.blp:14 data/ui/user-page.blp:24
+#: data/ui/user-page.blp:7
+msgid "Set information about You"
+msgstr "Введите информацию о Вас"
+
+#: data/ui/user-page.blp:15 data/ui/user-page.blp:25
 msgid "Full Name"
 msgstr "Полное имя"
 
-#: data/ui/user-page.blp:31 data/ui/user-page.blp:42
+#: data/ui/user-page.blp:32 data/ui/user-page.blp:43
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: data/ui/user-page.blp:32
+#: data/ui/user-page.blp:33
 msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 "Имя пользователя будет использовано для имени Вашей домашней директории и не "
 "может быть изменено."
 
-#: data/ui/user-page.blp:49
+#: data/ui/user-page.blp:50
 msgid "User password"
 msgstr "Пароль пользователя"
 
-#: data/ui/user-page.blp:59
+#: data/ui/user-page.blp:60
 msgid "Password"
 msgstr "Пароль"
 
-#: data/ui/user-page.blp:70 data/ui/user-page.blp:120
+#: data/ui/user-page.blp:83 data/ui/user-page.blp:139
 msgid "Passwords do not match"
 msgstr "Пароли не совпадают"
 
-#: data/ui/user-page.blp:74
+#: data/ui/user-page.blp:87
 msgid "Repeat password"
 msgstr "Повторите пароль"
 
-#: data/ui/user-page.blp:82 data/ui/user-page.blp:108
+#: data/ui/user-page.blp:95 data/ui/user-page.blp:116
 msgid "Administrator password"
 msgstr "Пароль администратора"
 
-#: data/ui/user-page.blp:98
-msgid "Equal to user password"
-msgstr "Совпадает с паролем пользователя"
+#: data/ui/user-page.blp:96
+msgid ""
+"Set administrator password manualy. Otherwise it will be equal to user "
+"password"
+msgstr ""
+"Установить пароль администратора вручную. Иначе он будет равен паролю "
+"пользователя"
 
-#: data/ui/user-page.blp:124
+#: data/ui/user-page.blp:143
 msgid "Repeat administrator password"
 msgstr "Повторите пароль администратора"
 
@@ -211,27 +219,27 @@ msgid ""
 "Let's start by choosing the language for the application and for your system."
 msgstr "Давайте начнём с выбора языка для приложения и для Вашей системы."
 
-#: src/pages/user/user-page.vala:136
+#: src/pages/user/user-page.vala:132
 msgid "Failed to create user"
 msgstr "Не удалось создать пользователя"
 
-#: src/utils-user.vala:63
+#: src/utils-user.vala:76
 msgid "Name cannot be empty"
 msgstr "Имя не может быть пустым"
 
-#: src/utils-user.vala:113
+#: src/utils-user.vala:166
 msgid "That username isn't available. Please try another"
 msgstr "Это имя пользователя недоступно. Пожалуйста, попробуйте другое"
 
-#: src/utils-user.vala:115
+#: src/utils-user.vala:168
 msgid "The username is too long"
 msgstr "Имя пользователя слишком длинное"
 
-#: src/utils-user.vala:117
+#: src/utils-user.vala:170
 msgid "The username must start with a lower case letter from a-z"
 msgstr "Имя пользователя должно начинаться со строчной буквы от «a» до «z»"
 
-#: src/utils-user.vala:119
+#: src/utils-user.vala:172
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
@@ -239,19 +247,131 @@ msgstr ""
 "Имя пользователя может содержать только строчные буквы от «a» до «z», цифры "
 "и следущие символы: «-», «_»"
 
-#: src/utils-user.vala:122
+#: src/utils-user.vala:175
 msgid "Username cannot be empty"
 msgstr "Имя пользователя не может быть пустым"
 
-#: src/utils.vala:149
+#: src/utils-user.vala:215
+msgid "The new password needs to be different from the old one."
+msgstr "Новый пароль должен отличаться от старого."
+
+#: src/utils-user.vala:219
+msgid ""
+"This password is very similar to your last one. Try changing some letters "
+"and numbers."
+msgstr ""
+"Пароль слишком похож на предыдущий. Попробуйте поменять некоторые буквы или "
+"цифры."
+
+#: src/utils-user.vala:221
+msgid ""
+"This is a weak password. A password without your user name would be stronger."
+msgstr ""
+"Слишком слабый пароль. Пароль, не включающий имя пользователя, будет сильнее."
+
+#: src/utils-user.vala:223
+msgid "This is a weak password. Try to avoid using your name in the password."
+msgstr "Слишком слабый пароль. Старайтесь избегать вашего имени в пароле."
+
+#: src/utils-user.vala:225
+msgid ""
+"This is a weak password. Try to avoid some of the words included in the "
+"password."
+msgstr ""
+"Слишком слабый пароль. Старайтесь избегать каких-то слов, включённые в "
+"пароль."
+
+#: src/utils-user.vala:227
+msgid "This is a weak password. Try to avoid common words."
+msgstr "Слишком слабый пароль. Старайтесь избегать распространённых слов."
+
+#: src/utils-user.vala:229
+msgid "This is a weak password. Try to avoid reordering existing words."
+msgstr ""
+"Слишком слабый пароль. Старайтесь избегать изменения порядка сущствующих "
+"слов."
+
+#: src/utils-user.vala:231
+msgid "This is a weak password. Try to use more numbers."
+msgstr "Слишком слабый пароль. Старайтесь использовать больше цифр."
+
+#: src/utils-user.vala:233
+msgid "This is a weak password. Try to use more uppercase letters."
+msgstr ""
+"Слишком слабый пароль. Старайтесь использовать больше букв верхнего регистра."
+
+#: src/utils-user.vala:235
+msgid "This is a weak password. Try to use more lowercase letters."
+msgstr ""
+"Слишком слабый пароль. Старайтесь использовать больше букв нижнего регистра."
+
+#: src/utils-user.vala:237
+msgid ""
+"This is a weak password. Try to use more special characters, like "
+"punctuation."
+msgstr ""
+"Слишком слабый пароль. Старайтесь использовать больше специальных символов, "
+"к примеру — символы пунктуации."
+
+#: src/utils-user.vala:239
+msgid ""
+"This is a weak password. Try to use a mixture of letters, numbers and "
+"punctuation."
+msgstr ""
+"Слишком слабый пароль. Старайтесь использовать смесь из букв, цифр и "
+"символов пунктуации."
+
+#: src/utils-user.vala:241
+msgid "This is a weak password. Try to avoid repeating the same character."
+msgstr "Слишком слабый пароль. Старайтесь избегать повторения символов."
+
+#: src/utils-user.vala:243
+msgid ""
+"This is a weak password. Try to avoid repeating the same type of character: "
+"you need to mix up letters, numbers and punctuation."
+msgstr ""
+"Слишком слабый пароль. Старайтесь избегать повторения символов одиного типа: "
+"смешивайте буквы, цифры и символы пунктуации."
+
+#. vala-lint=line-length
+#: src/utils-user.vala:245
+msgid "This is a weak password. Try to avoid sequences like 1234 or abcd."
+msgstr ""
+"Слишком слабый пароль. Старайтесь избегать последовательностей по типу 1234 "
+"или abcd."
+
+#: src/utils-user.vala:247
+msgid ""
+"This is a weak password. Try to add more letters, numbers and punctuation."
+msgstr ""
+"Слишком слабый пароль. Старайтесь добавить больше букв, цифр и символов "
+"пунктуации."
+
+#: src/utils-user.vala:249
+msgid "Mix uppercase and lowercase and try to use a number or two."
+msgstr ""
+"Смешивайте символы верхнего и нижнего регистров, а также попробуйте "
+"использовать одну-две цифры."
+
+#: src/utils-user.vala:251
+msgid ""
+"Adding more letters, numbers and punctuation will make the password stronger."
+msgstr ""
+"Добавьте больше букв, цифр и символов пунктуации, чтобы сделать пароль "
+"сильнее."
+
+#: src/utils.vala:182
 msgid "Steps file doesn't exists"
 msgstr "Файла шагов не существует"
 
-#: src/utils.vala:155
+#: src/utils.vala:188
 msgid "Steps file is empty"
 msgstr "Файл шагов пуст"
 
-#: src/utils.vala:158
+#: src/utils.vala:191
 #, c-format
 msgid "Error loading steps file: %s"
 msgstr "Ошибка при загрузке файла шагов: %s"
+
+#~ msgid "Equal to user password"
+#~ msgstr "Совпадает с паролем пользователя"
