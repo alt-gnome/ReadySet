@@ -1,0 +1,8 @@
+object 4e5905c6170cc3d08bddd3dc5e2380ee923492e6
+type commit
+tag v0.2.6
+tagger Gitea <gitea@fake.local> 1755219152 +0300
+
+0.2.6
+
+Fixed translations
