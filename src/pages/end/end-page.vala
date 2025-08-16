@@ -21,12 +21,10 @@ public sealed class ReadySet.EndPage : BasePage {
 
     [GtkChild]
     unowned Gtk.Stack stack;
-    [GtkChild]
-    unowned BasePageDesc error_desc;
 
-    construct {
-        title += "…";
-    }
+    public string error_title { get; set; }
+
+    public string error_description { get; set; }
 
     public void start_action () {
         stack.visible_child_name = "load";
@@ -37,8 +35,19 @@ public sealed class ReadySet.EndPage : BasePage {
             is_ready = true;
 
         } catch (ApplyError error) {
+            var parts = error.message.split (RSS);
+
+            if (parts.length == 2) {
+                error_title = parts[0];
+                error_description = parts[1];
+            } else {
+                error_title = _("Something went wrong");
+                error_description = error.message;
+            }
+
+            error_description = _("Error message: %s").printf (error_description);
+
             stack.visible_child_name = "error";
-            error_desc.description = error.message;
             is_ready = false;
         }
     }

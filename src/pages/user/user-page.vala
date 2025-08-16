@@ -129,7 +129,11 @@ public class ReadySet.UserPage : BasePage {
             set_root_password (data.user.equal_to_root ? data.user.password : data.user.root_password);
 
         } catch (Error e) {
-            throw new ApplyError.BASE (_("Failed to create user"));
+            throw new ApplyError.BASE ("%s%s%s".printf (
+                _("Error when creating a user"),
+                RSS,
+                e.message
+            ));
         }
     }
 

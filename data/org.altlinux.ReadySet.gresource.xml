@@ -28,6 +28,7 @@
     <file preprocess="xml-stripblanks">ui/step-row.ui</file>
     <file preprocess="xml-stripblanks">ui/steps-main-page.ui</file>
     <file preprocess="xml-stripblanks">ui/steps-sidebar.ui</file>
+    <file preprocess="xml-stripblanks">ui/test-error-page.ui</file>
     <file preprocess="xml-stripblanks">ui/test-page.ui</file>
     <file preprocess="xml-stripblanks">ui/user-page.ui</file>
     <file preprocess="xml-stripblanks">ui/welcome-page.ui</file>

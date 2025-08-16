@@ -92,6 +92,8 @@ public class ReadySet.InputInfo : Object {
 
 namespace ReadySet {
 
+    const string RSS = "\n::READY-SET-SEPARATOR::\n";
+
     const string[] DEFAULT_STEPS = {
         "language",
         "keyboard",

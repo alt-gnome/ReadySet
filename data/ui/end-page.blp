@@ -3,7 +3,7 @@ using Adw 1;
 
 template $ReadySetEndPage: $ReadySetBasePage {
   title-header: _("Finishing");
-  title: _("Ready Set");
+  title: _("Ready Set…");
   icon-name: "org.altlinux.ReadySet-symbolic";
   description: _("The system is ready for use.");
 
@@ -30,9 +30,9 @@ template $ReadySetEndPage: $ReadySetBasePage {
       name: "error";
 
       child: $ReadySetBasePageDesc error_desc {
-        title: "Error";
-        description: bind template.description;
-      };
+        title: bind template.error_title;
+        description: bind template.error_description;
+      }; 
     }
   };
 }

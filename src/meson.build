@@ -19,6 +19,7 @@ vala_sources = files(
   'pages/language/languages-box.vala',
   'pages/language/locale-data.vala',
 
+  'pages/test/test-error-page.vala',
   'pages/test/test-page.vala',
 
   'pages/user/user-page.vala',

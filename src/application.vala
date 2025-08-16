@@ -54,6 +54,7 @@ public sealed class ReadySet.Application: Adw.Application {
         typeof (StepsSidebar).ensure ();
 
         typeof (TestPage).ensure ();
+        typeof (TestErrorPage).ensure ();
         typeof (BasePage).ensure ();
         typeof (EndPage).ensure ();
         typeof (KeyboardPage).ensure ();
