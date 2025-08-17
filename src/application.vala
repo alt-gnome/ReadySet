@@ -24,11 +24,14 @@ public sealed class ReadySet.Application: Adw.Application {
         { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
         { "steps-file", 'f', 0, OptionArg.FILENAME, null, N_("Filename with steps"), "FILENAME" },
         { "steps", 's', 0, OptionArg.STRING, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
+        { "idle", 'i', 0, OptionArg.NONE, null, N_("Idle run without doing anything"), null },
         { null }
     };
 
     public string? steps_filename = null;
     public string[]? steps = null;
+
+    bool idle = false;
 
     public bool show_steps { get; set; default = false; }
 
@@ -78,6 +81,9 @@ public sealed class ReadySet.Application: Adw.Application {
         } else if (options.contains ("steps-file")) {
             steps_filename = options.lookup_value ("steps-file", null).get_bytestring ();
 
+        } else if (options.contains ("idle")) {
+            idle = true;
+
         } else if (options.contains ("steps")) {
             steps = options.lookup_value ("steps", null).get_string ().split (",");
             for (int i = 0; i < steps.length; i++) {
@@ -94,6 +100,10 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     public void apply_all () throws ApplyError {
+        if (idle) {
+            return;
+        }
+
         foreach (var callback in apply_callbacks) {
             callback.apply ();
         }
