@@ -1,0 +1,8 @@
+object 1df4b529ad94685be68c48ed2beca0c6f3282a5e
+type commit
+tag v0.2.7
+tagger Gitea <gitea@fake.local> 1755376271 +0300
+
+0.2.7
+
+Improved error handling (more information if user creation failed)
