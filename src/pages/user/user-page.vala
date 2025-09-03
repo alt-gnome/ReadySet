@@ -113,14 +113,15 @@ public class ReadySet.UserPage : BasePage {
                    data.user.root_password == data.user.repeat_root_password)));
     }
 
-    public override void apply () throws ApplyError {
+    public override async void apply () throws ApplyError {
         var data = Data.get_instance ();
 
         try {
-            var user = Act.UserManager.get_default ().create_user (
+            var user = yield Act.UserManager.get_default ().create_user_async (
                 data.user.username,
                 data.user.fullname,
-                Act.UserAccountType.ADMINISTRATOR
+                Act.UserAccountType.ADMINISTRATOR,
+                null
             );
 
             user.set_password (data.user.password, "");

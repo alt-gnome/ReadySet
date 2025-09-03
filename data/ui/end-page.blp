@@ -1,10 +1,9 @@
 using Gtk 4.0;
-using Adw 1;
 
 template $ReadySetEndPage: $ReadySetBasePage {
   title-header: _("Finishing");
   title: _("Ready Set…");
-  icon-name: "org.altlinux.ReadySet-symbolic";
+  icon_name: "org.altlinux.ReadySet-symbolic";
   description: _("The system is ready for use.");
 
   title-widget: Stack stack {
@@ -14,7 +13,9 @@ template $ReadySetEndPage: $ReadySetBasePage {
     StackPage {
       name: "load";
 
-      child: Adw.Spinner {};
+      child: $ReadySetBasePageDesc {
+        title: _("Applying changes…");
+      };
     }
 
     StackPage {

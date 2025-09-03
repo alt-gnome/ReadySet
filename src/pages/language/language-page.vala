@@ -39,11 +39,11 @@ public sealed class ReadySet.LanguagePage : BasePage {
         }
     }
 
-    public override void apply () throws ApplyError {
+    public override async void apply () throws ApplyError {
         var proxy = get_locale_proxy ();
 
         try {
-            proxy.set_locale ({ @"LANG=$(get_current_language ())" }, true);
+            yield proxy.set_locale ({ @"LANG=$(get_current_language ())" }, true);
         } catch (Error e) {
             throw new ApplyError.BASE ("%s%s%s".printf (
                 _("Error when setting language"),

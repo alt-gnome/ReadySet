@@ -22,15 +22,15 @@ basepage > scrolledwindow > viewport > box > clamp > box {
     border-spacing: 12px;
 }
 
-basepage > scrolledwindow > viewport > box > clamp > box > .icon {
+basepage > scrolledwindow > viewport > box > clamp > box > stack > .icon {
     color: color-mix(in srgb, currentColor var(--dim-opacity), transparent);
     -gtk-icon-size: 128px;
 }
 
-basepage > scrolledwindow > viewport > box > clamp > box > .icon:disabled {
+basepage > scrolledwindow > viewport > box > clamp > box > stack > .icon:disabled {
     opacity: var(--disabled-opacity);
 }
 
-basepage > scrolledwindow > viewport > box > clamp > box > .icon:not(:last-child) {
+basepage > scrolledwindow > viewport > box > clamp > box > stack > .icon:not(:last-child) {
     margin-bottom: 24px;
 }

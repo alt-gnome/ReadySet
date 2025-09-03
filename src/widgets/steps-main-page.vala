@@ -110,7 +110,7 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
                 show_steps_list = false;
                 dead_end = true;
 
-                end_page.start_action ();
+                end_page.start_action.begin ();
             };
         }
 

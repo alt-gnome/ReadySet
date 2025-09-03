@@ -24,6 +24,8 @@ public class ReadySet.BasePage : Gtk.Box {
     [GtkChild]
     unowned Adw.Bin child_bin;
     [GtkChild]
+    unowned Gtk.Stack loading_stack;
+    [GtkChild]
     unowned Gtk.ScrolledWindow scrolled_window;
 
     public bool show_banner { get; set; default = false; }
@@ -32,13 +34,13 @@ public class ReadySet.BasePage : Gtk.Box {
 
     public string icon_name { get; set; default = "dialog-error-symbolic"; }
 
-    public Gdk.Paintable paintable { get; set; }
-
     public string title_header { get; set; default = _("Unknown"); }
 
     public string title { get; set; default = _("Unknown page"); }
 
     public string description { get; set; default = _("This page says that your distribution has made a mistake."); }
+
+    public string start_apply_message { get; set; default = _("Applying changes…"); }
 
     public bool passed { get; set; default = false; }
 
@@ -76,8 +78,16 @@ public class ReadySet.BasePage : Gtk.Box {
         return true;
     }
 
-    public virtual void apply () throws ApplyError {
+    public virtual async void apply () throws ApplyError {
         warning ("Empty 'apply' detected");
         return;
+    }
+
+    public void start_loading () {
+        loading_stack.visible_child_name = "loading";
+    }
+
+    public void stop_loading () {
+        loading_stack.visible_child_name = "default";
     }
 }

@@ -39,19 +39,19 @@ public interface Locale1 : Object {
     public abstract string x_11_options { owned get; }
     public abstract string x_11_variant { owned get; }
 
-    public abstract void set_locale (
+    public abstract async void set_locale (
         string[] locale,
         bool interactive
     ) throws Error;
 
-    public abstract void set_v_console_keyboard (
+    public abstract async void set_v_console_keyboard (
         string keymap,
         string keymap_toggle,
         bool convert,
         bool interactive
     ) throws Error;
 
-    public abstract void set_x_11_keyboard (
+    public abstract async void set_x_11_keyboard (
         string layout,
         string model,
         string variant,

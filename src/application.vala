@@ -31,11 +31,11 @@ public sealed class ReadySet.Application: Adw.Application {
     public string? steps_filename = null;
     public string[]? steps = null;
 
-    bool idle = false;
+    public bool idle { get; private set; }
 
     public bool show_steps { get; set; default = false; }
 
-    ApplyCallback[] apply_callbacks = {};
+    public Gee.ArrayList<BasePage> callback_pages { get; default = new Gee.ArrayList<BasePage> (); }
 
     public Application () {
         Object (
@@ -78,13 +78,16 @@ public sealed class ReadySet.Application: Adw.Application {
             print ("%s\n", Config.VERSION);
             return 0;
 
-        } else if (options.contains ("steps-file")) {
+        }
+        if (options.contains ("steps-file")) {
             steps_filename = options.lookup_value ("steps-file", null).get_bytestring ();
 
-        } else if (options.contains ("idle")) {
+        }
+        if (options.contains ("idle")) {
             idle = true;
 
-        } else if (options.contains ("steps")) {
+        }
+        if (options.contains ("steps")) {
             steps = options.lookup_value ("steps", null).get_string ().split (",");
             for (int i = 0; i < steps.length; i++) {
                 steps[i] = steps[i].strip ();
@@ -92,21 +95,6 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         return -1;
-    }
-
-    public void add_apply_callback (ApplyCallback callback) {
-        apply_callbacks.resize (apply_callbacks.length + 1);
-        apply_callbacks[apply_callbacks.length - 1] = callback;
-    }
-
-    public void apply_all () throws ApplyError {
-        if (idle) {
-            return;
-        }
-
-        foreach (var callback in apply_callbacks) {
-            callback.apply ();
-        }
     }
 
     public void reload_window () {

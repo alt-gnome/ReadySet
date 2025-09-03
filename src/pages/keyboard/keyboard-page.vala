@@ -59,7 +59,7 @@ public sealed class ReadySet.KeyboardPage : BasePage {
         }
     }
 
-    public override void apply () throws ApplyError {
+    public override async void apply () throws ApplyError {
         var proxy = get_locale_proxy ();
 
         var data = Data.get_instance ();
@@ -86,7 +86,7 @@ public sealed class ReadySet.KeyboardPage : BasePage {
         }
 
         try {
-            proxy.set_x_11_keyboard (string.joinv (
+            yield proxy.set_x_11_keyboard (string.joinv (
                 ",",
                 layouts.to_array ()),
                 "",

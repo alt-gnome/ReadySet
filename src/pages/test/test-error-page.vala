@@ -23,7 +23,7 @@ public sealed class ReadySet.TestErrorPage : BasePage {
         is_ready = true;
     }
 
-    public override void apply () throws ApplyError {
+    public override async void apply () throws ApplyError {
         throw new ApplyError.BASE ("%s%s%s".printf (
             "Test error",
             RSS,

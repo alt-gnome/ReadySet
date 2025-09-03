@@ -40,13 +40,14 @@ public sealed class ReadySet.WindowContent : Adw.BreakpointBin {
             saved_all_steps = get_all_steps ();
         }
 
+        var app = (ReadySet.Application) GLib.Application.get_default ();
+        app.callback_pages.clear ();
+
         foreach (string step_id in saved_all_steps) {
             var page = build_page_by_step_id (step_id);
             if (page.allowed ()) {
                 steps_main_page.add_page (page);
-                ((ReadySet.Application) GLib.Application.get_default ()).add_apply_callback (
-                    new ApplyCallback (page.apply)
-                );
+                app.callback_pages.add (page);
             }
         }
     }

@@ -20,15 +20,37 @@ template $ReadySetBasePage: Box {
           orientation: vertical;
           valign: center;
 
-          Image image {
-            accessible-role: presentation;
-            halign: center;
-            icon-name: bind template.icon-name;
-            paintable: bind template.paintable;
+          Stack loading_stack {
+            transition-duration: 300;
+            transition-type: crossfade;
 
-            styles [
-              "icon",
-            ]
+            StackPage {
+              name: "default";
+              child: Image {
+                accessible-role: presentation;
+                halign: center;
+                icon-name: bind template.icon-name;
+
+                styles [
+                  "icon",
+                ]
+              };
+            }
+
+            StackPage {
+              name: "loading";
+              child: Image {
+                accessible-role: presentation;
+                halign: center;
+                paintable: Adw.SpinnerPaintable {
+                  widget: template;
+                };
+
+                styles [
+                  "icon",
+                ]
+              };
+            }
           }
 
           Adw.Bin title_bin {

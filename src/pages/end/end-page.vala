@@ -26,11 +26,31 @@ public sealed class ReadySet.EndPage : BasePage {
 
     public string error_description { get; set; }
 
-    public void start_action () {
+    public string loading_status { get; set; }
+
+    construct {
+        start_loading ();
+    }
+
+    public async void start_action () {
         stack.visible_child_name = "load";
 
         try {
-            ((ReadySet.Application) GLib.Application.get_default ()).apply_all ();
+            var app = (ReadySet.Application) GLib.Application.get_default ();
+            foreach (var callback_page in app.callback_pages) {
+                if (app.idle) {
+                    Timeout.add_seconds_once (1, () => {
+                        Idle.add (start_action.callback);
+                    });
+                    yield;
+
+                } else {
+                    loading_status = callback_page.start_apply_message;
+                    yield callback_page.apply ();
+                }
+            }
+
+            stop_loading ();
             stack.visible_child_name = "ready";
             is_ready = true;
 
@@ -47,12 +67,13 @@ public sealed class ReadySet.EndPage : BasePage {
 
             error_description = _("Error message: %s").printf (error_description);
 
+            icon_name = "dialog-error-symbolic";
             stack.visible_child_name = "error";
             is_ready = false;
         }
     }
 
-    public override void apply () throws ApplyError {
+    public override async void apply () throws ApplyError {
         return;
     }
 }
