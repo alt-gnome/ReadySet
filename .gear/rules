@@ -1,6 +1,6 @@
 spec: .gear/ready-set.spec
 copy: .gear/alt-mobile/ready-set-first-run
-copy: .gear/alt-mobile/00_org.altlinux.ReadySet.ALT-Mobile
-copy: .gear/alt-mobile/00_alt-mobile.conf
+copy: .gear/alt-mobile/50_org.altlinux.ReadySet.ALT-Mobile
+copy: .gear/alt-mobile/50_org.altlinux.ReadySet.ALT-Mobile.conf
 tar: v@version@:.
 diff: v@version@:. . exclude=.gear
