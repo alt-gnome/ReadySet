@@ -1,0 +1,3 @@
+[remote "upstream"]
+	url = ssh://forgejo@altlinux.space/alt-gnome/ReadySet.git
+	fetch = +refs/heads/*:refs/remotes/upstream/*
