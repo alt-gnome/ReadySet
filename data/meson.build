@@ -1,7 +1,5 @@
 blueprints = custom_target('blueprints',
   input: files(
-    'ui/base-page-desc.blp',
-    'ui/base-page.blp',
     'ui/context-row.blp',
     'ui/end-page.blp',
     'ui/input-chooser.blp',

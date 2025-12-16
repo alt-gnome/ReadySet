@@ -3,9 +3,6 @@ vapi_sources = files(
 )
 
 vala_sources = files(
-  'pages/base/base-page.vala',
-  'pages/base/base-page-desc.vala',
-
   'pages/end/end-page.vala',
 
   'pages/keyboard/ibus-utils.vala',
@@ -48,6 +45,20 @@ vala_sources = files(
   'window.vala',
 )
 
+app_dependencies = [
+  accountsservice_desktop_dep,
+  gee_dep,
+  gnome_desktop_dep,
+  gtk_dep,
+  ibus_dep,
+  libadwaita_dep,
+  libpeas_dep,
+  polkit_dep,
+  posix_dep,
+  pwquality_dep,
+  ready_set_lib_dep,
+]
+
 sources = [
   vala_sources,
   vapi_sources,
@@ -74,7 +85,7 @@ executable(
   'ready-set',
   sources,
   include_directories: config_h_dir,
-  dependencies: dependencies,
+  dependencies: app_dependencies,
   link_args: ['-lm'],
   c_args: c_args,
   vala_args: vala_args,

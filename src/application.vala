@@ -37,6 +37,8 @@ public sealed class ReadySet.Application: Adw.Application {
 
     public Gee.ArrayList<BasePage> callback_pages { get; default = new Gee.ArrayList<BasePage> (); }
 
+    Peas.ExtensionSet addins;
+
     public Application () {
         Object (
             application_id: Config.APP_ID_DYN,
@@ -67,10 +69,22 @@ public sealed class ReadySet.Application: Adw.Application {
         typeof (WelcomePage).ensure ();
     }
 
-    construct {
+    public override void startup () {
+        base.startup ();
+
         add_main_option_entries (OPTION_ENTRIES);
         add_action_entries (ACTION_ENTRIES, this);
         set_accels_for_action ("app.quit", { "<primary>q" });
+
+        var engine = Peas.Engine.get_default ();
+        engine.enable_loader ("python");
+
+        engine.add_search_path (
+            Path.build_filename (Config.LIBDIR, "ready-set", "plugins"),
+            Path.build_filename (Config.DATADIR, "ready-set", "plugins")
+        );
+
+        addins = new Peas.ExtensionSet.with_properties (engine, typeof (Addin), {}, {});
     }
 
     protected override int handle_local_options (VariantDict options) {

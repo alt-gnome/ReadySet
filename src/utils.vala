@@ -16,19 +16,6 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class ReadySet.ApplyCallback : Object {
-
-    public weak ApplyFunc func;
-
-    public ApplyCallback (ApplyFunc func_) {
-        func = func_;
-    }
-
-    public void apply () throws ApplyError {
-        func ();
-    }
-}
-
 [DBus (name = "org.freedesktop.locale1")]
 public interface Locale1 : Object {
     public abstract string[] locale { owned get; }
@@ -100,13 +87,6 @@ namespace ReadySet {
         "user",
         "end",
     };
-
-    public errordomain ApplyError {
-        BASE,
-        NO_PERMISSION;
-    }
-
-    public delegate void ApplyFunc () throws ApplyError;
 
     public void set_msg_locale (string locale) {
         var result = Data.get_instance ();
