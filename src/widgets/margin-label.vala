@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/margin-label.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/margin-label.ui")]
 public sealed class ReadySet.MarginLabel : Adw.Bin {
 
     public string label { get; set; }

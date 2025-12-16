@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/context-row.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/context-row.ui")]
 public sealed class ReadySet.ContextRow : Gtk.Box {
 
     [GtkChild]

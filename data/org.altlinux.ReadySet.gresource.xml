@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/space/rirusha/ReadySet/icons/scalable/actions/">
+  <gresource prefix="/org/altlinux/ReadySet/icons/scalable/actions/">
     <file alias="altmobile-symbolic.svg">assets/icons/altmobile-symbolic.svg</file>
     <file alias="document-edit-symbolic.svg">assets/icons/document-edit-symbolic.svg</file>
     <file alias="keyboard-symbolic.svg">assets/icons/keyboard-symbolic.svg</file>
@@ -9,7 +9,7 @@
     <file alias="system-users-symbolic.svg">assets/icons/system-users-symbolic.svg</file>
     <file alias="org.altlinux.ReadySet-symbolic.svg">icons/hicolor/symbolic/apps/org.altlinux.ReadySet-symbolic.svg</file>
   </gresource>
-  <gresource prefix="/space/rirusha/ReadySet/">
+  <gresource prefix="/org/altlinux/ReadySet/">
     <file>style.css</file>
     <file preprocess="xml-stripblanks">ui/base-page-desc.ui</file>
     <file preprocess="xml-stripblanks">ui/base-page.ui</file>

@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/step-row.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/step-row.ui")]
 public sealed class ReadySet.StepRow : Gtk.ListBoxRow {
 
     public string icon_name { get; set; }

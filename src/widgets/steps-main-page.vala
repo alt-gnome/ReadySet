@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/steps-main-page.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/steps-main-page.ui")]
 public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     [GtkChild]

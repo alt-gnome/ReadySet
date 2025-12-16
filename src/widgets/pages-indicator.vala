@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/pages-indicator.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/pages-indicator.ui")]
 public sealed class ReadySet.PagesIndicator : Gtk.Box {
 
     [GtkChild]

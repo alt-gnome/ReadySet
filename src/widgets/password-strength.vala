@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/password-strength.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/password-strength.ui")]
 public sealed class ReadySet.PasswordStrength : Gtk.Box {
 
     [GtkChild]

@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/keyboard-page.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/keyboard-page.ui")]
 public sealed class ReadySet.KeyboardPage : BasePage {
 
     [GtkChild]

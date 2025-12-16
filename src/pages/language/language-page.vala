@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/language-page.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/language-page.ui")]
 public sealed class ReadySet.LanguagePage : BasePage {
 
     static double saved_scroll_position = 0.0;

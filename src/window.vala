@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/window.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/window.ui")]
 public sealed class ReadySet.Window: Adw.ApplicationWindow {
 
     [GtkChild]

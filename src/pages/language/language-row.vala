@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/language-row.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/language-row.ui")]
 public sealed class ReadySet.LanguageRow : Adw.ActionRow {
 
     [GtkChild]

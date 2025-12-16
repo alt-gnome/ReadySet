@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/languages-box.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/languages-box.ui")]
 public sealed class ReadySet.LanguagesBox : Adw.Bin {
 
     [GtkChild]

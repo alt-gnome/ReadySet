@@ -16,5 +16,5 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/welcome-page.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/welcome-page.ui")]
 public sealed class ReadySet.WelcomePage : BasePage {}

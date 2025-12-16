@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/input-row.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/input-row.ui")]
 public sealed class ReadySet.InputRow : Adw.ActionRow {
 
     public InputInfo input_info { get; construct; }

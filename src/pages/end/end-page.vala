@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/end-page.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/end-page.ui")]
 public sealed class ReadySet.EndPage : BasePage {
 
     [GtkChild]

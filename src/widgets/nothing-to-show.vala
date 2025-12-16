@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/nothing-to-show.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/nothing-to-show.ui")]
 public sealed class ReadySet.NothingToShow : Adw.Bin {
 
 }

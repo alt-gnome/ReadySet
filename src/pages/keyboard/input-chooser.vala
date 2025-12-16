@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/input-chooser.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/input-chooser.ui")]
 public sealed class ReadySet.InputChooser : Gtk.Box {
 
     [GtkChild]

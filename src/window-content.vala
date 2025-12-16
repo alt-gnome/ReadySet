@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/window-content.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/window-content.ui")]
 public sealed class ReadySet.WindowContent : Adw.BreakpointBin {
 
     [GtkChild]

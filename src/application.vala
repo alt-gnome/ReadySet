@@ -40,7 +40,7 @@ public sealed class ReadySet.Application: Adw.Application {
     public Application () {
         Object (
             application_id: Config.APP_ID_DYN,
-            resource_base_path: "/space/rirusha/ReadySet/"
+            resource_base_path: "/org/altlinux/ReadySet/"
         );
     }
 
