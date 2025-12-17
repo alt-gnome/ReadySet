@@ -37,6 +37,8 @@ public sealed class ReadySet.Application: Adw.Application {
 
     public bool show_steps { get; set; default = false; }
 
+    Context context;
+
     public Gee.ArrayList<BasePage> callback_pages { get; default = new Gee.ArrayList<BasePage> (); }
 
     public Application () {
@@ -49,8 +51,6 @@ public sealed class ReadySet.Application: Adw.Application {
     static construct {
         typeof (BasePageDesc).ensure ();
         typeof (ContextRow).ensure ();
-        typeof (LangSelectTitle).ensure ();
-        typeof (LanguagesBox).ensure ();
         typeof (MarginLabel).ensure ();
         typeof (PagesIndicator).ensure ();
         typeof (PositionedStack).ensure ();
@@ -63,7 +63,6 @@ public sealed class ReadySet.Application: Adw.Application {
         typeof (BasePage).ensure ();
         typeof (EndPage).ensure ();
         typeof (KeyboardPage).ensure ();
-        typeof (LanguagePage).ensure ();
         typeof (UserPage).ensure ();
         typeof (UserWithRootPage).ensure ();
     }
@@ -72,6 +71,9 @@ public sealed class ReadySet.Application: Adw.Application {
         add_main_option_entries (OPTION_ENTRIES);
         add_action_entries (ACTION_ENTRIES, this);
         set_accels_for_action ("app.quit", { "<primary>q" });
+
+        context = new Context ();
+        context.reload_window.connect (reload_window);
     }
 
     protected override int handle_local_options (VariantDict options) {
@@ -131,15 +133,15 @@ public sealed class ReadySet.Application: Adw.Application {
         });
 
         if (pages.length == 0) {
-            error ("No plugins found\n");
+            error ("\nNo plugins found\n");
         } else {
-            print ("Found plugins:\n");
+            print ("\nFound plugins:\n");
             foreach (var plugin in plugins) {
                 print ("  %s\n", plugin.key);
             }
         }
 
-        print ("Using steps:\n");
+        print ("Loaded plugins:\n");
         for (int i = 0; i < all_steps.length; i++) {
             if (plugins[all_steps[i]] == null) {
                 pages[i] = new BasePage () {
@@ -147,7 +149,9 @@ public sealed class ReadySet.Application: Adw.Application {
                 };
                 print ("  broken step");
             } else {
-                pages[i] = plugins[all_steps[i]].page;
+                var addin = plugins[all_steps[i]];
+                addin.context = context;
+                pages[i] = addin.build_page ();
                 print ("  %s\n", all_steps[i]);
             }
         }
@@ -198,13 +202,13 @@ public sealed class ReadySet.Application: Adw.Application {
             }
 
         } else {
-            return DEFAULT_STEPS;
+            error (_("No steps specified"));
         }
 
         return steps_data.data;
     }
 
-    public void reload_window () {
+    void reload_window () {
         (active_window as ReadySet.Window)?.reload_window ();
     }
 

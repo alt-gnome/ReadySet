@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public sealed class ReadySet.LocaleData : Object {
+public sealed class Language.LocaleData : Object {
 
     public string locale { get; construct set; }
 

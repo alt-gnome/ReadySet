@@ -16,8 +16,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/language-page.ui")]
-public sealed class ReadySet.LanguagePage : BasePage {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Language/ui/page.ui")]
+public sealed class Language.Page : ReadySet.BasePage {
 
     static double saved_scroll_position = 0.0;
 
@@ -39,15 +39,15 @@ public sealed class ReadySet.LanguagePage : BasePage {
         }
     }
 
-    public override async void apply () throws ApplyError {
+    public override async void apply () throws ReadySet.ApplyError {
         var proxy = get_locale_proxy ();
 
         try {
             yield proxy.set_locale ({ @"LANG=$(get_current_language ())" }, true);
         } catch (Error e) {
-            throw new ApplyError.BASE ("%s%s%s".printf (
+            throw new ReadySet.ApplyError.BASE ("%s%s%s".printf (
                 _("Error when setting language"),
-                RSS,
+                ReadySet.RSS,
                 e.message
             ));
         }

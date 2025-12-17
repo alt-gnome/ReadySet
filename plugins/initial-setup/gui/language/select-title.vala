@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class ReadySet.LangSelectTitle : Adw.Bin {
+public class Language.SelectTitle : Adw.Bin {
 
     Adw.Carousel carousel;
 
@@ -41,7 +41,7 @@ public class ReadySet.LangSelectTitle : Adw.Bin {
             append ();
         }
 
-        set_msg_locale (cur_locale);
+        set_current_locale (cur_locale);
 
         Timeout.add_seconds (3, () => {
             var cur_pos = (int) carousel.position;
@@ -60,7 +60,7 @@ public class ReadySet.LangSelectTitle : Adw.Bin {
     }
 
     void append () {
-        carousel.append (new BasePageDesc (
+        carousel.append (new ReadySet.BasePageDesc (
             _("Hello!"),
             _("Let's start by choosing the language for the application and for your system.")
         ) {

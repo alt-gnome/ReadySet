@@ -1,18 +1,20 @@
-/* Copyright (C) 2024-2025 Vladimir Romanov <rirusha@altlinux.org>
- *
+/*
+ * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * along with this program. If not, see
+ * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
+ * 
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -48,61 +50,51 @@ public interface Locale1 : Object {
     ) throws Error;
 }
 
-public class ReadySet.InputInfo : Object {
+namespace Language {
 
-    public string id { get; construct; }
+    public void set_current_locale (string locale) {
+        var context = Addin.get_instance ().context;
 
-    public string type_ { get; construct; }
-
-    public string format { get; construct; }
-
-    public InputInfo (string type, string id_) {
-        Object (
-            id: id_,
-            type_: type,
-            format: "%s::%s".printf (type, id_)
-        );
-    }
-
-    public uint _hash () {
-        return format.hash ();
-    }
-
-    public static uint hash (InputInfo a) {
-        return a._hash ();
-    }
-
-    public static bool equal (InputInfo a, InputInfo b) {
-        return strcmp (a.format, b.format) == 0;
-    }
-}
-
-namespace ReadySet {
-
-    public void set_msg_locale (string locale) {
-        var result = Data.get_instance ();
-
-        result.language.current_language = locale;
+        Intl.setlocale (LocaleCategory.MESSAGES, locale);
+        context.set_data ("locale", locale);
     }
 
     public string get_current_language () {
-        var result = Data.get_instance ();
+        var context = Addin.get_instance ().context;
 
-        return result.language.current_language;
+        var locale = context.get_string ("locale");
+
+        if (locale == null) {
+            debug ("Languages: %s", string.joinv (", ", Intl.get_language_names ()));
+
+            foreach (string lang in Intl.get_language_names ()) {
+                if (Gnome.Languages.parse_locale (lang, null, null, null, null)) {
+                    locale = lang;
+                    break;
+                }
+            }
+
+            if (locale == null) {
+                locale = "C";
+            }
+        }
+
+        return locale;
+    }
+
+    string fix_locale (string locale) {
+        switch (locale) {
+            case "en":
+                return "en_US.UTF-8";
+            case "ru":
+                return "ru_RU.UTF-8";
+            default:
+                return locale;
+        }
     }
 
     public string[] get_supported_languages () {
-        return Config.SUPPORTED_LANGUAGES.split ("|");
-    }
-
-    bool is_username_used (string? username) {
-        if (username == null || username == "") {
-            return false;
-        }
-
-        weak Posix.Passwd? pwent = Posix.getpwnam (username);
-
-        return pwent != null;
+        return {"en", "ru"};
     }
 
     Locale1 get_locale_proxy () {
@@ -121,23 +113,5 @@ namespace ReadySet {
         } catch (Error e) {
             error (e.message);
         }
-    }
-
-    void pkexec (owned string[] cmd, string? user = null) throws Error {
-        var launcher = new SubprocessLauncher (NONE);
-        var argv = new Gee.ArrayList<string>.wrap ({ "pkexec" });
-
-        if (user != null) {
-            argv.add_all_array ({ "--user", user });
-        }
-
-        argv.add_all_array (cmd);
-
-        //  pkexec won't let us run the program if $SHELL isn't in /etc/shells,
-        //  so remove it from the environment.
-        launcher.unsetenv ("SHELL");
-        var process = launcher.spawnv (argv.to_array ().copy ());
-
-        process.wait_check ();
     }
 }

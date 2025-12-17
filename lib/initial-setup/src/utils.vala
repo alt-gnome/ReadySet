@@ -26,4 +26,6 @@ namespace ReadySet {
     }
 
     public delegate void ApplyFunc () throws ApplyError;
+
+    public const string RSS = "\n::READY-SET-SEPARATOR::\n";
 }

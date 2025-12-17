@@ -20,6 +20,7 @@ librs_is_vala_sources = files(
   'base/base-page.vala',
   'addin.vala',
   'apply-callback.vala',
+  'context.vala',
   'utils.vala',
 )
 
@@ -35,6 +36,7 @@ librs_is_c_args = [
 ]
 
 librs_is_deps_pkgs = [
+  'gee-0.8',
   'gio-unix-2.0',
   'gtk4',
   'libadwaita-1',
@@ -42,6 +44,7 @@ librs_is_deps_pkgs = [
 ]
 
 librs_is_dependencies = [
+  gee_dep,
   gio_dep,
   gtk_dep,
   libadwaita_dep,

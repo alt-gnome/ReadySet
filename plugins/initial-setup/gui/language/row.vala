@@ -16,8 +16,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/language-row.ui")]
-public sealed class ReadySet.LanguageRow : Adw.ActionRow {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Language/ui/row.ui")]
+public sealed class Language.Row : Adw.ActionRow {
 
     [GtkChild]
     unowned Gtk.Revealer suffix_revealer;
@@ -26,7 +26,7 @@ public sealed class ReadySet.LanguageRow : Adw.ActionRow {
 
     public bool is_current_language { get; set; default = false; }
 
-    public LanguageRow (LocaleData locale_data) {
+    public Row (LocaleData locale_data) {
         Object (locale_data: locale_data);
     }
 
@@ -43,8 +43,8 @@ public sealed class ReadySet.LanguageRow : Adw.ActionRow {
             return;
         }
 
-        set_msg_locale (locale_data.locale);
+        set_current_locale (locale_data.locale);
 
-        ReadySet.Application.get_default ().reload_window ();
+        Addin.get_instance ().context.reload_window ();
     }
 }

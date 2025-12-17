@@ -16,8 +16,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/languages-box.ui")]
-public sealed class ReadySet.LanguagesBox : Adw.Bin {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Language/ui/box.ui")]
+public sealed class Language.Box : Adw.Bin {
 
     [GtkChild]
     unowned Gtk.ListBox languages_listbox;
@@ -44,7 +44,7 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
     }
 
     static construct {
-        typeof (LanguageRow).ensure ();
+        typeof (Row).ensure ();
     }
 
     construct {
@@ -114,7 +114,7 @@ public sealed class ReadySet.LanguagesBox : Adw.Bin {
         languages_listbox.bind_model (
             filter_model,
             (obj) => {
-                return new LanguageRow ((LocaleData) obj);
+                return new Row ((LocaleData) obj);
             }
         );
     }

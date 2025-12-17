@@ -18,20 +18,36 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Welcome.Addin : ReadySet.Addin {
+public class Language.Addin : ReadySet.Addin {
+
+    static Addin instance;
 
     protected override string? css_resources_path {
         get {
-            return "/org/altlinux/ReadySet/Plugin/Welcome/style.css";
+            return "/org/altlinux/ReadySet/Plugin/Language/style.css";
         }
     }
 
+    static construct {
+        typeof (SelectTitle).ensure ();
+        typeof (Box).ensure ();
+        typeof (Row).ensure ();
+    }
+
+    construct {
+        instance = this;
+    }
+
     public override ReadySet.BasePage build_page () {
-        return new Welcome.Page ();
+        return new Language.Page ();
+    }
+
+    internal static Addin get_instance () {
+        return instance;
     }
 }
 
 public void peas_register_types (TypeModule module) {
     var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySet.Addin), typeof (Welcome.Addin));
+    obj.register_extension_type (typeof (ReadySet.Addin), typeof (Language.Addin));
 }

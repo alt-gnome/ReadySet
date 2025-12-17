@@ -20,5 +20,21 @@
 
 public abstract class ReadySet.Addin : Peas.ExtensionBase {
 
-    public BasePage page { get; set; }
+    protected virtual string? css_resources_path {
+        get {
+            return null;
+        }
+    }
+
+    public Context context { get; set; default = new Context (); }
+
+    construct {
+        if (css_resources_path != null) {
+            var provider = new Gtk.CssProvider ();
+            provider.load_from_resource (css_resources_path);
+            Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        }
+    }
+
+    public abstract BasePage build_page ();
 }

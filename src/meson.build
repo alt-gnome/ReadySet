@@ -10,12 +10,6 @@ rs_app_vala_sources = files(
   'pages/keyboard/input-row.vala',
   'pages/keyboard/keyboard-page.vala',
 
-  'pages/language/lang-select-title.vala',
-  'pages/language/language-page.vala',
-  'pages/language/language-row.vala',
-  'pages/language/languages-box.vala',
-  'pages/language/locale-data.vala',
-
   'pages/test/test-error-page.vala',
   'pages/test/test-page.vala',
 
