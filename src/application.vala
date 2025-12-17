@@ -28,16 +28,16 @@ public sealed class ReadySet.Application: Adw.Application {
         { null }
     };
 
-    public string? steps_filename = null;
-    public string[]? steps = null;
+    static string[] all_steps = {};
+
+    string? steps_filename = null;
+    string[]? steps = null;
 
     public bool idle { get; private set; }
 
     public bool show_steps { get; set; default = false; }
 
     public Gee.ArrayList<BasePage> callback_pages { get; default = new Gee.ArrayList<BasePage> (); }
-
-    Peas.ExtensionSet addins;
 
     public Application () {
         Object (
@@ -66,27 +66,12 @@ public sealed class ReadySet.Application: Adw.Application {
         typeof (LanguagePage).ensure ();
         typeof (UserPage).ensure ();
         typeof (UserWithRootPage).ensure ();
-        typeof (WelcomePage).ensure ();
     }
 
     construct {
         add_main_option_entries (OPTION_ENTRIES);
         add_action_entries (ACTION_ENTRIES, this);
         set_accels_for_action ("app.quit", { "<primary>q" });
-    }
-
-    public override void startup () {
-        base.startup ();
-
-        var engine = Peas.Engine.get_default ();
-        engine.enable_loader ("python");
-
-        engine.add_search_path (
-            Path.build_filename (Config.LIBDIR, "ready-set", "plugins"),
-            Path.build_filename (Config.DATADIR, "ready-set", "plugins")
-        );
-
-        addins = new Peas.ExtensionSet.with_properties (engine, typeof (Addin), {}, {});
     }
 
     protected override int handle_local_options (VariantDict options) {
@@ -111,6 +96,112 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         return -1;
+    }
+
+    Peas.Engine get_engine () {
+        var engine = Peas.Engine.get_default ();
+        engine.enable_loader ("python");
+
+        engine.add_search_path (
+            Path.build_filename (Config.LIBDIR, "ready-set", "plugins"),
+            Path.build_filename (Config.DATADIR, "ready-set", "plugins")
+        );
+
+        return engine;
+    }
+
+    public BasePage[] get_pages () {
+        if (all_steps.length == 0) {
+            all_steps = get_all_steps ();
+        }
+
+        var pages = new BasePage[all_steps.length + 1];
+
+        var engine = get_engine ();
+        var addins = new Peas.ExtensionSet.with_properties (engine, typeof (Addin), {}, {});
+
+        for (int i = 0; i < engine.get_n_items (); i++) {
+            engine.load_plugin ((Peas.PluginInfo) engine.get_item (i));
+        }
+
+        var plugins = new Gee.HashMap<string, Addin> ();
+
+        addins.foreach ((_set, info, extension) => {
+            plugins[info.module_name] = (Addin) extension;
+        });
+
+        if (pages.length == 0) {
+            error ("No plugins found\n");
+        } else {
+            print ("Found plugins:\n");
+            foreach (var plugin in plugins) {
+                print ("  %s\n", plugin.key);
+            }
+        }
+
+        print ("Using steps:\n");
+        for (int i = 0; i < all_steps.length; i++) {
+            if (plugins[all_steps[i]] == null) {
+                pages[i] = new BasePage () {
+                    is_ready = true
+                };
+                print ("  broken step");
+            } else {
+                pages[i] = plugins[all_steps[i]].page;
+                print ("  %s\n", all_steps[i]);
+            }
+        }
+
+        pages[pages.length - 1] = new EndPage ();
+
+        return pages;
+    }
+
+    string[] get_all_steps () {
+        var app = ReadySet.Application.get_default ();
+
+        var steps_data = new Array<string> ();
+
+        if (app.steps_filename != null) {
+            var steps_file = File.new_for_path (app.steps_filename);
+
+            if (!steps_file.query_exists ()) {
+                error (_("Steps file doesn't exists"));
+            }
+
+            uint8[] steps_file_content;
+            try {
+                if (!steps_file.load_contents (null, out steps_file_content, null)) {
+                    error (_("Steps file is empty"));
+                }
+            } catch (Error e) {
+                error (_("Error loading steps file: %s"), e.message);
+            }
+
+            string[] data = ((string) steps_file_content).split ("\n");
+
+            for (int i = 0; i < data.length; i++) {
+                data[i] = data[i].strip ();
+            };
+
+            foreach (var line in data) {
+                var stripped_line = line.strip ();
+
+                if (stripped_line != "" && !stripped_line.has_prefix ("#")) {
+                    steps_data.append_val (stripped_line);
+                }
+            }
+
+        } else if (app.steps != null) {
+            foreach (var step in app.steps) {
+                steps_data.append_val (step);
+            }
+
+        } else {
+            return DEFAULT_STEPS;
+        }
+
+        return steps_data.data;
     }
 
     public void reload_window () {

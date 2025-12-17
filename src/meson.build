@@ -23,8 +23,6 @@ rs_app_vala_sources = files(
 
   'pages/user-with-root/user-with-root-page.vala',
 
-  'pages/welcome/welcome-page.vala',
-
   'widgets/context-row.vala',
   'widgets/margin-label.vala',
   'widgets/nothing-to-show.vala',

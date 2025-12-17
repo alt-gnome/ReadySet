@@ -26,8 +26,6 @@ public sealed class ReadySet.WindowContent : Adw.BreakpointBin {
     [GtkChild]
     unowned StepsMainPage steps_main_page;
 
-    static string[] saved_all_steps = {};
-
     construct {
         GLib.Application.get_default ().bind_property (
             "show-steps",
@@ -36,15 +34,10 @@ public sealed class ReadySet.WindowContent : Adw.BreakpointBin {
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
 
-        if (saved_all_steps.length == 0) {
-            saved_all_steps = get_all_steps ();
-        }
-
-        var app = (ReadySet.Application) GLib.Application.get_default ();
+        var app = ReadySet.Application.get_default ();
         app.callback_pages.clear ();
 
-        foreach (string step_id in saved_all_steps) {
-            var page = build_page_by_step_id (step_id);
+        foreach (var page in app.get_pages ()) {
             if (page.allowed ()) {
                 steps_main_page.add_page (page);
                 app.callback_pages.add (page);

@@ -45,6 +45,9 @@ foreach lang : linguas
 endforeach
 supported_languages_arr += ['en']
 
+datadir = get_option('prefix') / get_option('datadir')
+localedir = get_option('prefix') / get_option('localedir')
+libdir = get_option('prefix') / get_option('libdir')
 sysconfdir = get_option('prefix') / get_option('sysconfdir')
 
 global_conf = configuration_data()
@@ -55,15 +58,16 @@ global_conf.set_quoted('SYSCONFDIR', sysconfdir)
 global_conf.set10('IS_DEVEL', get_option('is_devel'))
 global_conf.set_quoted('VERSION', meson.project_version())
 global_conf.set_quoted('GETTEXT_PACKAGE', meson.project_name())
-global_conf.set_quoted('LIBDIR', get_option('prefix') / get_option('libdir'))
-global_conf.set_quoted('DATADIR', get_option('prefix') / get_option('datadir'))
-global_conf.set_quoted('GNOMELOCALEDIR', get_option('prefix') / get_option('localedir'))
+global_conf.set_quoted('LIBDIR', libdir)
+global_conf.set_quoted('DATADIR', datadir)
+global_conf.set_quoted('GNOMELOCALEDIR', localedir)
 global_conf.set_quoted('SUPPORTED_LANGUAGES', '|'.join(supported_languages_arr))
 
 subdir('data')
 subdir('po')
 subdir('lib')
 subdir('src')
+subdir('plugins')
 
 gnome.post_install(
   glib_compile_schemas: true,

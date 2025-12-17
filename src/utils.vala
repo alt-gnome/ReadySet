@@ -104,22 +104,6 @@ namespace ReadySet {
         return Config.SUPPORTED_LANGUAGES.split ("|");
     }
 
-    public BasePage build_page_by_step_id (string step_id) {
-        BasePage page_content;
-
-        var page_type = Type.from_name ("ReadySet%sPage".printf (kebab2pascal (step_id)));
-
-        if (page_type == 0) {
-            page_content = new BasePage () {
-                is_ready = true
-            };
-        } else {
-            page_content = (BasePage) Object.new (page_type);
-        }
-
-        return page_content;
-    }
-
     string kebab2pascal (string kebab_string) {
         var builder = new StringBuilder ();
         bool capitalize = true;
@@ -150,57 +134,6 @@ namespace ReadySet {
             default:
                 return locale;
         }
-    }
-
-    string[] get_all_steps () {
-        var app = ((ReadySet.Application) GLib.Application.get_default ());
-
-        var steps_data = new Array<string> ();
-
-        if (app.steps_filename != null) {
-            var steps_file = File.new_for_path (app.steps_filename);
-
-            if (!steps_file.query_exists ()) {
-                error (_("Steps file doesn't exists"));
-            }
-
-            uint8[] steps_file_content;
-            try {
-                if (!steps_file.load_contents (null, out steps_file_content, null)) {
-                    error (_("Steps file is empty"));
-                }
-            } catch (Error e) {
-                error (_("Error loading steps file: %s"), e.message);
-            }
-
-            string[] data = ((string) steps_file_content).split ("\n");
-
-            for (int i = 0; i < data.length; i++) {
-                data[i] = data[i].strip ();
-            };
-
-            foreach (var line in data) {
-                var stripped_line = line.strip ();
-
-                if (stripped_line != "" && !stripped_line.has_prefix ("#")) {
-                    steps_data.append_val (stripped_line);
-                }
-            }
-
-        } else if (app.steps != null) {
-            foreach (var step in app.steps) {
-                steps_data.append_val (step);
-            }
-
-        } else {
-            return DEFAULT_STEPS;
-        }
-
-        if (steps_data.index (steps_data.length - 1) != "end") {
-            steps_data.append_val ("end");
-        }
-
-        return steps_data.data;
     }
 
     bool is_username_used (string? username) {
