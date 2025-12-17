@@ -2,12 +2,12 @@ librs_is_name = 'lib' + meson.project_name()
 librs_is_gir_name = pascal_name
 
 librs_is_versioned_name = meson.project_name() + '-' + api_version
-librs_is_versioned_name = librs_is_name + '-' + api_version
+librs_is_versioned_lib_name = librs_is_name + '-' + api_version
 librs_is_versioned_gir_name = librs_is_gir_name + '-' + api_version
 
-librs_is_deps_name = librs_is_versioned_name + '.deps'
-librs_is_header_name = librs_is_versioned_name + '.h'
-librs_is_vapi_name = librs_is_versioned_name + '.vapi'
+librs_is_deps_name = librs_is_versioned_lib_name + '.deps'
+librs_is_header_name = librs_is_versioned_lib_name + '.h'
+librs_is_vapi_name = librs_is_versioned_lib_name + '.vapi'
 librs_is_gir_name = librs_is_versioned_gir_name + '.gir'
 librs_is_typelib_name = librs_is_versioned_gir_name + '.typelib'
 
@@ -102,7 +102,7 @@ endif
 
 pkgconfig.generate(
   librs,
-  name: librs_is_versioned_name,
+  name: librs_is_versioned_lib_name,
   requires: librs_is_dependencies,
   subdirs: [ librs_is_versioned_name ],
   description: 'ReadySet library',
