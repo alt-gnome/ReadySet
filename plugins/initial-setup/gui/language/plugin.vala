@@ -38,8 +38,8 @@ public class Language.Addin : ReadySet.Addin {
         instance = this;
     }
 
-    public override ReadySet.BasePage build_page () {
-        return new Language.Page ();
+    public override ReadySet.BasePage[] build_pages () {
+        return { new Language.Page () };
     }
 
     internal static Addin get_instance () {

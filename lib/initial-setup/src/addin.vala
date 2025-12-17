@@ -36,5 +36,5 @@ public abstract class ReadySet.Addin : Peas.ExtensionBase {
         }
     }
 
-    public abstract BasePage build_page ();
+    public abstract BasePage[] build_pages ();
 }

@@ -26,8 +26,8 @@ public class Welcome.Addin : ReadySet.Addin {
         }
     }
 
-    public override ReadySet.BasePage build_page () {
-        return new Welcome.Page ();
+    public override ReadySet.BasePage[] build_pages () {
+        return { new Welcome.Page () };
     }
 }
 

@@ -117,7 +117,7 @@ public sealed class ReadySet.Application: Adw.Application {
             all_steps = get_all_steps ();
         }
 
-        var pages = new BasePage[all_steps.length + 1];
+        var pages = new Gee.ArrayList<BasePage> ();
 
         var engine = get_engine ();
         var addins = new Peas.ExtensionSet.with_properties (engine, typeof (Addin), {}, {});
@@ -132,7 +132,7 @@ public sealed class ReadySet.Application: Adw.Application {
             plugins[info.module_name] = (Addin) extension;
         });
 
-        if (pages.length == 0) {
+        if (plugins.size == 0) {
             error ("\nNo plugins found\n");
         } else {
             print ("\nFound plugins:\n");
@@ -144,21 +144,21 @@ public sealed class ReadySet.Application: Adw.Application {
         print ("Loaded plugins:\n");
         for (int i = 0; i < all_steps.length; i++) {
             if (plugins[all_steps[i]] == null) {
-                pages[i] = new BasePage () {
+                pages.add (new BasePage () {
                     is_ready = true
-                };
+                });
                 print ("  broken step");
             } else {
                 var addin = plugins[all_steps[i]];
                 addin.context = context;
-                pages[i] = addin.build_page ();
+                pages.add_all_array (addin.build_pages ());
                 print ("  %s\n", all_steps[i]);
             }
         }
 
-        pages[pages.length - 1] = new EndPage ();
+        pages.add (new EndPage ());
 
-        return pages;
+        return pages.to_array ();
     }
 
     string[] get_all_steps () {
