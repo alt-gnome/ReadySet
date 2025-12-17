@@ -1,8 +1,8 @@
-vapi_sources = files(
+rs_app_vapi_sources = files(
   'config.vapi',
 )
 
-vala_sources = files(
+rs_app_vala_sources = files(
   'pages/end/end-page.vala',
 
   'pages/keyboard/ibus-utils.vala',
@@ -45,7 +45,7 @@ vala_sources = files(
   'window.vala',
 )
 
-app_dependencies = [
+rs_app_dependencies = [
   accountsservice_desktop_dep,
   gee_dep,
   gnome_desktop_dep,
@@ -56,39 +56,42 @@ app_dependencies = [
   polkit_dep,
   posix_dep,
   pwquality_dep,
-  ready_set_lib_dep,
+  librs_is_dep,
 ]
 
-sources = [
-  vala_sources,
-  vapi_sources,
-  resources,
+rs_app_sources = [
+  rs_app_vala_sources,
+  rs_app_vapi_sources,
+  rs_app_resources,
 ]
 
-c_args = [
+rs_app_c_args = [
   '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
   '-DGNOME_DESKTOP_USE_UNSTABLE_API',
   '-w'
 ]
 
-vala_args = [
-  '--gresources', resource_files,
+rs_app_vala_args = [
+  '--gresources', rs_app_resource_files,
   '--gresourcesdir=data/',
   '--vapidir', meson.current_source_dir() / '..' / 'vapi',
 ]
 
 if get_option('have_ibus')
-  c_args += ['-DHAVE_IBUS']
+  rs_app_c_args += ['-DHAVE_IBUS']
 endif
+
+configure_file(output: 'config.h', configuration: global_conf)
+rs_app_config_h_dir = include_directories('.')
 
 executable(
   'ready-set',
-  sources,
-  include_directories: config_h_dir,
-  dependencies: app_dependencies,
+  rs_app_sources,
+  include_directories: rs_app_config_h_dir,
+  dependencies: rs_app_dependencies,
   link_args: ['-lm'],
-  c_args: c_args,
-  vala_args: vala_args,
+  c_args: rs_app_c_args,
+  vala_args: rs_app_vala_args,
   install: true,
   install_dir: get_option('prefix') / get_option('libexecdir')
 )

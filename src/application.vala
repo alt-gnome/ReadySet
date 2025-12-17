@@ -69,12 +69,14 @@ public sealed class ReadySet.Application: Adw.Application {
         typeof (WelcomePage).ensure ();
     }
 
-    public override void startup () {
-        base.startup ();
-
+    construct {
         add_main_option_entries (OPTION_ENTRIES);
         add_action_entries (ACTION_ENTRIES, this);
         set_accels_for_action ("app.quit", { "<primary>q" });
+    }
+
+    public override void startup () {
+        base.startup ();
 
         var engine = Peas.Engine.get_default ();
         engine.enable_loader ("python");

@@ -1,4 +1,4 @@
-blueprints = custom_target('blueprints',
+rs_app_blueprints = custom_target('blueprints',
   input: files(
     'ui/context-row.blp',
     'ui/end-page.blp',
@@ -26,12 +26,12 @@ blueprints = custom_target('blueprints',
   command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
 )
 
-resource_files = files('@0@.gresource.xml'.format(app_id))
-resources = gnome.compile_resources(
-  'ready-set-resources',
-  resource_files,
-  dependencies: blueprints,
-  c_name: 'ready_set'
+rs_app_resource_files = files('@0@.gresource.xml'.format(app_id))
+rs_app_resources = gnome.compile_resources(
+  'ready-set-app-resources',
+  rs_app_resource_files,
+  dependencies: rs_app_blueprints,
+  c_name: 'ready_set_app'
 )
 
 rules_conf = configuration_data()
