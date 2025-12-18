@@ -23,7 +23,7 @@ shared_module(
   plugin_test_resources,
   plugin_test_sources,
   dependencies: plugin_test_deps,
-  c_args: rs_app_c_args,
+  c_args: plugin_test_c_args,
   install: true,
   install_dir: libdir / meson.project_name() / 'plugins'
 )

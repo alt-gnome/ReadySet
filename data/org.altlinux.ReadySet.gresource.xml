@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/altlinux/ReadySet/icons/scalable/actions/">
-    <file alias="altmobile-symbolic.svg">assets/icons/altmobile-symbolic.svg</file>
-    <file alias="document-edit-symbolic.svg">assets/icons/document-edit-symbolic.svg</file>
-    <file alias="rs-random-symbolic.svg">assets/icons/rs-random-symbolic.svg</file>
-    <file alias="system-users-symbolic.svg">assets/icons/system-users-symbolic.svg</file>
     <file alias="org.altlinux.ReadySet-symbolic.svg">icons/hicolor/symbolic/apps/org.altlinux.ReadySet-symbolic.svg</file>
   </gresource>
   <gresource prefix="/org/altlinux/ReadySet/">
     <file>style.css</file>
-    <file preprocess="xml-stripblanks">ui/context-row.ui</file>
     <file preprocess="xml-stripblanks">ui/end-page.ui</file>
-    <file preprocess="xml-stripblanks">ui/margin-label.ui</file>
     <file preprocess="xml-stripblanks">ui/nothing-to-show.ui</file>
     <file preprocess="xml-stripblanks">ui/pages-indicator.ui</file>
-    <file preprocess="xml-stripblanks">ui/password-strength.ui</file>
     <file preprocess="xml-stripblanks">ui/step-row.ui</file>
     <file preprocess="xml-stripblanks">ui/steps-main-page.ui</file>
     <file preprocess="xml-stripblanks">ui/steps-sidebar.ui</file>
-    <file preprocess="xml-stripblanks">ui/user-page.ui</file>
     <file preprocess="xml-stripblanks">ui/window-content.ui</file>
     <file preprocess="xml-stripblanks">ui/window.ui</file>
   </gresource>

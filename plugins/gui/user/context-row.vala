@@ -18,8 +18,29 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/margin-label.ui")]
-public sealed class ReadySet.MarginLabel : Adw.Bin {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/User/ui/context-row.ui")]
+public sealed class User.ContextRow : Gtk.Box {
 
-    public string label { get; set; }
+    [GtkChild]
+    unowned Gtk.ListBox list_box;
+
+    public Gtk.Widget context { get; set; }
+
+    Gtk.ListBoxRow _row;
+    public Gtk.ListBoxRow row {
+        get {
+            return _row;
+        }
+        set {
+            if (_row != null) {
+                list_box.remove (_row);
+            }
+
+            list_box.append (value);
+
+            _row = value;
+        }
+    }
+
+    public bool reveal_context { get; set; default = false; }
 }

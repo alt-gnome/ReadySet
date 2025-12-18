@@ -18,35 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/password-strength.ui")]
-public sealed class ReadySet.PasswordStrength : Gtk.Box {
-
-    [GtkChild]
-    unowned Gtk.ProgressBar progress_bar;
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/User/ui/margin-label.ui")]
+public sealed class User.MarginLabel : Adw.Bin {
 
     public string label { get; set; }
-
-    double _strength;
-    public double strength {
-        get {
-            return _strength;
-        }
-        set {
-            _strength = value;
-
-            progress_bar.fraction = _strength;
-        }
-    }
-
-    int _strength_level;
-    public int strength_level {
-        get {
-            return _strength_level;
-        }
-        set {
-            _strength_level = value;
-
-            update_css_by_strength (this, _strength_level);
-        }
-    }
 }

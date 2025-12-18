@@ -35,6 +35,10 @@ librs_c_args = [
   '-w',
 ]
 
+rs_app_vala_args = [
+  '--vapidir', meson.project_source_root() / 'vapi',
+]
+
 librs_deps_pkgs = [
   'gee-0.8',
   'gio-unix-2.0',
@@ -62,6 +66,7 @@ librs = shared_library(
   install: true,
   install_dir: [ true, true, true, true ],
   c_args: librs_c_args,
+  vala_args: rs_app_vala_args,
 )
 
 librs_dep = declare_dependency(

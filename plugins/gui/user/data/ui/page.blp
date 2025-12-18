@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $ReadySetUserPage: $ReadySetBasePage {
+template $UserPage: $ReadySetBasePage {
   title-header: _("User");
   title: _("About you");
   description: _("Set information about You");
@@ -14,8 +14,8 @@ template $ReadySetUserPage: $ReadySetBasePage {
     Adw.PreferencesGroup {
       title: _("Full Name");
 
-      $ReadySetContextRow fullname_context_row {
-        context: $ReadySetMarginLabel fullname_label {
+      $UserContextRow fullname_context_row {
+        context: $UserMarginLabel fullname_label {
           styles [
             "error",
           ]
@@ -32,8 +32,8 @@ template $ReadySetUserPage: $ReadySetBasePage {
       title: _("Username");
       description: _("Username will be used to name your home folder and can't be changed.");
 
-      $ReadySetContextRow username_context_row {
-        context: $ReadySetMarginLabel username_label {
+      $UserContextRow username_context_row {
+        context: $UserMarginLabel username_label {
           styles [
             "error",
           ]
@@ -53,8 +53,8 @@ template $ReadySetUserPage: $ReadySetBasePage {
         orientation: vertical;
         spacing: 6;
 
-        $ReadySetContextRow password_context_row {
-          context: $ReadySetPasswordStrength password_strength {};
+        $UserContextRow password_context_row {
+          context: $UserPasswordStrength password_strength {};
 
           row: Adw.PasswordEntryRow password_entry {
             title: _("Password");
@@ -74,8 +74,8 @@ template $ReadySetUserPage: $ReadySetBasePage {
           };
         }
 
-        $ReadySetContextRow password_repeat_context_row {
-          context: $ReadySetMarginLabel password_repeat_label {
+        $UserContextRow password_repeat_context_row {
+          context: $UserMarginLabel password_repeat_label {
             styles [
               "error",
             ]
@@ -109,8 +109,8 @@ template $ReadySetUserPage: $ReadySetBasePage {
         orientation: vertical;
         spacing: 6;
 
-        $ReadySetContextRow root_password_context_row {
-          context: $ReadySetPasswordStrength root_password_strength {};
+        $UserContextRow root_password_context_row {
+          context: $UserPasswordStrength root_password_strength {};
 
           row: Adw.PasswordEntryRow root_password_entry {
             title: _("Administrator password");
@@ -130,8 +130,8 @@ template $ReadySetUserPage: $ReadySetBasePage {
           };
         }
 
-        $ReadySetContextRow root_password_repeat_context_row {
-          context: $ReadySetMarginLabel root_password_repeat_label {
+        $UserContextRow root_password_repeat_context_row {
+          context: $UserMarginLabel root_password_repeat_label {
             styles [
               "error",
             ]

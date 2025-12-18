@@ -12,5 +12,5 @@ librs_resources = gnome.compile_resources(
   'libready-set-initial-setup-resources',
   librs_resource_files,
   dependencies: librs_blueprints,
-  c_name: 'libready_set_initial_setup'
+  c_name: 'libready_set'
 )

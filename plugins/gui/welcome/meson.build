@@ -22,7 +22,7 @@ shared_module(
   plugin_welcome_resources,
   plugin_welcome_sources,
   dependencies: plugin_welcome_deps,
-  c_args: rs_app_c_args,
+  c_args: plugin_welcome_c_args,
   install: true,
   install_dir: libdir / meson.project_name() / 'plugins'
 )

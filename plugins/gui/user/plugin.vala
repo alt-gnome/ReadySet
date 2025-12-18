@@ -18,9 +18,31 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public sealed class ReadySet.UserWithRootPage : UserPage {
+public class User.Addin : ReadySet.Addin {
+
+    static Addin instance;
+
+    protected override string? resource_base_path {
+        get {
+            return "/org/altlinux/ReadySet/Plugin/Welcome/";
+        }
+    }
 
     construct {
-        with_root_password = true;
+        instance = this;
     }
+
+    public override ReadySet.BasePage[] build_pages () {
+        bool with_root = context.get_string ("user-with-root") == "true";
+        return { new User.Page () { with_root_password = with_root } };
+    }
+
+    internal static Addin get_instance () {
+        return instance;
+    }
+}
+
+public void peas_register_types (TypeModule module) {
+    var obj = (Peas.ObjectModule) module;
+    obj.register_extension_type (typeof (ReadySet.Addin), typeof (User.Addin));
 }

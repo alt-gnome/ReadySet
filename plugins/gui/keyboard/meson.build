@@ -22,6 +22,7 @@ subdir('data')
 
 plugin_keyboard_c_args = [
   '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
+  '-DGNOME_DESKTOP_USE_UNSTABLE_API',
   '-w'
 ]
 
@@ -34,7 +35,7 @@ shared_module(
   plugin_keyboard_resources,
   plugin_keyboard_sources,
   dependencies: plugin_keyboard_deps,
-  c_args: rs_app_c_args,
+  c_args: plugin_keyboard_c_args,
   install: true,
   install_dir: libdir / meson.project_name() / 'plugins'
 )

@@ -20,18 +20,19 @@ public sealed class ReadySet.Application: Adw.Application {
 
     const ActionEntry[] ACTION_ENTRIES = {};
 
+    string? steps_filename = null;
+    string[]? steps = null;
+
     const OptionEntry[] OPTION_ENTRIES = {
         { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
         { "steps-file", 'f', 0, OptionArg.FILENAME, null, N_("Filename with steps"), "FILENAME" },
         { "steps", 's', 0, OptionArg.STRING, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
+        { "context", 'c', 0, OptionArg.STRING_ARRAY, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
         { "idle", 'i', 0, OptionArg.NONE, null, N_("Idle run without doing anything"), null },
         { null }
     };
 
     static string[] all_steps = {};
-
-    string? steps_filename = null;
-    string[]? steps = null;
 
     public bool idle { get; private set; }
 
@@ -51,8 +52,6 @@ public sealed class ReadySet.Application: Adw.Application {
 
     static construct {
         typeof (BasePageDesc).ensure ();
-        typeof (ContextRow).ensure ();
-        typeof (MarginLabel).ensure ();
         typeof (PagesIndicator).ensure ();
         typeof (PositionedStack).ensure ();
         typeof (StepRow).ensure ();
@@ -61,8 +60,6 @@ public sealed class ReadySet.Application: Adw.Application {
 
         typeof (BasePage).ensure ();
         typeof (EndPage).ensure ();
-        typeof (UserPage).ensure ();
-        typeof (UserWithRootPage).ensure ();
     }
 
     construct {
@@ -92,6 +89,16 @@ public sealed class ReadySet.Application: Adw.Application {
             steps = options.lookup_value ("steps", null).get_string ().split (",");
             for (int i = 0; i < steps.length; i++) {
                 steps[i] = steps[i].strip ();
+            }
+        }
+        if (options.contains ("context")) {
+            var ctx = options.lookup_value ("context", null).get_strv ();
+            foreach (var c in ctx) {
+                var parts = c.split ("=", 2);
+                if (parts.length != 2) {
+                    error ("Invalid context: %s", c);
+                }
+                context.set_data (parts[0], parts[1]);
             }
         }
 

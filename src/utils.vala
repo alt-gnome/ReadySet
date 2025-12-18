@@ -18,31 +18,4 @@
 
 namespace ReadySet {
 
-    bool is_username_used (string? username) {
-        if (username == null || username == "") {
-            return false;
-        }
-
-        weak Posix.Passwd? pwent = Posix.getpwnam (username);
-
-        return pwent != null;
-    }
-
-    void pkexec (owned string[] cmd, string? user = null) throws Error {
-        var launcher = new SubprocessLauncher (NONE);
-        var argv = new Gee.ArrayList<string>.wrap ({ "pkexec" });
-
-        if (user != null) {
-            argv.add_all_array ({ "--user", user });
-        }
-
-        argv.add_all_array (cmd);
-
-        //  pkexec won't let us run the program if $SHELL isn't in /etc/shells,
-        //  so remove it from the environment.
-        launcher.unsetenv ("SHELL");
-        var process = launcher.spawnv (argv.to_array ().copy ());
-
-        process.wait_check ();
-    }
 }

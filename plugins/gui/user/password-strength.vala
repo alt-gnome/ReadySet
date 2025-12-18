@@ -18,29 +18,35 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/context-row.ui")]
-public sealed class ReadySet.ContextRow : Gtk.Box {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/User/ui/password-strength.ui")]
+public sealed class User.PasswordStrength : Gtk.Box {
 
     [GtkChild]
-    unowned Gtk.ListBox list_box;
+    unowned Gtk.ProgressBar progress_bar;
 
-    public Gtk.Widget context { get; set; }
+    public string label { get; set; }
 
-    Gtk.ListBoxRow _row;
-    public Gtk.ListBoxRow row {
+    double _strength;
+    public double strength {
         get {
-            return _row;
+            return _strength;
         }
         set {
-            if (_row != null) {
-                list_box.remove (_row);
-            }
+            _strength = value;
 
-            list_box.append (value);
-
-            _row = value;
+            progress_bar.fraction = _strength;
         }
     }
 
-    public bool reveal_context { get; set; default = false; }
+    int _strength_level;
+    public int strength_level {
+        get {
+            return _strength_level;
+        }
+        set {
+            _strength_level = value;
+
+            update_css_by_strength (this, _strength_level);
+        }
+    }
 }

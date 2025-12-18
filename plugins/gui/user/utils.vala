@@ -1,26 +1,24 @@
 /*
  * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- *
+ * 
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-//  Took from gnome-initial-setup
-
-namespace ReadySet {
+namespace User {
 
     public enum StrengthLevel {
         BAD,
@@ -35,6 +33,16 @@ namespace ReadySet {
 
         if (is_correct)
             row.remove_css_class ("error");
+    }
+
+    bool is_username_used (string? username) {
+        if (username == null || username == "") {
+            return false;
+        }
+
+        weak Posix.Passwd? pwent = Posix.getpwnam (username);
+
+        return pwent != null;
     }
 
     public void update_css_by_strength (Gtk.Widget row, StrengthLevel strength_level) {
@@ -277,10 +285,33 @@ namespace ReadySet {
 
     bool set_root_password (string password) {
         try {
-            pkexec ({ "/usr/libexec/ready-set-set-root-password", password });
+            ReadySet.pkexec ({ "/usr/libexec/ready-set-set-root-password", password });
             return true;
         } catch (Error e) {
             return false;
         }
+    }
+
+    public string get_current_language () {
+        var context = Addin.get_instance ().context;
+
+        var locale = context.get_string ("locale");
+
+        if (locale == null) {
+            debug ("Languages: %s", string.joinv (", ", Intl.get_language_names ()));
+
+            foreach (string lang in Intl.get_language_names ()) {
+                if (Gnome.Languages.parse_locale (lang, null, null, null, null)) {
+                    locale = lang;
+                    break;
+                }
+            }
+
+            if (locale == null) {
+                locale = "C";
+            }
+        }
+
+        return locale;
     }
 }
