@@ -20,6 +20,8 @@
 
 public abstract class ReadySet.Addin : Peas.ExtensionBase {
 
+    public string start_apply_message { get; set; default = _("Applying changes…"); }
+
     protected virtual string? resource_base_path {
         get {
             return null;
@@ -50,4 +52,12 @@ public abstract class ReadySet.Addin : Peas.ExtensionBase {
     }
 
     public abstract BasePage[] build_pages ();
+
+    public virtual bool allowed () {
+        return true;
+    }
+
+    public virtual async void apply () throws ApplyError {
+        return;
+    }
 }

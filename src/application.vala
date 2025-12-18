@@ -40,6 +40,7 @@ public sealed class ReadySet.Application: Adw.Application {
     Context context;
 
     public Gee.ArrayList<BasePage> callback_pages { get; default = new Gee.ArrayList<BasePage> (); }
+    public Gee.ArrayList<Addin> callback_addins { get; default = new Gee.ArrayList<Addin> (); }
 
     public Application () {
         Object (
@@ -110,7 +111,10 @@ public sealed class ReadySet.Application: Adw.Application {
         return engine;
     }
 
-    public BasePage[] get_pages () {
+    public void init_pages () {
+        callback_pages.clear ();
+        callback_addins.clear ();
+
         if (all_steps.length == 0) {
             all_steps = get_all_steps ();
         }
@@ -148,15 +152,22 @@ public sealed class ReadySet.Application: Adw.Application {
                 print ("  broken step");
             } else {
                 var addin = plugins[all_steps[i]];
-                addin.context = context;
-                pages.add_all_array (addin.build_pages ());
-                print ("  %s\n", all_steps[i]);
+                if (addin.allowed ()) {
+                    callback_addins.add (addin);
+                    addin.context = context;
+                    pages.add_all_array (addin.build_pages ());
+                    print ("  %s\n", all_steps[i]);
+                }
             }
         }
 
         pages.add (new EndPage ());
 
-        return pages.to_array ();
+        foreach (var page in pages) {
+            if (page.allowed ()) {
+                callback_pages.add (page);
+            }
+        }
     }
 
     string[] get_all_steps () {

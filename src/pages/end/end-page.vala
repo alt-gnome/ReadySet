@@ -50,6 +50,19 @@ public sealed class ReadySet.EndPage : BasePage {
                 }
             }
 
+            foreach (var callback_addin in app.callback_addins) {
+                if (app.idle) {
+                    Timeout.add_seconds_once (1, () => {
+                        Idle.add (start_action.callback);
+                    });
+                    yield;
+
+                } else {
+                    loading_status = callback_addin.start_apply_message;
+                    yield callback_addin.apply ();
+                }
+            }
+
             stop_loading ();
             stack.visible_child_name = "ready";
             is_ready = true;

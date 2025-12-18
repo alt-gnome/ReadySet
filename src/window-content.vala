@@ -35,13 +35,10 @@ public sealed class ReadySet.WindowContent : Adw.BreakpointBin {
         );
 
         var app = ReadySet.Application.get_default ();
-        app.callback_pages.clear ();
+        app.init_pages ();
 
-        foreach (var page in app.get_pages ()) {
-            if (page.allowed ()) {
-                steps_main_page.add_page (page);
-                app.callback_pages.add (page);
-            }
+        foreach (var page in app.callback_pages) {
+            steps_main_page.add_page (page);
         }
     }
 

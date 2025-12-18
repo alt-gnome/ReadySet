@@ -32,6 +32,10 @@ public class Test.Addin : ReadySet.Addin {
             new Test.ErrorPage ()
         };
     }
+
+    public override async void apply () throws ReadySet.ApplyError {
+        message ("Tests DONE");
+    }
 }
 
 public void peas_register_types (TypeModule module) {
