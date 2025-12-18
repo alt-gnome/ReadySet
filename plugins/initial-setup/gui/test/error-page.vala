@@ -16,18 +16,14 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/test-error-page.ui")]
-public sealed class ReadySet.TestErrorPage : BasePage {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Test/ui/error-page.ui")]
+public sealed class Test.ErrorPage : ReadySet.BasePage {
 
     construct {
         is_ready = true;
     }
 
-    public override async void apply () throws ApplyError {
-        throw new ApplyError.BASE ("%s%s%s".printf (
-            "Test error",
-            RSS,
-            "Test error has been thrown"
-        ));
+    public override async void apply () throws ReadySet.ApplyError {
+        throw ReadySet.ApplyError.build_error ("Test error", "Test error has been thrown");
     }
 }

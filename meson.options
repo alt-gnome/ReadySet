@@ -25,3 +25,9 @@ option(
   value: true,
   description: 'Whether to build library introspection files',
 )
+option(
+  'with_test_pages',
+  type: 'boolean',
+  value: false,
+  description: 'Build test pages ot not',
+)

@@ -45,11 +45,7 @@ public sealed class Language.Page : ReadySet.BasePage {
         try {
             yield proxy.set_locale ({ @"LANG=$(get_current_language ())" }, true);
         } catch (Error e) {
-            throw new ReadySet.ApplyError.BASE ("%s%s%s".printf (
-                _("Error when setting language"),
-                ReadySet.RSS,
-                e.message
-            ));
+            throw ReadySet.ApplyError.build_error (_("Error when setting language"), e.message);
         }
     }
 }

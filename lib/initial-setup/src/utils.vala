@@ -20,12 +20,41 @@
 
 namespace ReadySet {
 
+    public struct ApplyErrorData {
+        public string message;
+        public string description;
+    }
+
     public errordomain ApplyError {
         BASE,
         NO_PERMISSION;
+
+        public static ApplyError build_error (string message, string description) {
+            return new ApplyError.BASE ("%s%s%s".printf (
+                message,
+                RSS,
+                description
+            ));
+        }
+
+        public static ApplyErrorData to_data (ApplyError error) {
+            var parts = error.message.split (RSS, 2);
+
+            if (parts.length == 2) {
+                return {
+                    message: parts[0],
+                    description: parts[1]
+                };
+            } else {
+                return {
+                    message: _("Something went wrong"),
+                    description: parts[0]
+                };
+            }
+        }
     }
 
     public delegate void ApplyFunc () throws ApplyError;
 
-    public const string RSS = "\n::READY-SET-SEPARATOR::\n";
+    const string RSS = "\n::READY-SET-SEPARATOR::\n";
 }

@@ -96,11 +96,7 @@ public sealed class ReadySet.KeyboardPage : BasePage {
                 true
             );
         } catch (Error e) {
-            throw new ApplyError.BASE ("%s%s%s".printf (
-                _("Error when setting keyboard layout"),
-                RSS,
-                e.message
-            ));
+            throw ApplyError.build_error (_("Error when setting keyboard layout"), e.message);
         }
     }
 }

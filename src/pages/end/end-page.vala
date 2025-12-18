@@ -55,15 +55,10 @@ public sealed class ReadySet.EndPage : BasePage {
             is_ready = true;
 
         } catch (ApplyError error) {
-            var parts = error.message.split (RSS);
+            var apply_error_data = ApplyError.to_data (error);
 
-            if (parts.length == 2) {
-                error_title = parts[0];
-                error_description = parts[1];
-            } else {
-                error_title = _("Something went wrong");
-                error_description = error.message;
-            }
+            error_title = apply_error_data.message;
+            error_description = apply_error_data.description;
 
             error_description = _("Error message: %s").printf (error_description);
 

@@ -16,8 +16,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/test-page.ui")]
-public sealed class ReadySet.TestPage : BasePage {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Test/ui/page.ui")]
+public sealed class Test.Page : ReadySet.BasePage {
 
     [GtkCallback]
     void test_clicked () {
