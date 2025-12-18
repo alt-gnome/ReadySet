@@ -20,9 +20,9 @@
 
 public class Welcome.Addin : ReadySet.Addin {
 
-    protected override string? css_resources_path {
+    protected override string? resource_base_path {
         get {
-            return "/org/altlinux/ReadySet/Plugin/Welcome/style.css";
+            return "/org/altlinux/ReadySet/Plugin/Welcome/";
         }
     }
 

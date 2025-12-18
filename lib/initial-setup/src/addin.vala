@@ -20,7 +20,7 @@
 
 public abstract class ReadySet.Addin : Peas.ExtensionBase {
 
-    protected virtual string? css_resources_path {
+    protected virtual string? resource_base_path {
         get {
             return null;
         }
@@ -29,10 +29,23 @@ public abstract class ReadySet.Addin : Peas.ExtensionBase {
     public Context context { get; set; default = new Context (); }
 
     construct {
-        if (css_resources_path != null) {
-            var provider = new Gtk.CssProvider ();
-            provider.load_from_resource (css_resources_path);
-            Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        load_css ();
+    }
+
+    void load_css () {
+        if (resource_base_path != null) {
+            try {
+                var bytes = resources_lookup_data (
+                    Path.build_filename (resource_base_path, "style.css"),
+                    ResourceLookupFlags.NONE
+                );
+
+                var provider = new Gtk.CssProvider ();
+                provider.load_from_bytes (bytes);
+                Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            } catch (Error e) {
+                debug ("style.css doesnt' provides by resources");
+            }
         }
     }
 
