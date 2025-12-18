@@ -1,15 +1,17 @@
-plugin_welcome_blueprints = files(
+plugin_keyboard_blueprints = files(
+  'ui/input-chooser.blp',
+  'ui/input-row.blp',
   'ui/page.blp',
 )
 
-plugin_welcome_resources = gnome.compile_resources(
+plugin_keyboard_resources = gnome.compile_resources(
   'resources',
-  '@0@.Plugin.Welcome.gresource.xml'.format(app_id),
+  '@0@.Plugin.Keyboard.gresource.xml'.format(app_id),
   source_dir: meson.current_build_dir(),
   dependencies: custom_target(
     'blueprints',
     
-    input: plugin_welcome_blueprints,
+    input: plugin_keyboard_blueprints,
     output: '.',
     command: [ find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@' ],
   )
@@ -17,11 +19,11 @@ plugin_welcome_resources = gnome.compile_resources(
 
 configure_file(
   input: 'plugin.in',
-  output: plugin_welcome_name + '.plugin',
+  output: plugin_keyboard_name + '.plugin',
 
   configuration: {
-    'NAME': plugin_welcome_pretty_name,
-    'MODULE': plugin_welcome_name,
+    'NAME': plugin_keyboard_pretty_name,
+    'MODULE': plugin_keyboard_name,
     'VERSION': meson.project_version(),
   },
   install: true,

@@ -125,7 +125,7 @@ public class ReadySet.UserPage : BasePage {
             );
 
             user.set_password (data.user.password, "");
-            user.set_language (get_current_language ());
+            //  user.set_language (get_current_language ());
 
             set_root_password (data.user.equal_to_root ? data.user.password : data.user.root_password);
 

@@ -16,84 +16,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[DBus (name = "org.freedesktop.locale1")]
-public interface Locale1 : Object {
-    public abstract string[] locale { owned get; }
-    public abstract string v_console_toggle { owned get; }
-    public abstract string v_console_keymap_toggle { owned get; }
-    public abstract string x_11_layout { owned get; }
-    public abstract string x_11_model { owned get; }
-    public abstract string x_11_options { owned get; }
-    public abstract string x_11_variant { owned get; }
-
-    public abstract async void set_locale (
-        string[] locale,
-        bool interactive
-    ) throws Error;
-
-    public abstract async void set_v_console_keyboard (
-        string keymap,
-        string keymap_toggle,
-        bool convert,
-        bool interactive
-    ) throws Error;
-
-    public abstract async void set_x_11_keyboard (
-        string layout,
-        string model,
-        string variant,
-        string options,
-        bool convert,
-        bool interactive
-    ) throws Error;
-}
-
-public class ReadySet.InputInfo : Object {
-
-    public string id { get; construct; }
-
-    public string type_ { get; construct; }
-
-    public string format { get; construct; }
-
-    public InputInfo (string type, string id_) {
-        Object (
-            id: id_,
-            type_: type,
-            format: "%s::%s".printf (type, id_)
-        );
-    }
-
-    public uint _hash () {
-        return format.hash ();
-    }
-
-    public static uint hash (InputInfo a) {
-        return a._hash ();
-    }
-
-    public static bool equal (InputInfo a, InputInfo b) {
-        return strcmp (a.format, b.format) == 0;
-    }
-}
-
 namespace ReadySet {
-
-    public void set_msg_locale (string locale) {
-        var result = Data.get_instance ();
-
-        result.language.current_language = locale;
-    }
-
-    public string get_current_language () {
-        var result = Data.get_instance ();
-
-        return result.language.current_language;
-    }
-
-    public string[] get_supported_languages () {
-        return Config.SUPPORTED_LANGUAGES.split ("|");
-    }
 
     bool is_username_used (string? username) {
         if (username == null || username == "") {
@@ -103,24 +26,6 @@ namespace ReadySet {
         weak Posix.Passwd? pwent = Posix.getpwnam (username);
 
         return pwent != null;
-    }
-
-    Locale1 get_locale_proxy () {
-        try {
-            var con = Bus.get_sync (BusType.SYSTEM);
-
-            if (con == null) {
-                error ("Failed to connect to bus");
-            }
-
-            return con.get_proxy_sync<Locale1> (
-                "org.freedesktop.locale1",
-                "/org/freedesktop/locale1",
-                DBusProxyFlags.NONE
-            );
-        } catch (Error e) {
-            error (e.message);
-        }
     }
 
     void pkexec (owned string[] cmd, string? user = null) throws Error {

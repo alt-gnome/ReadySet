@@ -16,8 +16,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/keyboard-page.ui")]
-public sealed class ReadySet.KeyboardPage : BasePage {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Keyboard/ui/page.ui")]
+public sealed class Keyboard.Page : ReadySet.BasePage {
 
     [GtkChild]
     unowned InputChooser input_chooser;
@@ -59,11 +59,11 @@ public sealed class ReadySet.KeyboardPage : BasePage {
         }
     }
 
-    public override async void apply () throws ApplyError {
+    public override async void apply () throws ReadySet.ApplyError {
         var proxy = get_locale_proxy ();
 
-        var data = Data.get_instance ();
-        var inputs = data.keyboard.current_inputs_info.to_array ();
+        var current_inputs_info = get_current_inputs ();
+        var inputs = current_inputs_info.to_array ();
 
         var layouts = new Gee.ArrayList<string> ();
         var variants = new Gee.ArrayList<string> ();
@@ -96,7 +96,7 @@ public sealed class ReadySet.KeyboardPage : BasePage {
                 true
             );
         } catch (Error e) {
-            throw ApplyError.build_error (_("Error when setting keyboard layout"), e.message);
+            throw ReadySet.ApplyError.build_error (_("Error when setting keyboard layout"), e.message);
         }
     }
 }

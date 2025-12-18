@@ -5,11 +5,6 @@ rs_app_vapi_sources = files(
 rs_app_vala_sources = files(
   'pages/end/end-page.vala',
 
-  'pages/keyboard/ibus-utils.vala',
-  'pages/keyboard/input-chooser.vala',
-  'pages/keyboard/input-row.vala',
-  'pages/keyboard/keyboard-page.vala',
-
   'pages/user/user-page.vala',
 
   'pages/user-with-root/user-with-root-page.vala',
@@ -39,7 +34,6 @@ rs_app_dependencies = [
   gee_dep,
   gnome_desktop_dep,
   gtk_dep,
-  ibus_dep,
   libadwaita_dep,
   libpeas_dep,
   polkit_dep,
@@ -65,10 +59,6 @@ rs_app_vala_args = [
   '--gresourcesdir=data/',
   '--vapidir', meson.current_source_dir() / '..' / 'vapi',
 ]
-
-if get_option('have_ibus')
-  rs_app_c_args += ['-DHAVE_IBUS']
-endif
 
 configure_file(output: 'config.h', configuration: global_conf)
 rs_app_config_h_dir = include_directories('.')

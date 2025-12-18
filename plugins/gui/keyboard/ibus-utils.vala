@@ -17,7 +17,7 @@
  */
 
 #if HAVE_IBUS
-namespace ReadySet {
+namespace Keyboard {
     public string? engine_get_display_name (IBus.EngineDesc engine_desc) {
         string name = engine_desc.get_longname ();
         string language_code = engine_desc.get_language ();

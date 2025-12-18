@@ -18,20 +18,34 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/input-row.ui")]
-public sealed class ReadySet.InputRow : Adw.ActionRow {
+public class Keyboard.Addin : ReadySet.Addin {
 
-    public InputInfo input_info { get; construct; }
+    static Addin instance;
 
-    public bool is_extra { get; construct set; }
-
-    public new bool is_selected { get; set; }
-
-    public InputRow (InputInfo input_info, string name, bool is_extra) {
-        Object (
-            input_info: input_info,
-            title: name,
-            is_extra: is_extra
-        );
+    protected override string? resource_base_path {
+        get {
+            return "/org/altlinux/ReadySet/Plugin/Keyboard/";
+        }
     }
+
+    static construct {
+        typeof (InputChooser).ensure ();
+    }
+
+    construct {
+        instance = this;
+    }
+
+    public override ReadySet.BasePage[] build_pages () {
+        return { new Keyboard.Page () };
+    }
+
+    internal static Addin get_instance () {
+        return instance;
+    }
+}
+
+public void peas_register_types (TypeModule module) {
+    var obj = (Peas.ObjectModule) module;
+    obj.register_extension_type (typeof (ReadySet.Addin), typeof (Keyboard.Addin));
 }

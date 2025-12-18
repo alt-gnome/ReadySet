@@ -16,8 +16,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/input-chooser.ui")]
-public sealed class ReadySet.InputChooser : Gtk.Box {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Keyboard/ui/input-chooser.ui")]
+public sealed class Keyboard.InputChooser : Gtk.Box {
 
     [GtkChild]
     unowned Gtk.SearchEntry filter_entry;
@@ -134,13 +134,13 @@ public sealed class ReadySet.InputChooser : Gtk.Box {
     }
 
     void sync_all_checkmarks (bool initial = false) {
-        var result = Data.get_instance ();
+        var current_inputs_info = get_current_inputs ();
         bool invalidate = false;
 
         foreach (var entry in input_rows) {
             var row_input_info = entry.key;
             var row = entry.value;
-            bool is_selected = row_input_info in result.keyboard.current_inputs_info;
+            bool is_selected = row_input_info in current_inputs_info;
 
             row.is_selected = is_selected;
 
@@ -171,20 +171,21 @@ public sealed class ReadySet.InputChooser : Gtk.Box {
             return;
         }
 
-        var result = Data.get_instance ();
+        var current_inputs_info = get_current_inputs ();
 
         var input_row = (InputRow) row;
         input_row.is_selected = !input_row.is_selected;
 
         if (input_row.is_selected) {
-            result.keyboard.current_inputs_info.add (input_row.input_info);
+            current_inputs_info.add (input_row.input_info);
         } else {
-            result.keyboard.current_inputs_info.remove (input_row.input_info);
+            current_inputs_info.remove (input_row.input_info);
         }
 
         sync_all_checkmarks ();
 
-        changed (result.keyboard.current_inputs_info.to_array ());
+        set_current_inputs (current_inputs_info);
+        changed (current_inputs_info.to_array ());
     }
 
     int sort_inputs (Gtk.ListBoxRow a, Gtk.ListBoxRow b) {
@@ -231,11 +232,12 @@ public sealed class ReadySet.InputChooser : Gtk.Box {
         string lang = null;
         string country = null;
 
-        var result = Data.get_instance ();
+        var current_inputs_info = get_current_inputs ();
 
         if (Gnome.Languages.get_input_source_from_locale (get_current_language (), out type, out id)) {
-            if (result.keyboard.current_inputs_info.size == 0) {
-                result.keyboard.current_inputs_info.add (new InputInfo (type, id));
+            if (current_inputs_info.size == 0) {
+                current_inputs_info.add (new InputInfo (type, id));
+                set_current_inputs (current_inputs_info);
             }
 
             add_row_to_list (type, id);
@@ -402,14 +404,15 @@ public sealed class ReadySet.InputChooser : Gtk.Box {
         var variant = settings.get_value ("sources");
 
         var iterator = variant.iterator ();
-        var result = Data.get_instance ();
+        var current_inputs_info = get_current_inputs ();
 
         Variant? item;
         while ((item = iterator.next_value ()) != null) {
             string input_type, input_id;
 
             item.get ("(ss)", out input_type, out input_id);
-            result.keyboard.current_inputs_info.add (new InputInfo (input_type, input_id));
+            current_inputs_info.add (new InputInfo (input_type, input_id));
+            set_current_inputs (current_inputs_info);
         }
     }
 }
