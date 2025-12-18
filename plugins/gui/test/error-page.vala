@@ -24,7 +24,7 @@ public sealed class Test.ErrorPage : ReadySet.BasePage {
     }
 
     public override async void apply () throws ReadySet.ApplyError {
-        if (Environment.get_variable ("ERROR_TEST") != null) {
+        if (Addin.get_instance ().context.get_string ("test-throw-error") == "true") {
             throw ReadySet.ApplyError.build_error ("Test error", "Test error has been thrown");
         }
     }

@@ -20,10 +20,16 @@
 
 public class Test.Addin : ReadySet.Addin {
 
+    static Addin instance;
+
     protected override string? resource_base_path {
         get {
             return "/org/altlinux/ReadySet/Plugin/Test/";
         }
+    }
+
+    construct {
+        instance = this;
     }
 
     public override ReadySet.BasePage[] build_pages () {
@@ -31,6 +37,10 @@ public class Test.Addin : ReadySet.Addin {
             new Test.Page (),
             new Test.ErrorPage ()
         };
+    }
+
+    internal static Addin get_instance () {
+        return instance;
     }
 
     public override async void apply () throws ReadySet.ApplyError {
