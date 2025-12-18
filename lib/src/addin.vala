@@ -46,7 +46,7 @@ public abstract class ReadySet.Addin : Peas.ExtensionBase {
                 provider.load_from_bytes (bytes);
                 Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
             } catch (Error e) {
-                debug ("style.css doesnt' provides by resources");
+                debug ("style.css doesn't provides by resources");
             }
         }
     }
