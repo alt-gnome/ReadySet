@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Vaskov <rirusha@altlinux.org>
+ * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,13 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/window-content.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/window-content.ui")]
 public sealed class ReadySet.WindowContent : Adw.BreakpointBin {
 
     [GtkChild]
     unowned Adw.OverlaySplitView split_view;
     [GtkChild]
     unowned StepsMainPage steps_main_page;
-
-    static string[] saved_all_steps = {};
 
     construct {
         GLib.Application.get_default ().bind_property (
@@ -36,19 +34,11 @@ public sealed class ReadySet.WindowContent : Adw.BreakpointBin {
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
 
-        if (saved_all_steps.length == 0) {
-            saved_all_steps = get_all_steps ();
-        }
+        var app = ReadySet.Application.get_default ();
+        app.init_pages ();
 
-        var app = (ReadySet.Application) GLib.Application.get_default ();
-        app.callback_pages.clear ();
-
-        foreach (string step_id in saved_all_steps) {
-            var page = build_page_by_step_id (step_id);
-            if (page.allowed ()) {
-                steps_main_page.add_page (page);
-                app.callback_pages.add (page);
-            }
+        foreach (var page in app.callback_pages) {
+            steps_main_page.add_page (page);
         }
     }
 

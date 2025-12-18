@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/altlinux/ReadySet/icons/scalable/actions/">
+    <file alias="altmobile-symbolic.svg">assets/icons/altmobile-symbolic.svg</file>
+  </gresource>
+  <gresource prefix="/org/altlinux/ReadySet/Plugin/Welcome/">
+    <file>style.css</file>
+    <file preprocess="xml-stripblanks">ui/page.ui</file>
+  </gresource>
+</gresources>

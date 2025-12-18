@@ -1,0 +1,11 @@
+using Gtk 4.0;
+
+template $KeyboardPage: $ReadySetBasePage {
+  title-header: _("Keyboard");
+  title: _("Keyboard settings");
+  icon-name: "keyboard-symbolic";
+  description: _("Select your keyboard layout");
+  is-ready: true;
+
+  content: $KeyboardInputChooser input_chooser {};
+}

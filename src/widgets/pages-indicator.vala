@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Vaskov <rirusha@altlinux.org>
+ * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/pages-indicator.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/pages-indicator.ui")]
 public sealed class ReadySet.PagesIndicator : Gtk.Box {
 
     [GtkChild]

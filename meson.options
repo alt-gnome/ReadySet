@@ -1,0 +1,33 @@
+option(
+  'is_devel',
+  type: 'boolean',
+  value: false
+)
+option(
+  'have_ibus',
+  type: 'boolean',
+  value: true
+)
+option(
+  'username',
+  type: 'string',
+  value: 'root'
+)
+option(
+  'with_lib_documentation',
+  type: 'boolean',
+  value: false,
+  description: 'Whether to build library documentation',
+)
+option(
+  'with_lib_introspection',
+  type: 'boolean',
+  value: true,
+  description: 'Whether to build library introspection files',
+)
+option(
+  'with_test_pages',
+  type: 'boolean',
+  value: false,
+  description: 'Build test pages ot not',
+)

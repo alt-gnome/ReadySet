@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/altlinux/ReadySet/icons/scalable/actions/">
+    <file alias="language-symbolic.svg">assets/icons/language-symbolic.svg</file>
+  </gresource>
+  <gresource prefix="/org/altlinux/ReadySet/Plugin/Language/">
+    <file>style.css</file>
+    <file preprocess="xml-stripblanks">ui/box.ui</file>
+    <file preprocess="xml-stripblanks">ui/page.ui</file>
+    <file preprocess="xml-stripblanks">ui/row.ui</file>
+  </gresource>
+</gresources>

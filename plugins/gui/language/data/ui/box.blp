@@ -1,0 +1,44 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $LanguageBox: Adw.Bin {
+  Box {
+    orientation: vertical;
+    spacing: 10;
+
+    SearchEntry search_entry {
+      styles [
+        "card",
+      ]
+
+      can-focus: false;
+      height-request: 48;
+      placeholder-text: _("Search language");
+      hexpand: true;
+      visible: bind template.show-more;
+    }
+
+    ListBox languages_listbox {
+      styles [
+        "boxed-list",
+      ]
+
+      selection-mode: none;
+    }
+
+    ListBox {
+      styles [
+        "boxed-list",
+      ]
+
+      selection-mode: none;
+      visible: bind template.show-more inverted;
+
+      Adw.ButtonRow {
+        title: _("Show more");
+        start-icon-name: "view-more-symbolic";
+        activated => $show_more_clicked();
+      }
+    }
+  }
+}

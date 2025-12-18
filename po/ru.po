@@ -171,7 +171,7 @@ msgstr "Главная"
 #: src/about.vala:27
 msgid "translator-credits"
 msgstr ""
-"Vladimir Vaskov <rirusha@altlinux.org>\n"
+"Vladimir Romanov <rirusha@altlinux.org>\n"
 "David Sultaniiazov <x1z53@altlinux.org>"
 
 #: src/about.vala:33
