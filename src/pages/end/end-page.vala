@@ -62,6 +62,7 @@ public sealed class ReadySet.EndPage : BasePage {
 
             error_description = _("Error message: %s").printf (error_description);
 
+            stop_loading ();
             icon_name = "dialog-error-symbolic";
             stack.visible_child_name = "error";
             is_ready = false;
