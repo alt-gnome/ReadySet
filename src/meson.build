@@ -45,7 +45,7 @@ rs_app_dependencies = [
   polkit_dep,
   posix_dep,
   pwquality_dep,
-  librs_is_dep,
+  librs_dep,
 ]
 
 rs_app_sources = [

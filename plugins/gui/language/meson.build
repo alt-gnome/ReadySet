@@ -1,7 +1,7 @@
 plugin_is_language_deps = [
   gio_dep,
   gnome_desktop_dep,
-  librs_is_dep,
+  librs_dep,
   polkit_dep,
 ]
 

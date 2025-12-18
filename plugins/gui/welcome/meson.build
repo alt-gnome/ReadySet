@@ -1,5 +1,5 @@
 plugin_is_welcome_deps = [
-  librs_is_dep,
+  librs_dep,
 ]
 
 plugin_is_welcome_sources = files(

@@ -1,3 +1,3 @@
-subdir('common')
-subdir('initial-setup')
-subdir('installer')
+subdir('gui/language')
+subdir('gui/test')
+subdir('gui/welcome')

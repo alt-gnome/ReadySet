@@ -1,5 +1,5 @@
 plugin_is_test_deps = [
-  librs_is_dep,
+  librs_dep,
 ]
 
 plugin_is_test_sources = files(
