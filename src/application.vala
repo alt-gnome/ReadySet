@@ -22,6 +22,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
     string? steps_filename = null;
     string[]? steps = null;
+    bool fullscreen = false;
 
     const OptionEntry[] OPTION_ENTRIES = {
         { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
@@ -29,6 +30,7 @@ public sealed class ReadySet.Application: Adw.Application {
         { "steps", 's', 0, OptionArg.STRING, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
         { "context", 'c', 0, OptionArg.STRING_ARRAY, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
         { "idle", 'i', 0, OptionArg.NONE, null, N_("Idle run without doing anything"), null },
+        { "fullscreen", '\0', 0, OptionArg.NONE, null, N_("Run window in fullscreen"), null },
         { null }
     };
 
@@ -83,7 +85,9 @@ public sealed class ReadySet.Application: Adw.Application {
         }
         if (options.contains ("idle")) {
             idle = true;
-
+        }
+        if (options.contains ("fullscreen")) {
+            fullscreen = true;
         }
         if (options.contains ("steps")) {
             steps = options.lookup_value ("steps", null).get_string ().split (",");
@@ -234,6 +238,9 @@ public sealed class ReadySet.Application: Adw.Application {
             var win = new Window (this);
 
             win.present ();
+            if (fullscreen) {
+                win.fullscreen ();
+            }
 
         } else {
             active_window.present ();
