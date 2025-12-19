@@ -19,7 +19,8 @@ foreach pwcheck_backend : password_check_backend
   plugin_user_sources = files(
     'context-row.vala',
     'margin-label.vala',
-    'page.vala',
+    'page-password.vala',
+    'page-username.vala',
     'password-strength.vala',
     'plugin.vala',
     'utils.vala',

@@ -34,7 +34,29 @@ public class User.Addin : ReadySet.Addin {
 
     public override ReadySet.BasePage[] build_pages () {
         bool with_root = context.get_string ("user-with-root") == "true";
-        return { new User.Page () { with_root_password = with_root } };
+        return {
+            new User.PageUsername (),
+            new User.PagePassword () { with_root_password = with_root }
+        };
+    }
+
+    public async override void apply () throws ReadySet.ApplyError {
+        try {
+            var user = yield Act.UserManager.get_default ().create_user_async (
+                context.get_string ("user-username"),
+                context.get_string ("user-fullname"),
+                Act.UserAccountType.ADMINISTRATOR,
+                null
+            );
+
+            user.set_password (context.get_string ("user-password"), "");
+            user.set_language (get_current_language ());
+
+            set_root_password (context.get_string ("user-root-password"));
+
+        } catch (Error e) {
+            throw ReadySet.ApplyError.build_error (_("Error when creating a user"), e.message);
+        }
     }
 
     internal static Addin get_instance () {

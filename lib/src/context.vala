@@ -39,6 +39,10 @@ public class ReadySet.Context : Object {
         data_changed (key, value);
     }
 
+    public void set_string (string key, string value) {
+        set_data (key, value);
+    }
+
     public new Value? get_data (string key) {
         if (!has_data (key)) {
             return null;
