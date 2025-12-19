@@ -17,16 +17,3 @@ plugin_user_resources = gnome.compile_resources(
     command: [ find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@' ],
   )
 )
-
-configure_file(
-  input: 'plugin.in',
-  output: plugin_user_name + '.plugin',
-
-  configuration: {
-    'NAME': plugin_user_pretty_name,
-    'MODULE': plugin_user_name,
-    'VERSION': meson.project_version(),
-  },
-  install: true,
-  install_dir: libdir / meson.project_name() / 'plugins'
-)

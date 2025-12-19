@@ -108,9 +108,9 @@ namespace User.Password {
 
         return {
             hint: error_hint (rv),
-            strength: strength,
             level: strength_level,
+            value: strength,
             support_value: true
-        }
+        };
     }
 }

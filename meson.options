@@ -34,6 +34,6 @@ option(
 option(
   'password_check_backend',
   type: 'combo',
-  choices: ['passwdqc', 'pwquality'],
+  choices: ['passwdqc', 'pwquality', 'both'],
   value : 'passwdqc'
 )
