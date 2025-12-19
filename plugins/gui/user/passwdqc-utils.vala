@@ -45,8 +45,8 @@ namespace User.Password {
 
     public Strength strength (
         string password,
-        string? old_password,
-        string? username
+        string? old_password = null,
+        string? username = null
     ) {
         var prms = get_pwqc ();
         var res = prms.qc.check (password, old_password);

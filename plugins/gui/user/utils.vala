@@ -192,10 +192,7 @@ namespace User {
     }
 
     bool password_is_correct (string password) {
-        StrengthLevel strength_level;
-        var s = Password.strength (password, null, null);
-
-        return s.level != BAD;
+        return Password.strength (password).level != BAD;
     }
 
     bool set_root_password (string password) {
