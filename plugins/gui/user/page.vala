@@ -188,7 +188,6 @@ public class User.Page : ReadySet.BasePage {
 
     [GtkCallback]
     void switch_changed () {
-        equal_switch_row.active = !equal_switch_row.active;
         root_password_entry.text = "";
         root_password_repeat_entry.text = "";
 
