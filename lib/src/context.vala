@@ -43,6 +43,10 @@ public class ReadySet.Context : Object {
         set_data (key, value);
     }
 
+    public void set_boolean (string key, bool value) {
+        set_data (key, value ? "true" : "false");
+    }
+
     public new Value? get_data (string key) {
         if (!has_data (key)) {
             return null;
@@ -50,7 +54,7 @@ public class ReadySet.Context : Object {
         return data[key];
     }
 
-    public new string? get_string (string key) {
+    public string? get_string (string key) {
         if (!has_data (key)) {
             return null;
         }
@@ -60,5 +64,18 @@ public class ReadySet.Context : Object {
         } else {
             return null;
         }
+    }
+
+    public bool get_boolean (string key) {
+        if (!has_data (key)) {
+            return false;
+        }
+
+        var str = get_string (key);
+        if (str == null) {
+            return false;
+        }
+
+        return str == "true";
     }
 }

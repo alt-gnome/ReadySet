@@ -33,7 +33,7 @@ public class User.Addin : ReadySet.Addin {
     }
 
     public override ReadySet.BasePage[] build_pages () {
-        bool with_root = context.get_string ("user-with-root") == "true";
+        bool with_root = context.get_boolean ("user-with-root");
         return {
             new User.PageUsername (),
             new User.PagePassword () { with_root_password = with_root }
@@ -49,6 +49,7 @@ public class User.Addin : ReadySet.Addin {
                 null
             );
 
+            user.set_automatic_login (context.get_boolean ("user-autologin"));
             user.set_password (context.get_string ("user-password"), "");
             user.set_language (get_current_language ());
 

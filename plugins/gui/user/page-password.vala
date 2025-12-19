@@ -34,6 +34,8 @@ public class User.PagePassword : ReadySet.BasePage {
     [GtkChild]
     unowned Gtk.Switch equal_switch_row;
     [GtkChild]
+    unowned Adw.SwitchRow autologin_switch_row;
+    [GtkChild]
     unowned ContextRow root_password_context_row;
     [GtkChild]
     unowned Adw.PasswordEntryRow root_password_entry;
@@ -159,6 +161,11 @@ public class User.PagePassword : ReadySet.BasePage {
         root_password_repeat_context_row.reveal_context = false;
 
         update_is_ready ();
+    }
+
+    [GtkCallback]
+    void autologin_switch_changed () {
+        Addin.get_instance ().context.set_boolean ("user-autologin", autologin_switch_row.active);
     }
 
     [GtkCallback]
