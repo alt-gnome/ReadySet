@@ -155,7 +155,7 @@ public sealed class ReadySet.Application: Adw.Application {
                 pages.add (new BasePage () {
                     is_ready = true
                 });
-                print ("  broken step");
+                print ("  broken step\n");
             } else {
                 var addin = plugins[all_steps[i]];
                 if (addin.allowed ()) {
