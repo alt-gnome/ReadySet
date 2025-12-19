@@ -20,13 +20,18 @@
 
 namespace User {
 
+    public struct Strength {
+        public string hint;
+        public StrengthLevel level;
+        public double value;
+        public bool support_value;
+    }
+
     public enum StrengthLevel {
         BAD,
         NOT_BAD,
         GOOD;
     }
-
-    static PasswordQuality.Settings? _pwq_settings = null;
 
     public void update_correct (Adw.PreferencesRow row, bool is_correct) {
         row.add_css_class ("error");
@@ -188,99 +193,9 @@ namespace User {
 
     bool password_is_correct (string password) {
         StrengthLevel strength_level;
-        pw_strength (password, null, null, null, out strength_level);
+        var s = Password.strength (password, null, null);
 
-        return strength_level != BAD;
-    }
-
-    unowned PasswordQuality.Settings get_pwq () {
-        if (_pwq_settings == null) {
-            _pwq_settings = new PasswordQuality.Settings ();
-
-            var error = _pwq_settings.read_config (null, null);
-            if (error != PasswordQuality.Error.SUCCESS) {
-                GLib.error (error.to_string ());
-            }
-        }
-
-        return _pwq_settings;
-    }
-
-    string pw_generate () {
-        string res;
-        var error = get_pwq ().generate (0, out res);
-
-        if (error != PasswordQuality.Error.SUCCESS) {
-            GLib.error (error.to_string ());
-        }
-
-        return res;
-    }
-
-    string pw_error_hint (PasswordQuality.Error error) {
-        switch (error) {
-            case PasswordQuality.Error.SAME_PASSWORD:
-                return _("The new password needs to be different from the old one.");
-            case PasswordQuality.Error.CASE_CHANGES_ONLY:
-            case PasswordQuality.Error.TOO_SIMILAR:
-            case PasswordQuality.Error.ROTATED:
-                return _("This password is very similar to your last one. Try changing some letters and numbers.");
-            case PasswordQuality.Error.USER_CHECK:
-                return _("This is a weak password. A password without your user name would be stronger.");
-            case PasswordQuality.Error.GECOS_CHECK:
-                return _("This is a weak password. Try to avoid using your name in the password.");
-            case PasswordQuality.Error.BAD_WORDS:
-                return _("This is a weak password. Try to avoid some of the words included in the password.");
-            case PasswordQuality.Error.CRACKLIB_CHECK:
-                return _("This is a weak password. Try to avoid common words.");
-            case PasswordQuality.Error.PALINDROME:
-                return _("This is a weak password. Try to avoid reordering existing words.");
-            case PasswordQuality.Error.MIN_DIGITS:
-                return _("This is a weak password. Try to use more numbers.");
-            case PasswordQuality.Error.MIN_UPPERS:
-                return _("This is a weak password. Try to use more uppercase letters.");
-            case PasswordQuality.Error.MIN_LOWERS:
-                return _("This is a weak password. Try to use more lowercase letters.");
-            case PasswordQuality.Error.MIN_OTHERS:
-                return _("This is a weak password. Try to use more special characters, like punctuation.");
-            case PasswordQuality.Error.MIN_CLASSES:
-                return _("This is a weak password. Try to use a mixture of letters, numbers and punctuation.");
-            case PasswordQuality.Error.MAX_CONSECUTIVE:
-                return _("This is a weak password. Try to avoid repeating the same character.");
-            case PasswordQuality.Error.MAX_CLASS_REPEAT:
-                return _("This is a weak password. Try to avoid repeating the same type of character: you need to mix up letters, numbers and punctuation."); // vala-lint=line-length
-            case PasswordQuality.Error.MAX_SEQUENCE:
-                return _("This is a weak password. Try to avoid sequences like 1234 or abcd.");
-            case PasswordQuality.Error.MIN_LENGTH:
-                return _("This is a weak password. Try to add more letters, numbers and punctuation.");
-            case PasswordQuality.Error.EMPTY_PASSWORD:
-                return _("Mix uppercase and lowercase and try to use a number or two.");
-            default:
-                return _("Adding more letters, numbers and punctuation will make the password stronger.");
-        }
-    }
-
-    double pw_strength (
-        string password,
-        string? old_password,
-        string? username,
-        out string hint,
-        out StrengthLevel strength_level
-    ) {
-        var rv = get_pwq ().check (password, old_password, username, null);
-        double strength = (0.02 * rv).clamp (0.0, 1.0);
-
-        if (rv <= 0) {
-            strength_level = BAD;
-        } else if (rv <= 50) {
-            strength_level = NOT_BAD;
-        } else {
-            strength_level = GOOD;
-        }
-
-        hint = pw_error_hint (rv);
-
-        return strength;
+        return s.level != BAD;
     }
 
     bool set_root_password (string password) {

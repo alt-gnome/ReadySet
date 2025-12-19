@@ -1,9 +1,11 @@
+pwcheck_backend = get_option('password_check_backend') 
+
 plugin_user_deps = [
   accountsservice_desktop_dep,
   gnome_desktop_dep,
   librs_dep,
   posix_dep,
-  pwquality_dep,
+  dependency(pwcheck_backend)
 ]
 
 plugin_user_sources = files(
@@ -13,6 +15,7 @@ plugin_user_sources = files(
   'password-strength.vala',
   'plugin.vala',
   'utils.vala',
+  pwcheck_backend + '-utils.vala',
 )
 
 plugin_user_pretty_name = 'User'

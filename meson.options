@@ -31,3 +31,9 @@ option(
   value: false,
   description: 'Build test pages ot not',
 )
+option(
+  'password_check_backend',
+  type: 'combo',
+  choices: ['passwdqc', 'pwquality'],
+  value : 'passwdqc'
+)

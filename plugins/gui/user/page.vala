@@ -132,22 +132,18 @@ public class User.Page : ReadySet.BasePage {
 
     [GtkCallback]
     void password_changed () {
-        string hint;
-        StrengthLevel strength_level;
-
-        double strength = pw_strength (
+        var strength = Password.strength (
             password_entry.text,
             null,
-            username_entry.text,
-            out hint,
-            out strength_level
+            username_entry.text
         );
 
-        password_strength.strength_level = strength_level;
-        password_strength.strength = strength;
-        password_strength.label = hint;
-        update_css_by_strength (password_entry, strength_level);
-        password_context_row.reveal_context = strength_level != GOOD;
+        password_strength.strength_level = strength.level;
+        password_strength.strength = strength.value;
+        password_strength.label = strength.hint;
+        update_css_by_strength (password_entry, strength.level);
+        password_strength.progress_bar_visible = strength.support_value;
+        password_context_row.reveal_context = strength.level != GOOD;
 
         password_repeat_changed ();
         update_is_ready ();
@@ -164,22 +160,18 @@ public class User.Page : ReadySet.BasePage {
 
     [GtkCallback]
     void root_password_changed () {
-        string hint;
-        StrengthLevel strength_level;
-
-        double strength = pw_strength (
+        var strength = Password.strength (
             root_password_entry.text,
             null,
-            username_entry.text,
-            out hint,
-            out strength_level
+            username_entry.text
         );
 
-        root_password_strength.strength_level = strength_level;
-        root_password_strength.strength = strength;
-        root_password_strength.label = hint;
-        update_css_by_strength (root_password_entry, strength_level);
-        root_password_context_row.reveal_context = strength_level != GOOD;
+        root_password_strength.strength_level = strength.level;
+        root_password_strength.strength = strength.value;
+        root_password_strength.label = strength.hint;
+        update_css_by_strength (root_password_entry, strength.level);
+        root_password_strength.progress_bar_visible = strength.support_value;
+        root_password_context_row.reveal_context = strength.level != GOOD;
 
         root_password_repeat_changed ();
         update_is_ready ();
@@ -210,14 +202,14 @@ public class User.Page : ReadySet.BasePage {
 
     [GtkCallback]
     void generate_user_password () {
-        var password = pw_generate ();
+        var password = Password.generate ();
 
         password_entry.text = password;
     }
 
     [GtkCallback]
     void generate_root_password () {
-        var password = pw_generate ();
+        var password = Password.generate ();
 
         root_password_entry.text = password;
     }

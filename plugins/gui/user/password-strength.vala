@@ -26,6 +26,8 @@ public sealed class User.PasswordStrength : Gtk.Box {
 
     public string label { get; set; }
 
+    public bool progress_bar_visible { get; set; }
+
     double _strength;
     public double strength {
         get {
