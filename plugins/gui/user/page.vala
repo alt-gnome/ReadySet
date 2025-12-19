@@ -63,11 +63,42 @@ public class User.Page : ReadySet.BasePage {
     void update_is_ready () {
         is_ready = fullname_is_correct (fullname_entry.text, null) &&
                    username_is_correct (username_entry.text, false, null) &&
-                   password_is_correct (password_entry.text) &&
+                   password_is_ready (password_entry.text) &&
                    password_entry.text == password_repeat_entry.text &&
                    (equal_switch_row.active || (!equal_switch_row.active &&
-                   (password_is_correct (root_password_entry.text) &&
+                   (password_is_ready (root_password_entry.text) &&
                    root_password_entry.text == root_password_repeat_entry.text)));
+    }
+
+    bool password_is_ready (string password) {
+        bool no_password_security = Addin.get_instance ().context.get_string ("no-password-security") == "true";
+        if (no_password_security) {
+            return true;
+        } else {
+            return password_is_correct (password);
+        }
+    }
+
+    Strength get_password_strength (
+        string password,
+        string? old_password = null,
+        string? username = null
+    ) {
+        bool no_password_security = Addin.get_instance ().context.get_string ("no-password-security") == "true";
+        if (no_password_security) {
+            return {
+                hint: "",
+                strength_level: GOOD,
+                value: 0.0,
+                support_value: false
+            };
+        } else {
+            return Password.strength (
+                password,
+                old_password,
+                username
+            );
+        }
     }
 
     public override async void apply () throws ReadySet.ApplyError {
@@ -132,7 +163,7 @@ public class User.Page : ReadySet.BasePage {
 
     [GtkCallback]
     void password_changed () {
-        var strength = Password.strength (
+        var strength = get_password_strength (
             password_entry.text,
             null,
             username_entry.text
@@ -160,7 +191,7 @@ public class User.Page : ReadySet.BasePage {
 
     [GtkCallback]
     void root_password_changed () {
-        var strength = Password.strength (
+        var strength = get_password_strength (
             root_password_entry.text,
             null,
             username_entry.text
