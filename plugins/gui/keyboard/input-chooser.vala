@@ -23,11 +23,13 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
     unowned Gtk.SearchEntry filter_entry;
     [GtkChild]
     unowned Gtk.ListBox input_list;
+    [GtkChild]
+    unowned Gtk.ListBox current_input_list;
 
     const string INPUT_SOURCE_TYPE_XKB = "xkb";
     const string INPUT_SOURCE_TYPE_IBUS = "ibus";
 
-    const uint MIN_ROWS = 5;
+    const string[] MAIN_SOURCES = { "ara", "cn", "gb", "us", "fr", "de", "jp", "ru", "es" };
 
     public bool show_more { get; private set; }
 
@@ -36,16 +38,16 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
     Gee.HashMap<InputInfo, InputRow> input_rows;
     Gnome.XkbInfo xkb_info;
 
-// #if HAVE_IBUS
+#if HAVE_IBUS
     IBus.Bus ibus;
     Gee.HashMap<string, IBus.EngineDesc> ibus_engines;
     Cancellable ibus_cancellable;
-// #endif
+#endif
 
     construct {
         xkb_info = new Gnome.XkbInfo ();
 
-// #if HAVE_IBUS
+#if HAVE_IBUS
         IBus.init ();
 
         if (ibus != null) {
@@ -59,26 +61,54 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
 
             maybe_start_ibus ();
         }
-// #endif
+#endif
+
+        input_list.set_placeholder (new Gtk.Label (_("Nothing found")) {
+            height_request = 48
+        });
 
         input_rows = new Gee.HashMap<InputInfo, InputRow> (InputInfo.hash, InputInfo.equal);
 
+        current_input_list.set_sort_func (sort_inputs);
         input_list.set_sort_func (sort_inputs);
         input_list.set_filter_func (input_visible);
 
         read_sources ();
         get_locale_infos ();
+#if HAVE_IBUS
         get_ibus_locale_infos ();
+#endif
 
         filter_entry.changed.connect (() => {
             input_list.invalidate_filter ();
         });
+
+        Addin.get_instance ().context.data_changed.connect ((key, value) => {
+            if (key == "input-sources") {
+                update_current ();
+            }
+        });
+        update_current ();
 
         sync_all_checkmarks (true);
 
         Idle.add_once (() => {
             filter_entry.can_focus = true;
         });
+    }
+
+    void update_current () {
+        current_input_list.remove_all ();
+        current_input_list.set_placeholder (new Gtk.Label (_("No input sources selected")) {
+            height_request = 48,
+            css_classes = { "error" }
+        });
+        foreach (var info in get_current_inputs ()) {
+            current_input_list.append (new InputRow (info, get_row_name (info)) { is_selected = true });
+        }
+
+        input_list.invalidate_sort ();
+        input_list.invalidate_filter ();
     }
 
     public bool get_layout (string type, string id, out string layout, out string variant) {
@@ -90,7 +120,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             return true;
         }
 
-// #if HAVE_IBUS
+#if HAVE_IBUS
         if (type == "ibus") {
             IBus.EngineDesc? engine_desc = null;
 
@@ -108,7 +138,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             variant = "";
             return true;
         }
-// #endif
+#endif
 
         return false;
     }
@@ -118,7 +148,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             string display_name;
             xkb_info.get_layout_info (input_info.id, out display_name, null, null, null);
             return display_name;
-// #if HAVE_IBUS
+#if HAVE_IBUS
         } else if (input_info.type_ == INPUT_SOURCE_TYPE_IBUS) {
             if (ibus_engines != null) {
                 if (ibus_engines.has_key (input_info.id)) {
@@ -127,7 +157,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             }
 
             return input_info.id;
-// #endif
+#endif
         }
 
         return "ERROR";
@@ -218,6 +248,12 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             return false;
         }
 
+        foreach (var input_info in get_current_inputs ()) {
+            if (!show_more && input_row.input_info.format == input_info.format) {
+                return false;
+            }
+        }
+
         var search_query = filter_entry.text;
         if (search_query == null && search_query == "") {
             return false;
@@ -240,41 +276,46 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
                 set_current_inputs (current_inputs_info);
             }
 
-            add_row_to_list (type, id);
+            add_row_to_list (type, id, false);
         }
 
         if (!Gnome.Languages.parse_locale (get_current_language (), out lang, out country, null, null)) {
             return;
         }
 
+        foreach (var mid in MAIN_SOURCES) {
+            add_row_to_list (INPUT_SOURCE_TYPE_XKB, mid, false);
+        }
+
         var list = xkb_info.get_layouts_for_language (lang);
-        add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id);
+        add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
 
         if (country != null) {
             list = xkb_info.get_layouts_for_country (country);
-            add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id);
+            add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
         }
 
-        choose_non_extras ();
-
         list = xkb_info.get_all_layouts ();
-        add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id);
+        add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
+
+        input_list.invalidate_sort ();
+        input_list.invalidate_filter ();
     }
 
-    void add_row_to_list (string type, string id) {
+    void add_row_to_list (string type, string id, bool is_extra) {
         var tmp = new List<weak string> ();
         tmp.append (id);
-        add_rows_to_list (tmp, type, null);
+        add_rows_to_list (tmp, type, null, is_extra);
     }
 
-    void add_rows_to_list (List<weak string> list, string type, string? default_id) {
+    void add_rows_to_list (List<weak string> list, string type, string? default_id, bool is_extra) {
         foreach (var id in list) {
             if (id == default_id) {
                 continue;
             }
 
             var input_info = new InputInfo (type, id);
-            var widget = new InputRow (input_info, get_row_name (input_info), true);
+            var widget = new InputRow (input_info, get_row_name (input_info), is_extra);
             if (!input_rows.has_key (input_info)) {
                 input_rows.set (input_info, widget);
                 input_list.append (widget);
@@ -282,26 +323,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         }
     }
 
-    void choose_non_extras () {
-        uint count = 0;
-
-        foreach (var entry in input_rows) {
-            if (++count > MIN_ROWS) {
-                break;
-            }
-
-            var row_input_info = entry.key;
-            var row = entry.value;
-
-            debug ("Picking %s (%s:%s) as non-extra", row.name, row_input_info.type_, row_input_info.id);
-            row.is_extra = false;
-        }
-
-        input_list.invalidate_sort ();
-        input_list.invalidate_filter ();
-    }
-
-// #if HAVE_IBUS
+#if HAVE_IBUS
     void update_ibus_active_sources () {
         bool invalidate = false;
 
@@ -336,7 +358,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         }
 
         foreach (var entry in ibus_engines) {
-            add_row_to_list (INPUT_SOURCE_TYPE_IBUS, entry.key);
+            add_row_to_list (INPUT_SOURCE_TYPE_IBUS, entry.key, true);
         }
     }
 
@@ -381,7 +403,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
          */
         Bus.unwatch_name (Bus.watch_name (BusType.SESSION, IBus.SERVICE_IBUS, BusNameWatcherFlags.AUTO_START));
     }
-// #endif
+#endif
 
     public void clear_filter () {
         filter_entry.text = "";
@@ -389,10 +411,6 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
 
     [GtkCallback]
     void show_more_clicked () {
-        if (input_rows.size <= MIN_ROWS) {
-            return;
-        }
-
         filter_entry.grab_focus ();
 
         show_more = true;

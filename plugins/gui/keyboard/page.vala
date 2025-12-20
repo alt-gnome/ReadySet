@@ -26,12 +26,9 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
         input_chooser.changed.connect ((inputs) => {
             if (inputs.length > 0) {
                 is_ready = true;
-                show_banner = false;
 
             } else {
                 is_ready = false;
-                show_banner = true;
-                banner_message = _("No input source selected");
             }
 
             if (is_ready) {

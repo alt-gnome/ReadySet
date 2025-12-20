@@ -17,7 +17,7 @@ template $KeyboardInputChooser: Box {
     visible: bind template.show-more;
   }
 
-  ListBox input_list {
+  ListBox current_input_list {
     styles [
       "boxed-list",
     ]
@@ -29,6 +29,17 @@ template $KeyboardInputChooser: Box {
     row-activated => $row_activated();
   }
 
+  ListBox input_list {
+    styles [
+      "boxed-list",
+    ]
+
+    selection-mode: none;
+    vexpand: true;
+    halign: fill;
+    valign: start;
+    row-activated => $row_activated();
+  }
   ListBox {
     styles [
       "boxed-list",

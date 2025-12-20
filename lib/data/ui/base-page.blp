@@ -4,6 +4,8 @@ using Adw 1;
 template $ReadySetBasePage: Box {
   orientation: vertical;
 
+  Adw.Bin top_bin {}
+
   ScrolledWindow scrolled_window {
     hscrollbar-policy: never;
     propagate-natural-height: true;
@@ -66,8 +68,5 @@ template $ReadySetBasePage: Box {
     }
   }
 
-  Adw.Banner banner {
-    revealed: bind template.show-banner;
-    title: bind template.banner-message;
-  }
+  Adw.Bin bottom_bin {}
 }

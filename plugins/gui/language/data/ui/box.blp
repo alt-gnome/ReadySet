@@ -18,6 +18,18 @@ template $LanguageBox: Adw.Bin {
       visible: bind template.show-more;
     }
 
+    ListBox {
+      styles [
+        "boxed-list",
+      ]
+
+      selection-mode: none;
+
+      $LanguageRow {
+        locale-data: bind template.current-locale;
+      }
+    }
+
     ListBox languages_listbox {
       styles [
         "boxed-list",

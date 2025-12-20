@@ -26,11 +26,29 @@ public class ReadySet.BasePage : Gtk.Box {
     [GtkChild]
     unowned Gtk.Stack loading_stack;
     [GtkChild]
+    unowned Adw.Bin top_bin;
+    [GtkChild]
+    unowned Adw.Bin bottom_bin;
+    [GtkChild]
     unowned Gtk.ScrolledWindow scrolled_window;
 
-    public bool show_banner { get; set; default = false; }
+    public Gtk.Widget top_widget {
+        get {
+            return top_bin.child;
+        }
+        set {
+            top_bin.child = value;
+        }
+    }
 
-    public string banner_message { get; set; default = ""; }
+    public Gtk.Widget bottom_widget {
+        get {
+            return bottom_bin.child;
+        }
+        set {
+            bottom_bin.child = value;
+        }
+    }
 
     public string icon_name { get; set; default = "dialog-error-symbolic"; }
 
@@ -61,6 +79,11 @@ public class ReadySet.BasePage : Gtk.Box {
         }
     }
 
+    public bool scroll_on_top { get; private set; default = true; }
+
+    Adw.PropertyAnimationTarget scroll_anim_target;
+    Adw.TimedAnimation scroll_animation;
+
     public Gtk.Widget content {
         get {
             return child_bin.child;
@@ -72,6 +95,15 @@ public class ReadySet.BasePage : Gtk.Box {
 
     static construct {
         set_css_name ("basepage");
+    }
+
+    construct {
+        scrolled_window.vadjustment.notify["value"].connect (update_scroll_on_top);
+        scroll_anim_target = new Adw.PropertyAnimationTarget (scrolled_window.vadjustment, "value");
+    }
+
+    void update_scroll_on_top () {
+        scroll_on_top = scrolled_window.vadjustment.value <= 360.0;
     }
 
     public virtual bool allowed () {
@@ -89,5 +121,18 @@ public class ReadySet.BasePage : Gtk.Box {
 
     public void stop_loading () {
         loading_stack.visible_child_name = "default";
+    }
+
+    public void to_up () {
+        scrolled_window.set_kinetic_scrolling (false);
+
+        if (scroll_animation != null) {
+            scroll_animation.reset ();
+        }
+
+        scroll_animation = new Adw.TimedAnimation (scrolled_window, scrolled_window.vadjustment.value, 0.0, 100, scroll_anim_target);
+
+        scroll_animation.play ();
+        scrolled_window.set_kinetic_scrolling (true);
     }
 }

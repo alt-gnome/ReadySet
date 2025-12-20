@@ -24,6 +24,8 @@ public sealed class Language.Box : Adw.Bin {
     [GtkChild]
     unowned Gtk.SearchEntry search_entry;
 
+    public LocaleData current_locale { get; set; default = new LocaleData (get_current_language ()); }
+
     static bool saved_show_more = false;
     static string saved_search_query = "";
 
@@ -48,6 +50,12 @@ public sealed class Language.Box : Adw.Bin {
     }
 
     construct {
+        languages_listbox.set_placeholder (
+            new Gtk.Label (_("Nothing found")) {
+                height_request = 48
+            }
+        );
+
         set_supported_languages.begin ();
 
         search_entry.changed.connect (() => {
@@ -63,36 +71,21 @@ public sealed class Language.Box : Adw.Bin {
     }
 
     async void set_supported_languages () {
-        var lang_arr = new Array<string> ();
-        foreach (string locale in get_supported_languages ()) {
-            lang_arr.append_val (fix_locale (locale));
-        }
-
-        var cl = get_current_language ();
-
-        if (!(cl in lang_arr.data) && cl != "C" && Gnome.Languages.get_language_from_code (cl, null) != null) {
-            lang_arr.append_val (cl);
-        }
-
-        set_languages (lang_arr.data);
-
-        //  set_languages ({
-        //      "ru_RU.UTF-8",
-        //      "en_US.UTF-8",
-        //      "de_DE.UTF-8",
-        //      "fr_FR.UTF-8",
-        //      "es_ES.UTF-8",
-        //      "zh_CN.UTF-8",
-        //      "ja_JP.UTF-8",
-        //      "ar_EG.UTF-8",
-        //  });
+        set_languages ({
+            "ru_RU.UTF-8",
+            "en_US.UTF-8",
+            "fr_FR.UTF-8",
+            "es_ES.UTF-8",
+            "zh_CN.UTF-8",
+            "ja_JP.UTF-8",
+        });
     }
 
     public void show_all_languages () {
-        set_languages (Gnome.Languages.get_all_locales ());
+        set_languages (Gnome.Languages.get_all_locales (), true);
     }
 
-    void set_languages (string[] language_locales) {
+    void set_languages (string[] language_locales, bool with_sorting = false) {
         var model = new ListStore (typeof (LocaleData));
 
         LocaleData locale_data;
@@ -108,11 +101,18 @@ public sealed class Language.Box : Adw.Bin {
             }
         }
 
-        var sort_model = new Gtk.SortListModel (model, get_sorter ());
-        var filter_model = new Gtk.FilterListModel (sort_model, get_filter ());
+        Gtk.FilterListModel filter_model;
+        if (with_sorting) {
+            var sort_model = new Gtk.SortListModel (model, get_sorter ());
+            filter_model = new Gtk.FilterListModel (sort_model, get_filter ());
+        } else {
+            filter_model = new Gtk.FilterListModel (model, get_filter ());
+        }
+
+        var filter_current_model = new Gtk.FilterListModel (filter_model, get_current_filter ());
 
         languages_listbox.bind_model (
-            filter_model,
+            filter_current_model,
             (obj) => {
                 return new Row ((LocaleData) obj);
             }
@@ -171,6 +171,12 @@ public sealed class Language.Box : Adw.Bin {
         multifilter.append (local_filter);
 
         return multifilter;
+    }
+
+    Gtk.Filter get_current_filter () {
+        return new Gtk.CustomFilter ((item) => {
+            return ((LocaleData) item).locale != current_locale.locale;
+        });
     }
 
     [GtkCallback]

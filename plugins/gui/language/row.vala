@@ -19,22 +19,34 @@
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Language/ui/row.ui")]
 public sealed class Language.Row : Adw.ActionRow {
 
-    [GtkChild]
-    unowned Gtk.Revealer suffix_revealer;
+    LocaleData _locale_data;
+    public LocaleData locale_data {
+        get {
+            return _locale_data;
+        }
+        construct set {
+            _locale_data = value;
+            if (value != null) {
+                var is_current_language = value.locale == get_current_language ();
 
-    public LocaleData locale_data { get; construct set; }
-
-    public bool is_current_language { get; set; default = false; }
+                if (is_current_language) {
+                    add_css_class ("property");
+                    title = _("Current language");
+                    subtitle = value.country_cur;
+                } else {
+                    remove_css_class ("property");
+                    title = value.country_loc;
+                    subtitle = value.country_cur;
+                }
+            } else {
+                title = "";
+                subtitle = "";
+            }
+        }
+    }
 
     public Row (LocaleData locale_data) {
         Object (locale_data: locale_data);
-    }
-
-    construct {
-        suffix_revealer.reveal_child = locale_data.locale == get_current_language ();
-
-        title = locale_data.country_loc;
-        subtitle = locale_data.country_cur;
     }
 
     [GtkCallback]

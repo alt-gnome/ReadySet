@@ -27,7 +27,7 @@ public sealed class Keyboard.InputRow : Adw.ActionRow {
 
     public new bool is_selected { get; set; }
 
-    public InputRow (InputInfo input_info, string name, bool is_extra) {
+    public InputRow (InputInfo input_info, string name, bool is_extra = false) {
         Object (
             input_info: input_info,
             title: name,

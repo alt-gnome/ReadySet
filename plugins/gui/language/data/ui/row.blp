@@ -4,14 +4,4 @@ using Adw 1;
 template $LanguageRow: Adw.ActionRow {
   activatable: true;
   activated => $row_activated();
-
-  [suffix]
-  Revealer suffix_revealer {
-    transition-type: crossfade;
-
-    Image {
-      icon-name: "object-select-symbolic";
-      margin-end: 4;
-    }
-  }
 }
