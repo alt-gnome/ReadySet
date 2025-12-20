@@ -197,7 +197,7 @@ namespace User {
 
     bool set_root_password (string password) {
         try {
-            ReadySet.pkexec ({ "/usr/libexec/ready-set-set-root-password", password });
+            ReadySet.pkexec ({ Path.build_filename (Config.LIBEXECDIR, "ready-set-set-root-password"), password });
             return true;
         } catch (Error e) {
             return false;

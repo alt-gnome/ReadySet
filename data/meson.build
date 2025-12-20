@@ -21,17 +21,13 @@ rs_app_resources = gnome.compile_resources(
   c_name: 'ready_set_app'
 )
 
-rules_conf = configuration_data()
-rules_conf.set('USERNAME', get_option('username'))
-rules_conf.set('SYSCONFDIR', sysconfdir)
+systemd = dependency('systemd')
+systemd_sysusers_dir = systemd.get_variable(pkgconfig: 'sysusers_dir')
 
-configure_file(
-  input: 'org.altlinux.ReadySet.rules.in',
-  output: 'org.altlinux.ReadySet.rules',
-  install: true,
-  install_dir: join_paths(get_option('datadir'), 'polkit-1', 'rules.d'),
-  configuration: rules_conf,
+install_data(
+  files('readyset-sysusers.conf'),
+  install_dir: systemd_sysusers_dir,
+  rename: ['readyset.conf']
 )
 
 subdir('icons')
-subdir('tools')

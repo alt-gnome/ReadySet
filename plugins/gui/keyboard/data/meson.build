@@ -29,3 +29,8 @@ configure_file(
   install: true,
   install_dir: libdir / meson.project_name() / 'plugins'
 )
+
+install_data(
+  files('org.altlinux.ReadySet.Plugin.Keyboard.rules'),
+  install_dir: join_paths(get_option('datadir'), 'polkit-1', 'rules.d'),
+)

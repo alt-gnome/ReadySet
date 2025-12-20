@@ -18,3 +18,16 @@ plugin_user_resources = gnome.compile_resources(
     command: [ find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@' ],
   )
 )
+
+rules_conf = configuration_data()
+rules_conf.set('LIBEXECDIR', libexecdir)
+
+configure_file(
+  input: 'org.altlinux.ReadySet.Plugin.User.rules.in',
+  output: 'org.altlinux.ReadySet.Plugin.User.rules',
+  install: true,
+  install_dir: join_paths(get_option('datadir'), 'polkit-1', 'rules.d'),
+  configuration: rules_conf,
+)
+
+subdir('tools')

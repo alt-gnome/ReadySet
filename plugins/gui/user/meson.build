@@ -16,7 +16,11 @@ foreach pwcheck_backend : password_check_backend
     dependency(pwcheck_backend)
   ]
 
-  plugin_user_sources = files(
+  plugin_user_vapi_sources = files(
+    'config.vapi',
+  )
+
+  plugin_user_vala_sources = files(
     'context-row.vala',
     'margin-label.vala',
     'page-password.vala',
@@ -26,6 +30,11 @@ foreach pwcheck_backend : password_check_backend
     'utils.vala',
     pwcheck_backend + '-utils.vala',
   )
+
+  plugin_user_sources = [
+    plugin_user_vapi_sources,
+    plugin_user_vala_sources,
+  ]
 
   plugin_user_pretty_name = 'User with ' + pwcheck_backend + ' password check'
   plugin_user_name = 'user-' + pwcheck_backend
@@ -53,10 +62,13 @@ foreach pwcheck_backend : password_check_backend
     '--vapidir', meson.current_source_dir() / 'vapi',
   ]
 
+  configure_file(output: 'config.h', configuration: global_conf)
+
   shared_module(
     plugin_user_name,
     plugin_user_resources,
     plugin_user_sources,
+    include_directories: include_directories('.'),
     dependencies: plugin_user_deps,
     c_args: plugin_user_c_args,
     vala_args: plugin_user_vala_args,

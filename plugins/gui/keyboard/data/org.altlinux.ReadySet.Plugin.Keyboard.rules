@@ -1,0 +1,13 @@
+polkit.addRule(function(action, subject) {
+    if (subject.user !== "ready-set")
+        return;
+
+    if (action.id.indexOf("org.freedesktop.locale1.") === 0) {
+        if (subject.local)
+            return polkit.Result.YES;
+        else
+            return polkit.Result.AUTH_ADMIN;
+    }
+
+    return;
+});
