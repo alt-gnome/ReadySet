@@ -42,8 +42,10 @@ public sealed class ReadySet.Application: Adw.Application {
 
     Context context;
 
-    public Gee.ArrayList<BasePage> callback_pages { get; default = new Gee.ArrayList<BasePage> (); }
-    public Gee.ArrayList<Addin> callback_addins { get; default = new Gee.ArrayList<Addin> (); }
+    Gee.HashMap<string, Addin> plugins = new Gee.HashMap<string, Addin> ();
+
+    public Gee.ArrayList<BasePage> loaded_pages { get; default = new Gee.ArrayList<BasePage> (); }
+    public Gee.ArrayList<Addin> loaded_addins { get; default = new Gee.ArrayList<Addin> (); }
 
     public Application () {
         Object (
@@ -121,16 +123,7 @@ public sealed class ReadySet.Application: Adw.Application {
         return engine;
     }
 
-    public void init_pages () {
-        callback_pages.clear ();
-        callback_addins.clear ();
-
-        if (all_steps.length == 0) {
-            all_steps = get_all_steps ();
-        }
-
-        var pages = new Gee.ArrayList<BasePage> ();
-
+    void init_plugins () {
         var engine = get_engine ();
         var addins = new Peas.ExtensionSet.with_properties (engine, typeof (Addin), {}, {});
 
@@ -138,7 +131,7 @@ public sealed class ReadySet.Application: Adw.Application {
             engine.load_plugin ((Peas.PluginInfo) engine.get_item (i));
         }
 
-        var plugins = new Gee.HashMap<string, Addin> ();
+        plugins.clear ();
 
         addins.foreach ((_set, info, extension) => {
             plugins[info.module_name] = (Addin) extension;
@@ -152,32 +145,39 @@ public sealed class ReadySet.Application: Adw.Application {
                 print ("  %s\n", plugin.key);
             }
         }
+    }
+
+    public void init_pages () {
+        loaded_pages.clear ();
+        loaded_addins.clear ();
+
+        if (all_steps.length == 0) {
+            all_steps = get_all_steps ();
+        }
+
+        if (plugins.size == 0) {
+            init_plugins ();
+        }
 
         print ("Loaded plugins:\n");
         for (int i = 0; i < all_steps.length; i++) {
             if (plugins[all_steps[i]] == null) {
-                pages.add (new BasePage () {
+                loaded_pages.add (new BasePage () {
                     is_ready = true
                 });
                 print ("  broken step\n");
             } else {
                 var addin = plugins[all_steps[i]];
                 if (addin.allowed ()) {
-                    callback_addins.add (addin);
+                    loaded_addins.add (addin);
                     addin.context = context;
-                    pages.add_all_array (addin.build_pages ());
+                    loaded_pages.add_all_array (addin.build_pages ());
                     print ("  %s\n", all_steps[i]);
                 }
             }
         }
 
-        pages.add (new EndPage ());
-
-        foreach (var page in pages) {
-            if (page.allowed ()) {
-                callback_pages.add (page);
-            }
-        }
+        loaded_pages.add (new EndPage ());
     }
 
     string[] get_all_steps () {
