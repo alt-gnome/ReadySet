@@ -26,7 +26,7 @@ namespace User.Password {
         if (_pwq_settings == null) {
             _pwq_settings = new PasswordQuality.Settings ();
 
-            var error = _pwq_settings.read_config (null, null);
+            var error = _pwq_settings.read_config (Addin.get_instance ().context.get_string ("passwd-conf-path"), null);
             if (error != PasswordQuality.Error.SUCCESS) {
                 GLib.error (error.to_string ());
             }

@@ -25,7 +25,11 @@ namespace User.Password {
     unowned PasswdQC.Params get_pwqc () {
         if (_passwdqc_params == null) {
             _passwdqc_params = PasswdQC.Params ();
-            _passwdqc_params.params_load (null, "/etc/passwdqc.conf");
+            var passwdqc_conf_path = Addin.get_instance ().context.get_string ("passwd-conf-path");
+            if (passwdqc_conf_path == null) {
+                passwdqc_conf_path = "/etc/passwdqc.conf";
+            }
+            _passwdqc_params.params_load (null, passwdqc_conf_path);
         }
 
         return _passwdqc_params;
