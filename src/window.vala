@@ -34,6 +34,10 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
     construct {
         add_action_entries (ACTION_ENTRIES, this);
         build_content ();
+
+        if (Config.IS_DEVEL) {
+            add_css_class ("devel");
+        }
     }
 
     public void reload_window () {

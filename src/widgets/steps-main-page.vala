@@ -25,6 +25,8 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     unowned PositionedStack positioned_stack;
     [GtkChild]
     unowned PagesIndicator pages_indicator;
+    [GtkChild]
+    unowned Adw.HeaderBar header_bar;
 
     static uint saved_last_position = 0;
 
@@ -86,6 +88,8 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         });
 
         model.selection_changed.connect (selection_changed);
+
+        header_bar.show_end_title_buttons = Config.IS_DEVEL;
     }
 
     void selection_changed () {
