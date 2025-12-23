@@ -48,6 +48,19 @@ public class User.PagePassword : ReadySet.BasePage {
 
     public bool with_root_password { get; construct set; default = false; }
 
+    construct {
+        var password = Addin.get_instance ().context.get_string ("user-password");
+        var root_password = Addin.get_instance ().context.get_string ("user-root-password");
+
+        if (password != null) {
+            password_entry.text = password;
+        }
+        if (root_password != null) {
+            root_password_entry.text = root_password;
+        }
+        autologin_switch_row.active = Addin.get_instance ().context.get_boolean ("user-autologin");
+    }
+
     void update_is_ready () {
         is_ready = password_is_ready (password_entry.text) &&
                    password_entry.text == password_repeat_entry.text &&

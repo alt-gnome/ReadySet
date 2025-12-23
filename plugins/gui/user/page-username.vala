@@ -36,6 +36,18 @@ public class User.PageUsername : ReadySet.BasePage {
 
     bool username_manually_entered = false;
 
+    construct {
+        var username = Addin.get_instance ().context.get_string ("user-username");
+        var fullname = Addin.get_instance ().context.get_string ("user-fullname");
+
+        if (username != null) {
+            username_entry.text = username;
+        }
+        if (fullname != null) {
+            fullname_entry.text = fullname;
+        }
+    }
+
     void update_is_ready () {
         is_ready = fullname_is_correct (fullname_entry.text, null) &&
                    username_is_correct (username_entry.text, false, null);
