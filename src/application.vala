@@ -28,7 +28,7 @@ public sealed class ReadySet.Application: Adw.Application {
         { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
         { "steps-file", 'f', 0, OptionArg.FILENAME, null, N_("Filename with steps"), "FILENAME" },
         { "steps", 's', 0, OptionArg.STRING, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
-        { "context", 'c', 0, OptionArg.STRING_ARRAY, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
+        { "context", 'c', 0, OptionArg.STRING_ARRAY, null, N_("Context vars"), "STEPS" },
         { "idle", 'i', 0, OptionArg.NONE, null, N_("Idle run without doing anything"), null },
         { "fullscreen", '\0', 0, OptionArg.NONE, null, N_("Run window in fullscreen"), null },
         { null }
