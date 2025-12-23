@@ -83,14 +83,12 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             input_list.invalidate_filter ();
         });
 
-        Addin.get_instance ().context.data_changed.connect ((key, value) => {
+        Addin.get_instance ().context.data_changed.connect ((key) => {
             if (key == "input-sources") {
                 update_current ();
             }
         });
         update_current ();
-
-        sync_all_checkmarks (true);
 
         Idle.add_once (() => {
             filter_entry.can_focus = true;
@@ -106,6 +104,8 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         foreach (var info in get_current_inputs ()) {
             current_input_list.append (new InputRow (info, get_row_name (info)) { is_selected = true });
         }
+
+        sync_all_checkmarks (true);
 
         input_list.invalidate_sort ();
         input_list.invalidate_filter ();
