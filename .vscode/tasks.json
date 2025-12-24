@@ -12,13 +12,13 @@
         {
             "label": "Lint .blp check",
             "type": "shell",
-            "command": "blueprint-compiler format -s 2 data/ui/*.blp",
+            "command": ".vscode/check-all-blp",
             "problemMatcher": []
         },
         {
             "label": "Fix all .blp",
             "type": "shell",
-            "command": "blueprint-compiler format -f -s 2 data/ui/*.blp",
+            "command": ".vscode/fix-all-blp",
             "problemMatcher": []
         }
     ]
