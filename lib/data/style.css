@@ -1,0 +1,21 @@
+basepage > scrolledwindow > viewport > box {
+    margin: 24px 12px;
+    border-spacing: 36px;
+}
+
+basepage > scrolledwindow > viewport > box > clamp > box {
+    border-spacing: 12px;
+}
+
+basepage > scrolledwindow > viewport > box > clamp > box > stack > .icon {
+    color: color-mix(in srgb, currentColor var(--dim-opacity), transparent);
+    -gtk-icon-size: 128px;
+}
+
+basepage > scrolledwindow > viewport > box > clamp > box > stack > .icon:disabled {
+    opacity: var(--disabled-opacity);
+}
+
+basepage > scrolledwindow > viewport > box > clamp > box > stack > .icon:not(:last-child) {
+    margin-bottom: 24px;
+}

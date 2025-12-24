@@ -6,6 +6,7 @@
   </gresource>
   <gresource prefix="/org/altlinux/ReadySet/Plugin/User/">
     <file>style.css</file>
+    <file preprocess="xml-stripblanks">ui/avatar-chooser.ui</file>
     <file preprocess="xml-stripblanks">ui/context-row.ui</file>
     <file preprocess="xml-stripblanks">ui/margin-label.ui</file>
     <file preprocess="xml-stripblanks">ui/page-password.ui</file>

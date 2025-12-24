@@ -68,3 +68,5 @@ meson uninstall -C _build
 
 - Roman Alifanov <ximper@etersoft.ru>
 - David Sultaniiazov <x1z53@altlinux.org>
+
+- [GNOME Initial Setup](https://gitlab.gnome.org/GNOME/gnome-initial-setup), where did a lot of logic come from

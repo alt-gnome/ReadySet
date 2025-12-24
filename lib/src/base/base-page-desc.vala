@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/Lib/InitialSetup/ui/base-page-desc.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Lib/ui/base-page-desc.ui")]
 public sealed class ReadySet.BasePageDesc : Gtk.Box {
 
     public string title { get; set; }

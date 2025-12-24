@@ -62,6 +62,16 @@ public class ReadySet.Context : Object {
         }
     }
 
+    public void unset (string key) {
+        try {
+            if (has_key (key)) {
+                data.remove_key (GN, key);
+            }
+        } catch (Error e) {
+            return;
+        }
+    }
+
     public void set_raw (string key, owned string value) {
         data.set_value (GN, key, value);
         data_changed (key);

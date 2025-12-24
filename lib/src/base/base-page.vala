@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/Lib/InitialSetup/ui/base-page.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Lib/ui/base-page.ui")]
 public class ReadySet.BasePage : Gtk.Box {
 
     [GtkChild]
@@ -31,6 +31,28 @@ public class ReadySet.BasePage : Gtk.Box {
     unowned Adw.Bin bottom_bin;
     [GtkChild]
     unowned Gtk.ScrolledWindow scrolled_window;
+
+    bool icon_widget_set = false;
+
+    public Gtk.Widget? icon_widget {
+        get {
+            if (icon_widget_set) {
+                return icon_widget;
+            } else {
+                return null;
+            }
+        }
+        set {
+            if (value == null) {
+                return;
+            }
+
+            loading_stack.remove (loading_stack.get_child_by_name ("default"));
+            loading_stack.add_named (value, "default");
+            loading_stack.visible_child_name = "default";
+            icon_widget_set = true;
+        }
+    }
 
     public Gtk.Widget top_widget {
         get {

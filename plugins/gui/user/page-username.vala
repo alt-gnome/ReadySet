@@ -33,6 +33,12 @@ public class User.PageUsername : ReadySet.BasePage {
     unowned MarginLabel username_label;
     [GtkChild]
     unowned Adw.EntryRow username_entry;
+    [GtkChild]
+    unowned Adw.Avatar avatar_image;
+    [GtkChild]
+    unowned Gtk.Button remove_avatar_button;
+    [GtkChild]
+    unowned AvatarChooser avatar_chooser;
 
     bool username_manually_entered = false;
 
@@ -46,6 +52,16 @@ public class User.PageUsername : ReadySet.BasePage {
         if (fullname != null) {
             fullname_entry.text = fullname;
         }
+
+        if (Addin.get_instance ().context.has_key ("user-avatar-file")) {
+            try {
+                avatar_image.set_custom_image (Gdk.Texture.from_filename (Addin.get_instance ().context.get_string ("user-avatar-file")));
+            } catch (Error e) {
+                warning (e.message);
+            }
+        }
+
+        avatar_chooser.set_callback (on_avatar_selected);
     }
 
     void update_is_ready () {
@@ -77,6 +93,7 @@ public class User.PageUsername : ReadySet.BasePage {
         update_correct (fullname_entry, is_correct);
 
         update_is_ready ();
+        update_avatar_text ();
     }
 
     [GtkCallback]
@@ -96,5 +113,37 @@ public class User.PageUsername : ReadySet.BasePage {
         update_correct (username_entry, is_correct);
 
         update_is_ready ();
+        update_avatar_text ();
+    }
+
+    void update_avatar_text () {
+        string? name = fullname_entry.text;
+
+        if (name == "") {
+            name = username_entry.text;
+        }
+
+        if (name == "") {
+            name = null;
+        }
+
+        avatar_image.text = name;
+    }
+
+    [GtkCallback]
+    void on_remove_avatar_button_clicked () {
+        avatar_image.set_custom_image (null);
+        remove_avatar_button.visible = false;
+        Addin.get_instance ().context.unset ("user-avatar-file");
+    }
+
+    void on_avatar_selected (owned string filename) {
+        try {
+            avatar_image.set_custom_image (Gdk.Texture.from_filename (filename));
+            Addin.get_instance ().context.set_string ("user-avatar-file", filename);
+            remove_avatar_button.visible = true;
+        } catch (Error e) {
+            warning (e.message);
+        }
     }
 }

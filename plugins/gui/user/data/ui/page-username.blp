@@ -7,6 +7,58 @@ template $UserPageUsername: $ReadySetBasePage {
   description: _("Set information about You");
   icon-name: "folder-user-symbolic";
 
+  icon-widget: Overlay {
+    halign: center;
+    valign: center;
+
+    Adw.Avatar avatar_image {
+      size: 128;
+      show-initials: true;
+    }
+
+    [overlay]
+    Adw.Bin {
+      styles [
+        "cutout-button"
+      ]
+
+      halign: end;
+      valign: end;
+
+      MenuButton avatar_button {
+        styles [
+          "circular"
+        ]
+
+        tooltip-text: _("Change Avatar");
+        icon-name: "document-edit-symbolic";
+        popover: $UserAvatarChooser avatar_chooser {};
+      }
+    }
+
+    [overlay]
+    Adw.Bin {
+      styles [
+        "cutout-button"
+      ]
+
+      halign: end;
+      valign: start;
+
+      Button remove_avatar_button {
+        styles [
+          "circular",
+          "destructive-image-button"
+        ]
+
+        tooltip-text: _("Remove Avatar");
+        visible: false;
+        icon-name: "user-trash-symbolic";
+        clicked => $on_remove_avatar_button_clicked();
+      }
+    }
+  };
+
   content: Box {
     orientation: vertical;
     spacing: 18;

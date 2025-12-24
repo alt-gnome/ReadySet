@@ -10,3 +10,7 @@ If `true`, password will not be checked via passwdqc/pwquality and any password 
 ###### `passwd-conf-path`
 Path to desired passwdqc config file.
 If empty, `/etc/passwdqc.conf` or pwquality default will be used.
+
+###### `user-avatar-directories`
+Paths to directories with avatar files.
+Override system dirs and gsettings.

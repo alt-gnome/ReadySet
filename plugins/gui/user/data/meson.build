@@ -1,4 +1,5 @@
 plugin_user_blueprints = files(
+  'ui/avatar-chooser.blp',
   'ui/context-row.blp',
   'ui/margin-label.blp',
   'ui/page-password.blp',

@@ -24,7 +24,7 @@ public class User.Addin : ReadySet.Addin {
 
     protected override string? resource_base_path {
         get {
-            return "/org/altlinux/ReadySet/Plugin/Welcome/";
+            return "/org/altlinux/ReadySet/Plugin/User/";
         }
     }
 
@@ -52,8 +52,15 @@ public class User.Addin : ReadySet.Addin {
             user.set_automatic_login (context.get_boolean ("user-autologin"));
             user.set_password (context.get_string ("user-password"), "");
             user.set_language (get_current_language ());
+            if (context.has_key ("user-avatar-file")) {
+                user.set_icon_file (context.get_string ("user-avatar-file"));
+            }
 
-            set_root_password (context.get_string ("user-root-password"));
+            if (context.has_key ("user-root-password")) {
+                set_root_password (context.get_string ("user-root-password"));
+            } else {
+                set_root_password (context.get_string ("user-password"));
+            }
 
         } catch (Error e) {
             throw ReadySet.ApplyError.build_error (_("Error when creating a user"), e.message);

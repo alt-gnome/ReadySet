@@ -103,9 +103,6 @@ public class User.PagePassword : ReadySet.BasePage {
     [GtkCallback]
     void password_changed () {
         Addin.get_instance ().context.set_string ("user-password", password_entry.text);
-        if (!equal_switch_row.active) {
-            Addin.get_instance ().context.set_string ("user-root-password", root_password_entry.text);
-        }
 
         var strength = get_password_strength (
             password_entry.text,

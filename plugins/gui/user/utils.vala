@@ -20,6 +20,8 @@
 
 namespace User {
 
+    public delegate void SelectAvatarCallback (owned string filename);
+
     public struct Strength {
         public string hint;
         public StrengthLevel level;
@@ -225,5 +227,51 @@ namespace User {
         }
 
         return locale;
+    }
+
+    public string[] get_context_facesdirs () {
+        var context = Addin.get_instance ().context;
+        var facesdir = new Gee.ArrayList<string> ();
+
+        var dirs = context.get_strv ("user-avatar-directories");
+        if (dirs == null) {
+            return {};
+        }
+
+        foreach (var dir_path in dirs) {
+            if (dir_path != "") {
+                facesdir.add (dir_path);
+            }
+        }
+
+        return facesdir.to_array ();
+    }
+
+    public string[] get_settings_facesdirs () {
+        var facesdir = new Gee.ArrayList<string> ();
+        var settings = new Settings ("org.gnome.desktop.interface");
+
+        var dirs = settings.get_strv ("avatar-directories");
+        if (dirs == null) {
+            return {};
+        }
+
+        foreach (var dir_path in dirs) {
+            if (dir_path != "") {
+                facesdir.add (dir_path);
+            }
+        }
+
+        return facesdir.to_array ();
+    }
+
+    public string[] get_system_facesdirs () {
+        var facesdir = new Gee.ArrayList<string> ();
+
+        foreach (var dir in Environment.get_system_data_dirs ()) {
+            facesdir.add (Path.build_filename (dir, "pixmaps", "faces"));
+        }
+
+        return facesdir.to_array ();
     }
 }

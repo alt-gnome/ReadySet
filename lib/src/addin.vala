@@ -35,6 +35,10 @@ public abstract class ReadySet.Addin : Peas.ExtensionBase {
     }
 
     void load_css () {
+        var provider = new Gtk.CssProvider ();
+        provider.load_from_resource ("/org/altlinux/ReadySet/Lib/style.css");
+        Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
         if (resource_base_path != null) {
             try {
                 var bytes = resources_lookup_data (
@@ -42,7 +46,7 @@ public abstract class ReadySet.Addin : Peas.ExtensionBase {
                     ResourceLookupFlags.NONE
                 );
 
-                var provider = new Gtk.CssProvider ();
+                provider = new Gtk.CssProvider ();
                 provider.load_from_bytes (bytes);
                 Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
             } catch (Error e) {
