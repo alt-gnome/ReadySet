@@ -19,7 +19,7 @@ template $UserPageUsername: $ReadySetBasePage {
     [overlay]
     Adw.Bin {
       styles [
-        "cutout-button"
+        "cutout-button",
       ]
 
       halign: end;
@@ -27,11 +27,12 @@ template $UserPageUsername: $ReadySetBasePage {
 
       MenuButton avatar_button {
         styles [
-          "circular"
+          "circular",
         ]
 
         tooltip-text: _("Change Avatar");
         icon-name: "document-edit-symbolic";
+
         popover: $UserAvatarChooser avatar_chooser {};
       }
     }
@@ -39,7 +40,7 @@ template $UserPageUsername: $ReadySetBasePage {
     [overlay]
     Adw.Bin {
       styles [
-        "cutout-button"
+        "cutout-button",
       ]
 
       halign: end;
@@ -48,7 +49,7 @@ template $UserPageUsername: $ReadySetBasePage {
       Button remove_avatar_button {
         styles [
           "circular",
-          "destructive-image-button"
+          "destructive-image-button",
         ]
 
         tooltip-text: _("Remove Avatar");

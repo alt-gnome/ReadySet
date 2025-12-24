@@ -28,6 +28,7 @@ template $ReadySetBasePage: Box {
 
             StackPage {
               name: "default";
+
               child: Image {
                 accessible-role: presentation;
                 halign: center;
@@ -41,9 +42,11 @@ template $ReadySetBasePage: Box {
 
             StackPage {
               name: "loading";
+
               child: Image {
                 accessible-role: presentation;
                 halign: center;
+
                 paintable: Adw.SpinnerPaintable {
                   widget: template;
                 };
