@@ -17,10 +17,14 @@
 
 App using steps. Curently available steps:
 
-- user-with-root (Setup user with administrator password)
-- user (Root password skips)
+- user-passwdqc
+- user-pwquality
 - keyboard (Choosing layouts)
 - language (Users language)
+
+## Testing
+
+For test purpose you should use `--idle` option.
 
 ## Install
 
@@ -43,7 +47,7 @@ sudo apt-get install ready-set
 - gee-0.8
 - accountsservice
 - ibus-1.0
-- pwquality
+- pwquality/passwdqc
 - blueprint-compiler
 
 #### Building
@@ -55,13 +59,13 @@ meson setup _build
 #### Installing
 
 ```sh
-meson install -C _build
+ninja install -C _build
 ```
 
 #### Uninstalling
 
 ```sh
-meson uninstall -C _build
+ninja uninstall -C _build
 ```
 
 #### Mentions

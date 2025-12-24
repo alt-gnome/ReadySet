@@ -1,5 +1,9 @@
-subdir('gui/keyboard')
-subdir('gui/language')
-subdir('gui/test')
-subdir('gui/user')
-subdir('gui/welcome')
+plugins = ['keyboard', 'language', 'user', 'welcome']
+
+if get_option('is_devel')
+  plugins += ['test']
+endif
+
+foreach plugin : plugins
+  subdir('gui' / plugin)
+endforeach
