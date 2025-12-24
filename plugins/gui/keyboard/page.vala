@@ -24,28 +24,17 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
 
     construct {
         input_chooser.changed.connect ((inputs) => {
-            if (inputs.length > 0) {
-                is_ready = true;
-
-            } else {
-                is_ready = false;
-            }
-
-            if (is_ready) {
-                apply_input_sources (inputs);
-            }
+            is_ready = inputs.length > 0;
         });
-    }
 
-    void apply_input_sources (InputInfo[] inputs) {
-        VariantBuilder builer = new VariantBuilder (new VariantType ("a(ss)"));
-
-        foreach (var info in inputs) {
-            builer.add ("(ss)", info.type_, info.id);
+        var input_sources_val = Addin.get_instance ().context.get_strv ("input-sources");
+        if (input_sources_val != null) {
+            var input_sources = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
+            foreach (var input in input_sources_val) {
+                input_sources.add (new InputInfo.from_format (input));
+            }
+            set_current_inputs (input_sources);
         }
-
-        var settings = new Settings ("org.gnome.desktop.input-sources");
-        settings.set_value ("sources", builer.end ());
     }
 
     public override bool allowed () {

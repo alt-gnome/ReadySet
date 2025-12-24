@@ -63,17 +63,12 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         }
 #endif
 
-        input_list.set_placeholder (new Gtk.Label (_("Nothing found")) {
-            height_request = 48
-        });
-
         input_rows = new Gee.HashMap<InputInfo, InputRow> (InputInfo.hash, InputInfo.equal);
 
         current_input_list.set_sort_func (sort_inputs);
         input_list.set_sort_func (sort_inputs);
         input_list.set_filter_func (input_visible);
 
-        read_sources ();
         get_locale_infos ();
 #if HAVE_IBUS
         get_ibus_locale_infos ();
@@ -212,10 +207,12 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             current_inputs_info.remove (input_row.input_info);
         }
 
-        sync_all_checkmarks ();
-
         set_current_inputs (current_inputs_info);
         changed (current_inputs_info.to_array ());
+
+        sync_all_checkmarks ();
+
+        update_input_list_visible ();
     }
 
     int sort_inputs (Gtk.ListBoxRow a, Gtk.ListBoxRow b) {
@@ -239,6 +236,12 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         }
 
         return strcmp (la.name, lb.name);
+    }
+
+    void update_input_list_visible () {
+        //  Update input_list widget visibility to hide it when no search bar and no more
+        //  input sources provided
+        input_list.visible = (MAIN_SOURCES.length != get_current_inputs ().size) || show_more;
     }
 
     bool input_visible (Gtk.ListBoxRow row) {
@@ -411,26 +414,15 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
 
     [GtkCallback]
     void show_more_clicked () {
+        input_list.set_placeholder (new Gtk.Label (_("Nothing found")) {
+            height_request = 48
+        });
+
         filter_entry.grab_focus ();
 
         show_more = true;
         input_list.invalidate_filter ();
-    }
 
-    void read_sources () {
-        var settings = new Settings ("org.gnome.desktop.input-sources");
-        var variant = settings.get_value ("sources");
-
-        var iterator = variant.iterator ();
-        var current_inputs_info = get_current_inputs ();
-
-        Variant? item;
-        while ((item = iterator.next_value ()) != null) {
-            string input_type, input_id;
-
-            item.get ("(ss)", out input_type, out input_id);
-            current_inputs_info.add (new InputInfo (input_type, input_id));
-            set_current_inputs (current_inputs_info);
-        }
+        update_input_list_visible ();
     }
 }

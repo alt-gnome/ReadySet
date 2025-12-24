@@ -34,11 +34,12 @@ public sealed class ReadySet.EndPage : BasePage {
 
     public async void start_action () {
         stack.visible_child_name = "load";
+        var context = ReadySet.Application.get_default ().context;
 
         try {
             var app = (ReadySet.Application) GLib.Application.get_default ();
             foreach (var callback_page in app.loaded_pages) {
-                if (app.idle) {
+                if (context.idle) {
                     Timeout.add_seconds_once (1, () => {
                         Idle.add (start_action.callback);
                     });
@@ -51,7 +52,7 @@ public sealed class ReadySet.EndPage : BasePage {
             }
 
             foreach (var callback_addin in app.loaded_addins) {
-                if (app.idle) {
+                if (context.idle) {
                     Timeout.add_seconds_once (1, () => {
                         Idle.add (start_action.callback);
                     });

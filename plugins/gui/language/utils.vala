@@ -55,8 +55,8 @@ namespace Language {
     public void set_current_locale (string locale) {
         var context = Addin.get_instance ().context;
 
-        Intl.setlocale (LocaleCategory.MESSAGES, locale);
-        context.set_data ("locale", locale);
+        Intl.setlocale (LocaleCategory.ALL, locale);
+        context.set_string ("locale", locale);
     }
 
     public string get_current_language () {

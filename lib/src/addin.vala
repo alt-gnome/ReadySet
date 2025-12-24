@@ -28,7 +28,7 @@ public abstract class ReadySet.Addin : Peas.ExtensionBase {
         }
     }
 
-    public Context context { get; set; default = new Context (); }
+    public Context context { get; set; default = new Context (true); }
 
     construct {
         load_css ();

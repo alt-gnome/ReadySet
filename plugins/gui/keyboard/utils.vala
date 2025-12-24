@@ -66,6 +66,18 @@ public class Keyboard.InputInfo : Object {
         );
     }
 
+    public InputInfo.from_format (string format) {
+        var parts = format.split ("::", 2);
+        if (parts.length != 2) {
+            error ("Invalid input sources format: `%s`", format);
+        }
+        Object (
+            id: parts[1],
+            type_: parts[0],
+            format: format
+        );
+    }
+
     public uint _hash () {
         return format.hash ();
     }
@@ -107,14 +119,28 @@ namespace Keyboard {
     public Gee.HashSet<InputInfo> get_current_inputs () {
         var context = Addin.get_instance ().context;
 
-        Gee.HashSet<InputInfo> input_sources;
-        var inputs_val = context.get_data ("input-sources");
+        var input_sources = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
+        var inputs_val = context.get_strv ("input-sources");
 
         if (inputs_val == null) {
-            input_sources = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
-            context.set_data ("input-sources", input_sources);
+            var settings = new Settings ("org.gnome.desktop.input-sources");
+            var variant = settings.get_value ("sources");
+
+            var iterator = variant.iterator ();
+
+            Variant? item;
+            while ((item = iterator.next_value ()) != null) {
+                string input_type, input_id;
+
+                item.get ("(ss)", out input_type, out input_id);
+                input_sources.add (new InputInfo (input_type, input_id));
+            }
+            set_current_inputs (input_sources);
+
         } else {
-            input_sources = (Gee.HashSet<InputInfo>) inputs_val.get_object ();
+            foreach (var input in inputs_val) {
+                input_sources.add (new InputInfo.from_format (input));
+            }
         }
 
         return input_sources;
@@ -122,8 +148,24 @@ namespace Keyboard {
 
     public void set_current_inputs (Gee.HashSet<InputInfo> inputs) {
         var context = Addin.get_instance ().context;
+        var inputs_val = new Array<string> ();
 
-        context.set_data ("input-sources", inputs);
+        foreach (var input in inputs) {
+            inputs_val.append_val (input.format);
+        }
+
+        if (!context.idle) {
+            VariantBuilder builder = new VariantBuilder (new VariantType ("a(ss)"));
+
+            foreach (var info in inputs) {
+                builder.add ("(ss)", info.type_, info.id);
+            }
+
+            var settings = new Settings ("org.gnome.desktop.input-sources");
+            settings.set_value ("sources", builder.end ());
+        }
+
+        context.set_strv ("input-sources", inputs_val.data);
     }
 
     Locale1 get_locale_proxy () {

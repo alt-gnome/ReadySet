@@ -75,4 +75,11 @@ namespace ReadySet {
 
         process.wait_check ();
     }
+
+    public bool kf_has_key (KeyFile keyfile, string group_name, string key) throws Error {
+        if (keyfile.has_group (group_name)) {
+            return keyfile.has_key (group_name, key);
+        }
+        return false;
+    }
 }

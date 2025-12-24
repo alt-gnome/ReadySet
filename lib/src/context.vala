@@ -20,62 +20,123 @@
 
 public class ReadySet.Context : Object {
 
+    public bool idle { get; construct; default = true; }
+
     public signal void reload_window ();
 
-    public signal void data_changed (string key, Value new_value);
+    public signal void data_changed (string key);
 
-    Gee.HashMap<string, Value?> data = new Gee.HashMap<string, Value?> ();
+    KeyFile data = new KeyFile ();
+
+    const string GN = "MAIN";
+
+    public Context (bool idle) {
+        Object (
+            idle: idle
+        );
+    }
+
+    construct {
+        data.set_list_separator (',');
+    }
+
+    public void load_from_keyfile (KeyFile keyfile, string group_name) throws Error {
+        foreach (var key in keyfile.get_keys (group_name)) {
+            set_raw (key, keyfile.get_value (group_name, key));
+        }
+    }
 
     public string[] get_keys () {
-        return data.keys.to_array ();
+        try {
+            return data.get_keys (GN);
+        } catch (Error e) {
+            return {};
+        }
     }
 
-    public bool has_data (string key) {
-        return data.has_key (key);
+    public bool has_key (string key) {
+        try {
+            return data.has_key (GN, key);
+        } catch (Error e) {
+            return false;
+        }
     }
 
-    public new void set_data (string key, Value value) {
-        data[key] = value;
-        data_changed (key, value);
+    public void set_raw (string key, owned string value) {
+        data.set_value (GN, key, value);
+        data_changed (key);
     }
 
-    public void set_string (string key, string value) {
-        set_data (key, value);
-    }
-
-    public void set_boolean (string key, bool value) {
-        set_data (key, value ? "true" : "false");
-    }
-
-    public new Value? get_data (string key) {
-        if (!has_data (key)) {
+    public string? get_raw (string key) {
+        try {
+            return data.get_value (GN, key);
+        } catch (Error e) {
             return null;
         }
-        return data[key];
+    }
+
+    public void set_string (string key, owned string value) {
+        data.set_string (GN, key, value);
+        data_changed (key);
     }
 
     public string? get_string (string key) {
-        if (!has_data (key)) {
-            return null;
-        }
-        var val = data[key];
-        if (val.holds (GLib.Type.STRING)) {
-            return val.get_string ();
-        } else {
+        try {
+            return data.get_string (GN, key);
+        } catch (Error e) {
             return null;
         }
     }
 
+    public void set_boolean (string key, bool value) {
+        data.set_boolean (GN, key, value);
+        data_changed (key);
+    }
+
     public bool get_boolean (string key) {
-        if (!has_data (key)) {
+        try {
+            return data.get_boolean (GN, key);
+        } catch (Error e) {
             return false;
         }
+    }
 
-        var str = get_string (key);
-        if (str == null) {
-            return false;
+    public void set_strv (string key, owned string[] value) {
+        data.set_string_list (GN, key, value);
+        data_changed (key);
+    }
+
+    public string[]? get_strv (string key) {
+        try {
+            return data.get_string_list (GN, key);
+        } catch (Error e) {
+            return null;
         }
+    }
 
-        return str == "true";
+    public void set_int (string key, int value) {
+        data.set_int64 (GN, key, value);
+        data_changed (key);
+    }
+
+    public int64 get_int (string key) {
+        try {
+            return data.get_int64 (GN, key);
+        } catch (Error e) {
+            return 0;
+        }
+    }
+
+    public void set_double (string key, double value) {
+        data.set_double (GN, key, value);
+        data_changed (key);
+    }
+
+    public double get_double (string key) {
+        try {
+            return data.get_double (GN, key);
+        } catch (Error e) {
+            return 0.0;
+        }
     }
 }
