@@ -282,12 +282,11 @@ public sealed class ReadySet.Application: Adw.Application {
                 Intl.setlocale (ALL, locale);
             }
 
-            var win = new Window (this);
+            var win = new Window (this) {
+                fullscreened = fullscreen
+            };
 
             win.present ();
-            if (fullscreen) {
-                win.fullscreen ();
-            }
 
         } else {
             active_window.present ();
