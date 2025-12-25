@@ -5,7 +5,7 @@ foreach deps_pkg : librs_deps_pkgs
   pkgs += '--pkg=' + deps_pkg
 endforeach
 
-valadoc_vala_dir = librs_versioned_name + '-vala'
+valadoc_vala_dir = meson.project_name() + '-vala'
 custom_target(
   'valadoc',
   command: [ valadoc ] + pkgs +
@@ -24,6 +24,7 @@ custom_target(
   depends: librs,
 )
 
+valadoc_cdocs_dir = meson.project_name() + '-cdocs'
 custom_target(
   'cdocs',
   command: [ valadoc ] + pkgs +
@@ -34,11 +35,11 @@ custom_target(
     '--package-version=' + meson.project_version(),
     '--verbose',
     '--force',
-    '-o', meson.current_build_dir() / librs_versioned_name,
-    '--doclet-arg=lib/' + librs_header_name,
+    '-o', meson.current_build_dir() / valadoc_cdocs_dir,
+    '--doclet-arg=' + 'lib' / 'src' / librs_header_name,
     '--doclet=gtkdoc',
   ],
   build_by_default: true,
-  output: librs_versioned_name,
+  output: valadoc_cdocs_dir,
   depends: librs,
 )

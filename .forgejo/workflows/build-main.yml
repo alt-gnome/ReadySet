@@ -35,7 +35,7 @@ jobs:
         uses: alt-gnome/coding-style-actions/blueprint@main
 
   test-build:
-    name: Test Build
+    name: Test Build and upload doc
     runs-on: alt-sisyphus
     needs:
       - lint-vala
@@ -45,13 +45,39 @@ jobs:
       - name: Install libs on container
         run: |
           apt-get update
-          apt-get install -y meson vala "pkgconfig(gtk4)" "pkgconfig(libadwaita-1)" "pkgconfig(gnome-desktop-4)" "pkgconfig(gee-0.8)" "pkgconfig(accountsservice)" "pkgconfig(ibus-1.0)" "pkgconfig(pwquality)" "pkgconfig(systemd)" "pkgconfig(polkit-gobject-1)" blueprint-compiler
+          apt-get install -y \
+            /usr/bin/meson \
+            /usr/bin/gcc \
+            /usr/bin/valac \
+            'pkgconfig(accountsservice)' \
+            'pkgconfig(gee-0.8)' \
+            'pkgconfig(gio-unix-2.0)' \
+            'pkgconfig(gnome-desktop-4)' \
+            'pkgconfig(ibus-1.0)' \
+            'pkgconfig(libadwaita-1)>=1.7' \
+            'pkgconfig(libpeas-2)' \
+            'pkgconfig(polkit-gobject-1)' \
+            /usr/bin/blueprint-compiler \
+            'pkgconfig(systemd)' \
+            /usr/bin/g-ir-compiler \
+            /usr/bin/valadoc \
+            /usr/bin/gtkdoc-scan \
+            'pkgconfig(passwdqc)' \
+            'pkgconfig(pwquality)' \
+            'gir(Gtk)=4.0' \
+            'gir(Peas)=2'
  
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup
-        run: meson setup _build
+        run: meson setup _build -Dwith_lib_documentation=true -Dwith_test_pages=true -Dpassword_check_backend=both
 
       - name: Build
         run: meson compile -C _build
+
+      - name: Deploy pages
+        if: github.event_name != 'pull_request'
+        uses: actions/deploy-pages@v1
+        with:
+          directory: ./_build/doc/ready-set-vala
