@@ -9,11 +9,6 @@ option(
   value: true
 )
 option(
-  'username',
-  type: 'string',
-  value: 'root'
-)
-option(
   'with_lib_documentation',
   type: 'boolean',
   value: false,
