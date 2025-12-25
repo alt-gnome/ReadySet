@@ -69,6 +69,7 @@ public sealed class ReadySet.Application: Adw.Application {
         add_main_option_entries (OPTION_ENTRIES);
         add_action_entries (ACTION_ENTRIES, this);
         set_accels_for_action ("app.quit", { "<primary>q" });
+        set_accels_for_action ("win.about", { "<primary>o" });
     }
 
     protected override int handle_local_options (VariantDict options) {
