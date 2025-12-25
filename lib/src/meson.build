@@ -27,8 +27,9 @@ librs_vala_sources = files(
 librs_sources = [
   librs_vapi_sources,
   librs_vala_sources,
-  librs_resources,
 ]
+
+librs_sources_with_resources = librs_sources + [librs_resources]
 
 librs_c_args = [
   '-DGETTEXT_PACKAGE="@0@"'.format(librs_name),
@@ -54,7 +55,7 @@ endforeach
 
 librs = shared_library(
   librs_versioned_name,
-  librs_sources,
+  librs_sources_with_resources,
   dependencies: librs_dependencies,
   vala_header: librs_header_name,
   vala_vapi: librs_vapi_name,
