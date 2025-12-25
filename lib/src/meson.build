@@ -39,14 +39,6 @@ rs_app_vala_args = [
   '--vapidir', meson.project_source_root() / 'vapi',
 ]
 
-librs_deps_pkgs = [
-  'gee-0.8',
-  'gio-unix-2.0',
-  'gtk4',
-  'libadwaita-1',
-  'libpeas-2',
-]
-
 librs_dependencies = [
   gee_dep,
   gio_dep,
@@ -54,6 +46,11 @@ librs_dependencies = [
   libadwaita_dep,
   libpeas_dep,
 ]
+
+librs_deps_pkgs = []
+foreach dep : librs_dependencies
+  librs_deps_pkgs += [dep.name()]
+endforeach
 
 librs = shared_library(
   librs_versioned_name,
