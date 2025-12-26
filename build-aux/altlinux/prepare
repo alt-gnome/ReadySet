@@ -3,7 +3,7 @@
 mkdir -p .gear
 cp -a build-aux/altlinux/rules ./.gear/
 
-meson_ast=$(meson introspect --ast ./meson.build 2> /dev/null)
+meson_ast=$(meson introspect --ast ./meson.build)
 
 echo "Meson AST:"
 echo "$meson_ast"
