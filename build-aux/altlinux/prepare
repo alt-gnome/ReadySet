@@ -1,9 +1,14 @@
-#!/usr/bin/bash
+#!/usr/bin/bash -e
 
 mkdir -p .gear
 cp -a build-aux/altlinux/rules ./.gear/
 
-version=$(meson introspect --ast ./meson.build | jq -r '.lines[0].args.kwargs[] | select(.key.value == "version") | .val.value')
+meson_ast=$(meson introspect --ast ./meson.build 2> /dev/null)
+
+echo "Meson AST:"
+echo "$meson_ast"
+
+version=$(echo "$meson_ast" | jq -r '.lines[0].args.kwargs[] | select(.key.value == "version") | .val.value')
 release=1.$(date +%Y%m%d)
 
 sed -e "s/@VERSION@/${version}/g" \
