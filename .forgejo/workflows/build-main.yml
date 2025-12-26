@@ -80,4 +80,4 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: actions/deploy-pages@v1
         with:
-          directory: ./_build/doc/ready-set-vala
+          directory: ./_build/lib/doc/ready-set-vala
