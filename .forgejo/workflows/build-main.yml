@@ -46,9 +46,8 @@ jobs:
         run: |
           apt-get update
           apt-get install -y \
-            /usr/bin/meson \
-            /usr/bin/gcc \
-            /usr/bin/valac \
+            'gir(Gtk)=4.0' \
+            'gir(Peas)=2' \
             'pkgconfig(accountsservice)' \
             'pkgconfig(gee-0.8)' \
             'pkgconfig(gio-unix-2.0)' \
@@ -56,16 +55,17 @@ jobs:
             'pkgconfig(ibus-1.0)' \
             'pkgconfig(libadwaita-1)>=1.7' \
             'pkgconfig(libpeas-2)' \
-            'pkgconfig(polkit-gobject-1)' \
-            /usr/bin/blueprint-compiler \
-            'pkgconfig(systemd)' \
-            /usr/bin/g-ir-compiler \
-            /usr/bin/valadoc \
-            /usr/bin/gtkdoc-scan \
             'pkgconfig(passwdqc)' \
+            'pkgconfig(polkit-gobject-1)' \
             'pkgconfig(pwquality)' \
-            'gir(Gtk)=4.0' \
-            'gir(Peas)=2'
+            'pkgconfig(systemd)' \
+            /usr/bin/blueprint-compiler \
+            /usr/bin/g-ir-compiler \
+            /usr/bin/gcc \
+            /usr/bin/gtkdoc-scan \
+            /usr/bin/meson \
+            /usr/bin/valac \
+            /usr/bin/valadoc
  
       - name: Checkout repository
         uses: actions/checkout@v4
