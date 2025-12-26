@@ -3,7 +3,7 @@
 mkdir -p .gear
 cp -a build-aux/altlinux/rules ./.gear/
 
-version=$(meson introspect --ast ./meson.build | jq -r '.lines[0].args.kwargs[] | select(.key.value == "version") | .val.value')
+version=$(./build-aux/get_meson_version)
 release=$(date +%Y%m%d)
 
 sed -e "s/@VERSION@/${version}/g" \
