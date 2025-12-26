@@ -1,9 +1,14 @@
-plugins = ['keyboard', 'language', 'user', 'welcome']
+plugins = [
+  'keyboard',
+  'language',
+  'user',
+  'welcome'
+]
 
 if get_option('is_devel')
   plugins += ['test']
 endif
 
 foreach plugin : plugins
-  subdir('gui' / plugin)
+  subdir(plugin)
 endforeach
