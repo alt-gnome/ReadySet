@@ -34,15 +34,15 @@ jobs:
       - name: Check files
         uses: alt-gnome/coding-style-actions/blueprint@main
 
-  test-build:
-    name: Test Build and upload doc
+  build:
+    name: Build and upload doc
     runs-on: alt-sisyphus
     needs:
       - lint-vala
       - lint-blueprint
 
     steps:
-      - name: Install libs on container
+      - name: Install deps
         run: |
           apt-get update
           apt-get install -y \
@@ -81,3 +81,45 @@ jobs:
         uses: actions/deploy-pages@v1
         with:
           directory: ./_build/lib/doc/ready-set-vala
+
+  rpm-build:
+    name: RPM build and uploading
+    runs-on: alt-sisyphus
+    container:
+      image: altlinux.space/rirusha/riru-build-image:latest
+
+    strategy:
+      matrix:
+        branch:
+          - sisyphus
+          - p11
+    needs:
+      - lint-vala
+      - lint-blueprint
+
+    steps:
+      - name: Install utils
+        run: |
+          apt-get update
+          apt-get install -y meson jq /usr/bin/add_changelog
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare RPM build
+        run: |
+          ./build-aux/altlinux/prepare
+          git add .
+
+      - uses: alt-gnome/build-rpm-action@main
+        name: Build RPMs
+        with:
+          branch: ${{ matrix.branch }}
+
+      - uses: alt-gnome/upload-rpm-action@main
+        name: Upload RPMs
+        if: github.event_name != 'pull_request'
+        with:
+          directory: ~/.cache/hasherc/ready-set/out/RPMS
+          token: ${{ secrets.TOKEN }}
+          group: ready-set-nightly/${{ matrix.branch }}

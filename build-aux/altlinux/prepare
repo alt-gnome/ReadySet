@@ -1,0 +1,13 @@
+#!/usr/bin/bash
+
+mkdir -p .gear
+cp -a build-aux/altlinux/rules ./.gear/
+
+version=$(meson introspect --ast ./meson.build | jq -r '.lines[0].args.kwargs[] | select(.key.value == "version") | .val.value')
+release=1.$(date +%Y%m%d)
+
+sed -e "s/@VERSION@/${version}/g" \
+    -e "s/@RELEASE@/${release}/g" \
+    build-aux/altlinux/ready-set.spec.in > ready-set.spec
+
+add_changelog ready-set.spec -e '- Regular build.'
