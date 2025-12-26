@@ -8,333 +8,398 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-13 12:56+0300\n"
+"POT-Creation-Date: 2025-12-26 14:14+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data/ui/end-page.blp:5
+#: data/ui/end-page.blp:4
 msgid "Finishing"
 msgstr ""
 
-#: data/ui/end-page.blp:6 src/about.vala:22
-msgid "Ready Set"
+#: data/ui/end-page.blp:5
+msgid "Ready Set…"
 msgstr ""
 
-#: data/ui/end-page.blp:8
+#: data/ui/end-page.blp:7
 msgid "The system is ready for use."
 msgstr ""
 
-#: data/ui/input-chooser.blp:15
-msgid "Search keyboards and input methods"
-msgstr ""
-
-#: data/ui/input-chooser.blp:41 data/ui/languages-box.blp:38
-msgid "Show more"
-msgstr ""
-
-#: data/ui/keyboard-page.blp:4
-msgid "Keyboard"
-msgstr ""
-
-#: data/ui/keyboard-page.blp:5
-msgid "Keyboard settings"
-msgstr ""
-
-#: data/ui/keyboard-page.blp:7
-msgid "Select your keyboard layout"
-msgstr ""
-
-#: data/ui/language-page.blp:4
-msgid "Language selection"
-msgstr ""
-
-#: data/ui/languages-box.blp:16
-msgid "Search language"
+#: data/ui/end-page.blp:17 lib/src/addin.vala:23 lib/src/base/base-page.vala:83
+msgid "Applying changes…"
 msgstr ""
 
 #: data/ui/nothing-to-show.blp:30
 msgid "Nothing to show"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:69
-msgid "Back"
-msgstr ""
-
-#: data/ui/steps-main-page.blp:92
+#: data/ui/steps-main-page.blp:98
 msgid "Next"
 msgstr ""
 
 #. TRANSLATORS: Last word in "Ready Set ..." sentence
-#: data/ui/steps-main-page.blp:109
+#: data/ui/steps-main-page.blp:115
 msgid "Go!"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:121
+#: data/ui/steps-main-page.blp:148
 msgid "Preferences"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:122
+#: data/ui/steps-main-page.blp:149
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:123
+#: data/ui/steps-main-page.blp:150
 msgid "About Ready Set"
 msgstr ""
 
-#: data/ui/test-page.blp:4
-msgid "Test"
+#: data/ui/window-content.blp:27
+msgid "All steps"
 msgstr ""
 
-#: data/ui/test-page.blp:5
-msgid "Test page"
+#: data/ui/window-content.blp:39
+msgid "Main"
 msgstr ""
 
-#: data/ui/user-page.blp:5
-msgid "User"
+#: lib/src/base/base-page.vala:77
+msgid "Unknown"
 msgstr ""
 
-#: data/ui/user-page.blp:6
-msgid "About you"
+#: lib/src/base/base-page.vala:79
+msgid "Unknown page"
 msgstr ""
 
-#: data/ui/user-page.blp:7
-msgid "Set information about You"
+#: lib/src/base/base-page.vala:81
+msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
-#: data/ui/user-page.blp:15 data/ui/user-page.blp:25
-msgid "Full Name"
+#: lib/src/utils.vala:50
+msgid "Something went wrong"
 msgstr ""
 
-#: data/ui/user-page.blp:32 data/ui/user-page.blp:43
-msgid "Username"
+#: plugins/keyboard/data/ui/input-chooser.blp:15
+msgid "Search keyboards and input methods"
 msgstr ""
 
-#: data/ui/user-page.blp:33
-msgid "Username will be used to name your home folder and can't be changed."
+#: plugins/keyboard/data/ui/input-chooser.blp:53
+#: plugins/language/data/ui/box.blp:50
+msgid "Show more"
 msgstr ""
 
-#: data/ui/user-page.blp:50
+#: plugins/keyboard/data/ui/page.blp:5
+msgid "Keyboard"
+msgstr ""
+
+#: plugins/keyboard/data/ui/page.blp:6
+msgid "Keyboard settings"
+msgstr ""
+
+#: plugins/keyboard/data/ui/page.blp:8
+msgid "Select your keyboard layout"
+msgstr ""
+
+#: plugins/keyboard/data/ui/page.blp:15
+msgid ""
+"Make sure that at least one layout containing Latin characters is selected"
+msgstr ""
+
+#: plugins/keyboard/input-chooser.vala:95
+msgid "No input sources selected"
+msgstr ""
+
+#: plugins/keyboard/input-chooser.vala:417 plugins/language/box.vala:54
+msgid "Nothing found"
+msgstr ""
+
+#: plugins/keyboard/page.vala:85
+msgid "Error when setting keyboard layout"
+msgstr ""
+
+#: plugins/language/data/ui/box.blp:16
+msgid "Search language"
+msgstr ""
+
+#: plugins/language/data/ui/page.blp:4
+msgid "Language selection"
+msgstr ""
+
+#: plugins/language/page.vala:48
+msgid "Error when setting language"
+msgstr ""
+
+#: plugins/language/row.vala:34
+msgid "Current language"
+msgstr ""
+
+#: plugins/language/select-title.vala:64
+msgid "Hello!"
+msgstr ""
+
+#: plugins/language/select-title.vala:65
+msgid ""
+"Let's start by choosing the language for the application and for your system."
+msgstr ""
+
+#: plugins/user/data/ui/page-password.blp:5
+#: plugins/user/data/ui/page-password.blp:6
+#: plugins/user/data/ui/page-password.blp:15
 msgid "User password"
 msgstr ""
 
-#: data/ui/user-page.blp:60
+#: plugins/user/data/ui/page-password.blp:7
+msgid "Set password for user"
+msgstr ""
+
+#: plugins/user/data/ui/page-password.blp:25
 msgid "Password"
 msgstr ""
 
-#: data/ui/user-page.blp:83 data/ui/user-page.blp:139
+#: plugins/user/data/ui/page-password.blp:48
+#: plugins/user/data/ui/page-password.blp:119
 msgid "Passwords do not match"
 msgstr ""
 
-#: data/ui/user-page.blp:87
+#: plugins/user/data/ui/page-password.blp:52
 msgid "Repeat password"
 msgstr ""
 
-#: data/ui/user-page.blp:95 data/ui/user-page.blp:116
+#: plugins/user/data/ui/page-password.blp:66
+msgid "Enable autologin"
+msgstr ""
+
+#: plugins/user/data/ui/page-password.blp:75
+#: plugins/user/data/ui/page-password.blp:96
 msgid "Administrator password"
 msgstr ""
 
-#: data/ui/user-page.blp:96
+#: plugins/user/data/ui/page-password.blp:76
 msgid ""
 "Set administrator password manualy. Otherwise it will be equal to user "
 "password"
 msgstr ""
 
-#: data/ui/user-page.blp:143
+#: plugins/user/data/ui/page-password.blp:123
 msgid "Repeat administrator password"
 msgstr ""
 
-#: data/ui/welcome-page.blp:4 data/ui/welcome-page.blp:5
-msgid "Welcome"
+#: plugins/user/data/ui/page-username.blp:5
+msgid "User name"
 msgstr ""
 
-#: data/ui/window-content.blp:28
-msgid "All steps"
+#: plugins/user/data/ui/page-username.blp:6
+msgid "About You"
 msgstr ""
 
-#: data/ui/window-content.blp:40
-msgid "Main"
+#: plugins/user/data/ui/page-username.blp:7
+msgid "Set information about You"
 msgstr ""
 
-#. Translators: NAME <EMAIL.COM> /n NAME <EMAIL.COM>
-#: src/about.vala:27
-msgid "translator-credits"
+#: plugins/user/data/ui/page-username.blp:33
+msgid "Change Avatar"
 msgstr ""
 
-#: src/about.vala:33
-msgid "Folder manager"
+#: plugins/user/data/ui/page-username.blp:55
+msgid "Remove Avatar"
 msgstr ""
 
-#: src/about.vala:33
-msgid "Folder manager for mobile devices"
+#: plugins/user/data/ui/page-username.blp:68
+#: plugins/user/data/ui/page-username.blp:78
+msgid "Full Name"
 msgstr ""
 
-#: src/application.vala:24
-msgid "Print version information and exit"
+#: plugins/user/data/ui/page-username.blp:85
+#: plugins/user/data/ui/page-username.blp:96
+msgid "Username"
 msgstr ""
 
-#: src/application.vala:25
-msgid "Filename with steps"
+#: plugins/user/data/ui/page-username.blp:86
+msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 
-#: src/application.vala:26
-msgid "Steps. E.g: `steps=language,keyboard,end`"
+#: plugins/user/passwdqc-utils.vala:43
+msgid "Failed to generate password"
 msgstr ""
 
-#: src/pages/base/base-page.vala:37
-msgid "Unknown"
+#: plugins/user/plugin.vala:66
+msgid "Error when creating a user"
 msgstr ""
 
-#: src/pages/base/base-page.vala:39
-msgid "Unknown page"
-msgstr ""
-
-#: src/pages/base/base-page.vala:41
-msgid "This page says that your distribution has made a mistake."
-msgstr ""
-
-#: src/pages/keyboard/keyboard-page.vala:34
-msgid "No input source selected"
-msgstr ""
-
-#: src/pages/language/lang-select-title.vala:64
-msgid "Hello!"
-msgstr ""
-
-#: src/pages/language/lang-select-title.vala:65
-msgid ""
-"Let's start by choosing the language for the application and for your system."
-msgstr ""
-
-#: src/pages/user/user-page.vala:132
-msgid "Failed to create user"
-msgstr ""
-
-#: src/utils-user.vala:76
-msgid "Name cannot be empty"
-msgstr ""
-
-#: src/utils-user.vala:166
-msgid "That username isn't available. Please try another"
-msgstr ""
-
-#: src/utils-user.vala:168
-msgid "The username is too long"
-msgstr ""
-
-#: src/utils-user.vala:170
-msgid "The username must start with a lower case letter from a-z"
-msgstr ""
-
-#: src/utils-user.vala:172
-msgid ""
-"The username should only consist of lower case letters from a-z, digits, and "
-"the following characters: '-', '_'"
-msgstr ""
-
-#: src/utils-user.vala:175
-msgid "Username cannot be empty"
-msgstr ""
-
-#: src/utils-user.vala:215
+#: plugins/user/pwquality-utils.vala:52
 msgid "The new password needs to be different from the old one."
 msgstr ""
 
-#: src/utils-user.vala:219
+#: plugins/user/pwquality-utils.vala:56
 msgid ""
 "This password is very similar to your last one. Try changing some letters "
 "and numbers."
 msgstr ""
 
-#: src/utils-user.vala:221
+#: plugins/user/pwquality-utils.vala:58
 msgid ""
 "This is a weak password. A password without your user name would be stronger."
 msgstr ""
 
-#: src/utils-user.vala:223
+#: plugins/user/pwquality-utils.vala:60
 msgid "This is a weak password. Try to avoid using your name in the password."
 msgstr ""
 
-#: src/utils-user.vala:225
+#: plugins/user/pwquality-utils.vala:62
 msgid ""
 "This is a weak password. Try to avoid some of the words included in the "
 "password."
 msgstr ""
 
-#: src/utils-user.vala:227
+#: plugins/user/pwquality-utils.vala:64
 msgid "This is a weak password. Try to avoid common words."
 msgstr ""
 
-#: src/utils-user.vala:229
+#: plugins/user/pwquality-utils.vala:66
 msgid "This is a weak password. Try to avoid reordering existing words."
 msgstr ""
 
-#: src/utils-user.vala:231
+#: plugins/user/pwquality-utils.vala:68
 msgid "This is a weak password. Try to use more numbers."
 msgstr ""
 
-#: src/utils-user.vala:233
+#: plugins/user/pwquality-utils.vala:70
 msgid "This is a weak password. Try to use more uppercase letters."
 msgstr ""
 
-#: src/utils-user.vala:235
+#: plugins/user/pwquality-utils.vala:72
 msgid "This is a weak password. Try to use more lowercase letters."
 msgstr ""
 
-#: src/utils-user.vala:237
+#: plugins/user/pwquality-utils.vala:74
 msgid ""
 "This is a weak password. Try to use more special characters, like "
 "punctuation."
 msgstr ""
 
-#: src/utils-user.vala:239
+#: plugins/user/pwquality-utils.vala:76
 msgid ""
 "This is a weak password. Try to use a mixture of letters, numbers and "
 "punctuation."
 msgstr ""
 
-#: src/utils-user.vala:241
+#: plugins/user/pwquality-utils.vala:78
 msgid "This is a weak password. Try to avoid repeating the same character."
 msgstr ""
 
-#: src/utils-user.vala:243
+#: plugins/user/pwquality-utils.vala:80
 msgid ""
 "This is a weak password. Try to avoid repeating the same type of character: "
 "you need to mix up letters, numbers and punctuation."
 msgstr ""
 
 #. vala-lint=line-length
-#: src/utils-user.vala:245
+#: plugins/user/pwquality-utils.vala:82
 msgid "This is a weak password. Try to avoid sequences like 1234 or abcd."
 msgstr ""
 
-#: src/utils-user.vala:247
+#: plugins/user/pwquality-utils.vala:84
 msgid ""
 "This is a weak password. Try to add more letters, numbers and punctuation."
 msgstr ""
 
-#: src/utils-user.vala:249
+#: plugins/user/pwquality-utils.vala:86
 msgid "Mix uppercase and lowercase and try to use a number or two."
 msgstr ""
 
-#: src/utils-user.vala:251
+#: plugins/user/pwquality-utils.vala:88
 msgid ""
 "Adding more letters, numbers and punctuation will make the password stronger."
 msgstr ""
 
-#: src/utils.vala:182
+#: plugins/user/utils.vala:91
+msgid "Name cannot be empty"
+msgstr ""
+
+#: plugins/user/utils.vala:181
+msgid "That username isn't available. Please try another"
+msgstr ""
+
+#: plugins/user/utils.vala:183
+msgid "The username is too long"
+msgstr ""
+
+#: plugins/user/utils.vala:185
+msgid "The username must start with a lower case letter from a-z"
+msgstr ""
+
+#: plugins/user/utils.vala:187
+msgid ""
+"The username should only consist of lower case letters from a-z, digits, and "
+"the following characters: '-', '_'"
+msgstr ""
+
+#: plugins/user/utils.vala:190
+msgid "Username cannot be empty"
+msgstr ""
+
+#: plugins/welcome/data/ui/page.blp:4 plugins/welcome/data/ui/page.blp:5
+msgid "Welcome"
+msgstr ""
+
+#: src/about.vala:22
+msgid "Ready Set"
+msgstr ""
+
+#. Translators: NAME <EMAIL.COM> /n NAME <EMAIL.COM>
+#: src/about.vala:36
+msgid "translator-credits"
+msgstr ""
+
+#: src/application.vala:28
+msgid "Print version information and exit"
+msgstr ""
+
+#: src/application.vala:29
+msgid "Filename with steps"
+msgstr ""
+
+#: src/application.vala:30
+msgid "Steps. E.g: `steps=language,keyboard`"
+msgstr ""
+
+#: src/application.vala:31
+msgid "Context vars"
+msgstr ""
+
+#: src/application.vala:32
+msgid "App config file"
+msgstr ""
+
+#: src/application.vala:33
+msgid "Idle run without doing anything"
+msgstr ""
+
+#: src/application.vala:34
+msgid "Run window in fullscreen"
+msgstr ""
+
+#: src/application.vala:235
 msgid "Steps file doesn't exists"
 msgstr ""
 
-#: src/utils.vala:188
+#: src/application.vala:241
 msgid "Steps file is empty"
 msgstr ""
 
-#: src/utils.vala:191
+#: src/application.vala:244
 #, c-format
 msgid "Error loading steps file: %s"
+msgstr ""
+
+#: src/application.vala:267
+msgid "No steps specified"
+msgstr ""
+
+#: src/pages/end-page.vala:77
+#, c-format
+msgid "Error message: %s"
 msgstr ""
