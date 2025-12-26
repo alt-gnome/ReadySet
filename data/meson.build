@@ -25,9 +25,9 @@ systemd = dependency('systemd')
 systemd_sysusers_dir = systemd.get_variable(pkgconfig: 'sysusers_dir')
 
 install_data(
-  files('readyset-sysusers.conf'),
+  files(meson.project_name() + '-sysusers.conf'),
   install_dir: systemd_sysusers_dir,
-  rename: ['readyset.conf']
+  rename: [meson.project_name() + '.conf']
 )
 
 subdir('icons')
