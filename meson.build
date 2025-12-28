@@ -50,6 +50,7 @@ sysconfdir = get_option('prefix') / get_option('sysconfdir')
 libexecdir = get_option('prefix') / get_option('libexecdir')
 
 global_conf = configuration_data()
+global_conf.set_quoted('NAME', meson.project_name())
 global_conf.set_quoted('APP_ID', app_id)
 global_conf.set_quoted('APP_ID_DYN', app_id_dyn)
 global_conf.set_quoted('G_LOG_DOMAIN', app_id)

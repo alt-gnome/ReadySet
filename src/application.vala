@@ -20,23 +20,11 @@ public sealed class ReadySet.Application: Adw.Application {
 
     const ActionEntry[] ACTION_ENTRIES = {};
 
-    string[]? steps = null;
-    bool fullscreen = false;
-
-    const OptionEntry[] OPTION_ENTRIES = {
-        { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
-        { "steps", 's', 0, OptionArg.STRING, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
-        { "context", 'c', 0, OptionArg.STRING_ARRAY, null, N_("Context vars"), "CONTEXT" },
-        { "conf-file", 'C', 0, OptionArg.FILENAME, null, N_("App config file"), "CONF-FILE" },
-        { "idle", 'i', 0, OptionArg.NONE, null, N_("Idle run without doing anything"), null },
-        { "fullscreen", 'F', 0, OptionArg.NONE, null, N_("Run window in fullscreen"), null },
-        { null }
-    };
-
     static string[] all_steps = {};
 
     public bool show_steps { get; set; default = false; }
 
+    OptionsHandler options_handler;
     public Context context { get; private set; }
 
     Gee.HashMap<string, Addin> plugins = new Gee.HashMap<string, Addin> ();
@@ -64,7 +52,7 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     construct {
-        add_main_option_entries (OPTION_ENTRIES);
+        add_main_option_entries (OptionsHandler.OPTION_ENTRIES);
         add_action_entries (ACTION_ENTRIES, this);
         set_accels_for_action ("app.quit", { "<primary>q" });
         set_accels_for_action ("win.about", { "<primary>o" });
@@ -76,71 +64,9 @@ public sealed class ReadySet.Application: Adw.Application {
             return 0;
         }
 
-        var conf_keyfile = new KeyFile ();
-        conf_keyfile.set_list_separator (',');
-        var app_group_name = "Application";
-        var has_app_group = false;
-        var ctx_group_name = "Context";
-
-        var idle = false;
-
-        try {
-            var idle_opt_name = "idle";
-            if (options.contains (idle_opt_name)) {
-                idle = true;
-            }
-
-            if (options.contains ("conf-file")) {
-                var config_filename = options.lookup_value ("conf-file", null).get_bytestring ();
-                conf_keyfile.load_from_file (config_filename, KeyFileFlags.NONE);
-                has_app_group = conf_keyfile.has_group (app_group_name);
-
-                //  Also check if idle not set by args
-                if (!idle && kf_has_key (conf_keyfile, app_group_name, idle_opt_name)) {
-                    idle = conf_keyfile.get_boolean (app_group_name, idle_opt_name);
-                }
-
-                context = new Context (idle);
-                context.load_from_keyfile (conf_keyfile, ctx_group_name);
-            } else {
-                context = new Context (idle);
-            }
-
-            context.reload_window.connect (reload_window);
-
-            var fullscreen_opt_name = "fullscreen";
-            if (options.contains (fullscreen_opt_name)) {
-                fullscreen = true;
-            } else if (kf_has_key (conf_keyfile, app_group_name, fullscreen_opt_name)) {
-                fullscreen = conf_keyfile.get_boolean (app_group_name, fullscreen_opt_name);
-            }
-
-            var steps_opt_name = "steps";
-            if (options.contains (steps_opt_name)) {
-                steps = options.lookup_value (steps_opt_name, null).get_string ().split (",");
-                for (int i = 0; i < steps.length; i++) {
-                    steps[i] = steps[i].strip ();
-                }
-            } else if (kf_has_key (conf_keyfile, app_group_name, steps_opt_name)) {
-                steps = conf_keyfile.get_string_list (app_group_name, steps_opt_name);
-                for (int i = 0; i < steps.length; i++) {
-                    steps[i] = steps[i].strip ();
-                }
-            }
-
-            if (options.contains ("context")) {
-                var ctx = options.lookup_value ("context", null).get_strv ();
-                foreach (var c in ctx) {
-                    var parts = c.split ("=", 2);
-                    if (parts.length != 2) {
-                        error ("Invalid context: %s", c);
-                    }
-                    context.set_raw (parts[0], parts[1]);
-                }
-            }
-        } catch (Error e) {
-            error ("Error in working with config file: %s", e.message);
-        }
+        options_handler = new OptionsHandler.from_options (options);
+        context = options_handler.build_context ();
+        context.reload_window.connect (reload_window);
 
         return -1;
     }
@@ -150,8 +76,8 @@ public sealed class ReadySet.Application: Adw.Application {
         engine.enable_loader ("python");
 
         engine.add_search_path (
-            Path.build_filename (Config.LIBDIR, "ready-set", "plugins"),
-            Path.build_filename (Config.DATADIR, "ready-set", "plugins")
+            Path.build_filename (Config.LIBDIR, Config.NAME, "plugins"),
+            Path.build_filename (Config.DATADIR, Config.NAME, "plugins")
         );
 
         return engine;
@@ -215,12 +141,10 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     string[] get_all_steps () {
-        var app = ReadySet.Application.get_default ();
-
         var steps_data = new Array<string> ();
 
-        if (app.steps != null) {
-            foreach (var step in app.steps) {
+        if (options_handler.steps != null) {
+            foreach (var step in options_handler.steps) {
                 steps_data.append_val (step);
             }
 
@@ -245,7 +169,7 @@ public sealed class ReadySet.Application: Adw.Application {
             }
 
             var win = new Window (this) {
-                fullscreened = fullscreen
+                fullscreened = options_handler.fullscreen
             };
 
             win.present ();
