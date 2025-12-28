@@ -20,13 +20,11 @@ public sealed class ReadySet.Application: Adw.Application {
 
     const ActionEntry[] ACTION_ENTRIES = {};
 
-    string? steps_filename = null;
     string[]? steps = null;
     bool fullscreen = false;
 
     const OptionEntry[] OPTION_ENTRIES = {
         { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
-        { "steps-file", 'f', 0, OptionArg.FILENAME, null, N_("Filename with steps"), "FILENAME" },
         { "steps", 's', 0, OptionArg.STRING, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
         { "context", 'c', 0, OptionArg.STRING_ARRAY, null, N_("Context vars"), "CONTEXT" },
         { "conf-file", 'C', 0, OptionArg.FILENAME, null, N_("App config file"), "CONF-FILE" },
@@ -109,13 +107,6 @@ public sealed class ReadySet.Application: Adw.Application {
             }
 
             context.reload_window.connect (reload_window);
-
-            var steps_file_opt_name = "steps-file";
-            if (options.contains (steps_file_opt_name)) {
-                steps_filename = options.lookup_value (steps_file_opt_name, null).get_bytestring ();
-            } else if (kf_has_key (conf_keyfile, app_group_name, steps_file_opt_name)) {
-                steps_filename = conf_keyfile.get_string (app_group_name, steps_file_opt_name);
-            }
 
             var fullscreen_opt_name = "fullscreen";
             if (options.contains (fullscreen_opt_name)) {
@@ -228,37 +219,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
         var steps_data = new Array<string> ();
 
-        if (app.steps_filename != null) {
-            var steps_file = File.new_for_path (app.steps_filename);
-
-            if (!steps_file.query_exists ()) {
-                error (_("Steps file doesn't exists"));
-            }
-
-            uint8[] steps_file_content;
-            try {
-                if (!steps_file.load_contents (null, out steps_file_content, null)) {
-                    error (_("Steps file is empty"));
-                }
-            } catch (Error e) {
-                error (_("Error loading steps file: %s"), e.message);
-            }
-
-            string[] data = ((string) steps_file_content).split ("\n");
-
-            for (int i = 0; i < data.length; i++) {
-                data[i] = data[i].strip ();
-            };
-
-            foreach (var line in data) {
-                var stripped_line = line.strip ();
-
-                if (stripped_line != "" && !stripped_line.has_prefix ("#")) {
-                    steps_data.append_val (stripped_line);
-                }
-            }
-
-        } else if (app.steps != null) {
+        if (app.steps != null) {
             foreach (var step in app.steps) {
                 steps_data.append_val (step);
             }
