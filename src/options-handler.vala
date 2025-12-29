@@ -87,6 +87,26 @@ public sealed class ReadySet.OptionsHandler : Object {
         } catch (Error e) {
             error ("Error in working with config file: %s", e.message);
         }
+
+        check ();
+    }
+
+    public void check () {
+        string last = Uuid.string_random ();
+
+        var asteps = new Gee.ArrayList<string>.wrap (steps);
+        asteps.sort ();
+
+        foreach (var step in asteps) {
+            if (step == last) {
+                error ("Duplicate step: %s", step);
+            }
+            last = step;
+
+            if (step == "") {
+                error ("Empty step");
+            }
+        }
     }
 
     public Context build_context () {
