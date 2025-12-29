@@ -133,7 +133,6 @@ public class ReadySet.BasePage : Gtk.Box {
     }
 
     public virtual async void apply () throws ApplyError {
-        warning ("Empty 'apply' detected");
         return;
     }
 
