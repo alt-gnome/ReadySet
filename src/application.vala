@@ -24,7 +24,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
     public bool show_steps { get; set; default = false; }
 
-    OptionsHandler options_handler;
+    public OptionsHandler options_handler;
     public Context context { get; private set; }
 
     Gee.HashMap<string, Addin> plugins = new Gee.HashMap<string, Addin> ();
@@ -129,9 +129,13 @@ public sealed class ReadySet.Application: Adw.Application {
             } else {
                 var addin = plugins[all_steps[i]];
                 if (addin.allowed ()) {
+                    addin.set_data<string> (STEP_ID_LABEL, all_steps[i]);
                     loaded_addins.add (addin);
                     addin.context = context;
-                    loaded_pages.add_all_array (addin.build_pages ());
+                    foreach (var page in addin.build_pages ()) {
+                        page.set_data<string> (STEP_ID_LABEL, all_steps[i]);
+                        loaded_pages.add (page);
+                    }
                     print ("  %s\n", all_steps[i]);
                 }
             }

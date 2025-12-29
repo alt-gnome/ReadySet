@@ -39,6 +39,10 @@ public sealed class ReadySet.EndPage : BasePage {
         try {
             var app = (ReadySet.Application) GLib.Application.get_default ();
             foreach (var callback_page in app.loaded_pages) {
+                if (callback_page.get_data<string> (STEP_ID_LABEL) in app.options_handler.steps_no_apply) {
+                    continue;
+                }
+
                 if (context.idle) {
                     Timeout.add_seconds_once (1, () => {
                         Idle.add (start_action.callback);
@@ -52,6 +56,10 @@ public sealed class ReadySet.EndPage : BasePage {
             }
 
             foreach (var callback_addin in app.loaded_addins) {
+                if (callback_addin.get_data<string> (STEP_ID_LABEL) in app.options_handler.steps_no_apply) {
+                    continue;
+                }
+
                 if (context.idle) {
                     Timeout.add_seconds_once (1, () => {
                         Idle.add (start_action.callback);

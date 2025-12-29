@@ -18,4 +18,5 @@
 
 namespace ReadySet {
 
+    public const string STEP_ID_LABEL = "step-id";
 }

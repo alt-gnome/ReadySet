@@ -33,6 +33,7 @@ public sealed class ReadySet.OptionsHandler : Object {
     internal const OptionEntry[] OPTION_ENTRIES = {
         { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
         { "steps", 's', 0, OptionArg.STRING, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
+        { "steps-no-apply", 's', 0, OptionArg.STRING, null, N_("Steps which will not apply. E.g: `steps=language,keyboard`"), "STEPS_NO_APPLY" },
         { "context", 'c', 0, OptionArg.STRING_ARRAY, null, N_("Context vars"), "CONTEXT" },
         { OPT_CONF_FILE, 'C', 0, OptionArg.FILENAME, null, N_("App config file"), "CONF-FILE" },
         { "idle", 'i', 0, OptionArg.NONE, null, N_("Idle run without doing anything"), null },
@@ -43,6 +44,8 @@ public sealed class ReadySet.OptionsHandler : Object {
     public bool version { get; set; }
 
     public string[] steps { get; set; }
+
+    public string[] steps_no_apply { get; set; }
 
     public string[] context { get; set; }
 
