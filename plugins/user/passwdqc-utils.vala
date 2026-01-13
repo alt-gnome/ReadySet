@@ -64,7 +64,7 @@ namespace User.Password {
             };
         } else {
             return {
-                hint: res[0:1].up () + res[1:res.length],
+                hint: capital (res),
                 strength_level: BAD,
                 value: 0.0,
                 support_value: false

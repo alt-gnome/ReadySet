@@ -274,4 +274,21 @@ namespace User {
 
         return facesdir.to_array ();
     }
+
+    public string capital (string str) {
+        var builder = new StringBuilder ();
+
+        int next_index = 0;
+        unichar c;
+
+        while (str.get_next_char (ref next_index, out c)) {
+            if (builder.len == 0) {
+                builder.append_unichar (c.toupper ());
+            } else {
+                builder.append_unichar (c);
+            }
+        }
+
+        return builder.free_and_steal ();
+    }
 }
