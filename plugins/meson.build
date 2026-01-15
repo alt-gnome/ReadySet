@@ -5,7 +5,7 @@ plugins = [
   'welcome'
 ]
 
-if get_option('is_devel')
+if get_option('with_test_pages')
   plugins += ['test']
 endif
 
