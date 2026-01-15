@@ -23,10 +23,17 @@ rs_app_resources = gnome.compile_resources(
 
 systemd = dependency('systemd')
 systemd_sysusers_dir = systemd.get_variable(pkgconfig: 'sysusers_dir')
+systemd_tmpfiles_dir = systemd.get_variable(pkgconfig: 'tmpfiles_dir')
 
 install_data(
   files(meson.project_name() + '-sysusers.conf'),
   install_dir: systemd_sysusers_dir,
+  rename: [meson.project_name() + '.conf']
+)
+
+install_data(
+  files(meson.project_name() + '-tmpfiles.conf'),
+  install_dir: systemd_tmpfiles_dir,
   rename: [meson.project_name() + '.conf']
 )
 
