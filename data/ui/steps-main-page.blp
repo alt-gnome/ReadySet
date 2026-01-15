@@ -36,7 +36,10 @@ template $ReadySetStepsMainPage: Adw.Bin {
 
       [end]
       Button context_button {
-        styles ["flat"]
+        styles [
+          "flat",
+        ]
+
         icon-name: "open-menu-symbolic";
         clicked => $on_context_button_clicked();
       }
@@ -44,7 +47,7 @@ template $ReadySetStepsMainPage: Adw.Bin {
       [end]
       Label idle_label {
         styles [
-          "dimmed"
+          "dimmed",
         ]
 
         margin-start: 12;

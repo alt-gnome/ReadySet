@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $ReadySetDevelWindow : Adw.Window {
+template $ReadySetDevelWindow: Adw.Window {
   styles [
     "devel",
   ]
@@ -19,6 +19,7 @@ template $ReadySetDevelWindow : Adw.Window {
     content: Adw.ViewStack stack {
       Adw.ViewStackPage {
         name: "Context";
+
         child: ScrolledWindow {
           propagate-natural-height: true;
           hscrollbar-policy: never;
@@ -49,7 +50,6 @@ template $ReadySetDevelWindow : Adw.Window {
                 ]
 
                 halign: end;
-
                 icon-name: "list-add-symbolic";
                 clicked => $on_add_button_clicked();
               }
