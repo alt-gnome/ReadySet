@@ -162,8 +162,7 @@ Requires: %name
 %_libexecdir/%name
 %_sysusersdir/%name.conf
 %_tmpfilesdir/%name.conf
-%_iconsdir/hicolor/*/apps/%app_id.svg
-%_iconsdir/hicolor/*/apps/%app_id-symbolic.svg
+%_iconsdir/hicolor/*/apps/%{app_id}*
 %doc README.md
 
 %files translation -f %name.lang
