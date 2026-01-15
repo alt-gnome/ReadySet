@@ -2,7 +2,7 @@ using Gtk 4.0;
 using Adw 1;
 
 template $ReadySetDevelAddContextDialog : Adw.Dialog {
-  title: _("Add context");
+  title: "Add context";
 
   Adw.ToolbarView {
     [top]
@@ -27,7 +27,7 @@ template $ReadySetDevelAddContextDialog : Adw.Dialog {
             "property",
           ]
 
-          title: _("Name");
+          title: "Name";
           text: bind template.context_name bidirectional;
         }
 
@@ -36,7 +36,7 @@ template $ReadySetDevelAddContextDialog : Adw.Dialog {
             "property",
           ]
 
-          title: _("Raw value");
+          title: "Raw value";
           text: bind template.context_value bidirectional;
         }
 
@@ -45,7 +45,7 @@ template $ReadySetDevelAddContextDialog : Adw.Dialog {
             "suggested-action",
           ]
 
-          title: _("Add");
+          title: "Add";
           activated => $on_buttonrow_activated();
         }
       }
