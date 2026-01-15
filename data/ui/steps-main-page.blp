@@ -34,13 +34,24 @@ template $ReadySetStepsMainPage: Adw.Bin {
         }
       };
 
-      // [end]
-      // MenuButton menu_button {
-      //   styles ["flat"]
-      //   icon-name: "open-menu-symbolic";
-      //   menu-model: primary_menu;
-      //   valign: start;
-      // }
+      [end]
+      Button context_button {
+        styles ["flat"]
+        icon-name: "open-menu-symbolic";
+        clicked => $on_context_button_clicked();
+      }
+
+      [end]
+      Label idle_label {
+        styles [
+          "dimmed"
+        ]
+
+        margin-start: 12;
+        margin-end: 12;
+        visible: false;
+        label: "idle";
+      }
     }
 
     content: $ReadySetPositionedStack positioned_stack {};
@@ -140,13 +151,5 @@ template $ReadySetStepsMainPage: Adw.Bin {
         }
       };
     }
-  }
-}
-
-menu primary_menu {
-  section {
-    item (_("Preferences"), "win.preferences")
-    item (_("Keyboard Shortcuts"), "win.show-help-overlay")
-    item (_("About Ready Set"), "win.about")
   }
 }

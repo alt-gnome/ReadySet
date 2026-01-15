@@ -27,6 +27,12 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     unowned PagesIndicator pages_indicator;
     [GtkChild]
     unowned Adw.HeaderBar header_bar;
+    [GtkChild]
+    unowned Gtk.Label idle_label;
+    [GtkChild]
+    unowned Gtk.Button context_button;
+
+    Devel.Window devel_window;
 
     static uint saved_last_position = 0;
 
@@ -90,6 +96,8 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         model.selection_changed.connect (selection_changed);
 
         header_bar.show_end_title_buttons = Config.IS_DEVEL;
+        context_button.visible = Config.IS_DEVEL;
+        idle_label.visible = ReadySet.Application.get_default ().context.idle;
     }
 
     void selection_changed () {
@@ -137,6 +145,19 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     public void add_page (BasePage page) {
         page.hexpand = true;
         ((ListStore) model.get_model ()).append (page);
+    }
+
+    [GtkCallback]
+    void on_context_button_clicked () {
+        if (devel_window == null) {
+            devel_window = new Devel.Window ();
+            devel_window.close_request.connect (() => {
+                devel_window = null;
+                return false;
+            });
+        }
+
+        devel_window.present ();
     }
 
     [GtkCallback]

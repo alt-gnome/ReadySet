@@ -5,6 +5,9 @@ rs_app_vapi_sources = files(
 rs_app_vala_sources = files(
   'pages/end-page.vala',
 
+  'widgets/devel/add-context-dialog.vala',
+  'widgets/devel/window.vala',
+
   'widgets/nothing-to-show.vala',
   'widgets/pages-indicator.vala',
   'widgets/positioned-stack.vala',
@@ -45,6 +48,12 @@ rs_app_vala_args = [
   '--gresourcesdir=data/',
   '--vapidir', meson.project_source_root() / 'vapi',
 ]
+
+if get_option('is_devel')
+  rs_app_vala_args += [
+    '--define=DEVEL',
+  ]
+endif
 
 configure_file(output: 'config.h', configuration: global_conf)
 rs_app_config_h_dir = include_directories('.')

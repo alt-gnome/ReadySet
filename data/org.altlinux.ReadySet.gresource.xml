@@ -5,6 +5,8 @@
   </gresource>
   <gresource prefix="/org/altlinux/ReadySet/">
     <file>style.css</file>
+    <file preprocess="xml-stripblanks">ui/devel-add-context-dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/devel-window.ui</file>
     <file preprocess="xml-stripblanks">ui/end-page.ui</file>
     <file preprocess="xml-stripblanks">ui/nothing-to-show.ui</file>
     <file preprocess="xml-stripblanks">ui/pages-indicator.ui</file>

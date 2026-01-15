@@ -1,5 +1,7 @@
 rs_app_blueprints = custom_target('blueprints',
   input: files(
+    'ui/devel-add-context-dialog.blp',
+    'ui/devel-window.blp',
     'ui/end-page.blp',
     'ui/nothing-to-show.blp',
     'ui/pages-indicator.blp',

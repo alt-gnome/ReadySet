@@ -1,0 +1,54 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ReadySetDevelAddContextDialog : Adw.Dialog {
+  title: _("Add context");
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {}
+
+    content: Adw.Clamp {
+      maximum-size: 550;
+      margin-bottom: 12;
+      margin-top: 12;
+      margin-start: 12;
+      margin-end: 12;
+
+      ListBox {
+        styles [
+          "boxed-list",
+        ]
+
+        selection-mode: none;
+
+        Adw.EntryRow {
+          styles [
+            "property",
+          ]
+
+          title: _("Name");
+          text: bind template.context_name bidirectional;
+        }
+
+        Adw.EntryRow {
+          styles [
+            "property",
+          ]
+
+          title: _("Raw value");
+          text: bind template.context_value bidirectional;
+        }
+
+        Adw.ButtonRow {
+          styles [
+            "suggested-action",
+          ]
+
+          title: _("Add");
+          activated => $on_buttonrow_activated();
+        }
+      }
+    };
+  }
+}
