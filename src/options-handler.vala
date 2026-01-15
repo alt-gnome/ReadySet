@@ -113,16 +113,14 @@ public sealed class ReadySet.OptionsHandler : Object {
     }
 
     public Context build_context () {
-        Context ctx;
+        var ctx = new Context (idle);
+
         if (conf_file != null) {
-            ctx = new Context (idle);
             try {
                 ctx.load_from_keyfile (conf_keyfile, CTX_GROUP_NAME);
             } catch (Error e) {
                 error ("Error in working with config file: %s", e.message);
             }
-        } else {
-            ctx = new Context (idle);
         }
 
         foreach (var context_var in context) {
