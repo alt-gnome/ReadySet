@@ -1,3 +1,4 @@
+data/ui/devel-add-context-dialog.blp
 data/ui/end-page.blp
 data/ui/nothing-to-show.blp
 data/ui/steps-main-page.blp
@@ -25,6 +26,7 @@ plugins/user/utils.vala
 plugins/welcome/data/ui/page.blp
 src/about.vala
 src/application.vala
+src/options-handler.vala
 src/pages/end-page.vala
 src/widgets/positioned-stack.vala
 src/widgets/steps-sidebar.vala
