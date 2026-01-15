@@ -45,6 +45,8 @@ public class User.PagePassword : ReadySet.BasePage {
     unowned ContextRow root_password_repeat_context_row;
     [GtkChild]
     unowned Adw.PasswordEntryRow root_password_repeat_entry;
+    [GtkChild]
+    unowned Gtk.ListBox autologin_list_box;
 
     public bool with_root_password { get; construct set; default = false; }
 
@@ -59,6 +61,7 @@ public class User.PagePassword : ReadySet.BasePage {
             root_password_entry.text = root_password;
         }
         autologin_switch_row.active = Addin.get_instance ().context.get_boolean ("user-autologin");
+        autologin_list_box.visible = !Addin.get_instance ().context.get_boolean ("hide-autologin");
     }
 
     void update_is_ready () {

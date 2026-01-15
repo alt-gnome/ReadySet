@@ -14,3 +14,6 @@ If empty, `/etc/passwdqc.conf` or pwquality default will be used.
 ###### `user-avatar-directories`
 Paths to directories with avatar files.
 Override system dirs and gsettings.
+
+###### `hide-autologin`
+Show autologin setting.
