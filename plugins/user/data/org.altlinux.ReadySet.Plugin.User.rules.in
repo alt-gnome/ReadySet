@@ -1,5 +1,5 @@
 polkit.addRule(function(action, subject) {
-    if (subject.user !== "ready-set")
+    if (subject.user !== "_greeter")
         return;
 
     var actionMatches =
