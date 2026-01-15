@@ -22,6 +22,19 @@ App using steps. Curently available steps:
 - keyboard (Choosing layouts)
 - language (Users language)
 
+## Configuration
+
+The Ready Set is fully configurable. You can transfer the desired behavior either through options on the command line or through a configuration file (command line options overwrite fields in the configuration file).
+
+Priority of configuration files (When a file is found, the following are not reading, so fields from other files cannot be combined):
+1) The file specified via the `--conf-file` option
+2) /etc/ready-set/config
+4) /usr/share/ready-set/config
+
+Example for configuration can be found file [here](example/example.conf).
+
+Context configuration options can be found in plugins README.
+
 ## Testing
 
 For test purpose you should use `--idle` option.
@@ -53,7 +66,7 @@ sudo apt-get install ready-set
 #### Building
 
 ```sh
-meson setup _build
+meson setup _build -Dis_devel=true
 ```
 
 #### Installing
