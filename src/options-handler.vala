@@ -163,7 +163,10 @@ public sealed class ReadySet.OptionsHandler : Object {
 
         } else if (value_type == typeof (string[])) {
             if (opt.get_type ().dup_string () == VariantType.STRING_ARRAY.dup_string ()) {
-                return opt.get_strv ();
+                var a = opt.get_strv ();
+                var val = Value (typeof (string[]));
+                val.set_boxed (a);
+                return val;
             } else if (opt.get_type ().dup_string () == VariantType.STRING.dup_string ()) {
                 return opt.get_string ().strip ().split (SEP.to_string ());
             } else {
