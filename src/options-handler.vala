@@ -28,7 +28,8 @@ public sealed class ReadySet.OptionsHandler : Object {
     KeyFile conf_keyfile;
     const char SEP = ',';
 
-    File standard_conf_file = File.new_build_filename (Config.SYSCONFDIR, Config.NAME, "config");
+    File standard_distro_conf_file = File.new_build_filename (Config.DATADIR, Config.NAME, "config");
+    File standard_local_conf_file = File.new_build_filename (Config.SYSCONFDIR, Config.NAME, "config");
 
     internal const OptionEntry[] OPTION_ENTRIES = {
         { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
@@ -63,8 +64,10 @@ public sealed class ReadySet.OptionsHandler : Object {
             if (options.contains (OPT_CONF_FILE)) {
                 var config_filename = options.lookup_value (OPT_CONF_FILE, null).get_bytestring ();
                 conf_keyfile.load_from_file (config_filename, KeyFileFlags.NONE);
-            } else if (standard_conf_file.query_exists ()) {
-                conf_keyfile.load_from_file (standard_conf_file.get_path (), KeyFileFlags.NONE);
+            } else if (standard_local_conf_file.query_exists ()) {
+                conf_keyfile.load_from_file (standard_local_conf_file.get_path (), KeyFileFlags.NONE);
+            } else if (standard_distro_conf_file.query_exists ()) {
+                conf_keyfile.load_from_file (standard_distro_conf_file.get_path (), KeyFileFlags.NONE);
             }
 
             foreach (var prop in this.get_class ().list_properties ()) {
