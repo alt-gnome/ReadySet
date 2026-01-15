@@ -20,51 +20,79 @@
 
 public class Language.SelectTitle : Adw.Bin {
 
-    Adw.Carousel carousel;
+    Gtk.Stack stack;
 
     construct {
-        carousel = new Adw.Carousel () {
-            interactive = false,
-            spacing = 24
+        stack = new Gtk.Stack () {
+            transition_type = Gtk.StackTransitionType.SLIDE_LEFT
         };
-        child = carousel;
+        child = stack;
 
         var cur_locale = get_current_language ();
 
-        Intl.setlocale (LocaleCategory.MESSAGES, fix_locale ("en"));
-
         append ();
 
-        foreach (var locale in get_supported_languages ()) {
-            Intl.setlocale (LocaleCategory.MESSAGES, fix_locale (locale));
-
-            append ();
+        foreach (var lang in get_supported_languages ()) {
+            var locale = fix_locale (lang);
+            if (cur_locale != locale) {
+                Intl.setlocale (LocaleCategory.MESSAGES, locale);
+                append ();
+            }
         }
 
         set_current_locale (cur_locale);
 
         Timeout.add_seconds (3, () => {
-            var cur_pos = (int) carousel.position;
-
-            if (cur_pos == carousel.n_pages - 1) {
-                carousel.scroll_to (carousel.get_nth_page (0), false);
-                Idle.add_once (() => {
-                    carousel.scroll_to (carousel.get_nth_page (1), true);
-                });
-            } else {
-                carousel.scroll_to (carousel.get_nth_page (cur_pos + 1), true);
-            }
+            next ();
 
             return true;
         });
     }
 
     void append () {
-        carousel.append (new ReadySet.BasePageDesc (
+        int num;
+        var widget = stack.get_last_child ();
+
+        if (widget == null) {
+            num = 0;
+        } else {
+            num = widget.get_data<int> ("num") + 1;
+        }
+
+        var desc = new ReadySet.BasePageDesc (
             _("Hello!"),
             _("Let's start by choosing the language for the application and for your system.")
         ) {
             hexpand = true
-        });
+        };
+
+        desc.set_data<int> ("num", num);
+
+        stack.add_named (
+            desc,
+            num.to_string ()
+        );
+    }
+
+    void next () {
+        var last_widget = stack.get_last_child ();
+
+        if (last_widget == null) {
+            return;
+        }
+
+        Gtk.Widget cur_widget = stack.visible_child;
+
+        var last_num = last_widget.get_data<int> ("num");
+        var cur_num = cur_widget.get_data<int> ("num");
+        int next_num;
+
+        if (last_num == cur_num) {
+            next_num = 0;
+        } else {
+            next_num = cur_num + 1;
+        }
+
+        stack.set_visible_child_name (next_num.to_string ());
     }
 }
