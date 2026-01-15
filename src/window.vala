@@ -40,6 +40,14 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         }
     }
 
+    protected override bool close_request () {
+        if (Config.IS_DEVEL) {
+            return base.close_request ();
+        }
+
+        return true;
+    }
+
     public void reload_window () {
         stack.visible_child_name = "load";
         Timeout.add_once (300, build_content);
