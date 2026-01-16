@@ -1,3 +1,3 @@
-spec: .gear/ready-set.spec
+spec: altlinux/ready-set.spec
 tar: v@version@:.
-diff: v@version@:. . exclude=.gear
+diff: v@version@:. . exclude=.gear exclude=altlinux
