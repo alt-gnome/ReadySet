@@ -166,7 +166,7 @@ Requires: %name
 %_sysusersdir/%name.conf
 %_tmpfilesdir/%name.conf
 %_iconsdir/hicolor/*/apps/%{app_id}*
-%doc README.md
+%doc README.en.md
 
 %files translation -f %name.lang
 
