@@ -17,7 +17,7 @@ VCS: https://github.com/alt-gnome/ReadySet.git
 
 Source: %name-%version.tar
 
-Requires: shadow-utils
+Requires: %name-translation
 
 BuildRequires(pre): rpm-macros-meson
 BuildRequires(pre): rpm-macros-systemd
@@ -110,6 +110,9 @@ Requires: %name
 Summary: %name user plugin common files
 Group: Other
 
+Requires: gnome-control-center-data
+Requires: accountsservice
+Requires: shadow-utils
 Requires: %name
 
 %description plugin-user-common
