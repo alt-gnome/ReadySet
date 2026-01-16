@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Vaskov <rirusha@altlinux.org>
+ * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,37 +18,33 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/space/rirusha/ReadySet/ui/steps-main-page.ui")]
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/steps-main-page.ui")]
 public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     [GtkChild]
     unowned PositionedStack positioned_stack;
     [GtkChild]
-    unowned Gtk.Stack continue_stack;
-    [GtkChild]
-    unowned Gtk.Box button_box;
-    [GtkChild]
     unowned PagesIndicator pages_indicator;
+    [GtkChild]
+    unowned Adw.HeaderBar header_bar;
+    [GtkChild]
+    unowned Gtk.Label idle_label;
+    [GtkChild]
+    unowned Gtk.Button context_button;
+
+    Devel.Window devel_window;
 
     static uint saved_last_position = 0;
 
-    bool _centerize_buttons = false;
-    public bool centerize_buttons {
-        get {
-            return _centerize_buttons;
-        }
-        set {
-            _centerize_buttons = value;
-
-            button_box.halign = _centerize_buttons ? Gtk.Align.CENTER : Gtk.Align.END;
-        }
-    }
+    public string continue_state { get; set; default = "continue"; }
 
     public bool show_steps_list { get; set; }
 
     public bool is_ready_to_continue { get; set; }
 
     public bool dead_end { get; set; default = false; }
+
+    public bool can_up { get; set; }
 
     BasePage last_current_page;
 
@@ -73,10 +69,10 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
             _is_ready_to_finish = value;
 
             if (_is_ready_to_finish) {
-                continue_stack.visible_child_name = "finish";
+                continue_state = "finish";
 
             } else {
-                continue_stack.visible_child_name = "continue";
+                continue_state = "continue";
             }
         }
     }
@@ -98,6 +94,10 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         });
 
         model.selection_changed.connect (selection_changed);
+
+        header_bar.show_end_title_buttons = Config.IS_DEVEL;
+        context_button.visible = Config.IS_DEVEL;
+        idle_label.visible = ReadySet.Application.get_default ().context.idle;
     }
 
     void selection_changed () {
@@ -115,6 +115,7 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         }
 
         update_buttons ();
+        update_scroll ();
 
         if (saved_last_position < position) {
             saved_last_position = position;
@@ -126,8 +127,13 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
         last_current_page = current_page;
         last_current_page.notify["is-ready"].connect (update_buttons);
+        last_current_page.notify["scroll-on-top"].connect (update_scroll);
 
         current_page.passed = true;
+    }
+
+    void update_scroll () {
+        can_up = !current_page.scroll_on_top;
     }
 
     void update_buttons () {
@@ -139,6 +145,24 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     public void add_page (BasePage page) {
         page.hexpand = true;
         ((ListStore) model.get_model ()).append (page);
+    }
+
+    [GtkCallback]
+    void on_context_button_clicked () {
+        if (devel_window == null) {
+            devel_window = new Devel.Window ();
+            devel_window.close_request.connect (() => {
+                devel_window = null;
+                return false;
+            });
+        }
+
+        devel_window.present ();
+    }
+
+    [GtkCallback]
+    void up_clicked () {
+        current_page.to_up ();
     }
 
     [GtkCallback]

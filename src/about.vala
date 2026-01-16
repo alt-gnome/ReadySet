@@ -1,4 +1,4 @@
-/* Copyright 2024-2025 Vladimir Vaskov <rirusha@altlinux.org>
+/* Copyright (C) 2024-2025 Vladimir Romanov <rirusha@altlinux.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,14 +23,21 @@ namespace ReadySet {
             application_icon = Config.APP_ID_DYN,
             developer_name = "ALT Linux Team",
             version = Config.VERSION,
+            designers = {
+                "Viktoria Zubacheva <gingercat@alt-gnome.ru>",
+            },
+            artists = {
+                "Nina Petrova <1704.nina.petrova@gmail.com>",
+            },
+            developers = {
+                "Vladimir Romanov <rirusha@altlinux.org>"
+            },
             // Translators: NAME <EMAIL.COM> /n NAME <EMAIL.COM>
             translator_credits = _("translator-credits"),
             license_type = Gtk.License.GPL_3_0,
             copyright = "© 2024-2025 ALT Linux Team",
             release_notes_version = Config.VERSION
         };
-
-        about.add_other_app ("org.altlinux.Foldy", _("Folder manager"), _("Folder manager for mobile devices"));
 
         return about;
     }

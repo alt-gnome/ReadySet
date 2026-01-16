@@ -1,0 +1,20 @@
+using Gtk 4.0;
+
+template $UserContextRow: Box {
+  orientation: vertical;
+  spacing: 4;
+
+  ListBox list_box {
+    styles [
+      "boxed-list",
+    ]
+
+    selection-mode: none;
+  }
+
+  Revealer {
+    transition-type: slide_down;
+    reveal-child: bind template.reveal-context;
+    child: bind template.context;
+  }
+}

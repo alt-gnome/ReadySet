@@ -1,0 +1,34 @@
+option(
+  'is_devel',
+  type: 'boolean',
+  value: false
+)
+option(
+  'have_ibus',
+  type: 'boolean',
+  value: true
+)
+option(
+  'with_lib_documentation',
+  type: 'boolean',
+  value: false,
+  description: 'Whether to build library documentation',
+)
+option(
+  'with_lib_introspection',
+  type: 'boolean',
+  value: true,
+  description: 'Whether to build library introspection files',
+)
+option(
+  'with_test_pages',
+  type: 'boolean',
+  value: false,
+  description: 'Build test pages ot not',
+)
+option(
+  'password_check_backend',
+  type: 'combo',
+  choices: ['passwdqc', 'pwquality', 'both'],
+  value : 'passwdqc'
+)

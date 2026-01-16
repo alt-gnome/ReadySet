@@ -1,0 +1,58 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyboardInputChooser: Box {
+  orientation: vertical;
+  spacing: 12;
+
+  SearchEntry filter_entry {
+    styles [
+      "card",
+    ]
+
+    can-focus: false;
+    height-request: 48;
+    placeholder-text: _("Search keyboards and input methods");
+    hexpand: true;
+    visible: bind template.show-more;
+  }
+
+  ListBox current_input_list {
+    styles [
+      "boxed-list",
+    ]
+
+    selection-mode: none;
+    vexpand: true;
+    halign: fill;
+    valign: start;
+    row-activated => $row_activated();
+  }
+
+  ListBox input_list {
+    styles [
+      "boxed-list",
+    ]
+
+    selection-mode: none;
+    vexpand: true;
+    halign: fill;
+    valign: start;
+    row-activated => $row_activated();
+  }
+
+  ListBox {
+    styles [
+      "boxed-list",
+    ]
+
+    selection-mode: none;
+    visible: bind template.show-more inverted;
+
+    Adw.ButtonRow {
+      title: _("Show more");
+      start-icon-name: "view-more-symbolic";
+      activated => $show_more_clicked();
+    }
+  }
+}

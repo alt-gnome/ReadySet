@@ -1,0 +1,78 @@
+/*
+ * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see
+ * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
+ * 
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+public class User.Addin : ReadySet.Addin {
+
+    static Addin instance;
+
+    protected override string? resource_base_path {
+        get {
+            return "/org/altlinux/ReadySet/Plugin/User/";
+        }
+    }
+
+    construct {
+        instance = this;
+    }
+
+    public override ReadySet.BasePage[] build_pages () {
+        bool with_root = context.get_boolean ("user-with-root");
+        return {
+            new User.PageUsername (),
+            new User.PagePassword () { with_root_password = with_root }
+        };
+    }
+
+    public async override void apply () throws ReadySet.ApplyError {
+        try {
+            var user = yield Act.UserManager.get_default ().create_user_async (
+                context.get_string ("user-username"),
+                context.get_string ("user-fullname"),
+                Act.UserAccountType.ADMINISTRATOR,
+                null
+            );
+
+            user.set_automatic_login (context.get_boolean ("user-autologin"));
+            user.set_password (context.get_string ("user-password"), "");
+            user.set_language (get_current_language ());
+            if (context.has_key ("user-avatar-file")) {
+                user.set_icon_file (context.get_string ("user-avatar-file"));
+            }
+
+            if (context.has_key ("user-root-password")) {
+                set_root_password (context.get_string ("user-root-password"));
+            } else {
+                set_root_password (context.get_string ("user-password"));
+            }
+
+        } catch (Error e) {
+            throw ReadySet.ApplyError.build_error (_("Error when creating a user"), e.message);
+        }
+    }
+
+    internal static Addin get_instance () {
+        return instance;
+    }
+}
+
+public void peas_register_types (TypeModule module) {
+    var obj = (Peas.ObjectModule) module;
+    obj.register_extension_type (typeof (ReadySet.Addin), typeof (User.Addin));
+}

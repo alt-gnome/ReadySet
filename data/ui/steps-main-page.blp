@@ -6,7 +6,7 @@ template $ReadySetStepsMainPage: Adw.Bin {
 
   Adw.ToolbarView {
     [top]
-    Adw.HeaderBar {
+    Adw.HeaderBar header_bar {
       show-back-button: false;
       show-end-title-buttons: false;
       show-start-title-buttons: false;
@@ -34,54 +34,74 @@ template $ReadySetStepsMainPage: Adw.Bin {
         }
       };
 
-      // [end]
-      // MenuButton menu_button {
-      //   styles ["flat"]
-      //   icon-name: "open-menu-symbolic";
-      //   menu-model: primary_menu;
-      //   valign: start;
-      // }
+      [end]
+      Button context_button {
+        styles [
+          "flat",
+        ]
+
+        icon-name: "open-menu-symbolic";
+        clicked => $on_context_button_clicked();
+      }
+
+      [end]
+      Label idle_label {
+        styles [
+          "dimmed",
+        ]
+
+        margin-start: 12;
+        margin-end: 12;
+        visible: false;
+        label: "idle";
+      }
     }
 
     content: $ReadySetPositionedStack positioned_stack {};
 
     [bottom]
-    Box button_box {
+    CenterBox button_center_box {
       orientation: horizontal;
       margin-bottom: 12;
-      margin-top: 6;
-      margin-end: 12;
+      margin-top: 12;
       margin-start: 12;
-      halign: center;
-      spacing: 12;
+      margin-end: 12;
+      halign: fill;
+      hexpand: true;
 
-      Revealer {
-        transition-type: swing_right;
+      start-widget: Revealer {
+        transition-type: crossfade;
         transition-duration: 200;
         reveal-child: bind template.can-cancel;
         visible: bind template.dead-end inverted;
+        halign: end;
+        hexpand: true;
 
-        Button cancel_button {
+        Button {
           styles [
-            "pill",
+            "circular",
           ]
 
-          label: _("Back");
+          icon-name: "go-previous-symbolic";
           can-shrink: true;
+          width-request: 48;
+          height-request: 48;
           clicked => $cancel_clicked();
+          margin-end: 12;
         }
-      }
+      };
 
-      Stack continue_stack {
+      center-widget: Stack {
         transition-duration: 200;
         transition-type: crossfade;
         hhomogeneous: true;
-        halign: end;
+        visible-child-name: bind template.continue_state;
+        halign: center;
 
         StackPage {
           name: "continue";
 
-          child: Button continue_button {
+          child: Button {
             styles [
               "pill",
               "suggested-action",
@@ -90,7 +110,7 @@ template $ReadySetStepsMainPage: Adw.Bin {
             sensitive: bind template.is-ready-to-continue;
             visible: bind template.dead-end inverted;
             label: _("Next");
-            can-shrink: true;
+            width-request: 156;
             clicked => $continue_clicked();
           };
         }
@@ -98,7 +118,7 @@ template $ReadySetStepsMainPage: Adw.Bin {
         StackPage {
           name: "finish";
 
-          child: Button finish_button {
+          child: Button {
             styles [
               "pill",
               "suggested-action",
@@ -107,19 +127,32 @@ template $ReadySetStepsMainPage: Adw.Bin {
             visible: bind template.is-ready-to-continue;
             // TRANSLATORS: Last word in "Ready Set ..." sentence
             label: _("Go!");
+            width-request: 156;
             can-shrink: true;
             clicked => $finish_clicked();
           };
         }
-      }
-    }
-  }
-}
+      };
 
-menu primary_menu {
-  section {
-    item (_("Preferences"), "win.preferences")
-    item (_("Keyboard Shortcuts"), "win.show-help-overlay")
-    item (_("About Ready Set"), "win.about")
+      end-widget: Revealer {
+        transition-type: crossfade;
+        transition-duration: 200;
+        reveal-child: bind template.can-up;
+        halign: end;
+
+        Button {
+          styles [
+            "circular",
+            "flat",
+          ]
+
+          icon-name: "go-up-symbolic";
+          width-request: 48;
+          height-request: 48;
+          clicked => $up_clicked();
+          margin-start: 12;
+        }
+      };
+    }
   }
 }

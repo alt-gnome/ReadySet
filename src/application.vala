@@ -1,4 +1,4 @@
-/* Copyright 2024-2025 Vladimir Vaskov <rirusha@altlinux.org>
+/* Copyright (C) 2024-2025 Vladimir Romanov <rirusha@altlinux.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,84 +20,146 @@ public sealed class ReadySet.Application: Adw.Application {
 
     const ActionEntry[] ACTION_ENTRIES = {};
 
-    const OptionEntry[] OPTION_ENTRIES = {
-        { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
-        { "steps-file", 'f', 0, OptionArg.FILENAME, null, N_("Filename with steps"), "FILENAME" },
-        { "steps", 's', 0, OptionArg.STRING, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
-        { "idle", 'i', 0, OptionArg.NONE, null, N_("Idle run without doing anything"), null },
-        { null }
-    };
-
-    public string? steps_filename = null;
-    public string[]? steps = null;
-
-    public bool idle { get; private set; }
+    static string[] all_steps = {};
 
     public bool show_steps { get; set; default = false; }
 
-    public Gee.ArrayList<BasePage> callback_pages { get; default = new Gee.ArrayList<BasePage> (); }
+    public OptionsHandler options_handler;
+    public Context context { get; private set; }
+
+    Gee.HashMap<string, Addin> plugins = new Gee.HashMap<string, Addin> ();
+
+    public Gee.ArrayList<BasePage> loaded_pages { get; default = new Gee.ArrayList<BasePage> (); }
+    public Gee.ArrayList<Addin> loaded_addins { get; default = new Gee.ArrayList<Addin> (); }
 
     public Application () {
         Object (
             application_id: Config.APP_ID_DYN,
-            resource_base_path: "/space/rirusha/ReadySet/"
+            resource_base_path: "/org/altlinux/ReadySet/"
         );
     }
 
     static construct {
         typeof (BasePageDesc).ensure ();
-        typeof (ContextRow).ensure ();
-        typeof (LangSelectTitle).ensure ();
-        typeof (LanguagesBox).ensure ();
-        typeof (MarginLabel).ensure ();
         typeof (PagesIndicator).ensure ();
         typeof (PositionedStack).ensure ();
         typeof (StepRow).ensure ();
         typeof (StepsMainPage).ensure ();
         typeof (StepsSidebar).ensure ();
 
-        typeof (TestPage).ensure ();
-        typeof (TestErrorPage).ensure ();
         typeof (BasePage).ensure ();
         typeof (EndPage).ensure ();
-        typeof (KeyboardPage).ensure ();
-        typeof (LanguagePage).ensure ();
-        typeof (UserPage).ensure ();
-        typeof (UserWithRootPage).ensure ();
-        typeof (WelcomePage).ensure ();
     }
 
     construct {
-        add_main_option_entries (OPTION_ENTRIES);
+        add_main_option_entries (OptionsHandler.OPTION_ENTRIES);
         add_action_entries (ACTION_ENTRIES, this);
         set_accels_for_action ("app.quit", { "<primary>q" });
+        set_accels_for_action ("win.about", { "<primary>o" });
     }
 
     protected override int handle_local_options (VariantDict options) {
         if (options.contains ("version")) {
             print ("%s\n", Config.VERSION);
             return 0;
+        }
 
-        }
-        if (options.contains ("steps-file")) {
-            steps_filename = options.lookup_value ("steps-file", null).get_bytestring ();
-
-        }
-        if (options.contains ("idle")) {
-            idle = true;
-
-        }
-        if (options.contains ("steps")) {
-            steps = options.lookup_value ("steps", null).get_string ().split (",");
-            for (int i = 0; i < steps.length; i++) {
-                steps[i] = steps[i].strip ();
-            }
-        }
+        options_handler = new OptionsHandler.from_options (options);
+        context = options_handler.build_context ();
+        context.reload_window.connect (reload_window);
 
         return -1;
     }
 
-    public void reload_window () {
+    Peas.Engine get_engine () {
+        var engine = Peas.Engine.get_default ();
+        engine.enable_loader ("python");
+
+        engine.add_search_path (
+            Path.build_filename (Config.LIBDIR, Config.NAME, "plugins"),
+            Path.build_filename (Config.DATADIR, Config.NAME, "plugins")
+        );
+
+        return engine;
+    }
+
+    void init_plugins () {
+        var engine = get_engine ();
+        var addins = new Peas.ExtensionSet.with_properties (engine, typeof (Addin), {}, {});
+
+        for (int i = 0; i < engine.get_n_items (); i++) {
+            engine.load_plugin ((Peas.PluginInfo) engine.get_item (i));
+        }
+
+        plugins.clear ();
+
+        addins.foreach ((_set, info, extension) => {
+            plugins[info.module_name] = (Addin) extension;
+        });
+
+        if (plugins.size == 0) {
+            error ("\nNo plugins found\n");
+        } else {
+            print ("\nFound plugins:\n");
+            foreach (var plugin in plugins) {
+                print ("  %s\n", plugin.key);
+            }
+        }
+    }
+
+    public void init_pages () {
+        loaded_pages.clear ();
+        loaded_addins.clear ();
+
+        if (all_steps.length == 0) {
+            all_steps = get_all_steps ();
+        }
+
+        if (plugins.size == 0) {
+            init_plugins ();
+        }
+
+        print ("Loaded plugins:\n");
+        for (int i = 0; i < all_steps.length; i++) {
+            if (plugins[all_steps[i]] == null) {
+                loaded_pages.add (new BasePage () {
+                    is_ready = true
+                });
+                print ("  broken step (%s)\n", all_steps[i]);
+            } else {
+                var addin = plugins[all_steps[i]];
+                if (addin.allowed ()) {
+                    addin.set_data<string> (STEP_ID_LABEL, all_steps[i]);
+                    loaded_addins.add (addin);
+                    addin.context = context;
+                    foreach (var page in addin.build_pages ()) {
+                        page.set_data<string> (STEP_ID_LABEL, all_steps[i]);
+                        loaded_pages.add (page);
+                    }
+                    print ("  %s\n", all_steps[i]);
+                }
+            }
+        }
+
+        loaded_pages.add (new EndPage ());
+    }
+
+    string[] get_all_steps () {
+        var steps_data = new Array<string> ();
+
+        if (options_handler.steps != null) {
+            foreach (var step in options_handler.steps) {
+                steps_data.append_val (step);
+            }
+
+        } else {
+            error (_("No steps specified"));
+        }
+
+        return steps_data.data;
+    }
+
+    void reload_window () {
         (active_window as ReadySet.Window)?.reload_window ();
     }
 
@@ -105,7 +167,14 @@ public sealed class ReadySet.Application: Adw.Application {
         base.activate ();
 
         if (active_window == null) {
-            var win = new Window (this);
+            var locale = context.get_string ("locale");
+            if (locale != null) {
+                Intl.setlocale (ALL, locale);
+            }
+
+            var win = new Window (this) {
+                fullscreened = options_handler.fullscreen
+            };
 
             win.present ();
 

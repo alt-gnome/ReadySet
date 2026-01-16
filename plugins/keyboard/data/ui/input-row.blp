@@ -1,0 +1,17 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyboardInputRow: Adw.ActionRow {
+  activatable: true;
+
+  [suffix]
+  Revealer {
+    transition-type: crossfade;
+    reveal-child: bind template.is-selected;
+
+    Image {
+      icon-name: "object-select-symbolic";
+      margin-end: 4;
+    }
+  }
+}

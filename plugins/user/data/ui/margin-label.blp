@@ -1,0 +1,15 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $UserMarginLabel: Adw.Bin {
+  Label {
+    hexpand: true;
+    halign: start;
+    margin-bottom: 4;
+    margin-end: 14;
+    margin-start: 14;
+    margin-top: 4;
+    wrap: true;
+    label: bind template.label;
+  }
+}

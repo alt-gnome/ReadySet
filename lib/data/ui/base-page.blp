@@ -1,0 +1,77 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ReadySetBasePage: Box {
+  orientation: vertical;
+
+  Adw.Bin top_bin {}
+
+  ScrolledWindow scrolled_window {
+    hscrollbar-policy: never;
+    propagate-natural-height: true;
+    vexpand: true;
+
+    Box toplevel_box {
+      orientation: vertical;
+      valign: center;
+
+      Adw.Clamp {
+        maximum-size: 600;
+
+        child: Box {
+          orientation: vertical;
+          valign: center;
+
+          Stack loading_stack {
+            transition-duration: 300;
+            transition-type: crossfade;
+
+            StackPage {
+              name: "default";
+
+              child: Image {
+                accessible-role: presentation;
+                halign: center;
+                icon-name: bind template.icon-name;
+
+                styles [
+                  "icon",
+                ]
+              };
+            }
+
+            StackPage {
+              name: "loading";
+
+              child: Image {
+                accessible-role: presentation;
+                halign: center;
+
+                paintable: Adw.SpinnerPaintable {
+                  widget: template;
+                };
+
+                styles [
+                  "icon",
+                ]
+              };
+            }
+          }
+
+          Adw.Bin title_bin {
+            margin-bottom: 12;
+
+            $ReadySetBasePageDesc {
+              title: bind template.title;
+              description: bind template.description;
+            }
+          }
+
+          Adw.Bin child_bin {}
+        };
+      }
+    }
+  }
+
+  Adw.Bin bottom_bin {}
+}

@@ -1,0 +1,125 @@
+name: Main
+
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  lint-vala:
+    name: Check vala files
+    runs-on: alt-sisyphus
+    container:
+      image: altlinux.space/alt-gnome/coding-style-image:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check files
+        uses: alt-gnome/coding-style-actions/vala@main
+
+  lint-blueprint:
+    name: Check blueprint files
+    runs-on: alt-sisyphus
+    container:
+      image: altlinux.space/alt-gnome/coding-style-image:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check files
+        uses: alt-gnome/coding-style-actions/blueprint@main
+
+  build:
+    name: Build and upload doc
+    runs-on: alt-sisyphus
+    needs:
+      - lint-vala
+      - lint-blueprint
+
+    steps:
+      - name: Install deps
+        run: |
+          apt-get update
+          apt-get install -y \
+            'gir(Gtk)=4.0' \
+            'gir(Peas)=2' \
+            'pkgconfig(accountsservice)' \
+            'pkgconfig(gee-0.8)' \
+            'pkgconfig(gio-unix-2.0)' \
+            'pkgconfig(gnome-desktop-4)' \
+            'pkgconfig(ibus-1.0)' \
+            'pkgconfig(libadwaita-1)>=1.7' \
+            'pkgconfig(libpeas-2)' \
+            'pkgconfig(passwdqc)' \
+            'pkgconfig(polkit-gobject-1)' \
+            'pkgconfig(pwquality)' \
+            'pkgconfig(systemd)' \
+            /usr/bin/blueprint-compiler \
+            /usr/bin/g-ir-compiler \
+            /usr/bin/gcc \
+            /usr/bin/gtkdoc-scan \
+            /usr/bin/meson \
+            /usr/bin/valac \
+            /usr/bin/valadoc
+ 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup
+        run: meson setup _build -Dwith_lib_documentation=true -Dwith_test_pages=true -Dpassword_check_backend=both
+
+      - name: Build
+        run: meson compile -C _build
+
+      - name: Deploy pages
+        if: github.event_name != 'pull_request'
+        uses: actions/deploy-pages@v1
+        with:
+          directory: ./_build/lib/doc/ready-set-vala
+
+  rpm-build:
+    name: RPM build for ${{ matrix.branch }} and uploading
+    runs-on: alt-sisyphus
+    container:
+      image: altlinux.space/rirusha/riru-build-image:latest
+
+    strategy:
+      matrix:
+        branch:
+          - sisyphus
+          - p11
+    needs:
+      - lint-vala
+      - lint-blueprint
+
+    steps:
+      - name: Install utils
+        run: |
+          apt-get update
+          apt-get install -y meson jq /usr/bin/add_changelog
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare RPM build
+        run: |
+          ./build-aux/altlinux/prepare
+          git add .
+
+      - uses: alt-gnome/build-rpm-action@main
+        name: Build RPMs
+        with:
+          branch: ${{ matrix.branch }}
+
+      - uses: alt-gnome/upload-rpm-action@main
+        name: Upload RPMs
+        if: github.event_name != 'pull_request'
+        with:
+          directory: ~/.cache/hasherc/ready-set/out/RPMS
+          token: ${{ secrets.TOKEN }}
+          group: ready-set-nightly/${{ matrix.branch }}

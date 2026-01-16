@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Vaskov <rirusha@altlinux.org>
+ * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,44 +17,6 @@
  * 
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-
-public class ReadySet.LanguageData : Object {
-
-    string _current_language;
-    public string current_language {
-        get {
-            if (_current_language == null) {
-                debug ("Languages: %s", string.joinv (", ", Intl.get_language_names ()));
-
-                foreach (string lang in Intl.get_language_names ()) {
-                    if (Gnome.Languages.parse_locale (lang, null, null, null, null)) {
-                        _current_language = lang;
-                        break;
-                    }
-                }
-
-                if (_current_language == null) {
-                    _current_language = "C";
-                }
-            }
-
-            return _current_language;
-        }
-        set {
-            _current_language = value;
-
-            Intl.setlocale (LocaleCategory.MESSAGES, _current_language);
-        }
-    }
-}
-
-public class ReadySet.KeyboardData : Object {
-
-    public Gee.HashSet<InputInfo> current_inputs_info {
-        get; set;
-        default = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
-    }
-}
 
 public class ReadySet.UserData : Object {
 
@@ -78,10 +40,6 @@ public class ReadySet.UserData : Object {
  * It handles various data for window reload
  */
 public sealed class ReadySet.Data : Object {
-
-    public LanguageData language { get; default = new LanguageData (); }
-
-    public KeyboardData keyboard { get; default = new KeyboardData (); }
 
     public UserData user { get; default = new UserData (); }
 
