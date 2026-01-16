@@ -122,8 +122,7 @@ Requires: %name
 Summary: %name user plugin with passwdqc support
 Group: Other
 
-Requires: %name
-Requires: plugin-user-common
+Requires: %name-plugin-user-common
 
 %description plugin-user-passwdqc
 %summary.
@@ -132,8 +131,7 @@ Requires: plugin-user-common
 Summary: %name user plugin with pwquality support
 Group: Other
 
-Requires: %name
-Requires: plugin-user-common
+Requires: %name-plugin-user-common
 
 %description plugin-user-pwquality
 %summary.
