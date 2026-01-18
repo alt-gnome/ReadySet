@@ -40,6 +40,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           registry-username: "<token>"
           registry-password: ${{ secrets.TOKEN }}
-          image-name: ${{ github.repository }}-test-atomic
+          image-name: alt-gnome/ready-set-test-atomic
           image-tag: latest
           local-build-name: ${{ env.LOCAL_BUILD_NAME }}
