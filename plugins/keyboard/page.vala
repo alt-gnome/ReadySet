@@ -27,8 +27,8 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
             is_ready = inputs.length > 0;
         });
 
-        var input_sources_val = Addin.get_instance ().context.get_strv ("input-sources");
-        if (input_sources_val != null) {
+        var input_sources_val = Addin.get_instance ().context.get_strv ("keyboard-input-sources");
+        if (input_sources_val.length > 0) {
             var input_sources = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
             foreach (var input in input_sources_val) {
                 input_sources.add (new InputInfo.from_format (input));

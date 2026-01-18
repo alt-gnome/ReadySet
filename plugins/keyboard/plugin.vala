@@ -43,6 +43,12 @@ public class Keyboard.Addin : ReadySet.Addin {
     internal static Addin get_instance () {
         return instance;
     }
+
+    public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
+        var vars = base.get_context_vars ();
+        vars["keyboard-input-sources"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV);
+        return vars;
+    }
 }
 
 public void peas_register_types (TypeModule module) {

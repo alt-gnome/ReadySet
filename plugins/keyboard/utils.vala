@@ -94,35 +94,16 @@ public class Keyboard.InputInfo : Object {
 namespace Keyboard {
 
     public string get_current_language () {
-        var context = Addin.get_instance ().context;
-
-        var locale = context.get_string ("locale");
-
-        if (locale == null) {
-            debug ("Languages: %s", string.joinv (", ", Intl.get_language_names ()));
-
-            foreach (string lang in Intl.get_language_names ()) {
-                if (Gnome.Languages.parse_locale (lang, null, null, null, null)) {
-                    locale = lang;
-                    break;
-                }
-            }
-
-            if (locale == null) {
-                locale = "C";
-            }
-        }
-
-        return locale;
+        return Addin.get_instance ().context.get_string ("language-locale");
     }
 
     public Gee.HashSet<InputInfo> get_current_inputs () {
         var context = Addin.get_instance ().context;
 
         var input_sources = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
-        var inputs_val = context.get_strv ("input-sources");
+        var inputs_val = context.get_strv ("keyboard-input-sources");
 
-        if (inputs_val == null) {
+        if (inputs_val.length == 0) {
             var settings = new Settings ("org.gnome.desktop.input-sources");
             var variant = settings.get_value ("sources");
 
@@ -165,7 +146,7 @@ namespace Keyboard {
             settings.set_value ("sources", builder.end ());
         }
 
-        context.set_strv ("input-sources", inputs_val.data);
+        context.set_strv ("keyboard-input-sources", inputs_val.data);
     }
 
     Locale1 get_locale_proxy () {

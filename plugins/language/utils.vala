@@ -52,36 +52,6 @@ public interface Locale1 : Object {
 
 namespace Language {
 
-    public void set_current_locale (string locale) {
-        var context = Addin.get_instance ().context;
-
-        Intl.setlocale (LocaleCategory.ALL, locale);
-        context.set_string ("locale", locale);
-    }
-
-    public string get_current_language () {
-        var context = Addin.get_instance ().context;
-
-        var locale = context.get_string ("locale");
-
-        if (locale == null) {
-            debug ("Languages: %s", string.joinv (", ", Intl.get_language_names ()));
-
-            foreach (string lang in Intl.get_language_names ()) {
-                if (Gnome.Languages.parse_locale (lang, null, null, null, null)) {
-                    locale = lang;
-                    break;
-                }
-            }
-
-            if (locale == null) {
-                locale = "C";
-            }
-        }
-
-        return locale;
-    }
-
     string fix_locale (string locale) {
         switch (locale) {
             case "en":

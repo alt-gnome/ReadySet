@@ -207,26 +207,7 @@ namespace User {
     }
 
     public string get_current_language () {
-        var context = Addin.get_instance ().context;
-
-        var locale = context.get_string ("locale");
-
-        if (locale == null) {
-            debug ("Languages: %s", string.joinv (", ", Intl.get_language_names ()));
-
-            foreach (string lang in Intl.get_language_names ()) {
-                if (Gnome.Languages.parse_locale (lang, null, null, null, null)) {
-                    locale = lang;
-                    break;
-                }
-            }
-
-            if (locale == null) {
-                locale = "C";
-            }
-        }
-
-        return locale;
+        return Addin.get_instance ().context.get_string ("language-locale");
     }
 
     public string[] get_context_facesdirs () {

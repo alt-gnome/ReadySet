@@ -51,17 +51,40 @@ public class User.PagePassword : ReadySet.BasePage {
     public bool with_root_password { get; construct set; default = false; }
 
     construct {
-        var password = Addin.get_instance ().context.get_string ("user-password");
-        var root_password = Addin.get_instance ().context.get_string ("user-root-password");
+        Addin.get_instance ().context.bind_context_to_property (
+            "user-password",
+            password_entry,
+            "text",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
 
-        if (password != null) {
-            password_entry.text = password;
-        }
-        if (root_password != null) {
-            root_password_entry.text = root_password;
-        }
-        autologin_switch_row.active = Addin.get_instance ().context.get_boolean ("user-autologin");
-        autologin_list_box.visible = !Addin.get_instance ().context.get_boolean ("hide-autologin");
+        Addin.get_instance ().context.bind_context_to_property (
+            "user-root-password",
+            root_password_entry,
+            "text",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
+
+        Addin.get_instance ().context.bind_context_to_property (
+            "user-autologin",
+            autologin_switch_row,
+            "active",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
+
+        Addin.get_instance ().context.bind_context_to_property (
+            "hide-autologin",
+            autologin_list_box,
+            "visible",
+            BindingFlags.INVERT_BOOLEAN | BindingFlags.SYNC_CREATE
+        );
+
+        Addin.get_instance ().context.bind_context_to_property (
+            "user-with-root",
+            this,
+            "with-root-password",
+            BindingFlags.SYNC_CREATE
+        );
     }
 
     void update_is_ready () {
@@ -73,7 +96,7 @@ public class User.PagePassword : ReadySet.BasePage {
     }
 
     bool password_is_ready (string password) {
-        bool no_password_security = Addin.get_instance ().context.get_string ("no-password-security") == "true";
+        bool no_password_security = Addin.get_instance ().context.get_boolean ("no-password-security");
         if (no_password_security) {
             return true;
         } else {
@@ -86,7 +109,7 @@ public class User.PagePassword : ReadySet.BasePage {
         string? old_password = null,
         string? username = null
     ) {
-        bool no_password_security = Addin.get_instance ().context.get_string ("no-password-security") == "true";
+        bool no_password_security = Addin.get_instance ().context.get_boolean ("no-password-security");
         if (no_password_security) {
             return {
                 hint: "",
@@ -105,8 +128,6 @@ public class User.PagePassword : ReadySet.BasePage {
 
     [GtkCallback]
     void password_changed () {
-        Addin.get_instance ().context.set_string ("user-password", password_entry.text);
-
         var strength = get_password_strength (
             password_entry.text,
             null,
@@ -121,7 +142,6 @@ public class User.PagePassword : ReadySet.BasePage {
         password_context_row.reveal_context = strength.level != GOOD;
 
         password_repeat_changed ();
-        update_is_ready ();
     }
 
     [GtkCallback]
@@ -135,12 +155,10 @@ public class User.PagePassword : ReadySet.BasePage {
 
     [GtkCallback]
     void root_password_changed () {
-        Addin.get_instance ().context.set_string ("user-root-password", root_password_entry.text);
-
         var strength = get_password_strength (
             root_password_entry.text,
             null,
-            Addin.get_instance ().context.get_string ("user-username")
+            "root"
         );
 
         root_password_strength.strength_level = strength.level;
@@ -151,7 +169,6 @@ public class User.PagePassword : ReadySet.BasePage {
         root_password_context_row.reveal_context = strength.level != GOOD;
 
         root_password_repeat_changed ();
-        update_is_ready ();
     }
 
     [GtkCallback]
@@ -174,11 +191,6 @@ public class User.PagePassword : ReadySet.BasePage {
         root_password_repeat_context_row.reveal_context = false;
 
         update_is_ready ();
-    }
-
-    [GtkCallback]
-    void autologin_switch_changed () {
-        Addin.get_instance ().context.set_boolean ("user-autologin", autologin_switch_row.active);
     }
 
     [GtkCallback]

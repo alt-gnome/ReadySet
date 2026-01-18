@@ -30,7 +30,7 @@ public sealed class Language.LocaleData : Object {
         Object (
             locale: locale,
             country_loc: Gnome.Languages.get_country_from_locale (locale, locale),
-            country_cur: Gnome.Languages.get_country_from_locale (locale, get_current_language ())
+            country_cur: Gnome.Languages.get_country_from_locale (locale, Addin.get_instance ().current_locale)
         );
     }
 }

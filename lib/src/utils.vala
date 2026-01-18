@@ -56,6 +56,10 @@ namespace ReadySet {
 
     public delegate void ApplyFunc () throws ApplyError;
 
+    public delegate Value ContextGetterFunc (ref Value this_value);
+
+    public delegate void ContextSetterFunc (ref Value this_value, Value new_value);
+
     const string RSS = "\n::READY-SET-SEPARATOR::\n";
 
     public void pkexec (owned string[] cmd, string? user = null) throws Error {
@@ -74,5 +78,21 @@ namespace ReadySet {
         var process = launcher.spawnv (argv.to_array ().copy ());
 
         process.wait_check ();
+    }
+
+    public Value kf_value_to_value (KeyFile keyfile, string group_name, string key, Type value_type) throws Error {
+        if (value_type == Type.BOOLEAN) {
+            return keyfile.get_boolean (group_name, key);
+        } else if (value_type == Type.STRING) {
+            return keyfile.get_string (group_name, key);
+        } else if (value_type == typeof (string[])) {
+            return keyfile.get_string_list (group_name, key);
+        } else if (value_type == Type.INT || value_type == Type.INT64) {
+            return keyfile.get_int64 (group_name, key);
+        } else if (value_type == Type.DOUBLE) {
+            return keyfile.get_double (group_name, key);
+        } else {
+            error ("Unknown keyfile desired type %s for key %s", value_type.name (), key);
+        }
     }
 }

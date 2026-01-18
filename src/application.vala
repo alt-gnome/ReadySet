@@ -65,7 +65,11 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         options_handler = new OptionsHandler.from_options (options);
-        context = options_handler.build_context ();
+        context = new Context (options_handler.idle);
+
+        init_plugins ();
+
+        options_handler.fill_context (context);
         context.reload_window.connect (reload_window);
 
         return -1;
@@ -105,19 +109,25 @@ public sealed class ReadySet.Application: Adw.Application {
                 print ("  %s\n", plugin.key);
             }
         }
+
+        all_steps = get_all_steps ();
+
+        for (int i = 0; i < all_steps.length; i++) {
+            if (plugins[all_steps[i]] != null) {
+                var addin = plugins[all_steps[i]];
+                addin.set_data<bool> ("allowed", addin.allowed ());
+                addin.set_data<bool> ("inited", false);
+
+                if (addin.get_data<bool> ("allowed")) {
+                    context.register_vars (addin.get_context_vars ());
+                }
+            }
+        }
     }
 
     public void init_pages () {
         loaded_pages.clear ();
         loaded_addins.clear ();
-
-        if (all_steps.length == 0) {
-            all_steps = get_all_steps ();
-        }
-
-        if (plugins.size == 0) {
-            init_plugins ();
-        }
 
         print ("Loaded plugins:\n");
         for (int i = 0; i < all_steps.length; i++) {
@@ -128,10 +138,16 @@ public sealed class ReadySet.Application: Adw.Application {
                 print ("  broken step (%s)\n", all_steps[i]);
             } else {
                 var addin = plugins[all_steps[i]];
-                if (addin.allowed ()) {
+                if (addin.get_data<bool> ("allowed")) {
                     addin.set_data<string> (STEP_ID_LABEL, all_steps[i]);
                     loaded_addins.add (addin);
                     addin.context = context;
+                    addin.load_css_for_display (Gdk.Display.get_default ());
+                    if (!addin.get_data<bool> ("inited")) {
+                        addin.static_init ();
+                        addin.set_data<bool> ("inited", true);
+                    }
+                    addin.init ();
                     foreach (var page in addin.build_pages ()) {
                         page.set_data<string> (STEP_ID_LABEL, all_steps[i]);
                         loaded_pages.add (page);
@@ -167,9 +183,11 @@ public sealed class ReadySet.Application: Adw.Application {
         base.activate ();
 
         if (active_window == null) {
-            var locale = context.get_string ("locale");
-            if (locale != null) {
-                Intl.setlocale (ALL, locale);
+            if (context.has_key ("language-locale")) {
+                var locale = context.get_string ("language-locale");
+                if (locale != null) {
+                    Intl.setlocale (ALL, locale);
+                }
             }
 
             var win = new Window (this) {

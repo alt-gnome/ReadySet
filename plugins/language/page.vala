@@ -43,7 +43,7 @@ public sealed class Language.Page : ReadySet.BasePage {
         var proxy = get_locale_proxy ();
 
         try {
-            yield proxy.set_locale ({ @"LANG=$(get_current_language ())" }, true);
+            yield proxy.set_locale ({ @"LANG=$(Addin.get_instance ().current_locale)" }, true);
         } catch (Error e) {
             throw ReadySet.ApplyError.build_error (_("Error when setting language"), e.message);
         }

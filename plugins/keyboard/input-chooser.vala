@@ -79,7 +79,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         });
 
         Addin.get_instance ().context.data_changed.connect ((key) => {
-            if (key == "input-sources") {
+            if (key == "keyboard-input-sources") {
                 update_current ();
             }
         });

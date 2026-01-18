@@ -43,16 +43,6 @@ template $ReadySetDevelWindow: Adw.Window {
                 valign: start;
                 selection-mode: none;
               }
-
-              Button add_button {
-                styles [
-                  "circlular",
-                ]
-
-                halign: end;
-                icon-name: "list-add-symbolic";
-                clicked => $on_add_button_clicked();
-              }
             }
           }
         };

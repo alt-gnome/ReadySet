@@ -39,35 +39,111 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
 
     void fill () {
         foreach (var key in context.get_keys ()) {
-            var row = new Adw.EntryRow () {
-                title = key,
-                text = context.get_raw (key),
-                show_apply_button = true,
-                css_classes = { "property" },
-            };
-            row.apply.connect (row_apply);
-            row.activate.connect ((row) => {
-                row_apply ((Adw.EntryRow) row);
-            });
+            Adw.PreferencesRow row;
+
+            var value_type = context.get_value_type (key);
+
+            switch (value_type) {
+                case STRING:
+                    var erow = new Adw.EntryRow () {
+                        title = key,
+                        text = context.get_string (key) ?? "",
+                        show_apply_button = true,
+                    };
+                    erow.apply.connect (row_apply_string);
+                    erow.activate.connect (() => {
+                        row_apply_string (erow);
+                    });
+                    row = erow;
+                    break;
+
+                case BOOLEAN:
+                    var srow = new Adw.SwitchRow () {
+                        title = key,
+                        active = context.get_boolean (key),
+                    };
+                    srow.notify["active"].connect (() => {
+                        row_apply_boolean (srow);
+                    });
+                    row = srow;
+                    break;
+
+                case STRV:
+                    var erow = new Adw.EntryRow () {
+                        title = key,
+                        text = string.joinv (",", context.get_strv (key)),
+                        show_apply_button = true,
+                    };
+                    erow.apply.connect (row_apply_strv);
+                    erow.activate.connect (() => {
+                        row_apply_strv (erow);
+                    });
+                    row = erow;
+                    break;
+
+                case INT:
+                    var erow = new Adw.EntryRow () {
+                        title = key,
+                        text = context.get_int (key).to_string (),
+                        show_apply_button = true,
+                    };
+                    erow.apply.connect (row_apply_int);
+                    erow.activate.connect (() => {
+                        row_apply_int (erow);
+                    });
+                    row = erow;
+                    break;
+
+                case DOUBLE:
+                    var erow = new Adw.EntryRow () {
+                        title = key,
+                        text = context.get_double (key).to_string (),
+                        show_apply_button = true,
+                    };
+                    erow.apply.connect (row_apply_double);
+                    erow.activate.connect (() => {
+                        row_apply_double (erow);
+                    });
+                    row = erow;
+                    break;
+
+                default:
+                    assert_not_reached ();
+            }
+
             list_box.append (row);
         }
     }
 
-    void row_apply (Adw.EntryRow row) {
-        context.set_raw (row.title, row.text);
+    void row_apply_double (Adw.EntryRow row) {
+        double res;
+        if (double.try_parse (row.text, out res)) {
+            context.set_double (row.title, res);
+            row.remove_css_class ("error");
+        } else {
+            row.add_css_class ("error");
+        }
     }
 
-    [GtkCallback]
-    void on_add_button_clicked () {
-        var dialog = new Devel.AddContextDialog ();
-        dialog.add.connect (() => {
-            if (dialog.context_name.strip () != "") {
-                context.set_raw (dialog.context_name, dialog.context_value);
-                return true;
-            } else {
-                return false;
-            }
-        });
-        dialog.present (this);
+    void row_apply_int (Adw.EntryRow row) {
+        int res;
+        if (int.try_parse (row.text, out res)) {
+            context.set_int (row.title, res);
+            row.remove_css_class ("error");
+        } else {
+            row.add_css_class ("error");
+        }
+    }
+
+    void row_apply_strv (Adw.EntryRow row) {
+        context.set_strv (row.title, row.text.split (","));
+    }
+
+    void row_apply_string (Adw.EntryRow row) {
+        context.set_string (row.title, row.text);
+    }
+
+    void row_apply_boolean (Adw.SwitchRow row) {
+        context.set_boolean (row.title, row.active);
     }
 }

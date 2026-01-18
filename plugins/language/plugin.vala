@@ -22,6 +22,45 @@ public class Language.Addin : ReadySet.Addin {
 
     static Addin instance;
 
+    public string current_locale {
+        owned get {
+            return context.get_string ("language-locale");
+        }
+        set {
+            context.set_string ("language-locale", value);
+        }
+    }
+
+    public Value get_current_locale_func (ref Value this_value) {
+        var locale = this_value.get_string ();
+
+        if (locale == "") {
+            debug ("Languages: %s", string.joinv (", ", Intl.get_language_names ()));
+
+            foreach (string lang in Intl.get_language_names ()) {
+                if (Gnome.Languages.parse_locale (lang, null, null, null, null)) {
+                    locale = lang;
+                    break;
+                }
+            }
+
+            if (locale == "") {
+                locale = "C";
+            }
+        }
+
+        this_value.set_string (locale);
+        return locale;
+    }
+
+    public void set_current_locale_func (ref Value this_value, Value new_value) {
+        var nv = new_value.get_string ();
+        Intl.setlocale (LocaleCategory.ALL, nv);
+
+        Addin.get_instance ().context.reload_window ();
+        this_value.set_string (nv);
+    }
+
     protected override string? resource_base_path {
         get {
             return "/org/altlinux/ReadySet/Plugin/Language/";
@@ -36,6 +75,16 @@ public class Language.Addin : ReadySet.Addin {
 
     construct {
         instance = this;
+    }
+
+    public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
+        var vars = base.get_context_vars ();
+        vars["language-locale"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+
+        vars["language-locale"].getter_func = get_current_locale_func;
+        vars["language-locale"].setter_func = set_current_locale_func;
+
+        return vars;
     }
 
     public override ReadySet.BasePage[] build_pages () {

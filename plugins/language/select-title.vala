@@ -28,7 +28,7 @@ public class Language.SelectTitle : Adw.Bin {
         };
         child = stack;
 
-        var cur_locale = get_current_language ();
+        var cur_locale = Addin.get_instance ().current_locale;
 
         append ();
 
@@ -40,7 +40,7 @@ public class Language.SelectTitle : Adw.Bin {
             }
         }
 
-        set_current_locale (cur_locale);
+        Intl.setlocale (LocaleCategory.MESSAGES, cur_locale);
 
         Timeout.add_seconds (3, () => {
             next ();
