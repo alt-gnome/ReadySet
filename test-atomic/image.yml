@@ -21,7 +21,7 @@ modules:
     body:
       url: https://altlinux.space/alt-gnome/ReadySet.git
       command: |
-        meson setup _build -Dpassword_check_backend=passwdqc -Dis_devel --prefix=/usr
+        meson setup _build -Dpassword_check_backend=passwdqc -Dis_devel=true --prefix=/usr
         meson install -C _build
       deps:
         - shadow-utils
