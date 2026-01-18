@@ -19,7 +19,7 @@
  */
 
 [DBus (name = "org.freedesktop.locale1")]
-public interface Locale1 : Object {
+public interface Keyboard.Locale1 : Object {
     public abstract string[] locale { owned get; }
     public abstract string v_console_toggle { owned get; }
     public abstract string v_console_keymap_toggle { owned get; }
@@ -154,21 +154,17 @@ namespace Keyboard {
         context.set_strv ("keyboard-input-sources", inputs_val.data);
     }
 
-    Locale1 get_locale_proxy () {
-        try {
-            var con = Bus.get_sync (BusType.SYSTEM);
+    async Keyboard.Locale1 get_locale_proxy () throws Error {
+        var con = yield Bus.get (BusType.SYSTEM);
 
-            if (con == null) {
-                error ("Failed to connect to bus");
-            }
-
-            return con.get_proxy_sync<Locale1> (
-                "org.freedesktop.locale1",
-                "/org/freedesktop/locale1",
-                DBusProxyFlags.NONE
-            );
-        } catch (Error e) {
-            error (e.message);
+        if (con == null) {
+            error ("Failed to connect to bus");
         }
+
+        return con.get_proxy_sync<Keyboard.Locale1> (
+            "org.freedesktop.locale1",
+            "/org/freedesktop/locale1",
+            DBusProxyFlags.NONE
+        );
     }
 }

@@ -46,32 +46,32 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
     }
 
     public override async void apply () throws ReadySet.ApplyError {
-        var proxy = get_locale_proxy ();
+        try {
+            var proxy = yield get_locale_proxy ();
 
-        var current_inputs_info = get_current_inputs ();
-        var inputs = current_inputs_info.to_array ();
+            var current_inputs_info = get_current_inputs ();
+            var inputs = current_inputs_info.to_array ();
 
-        var layouts = new Gee.ArrayList<string> ();
-        var variants = new Gee.ArrayList<string> ();
+            var layouts = new Gee.ArrayList<string> ();
+            var variants = new Gee.ArrayList<string> ();
 
-        foreach (var input in inputs) {
-            var lv = input.id.split ("+");
+            foreach (var input in inputs) {
+                var lv = input.id.split ("+");
 
-            string layout;
-            string variant;
-            if (lv.length > 1) {
-                layout = lv[0];
-                variant = lv[1];
-            } else {
-                layout = lv[0];
-                variant = "";
+                string layout;
+                string variant;
+                if (lv.length > 1) {
+                    layout = lv[0];
+                    variant = lv[1];
+                } else {
+                    layout = lv[0];
+                    variant = "";
+                }
+
+                layouts.add (layout);
+                variants.add (variant);
             }
 
-            layouts.add (layout);
-            variants.add (variant);
-        }
-
-        try {
             yield proxy.set_x_11_keyboard (string.joinv (
                 ",",
                 layouts.to_array ()),
