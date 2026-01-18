@@ -26,18 +26,16 @@ modules:
       deps:
         - shadow-utils
         - accountsservice
-        - libaccountsservice.so.0()(64bit)
-        - libadwaita-1.so.0()(64bit)
-        - libgee-0.8.so.2()(64bit)
-        - libgio-2.0.so.0()(64bit)
-        - libglib-2.0.so.0()(64bit) 
-        - libgnome-desktop-4.so.2()(64bit)
-        - libgobject-2.0.so.0()(64bit)
-        - libgtk-4.so.1()(64bit)
-        - libpasswdqc.so.1()(64bit)
-        - libibus-1.0.so.5()(64bit)
-        - libpeas-2.so.0()(64bit)
-        - libpolkit-gobject-1.so.0()(64bit)
+        - libaccountsservice
+        - libadwaita
+        - libgee0.8
+        - glib2
+        - libgnome-desktop3
+        - libgtk4
+        - libpasswdqc
+        - libibus
+        - libpeas2
+        - libpolkit
         - gnome-control-center-data
       build-deps:
         - gir(Gtk)=4.0
