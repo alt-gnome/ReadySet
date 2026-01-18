@@ -56,3 +56,9 @@ modules:
         - gcc14
         - meson
         - vala
+
+  - type: copy
+    body:
+      source: root
+      destination: /
+      replace: true

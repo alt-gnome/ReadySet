@@ -1,0 +1,6 @@
+[Application]
+steps=language,keyboard,user-passwdqc
+
+[Context]
+user-with-root=true
+hide-autologin=true
