@@ -25,6 +25,7 @@ jobs:
             --platform linux/amd64 \
             --build-arg IMAGE=$PARENT_IMAGE \
             --file ./test-atomic/Containerfile \
+            --label org.altlinux.installer.no-user-creation=true \
             .
 
       # - name: Rechunk image
