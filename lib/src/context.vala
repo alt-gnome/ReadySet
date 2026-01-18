@@ -149,20 +149,28 @@ public class ReadySet.Context : Object {
         string target_property,
         BindingFlags flags = DEFAULT
     ) {
-        var prop = target.get_class ().find_property (target_property);
-        if (prop == null) {
-            warning ("Property %s not found in %s", target_property, target.get_type ().name ());
-            return null;
+        check_bind (source_key, target, target_property, flags);
+
+        //  Invert functions exists because of GObject don't store INVERT_BOOLEAN flag
+        //  when at least one of properties not boolean (or if transform function used).
+        //  So we just use another transform functions.
+        BindingTransformFunc transform_to;
+        BindingTransformFunc transform_from;
+        if ((BindingFlags.INVERT_BOOLEAN & flags) != 0) {
+            transform_to = transform_ctx_to_prop_invert;
+            transform_from = transform_prop_to_ctx_invert;
+        } else {
+            transform_to = transform_ctx_to_prop;
+            transform_from = transform_prop_to_ctx;
         }
 
-        check_key (source_key, ContextType.from_gtype (prop.value_type));
         return data[source_key].bind_property (
             "real-value",
             target,
             target_property,
             flags,
-            transform_ctx_to_prop,
-            transform_prop_to_ctx
+            transform_to,
+            transform_from
         );
     }
 
@@ -172,30 +180,75 @@ public class ReadySet.Context : Object {
         string target_key,
         BindingFlags flags = DEFAULT
     ) {
-        var prop = source.get_class ().find_property (source_property);
-        if (prop == null) {
-            warning ("Property %s not found in %s", source_property, source.get_type ().name ());
-            return null;
+        check_bind (target_key, source, source_property, flags);
+
+        //  Invert functions exists because of GObject don't store INVERT_BOOLEAN flag
+        //  when at least one of properties not boolean (or if transform function used).
+        //  So we just use another transform functions.
+        BindingTransformFunc transform_to;
+        BindingTransformFunc transform_from;
+        if ((BindingFlags.INVERT_BOOLEAN & flags) != 0) {
+            transform_to = transform_prop_to_ctx_invert;
+            transform_from = transform_ctx_to_prop_invert;
+        } else {
+            transform_to = transform_prop_to_ctx;
+            transform_from = transform_ctx_to_prop;
         }
 
-        check_key (target_key, ContextType.from_gtype (prop.value_type));
         return source.bind_property (
             source_property,
             data[target_key],
             "real-value",
             flags,
-            transform_prop_to_ctx,
-            transform_ctx_to_prop
+            transform_to,
+            transform_from
         );
     }
 
-    public bool transform_ctx_to_prop (Binding binding, Value from_value, ref Value to_value) {
+    bool check_bind (
+        string context_key,
+        Object obj,
+        string property,
+        BindingFlags flags = DEFAULT
+    ) {
+        var prop = obj.get_class ().find_property (property);
+        if (prop == null) {
+            warning ("Property %s not found in %s", property, obj.get_type ().name ());
+            return false;
+        }
+
+        check_key (context_key, ContextType.from_gtype (prop.value_type));
+
+        if (
+            ((BindingFlags.INVERT_BOOLEAN & flags) != 0)
+            && (prop.value_type != Type.BOOLEAN || data[context_key].value_type != ContextType.BOOLEAN)
+        ) {
+            warning ("Property or context key %s is not a boolean", context_key);
+            return false;
+        }
+
+        return true;
+    }
+
+    bool transform_ctx_to_prop (Binding binding, Value from_value, ref Value to_value) {
         return ((Value*) from_value.get_boxed ()).transform (ref to_value);
     }
 
-    public bool transform_prop_to_ctx (Binding binding, Value from_value, ref Value to_value) {
+    bool transform_prop_to_ctx (Binding binding, Value from_value, ref Value to_value) {
         var new_val = Value (from_value.type ());
         from_value.copy (ref new_val);
+        to_value.set_boxed (&new_val);
+        return true;
+    }
+
+    bool transform_ctx_to_prop_invert (Binding binding, Value from_value, ref Value to_value) {
+        to_value.set_boolean (!((Value*) from_value.get_boxed ()).get_boolean ());
+        return true;
+    }
+
+    bool transform_prop_to_ctx_invert (Binding binding, Value from_value, ref Value to_value) {
+        var new_val = Value (Type.BOOLEAN);
+        new_val.set_boolean (!from_value.get_boolean ());
         to_value.set_boxed (&new_val);
         return true;
     }
