@@ -38,7 +38,7 @@ modules:
         - libpolkit
         - gnome-control-center-data
       build-deps:
-        - gir(Gtk)=4.0
+        - gir(Gtk)
         - gir(Peas)
         - pkgconfig(accountsservice)
         - pkgconfig(gee-0.8)
