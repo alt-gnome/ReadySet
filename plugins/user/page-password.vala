@@ -79,6 +79,14 @@ public class User.PagePassword : ReadySet.BasePage {
             BindingFlags.INVERT_BOOLEAN | BindingFlags.SYNC_CREATE
         );
 
+        Addin.get_instance ().context.data_changed.connect ((key) => {
+            if (key == "hide-autologin") {
+                if (Addin.get_instance ().context.get_boolean ("hide-autologin")) {
+                    autologin_switch_row.active = false;
+                }
+            }
+        });
+
         Addin.get_instance ().context.bind_context_to_property (
             "user-with-root",
             this,
