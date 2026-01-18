@@ -94,7 +94,12 @@ public class Keyboard.InputInfo : Object {
 namespace Keyboard {
 
     public string get_current_language () {
-        return Addin.get_instance ().context.get_string ("language-locale");
+        var context = Addin.get_instance ().context;
+        if (context.has_key ("language-locale")) {
+            return context.get_string ("language-locale");
+        }
+
+        return "C";
     }
 
     public Gee.HashSet<InputInfo> get_current_inputs () {

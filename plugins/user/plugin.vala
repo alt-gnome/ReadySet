@@ -51,7 +51,9 @@ public class User.Addin : ReadySet.Addin {
 
             user.set_automatic_login (context.get_boolean ("user-autologin"));
             user.set_password (context.get_string ("user-password"), "");
-            user.set_language (get_current_language ());
+            if (context.has_key ("language-locale")) {
+                user.set_language (context.get_string ("language-locale"));
+            }
             if (context.get_string ("user-avatar-file") != "") {
                 user.set_icon_file (context.get_string ("user-avatar-file"));
             }

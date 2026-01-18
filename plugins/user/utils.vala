@@ -206,10 +206,6 @@ namespace User {
         }
     }
 
-    public string get_current_language () {
-        return Addin.get_instance ().context.get_string ("language-locale");
-    }
-
     public string[] get_context_facesdirs () {
         var context = Addin.get_instance ().context;
         var facesdir = new Gee.ArrayList<string> ();
