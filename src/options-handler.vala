@@ -57,7 +57,7 @@ public sealed class ReadySet.OptionsHandler : Object {
 
     public bool fullscreen { get; set; }
 
-    public string user { get; set; }
+    public string user { get; set; default = Environment.get_user_name (); }
 
     public OptionsHandler.from_options (VariantDict options) {
         conf_keyfile = new KeyFile ();
