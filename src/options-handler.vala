@@ -65,12 +65,16 @@ public sealed class ReadySet.OptionsHandler : Object {
 
         try {
             if (options.contains (OPT_CONF_FILE)) {
-                var config_filename = options.lookup_value (OPT_CONF_FILE, null).get_bytestring ();
-                conf_keyfile.load_from_file (config_filename, KeyFileFlags.NONE);
+                conf_file = options.lookup_value (OPT_CONF_FILE, null).get_bytestring ();
+                conf_keyfile.load_from_file (conf_file, KeyFileFlags.NONE);
+
             } else if (standard_local_conf_file.query_exists ()) {
-                conf_keyfile.load_from_file (standard_local_conf_file.get_path (), KeyFileFlags.NONE);
+                conf_file = standard_local_conf_file.get_path ();
+                conf_keyfile.load_from_file (conf_file, KeyFileFlags.NONE);
+
             } else if (standard_distro_conf_file.query_exists ()) {
-                conf_keyfile.load_from_file (standard_distro_conf_file.get_path (), KeyFileFlags.NONE);
+                conf_file = standard_distro_conf_file.get_path ();
+                conf_keyfile.load_from_file (conf_file, KeyFileFlags.NONE);
             }
 
             foreach (var prop in this.get_class ().list_properties ()) {
