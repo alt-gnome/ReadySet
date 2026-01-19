@@ -5,7 +5,6 @@ rs_app_vapi_sources = files(
 rs_app_vala_sources = files(
   'pages/end-page.vala',
 
-  'widgets/devel/add-context-dialog.vala',
   'widgets/devel/window.vala',
 
   'widgets/nothing-to-show.vala',

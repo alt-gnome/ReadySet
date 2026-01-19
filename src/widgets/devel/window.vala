@@ -22,52 +22,178 @@
 public sealed class ReadySet.Devel.Window : Adw.Window {
 
     [GtkChild]
-    unowned Gtk.ListBox list_box;
+    unowned Gtk.ListBox list_box_context;
+    [GtkChild]
+    unowned Gtk.ListBox list_box_options;
 
     Context context;
 
     construct {
         context = ReadySet.Application.get_default ().context;
         context.data_changed.connect (() => {
-            list_box.remove_all ();
-            fill ();
+            list_box_context.remove_all ();
+            fill_context ();
         });
-        fill ();
+        fill_context ();
 
-        list_box.set_placeholder (new Gtk.Label ("No Context?"));
+        fill_options ();
+
+        list_box_context.set_placeholder (new Gtk.Label ("No Context?"));
     }
 
-    void fill () {
-        foreach (var key in context.get_keys ()) {
-            var row = new Adw.EntryRow () {
-                title = key,
-                text = context.get_raw (key),
-                show_apply_button = true,
-                css_classes = { "property" },
+    void fill_options () {
+        const string[] IGNORE_PROPERTY = {
+            "version",
+            "context",
+        };
+
+        var opt_handler = ReadySet.Application.get_default ().options_handler;
+        foreach (var prop in opt_handler.get_class ().list_properties ()) {
+            if (prop.name in IGNORE_PROPERTY) {
+                continue;
+            }
+
+            var val = Value (prop.value_type);
+            opt_handler.get_property (prop.name, ref val);
+
+            string subtitle;
+            switch (ContextType.from_gtype (prop.value_type)) {
+                case STRING:
+                    subtitle = val.get_string ();
+                    break;
+                case STRV:
+                    subtitle = string.joinv (",", (string[]) val.get_boxed ());
+                    break;
+                case BOOLEAN:
+                    subtitle = val.get_boolean ().to_string ();
+                    break;
+                case INT:
+                    subtitle = val.get_int ().to_string ();
+                    break;
+                case DOUBLE:
+                    subtitle = val.get_double ().to_string ();
+                    break;
+                default:
+                    assert_not_reached ();
+            }
+
+            var row = new Adw.ActionRow () {
+                title = prop.name,
+                subtitle = subtitle,
+                css_classes = { "property" }
             };
-            row.apply.connect (row_apply);
-            row.activate.connect ((row) => {
-                row_apply ((Adw.EntryRow) row);
-            });
-            list_box.append (row);
+
+            list_box_options.append (row);
         }
     }
 
-    void row_apply (Adw.EntryRow row) {
-        context.set_raw (row.title, row.text);
+    void fill_context () {
+        foreach (var key in context.get_keys ()) {
+            Adw.PreferencesRow row;
+
+            var value_type = context.get_value_type (key);
+
+            switch (value_type) {
+                case STRING:
+                    var erow = new Adw.EntryRow () {
+                        title = key,
+                        text = context.get_string (key) ?? "",
+                        show_apply_button = true,
+                    };
+                    erow.apply.connect (row_apply_string);
+                    erow.activate.connect (() => {
+                        row_apply_string (erow);
+                    });
+                    row = erow;
+                    break;
+
+                case BOOLEAN:
+                    var srow = new Adw.SwitchRow () {
+                        title = key,
+                        active = context.get_boolean (key),
+                    };
+                    srow.notify["active"].connect (() => {
+                        row_apply_boolean (srow);
+                    });
+                    row = srow;
+                    break;
+
+                case STRV:
+                    var erow = new Adw.EntryRow () {
+                        title = key,
+                        text = string.joinv (",", context.get_strv (key)),
+                        show_apply_button = true,
+                    };
+                    erow.apply.connect (row_apply_strv);
+                    erow.activate.connect (() => {
+                        row_apply_strv (erow);
+                    });
+                    row = erow;
+                    break;
+
+                case INT:
+                    var erow = new Adw.EntryRow () {
+                        title = key,
+                        text = context.get_int (key).to_string (),
+                        show_apply_button = true,
+                    };
+                    erow.apply.connect (row_apply_int);
+                    erow.activate.connect (() => {
+                        row_apply_int (erow);
+                    });
+                    row = erow;
+                    break;
+
+                case DOUBLE:
+                    var erow = new Adw.EntryRow () {
+                        title = key,
+                        text = context.get_double (key).to_string (),
+                        show_apply_button = true,
+                    };
+                    erow.apply.connect (row_apply_double);
+                    erow.activate.connect (() => {
+                        row_apply_double (erow);
+                    });
+                    row = erow;
+                    break;
+
+                default:
+                    assert_not_reached ();
+            }
+
+            list_box_context.append (row);
+        }
     }
 
-    [GtkCallback]
-    void on_add_button_clicked () {
-        var dialog = new Devel.AddContextDialog ();
-        dialog.add.connect (() => {
-            if (dialog.context_name.strip () != "") {
-                context.set_raw (dialog.context_name, dialog.context_value);
-                return true;
-            } else {
-                return false;
-            }
-        });
-        dialog.present (this);
+    void row_apply_double (Adw.EntryRow row) {
+        double res;
+        if (double.try_parse (row.text, out res)) {
+            context.set_double (row.title, res);
+            row.remove_css_class ("error");
+        } else {
+            row.add_css_class ("error");
+        }
+    }
+
+    void row_apply_int (Adw.EntryRow row) {
+        int res;
+        if (int.try_parse (row.text, out res)) {
+            context.set_int (row.title, res);
+            row.remove_css_class ("error");
+        } else {
+            row.add_css_class ("error");
+        }
+    }
+
+    void row_apply_strv (Adw.EntryRow row) {
+        context.set_strv (row.title, row.text.split (","));
+    }
+
+    void row_apply_string (Adw.EntryRow row) {
+        context.set_string (row.title, row.text);
+    }
+
+    void row_apply_boolean (Adw.SwitchRow row) {
+        context.set_boolean (row.title, row.active);
     }
 }

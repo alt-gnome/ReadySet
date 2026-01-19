@@ -39,6 +39,7 @@ public sealed class ReadySet.OptionsHandler : Object {
         { OPT_CONF_FILE, 'C', 0, OptionArg.FILENAME, null, N_("App config file"), "CONF-FILE" },
         { "idle", 'i', 0, OptionArg.NONE, null, N_("Idle run without doing anything"), null },
         { "fullscreen", 'F', 0, OptionArg.NONE, null, N_("Run window in fullscreen"), null },
+        { "user", 'u', 0, OptionArg.STRING, null, N_("User for which will be generated plugin polkit rules"), "STEPS_NO_APPLY" },
         { null }
     };
 
@@ -56,18 +57,24 @@ public sealed class ReadySet.OptionsHandler : Object {
 
     public bool fullscreen { get; set; }
 
+    public string user { get; set; default = Environment.get_user_name (); }
+
     public OptionsHandler.from_options (VariantDict options) {
         conf_keyfile = new KeyFile ();
         conf_keyfile.set_list_separator (SEP);
 
         try {
             if (options.contains (OPT_CONF_FILE)) {
-                var config_filename = options.lookup_value (OPT_CONF_FILE, null).get_bytestring ();
-                conf_keyfile.load_from_file (config_filename, KeyFileFlags.NONE);
+                conf_file = options.lookup_value (OPT_CONF_FILE, null).get_bytestring ();
+                conf_keyfile.load_from_file (conf_file, KeyFileFlags.NONE);
+
             } else if (standard_local_conf_file.query_exists ()) {
-                conf_keyfile.load_from_file (standard_local_conf_file.get_path (), KeyFileFlags.NONE);
+                conf_file = standard_local_conf_file.get_path ();
+                conf_keyfile.load_from_file (conf_file, KeyFileFlags.NONE);
+
             } else if (standard_distro_conf_file.query_exists ()) {
-                conf_keyfile.load_from_file (standard_distro_conf_file.get_path (), KeyFileFlags.NONE);
+                conf_file = standard_distro_conf_file.get_path ();
+                conf_keyfile.load_from_file (conf_file, KeyFileFlags.NONE);
             }
 
             foreach (var prop in this.get_class ().list_properties ()) {
@@ -115,9 +122,7 @@ public sealed class ReadySet.OptionsHandler : Object {
         }
     }
 
-    public Context build_context () {
-        var ctx = new Context (idle);
-
+    public void fill_context (Context ctx) {
         if (conf_file != null) {
             try {
                 ctx.load_from_keyfile (conf_keyfile, CTX_GROUP_NAME);
@@ -133,21 +138,6 @@ public sealed class ReadySet.OptionsHandler : Object {
             } else {
                 error ("Invalid context var: %s", context_var);
             }
-        }
-
-        return ctx;
-    }
-
-    //  KeyFile value must be present
-    Value kf_value_to_value (KeyFile keyfile, string group_name, string key, Type value_type) throws Error {
-        if (value_type == Type.BOOLEAN) {
-            return keyfile.get_boolean (group_name, key);
-        } else if (value_type == Type.STRING) {
-            return keyfile.get_string (group_name, key);
-        } else if (value_type == typeof (string[])) {
-            return keyfile.get_string_list (group_name, key);
-        } else {
-            error ("Unknown keyfile desired type: %s", value_type.name ());
         }
     }
 

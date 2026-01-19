@@ -28,7 +28,9 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     [GtkChild]
     unowned Adw.HeaderBar header_bar;
     [GtkChild]
-    unowned Gtk.Label idle_label;
+    unowned Gtk.Label idle_label_left;
+    [GtkChild]
+    unowned Gtk.Label idle_label_right;
     [GtkChild]
     unowned Gtk.Button context_button;
 
@@ -97,7 +99,8 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
         header_bar.show_end_title_buttons = Config.IS_DEVEL;
         context_button.visible = Config.IS_DEVEL;
-        idle_label.visible = ReadySet.Application.get_default ().context.idle;
+        idle_label_left.visible = ReadySet.Application.get_default ().context.idle && Config.IS_DEVEL;
+        idle_label_right.visible = ReadySet.Application.get_default ().context.idle && !Config.IS_DEVEL;
     }
 
     void selection_changed () {

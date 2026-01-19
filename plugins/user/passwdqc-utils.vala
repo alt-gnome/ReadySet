@@ -26,7 +26,7 @@ namespace User.Password {
         if (_passwdqc_params == null) {
             _passwdqc_params = PasswdQC.Params ();
             var passwdqc_conf_path = Addin.get_instance ().context.get_string ("passwd-conf-path");
-            if (passwdqc_conf_path == null) {
+            if (passwdqc_conf_path == "") {
                 passwdqc_conf_path = "/etc/passwdqc.conf";
             }
             _passwdqc_params.params_load (null, passwdqc_conf_path);

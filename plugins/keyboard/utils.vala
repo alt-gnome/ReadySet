@@ -19,7 +19,7 @@
  */
 
 [DBus (name = "org.freedesktop.locale1")]
-public interface Locale1 : Object {
+public interface Keyboard.Locale1 : Object {
     public abstract string[] locale { owned get; }
     public abstract string v_console_toggle { owned get; }
     public abstract string v_console_keymap_toggle { owned get; }
@@ -95,34 +95,20 @@ namespace Keyboard {
 
     public string get_current_language () {
         var context = Addin.get_instance ().context;
-
-        var locale = context.get_string ("locale");
-
-        if (locale == null) {
-            debug ("Languages: %s", string.joinv (", ", Intl.get_language_names ()));
-
-            foreach (string lang in Intl.get_language_names ()) {
-                if (Gnome.Languages.parse_locale (lang, null, null, null, null)) {
-                    locale = lang;
-                    break;
-                }
-            }
-
-            if (locale == null) {
-                locale = "C";
-            }
+        if (context.has_key ("language-locale")) {
+            return context.get_string ("language-locale");
         }
 
-        return locale;
+        return "C";
     }
 
     public Gee.HashSet<InputInfo> get_current_inputs () {
         var context = Addin.get_instance ().context;
 
         var input_sources = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
-        var inputs_val = context.get_strv ("input-sources");
+        var inputs_val = context.get_strv ("keyboard-input-sources");
 
-        if (inputs_val == null) {
+        if (inputs_val.length == 0) {
             var settings = new Settings ("org.gnome.desktop.input-sources");
             var variant = settings.get_value ("sources");
 
@@ -165,24 +151,20 @@ namespace Keyboard {
             settings.set_value ("sources", builder.end ());
         }
 
-        context.set_strv ("input-sources", inputs_val.data);
+        context.set_strv ("keyboard-input-sources", inputs_val.data);
     }
 
-    Locale1 get_locale_proxy () {
-        try {
-            var con = Bus.get_sync (BusType.SYSTEM);
+    async Keyboard.Locale1 get_locale_proxy () throws Error {
+        var con = yield Bus.get (BusType.SYSTEM);
 
-            if (con == null) {
-                error ("Failed to connect to bus");
-            }
-
-            return con.get_proxy_sync<Locale1> (
-                "org.freedesktop.locale1",
-                "/org/freedesktop/locale1",
-                DBusProxyFlags.NONE
-            );
-        } catch (Error e) {
-            error (e.message);
+        if (con == null) {
+            error ("Failed to connect to bus");
         }
+
+        return con.get_proxy_sync<Keyboard.Locale1> (
+            "org.freedesktop.locale1",
+            "/org/freedesktop/locale1",
+            DBusProxyFlags.NONE
+        );
     }
 }

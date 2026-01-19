@@ -23,6 +23,18 @@ template $ReadySetStepsMainPage: Adw.Bin {
         visible: bind template.dead-end inverted;
       }
 
+      [start]
+      Label idle_label_left {
+        styles [
+          "warning",
+        ]
+
+        margin-start: 12;
+        margin-end: 12;
+        visible: false;
+        label: "idle";
+      }
+
       title-widget: Box {
         orientation: vertical;
         spacing: 2;
@@ -45,9 +57,9 @@ template $ReadySetStepsMainPage: Adw.Bin {
       }
 
       [end]
-      Label idle_label {
+      Label idle_label_right {
         styles [
-          "dimmed",
+          "warning",
         ]
 
         margin-start: 12;

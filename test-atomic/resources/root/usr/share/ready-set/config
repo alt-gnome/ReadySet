@@ -1,0 +1,8 @@
+[Application]
+steps=language,keyboard,user-passwdqc
+user=_greeter
+
+[Context]
+user-with-root=true
+hide-autologin=true
+no-password-security=true

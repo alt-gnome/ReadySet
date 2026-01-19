@@ -37,31 +37,51 @@ public class User.PageUsername : ReadySet.BasePage {
     unowned Adw.Avatar avatar_image;
     [GtkChild]
     unowned Gtk.Button remove_avatar_button;
-    [GtkChild]
-    unowned AvatarChooser avatar_chooser;
 
     bool username_manually_entered = false;
 
-    construct {
-        var username = Addin.get_instance ().context.get_string ("user-username");
-        var fullname = Addin.get_instance ().context.get_string ("user-fullname");
-
-        if (username != null) {
-            username_entry.text = username;
+    string _user_avatar_file;
+    public string user_avatar_file {
+        get {
+            return _user_avatar_file;
         }
-        if (fullname != null) {
-            fullname_entry.text = fullname;
-        }
+        set {
+            if (value == "") {
+                avatar_image.set_custom_image (null);
+                remove_avatar_button.visible = false;
 
-        if (Addin.get_instance ().context.has_key ("user-avatar-file")) {
-            try {
-                avatar_image.set_custom_image (Gdk.Texture.from_filename (Addin.get_instance ().context.get_string ("user-avatar-file")));
-            } catch (Error e) {
-                warning (e.message);
+            } else {
+                try {
+                    avatar_image.set_custom_image (Gdk.Texture.from_filename (value));
+                } catch (Error e) {
+                    warning (e.message);
+                }
             }
+            _user_avatar_file = value;
         }
+    }
 
-        avatar_chooser.set_callback (on_avatar_selected);
+    construct {
+        Addin.get_instance ().context.bind_context_to_property (
+            "user-username",
+            username_entry,
+            "text",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
+
+        Addin.get_instance ().context.bind_context_to_property (
+            "user-fullname",
+            fullname_entry,
+            "text",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
+
+        Addin.get_instance ().context.bind_context_to_property (
+            "user-avatar-file",
+            this,
+            "user-avatar-file",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
     }
 
     void update_is_ready () {
@@ -79,8 +99,6 @@ public class User.PageUsername : ReadySet.BasePage {
 
     [GtkCallback]
     void fullname_changed () {
-        Addin.get_instance ().context.set_string ("user-fullname", fullname_entry.text);
-
         if (!username_manually_entered) {
             auto_enter_username ();
         }
@@ -98,8 +116,6 @@ public class User.PageUsername : ReadySet.BasePage {
 
     [GtkCallback]
     void username_changed () {
-        Addin.get_instance ().context.set_string ("user-username", username_entry.text);
-
         username_manually_entered = username_entry.text != get_auto_username ();
 
         if (!username_manually_entered && username_entry.text == "") {
@@ -131,19 +147,20 @@ public class User.PageUsername : ReadySet.BasePage {
     }
 
     [GtkCallback]
-    void on_remove_avatar_button_clicked () {
-        avatar_image.set_custom_image (null);
-        remove_avatar_button.visible = false;
-        Addin.get_instance ().context.unset ("user-avatar-file");
+    void on_avatar_button_clicked () {
+        var chooser = new AvatarChooser ();
+        chooser.closed.connect (() => {
+            if (chooser.avatar_filename != null) {
+                remove_avatar_button.visible = true;
+                user_avatar_file = chooser.avatar_filename;
+            }
+        });
+        chooser.present (this);
     }
 
-    void on_avatar_selected (owned string filename) {
-        try {
-            avatar_image.set_custom_image (Gdk.Texture.from_filename (filename));
-            Addin.get_instance ().context.set_string ("user-avatar-file", filename);
-            remove_avatar_button.visible = true;
-        } catch (Error e) {
-            warning (e.message);
-        }
+    [GtkCallback]
+    void on_remove_avatar_button_clicked () {
+        remove_avatar_button.visible = false;
+        user_avatar_file = "";
     }
 }

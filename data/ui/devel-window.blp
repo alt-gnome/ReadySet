@@ -18,7 +18,9 @@ template $ReadySetDevelWindow: Adw.Window {
 
     content: Adw.ViewStack stack {
       Adw.ViewStackPage {
-        name: "Context";
+        name: "context";
+        title: "Context";
+        icon-name: "preferences-system";
 
         child: ScrolledWindow {
           propagate-natural-height: true;
@@ -35,7 +37,7 @@ template $ReadySetDevelWindow: Adw.Window {
               orientation: vertical;
               spacing: 12;
 
-              ListBox list_box {
+              ListBox list_box_context {
                 styles [
                   "boxed-list",
                 ]
@@ -43,15 +45,38 @@ template $ReadySetDevelWindow: Adw.Window {
                 valign: start;
                 selection-mode: none;
               }
+            }
+          }
+        };
+      }
 
-              Button add_button {
+      Adw.ViewStackPage {
+        name: "options";
+        title: "App options";
+        icon-name: "preferences-system";
+
+        child: ScrolledWindow {
+          propagate-natural-height: true;
+          hscrollbar-policy: never;
+
+          Adw.Clamp {
+            maximum-size: 550;
+            margin-bottom: 12;
+            margin-top: 12;
+            margin-start: 12;
+            margin-end: 12;
+
+            Box {
+              orientation: vertical;
+              spacing: 12;
+
+              ListBox list_box_options {
                 styles [
-                  "circlular",
+                  "boxed-list",
                 ]
 
-                halign: end;
-                icon-name: "list-add-symbolic";
-                clicked => $on_add_button_clicked();
+                valign: start;
+                selection-mode: none;
               }
             }
           }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/altlinux/ReadySet/icons/scalable/actions/">
+    <file alias="avatar-default-symbolic.svg">assets/icons/avatar-default-symbolic.svg</file>
     <file alias="rs-random-symbolic.svg">assets/icons/rs-random-symbolic.svg</file>
     <file alias="system-users-symbolic.svg">assets/icons/system-users-symbolic.svg</file>
   </gresource>

@@ -5,7 +5,7 @@ template $UserPageUsername: $ReadySetBasePage {
   title-header: _("User name");
   title: _("About You");
   description: _("Set information about You");
-  icon-name: "folder-user-symbolic";
+  icon-name: "avatar-default-symbolic";
 
   icon-widget: Overlay {
     halign: center;
@@ -25,15 +25,14 @@ template $UserPageUsername: $ReadySetBasePage {
       halign: end;
       valign: end;
 
-      MenuButton avatar_button {
+      Button avatar_button {
         styles [
           "circular",
         ]
 
         tooltip-text: _("Change Avatar");
         icon-name: "document-edit-symbolic";
-
-        popover: $UserAvatarChooser avatar_chooser {};
+        clicked => $on_avatar_button_clicked();
       }
     }
 

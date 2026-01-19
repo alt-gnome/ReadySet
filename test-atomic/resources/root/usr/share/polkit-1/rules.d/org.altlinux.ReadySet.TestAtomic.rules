@@ -1,0 +1,17 @@
+polkit.addRule(function(action, subject) {
+    if (subject.user !== "_greeter")
+        return;
+
+    var actionMatches =
+        action.id === "org.freedesktop.policykit.exec" &&
+         action.lookup("program") == "/usr/libexec/ready-set-ruler";
+
+    if (actionMatches) {
+        if (subject.local)
+            return polkit.Result.YES;
+        else
+            return polkit.Result.AUTH_ADMIN;
+    }
+
+    return;
+});

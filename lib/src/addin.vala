@@ -30,14 +30,10 @@ public abstract class ReadySet.Addin : Peas.ExtensionBase {
 
     public Context context { get; set; default = new Context (true); }
 
-    construct {
-        load_css ();
-    }
-
-    void load_css () {
+    public void load_css_for_display (Gdk.Display display) {
         var provider = new Gtk.CssProvider ();
         provider.load_from_resource ("/org/altlinux/ReadySet/Lib/style.css");
-        Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        Gtk.StyleContext.add_provider_for_display (display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         if (resource_base_path != null) {
             try {
@@ -48,7 +44,7 @@ public abstract class ReadySet.Addin : Peas.ExtensionBase {
 
                 provider = new Gtk.CssProvider ();
                 provider.load_from_bytes (bytes);
-                Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+                Gtk.StyleContext.add_provider_for_display (display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
             } catch (Error e) {
                 debug ("style.css doesn't provides by resources");
             }
@@ -56,6 +52,22 @@ public abstract class ReadySet.Addin : Peas.ExtensionBase {
     }
 
     public abstract BasePage[] build_pages ();
+
+    //  After context set action. Calls once. Calls before init
+    public virtual void init_once () {
+        return;
+    }
+
+    //  After context set action. Calls on every UI rebuild
+    public virtual void init () {
+        return;
+    }
+
+    //  For plugins better to use base.get_context_vars for getting empty HashTable.
+    public virtual HashTable<string, ContextVarInfo> get_context_vars () {
+        var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
+        return vars;
+    }
 
     public virtual bool allowed () {
         return true;

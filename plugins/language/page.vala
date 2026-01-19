@@ -40,10 +40,10 @@ public sealed class Language.Page : ReadySet.BasePage {
     }
 
     public override async void apply () throws ReadySet.ApplyError {
-        var proxy = get_locale_proxy ();
-
         try {
-            yield proxy.set_locale ({ @"LANG=$(get_current_language ())" }, true);
+            var proxy = yield get_locale_proxy ();
+
+            yield proxy.set_locale ({ @"LANG=$(Addin.get_instance ().current_locale)" }, true);
         } catch (Error e) {
             throw ReadySet.ApplyError.build_error (_("Error when setting language"), e.message);
         }

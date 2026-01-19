@@ -1,7 +1,7 @@
 project(
   'ready-set',
   'vala',
-  version: '0.3.0',
+  version: '0.3.1',
   meson_version: '>= 1.1',
   license: 'GPL-3.0-or-later',
 )
@@ -28,10 +28,8 @@ pascal_name = 'ReadySet'
 app_id = 'org.altlinux.' + pascal_name
 
 if get_option('is_devel')
-  name_postfix = ' (Development)'
   app_id_dyn = app_id + '.Devel'
 else
-  name_postfix = ''
   app_id_dyn = app_id
 endif
 
@@ -68,6 +66,7 @@ subdir('data')
 subdir('po')
 subdir('lib')
 subdir('src')
+subdir('internal')
 subdir('plugins')
 
 gnome.post_install(

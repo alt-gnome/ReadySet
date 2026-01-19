@@ -1,0 +1,13 @@
+ARG IMAGE
+
+FROM $IMAGE
+
+ARG IMAGE
+
+RUN --mount=type=bind,source=./test-atomic/image.yml,target=/etc/apm/image.yml \
+    --mount=type=bind,source=./test-atomic/resources,target=/etc/apm/resources \
+    apm system image build
+
+WORKDIR /
+
+CMD ["/sbin/init"]

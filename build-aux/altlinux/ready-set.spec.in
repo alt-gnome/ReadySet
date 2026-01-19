@@ -17,7 +17,7 @@ VCS: https://github.com/alt-gnome/ReadySet.git
 
 Source: %name-%version.tar
 
-Requires: shadow-utils
+Requires: %name-common = %EVR
 
 BuildRequires(pre): rpm-macros-meson
 BuildRequires(pre): rpm-macros-systemd
@@ -44,38 +44,51 @@ BuildRequires: pkgconfig(systemd)
 %description
 %summary.
 
-%package translation
-Summary: Translation file for %name frontends
-Group: System/Internationalization
+%package common
+Summary: Common files for %name frontends
+Group: Other
 
-BuildArch: noarch
+Obsoletes: %name-translation <= 0.3.0-alt1
+Provides: %name-translation = %EVR
 
-%description translation
-%summary: cli and gui.
+%description common
+%summary.
 
-%package -n %libname
+# %package cli
+# Summary: CLI %name frontend
+# Group: Other
+
+# BuildArch: noarch
+
+# Requires: %name-common = %EVR
+# Conflicts: %name = %EVR
+
+# %description cli
+# %summary.
+
+%package -n %libname%api_version
 Summary: %name library
 Group: System/Libraries
 
-%description -n %libname
+%description -n %libname%api_version
 %summary.
 
 %package -n %libname-devel
 Summary: %name development files
 Group: Development/C
 
-Requires: %libname
+Requires: %libname%api_version = %EVR
 
 %description -n %libname-devel
 %summary.
 
-%package -n %libname-gir
+%package -n %libname%api_version-gir
 Summary: %name GIR introspection files
 Group: System/Libraries
 
-Requires: %libname
+Requires: %libname%api_version = %EVR
 
-%description -n %libname-gir
+%description -n %libname%api_version-gir
 %summary.
 
 %package -n %libname-gir-devel
@@ -83,7 +96,7 @@ Summary: %name GIR introspection development files
 Group: Development/GNOME and GTK+
 
 BuildArch: noarch
-Requires: %libname-gir
+Requires: %libname%api_version-gir = %EVR
 
 %description -n %libname-gir-devel
 %summary.
@@ -92,7 +105,7 @@ Requires: %libname-gir
 Summary: %name keyboard plugin
 Group: Other
 
-Requires: %name
+Requires: %name = %EVR
 
 %description plugin-keyboard
 %summary.
@@ -101,7 +114,7 @@ Requires: %name
 Summary: %name language plugin
 Group: Other
 
-Requires: %name
+Requires: %name = %EVR
 
 %description plugin-language
 %summary.
@@ -110,7 +123,10 @@ Requires: %name
 Summary: %name user plugin common files
 Group: Other
 
-Requires: %name
+Requires: gnome-control-center-data
+Requires: accountsservice
+Requires: shadow-utils
+Requires: %name = %EVR
 
 %description plugin-user-common
 %summary.
@@ -119,8 +135,7 @@ Requires: %name
 Summary: %name user plugin with passwdqc support
 Group: Other
 
-Requires: %name
-Requires: plugin-user-common
+Requires: %name-plugin-user-common = %EVR
 
 %description plugin-user-passwdqc
 %summary.
@@ -129,8 +144,7 @@ Requires: plugin-user-common
 Summary: %name user plugin with pwquality support
 Group: Other
 
-Requires: %name
-Requires: plugin-user-common
+Requires: %name-plugin-user-common = %EVR
 
 %description plugin-user-pwquality
 %summary.
@@ -139,7 +153,7 @@ Requires: plugin-user-common
 Summary: %name welcome plugin
 Group: Other
 
-Requires: %name
+Requires: %name = %EVR
 
 %description plugin-welcome
 %summary.
@@ -160,14 +174,17 @@ Requires: %name
 
 %files
 %_libexecdir/%name
+%_iconsdir/hicolor/*/apps/%{app_id}*
+
+# %files cli
+
+%files common -f %name.lang
+%_libexecdir/%name-ruler
 %_sysusersdir/%name.conf
 %_tmpfilesdir/%name.conf
-%_iconsdir/hicolor/*/apps/%{app_id}*
-%doc README.md
+%doc README.en.md
 
-%files translation -f %name.lang
-
-%files -n %libname
+%files -n %libname%api_version
 %_libdir/%libname-%api_version.so.%api_version
 %_libdir/%libname-%api_version.so.%api_version.*
 
@@ -178,24 +195,24 @@ Requires: %name
 %_vapidir/%libname-%api_version.deps
 %_vapidir/%libname-%api_version.vapi
 
-%files -n %libname-gir
+%files -n %libname%api_version-gir
 %_typelibdir/%girname-%api_version.typelib
 
 %files -n %libname-gir-devel
 %_girdir/%girname-%api_version.gir
 
 %files plugin-keyboard
-%_datadir/polkit-1/rules.d/%app_id.Plugin.Keyboard.rules
+%_datadir/%name/rules.d/%app_id.Plugin.Keyboard.rules
 %_libdir/%name/plugins/keyboard.plugin
 %_libdir/%name/plugins/libkeyboard.so
 
 %files plugin-language
-%_datadir/polkit-1/rules.d/%app_id.Plugin.Language.rules
+%_datadir/%name/rules.d/%app_id.Plugin.Language.rules
 %_libdir/%name/plugins/language.plugin
 %_libdir/%name/plugins/liblanguage.so
 
 %files plugin-user-common
-%_datadir/polkit-1/rules.d/%app_id.Plugin.User.rules
+%_datadir/%name/rules.d/%app_id.Plugin.User.rules
 %_libexecdir/%name-set-root-password
 
 %files plugin-user-passwdqc

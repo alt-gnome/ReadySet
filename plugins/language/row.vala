@@ -27,7 +27,7 @@ public sealed class Language.Row : Adw.ActionRow {
         construct set {
             _locale_data = value;
             if (value != null) {
-                var is_current_language = value.locale == get_current_language ();
+                var is_current_language = value.locale == Addin.get_instance ().current_locale;
 
                 if (is_current_language) {
                     add_css_class ("property");
@@ -51,12 +51,10 @@ public sealed class Language.Row : Adw.ActionRow {
 
     [GtkCallback]
     void row_activated () {
-        if (locale_data.locale == get_current_language ()) {
+        if (locale_data.locale == Addin.get_instance ().current_locale) {
             return;
         }
 
-        set_current_locale (locale_data.locale);
-
-        Addin.get_instance ().context.reload_window ();
+        Addin.get_instance ().current_locale = locale_data.locale;
     }
 }

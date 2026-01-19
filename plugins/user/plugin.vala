@@ -51,12 +51,14 @@ public class User.Addin : ReadySet.Addin {
 
             user.set_automatic_login (context.get_boolean ("user-autologin"));
             user.set_password (context.get_string ("user-password"), "");
-            user.set_language (get_current_language ());
-            if (context.has_key ("user-avatar-file")) {
+            if (context.has_key ("language-locale")) {
+                user.set_language (context.get_string ("language-locale"));
+            }
+            if (context.get_string ("user-avatar-file") != "") {
                 user.set_icon_file (context.get_string ("user-avatar-file"));
             }
 
-            if (context.has_key ("user-root-password")) {
+            if (context.get_string ("user-root-password") != "") {
                 set_root_password (context.get_string ("user-root-password"));
             } else {
                 set_root_password (context.get_string ("user-password"));
@@ -65,6 +67,26 @@ public class User.Addin : ReadySet.Addin {
         } catch (Error e) {
             throw ReadySet.ApplyError.build_error (_("Error when creating a user"), e.message);
         }
+    }
+
+    public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
+        var vars = base.get_context_vars ();
+
+        //  Settings
+        vars["user-avatar-file"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["user-with-root"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        vars["no-password-security"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        vars["passwd-conf-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["user-avatar-directories"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV);
+        vars["hide-autologin"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+
+        //  Storage
+        vars["user-username"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["user-fullname"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["user-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["user-root-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["user-autologin"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        return vars;
     }
 
     internal static Addin get_instance () {

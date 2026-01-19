@@ -7,6 +7,7 @@ namespace Config {
     public const string LIBDIR;
     public const string DATADIR;
     public const string SYSCONFDIR;
+    public const string LIBEXECDIR;
     public const bool IS_DEVEL;
     public const string GETTEXT_PACKAGE;
     public const string GNOMELOCALEDIR;

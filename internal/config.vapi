@@ -17,20 +17,18 @@
  * 
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-
-[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/devel-add-context-dialog.ui")]
-public sealed class ReadySet.Devel.AddContextDialog : Adw.Dialog {
-
-    public new string context_name { get; set; default = ""; }
-
-    public string context_value { get; set; default = ""; }
-
-    public signal bool add ();
-
-    [GtkCallback]
-    void on_buttonrow_activated () {
-        if (add ()) {
-            close ();
-        }
-    }
+[CCode (cprefix = "", lower_case_cprefix = "", cheader_filename = "config.h")]
+namespace Config {
+    public const string NAME;
+    public const string APP_ID;
+    public const string APP_ID_DYN;
+    public const string VERSION;
+    public const string LIBDIR;
+    public const string DATADIR;
+    public const string SYSCONFDIR;
+    public const string LIBEXECDIR;
+    public const bool IS_DEVEL;
+    public const string GETTEXT_PACKAGE;
+    public const string GNOMELOCALEDIR;
+    public const string SUPPORTED_LANGUAGES;
 }
