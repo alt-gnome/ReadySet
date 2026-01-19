@@ -5,3 +5,4 @@ user=_greeter
 [Context]
 user-with-root=true
 hide-autologin=true
+no-password-security=true
