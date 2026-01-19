@@ -315,9 +315,13 @@ public class ReadySet.Context : Object {
                 warning ("Key %s not found in context, it will be ignored", key);
                 continue;
             }
-            var desired_type = data[key].value_type.to_gtype ();
-            var value = data[key].real_value;
-            kf_value_to_value (keyfile, group_name, key, desired_type).copy (ref value);
+
+            set_value (key, kf_value_to_value (
+                keyfile,
+                group_name,
+                key,
+                data[key].value_type.to_gtype ()
+            ));
         }
     }
 
