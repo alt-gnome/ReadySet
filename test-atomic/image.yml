@@ -76,3 +76,8 @@ modules:
       source: root
       destination: /
       replace: true
+
+  - name: Update dconf
+    type: shell
+    body:
+      command: dconf update
