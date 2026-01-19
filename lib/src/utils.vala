@@ -25,10 +25,10 @@ namespace ReadySet {
         public string description;
     }
 
-    public sealed class ProgressData {
+    public sealed class ProgressData : Object {
 
         //  Value from 0.0 to 1.0
-        public double value { get; set; }
+        public double value { get; set; default = 0.0; }
 
         public string message { get; set; }
     }

@@ -21,20 +21,26 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
     [GtkChild]
     unowned Gtk.Stack stack;
-
-    public string error_title { get; set; }
-
-    public string error_description { get; set; }
+    [GtkChild]
+    unowned Adw.StatusPage error_status_page;
+    [GtkChild]
+    unowned Adw.StatusPage apply_status_page;
+    [GtkChild]
+    unowned Gtk.ProgressBar progress_bar;
 
     public string loading_status { get; set; }
 
-    construct {
-        //  start_loading ();
-    }
+    ProgressData progress_data = new ProgressData ();
 
     public async void start_action () {
-        stack.visible_child_name = "load";
+        stack.visible_child_name = "applying";
         var context = ReadySet.Application.get_default ().context;
+
+        progress_data.bind_property ("message", apply_status_page, "description");
+        progress_data.bind_property ("value", progress_bar, "fraction");
+
+        progress_data.notify["value"].connect (update_progress_visibility);
+        update_progress_visibility ();
 
         try {
             var app = (ReadySet.Application) GLib.Application.get_default ();
@@ -45,13 +51,13 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
                 if (context.idle) {
                     Timeout.add_seconds_once (1, () => {
+                        progress_data.value += 0.1;
+                        progress_data.message = _("Doing some stuff…");
                         Idle.add (start_action.callback);
                     });
                     yield;
 
                 } else {
-                    //  loading_status = callback_page.start_apply_message;
-                    var progress_data = new ProgressData ();
                     yield callback_page.apply (progress_data);
                 }
             }
@@ -73,22 +79,22 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                 }
             }
 
-            //  stop_loading ();
             stack.visible_child_name = "ready";
             is_ready = true;
 
         } catch (ApplyError error) {
             var apply_error_data = ApplyError.to_data (error);
 
-            error_title = apply_error_data.message;
-            error_description = apply_error_data.description;
+            error_status_page.title = apply_error_data.message;
+            error_status_page.description = _("Error message: %s").printf (apply_error_data.description);
 
-            error_description = _("Error message: %s").printf (error_description);
-
-            //  stop_loading ();
             icon_name = "dialog-error-symbolic";
             stack.visible_child_name = "error";
             is_ready = false;
         }
+    }
+
+    void update_progress_visibility () {
+        progress_bar.visible = 1.0 > progress_data.value > 0;
     }
 }

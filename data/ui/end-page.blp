@@ -1,39 +1,43 @@
 using Gtk 4.0;
+using Adw 1;
 
 template $ReadySetEndPage: $ReadySetBaseBarePage {
   title-header: _("Finishing");
-  // title: _("Ready Set…");
   icon_name: "org.altlinux.ReadySet-symbolic";
-  // description: _("The system is ready for use.");
 
   content: Stack stack {
     transition-duration: 300;
     transition-type: crossfade;
 
     StackPage {
-      name: "load";
+      name: "applying";
 
-      child: $ReadySetBasePageDesc {
+      child: Adw.StatusPage apply_status_page {
+        paintable: Adw.SpinnerPaintable {
+          widget: template;
+        };
         title: _("Applying changes…");
+
+        ProgressBar progress_bar {
+          visible: false;
+        }
       };
     }
 
     StackPage {
       name: "ready";
 
-      child: $ReadySetBasePageDesc {
-        // title: bind template.title;
-        // description: bind template.description;
+      child: Adw.StatusPage {
+        icon-name: "org.altlinux.ReadySet-symbolic";
+        title: _("Ready Set…");
+        description: _("The system is ready for use.");
       };
     }
 
     StackPage {
       name: "error";
-
-      child: $ReadySetBasePageDesc error_desc {
-        title: bind template.error_title;
-        description: bind template.error_description;
-      };
+      icon-name: "dialog-error-symbolic";
+      child: Adw.StatusPage error_status_page {};
     }
   };
 }
