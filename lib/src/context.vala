@@ -154,24 +154,25 @@ public class ReadySet.Context : Object {
         //  Invert functions exists because of GObject don't store INVERT_BOOLEAN flag
         //  when at least one of properties not boolean (or if transform function used).
         //  So we just use another transform functions.
-        BindingTransformFunc transform_to;
-        BindingTransformFunc transform_from;
         if ((BindingFlags.INVERT_BOOLEAN & flags) != 0) {
-            transform_to = transform_ctx_to_prop_invert;
-            transform_from = transform_prop_to_ctx_invert;
+            return data[source_key].bind_property (
+                "real-value",
+                target,
+                target_property,
+                flags,
+                transform_ctx_to_prop_invert,
+                transform_prop_to_ctx_invert
+            );
         } else {
-            transform_to = transform_ctx_to_prop;
-            transform_from = transform_prop_to_ctx;
+            return data[source_key].bind_property (
+                "real-value",
+                target,
+                target_property,
+                flags,
+                transform_ctx_to_prop,
+                transform_prop_to_ctx
+            );
         }
-
-        return data[source_key].bind_property (
-            "real-value",
-            target,
-            target_property,
-            flags,
-            transform_to,
-            transform_from
-        );
     }
 
     public unowned Binding? bind_property_to_context (
@@ -185,24 +186,25 @@ public class ReadySet.Context : Object {
         //  Invert functions exists because of GObject don't store INVERT_BOOLEAN flag
         //  when at least one of properties not boolean (or if transform function used).
         //  So we just use another transform functions.
-        BindingTransformFunc transform_to;
-        BindingTransformFunc transform_from;
         if ((BindingFlags.INVERT_BOOLEAN & flags) != 0) {
-            transform_to = transform_prop_to_ctx_invert;
-            transform_from = transform_ctx_to_prop_invert;
+            return source.bind_property (
+                source_property,
+                data[target_key],
+                "real-value",
+                flags,
+                transform_prop_to_ctx_invert,
+                transform_ctx_to_prop_invert
+            );
         } else {
-            transform_to = transform_prop_to_ctx;
-            transform_from = transform_ctx_to_prop;
+            return source.bind_property (
+                source_property,
+                data[target_key],
+                "real-value",
+                flags,
+                transform_prop_to_ctx,
+                transform_ctx_to_prop
+            );
         }
-
-        return source.bind_property (
-            source_property,
-            data[target_key],
-            "real-value",
-            flags,
-            transform_to,
-            transform_from
-        );
     }
 
     bool check_bind (
