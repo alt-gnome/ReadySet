@@ -22,22 +22,72 @@
 public sealed class ReadySet.Devel.Window : Adw.Window {
 
     [GtkChild]
-    unowned Gtk.ListBox list_box;
+    unowned Gtk.ListBox list_box_context;
+    [GtkChild]
+    unowned Gtk.ListBox list_box_options;
 
     Context context;
 
     construct {
         context = ReadySet.Application.get_default ().context;
         context.data_changed.connect (() => {
-            list_box.remove_all ();
-            fill ();
+            list_box_context.remove_all ();
+            fill_context ();
         });
-        fill ();
+        fill_context ();
 
-        list_box.set_placeholder (new Gtk.Label ("No Context?"));
+        fill_options ();
+
+        list_box_context.set_placeholder (new Gtk.Label ("No Context?"));
     }
 
-    void fill () {
+    void fill_options () {
+        const string[] IGNORE_PROPERTY = {
+            "version",
+            "context",
+        };
+
+        var opt_handler = ReadySet.Application.get_default ().options_handler;
+        foreach (var prop in opt_handler.get_class ().list_properties ()) {
+            if (prop.name in IGNORE_PROPERTY) {
+                continue;
+            }
+
+            var val = Value (prop.value_type);
+            opt_handler.get_property (prop.name, ref val);
+
+            string subtitle;
+            switch (ContextType.from_gtype (prop.value_type)) {
+                case STRING:
+                    subtitle = val.get_string ();
+                    break;
+                case STRV:
+                    subtitle = string.joinv (",", (string[]) val.get_boxed ());
+                    break;
+                case BOOLEAN:
+                    subtitle = val.get_boolean ().to_string ();
+                    break;
+                case INT:
+                    subtitle = val.get_int ().to_string ();
+                    break;
+                case DOUBLE:
+                    subtitle = val.get_double ().to_string ();
+                    break;
+                default:
+                    assert_not_reached ();
+            }
+
+            var row = new Adw.ActionRow () {
+                title = prop.name,
+                subtitle = subtitle,
+                css_classes = { "property" }
+            };
+
+            list_box_options.append (row);
+        }
+    }
+
+    void fill_context () {
         foreach (var key in context.get_keys ()) {
             Adw.PreferencesRow row;
 
@@ -111,7 +161,7 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
                     assert_not_reached ();
             }
 
-            list_box.append (row);
+            list_box_context.append (row);
         }
     }
 
