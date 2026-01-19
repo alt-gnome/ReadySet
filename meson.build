@@ -28,10 +28,8 @@ pascal_name = 'ReadySet'
 app_id = 'org.altlinux.' + pascal_name
 
 if get_option('is_devel')
-  name_postfix = ' (Development)'
   app_id_dyn = app_id + '.Devel'
 else
-  name_postfix = ''
   app_id_dyn = app_id
 endif
 
@@ -68,6 +66,7 @@ subdir('data')
 subdir('po')
 subdir('lib')
 subdir('src')
+subdir('internal')
 subdir('plugins')
 
 gnome.post_install(

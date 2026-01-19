@@ -67,12 +67,41 @@ public sealed class ReadySet.Application: Adw.Application {
         options_handler = new OptionsHandler.from_options (options);
         context = new Context (options_handler.idle);
 
+        return -1;
+    }
+
+    protected override void startup () {
+        base.startup ();
+
+        try {
+            pkexec ({
+                Path.build_filename (Config.LIBEXECDIR, "ready-set-ruler"),
+                "--generate-rules",
+                "--restart-polkit",
+                "--user", options_handler.user
+            });
+        } catch (Error e) {
+            error ("Failed to generate rules: %s", e.message);
+        }
+
         init_plugins ();
 
         options_handler.fill_context (context);
         context.reload_window.connect (reload_window);
+    }
 
-        return -1;
+    protected override void shutdown () {
+        try {
+            pkexec ({
+                Path.build_filename (Config.LIBEXECDIR, "ready-set-ruler"),
+                "--clear-rules",
+                "--restart-polkit"
+            });
+        } catch (Error e) {
+            error ("Failed to clear generated rules: %s", e.message);
+        }
+
+        base.shutdown ();
     }
 
     Peas.Engine get_engine () {
