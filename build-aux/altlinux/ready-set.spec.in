@@ -48,8 +48,6 @@ BuildRequires: pkgconfig(systemd)
 Summary: Common files for %name frontends
 Group: Other
 
-BuildArch: noarch
-
 Obsoletes: %name-translation <= 0.3.0-alt1
 Provides: %name-translation = %EVR
 
