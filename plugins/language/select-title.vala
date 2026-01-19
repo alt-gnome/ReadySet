@@ -42,7 +42,7 @@ public class Language.SelectTitle : Adw.Bin {
 
         Intl.setlocale (LocaleCategory.MESSAGES, cur_locale);
 
-        Timeout.add_seconds (3, () => {
+        Timeout.add_seconds (5, () => {
             next ();
 
             return true;
