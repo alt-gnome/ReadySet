@@ -1,11 +1,17 @@
 using Gtk 4.0;
+using Adw 1;
 
-template $UserAvatarChooser: Popover {
-  Box {
-    orientation: vertical;
+template $UserAvatarChooser: Adw.Dialog {
+  title: _("Select Avatar");
+
+  Adw.ToolbarView {
+    top-bar-style: flat;
+
+    [top]
+    Adw.HeaderBar {}
 
     FlowBox flowbox {
-      margin-top: 12;
+      // margin-top: 12;
       margin-bottom: 12;
       margin-start: 12;
       margin-end: 12;

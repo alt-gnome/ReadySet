@@ -37,8 +37,6 @@ public class User.PageUsername : ReadySet.BasePage {
     unowned Adw.Avatar avatar_image;
     [GtkChild]
     unowned Gtk.Button remove_avatar_button;
-    [GtkChild]
-    unowned AvatarChooser avatar_chooser;
 
     bool username_manually_entered = false;
 
@@ -84,8 +82,6 @@ public class User.PageUsername : ReadySet.BasePage {
             "user-avatar-file",
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
-
-        avatar_chooser.set_callback (on_avatar_selected);
     }
 
     void update_is_ready () {
@@ -151,13 +147,20 @@ public class User.PageUsername : ReadySet.BasePage {
     }
 
     [GtkCallback]
+    void on_avatar_button_clicked () {
+        var chooser = new AvatarChooser ();
+        chooser.closed.connect (() => {
+            if (chooser.avatar_filename != null) {
+                remove_avatar_button.visible = true;
+                user_avatar_file = chooser.avatar_filename;
+            }
+        });
+        chooser.present (this);
+    }
+
+    [GtkCallback]
     void on_remove_avatar_button_clicked () {
         remove_avatar_button.visible = false;
         user_avatar_file = "";
-    }
-
-    void on_avatar_selected (owned string filename) {
-        remove_avatar_button.visible = true;
-        user_avatar_file = filename;
     }
 }

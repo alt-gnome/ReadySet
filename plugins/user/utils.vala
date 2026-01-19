@@ -20,8 +20,6 @@
 
 namespace User {
 
-    public delegate void SelectAvatarCallback (owned string filename);
-
     public struct Strength {
         public string hint;
         public StrengthLevel level;

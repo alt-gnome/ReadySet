@@ -19,14 +19,14 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/User/ui/avatar-chooser.ui")]
-public sealed class User.AvatarChooser : Gtk.Popover {
+public sealed class User.AvatarChooser : Adw.Dialog {
 
     [GtkChild]
     unowned Gtk.FlowBox flowbox;
 
     ListStore faces;
 
-    unowned SelectAvatarCallback callback;
+    public string? avatar_filename { get; private set; default = null; }
 
     construct {
         faces = new ListStore (typeof (File));
@@ -46,10 +46,6 @@ public sealed class User.AvatarChooser : Gtk.Popover {
                 added_faces = add_faces_from_dirs (faces, facesdirs, false);
             }
         }
-    }
-
-    public void set_callback (SelectAvatarCallback callback) {
-        this.callback = callback;
     }
 
     bool add_faces_from_dirs (ListStore faces, string[] facesdirs, bool add_all) {
@@ -123,8 +119,8 @@ public sealed class User.AvatarChooser : Gtk.Popover {
     void face_widget_activated (Gtk.FlowBoxChild child) {
         var image = (Adw.Avatar) child.get_child ();
 
-        callback (image.text);
+        avatar_filename = image.text;
 
-        popdown ();
+        close ();
     }
 }

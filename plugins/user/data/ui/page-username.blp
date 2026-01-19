@@ -25,7 +25,7 @@ template $UserPageUsername: $ReadySetBasePage {
       halign: end;
       valign: end;
 
-      MenuButton avatar_button {
+      Button avatar_button {
         styles [
           "circular",
         ]
@@ -33,7 +33,7 @@ template $UserPageUsername: $ReadySetBasePage {
         tooltip-text: _("Change Avatar");
         icon-name: "document-edit-symbolic";
 
-        popover: $UserAvatarChooser avatar_chooser {};
+        clicked => $on_avatar_button_clicked();
       }
     }
 
