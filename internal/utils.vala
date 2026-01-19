@@ -16,7 +16,21 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-namespace ReadySet {
+namespace ReadySetInternal {
+
+    public void pkexec (owned string[] cmd) throws Error {
+        var launcher = new SubprocessLauncher (NONE);
+        var argv = new Gee.ArrayList<string>.wrap ({ "pkexec" });
+
+        argv.add_all_array (cmd);
+
+        //  pkexec won't let us run the program if $SHELL isn't in /etc/shells,
+        //  so remove it from the environment.
+        launcher.unsetenv ("SHELL");
+        var process = launcher.spawnv (argv.to_array ().copy ());
+
+        process.wait_check ();
+    }
 
     const string RULE_PREFUX = "org.altlinux.ReadySet.Plugin.";
     const string REPLACE_USER_PATTERN = "--READY-SET-USER--";

@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public sealed class ReadySet.Application: Adw.Application {
+public sealed class ReadySetInternal.Application: GLib.Application {
 
     bool generate_rules_opt;
     bool clear_rules_opt;
