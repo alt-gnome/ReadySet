@@ -144,7 +144,7 @@ public sealed class ReadySet.Application: Adw.Application {
                     addin.context = context;
                     addin.load_css_for_display (Gdk.Display.get_default ());
                     if (!addin.get_data<bool> ("inited")) {
-                        addin.static_init ();
+                        addin.init_once ();
                         addin.set_data<bool> ("inited", true);
                     }
                     addin.init ();

@@ -54,7 +54,7 @@ public abstract class ReadySet.Addin : Peas.ExtensionBase {
     public abstract BasePage[] build_pages ();
 
     //  After context set action. Calls once. Calls before init
-    public virtual void static_init () {
+    public virtual void init_once () {
         return;
     }
 
