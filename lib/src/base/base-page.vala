@@ -17,27 +17,21 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Lib/ui/base-page.ui")]
-public class ReadySet.BasePage : Gtk.Box {
+public class ReadySet.BasePage : BaseBarePage {
 
     [GtkChild]
     unowned Adw.Bin title_bin;
     [GtkChild]
     unowned Adw.Bin child_bin;
     [GtkChild]
-    unowned Gtk.Stack loading_stack;
-    [GtkChild]
-    unowned Adw.Bin top_bin;
-    [GtkChild]
-    unowned Adw.Bin bottom_bin;
-    [GtkChild]
-    unowned Gtk.ScrolledWindow scrolled_window;
+    unowned Gtk.Box nbox;
 
     bool icon_widget_set = false;
 
     public Gtk.Widget? icon_widget {
         get {
             if (icon_widget_set) {
-                return icon_widget;
+                return nbox.get_first_child ();
             } else {
                 return null;
             }
@@ -47,44 +41,15 @@ public class ReadySet.BasePage : Gtk.Box {
                 return;
             }
 
-            loading_stack.remove (loading_stack.get_child_by_name ("default"));
-            loading_stack.add_named (value, "default");
-            loading_stack.visible_child_name = "default";
+            nbox.remove (nbox.get_first_child ());
+            nbox.prepend (value);
             icon_widget_set = true;
         }
     }
 
-    public Gtk.Widget top_widget {
-        get {
-            return top_bin.child;
-        }
-        set {
-            top_bin.child = value;
-        }
-    }
-
-    public Gtk.Widget bottom_widget {
-        get {
-            return bottom_bin.child;
-        }
-        set {
-            bottom_bin.child = value;
-        }
-    }
-
-    public string icon_name { get; set; default = "dialog-error-symbolic"; }
-
-    public string title_header { get; set; default = _("Unknown"); }
-
     public string title { get; set; default = _("Unknown page"); }
 
     public string description { get; set; default = _("This page says that your distribution has made a mistake."); }
-
-    public string start_apply_message { get; set; default = _("Applying changes…"); }
-
-    public bool passed { get; set; default = false; }
-
-    public bool is_ready { get; set; default = false; }
 
     public Gtk.Widget title_widget {
         get {
@@ -95,23 +60,23 @@ public class ReadySet.BasePage : Gtk.Box {
         }
     }
 
-    protected Gtk.ScrolledWindow root_scrolled_window {
+    bool content_widget_set = false;
+
+    public new Gtk.Widget? content {
         get {
-            return scrolled_window;
-        }
-    }
+            if (content_widget_set) {
+                return nbox.get_last_child ();
+            }
 
-    public bool scroll_on_top { get; private set; default = true; }
-
-    Adw.PropertyAnimationTarget scroll_anim_target;
-    Adw.TimedAnimation scroll_animation;
-
-    public Gtk.Widget content {
-        get {
-            return child_bin.child;
+            return null;
         }
         set {
-            child_bin.child = value;
+            if (content_widget_set) {
+                nbox.remove (nbox.get_last_child ());
+            }
+
+            nbox.append (value);
+            content_widget_set = true;
         }
     }
 
@@ -120,40 +85,6 @@ public class ReadySet.BasePage : Gtk.Box {
     }
 
     construct {
-        scrolled_window.vadjustment.notify["value"].connect (update_scroll_on_top);
-        scroll_anim_target = new Adw.PropertyAnimationTarget (scrolled_window.vadjustment, "value");
-    }
-
-    void update_scroll_on_top () {
-        scroll_on_top = scrolled_window.vadjustment.value <= 360.0;
-    }
-
-    public virtual bool allowed () {
-        return true;
-    }
-
-    public virtual async void apply () throws ApplyError {
-        return;
-    }
-
-    public void start_loading () {
-        loading_stack.visible_child_name = "loading";
-    }
-
-    public void stop_loading () {
-        loading_stack.visible_child_name = "default";
-    }
-
-    public void to_up () {
-        scrolled_window.set_kinetic_scrolling (false);
-
-        if (scroll_animation != null) {
-            scroll_animation.reset ();
-        }
-
-        scroll_animation = new Adw.TimedAnimation (scrolled_window, scrolled_window.vadjustment.value, 0.0, 100, scroll_anim_target);
-
-        scroll_animation.play ();
-        scrolled_window.set_kinetic_scrolling (true);
+        base.content = nbox;
     }
 }

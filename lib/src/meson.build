@@ -16,6 +16,7 @@ librs_vapi_sources = files(
 )
 
 librs_vala_sources = files(
+  'base/base-bare-page.vala',
   'base/base-page-desc.vala',
   'base/base-page.vala',
   'addin.vala',

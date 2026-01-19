@@ -25,6 +25,14 @@ namespace ReadySet {
         public string description;
     }
 
+    public sealed class ProgressData {
+
+        //  Value from 0.0 to 1.0
+        public double value { get; set; }
+
+        public string message { get; set; }
+    }
+
     public errordomain ApplyError {
         BASE,
         NO_PERMISSION;

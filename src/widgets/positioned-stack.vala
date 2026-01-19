@@ -20,7 +20,7 @@
 
 public class ReadySet.PositionedStack : Adw.Bin {
 
-    public delegate Gtk.Widget CreateFunc (BasePage page, int pos);
+    public delegate Gtk.Widget CreateFunc (BaseBarePage page, int pos);
 
     public int position {
         get {
@@ -141,11 +141,11 @@ public class ReadySet.PositionedStack : Adw.Bin {
         light_clear ();
 
         for (int i = 0; i < model.n_items; i++) {
-            var page = (BasePage) model.get_item (i);
+            var page = (BaseBarePage) model.get_item (i);
 
             add_page (
                 create_func (page, i),
-                page.title
+                page.title_header
             );
         }
 

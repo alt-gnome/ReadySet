@@ -19,18 +19,6 @@
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Language/ui/page.ui")]
 public sealed class Language.Page : ReadySet.BasePage {
 
-    static double saved_scroll_position = 0.0;
-
-    construct {
-        root_scrolled_window.vadjustment.value_changed.connect (() => {
-            saved_scroll_position = root_scrolled_window.vadjustment.value;
-        });
-
-        Idle.add_once (() => {
-            root_scrolled_window.vadjustment.value = saved_scroll_position;
-        });
-    }
-
     public override bool allowed () {
         try {
             return new Polkit.Permission.sync ("org.freedesktop.locale1.set-locale", null, null).allowed;
@@ -39,7 +27,7 @@ public sealed class Language.Page : ReadySet.BasePage {
         }
     }
 
-    public override async void apply () throws ReadySet.ApplyError {
+    public override async void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
         try {
             var proxy = yield get_locale_proxy ();
 

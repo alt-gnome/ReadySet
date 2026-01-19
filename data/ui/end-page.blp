@@ -1,12 +1,12 @@
 using Gtk 4.0;
 
-template $ReadySetEndPage: $ReadySetBasePage {
+template $ReadySetEndPage: $ReadySetBaseBarePage {
   title-header: _("Finishing");
-  title: _("Ready Set…");
+  // title: _("Ready Set…");
   icon_name: "org.altlinux.ReadySet-symbolic";
-  description: _("The system is ready for use.");
+  // description: _("The system is ready for use.");
 
-  title-widget: Stack stack {
+  content: Stack stack {
     transition-duration: 300;
     transition-type: crossfade;
 
@@ -22,8 +22,8 @@ template $ReadySetEndPage: $ReadySetBasePage {
       name: "ready";
 
       child: $ReadySetBasePageDesc {
-        title: bind template.title;
-        description: bind template.description;
+        // title: bind template.title;
+        // description: bind template.description;
       };
     }
 

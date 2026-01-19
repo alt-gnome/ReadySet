@@ -29,7 +29,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
     Gee.HashMap<string, Addin> plugins = new Gee.HashMap<string, Addin> ();
 
-    public Gee.ArrayList<BasePage> loaded_pages { get; default = new Gee.ArrayList<BasePage> (); }
+    public Gee.ArrayList<BaseBarePage> loaded_pages { get; default = new Gee.ArrayList<BaseBarePage> (); }
     public Gee.ArrayList<Addin> loaded_addins { get; default = new Gee.ArrayList<Addin> (); }
 
     public Application () {

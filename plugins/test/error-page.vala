@@ -23,7 +23,7 @@ public sealed class Test.ErrorPage : ReadySet.BasePage {
         is_ready = true;
     }
 
-    public override async void apply () throws ReadySet.ApplyError {
+    public override async void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
         if (Addin.get_instance ().context.get_boolean ("test-throw-error")) {
             throw ReadySet.ApplyError.build_error ("Test error", "Test error has been thrown");
         }

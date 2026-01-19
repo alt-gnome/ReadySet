@@ -17,7 +17,7 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/ui/end-page.ui")]
-public sealed class ReadySet.EndPage : BasePage {
+public sealed class ReadySet.EndPage : BaseBarePage {
 
     [GtkChild]
     unowned Gtk.Stack stack;
@@ -29,7 +29,7 @@ public sealed class ReadySet.EndPage : BasePage {
     public string loading_status { get; set; }
 
     construct {
-        start_loading ();
+        //  start_loading ();
     }
 
     public async void start_action () {
@@ -50,8 +50,9 @@ public sealed class ReadySet.EndPage : BasePage {
                     yield;
 
                 } else {
-                    loading_status = callback_page.start_apply_message;
-                    yield callback_page.apply ();
+                    //  loading_status = callback_page.start_apply_message;
+                    var progress_data = new ProgressData ();
+                    yield callback_page.apply (progress_data);
                 }
             }
 
@@ -72,7 +73,7 @@ public sealed class ReadySet.EndPage : BasePage {
                 }
             }
 
-            stop_loading ();
+            //  stop_loading ();
             stack.visible_child_name = "ready";
             is_ready = true;
 
@@ -84,14 +85,10 @@ public sealed class ReadySet.EndPage : BasePage {
 
             error_description = _("Error message: %s").printf (error_description);
 
-            stop_loading ();
+            //  stop_loading ();
             icon_name = "dialog-error-symbolic";
             stack.visible_child_name = "error";
             is_ready = false;
         }
-    }
-
-    public override async void apply () throws ApplyError {
-        return;
     }
 }

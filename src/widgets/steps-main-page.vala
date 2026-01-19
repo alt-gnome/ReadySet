@@ -48,11 +48,11 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     public bool can_up { get; set; }
 
-    BasePage last_current_page;
+    BaseBarePage last_current_page;
 
-    public BasePage current_page {
+    public BaseBarePage current_page {
         get {
-            return (BasePage) model.get_selected_item ();
+            return (BaseBarePage) model.get_selected_item ();
         }
     }
 
@@ -84,7 +84,7 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     public Gtk.SingleSelection model { get; set; }
 
     construct {
-        model = new Gtk.SingleSelection (new ListStore (typeof (BasePage)));
+        model = new Gtk.SingleSelection (new ListStore (typeof (BaseBarePage)));
 
         pages_indicator.model = model;
         positioned_stack.bind_model (model, (page, pos) => {
@@ -145,7 +145,7 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         can_cancel = model.get_selected () > 0 && !dead_end;
     }
 
-    public void add_page (BasePage page) {
+    public void add_page (BaseBarePage page) {
         page.hexpand = true;
         ((ListStore) model.get_model ()).append (page);
     }

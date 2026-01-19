@@ -44,7 +44,7 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
 
     void update_model () {
         menu_list_box.bind_model (model, (item) => {
-            var page = (BasePage) item;
+            var page = (BaseBarePage) item;
 
             var row = new StepRow (
                 page.title_header,

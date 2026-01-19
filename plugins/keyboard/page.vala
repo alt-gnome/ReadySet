@@ -45,7 +45,7 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
         }
     }
 
-    public override async void apply () throws ReadySet.ApplyError {
+    public override async void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
         try {
             var proxy = yield get_locale_proxy ();
 

@@ -84,7 +84,7 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
         light_clear ();
 
         for (int i = 0; i < model.n_items; i++) {
-            var page = (BasePage) model.get_item (i);
+            var page = (BaseBarePage) model.get_item (i);
 
             var img = new Gtk.Image.from_icon_name (page.icon_name) {
                 valign = Gtk.Align.CENTER
