@@ -73,15 +73,17 @@ public sealed class ReadySet.Application: Adw.Application {
     protected override void startup () {
         base.startup ();
 
-        try {
-            pkexec ({
-                Path.build_filename (Config.LIBEXECDIR, "ready-set-ruler"),
-                "--generate-rules",
-                "--restart-polkit",
-                "--user", options_handler.user
-            });
-        } catch (Error e) {
-            error ("Failed to generate rules: %s", e.message);
+        if (!options_handler.idle) {
+            try {
+                pkexec ({
+                    Path.build_filename (Config.LIBEXECDIR, "ready-set-ruler"),
+                    "--generate-rules",
+                    "--restart-polkit",
+                    "--user", options_handler.user
+                });
+            } catch (Error e) {
+                error ("Failed to generate rules: %s", e.message);
+            }
         }
 
         init_plugins ();
@@ -91,14 +93,16 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     protected override void shutdown () {
-        try {
-            pkexec ({
-                Path.build_filename (Config.LIBEXECDIR, "ready-set-ruler"),
-                "--clear-rules",
-                "--restart-polkit"
-            });
-        } catch (Error e) {
-            error ("Failed to clear generated rules: %s", e.message);
+        if (!options_handler.idle) {
+            try {
+                pkexec ({
+                    Path.build_filename (Config.LIBEXECDIR, "ready-set-ruler"),
+                    "--clear-rules",
+                    "--restart-polkit"
+                });
+            } catch (Error e) {
+                error ("Failed to clear generated rules: %s", e.message);
+            }
         }
 
         base.shutdown ();
