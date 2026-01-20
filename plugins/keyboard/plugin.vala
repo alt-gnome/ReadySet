@@ -22,6 +22,16 @@ public class Keyboard.Addin : ReadySet.Addin {
 
     static Addin instance;
 
+    bool _allowed;
+    public override bool allowed {
+        get {
+            return _allowed;
+        }
+        protected set {
+            _allowed = value;
+        }
+    }
+
     protected override string? resource_base_path {
         get {
             return "/org/altlinux/ReadySet/Plugin/Keyboard/";
@@ -34,6 +44,12 @@ public class Keyboard.Addin : ReadySet.Addin {
 
     construct {
         instance = this;
+
+        try {
+            allowed = new Polkit.Permission.sync ("org.freedesktop.locale1.set-keyboard", null, null).allowed;
+        } catch (Error e) {
+            error (e.message);
+        }
     }
 
     public override ReadySet.BasePage[] build_pages () {

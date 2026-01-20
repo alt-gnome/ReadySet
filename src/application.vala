@@ -32,6 +32,8 @@ public sealed class ReadySet.Application: Adw.Application {
     public Gee.ArrayList<BaseBarePage> loaded_pages { get; default = new Gee.ArrayList<BaseBarePage> (); }
     public Gee.ArrayList<Addin> loaded_addins { get; default = new Gee.ArrayList<Addin> (); }
 
+    Gee.ArrayList<string> inited_plugins = new Gee.ArrayList<string> ();
+
     public Application () {
         Object (
             application_id: Config.APP_ID_DYN,
@@ -148,10 +150,8 @@ public sealed class ReadySet.Application: Adw.Application {
         for (int i = 0; i < all_steps.length; i++) {
             if (plugins[all_steps[i]] != null) {
                 var addin = plugins[all_steps[i]];
-                addin.set_data<bool> ("allowed", addin.allowed ());
-                addin.set_data<bool> ("inited", false);
 
-                if (addin.get_data<bool> ("allowed")) {
+                if (addin.allowed) {
                     context.register_vars (addin.get_context_vars ());
                 }
             }
@@ -171,19 +171,21 @@ public sealed class ReadySet.Application: Adw.Application {
                 print ("  broken step (%s)\n", all_steps[i]);
             } else {
                 var addin = plugins[all_steps[i]];
-                if (addin.get_data<bool> ("allowed")) {
+                if (addin.allowed) {
                     addin.set_data<string> (STEP_ID_LABEL, all_steps[i]);
                     loaded_addins.add (addin);
                     addin.context = context;
                     addin.load_css_for_display (Gdk.Display.get_default ());
-                    if (!addin.get_data<bool> ("inited")) {
+                    if (!(all_steps[i] in inited_plugins)) {
                         addin.init_once ();
-                        addin.set_data<bool> ("inited", true);
+                        inited_plugins.add (all_steps[i]);
                     }
                     addin.init ();
                     foreach (var page in addin.build_pages ()) {
-                        page.set_data<string> (STEP_ID_LABEL, all_steps[i]);
-                        loaded_pages.add (page);
+                        if (page.allowed) {
+                            page.set_data<string> (STEP_ID_LABEL, all_steps[i]);
+                            loaded_pages.add (page);
+                        }
                     }
                     print ("  %s\n", all_steps[i]);
                 }

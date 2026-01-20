@@ -22,6 +22,16 @@ public class Language.Addin : ReadySet.Addin {
 
     static Addin instance;
 
+    bool _allowed;
+    public override bool allowed {
+        get {
+            return _allowed;
+        }
+        protected set {
+            _allowed = value;
+        }
+    }
+
     public string current_locale {
         owned get {
             return context.get_string ("language-locale");
@@ -75,6 +85,12 @@ public class Language.Addin : ReadySet.Addin {
 
     construct {
         instance = this;
+
+        try {
+            allowed = new Polkit.Permission.sync ("org.freedesktop.locale1.set-locale", null, null).allowed;
+        } catch (Error e) {
+            error (e.message);
+        }
     }
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {

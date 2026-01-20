@@ -28,8 +28,6 @@ public sealed class ReadySet.EndPage : BaseBarePage {
     [GtkChild]
     unowned Gtk.ProgressBar progress_bar;
 
-    public string loading_status { get; set; }
-
     ProgressData progress_data = new ProgressData ();
 
     public async void start_action () {
@@ -42,41 +40,39 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         progress_data.notify["value"].connect (update_progress_visibility);
         update_progress_visibility ();
 
+        var app = (ReadySet.Application) GLib.Application.get_default ();
+        var applyable_arr = new Gee.ArrayList<Applyable> ();
+
+        applyable_arr.add_all (app.loaded_pages);
+        applyable_arr.add_all (app.loaded_addins);
+
         try {
-            var app = (ReadySet.Application) GLib.Application.get_default ();
-            foreach (var callback_page in app.loaded_pages) {
-                if (callback_page.get_data<string> (STEP_ID_LABEL) in app.options_handler.steps_no_apply) {
+            foreach (var applyable in applyable_arr) {
+                if (applyable.get_data<string> (STEP_ID_LABEL) in app.options_handler.steps_no_apply) {
                     continue;
                 }
+                progress_data.value = 0.0;
 
                 if (context.idle) {
-                    Timeout.add_seconds_once (1, () => {
-                        progress_data.value += 0.1;
+                    Timeout.add_seconds (1, () => {
+                        progress_data.value += 0.2;
                         progress_data.message = _("Doing some stuff…");
-                        Idle.add (start_action.callback);
+
+                        if (progress_data.value >= 1.0) {
+                            Idle.add (start_action.callback);
+                            return false;
+                        }
+
+                        return true;
                     });
                     yield;
 
-                } else {
-                    yield callback_page.apply (progress_data);
-                }
-            }
-
-            foreach (var callback_addin in app.loaded_addins) {
-                if (callback_addin.get_data<string> (STEP_ID_LABEL) in app.options_handler.steps_no_apply) {
-                    continue;
-                }
-
-                if (context.idle) {
-                    Timeout.add_seconds_once (1, () => {
-                        Idle.add (start_action.callback);
-                    });
-                    yield;
+                    break;
 
                 } else {
-                    loading_status = callback_addin.start_apply_message;
-                    yield callback_addin.apply ();
+                    yield applyable.apply (progress_data);
                 }
+                progress_data.value = 1.0;
             }
 
             stack.visible_child_name = "ready";

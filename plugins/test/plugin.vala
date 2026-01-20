@@ -43,7 +43,7 @@ public class Test.Addin : ReadySet.Addin {
         return instance;
     }
 
-    public override async void apply () throws ReadySet.ApplyError {
+    public async void apply () throws ReadySet.ApplyError {
         message ("Tests DONE");
     }
 

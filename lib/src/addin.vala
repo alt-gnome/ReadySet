@@ -18,13 +18,22 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public abstract class ReadySet.Addin : Peas.ExtensionBase {
+public abstract class ReadySet.Addin : Peas.ExtensionBase, Applyable, Allowable {
 
     public string start_apply_message { get; set; default = _("Applying changes…"); }
 
     protected virtual string? resource_base_path {
         get {
             return null;
+        }
+    }
+
+    public virtual bool allowed {
+        get {
+            return true;
+        }
+        protected set {
+            return;
         }
     }
 
@@ -67,13 +76,5 @@ public abstract class ReadySet.Addin : Peas.ExtensionBase {
     public virtual HashTable<string, ContextVarInfo> get_context_vars () {
         var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
         return vars;
-    }
-
-    public virtual bool allowed () {
-        return true;
-    }
-
-    public virtual async void apply () throws ApplyError {
-        return;
     }
 }

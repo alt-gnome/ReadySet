@@ -18,8 +18,12 @@ template $ReadySetEndPage: $ReadySetBaseBarePage {
         };
         title: _("Setting up the system…");
 
-        ProgressBar progress_bar {
-          visible: false;
+        Adw.Clamp {
+          maximum-size: 360;
+
+          ProgressBar progress_bar {
+            visible: false;
+          }
         }
       };
     }
