@@ -46,6 +46,12 @@ public class Test.Addin : ReadySet.Addin {
     public override async void apply () throws ReadySet.ApplyError {
         message ("Tests DONE");
     }
+
+    public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
+        var vars = base.get_context_vars ();
+        vars["test-throw-error"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        return vars;
+    }
 }
 
 public void peas_register_types (TypeModule module) {

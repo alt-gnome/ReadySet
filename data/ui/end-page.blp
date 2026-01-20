@@ -16,7 +16,7 @@ template $ReadySetEndPage: $ReadySetBaseBarePage {
         paintable: Adw.SpinnerPaintable {
           widget: template;
         };
-        title: _("Applying changes…");
+        title: _("Setting up the system…");
 
         ProgressBar progress_bar {
           visible: false;
@@ -36,8 +36,9 @@ template $ReadySetEndPage: $ReadySetBaseBarePage {
 
     StackPage {
       name: "error";
-      icon-name: "dialog-error-symbolic";
-      child: Adw.StatusPage error_status_page {};
+      child: Adw.StatusPage error_status_page {
+        icon-name: "dialog-error-symbolic";
+      };
     }
   };
 }

@@ -88,7 +88,6 @@ public sealed class ReadySet.EndPage : BaseBarePage {
             error_status_page.title = apply_error_data.message;
             error_status_page.description = _("Error message: %s").printf (apply_error_data.description);
 
-            icon_name = "dialog-error-symbolic";
             stack.visible_child_name = "error";
             is_ready = false;
         }
