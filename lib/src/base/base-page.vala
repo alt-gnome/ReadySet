@@ -22,8 +22,6 @@ public class ReadySet.BasePage : BaseBarePage {
     [GtkChild]
     unowned Adw.Bin title_bin;
     [GtkChild]
-    unowned Adw.Bin child_bin;
-    [GtkChild]
     unowned Gtk.Box nbox;
 
     bool icon_widget_set = false;
