@@ -22,6 +22,8 @@ public class User.Addin : ReadySet.Addin {
 
     static Addin instance;
 
+    public override bool accessible { get; set; }
+
     protected override string? resource_base_path {
         get {
             return "/org/altlinux/ReadySet/Plugin/User/";
@@ -79,6 +81,8 @@ public class User.Addin : ReadySet.Addin {
         vars["passwd-conf-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["user-avatar-directories"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV);
         vars["hide-autologin"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        vars["user-enabled"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        vars["user-enabled"].initial_value = true;
 
         //  Storage
         vars["user-username"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
@@ -91,6 +95,17 @@ public class User.Addin : ReadySet.Addin {
 
     internal static Addin get_instance () {
         return instance;
+    }
+
+    public override void init_once () {
+        base.init_once ();
+
+        context.bind_context_to_property (
+            "user-enabled",
+            this,
+            "accessible",
+            SYNC_CREATE
+        );
     }
 }
 
