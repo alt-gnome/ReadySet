@@ -1,4 +1,5 @@
 plugin_test_blueprints = files(
+  'ui/allow-page.blp',
   'ui/error-page.blp',
   'ui/page.blp',
 )

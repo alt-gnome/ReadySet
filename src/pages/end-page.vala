@@ -41,16 +41,24 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         update_progress_visibility ();
 
         var app = (ReadySet.Application) GLib.Application.get_default ();
-        var applyable_arr = new Gee.ArrayList<Applyable> ();
+ 
+        Gee.ArrayList<Applyable> applyable_arr = new Gee.ArrayList<Applyable> ();
 
-        applyable_arr.add_all (app.loaded_pages);
-        applyable_arr.add_all (app.loaded_addins);
+        for (int i = 0; i < app.model.get_n_items (); i++) {
+            var page_info = (PageInfo) app.model.get_item (i);
+
+            if (!page_info.apply_plugin) {
+                continue;
+            }
+
+            if (!(page_info.plugin in applyable_arr)) {
+                applyable_arr.add (page_info.plugin);
+            }
+            applyable_arr.add (page_info.page);
+        }
 
         try {
             foreach (var applyable in applyable_arr) {
-                if (applyable.get_data<string> (STEP_ID_LABEL) in app.options_handler.steps_no_apply) {
-                    continue;
-                }
                 progress_data.value = 0.0;
 
                 if (context.idle) {
@@ -70,7 +78,9 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                     break;
 
                 } else {
-                    yield applyable.apply (progress_data);
+                    if (applyable.accessible) {
+                        yield applyable.apply (progress_data);
+                    }
                 }
                 progress_data.value = 1.0;
             }

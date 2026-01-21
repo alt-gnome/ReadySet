@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public abstract class ReadySet.Addin : Peas.ExtensionBase, Applyable, Allowable {
+public abstract class ReadySet.Addin : Peas.ExtensionBase, Applyable {
 
     public string start_apply_message { get; set; default = _("Applying changes…"); }
 
@@ -28,7 +28,7 @@ public abstract class ReadySet.Addin : Peas.ExtensionBase, Applyable, Allowable 
         }
     }
 
-    public virtual bool allowed {
+    public virtual bool accessible {
         get {
             return true;
         }
@@ -60,15 +60,10 @@ public abstract class ReadySet.Addin : Peas.ExtensionBase, Applyable, Allowable 
         }
     }
 
-    public abstract BasePage[] build_pages ();
+    public abstract BaseBarePage[] build_pages ();
 
     //  After context set action. Calls once. Calls before init
     public virtual void init_once () {
-        return;
-    }
-
-    //  After context set action. Calls on every UI rebuild
-    public virtual void init () {
         return;
     }
 

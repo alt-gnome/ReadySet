@@ -32,10 +32,11 @@ public class Test.Addin : ReadySet.Addin {
         instance = this;
     }
 
-    public override ReadySet.BasePage[] build_pages () {
+    public override ReadySet.BaseBarePage[] build_pages () {
         return {
             new Test.Page (),
-            new Test.ErrorPage ()
+            new Test.ErrorPage (),
+            new Test.AllowPage ()
         };
     }
 
@@ -49,6 +50,7 @@ public class Test.Addin : ReadySet.Addin {
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
+        vars["test-accessible"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
         vars["test-throw-error"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
         return vars;
     }

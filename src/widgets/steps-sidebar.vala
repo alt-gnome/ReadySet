@@ -26,7 +26,7 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
 
     public bool show_close_button { get; set; }
 
-    public Gtk.SingleSelection model { get; set; }
+    public PagesModel model { get; set; }
 
     public signal void request_close ();
 
@@ -44,7 +44,7 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
 
     void update_model () {
         menu_list_box.bind_model (model, (item) => {
-            var page = (BaseBarePage) item;
+            var page = (PageInfo) item;
 
             var row = new StepRow (
                 page.title_header,

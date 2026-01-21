@@ -33,13 +33,6 @@ public sealed class ReadySet.WindowContent : Adw.BreakpointBin {
             "show-sidebar",
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
-
-        var app = ReadySet.Application.get_default ();
-        app.init_pages ();
-
-        foreach (var page in app.loaded_pages) {
-            steps_main_page.add_page (page);
-        }
     }
 
     [GtkCallback]

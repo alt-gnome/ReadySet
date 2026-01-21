@@ -22,13 +22,13 @@ public class Keyboard.Addin : ReadySet.Addin {
 
     static Addin instance;
 
-    bool _allowed;
-    public override bool allowed {
+    bool _accessible;
+    public override bool accessible {
         get {
-            return _allowed;
+            return _accessible;
         }
         protected set {
-            _allowed = value;
+            _accessible = value;
         }
     }
 
@@ -46,13 +46,13 @@ public class Keyboard.Addin : ReadySet.Addin {
         instance = this;
 
         try {
-            allowed = new Polkit.Permission.sync ("org.freedesktop.locale1.set-keyboard", null, null).allowed;
+            accessible = new Polkit.Permission.sync ("org.freedesktop.locale1.set-keyboard", null, null).allowed;
         } catch (Error e) {
             error (e.message);
         }
     }
 
-    public override ReadySet.BasePage[] build_pages () {
+    public override ReadySet.BaseBarePage[] build_pages () {
         return { new Keyboard.Page () };
     }
 

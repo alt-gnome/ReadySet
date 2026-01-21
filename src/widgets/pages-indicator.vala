@@ -29,7 +29,7 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
     const int DEFAULT_PIXEL_SIZE = 13;
     const int CURRENT_PIXEL_SIZE = 16;
 
-    public Gtk.SingleSelection model {
+    public PagesModel model {
         get {
             return positioned_stack.model;
         }
@@ -40,7 +40,7 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
             }
 
             if (value != null) {
-                positioned_stack.bind_model (value, (page) => {
+                positioned_stack.bind_manager (value, (page) => {
                     return new Gtk.Label (page.title_header) {
                         css_classes = { "heading" }
                     };
@@ -83,8 +83,8 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
     void update () {
         light_clear ();
 
-        for (int i = 0; i < model.n_items; i++) {
-            var page = (BaseBarePage) model.get_item (i);
+        for (int i = 0; i < model.get_n_items (); i++) {
+            var page = (PageInfo) model.get_item (i);
 
             var img = new Gtk.Image.from_icon_name (page.icon_name) {
                 valign = Gtk.Align.CENTER
@@ -94,6 +94,8 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
             indicators.add (img);
             icons_box.append (img);
         }
+
+        on_selection_changed ();
     }
 
     void light_clear () {

@@ -17,7 +17,7 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Lib/ui/base-bare-page.ui")]
-public class ReadySet.BaseBarePage : Adw.Bin, Applyable, Allowable {
+public class ReadySet.BaseBarePage : Adw.Bin, Applyable {
 
     [GtkChild]
     unowned Adw.Bin content_bin;
@@ -28,7 +28,7 @@ public class ReadySet.BaseBarePage : Adw.Bin, Applyable, Allowable {
     [GtkChild]
     unowned Gtk.ScrolledWindow scrolled_window;
 
-    public virtual bool allowed {
+    public virtual bool accessible {
         get {
             return true;
         }

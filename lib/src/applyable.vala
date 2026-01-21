@@ -22,4 +22,6 @@ public interface ReadySet.Applyable : Object {
     public virtual async void apply (ProgressData progress_data) throws ReadySet.ApplyError {
         return;
     }
+
+    public abstract bool accessible { get; protected set; }
 }

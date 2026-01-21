@@ -36,8 +36,6 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     Devel.Window devel_window;
 
-    static uint saved_last_position = 0;
-
     public string continue_state { get; set; default = "continue"; }
 
     public bool show_steps_list { get; set; }
@@ -48,11 +46,13 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     public bool can_up { get; set; }
 
-    BaseBarePage last_current_page;
+    static Gee.ArrayList<string> passed_pages = new Gee.ArrayList<string> ();
 
-    public BaseBarePage current_page {
+    PageInfo last_current_page;
+
+    public PageInfo current_page {
         get {
-            return (BaseBarePage) model.get_selected_item ();
+            return model.get_selected_item ();
         }
     }
 
@@ -81,18 +81,18 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     public bool can_cancel { get; set; }
 
-    public Gtk.SingleSelection model { get; set; }
+    public PagesModel model { get; construct; }
 
     construct {
-        model = new Gtk.SingleSelection (new ListStore (typeof (BaseBarePage)));
+        model = Application.get_default ().model;
 
         pages_indicator.model = model;
-        positioned_stack.bind_model (model, (page, pos) => {
-            if (pos <= saved_last_position) {
+        positioned_stack.bind_manager (model, (page) => {
+            if (page.id in passed_pages) {
                 page.passed = true;
             }
 
-            return page;
+            return page.page;
         });
 
         model.selection_changed.connect (selection_changed);
@@ -108,7 +108,8 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         var n_items = model.get_n_items ();
 
         if (position == n_items - 1) {
-            var end_page = model.get_item (n_items - 1) as EndPage;
+            var page_info = (PageInfo) model.get_item (n_items - 1);
+            var end_page = page_info.page as EndPage;
             if (end_page != null) {
                 show_steps_list = false;
                 dead_end = true;
@@ -120,10 +121,6 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         update_buttons ();
         update_scroll ();
 
-        if (saved_last_position < position) {
-            saved_last_position = position;
-        }
-
         if (last_current_page != null) {
             last_current_page.notify["is-ready"].connect (update_buttons);
         }
@@ -132,22 +129,18 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         last_current_page.notify["is-ready"].connect (update_buttons);
         last_current_page.notify["scroll-on-top"].connect (update_scroll);
 
-        current_page.passed = true;
+        passed_pages.add (last_current_page.id);
+        last_current_page.passed = true;
     }
 
     void update_scroll () {
-        can_up = !current_page.scroll_on_top;
+        can_up = !current_page.page.scroll_on_top;
     }
 
     void update_buttons () {
         is_ready_to_continue = current_is_ready_to_continue;
         is_ready_to_finish = model.get_selected () == model.get_n_items () - 1;
         can_cancel = model.get_selected () > 0 && !dead_end;
-    }
-
-    public void add_page (BaseBarePage page) {
-        page.hexpand = true;
-        ((ListStore) model.get_model ()).append (page);
     }
 
     [GtkCallback]
@@ -165,7 +158,7 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     [GtkCallback]
     void up_clicked () {
-        current_page.to_up ();
+        current_page.page.to_up ();
     }
 
     [GtkCallback]

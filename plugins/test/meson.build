@@ -3,6 +3,7 @@ plugin_test_deps = [
 ]
 
 plugin_test_sources = files(
+  'allow-page.vala',
   'error-page.vala',
   'page.vala',
   'plugin.vala',
