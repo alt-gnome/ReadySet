@@ -116,6 +116,8 @@ public class ReadySet.ContextVarInfo : Object {
 
     public ContextType value_type { get; construct; }
 
+    public Value? initial_value { get; set; default = null; }
+
     public unowned ContextGetterFunc? getter_func = null;
 
     public unowned ContextSetterFunc? setter_func = null;
@@ -302,6 +304,9 @@ public class ReadySet.Context : Object {
             }
             if (info.setter_func != null) {
                 data[key].set_setter (info.setter_func);
+            }
+            if (info.initial_value != null) {
+                set_value (key, info.initial_value);
             }
             data[key].notify["real-value"].connect (() => {
                 data_changed (key);
