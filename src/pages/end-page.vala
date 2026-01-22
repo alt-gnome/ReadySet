@@ -42,7 +42,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         update_progress_visibility ();
 
         var app = (ReadySet.Application) GLib.Application.get_default ();
- 
+
         Gee.ArrayList<Applyable> applyable_arr = new Gee.ArrayList<Applyable> ();
 
         for (int i = 0; i < app.model.get_n_items (); i++) {
