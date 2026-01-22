@@ -33,6 +33,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
     public async void start_action () {
         stack.visible_child_name = "applying";
         var context = ReadySet.Application.get_default ().context;
+        context.locked = true;
 
         progress_data.bind_property ("message", apply_status_page, "description");
         progress_data.bind_property ("value", progress_bar, "fraction");
