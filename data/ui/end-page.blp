@@ -16,6 +16,7 @@ template $ReadySetEndPage: $ReadySetBaseBarePage {
         paintable: Adw.SpinnerPaintable {
           widget: template;
         };
+
         title: _("Setting up the system…");
 
         Adw.Clamp {
@@ -40,6 +41,7 @@ template $ReadySetEndPage: $ReadySetBaseBarePage {
 
     StackPage {
       name: "error";
+
       child: Adw.StatusPage error_status_page {
         icon-name: "dialog-error-symbolic";
       };
