@@ -46,6 +46,7 @@ jobs:
         run: |
           apt-get update
           apt-get install -y \
+            'gir(Adw)=1' \
             'gir(Gtk)=4.0' \
             'gir(Peas)=2' \
             'pkgconfig(accountsservice)' \
