@@ -20,14 +20,14 @@ public sealed class ReadySetInternal.Application: GLib.Application {
 
     bool generate_rules_opt;
     bool clear_rules_opt;
-    bool restart_polkit;
+    bool reload_polkit;
     string user_opt;
 
     internal const OptionEntry[] OPTION_ENTRIES = {
         { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
         { "generate-rules", '\0', 0, OptionArg.NONE, null, N_("Generate polkit rules"), null },
         { "clear-rules", '\0', 0, OptionArg.NONE, null, N_("Clear generated rules"), null },
-        { "restart-polkit", '\0', 0, OptionArg.NONE, null, N_("Restart polkit after actions"), null },
+        { "restart-polkit", '\0', 0, OptionArg.NONE, null, N_("Reload polkit after actions"), null },
         { "user", 'u', 0, OptionArg.STRING, null, N_("User for which will be generated plugin polkit rules"), "STEPS_NO_APPLY" },
         { null }
     };
@@ -61,7 +61,7 @@ public sealed class ReadySetInternal.Application: GLib.Application {
         }
 
         if (options.contains ("restart-polkit")) {
-            restart_polkit = true;
+            reload_polkit = true;
         }
 
         return -1;
@@ -88,11 +88,11 @@ public sealed class ReadySetInternal.Application: GLib.Application {
             clear_rules ();
         }
 
-        if (restart_polkit) {
+        if (reload_polkit) {
             try {
-                pkexec ({ "systemctl", "restart", "polkit" });
+                pkexec ({ "systemctl", "reload", "polkit" });
             } catch (Error e) {
-                error ("Failed to restart polkit: %s", e.message);
+                error ("Failed to reload polkit: %s", e.message);
             }
         }
     }
