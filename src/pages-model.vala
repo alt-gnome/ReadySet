@@ -49,7 +49,6 @@ public sealed class ReadySet.PageInfo : Object {
     construct {
         string[] props = {
             "is-ready",
-            "passed",
             "title-header",
             "icon-name"
         };
@@ -133,6 +132,8 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
         real_model.model = new Gtk.FilterListModel (
             store, filter
         );
+
+        selection_changed (0, 1);
     }
 
     public unowned PageInfo? get_selected_item () {
@@ -157,9 +158,8 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
 
     public bool select_item (uint position, bool unselect_rest) {
         var res = real_model.select_item (position, true);
-        if (get_n_items () > 0) {
+        if (get_n_items () > 0 && get_selected () != position) {
             selection_changed (position, 1);
-        } else {
         }
         return res;
     }

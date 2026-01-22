@@ -59,8 +59,6 @@ public class ReadySet.BaseBarePage : Adw.Bin, Applyable {
 
     public string title_header { get; set; default = _("Unknown"); }
 
-    public bool passed { get; set; default = false; }
-
     public bool is_ready { get; set; default = false; }
 
     public bool scroll_on_top { get; private set; default = true; }

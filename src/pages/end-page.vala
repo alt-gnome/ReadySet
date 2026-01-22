@@ -46,6 +46,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
         for (int i = 0; i < app.model.get_n_items (); i++) {
             var page_info = (PageInfo) app.model.get_item (i);
+            message (page_info.title_header);
 
             if (!page_info.apply_plugin) {
                 continue;
@@ -78,9 +79,8 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                     break;
 
                 } else {
-                    if (applyable.accessible) {
-                        yield applyable.apply (progress_data);
-                    }
+                    yield applyable.apply (progress_data);
+
                 }
                 progress_data.value = 1.0;
             }

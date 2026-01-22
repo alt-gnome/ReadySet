@@ -50,18 +50,6 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     PageInfo last_current_page;
 
-    public PageInfo current_page {
-        get {
-            return model.get_selected_item ();
-        }
-    }
-
-    bool current_is_ready_to_continue {
-        get {
-            return current_page.is_ready;
-        }
-    }
-
     bool _is_ready_to_finish = false;
     public bool is_ready_to_finish {
         get {
@@ -125,7 +113,7 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
             last_current_page.notify["is-ready"].connect (update_buttons);
         }
 
-        last_current_page = current_page;
+        last_current_page = model.get_selected_item ();
         last_current_page.notify["is-ready"].connect (update_buttons);
         last_current_page.notify["scroll-on-top"].connect (update_scroll);
 
@@ -134,11 +122,11 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     }
 
     void update_scroll () {
-        can_up = !current_page.page.scroll_on_top;
+        can_up = !model.get_selected_item ().page.scroll_on_top;
     }
 
     void update_buttons () {
-        is_ready_to_continue = current_is_ready_to_continue;
+        is_ready_to_continue = model.get_selected_item ().is_ready;
         is_ready_to_finish = model.get_selected () == model.get_n_items () - 1;
         can_cancel = model.get_selected () > 0 && !dead_end;
     }
@@ -158,7 +146,7 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     [GtkCallback]
     void up_clicked () {
-        current_page.page.to_up ();
+        model.get_selected_item ().page.to_up ();
     }
 
     [GtkCallback]
