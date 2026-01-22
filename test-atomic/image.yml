@@ -2,6 +2,7 @@ modules:
   - type: packages
     body:
       install:
+        - icon-theme-adwaita
         - phrog
 
   - type: systemd
