@@ -47,7 +47,6 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
         for (int i = 0; i < app.model.get_n_items (); i++) {
             var page_info = (PageInfo) app.model.get_item (i);
-            message (page_info.title_header);
 
             if (!page_info.apply_plugin) {
                 continue;
