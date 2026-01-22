@@ -161,6 +161,8 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
                     assert_not_reached ();
             }
 
+            context.bind_property ("locked", row, "sensitive", INVERT_BOOLEAN | SYNC_CREATE);
+
             list_box_context.append (row);
         }
     }
