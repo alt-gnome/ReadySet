@@ -17,18 +17,33 @@
  * 
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-[CCode (cprefix = "", lower_case_cprefix = "", cheader_filename = "config.h")]
-namespace Config {
-    public const string NAME;
-    public const string APP_ID;
-    public const string APP_ID_DYN;
-    public const string VERSION;
-    public const string LIBDIR;
-    public const string DATADIR;
-    public const string SYSCONFDIR;
-    public const string LIBEXECDIR;
-    public const bool IS_DEVEL;
-    public const string GETTEXT_PACKAGE;
-    public const string GNOMELOCALEDIR;
-    public const string SUPPORTED_LANGUAGES;
+
+namespace ReadySet {
+    [DBus (name = "org.freedesktop.systemd1.Manager")]
+    public interface SystemDManager : Object {
+        public abstract Variant reload_unit (
+            string name,
+            string mode
+        ) throws Error;
+    }
+
+    SystemDManager proxy;
+
+    public SystemDManager get_systemd_proxy () throws Error {
+        if (proxy == null) {
+            var con = Bus.get_sync (BusType.SYSTEM);
+
+            if (con == null) {
+                error ("Failed to connect to bus");
+            }
+
+            proxy = con.get_proxy_sync<SystemDManager> (
+                "org.freedesktop.systemd1",
+                "/org/freedesktop/systemd1",
+                DBusProxyFlags.NONE
+            );
+        }
+
+        return proxy;
+    }
 }

@@ -76,12 +76,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
         if (!options_handler.idle) {
             try {
-                pkexec ({
-                    Path.build_filename (Config.LIBEXECDIR, "ready-set-ruler"),
-                    "--generate-rules",
-                    "--restart-polkit",
-                    "--user", options_handler.user
-                });
+                get_ready_set_proxy ().generate_rules (options_handler.user);
             } catch (Error e) {
                 error ("Failed to generate rules: %s", e.message);
             }
@@ -96,11 +91,9 @@ public sealed class ReadySet.Application: Adw.Application {
     protected override void shutdown () {
         if (!options_handler.idle) {
             try {
-                pkexec ({
-                    Path.build_filename (Config.LIBEXECDIR, "ready-set-ruler"),
-                    "--clear-rules",
-                    "--restart-polkit"
-                });
+                var proxy = get_ready_set_proxy ();
+                proxy.clear_rules ();
+                proxy.exec_pre_hooks ();
             } catch (Error e) {
                 error ("Failed to clear generated rules: %s", e.message);
             }

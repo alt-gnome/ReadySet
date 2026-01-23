@@ -18,6 +18,61 @@
 
 namespace ReadySet {
 
+    [DBus (name = "org.altlinux.ReadySet")]
+    public interface Service : Object {
+
+        public abstract void generate_rules (
+            string user = "ready-set"
+        ) throws Error;
+
+        public abstract void clear_rules () throws Error;
+
+        public abstract void exec_pre_hooks (
+            string[] env = {}
+        ) throws Error;
+
+        public abstract void exec_post_hooks (
+            string[] env = {}
+        ) throws Error;
+    }
+
+    Service proxy;
+
+    public Service get_ready_set_proxy () throws Error {
+        if (proxy == null) {
+            var con = Bus.get_sync (BusType.SYSTEM);
+
+            if (con == null) {
+                error ("Failed to connect to bus");
+            }
+
+            proxy = con.get_proxy_sync<Service> (
+                "org.altlinux.ReadySet",
+                "/org/altlinux/ReadySet",
+                DBusProxyFlags.NONE
+            );
+        }
+
+        return proxy;
+    }
+
+    public string context_key_to_env_key (string key) {
+        var builder = new StringBuilder ();
+
+        int next_index = 0;
+        unichar c;
+
+        while (key.get_next_char (ref next_index, out c)) {
+            if (c == '-') {
+                builder.append_unichar ('_');
+            } else {
+                builder.append_unichar (c.toupper ());
+            }
+        }
+
+        return "CONTEXT_%s" + builder.free_and_steal ();
+    }
+
     public const string STEP_ID_LABEL = "step-id";
 
     public delegate Gtk.Widget CreateFunc (PageInfo page);

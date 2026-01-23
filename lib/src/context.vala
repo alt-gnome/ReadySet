@@ -269,6 +269,36 @@ public class ReadySet.Context : Object {
         return true;
     }
 
+    public HashTable<string, string> get_raw_string () {
+        var raw_data = new HashTable<string, string> (str_hash, str_equal);
+
+        foreach (var key in get_keys ()) {
+            string str;
+            switch (data[key].value_type) {
+                case ContextType.STRING:
+                    str = get_string (key);
+                    break;
+                case ContextType.STRV:
+                    str = string.joinv (",", get_strv (key));
+                    break;
+                case ContextType.INT:
+                    str = get_int (key).to_string ();
+                    break;
+                case ContextType.DOUBLE:
+                    str = get_double (key).to_string ();
+                    break;
+                case ContextType.BOOLEAN:
+                    str = get_boolean (key).to_string ();
+                    break;
+                default:
+                    assert_not_reached ();
+            }
+            raw_data[key] = str;
+        }
+
+        return raw_data;
+    }
+
     public void set_raw (string key, string value) {
         if (locked) {
             warning ("Context is locked");

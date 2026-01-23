@@ -39,3 +39,5 @@ install_data(
 )
 
 subdir('icons')
+
+install_emptydir(sysconfdir / meson.project_name())

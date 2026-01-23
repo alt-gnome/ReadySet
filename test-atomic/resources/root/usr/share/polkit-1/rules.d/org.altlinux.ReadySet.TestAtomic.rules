@@ -3,14 +3,13 @@ polkit.addRule(function(action, subject) {
         return;
 
     var actionMatches =
-        action.id === "org.freedesktop.policykit.exec" &&
-         action.lookup("program") == "/usr/libexec/ready-set-ruler";
+        action.id.indexOf("org.altlinux.ReadySet.Service.") === 0;
 
     if (actionMatches) {
         if (subject.local)
             return polkit.Result.YES;
         else
-            return polkit.Result.AUTH_ADMIN;
+            return polkit.Result.AUTH_ADMIN_KEEP;
     }
 
     return;

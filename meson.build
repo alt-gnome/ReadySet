@@ -66,7 +66,7 @@ subdir('data')
 subdir('po')
 subdir('lib')
 subdir('src')
-subdir('internal')
+subdir('service')
 subdir('plugins')
 
 gnome.post_install(

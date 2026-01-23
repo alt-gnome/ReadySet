@@ -1,16 +1,20 @@
+service_name = 'org.altlinux.ReadySet'
+
 rs_internal_vapi_sources = files(
   'config.vapi',
 )
 
 rs_internal_vala_sources = files(
-  'application.vala',
   'main.vala',
+  'service.vala',
+  'systemd-manager.vala',
   'utils.vala',
 )
 
 rs_internal_dependencies = [
   gee_dep,
   gio_dep,
+  polkit_dep,
 ]
 
 rs_internal_sources = [
@@ -19,7 +23,6 @@ rs_internal_sources = [
 ]
 
 rs_internal_c_args = [
-  '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
   '-w'
 ]
 
@@ -33,28 +36,18 @@ if get_option('is_devel')
   ]
 endif
 
-internal_app_id = 'org.altlinux.' + pascal_name + 'Internal'
-
-if get_option('is_devel')
-  internal_app_id_dyn = internal_app_id + '.Devel'
-else
-  internal_app_id_dyn = internal_app_id
-endif
-
-internal_config = configuration_data()
-internal_config.merge_from(global_conf)
-internal_config.set_quoted('APP_ID', internal_app_id)
-internal_config.set_quoted('APP_ID_DYN', internal_app_id_dyn)
-configure_file(output: 'config.h', configuration: internal_config)
+configure_file(output: 'config.h', configuration: global_conf)
 rs_internal_config_h_dir = include_directories('.')
 
 executable(
-  'ready-set-ruler',
+  service_name,
   rs_internal_sources,
   include_directories: rs_internal_config_h_dir,
   dependencies: rs_internal_dependencies,
   c_args: rs_internal_c_args,
   vala_args: rs_internal_vala_args,
   install: true,
-  install_dir: get_option('prefix') / get_option('libexecdir')
+  install_dir: libexecdir
 )
+
+subdir('data')

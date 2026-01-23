@@ -1,0 +1,8 @@
+[Unit]
+Description=ReadySet internal system service
+
+[Service]
+Type=dbus
+BusName=@SERVICE_NAME@
+User=@USER@
+ExecStart=@LIBEXECDIR@/@SERVICE_NAME@

@@ -85,14 +85,29 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                 progress_data.value = 1.0;
             }
 
+            var raw_context = context.get_raw_string ();
+            var env = new Gee.ArrayList<string> ();
+
+            foreach (var key in raw_context.get_keys ()) {
+                env.add ("%s=\"%s\"".printf (context_key_to_env_key (key), raw_context[key]));
+            }
+
+            get_ready_set_proxy ().exec_post_hooks (env.to_array ());
+
             stack.visible_child_name = "ready";
             is_ready = true;
 
-        } catch (ApplyError error) {
-            var apply_error_data = ApplyError.to_data (error);
+        } catch (ApplyError e) {
+            var apply_error_data = ApplyError.to_data (e);
 
             error_status_page.title = apply_error_data.message;
             error_status_page.description = _("Error message: %s").printf (apply_error_data.description);
+
+            stack.visible_child_name = "error";
+            is_ready = false;
+        } catch (Error e) {
+            error_status_page.title = _("Error while execute post hooks");
+            error_status_page.description = _("Error message: %s").printf (e.message);
 
             stack.visible_child_name = "error";
             is_ready = false;

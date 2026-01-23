@@ -1,0 +1,38 @@
+<policyconfig>
+   <action id="@SERVICE_NAME@.GenerateRules">
+     <description>Full management of APM</description>
+     <message>Authentication is required</message>
+     <defaults>
+       <allow_any>no</allow_any>
+       <allow_inactive>no</allow_inactive>
+       <allow_active>auth_admin</allow_active>
+     </defaults>
+   </action>
+   <action id="@SERVICE_NAME@.ClearRules">
+     <description>Full management of APM</description>
+     <message>Authentication is required</message>
+     <defaults>
+       <allow_any>no</allow_any>
+       <allow_inactive>no</allow_inactive>
+       <allow_active>auth_admin</allow_active>
+     </defaults>
+   </action>
+   <action id="@SERVICE_NAME@.ExecPreHooks">
+     <description>Full management of APM</description>
+     <message>Authentication is required</message>
+     <defaults>
+       <allow_any>no</allow_any>
+       <allow_inactive>no</allow_inactive>
+       <allow_active>auth_admin</allow_active>
+     </defaults>
+   </action>
+   <action id="@SERVICE_NAME@.ExecPostHooks">
+     <description>Full management of APM</description>
+     <message>Authentication is required</message>
+     <defaults>
+       <allow_any>no</allow_any>
+       <allow_inactive>no</allow_inactive>
+       <allow_active>auth_admin</allow_active>
+     </defaults>
+   </action>
+</policyconfig>

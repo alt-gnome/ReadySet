@@ -16,11 +16,36 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-int main (string[] args) {
-    Intl.bindtextdomain (Config.GETTEXT_PACKAGE, Config.GNOMELOCALEDIR);
-    Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
-    Intl.textdomain (Config.GETTEXT_PACKAGE);
+void on_bus_aquired (DBusConnection conn, string name) {
+    try {
+        var service = new ReadySet.Service ();
+        conn.register_object ("/org/altlinux/ReadySet", service);
 
-    var app = new ReadySetInternal.Application ();
-    return app.run (args);
+    } catch (IOError e) {
+        ml.quit ();
+        error ("Could not register service: %s\n", e.message);
+    }
+}
+
+MainLoop ml;
+
+int main (string[] args) {
+    ml = new MainLoop ();
+
+    Bus.own_name (
+        BusType.SYSTEM, "org.altlinux.ReadySet",
+        BusNameOwnerFlags.NONE,
+        on_bus_aquired,
+        (con, name) => {
+            print ("Name '%s' acquired. Stopping\n", name);
+        },
+        (con, name) => {
+            print ("Could not acquire name '%s'. Stopping\n", name);
+            ml.quit ();
+        }
+    );
+
+    ml.run ();
+
+    return 0;
 }
