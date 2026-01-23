@@ -180,7 +180,15 @@ Requires: %name = %EVR
 # %files cli
 
 %files common -f %name.lang
-%_libexecdir/%name-ruler
+%_libexecdir/%app_id
+%_sysconfdir/%name
+%_datadir/%name/pre-hooks
+%_datadir/%name/post-hooks
+%_datadir/%name/rules.d
+%_sysconfdir/dbus-1/system.d/%app_id.conf
+%_datadir/polkit-1/actions/%app_id.policy
+%_datadir/dbus-1/system-services/%app_id.service
+%_unitdir/%name.service
 %_sysusersdir/%name.conf
 %_tmpfilesdir/%name.conf
 %doc README.en.md
