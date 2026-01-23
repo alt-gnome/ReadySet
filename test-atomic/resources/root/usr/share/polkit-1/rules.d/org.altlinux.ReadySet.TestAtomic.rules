@@ -3,7 +3,7 @@ polkit.addRule(function(action, subject) {
         return;
 
     var actionMatches =
-        action.id.indexOf("org.altlinux.ReadySet.Service.") === 0;
+        action.id.indexOf("org.altlinux.ReadySet.") === 0;
 
     if (actionMatches) {
         if (subject.local)
