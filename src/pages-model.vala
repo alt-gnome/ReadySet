@@ -76,20 +76,33 @@ public sealed class ReadySet.PageInfo : Object {
 public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel {
 
     Gtk.SingleSelection real_model;
-    Gtk.Filter filter;
 
-    public signal void changed (uint position, uint removed, uint added, uint selection_position);
+    public Gee.ArrayList<PageInfo> pages { get; construct; }
+
+    public PagesModel (Gee.ArrayList<PageInfo> pages) {
+        Object (
+            pages: pages
+        );
+    }
 
     construct {
-        filter = new Gtk.BoolFilter (new Gtk.PropertyExpression (
+        var filter = new Gtk.BoolFilter (new Gtk.PropertyExpression (
             typeof (PageInfo),
             null,
             "accessible"
         ));
-        real_model = new Gtk.SingleSelection (null);
+        var store = new ListStore (typeof (PageInfo));
+        foreach (var page in pages) {
+            store.append (page);
+        }
+        real_model = new Gtk.SingleSelection (new Gtk.FilterListModel (
+            store, filter
+        ));
 
         real_model.selection_changed.connect (on_real_model_selection_changed);
         real_model.items_changed.connect (on_real_model_items_changed);
+
+        message ("NEW");
 
         unselect_all ();
     }
@@ -110,30 +123,10 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
             }
         }
 
+        message ("Items changed: %u, %u, %u", position, removed, added);
+
         select_item (new_selection_position, true);
         items_changed (position, removed, added);
-    }
-
-    public void set_pages (PageInfo[] pages) {
-        uint removed = 0;
-        if (real_model != null) {
-            removed = real_model.n_items;
-        }
-
-        var store = new ListStore (typeof (PageInfo));
-        foreach (var page in pages) {
-            store.append (page);
-
-            page.notify["accessible"].connect (() => {
-                filter.changed (Gtk.FilterChange.DIFFERENT);
-            });
-        }
-
-        real_model.model = new Gtk.FilterListModel (
-            store, filter
-        );
-
-        selection_changed (0, 1);
     }
 
     public unowned PageInfo? get_selected_item () {

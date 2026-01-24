@@ -76,10 +76,4 @@ namespace ReadySet {
     public const string STEP_ID_LABEL = "step-id";
 
     public delegate Gtk.Widget CreateFunc (PageInfo page);
-
-    public struct StackPageInfo {
-        public string name;
-        public string title;
-        public Gtk.Widget widget;
-    }
 }

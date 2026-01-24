@@ -22,7 +22,13 @@ public class ReadySet.PositionedStack : Adw.Bin {
 
     public int position {
         get {
-            return childs.index_of (stack.visible_child_name);
+            var name = stack.visible_child_name;
+            for (int i = 0; i < childs.size; i++) {
+                if (childs[i].id == name) {
+                    return i;
+                }
+            }
+            return -1;
         }
         set {
             if (childs.size == 0) {
@@ -37,7 +43,7 @@ public class ReadySet.PositionedStack : Adw.Bin {
                 tt = position > value ? Gtk.StackTransitionType.SLIDE_RIGHT : Gtk.StackTransitionType.SLIDE_LEFT;
             }
 
-            stack.set_visible_child_full (childs[(int) value], tt);
+            stack.set_visible_child_full (childs[(int) value].id, tt);
         }
     }
 
@@ -62,12 +68,14 @@ public class ReadySet.PositionedStack : Adw.Bin {
 
     public Gtk.StackTransitionType transition_type { get; set; default = Gtk.StackTransitionType.NONE; }
 
-    public PagesModel model { get; private set; }
+    public PagesModel? model { get; private set; }
 
     weak CreateFunc create_func;
     Gtk.Stack stack = new Gtk.Stack ();
 
-    new Gee.ArrayList<string> childs = new Gee.ArrayList<string> ();
+    new Gee.ArrayList<PageInfo> childs = new Gee.ArrayList<PageInfo> ((el1, el2) => {
+        return str_equal (el1.id, el2.id);
+    });
 
     construct {
         child = stack;
@@ -92,34 +100,29 @@ public class ReadySet.PositionedStack : Adw.Bin {
         });
     }
 
-    public void bind_manager (PagesModel model, owned CreateFunc create_func) {
-        clear ();
+    public void bind_model (PagesModel? model, owned CreateFunc create_func) {
+        if (this.model != null) {
+            this.model.selection_changed.disconnect (on_selection_changed);
+            this.model.items_changed.disconnect (on_items_changed);
+
+            this.model = null;
+            clear ();
+        }
 
         this.model = model;
         this.create_func = create_func;
 
-        this.model.selection_changed.connect (on_selection_changed);
-        this.model.items_changed.connect (on_items_changed);
-
-        update ();
+        if (model != null) {
+            model.selection_changed.connect (on_selection_changed);
+            model.items_changed.connect (on_items_changed);
+            update ();
+        }
     }
 
     public void clear () {
-        if (model != null) {
-            model.selection_changed.disconnect (on_selection_changed);
-            model.items_changed.disconnect (on_items_changed);
-
-            model = null;
+        for (int i = 0; i < childs.size; i++) {
+            remove_page (childs[0]);
         }
-
-        light_clear ();
-    }
-
-    void light_clear () {
-        while (stack.get_first_child () != null) {
-            stack.remove (stack.get_first_child ());
-        }
-        childs.clear ();
     }
 
     void on_selection_changed (uint position, uint n_items) {
@@ -128,59 +131,74 @@ public class ReadySet.PositionedStack : Adw.Bin {
 
     void on_items_changed (uint position, uint removed, uint added) {
         //  We need to readd stack tail to simulate inserting
-        Gee.ArrayList<StackPageInfo?> readd = new Gee.ArrayList<StackPageInfo?> ();
+        Gee.ArrayList<PageInfo> readd = new Gee.ArrayList<PageInfo> ();
+
+        message ("%u, %u, %u", position, removed, added);
+
+        info ();
 
         for (uint i = 0; i < removed; i++) {
             var name = childs[(int) position];
-            stack.remove (stack.get_child_by_name (name));
-            childs.remove (name);
+            remove_page (name);
         }
 
-        if (position < childs.size) {
-            var need_to_remove = new Gee.ArrayList<string> ();
+        info ();
+
+        if (position < childs.size && added > 0) {
             for (int i = (int) position; i < childs.size; i++) {
-                need_to_remove.add (childs[i]);
-            }
-
-            foreach (var name in need_to_remove) {
-                var page = stack.get_page (stack.get_child_by_name (name));
-                readd.add ({
-                    page.name,
-                    page.title,
-                    page.child
-                });
-                stack.remove (page.child);
-                childs.remove (name);
+                var page_info = childs[(int) position];
+                readd.add (page_info);
+                remove_page (page_info);
             }
         }
+
+        info ();
 
         for (uint i = position; i < position + added; i++) {
             var page = (PageInfo) model.get_item (i);
-            var name = Uuid.string_random ();
 
-            add_page ({
-                name: name,
-                title: page.title_header ?? "UNKNOWN",
-                widget: create_func (page)
-            });
+            add_page (page);
         }
+
+        info ();
 
         foreach (var page_info in readd) {
-            add_page ({
-                name: page_info.name,
-                title: page_info.title,
-                widget: page_info.widget
-            });
+            add_page (page_info);
         }
+
+        info ();
+    }
+ 
+    void info () {
+        message ("Info:");
+        var childs_names = new Gee.ArrayList<string> ();
+        foreach (var c in childs) {
+            childs_names.add (c.id);
+        }
+        message (string.joinv (", ", childs_names.to_array ()));
+
+        var stack_names = new Gee.ArrayList<string> ();
+        var m = stack.pages;
+        for (int i = 0; i < m.get_n_items (); i++) {
+            stack_names.add (((Gtk.StackPage) m.get_item (i)).name);
+        }
+        message (string.joinv (", ", stack_names.to_array ()));
     }
 
-    void add_page (StackPageInfo page_info) {
+    void remove_page (PageInfo page_info) {
+        stack.remove (stack.get_child_by_name (page_info.id));
+        childs.remove (page_info);
+    }
+
+    void add_page (PageInfo page_info) {
+        message ("Add %s", page_info.id);
+        message ((stack.get_child_by_name (page_info.id) == null).to_string ());
         stack.add_titled (
-            page_info.widget,
-            page_info.name,
-            page_info.title
+            create_func (page_info),
+            page_info.id,
+            page_info.title_header ?? "UNKNOWN"
         );
-        childs.add (page_info.name);
+        childs.add (page_info);
     }
 
     void update () {

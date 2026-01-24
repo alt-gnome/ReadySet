@@ -48,7 +48,23 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     static Gee.ArrayList<string> passed_pages = new Gee.ArrayList<string> ();
 
-    PageInfo last_current_page;
+    PageInfo _last_current_page;
+    PageInfo last_current_page {
+        get {
+            return _last_current_page;
+        }
+        set {
+            if (_last_current_page != null) {
+                _last_current_page.notify["is-ready"].disconnect (update_buttons);
+                _last_current_page.notify["scroll-on-top"].disconnect (update_scroll);
+            }
+
+            _last_current_page = value;
+
+            _last_current_page.notify["is-ready"].connect (update_buttons);
+            _last_current_page.notify["scroll-on-top"].connect (update_scroll);
+        }
+    }
 
     bool _is_ready_to_finish = false;
     public bool is_ready_to_finish {
@@ -69,21 +85,36 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     public bool can_cancel { get; set; }
 
-    public PagesModel model { get; construct; }
-
-    construct {
-        model = Application.get_default ().model;
-
-        pages_indicator.model = model;
-        positioned_stack.bind_manager (model, (page) => {
-            if (page.id in passed_pages) {
-                page.passed = true;
+    PagesModel _model;
+    public PagesModel? model {
+        get {
+            return _model;
+        }
+        set {
+            if (_model != null) {
+                _model.selection_changed.disconnect (selection_changed);
             }
 
-            return page.page;
-        });
+            _model = value;
 
-        model.selection_changed.connect (selection_changed);
+            positioned_stack.bind_model (_model, (page) => {
+                if (page.id in passed_pages) {
+                    page.passed = true;
+                }
+
+                return page.page;
+            });
+
+            if (_model != null) {
+                _model.selection_changed.connect (selection_changed);
+                selection_changed ();
+            }
+        }
+    }
+
+    construct {
+        Application.get_default ().bind_property ("model", this, "model", GLib.BindingFlags.SYNC_CREATE);
+        bind_property ("model", pages_indicator, "model", GLib.BindingFlags.SYNC_CREATE);
 
         header_bar.show_end_title_buttons = Config.IS_DEVEL;
         context_button.visible = Config.IS_DEVEL;
@@ -109,13 +140,7 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         update_buttons ();
         update_scroll ();
 
-        if (last_current_page != null) {
-            last_current_page.notify["is-ready"].connect (update_buttons);
-        }
-
         last_current_page = model.get_selected_item ();
-        last_current_page.notify["is-ready"].connect (update_buttons);
-        last_current_page.notify["scroll-on-top"].connect (update_scroll);
 
         passed_pages.add (last_current_page.id);
         last_current_page.passed = true;
@@ -146,17 +171,17 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     [GtkCallback]
     void up_clicked () {
-        model.get_selected_item ().page.to_up ();
+        model?.get_selected_item ().page.to_up ();
     }
 
     [GtkCallback]
     void cancel_clicked () {
-        model.select_item (model.get_selected () - 1, true);
+        model?.select_item (model.get_selected () - 1, true);
     }
 
     [GtkCallback]
     void continue_clicked () {
-        model.select_item (model.get_selected () + 1, true);
+        model?.select_item (model.get_selected () + 1, true);
     }
 
     [GtkCallback]

@@ -29,7 +29,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
     Gee.HashMap<string, Addin> plugins = new Gee.HashMap<string, Addin> ();
 
-    public PagesModel model { get; default = new PagesModel (); }
+    public PagesModel? model { get; private set; default = null; }
 
     Gee.ArrayList<string> inited_plugins = new Gee.ArrayList<string> ();
 
@@ -148,7 +148,7 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
-    void init_pages () {
+    public void init_pages () {
         var pages = new Gee.ArrayList<PageInfo> ();
 
         print ("Loaded plugins:\n");
@@ -188,7 +188,8 @@ public sealed class ReadySet.Application: Adw.Application {
             null,
             false
         ));
-        model.set_pages (pages.to_array ());
+
+        model = new PagesModel (pages);
     }
 
     string[] get_all_steps () {
@@ -224,8 +225,6 @@ public sealed class ReadySet.Application: Adw.Application {
             var win = new Window (this) {
                 fullscreened = options_handler.fullscreen
             };
-
-            init_pages ();
 
             win.present ();
 

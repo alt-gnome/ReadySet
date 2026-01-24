@@ -26,43 +26,55 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
 
     public bool show_close_button { get; set; }
 
-    public PagesModel model { get; set; }
+    PagesModel? _model;
+    public PagesModel? model {
+        get {
+            return _model;
+        }
+        set {
+            if (_model != null) {
+                model.selection_changed.disconnect (update_selection);
+            }
+
+            _model = value;
+
+            menu_list_box.bind_model (_model, (item) => {
+                var page = (PageInfo) item;
+
+                var row = new StepRow (
+                    page.title_header,
+                    page.icon_name
+                );
+
+                page.bind_property (
+                    "passed",
+                    row,
+                    "sensitive",
+                    BindingFlags.SYNC_CREATE
+                );
+
+                return row;
+            });
+
+            if (_model != null) {
+                model.selection_changed.connect (update_selection);
+                update_selection ();
+            }
+        }
+    }
 
     public signal void request_close ();
 
     construct {
-        notify["model"].connect (update_model);
-
-        menu_list_box.selected_rows_changed.connect (() => {
-            var row = menu_list_box.get_selected_row ();
-            if (row != null) {
-                model.select_item (row.get_index (), true);
-            }
-            update_selection ();
-        });
+        menu_list_box.selected_rows_changed.connect (selected_rows_changed);
     }
 
-    void update_model () {
-        menu_list_box.bind_model (model, (item) => {
-            var page = (PageInfo) item;
-
-            var row = new StepRow (
-                page.title_header,
-                page.icon_name
-            );
-
-            page.bind_property (
-                "passed",
-                row,
-                "sensitive",
-                BindingFlags.SYNC_CREATE
-            );
-
-            return row;
-        });
-
-        model.items_changed.connect (update_selection);
-        model.selection_changed.connect (update_selection);
+    [GtkCallback]
+    void selected_rows_changed () {
+        var row = menu_list_box.get_selected_row ();
+        if (row != null) {
+            model.select_item (row.get_index (), true);
+        }
         update_selection ();
     }
 

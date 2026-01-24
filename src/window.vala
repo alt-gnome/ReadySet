@@ -60,6 +60,7 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
             stack.remove (c);
         }
 
+        Application.get_default ().init_pages ();
         stack.add_named (new WindowContent (), "main");
 
         stack.visible_child_name = "main";
