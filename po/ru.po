@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 15:57+0300\n"
-"PO-Revision-Date: 2026-01-15 16:02+0300\n"
+"POT-Creation-Date: 2026-01-25 01:26+0300\n"
+"PO-Revision-Date: 2026-01-25 01:30+0300\n"
 "Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -21,32 +21,32 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: data/ui/end-page.blp:4
+#: data/ui/end-page.blp:5
 msgid "Finishing"
 msgstr "Завершение"
 
-#: data/ui/end-page.blp:5
+#: data/ui/end-page.blp:20
+msgid "Setting up the system…"
+msgstr "Настройка вашей системы…"
+
+#: data/ui/end-page.blp:37
 msgid "Ready Set…"
 msgstr "На Старт Внимание…"
 
-#: data/ui/end-page.blp:7
+#: data/ui/end-page.blp:38
 msgid "The system is ready for use."
 msgstr "Система готова к использованию."
-
-#: data/ui/end-page.blp:17 lib/src/addin.vala:23 lib/src/base/base-page.vala:83
-msgid "Applying changes…"
-msgstr "Применение изменения…"
 
 #: data/ui/nothing-to-show.blp:30
 msgid "Nothing to show"
 msgstr "Нечего показывать"
 
-#: data/ui/steps-main-page.blp:112
+#: data/ui/steps-main-page.blp:124
 msgid "Next"
 msgstr "Дальше"
 
 #. TRANSLATORS: Last word in "Ready Set ..." sentence
-#: data/ui/steps-main-page.blp:129
+#: data/ui/steps-main-page.blp:141
 msgid "Go!"
 msgstr "Марш!"
 
@@ -58,19 +58,23 @@ msgstr "Все шаги"
 msgid "Main"
 msgstr "Главная"
 
-#: lib/src/base/base-page.vala:77
+#: lib/src/addin.vala:23
+msgid "Applying changes…"
+msgstr "Применение изменения…"
+
+#: lib/src/base/base-bare-page.vala:60
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: lib/src/base/base-page.vala:79
+#: lib/src/base/base-page.vala:48
 msgid "Unknown page"
 msgstr "Неизвестная страница"
 
-#: lib/src/base/base-page.vala:81
+#: lib/src/base/base-page.vala:50
 msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
-#: lib/src/utils.vala:50
+#: lib/src/utils.vala:58
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
@@ -109,7 +113,7 @@ msgstr "Не выбраны источники ввода"
 msgid "Nothing found"
 msgstr "Нечего не найдено"
 
-#: plugins/keyboard/page.vala:85
+#: plugins/keyboard/page.vala:77
 msgid "Error when setting keyboard layout"
 msgstr "Ошибка при настройке раскладки клавиатуры"
 
@@ -118,10 +122,10 @@ msgid "Search language"
 msgstr "Поиск языка"
 
 #: plugins/language/data/ui/page.blp:4
-msgid "Language selection"
-msgstr "Выбор языка"
+msgid "Language"
+msgstr "Язык"
 
-#: plugins/language/page.vala:48
+#: plugins/language/page.vala:28
 msgid "Error when setting language"
 msgstr "Ошибка при настройке языка"
 
@@ -137,6 +141,10 @@ msgstr "Привет!"
 msgid ""
 "Let's start by choosing the language for the application and for your system."
 msgstr "Давайте начнём с выбора языка для приложения и для Вашей системы."
+
+#: plugins/user/data/ui/avatar-chooser.blp:5
+msgid "Select Avatar"
+msgstr "Выбрать Аватар"
 
 #: plugins/user/data/ui/page-password.blp:5
 msgid "Security"
@@ -155,12 +163,12 @@ msgid "Your user's password"
 msgstr "Пароль Вашего пользователя"
 
 #: plugins/user/data/ui/page-password.blp:46
-#: plugins/user/data/ui/page-password.blp:116
+#: plugins/user/data/ui/page-password.blp:115
 msgid "Passwords do not match"
 msgstr "Пароли не совпадают"
 
 #: plugins/user/data/ui/page-password.blp:50
-#: plugins/user/data/ui/page-password.blp:120
+#: plugins/user/data/ui/page-password.blp:119
 msgid "Repeat password"
 msgstr "Повторите пароль"
 
@@ -168,7 +176,7 @@ msgstr "Повторите пароль"
 msgid "Enable autologin"
 msgstr "Включить автоматический вход"
 
-#: plugins/user/data/ui/page-password.blp:73
+#: plugins/user/data/ui/page-password.blp:72
 msgid ""
 "Set administrator password manualy. Otherwise it will be equal to user "
 "password"
@@ -176,7 +184,7 @@ msgstr ""
 "Установить пароль администратора вручную. Иначе он будет равен паролю "
 "пользователя"
 
-#: plugins/user/data/ui/page-password.blp:93
+#: plugins/user/data/ui/page-password.blp:92
 msgid "Administrator's password"
 msgstr "Пароль администратора"
 
@@ -196,21 +204,21 @@ msgstr "Введите информацию о Вас"
 msgid "Change Avatar"
 msgstr "Изменить Аватар"
 
-#: plugins/user/data/ui/page-username.blp:55
+#: plugins/user/data/ui/page-username.blp:54
 msgid "Remove Avatar"
 msgstr "Удалить Аватар"
 
-#: plugins/user/data/ui/page-username.blp:76
+#: plugins/user/data/ui/page-username.blp:75
 msgid "Full Name"
 msgstr "Полное имя"
 
-#: plugins/user/data/ui/page-username.blp:83
+#: plugins/user/data/ui/page-username.blp:82
 msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 "Имя пользователя будет использовано для имени Вашей домашней директории и не "
 "может быть изменено."
 
-#: plugins/user/data/ui/page-username.blp:93
+#: plugins/user/data/ui/page-username.blp:92
 msgid "Username"
 msgstr "Имя пользователя"
 
@@ -218,15 +226,15 @@ msgstr "Имя пользователя"
 msgid "Failed to generate password"
 msgstr "Не удалось сгенерироавть пароль"
 
-#: plugins/user/plugin.vala:66
+#: plugins/user/plugin.vala:70
 msgid "Error when creating a user"
 msgstr "Ошибка при создании пользователя"
 
-#: plugins/user/pwquality-utils.vala:52
+#: plugins/user/pwquality-utils.vala:57
 msgid "The new password needs to be different from the old one."
 msgstr "Новый пароль должен отличаться от старого."
 
-#: plugins/user/pwquality-utils.vala:56
+#: plugins/user/pwquality-utils.vala:61
 msgid ""
 "This password is very similar to your last one. Try changing some letters "
 "and numbers."
@@ -234,17 +242,17 @@ msgstr ""
 "Пароль слишком похож на предыдущий. Попробуйте поменять некоторые буквы или "
 "цифры."
 
-#: plugins/user/pwquality-utils.vala:58
+#: plugins/user/pwquality-utils.vala:63
 msgid ""
 "This is a weak password. A password without your user name would be stronger."
 msgstr ""
 "Слишком слабый пароль. Пароль, не включающий имя пользователя, будет сильнее."
 
-#: plugins/user/pwquality-utils.vala:60
+#: plugins/user/pwquality-utils.vala:65
 msgid "This is a weak password. Try to avoid using your name in the password."
 msgstr "Слишком слабый пароль. Старайтесь избегать вашего имени в пароле."
 
-#: plugins/user/pwquality-utils.vala:62
+#: plugins/user/pwquality-utils.vala:67
 msgid ""
 "This is a weak password. Try to avoid some of the words included in the "
 "password."
@@ -252,31 +260,31 @@ msgstr ""
 "Слишком слабый пароль. Старайтесь избегать каких-то слов, включённые в "
 "пароль."
 
-#: plugins/user/pwquality-utils.vala:64
+#: plugins/user/pwquality-utils.vala:69
 msgid "This is a weak password. Try to avoid common words."
 msgstr "Слишком слабый пароль. Старайтесь избегать распространённых слов."
 
-#: plugins/user/pwquality-utils.vala:66
+#: plugins/user/pwquality-utils.vala:71
 msgid "This is a weak password. Try to avoid reordering existing words."
 msgstr ""
 "Слишком слабый пароль. Старайтесь избегать изменения порядка сущствующих "
 "слов."
 
-#: plugins/user/pwquality-utils.vala:68
+#: plugins/user/pwquality-utils.vala:73
 msgid "This is a weak password. Try to use more numbers."
 msgstr "Слишком слабый пароль. Старайтесь использовать больше цифр."
 
-#: plugins/user/pwquality-utils.vala:70
+#: plugins/user/pwquality-utils.vala:75
 msgid "This is a weak password. Try to use more uppercase letters."
 msgstr ""
 "Слишком слабый пароль. Старайтесь использовать больше букв верхнего регистра."
 
-#: plugins/user/pwquality-utils.vala:72
+#: plugins/user/pwquality-utils.vala:77
 msgid "This is a weak password. Try to use more lowercase letters."
 msgstr ""
 "Слишком слабый пароль. Старайтесь использовать больше букв нижнего регистра."
 
-#: plugins/user/pwquality-utils.vala:74
+#: plugins/user/pwquality-utils.vala:79
 msgid ""
 "This is a weak password. Try to use more special characters, like "
 "punctuation."
@@ -284,7 +292,7 @@ msgstr ""
 "Слишком слабый пароль. Старайтесь использовать больше специальных символов, "
 "к примеру — символы пунктуации."
 
-#: plugins/user/pwquality-utils.vala:76
+#: plugins/user/pwquality-utils.vala:81
 msgid ""
 "This is a weak password. Try to use a mixture of letters, numbers and "
 "punctuation."
@@ -292,11 +300,11 @@ msgstr ""
 "Слишком слабый пароль. Старайтесь использовать смесь из букв, цифр и "
 "символов пунктуации."
 
-#: plugins/user/pwquality-utils.vala:78
+#: plugins/user/pwquality-utils.vala:83
 msgid "This is a weak password. Try to avoid repeating the same character."
 msgstr "Слишком слабый пароль. Старайтесь избегать повторения символов."
 
-#: plugins/user/pwquality-utils.vala:80
+#: plugins/user/pwquality-utils.vala:85
 msgid ""
 "This is a weak password. Try to avoid repeating the same type of character: "
 "you need to mix up letters, numbers and punctuation."
@@ -305,49 +313,49 @@ msgstr ""
 "смешивайте буквы, цифры и символы пунктуации."
 
 #. vala-lint=line-length
-#: plugins/user/pwquality-utils.vala:82
+#: plugins/user/pwquality-utils.vala:87
 msgid "This is a weak password. Try to avoid sequences like 1234 or abcd."
 msgstr ""
 "Слишком слабый пароль. Старайтесь избегать последовательностей по типу 1234 "
 "или abcd."
 
-#: plugins/user/pwquality-utils.vala:84
+#: plugins/user/pwquality-utils.vala:89
 msgid ""
 "This is a weak password. Try to add more letters, numbers and punctuation."
 msgstr ""
 "Слишком слабый пароль. Старайтесь добавить больше букв, цифр и символов "
 "пунктуации."
 
-#: plugins/user/pwquality-utils.vala:86
+#: plugins/user/pwquality-utils.vala:91
 msgid "Mix uppercase and lowercase and try to use a number or two."
 msgstr ""
 "Смешивайте символы верхнего и нижнего регистров, а также попробуйте "
 "использовать одну-две цифры."
 
-#: plugins/user/pwquality-utils.vala:88
+#: plugins/user/pwquality-utils.vala:93
 msgid ""
 "Adding more letters, numbers and punctuation will make the password stronger."
 msgstr ""
 "Добавьте больше букв, цифр и символов пунктуации, чтобы сделать пароль "
 "сильнее."
 
-#: plugins/user/utils.vala:91
+#: plugins/user/utils.vala:89
 msgid "Name cannot be empty"
 msgstr "Имя не может быть пустым"
 
-#: plugins/user/utils.vala:181
+#: plugins/user/utils.vala:179
 msgid "That username isn't available. Please try another"
 msgstr "Это имя пользователя недоступно. Пожалуйста, попробуйте другое"
 
-#: plugins/user/utils.vala:183
+#: plugins/user/utils.vala:181
 msgid "The username is too long"
 msgstr "Имя пользователя слишком длинное"
 
-#: plugins/user/utils.vala:185
+#: plugins/user/utils.vala:183
 msgid "The username must start with a lower case letter from a-z"
 msgstr "Имя пользователя должно начинаться со строчной буквы от «a» до «z»"
 
-#: plugins/user/utils.vala:187
+#: plugins/user/utils.vala:185
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
@@ -355,7 +363,7 @@ msgstr ""
 "Имя пользователя может содержать только строчные буквы от «a» до «z», цифры "
 "и следущие символы: «-», «_»"
 
-#: plugins/user/utils.vala:190
+#: plugins/user/utils.vala:188
 msgid "Username cannot be empty"
 msgstr "Имя пользователя не может быть пустым"
 
@@ -374,44 +382,56 @@ msgstr ""
 "Vladimir Romanov <rirusha@altlinux.org>\n"
 "David Sultaniiazov <x1z53@altlinux.org>"
 
-#: src/application.vala:156
+#: src/application.vala:204
 msgid "No steps specified"
 msgstr "Не указан список шагов"
 
-#: src/options-handler.vala:34
+#: src/options-handler.vala:35
 msgid "Print version information and exit"
 msgstr "Показать информацию о версии и выйти"
 
-#: src/options-handler.vala:35
+#: src/options-handler.vala:36
 msgid "Steps. E.g: `steps=language,keyboard`"
 msgstr "Шаги. К примеру: `steps=language,keyboard`"
 
-#: src/options-handler.vala:36
+#: src/options-handler.vala:37
 msgid "Steps which will not apply. E.g: `steps=language,keyboard`"
 msgstr ""
 "Шаги, которые не будут применены в конце. К примеру: "
 "`steps=language,keyboard`"
 
-#: src/options-handler.vala:37
+#: src/options-handler.vala:38
 msgid "Context vars"
 msgstr "Переменные контекста"
 
-#: src/options-handler.vala:38
+#: src/options-handler.vala:39
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
-#: src/options-handler.vala:39
+#: src/options-handler.vala:40
 msgid "Idle run without doing anything"
 msgstr "Запуск без применения изменений в конце"
 
-#: src/options-handler.vala:40
+#: src/options-handler.vala:41
 msgid "Run window in fullscreen"
 msgstr "Запуск окна в полноэкранном режиме"
 
-#: src/pages/end-page.vala:85
+#: src/options-handler.vala:42
+msgid "User for which will be generated plugin polkit rules"
+msgstr "Пользователь, для которого будут сгенерированы polkit правила"
+
+#: src/pages/end-page.vala:64
+msgid "Doing some stuff…"
+msgstr "Делаем стаф…"
+
+#: src/pages/end-page.vala:98 src/pages/end-page.vala:104
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
+
+#: src/pages/end-page.vala:103
+msgid "Error while execute post hooks"
+msgstr "Ошибка при выполнении пост скриптов"
 
 #~ msgid "Come up with a memorable password"
 #~ msgstr "Придумайте запоминающийся пароль"
