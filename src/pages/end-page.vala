@@ -58,60 +58,58 @@ public sealed class ReadySet.EndPage : BaseBarePage {
             applyable_arr.add (page_info.page);
         }
 
-        try {
-            foreach (var applyable in applyable_arr) {
-                progress_data.value = 0.0;
+        if (context.idle) {
+            Timeout.add_seconds (1, () => {
+                progress_data.value += 0.2;
+                progress_data.message = _("Doing some stuff…");
 
-                if (context.idle) {
-                    Timeout.add_seconds (1, () => {
-                        progress_data.value += 0.2;
-                        progress_data.message = _("Doing some stuff…");
+                if (progress_data.value >= 1.0) {
+                    Idle.add (start_action.callback);
+                    return false;
+                }
 
-                        if (progress_data.value >= 1.0) {
-                            Idle.add (start_action.callback);
-                            return false;
-                        }
+                return true;
+            });
+            yield;
 
-                        return true;
-                    });
-                    yield;
+        } else {
+            try {
+                foreach (var applyable in applyable_arr) {
+                    progress_data.value = 0.0;
 
-                    break;
-
-                } else {
                     yield applyable.apply (progress_data);
 
+                    progress_data.value = 1.0;
                 }
-                progress_data.value = 1.0;
+
+                var raw_context = context.get_raw_string ();
+                var env = new Gee.ArrayList<string> ();
+
+                foreach (var key in raw_context.get_keys ()) {
+                    env.add ("%s=\"%s\"".printf (context_key_to_env_key (key), raw_context[key]));
+                }
+
+                get_ready_set_proxy ().exec_post_hooks (env.to_array ());
+
+            } catch (ApplyError e) {
+                var apply_error_data = ApplyError.to_data (e);
+
+                error_status_page.title = apply_error_data.message;
+                error_status_page.description = _("Error message: %s").printf (apply_error_data.description);
+
+                stack.visible_child_name = "error";
+                is_ready = false;
+            } catch (Error e) {
+                error_status_page.title = _("Error while execute post hooks");
+                error_status_page.description = _("Error message: %s").printf (e.message);
+
+                stack.visible_child_name = "error";
+                is_ready = false;
             }
-
-            var raw_context = context.get_raw_string ();
-            var env = new Gee.ArrayList<string> ();
-
-            foreach (var key in raw_context.get_keys ()) {
-                env.add ("%s=\"%s\"".printf (context_key_to_env_key (key), raw_context[key]));
-            }
-
-            get_ready_set_proxy ().exec_post_hooks (env.to_array ());
-
-            stack.visible_child_name = "ready";
-            is_ready = true;
-
-        } catch (ApplyError e) {
-            var apply_error_data = ApplyError.to_data (e);
-
-            error_status_page.title = apply_error_data.message;
-            error_status_page.description = _("Error message: %s").printf (apply_error_data.description);
-
-            stack.visible_child_name = "error";
-            is_ready = false;
-        } catch (Error e) {
-            error_status_page.title = _("Error while execute post hooks");
-            error_status_page.description = _("Error message: %s").printf (e.message);
-
-            stack.visible_child_name = "error";
-            is_ready = false;
         }
+
+        stack.visible_child_name = "ready";
+        is_ready = true;
     }
 
     void update_progress_visibility () {

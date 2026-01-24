@@ -88,6 +88,10 @@ public class ReadySet.BaseBarePage : Adw.Bin, Applyable {
         scroll_on_top = scrolled_window.vadjustment.value <= 360.0;
     }
 
+    public async virtual void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
+        return;
+    }
+
     public void to_up () {
         scrolled_window.set_kinetic_scrolling (false);
 

@@ -70,7 +70,7 @@ namespace ReadySet {
             }
         }
 
-        return "CONTEXT_%s" + builder.free_and_steal ();
+        return "READY_SET_CONTEXT_%s" + builder.free_and_steal ();
     }
 
     public const string STEP_ID_LABEL = "step-id";

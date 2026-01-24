@@ -19,7 +19,7 @@
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Language/ui/page.ui")]
 public sealed class Language.Page : ReadySet.BasePage {
 
-    public async void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
+    public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
         try {
             var proxy = yield get_locale_proxy ();
 

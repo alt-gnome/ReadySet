@@ -130,59 +130,28 @@ public class ReadySet.PositionedStack : Adw.Bin {
     }
 
     void on_items_changed (uint position, uint removed, uint added) {
-        //  We need to readd stack tail to simulate inserting
-        Gee.ArrayList<PageInfo> readd = new Gee.ArrayList<PageInfo> ();
-
-        message ("%u, %u, %u", position, removed, added);
-
-        info ();
-
         for (uint i = 0; i < removed; i++) {
-            var name = childs[(int) position];
-            remove_page (name);
-        }
-
-        info ();
-
-        if (position < childs.size && added > 0) {
-            for (int i = (int) position; i < childs.size; i++) {
-                var page_info = childs[(int) position];
-                readd.add (page_info);
-                remove_page (page_info);
+            if (position >= childs.size) {
+                break;
             }
+            remove_page (childs[(int) position]);
         }
 
-        info ();
+        Gee.ArrayList<PageInfo> tail = new Gee.ArrayList<PageInfo> ();
+        while (childs.size > position) {
+            var page = childs[(int) position];
+            tail.add (page);
+            remove_page (page);
+        }
 
-        for (uint i = position; i < position + added; i++) {
-            var page = (PageInfo) model.get_item (i);
-
+        for (uint i = 0; i < added; i++) {
+            var page = (PageInfo) model.get_item (position + i);
             add_page (page);
         }
 
-        info ();
-
-        foreach (var page_info in readd) {
-            add_page (page_info);
+        foreach (var page in tail) {
+            add_page (page);
         }
-
-        info ();
-    }
- 
-    void info () {
-        message ("Info:");
-        var childs_names = new Gee.ArrayList<string> ();
-        foreach (var c in childs) {
-            childs_names.add (c.id);
-        }
-        message (string.joinv (", ", childs_names.to_array ()));
-
-        var stack_names = new Gee.ArrayList<string> ();
-        var m = stack.pages;
-        for (int i = 0; i < m.get_n_items (); i++) {
-            stack_names.add (((Gtk.StackPage) m.get_item (i)).name);
-        }
-        message (string.joinv (", ", stack_names.to_array ()));
     }
 
     void remove_page (PageInfo page_info) {
@@ -191,10 +160,14 @@ public class ReadySet.PositionedStack : Adw.Bin {
     }
 
     void add_page (PageInfo page_info) {
-        message ("Add %s", page_info.id);
-        message ((stack.get_child_by_name (page_info.id) == null).to_string ());
+        var widget = create_func (page_info);
+
+        if (widget.get_parent () != null) {
+            widget.unparent ();
+        }
+
         stack.add_titled (
-            create_func (page_info),
+            widget,
             page_info.id,
             page_info.title_header ?? "UNKNOWN"
         );

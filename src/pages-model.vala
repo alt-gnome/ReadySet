@@ -94,6 +94,10 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
         var store = new ListStore (typeof (PageInfo));
         foreach (var page in pages) {
             store.append (page);
+
+            page.notify["accessible"].connect (() => {
+                filter.changed (Gtk.FilterChange.DIFFERENT);
+            });
         }
         real_model = new Gtk.SingleSelection (new Gtk.FilterListModel (
             store, filter
@@ -101,8 +105,6 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
 
         real_model.selection_changed.connect (on_real_model_selection_changed);
         real_model.items_changed.connect (on_real_model_items_changed);
-
-        message ("NEW");
 
         unselect_all ();
     }
@@ -122,8 +124,6 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
                 new_selection_position -= removed;
             }
         }
-
-        message ("Items changed: %u, %u, %u", position, removed, added);
 
         select_item (new_selection_position, true);
         items_changed (position, removed, added);

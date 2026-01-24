@@ -42,7 +42,7 @@ public class User.Addin : ReadySet.Addin {
         };
     }
 
-    public async void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
+    public async override void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
         try {
             var user = yield Act.UserManager.get_default ().create_user_async (
                 context.get_string ("user-username"),

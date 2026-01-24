@@ -48,6 +48,8 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     static Gee.ArrayList<string> passed_pages = new Gee.ArrayList<string> ();
 
+    Binding model_binding;
+
     PageInfo _last_current_page;
     PageInfo last_current_page {
         get {
