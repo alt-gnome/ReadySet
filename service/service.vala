@@ -19,24 +19,6 @@
 [DBus (name = "org.altlinux.ReadySet")]
 public sealed class ReadySet.Service : Object {
 
-    public void generate_rules (
-        string user,
-        BusName sender
-    ) throws Error {
-        polkit_check (sender, "org.altlinux.ReadySet.GenerateRules");
-
-        clear_rules_internal ();
-        generate_rules_internal (user);
-        reload_polkit ();
-    }
-
-    public void clear_rules (BusName sender) throws Error {
-        polkit_check (sender, "org.altlinux.ReadySet.ClearRules");
-
-        clear_rules_internal ();
-        reload_polkit ();
-    }
-
     public void exec_pre_hooks (string[] env, BusName sender) throws Error {
         polkit_check (sender, "org.altlinux.ReadySet.ExecPreHooks");
 

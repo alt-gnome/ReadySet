@@ -1,15 +1,15 @@
 polkit.addRule(function(action, subject) {
-    if (subject.user !== "_greeter")
+    if (!subject.isInGroup('ready-set'))
         return;
 
     var actionMatches =
-        action.id.indexOf("org.altlinux.ReadySet.") === 0;
+        action.id.indexOf("@SERVICE_NAME@.") === 0;
 
     if (actionMatches) {
         if (subject.local)
             return polkit.Result.YES;
         else
-            return polkit.Result.AUTH_ADMIN_KEEP;
+            return polkit.Result.AUTH_ADMIN;
     }
 
     return;

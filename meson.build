@@ -46,6 +46,7 @@ localedir = get_option('prefix') / get_option('localedir')
 libdir = get_option('prefix') / get_option('libdir')
 sysconfdir = get_option('prefix') / get_option('sysconfdir')
 libexecdir = get_option('prefix') / get_option('libexecdir')
+rulesdir = datadir / 'polkit-1' / 'rules.d'
 
 global_conf = configuration_data()
 global_conf.set_quoted('NAME', meson.project_name())
@@ -64,9 +65,9 @@ global_conf.set_quoted('SUPPORTED_LANGUAGES', '|'.join(supported_languages_arr))
 
 subdir('data')
 subdir('po')
+subdir('service')
 subdir('lib')
 subdir('src')
-subdir('service')
 subdir('plugins')
 
 gnome.post_install(

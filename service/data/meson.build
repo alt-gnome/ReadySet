@@ -2,7 +2,7 @@ systemd_system_unit_dir = systemd.get_variable(pkgconfig: 'systemdsystemunitdir'
 
 dbus_conf = configuration_data()
 dbus_conf.set('LIBEXECDIR', libexecdir)
-dbus_conf.set('SERVICE_NAME', service_name)
+dbus_conf.set('SERVICE_NAME', app_id)
 dbus_conf.set('NAME', meson.project_name())
 dbus_conf.set('USER', 'root')
 
@@ -15,23 +15,23 @@ configure_file(
 )
 
 configure_file(
-  input: service_name + '.service.in',
-  output: service_name + '.service',
+  input: app_id + '.service.in',
+  output: app_id + '.service',
   configuration: dbus_conf,
   install_dir: datadir / 'dbus-1' / 'system-services'
 )
 
 configure_file(
-  input: service_name + '.policy.in',
-  output: service_name + '.policy',
+  input: app_id + '.policy.in',
+  output: app_id + '.policy',
   configuration: dbus_conf,
   install: true,
   install_dir: datadir / 'polkit-1' / 'actions'
 )
 
 configure_file(
-  input: service_name + '.conf.in',
-  output: service_name + '.conf',
+  input: app_id + '.conf.in',
+  output: app_id + '.conf',
   configuration: dbus_conf,
   install: true,
   install_dir: sysconfdir / 'dbus-1' / 'system.d'

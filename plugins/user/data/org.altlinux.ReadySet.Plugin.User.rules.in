@@ -1,5 +1,5 @@
 polkit.addRule(function(action, subject) {
-    if (subject.user !== "--READY-SET-USER--")
+    if (!subject.isInGroup('ready-set'))
         return;
 
     var actionMatches =

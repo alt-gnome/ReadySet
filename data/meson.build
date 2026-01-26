@@ -53,6 +53,16 @@ install_data(
   rename: [meson.project_name() + '.conf']
 )
 
+configure_file(
+    input: app_id + '.rules.in',
+    output: app_id + '.rules',
+    install: true,
+    install_dir: rulesdir,
+    configuration: {
+      'SERVICE_NAME': app_id
+    },
+)
+
 subdir('icons')
 
 install_emptydir(sysconfdir / meson.project_name())
