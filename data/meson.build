@@ -1,3 +1,5 @@
+subdir('dconf')
+
 rs_app_blueprints = custom_target('blueprints',
   input: files(
     'ui/devel-window.blp',
@@ -40,6 +42,16 @@ rs_app_resources = gnome.compile_resources(
 systemd = dependency('systemd')
 systemd_sysusers_dir = systemd.get_variable(pkgconfig: 'sysusers_dir')
 systemd_tmpfiles_dir = systemd.get_variable(pkgconfig: 'tmpfiles_dir')
+systemd_user_unit_dir = systemd.get_variable(pkgconfig: 'systemd_user_unit_dir')
+
+configure_file(
+  input: meson.project_name() + '.service.in',
+  output: meson.project_name() + '.service',
+  configuration: {
+    'LIBEXECDIR': libexecdir
+  },
+  install_dir: systemd_user_unit_dir
+)
 
 install_data(
   files(meson.project_name() + '-sysusers.conf'),
@@ -61,6 +73,25 @@ configure_file(
   configuration: {
     'SERVICE_NAME': app_id
   },
+)
+
+configure_file(
+  input: meson.project_name() + '.session.conf.in',
+  output: meson.project_name() + '.session.conf',
+  configuration: {
+    'THIS': meson.project_name(),
+  },
+  install_dir: systemd_user_unit_dir / 'gnome-session@' + meson.project_name() + '.target.d',
+)
+
+install_data(
+  meson.project_name() + '.session',
+  install_dir: datadir / 'gnome-session' / 'sessions'
+)
+
+install_data(
+  'initial-setup.json',
+  install_dir: datadir / 'gnome-shell' / 'modes'
 )
 
 subdir('icons')
