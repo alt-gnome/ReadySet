@@ -21,12 +21,6 @@ namespace ReadySet {
     [DBus (name = "org.altlinux.ReadySet")]
     public interface Service : Object {
 
-        public abstract void generate_rules (
-            string user = "ready-set"
-        ) throws Error;
-
-        public abstract void clear_rules () throws Error;
-
         public abstract void exec_pre_hooks (
             string[] env = {}
         ) throws Error;

@@ -32,5 +32,5 @@ configure_file(
 
 install_data(
   files('org.altlinux.ReadySet.Plugin.Language.rules'),
-  install_dir: join_paths(get_option('datadir'), meson.project_name(), 'rules.d'),
+  install_dir: rulesdir,
 )

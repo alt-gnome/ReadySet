@@ -74,14 +74,6 @@ public sealed class ReadySet.Application: Adw.Application {
     protected override void startup () {
         base.startup ();
 
-        if (!options_handler.idle) {
-            try {
-                get_ready_set_proxy ().generate_rules (options_handler.user);
-            } catch (Error e) {
-                error ("Failed to generate rules: %s", e.message);
-            }
-        }
-
         init_plugins ();
 
         options_handler.fill_context (context);
@@ -92,7 +84,6 @@ public sealed class ReadySet.Application: Adw.Application {
         if (!options_handler.idle) {
             try {
                 var proxy = get_ready_set_proxy ();
-                proxy.clear_rules ();
                 proxy.exec_pre_hooks ();
             } catch (Error e) {
                 error ("Failed to clear generated rules: %s", e.message);

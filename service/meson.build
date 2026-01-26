@@ -1,5 +1,3 @@
-service_name = 'org.altlinux.ReadySet'
-
 rs_internal_vapi_sources = files(
   'config.vapi',
 )
@@ -40,7 +38,7 @@ configure_file(output: 'config.h', configuration: global_conf)
 rs_internal_config_h_dir = include_directories('.')
 
 executable(
-  service_name,
+  app_id,
   rs_internal_sources,
   include_directories: rs_internal_config_h_dir,
   dependencies: rs_internal_dependencies,
