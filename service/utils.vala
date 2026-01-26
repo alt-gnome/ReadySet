@@ -18,10 +18,6 @@
 
 namespace ReadySet {
 
-    public void reload_polkit () throws Error {
-        get_systemd_proxy ().reload_unit ("polkit.service", "replace");
-    }
-
     public bool env_exec (string program, string[] env) throws Error {
         var launcher = new SubprocessLauncher (NONE);
         launcher.set_environ (env);

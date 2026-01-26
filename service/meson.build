@@ -5,7 +5,6 @@ rs_internal_vapi_sources = files(
 rs_internal_vala_sources = files(
   'main.vala',
   'service.vala',
-  'systemd-manager.vala',
   'utils.vala',
 )
 
