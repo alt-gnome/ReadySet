@@ -127,7 +127,7 @@ jobs:
           group: ready-set-nightly/${{ matrix.branch }}
 
   build-test-image:
-    name: Build image
+    name: Build ${{ matrix.denviron }} image
     runs-on: alt-sisyphus
     strategy:
       matrix:
