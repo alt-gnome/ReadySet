@@ -1,0 +1,13 @@
+[Unit]
+Description=Ready Set
+RefuseManualStart=true
+RefuseManualStop=true
+
+BindsTo=gnome-session.target
+After=gnome-session.target
+
+[Service]
+Type=simple
+ExecStart=@LIBEXECDIR@/ready-set
+ExecStopPost=-@LIBEXECDIR@/gnome-session-ctl --shutdown
+Restart=no
