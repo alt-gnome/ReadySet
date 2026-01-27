@@ -66,7 +66,7 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         options_handler = new OptionsHandler.from_options (options);
-        context = new Context (options_handler.idle);
+        context = new Context (options_handler.intact);
 
         return -1;
     }
@@ -81,7 +81,7 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     protected override void shutdown () {
-        if (!options_handler.idle) {
+        if (!options_handler.intact) {
             try {
                 var proxy = get_ready_set_proxy ();
                 proxy.exec_pre_hooks ();

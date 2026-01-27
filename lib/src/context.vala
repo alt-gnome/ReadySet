@@ -131,7 +131,7 @@ public class ReadySet.ContextVarInfo : Object {
 
 public class ReadySet.Context : Object {
 
-    public bool idle { get; construct; default = true; }
+    public bool intact { get; construct; default = true; }
 
     public signal void reload_window ();
 
@@ -141,9 +141,9 @@ public class ReadySet.Context : Object {
 
     public bool locked { get; set; default = false; }
 
-    public Context (bool idle) {
+    public Context (bool intact) {
         Object (
-            idle: idle
+            intact: intact
         );
     }
 

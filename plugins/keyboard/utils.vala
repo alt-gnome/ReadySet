@@ -140,7 +140,7 @@ namespace Keyboard {
             inputs_val.append_val (input.format);
         }
 
-        if (!context.idle) {
+        if (!context.intact) {
             VariantBuilder builder = new VariantBuilder (new VariantType ("a(ss)"));
 
             foreach (var info in inputs) {

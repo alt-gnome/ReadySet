@@ -409,7 +409,7 @@ msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
 #: src/options-handler.vala:40
-msgid "Idle run without doing anything"
+msgid "Intact run without doing anything"
 msgstr "Запуск без применения изменений в конце"
 
 #: src/options-handler.vala:41

@@ -28,9 +28,9 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     [GtkChild]
     unowned Adw.HeaderBar header_bar;
     [GtkChild]
-    unowned Gtk.Label idle_label_left;
+    unowned Gtk.Label intact_label_left;
     [GtkChild]
-    unowned Gtk.Label idle_label_right;
+    unowned Gtk.Label intact_label_right;
     [GtkChild]
     unowned Gtk.Button context_button;
     [GtkChild]
@@ -122,8 +122,8 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
         header_bar.show_end_title_buttons = Config.IS_DEVEL;
         context_button.visible = Config.IS_DEVEL;
-        idle_label_left.visible = ReadySet.Application.get_default ().context.idle && Config.IS_DEVEL;
-        idle_label_right.visible = ReadySet.Application.get_default ().context.idle && !Config.IS_DEVEL;
+        intact_label_left.visible = ReadySet.Application.get_default ().context.intact && Config.IS_DEVEL;
+        intact_label_right.visible = ReadySet.Application.get_default ().context.intact && !Config.IS_DEVEL;
 
         notify["show-steps-list"].connect (update_icons_visible);
         notify["simple"].connect (update_icons_visible);

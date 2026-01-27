@@ -58,7 +58,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
             applyable_arr.add (page_info.page);
         }
 
-        if (context.idle) {
+        if (context.intact) {
             Timeout.add_seconds (1, () => {
                 progress_data.value += 0.2;
                 progress_data.message = _("Doing some stuff…");

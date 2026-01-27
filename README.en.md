@@ -37,7 +37,7 @@ Context configuration options can be found in plugins README.
 
 ## Testing
 
-For test purpose you should use `--idle` option.
+For test purpose you should use `--intact` option.
 
 ## Install
 

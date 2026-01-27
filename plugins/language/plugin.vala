@@ -106,7 +106,7 @@ public class Language.Addin : ReadySet.Addin {
     }
 
     public override void init_once () {
-        if (!context.idle) {
+        if (!context.intact) {
             try {
                 accessible = new Polkit.Permission.sync ("org.freedesktop.locale1.set-locale", null, null).allowed;
             } catch (Error e) {
