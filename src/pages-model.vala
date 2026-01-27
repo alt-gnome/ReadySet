@@ -20,7 +20,7 @@
 
 public sealed class ReadySet.PageInfo : Object {
 
-    public string id { get; default = Uuid.string_random (); }
+    public string id { get; construct; }
 
     public BaseBarePage page { get; construct; }
 
@@ -62,6 +62,11 @@ public sealed class ReadySet.PageInfo : Object {
             plugin.notify["accessible"].connect (update_accessible);
         }
         update_accessible ();
+
+        id = "%s-%s".printf (
+            plugin != null ? plugin.get_type ().name () : "None",
+            page.get_type ().name ()
+        );
     }
 
     void update_accessible () {
