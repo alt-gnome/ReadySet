@@ -4,8 +4,8 @@ FROM $IMAGE
 
 ARG IMAGE
 
-RUN --mount=type=bind,source=./test-atomic/image.yml,target=/etc/apm/image.yml \
-    --mount=type=bind,source=./test-atomic/resources,target=/etc/apm/resources \
+RUN --mount=type=bind,source=./test-atomic/gnome/image.yml,target=/etc/apm/image.yml \
+    --mount=type=bind,source=./test-atomic/gnome/resources,target=/etc/apm/resources \
     apm system image build
 
 WORKDIR /
