@@ -39,7 +39,6 @@ public sealed class ReadySet.OptionsHandler : Object {
         { OPT_CONF_FILE, 'C', 0, OptionArg.FILENAME, null, N_("App config file"), "CONF-FILE" },
         { "idle", 'i', 0, OptionArg.NONE, null, N_("Idle run without doing anything"), null },
         { "fullscreen", 'F', 0, OptionArg.NONE, null, N_("Run window in fullscreen"), null },
-        { "user", 'u', 0, OptionArg.STRING, null, N_("User for which will be generated plugin polkit rules"), "STEPS_NO_APPLY" },
         { null }
     };
 
@@ -56,8 +55,6 @@ public sealed class ReadySet.OptionsHandler : Object {
     public bool idle { get; set; }
 
     public bool fullscreen { get; set; }
-
-    public string user { get; set; default = Environment.get_user_name (); }
 
     public OptionsHandler.from_options (VariantDict options) {
         conf_keyfile = new KeyFile ();
