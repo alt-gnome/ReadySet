@@ -135,6 +135,12 @@ public sealed class ReadySet.Application: Adw.Application {
                 var addin = plugins[all_steps[i]];
 
                 context.register_vars (addin.get_context_vars ());
+
+                var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
+                var var_name = "step-%s-enabled".printf (all_steps[i]);
+                vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN);
+                vars[var_name].initial_value = true;
+                context.register_vars (vars);
             }
         }
     }
@@ -159,10 +165,18 @@ public sealed class ReadySet.Application: Adw.Application {
                 addin.context = context;
                 addin.load_css_for_display (Gdk.Display.get_default ());
 
+                context.bind_context_to_property (
+                    "step-%s-enabled".printf (all_steps[i]),
+                    addin,
+                    "accessible",
+                    SYNC_CREATE
+                );
+
                 if (!(all_steps[i] in inited_plugins)) {
                     addin.init_once ();
                     inited_plugins.add (all_steps[i]);
                 }
+
                 foreach (var page in addin.build_pages ()) {
                     pages.add (new PageInfo (
                         page,

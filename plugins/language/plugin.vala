@@ -85,12 +85,6 @@ public class Language.Addin : ReadySet.Addin {
 
     construct {
         instance = this;
-
-        try {
-            accessible = new Polkit.Permission.sync ("org.freedesktop.locale1.set-locale", null, null).allowed;
-        } catch (Error e) {
-            error (e.message);
-        }
     }
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
@@ -109,6 +103,16 @@ public class Language.Addin : ReadySet.Addin {
 
     internal static Addin get_instance () {
         return instance;
+    }
+
+    public override void init_once () {
+        if (!context.idle) {
+            try {
+                accessible = new Polkit.Permission.sync ("org.freedesktop.locale1.set-locale", null, null).allowed;
+            } catch (Error e) {
+                error (e.message);
+            }
+        }
     }
 }
 
