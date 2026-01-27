@@ -176,6 +176,7 @@ Requires: %name = %EVR
 %files
 %_libexecdir/%name
 %_iconsdir/hicolor/*/apps/%{app_id}*
+%_datadir/applications/%{app_id}*
 %_datadir/polkit-1/rules.d/%app_id.rules
 %_userunitdir/*
 %_datadir/dconf/profile/%name
