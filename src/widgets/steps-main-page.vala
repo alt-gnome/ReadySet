@@ -33,6 +33,8 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     unowned Gtk.Label idle_label_right;
     [GtkChild]
     unowned Gtk.Button context_button;
+    [GtkChild]
+    unowned Gtk.ToggleButton steps_list_button;
 
     Devel.Window devel_window;
 
@@ -48,7 +50,7 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     static Gee.ArrayList<string> passed_pages = new Gee.ArrayList<string> ();
 
-    Binding model_binding;
+    public bool simple { get; set; }
 
     PageInfo _last_current_page;
     PageInfo last_current_page {
@@ -122,6 +124,21 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         context_button.visible = Config.IS_DEVEL;
         idle_label_left.visible = ReadySet.Application.get_default ().context.idle && Config.IS_DEVEL;
         idle_label_right.visible = ReadySet.Application.get_default ().context.idle && !Config.IS_DEVEL;
+
+        notify["show-steps-list"].connect (update_icons_visible);
+        notify["simple"].connect (update_icons_visible);
+        notify["dead-end"].connect (update_menu_button_visible);
+        notify["simple"].connect (update_menu_button_visible);
+        update_icons_visible ();
+        update_menu_button_visible ();
+    }
+
+    void update_icons_visible () {
+        pages_indicator.show_icons = !show_steps_list && !simple;
+    }
+
+    void update_menu_button_visible () {
+        steps_list_button.visible = !dead_end && !simple;
     }
 
     void selection_changed () {

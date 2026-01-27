@@ -24,6 +24,14 @@ public sealed class ReadySet.WindowContent : Adw.BreakpointBin {
     [GtkChild]
     unowned Adw.OverlaySplitView split_view;
 
+    public bool simple { get; construct; }
+
+    public WindowContent (bool simple) {
+        Object (
+            simple: simple
+        );
+    }
+
     construct {
         GLib.Application.get_default ().bind_property (
             "show-steps",

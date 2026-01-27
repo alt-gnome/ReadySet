@@ -39,6 +39,7 @@ public sealed class ReadySet.OptionsHandler : Object {
         { OPT_CONF_FILE, 'C', 0, OptionArg.FILENAME, null, N_("App config file"), "CONF-FILE" },
         { "idle", 'i', 0, OptionArg.NONE, null, N_("Idle run without doing anything"), null },
         { "fullscreen", 'F', 0, OptionArg.NONE, null, N_("Run window in fullscreen"), null },
+        { "simple", 'S', 0, OptionArg.NONE, null, N_("Don't show indicators and keep window simple"), null },
         { null }
     };
 
@@ -55,6 +56,8 @@ public sealed class ReadySet.OptionsHandler : Object {
     public bool idle { get; set; }
 
     public bool fullscreen { get; set; }
+
+    public bool simple { get; set; }
 
     public OptionsHandler.from_options (VariantDict options) {
         conf_keyfile = new KeyFile ();
