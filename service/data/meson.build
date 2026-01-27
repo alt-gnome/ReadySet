@@ -37,6 +37,5 @@ configure_file(
   install_dir: sysconfdir / 'dbus-1' / 'system.d'
 )
 
-install_emptydir(datadir / meson.project_name() / 'rules.d')
 install_emptydir(datadir / meson.project_name() / 'pre-hooks')
 install_emptydir(datadir / meson.project_name() / 'post-hooks')

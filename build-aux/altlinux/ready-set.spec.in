@@ -176,15 +176,19 @@ Requires: %name = %EVR
 %files
 %_libexecdir/%name
 %_iconsdir/hicolor/*/apps/%{app_id}*
+%_datadir/polkit-1/rules.d/%app_id.rules
+%_userunitdir/*
+%_datadir/dconf/profile/%name
+%_datadir/%name/initial-setup-dconf-defaults
+%_datadir/gnome-session/sessions/%name.session
+%_datadir/gnome-shell/modes/initial-setup.json
 
 # %files cli
 
 %files common -f %name.lang
 %_libexecdir/%app_id
 %_sysconfdir/%name
-%_datadir/%name/pre-hooks
-%_datadir/%name/post-hooks
-%_datadir/%name/rules.d
+%_datadir/%name
 %_sysconfdir/dbus-1/system.d/%app_id.conf
 %_datadir/polkit-1/actions/%app_id.policy
 %_datadir/dbus-1/system-services/%app_id.service
@@ -211,17 +215,17 @@ Requires: %name = %EVR
 %_girdir/%girname-%api_version.gir
 
 %files plugin-keyboard
-%_datadir/%name/rules.d/%app_id.Plugin.Keyboard.rules
+%_datadir/polkit-1/rules.d/%app_id.Plugin.Keyboard.rules
 %_libdir/%name/plugins/keyboard.plugin
 %_libdir/%name/plugins/libkeyboard.so
 
 %files plugin-language
-%_datadir/%name/rules.d/%app_id.Plugin.Language.rules
+%_datadir/polkit-1/rules.d/%app_id.Plugin.Language.rules
 %_libdir/%name/plugins/language.plugin
 %_libdir/%name/plugins/liblanguage.so
 
 %files plugin-user-common
-%_datadir/%name/rules.d/%app_id.Plugin.User.rules
+%_datadir/polkit-1/rules.d/%app_id.Plugin.User.rules
 %_libexecdir/%name-set-root-password
 
 %files plugin-user-passwdqc

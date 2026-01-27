@@ -66,7 +66,8 @@ jobs:
             /usr/bin/gtkdoc-scan \
             /usr/bin/meson \
             /usr/bin/valac \
-            /usr/bin/valadoc
+            /usr/bin/valadoc \
+            gettext-devel
  
       - name: Checkout repository
         uses: actions/checkout@v4
