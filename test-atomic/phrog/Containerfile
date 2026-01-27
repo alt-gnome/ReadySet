@@ -5,7 +5,7 @@ FROM $IMAGE
 ARG IMAGE
 
 RUN --mount=type=bind,source=./test-atomic/phrog/image.yml,target=/etc/apm/image.yml \
-    --mount=type=bind,source=./test-atomic/phrog/iresources,target=/etc/apm/resources \
+    --mount=type=bind,source=./test-atomic/phrog/resources,target=/etc/apm/resources \
     apm system image build
 
 WORKDIR /
