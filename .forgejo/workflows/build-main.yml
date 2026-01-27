@@ -170,5 +170,5 @@ jobs:
           registry-username: "<token>"
           registry-password: ${{ secrets.TOKEN }}
           image-name: alt-gnome/ready-set-test-atomic
-          image-tag: latest
+          image-tag: ${{ matrix.denviron }}
           local-build-name: ${{ env.LOCAL_BUILD_NAME }}
