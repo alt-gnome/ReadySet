@@ -2,6 +2,7 @@ modules:
   - type: packages
     body:
       install:
+        - systemd-stateless
         - icon-theme-adwaita
         - phrog
 
