@@ -1,5 +1,6 @@
 [Application]
 steps=language,keyboard,user-passwdqc
+simple=true
 
 [Context]
 user-with-root=true
