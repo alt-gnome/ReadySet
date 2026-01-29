@@ -201,6 +201,7 @@ Requires: %name = %EVR
 %_datadir/gnome-shell/modes/initial-setup.json
 %_userunitdir/*
 %_sysusersdir/%gis_name.conf
+%_tmpfilesdir/%gis_name.conf
 
 %files common -f %name.lang
 %_libexecdir/%app_id
