@@ -174,7 +174,7 @@ Requires: %name = %EVR
 %setup
 
 %build
-%meson -Dpassword_check_backend=both -Dis_devel=true
+%meson -Dpassword_check_backend=both -Dpretend_to_be_gis=true -Dis_devel=true
 %meson_build
 
 %install
