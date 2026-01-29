@@ -1,1 +1,1 @@
-kargs = ["gnome.initial-setup=1"]
+kargs = ["gnome.initial-setup=1", "systemd.debug_shell"]
