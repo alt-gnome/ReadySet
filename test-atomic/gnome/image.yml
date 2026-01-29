@@ -11,6 +11,7 @@ modules:
         - ready-set-plugin-language
         - ready-set-plugin-keyboard
         - ready-set-plugin-user-passwdqc
+        - ready-set-gnome-initial-setup
 
   - name: Copy configuration
     type: copy

@@ -1,5 +1,5 @@
 [Unit]
-Description=Ready Set
+Description=GNOME Initial Setup
 RefuseManualStart=true
 RefuseManualStop=true
 
@@ -8,6 +8,6 @@ After=gnome-session.target
 
 [Service]
 Type=simple
-ExecStart=@LIBEXECDIR@/ready-set
+ExecStart=@LIBEXECDIR@/gnome-initial-setup
 ExecStopPost=-@LIBEXECDIR@/gnome-session-ctl --shutdown
 Restart=no

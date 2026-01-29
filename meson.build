@@ -47,6 +47,7 @@ libdir = get_option('prefix') / get_option('libdir')
 sysconfdir = get_option('prefix') / get_option('sysconfdir')
 libexecdir = get_option('prefix') / get_option('libexecdir')
 rulesdir = datadir / 'polkit-1' / 'rules.d'
+localstatedir = get_option('prefix') / get_option('localstatedir')
 
 global_conf = configuration_data()
 global_conf.set_quoted('NAME', meson.project_name())

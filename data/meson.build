@@ -1,5 +1,3 @@
-subdir('dconf')
-
 rs_app_blueprints = custom_target('blueprints',
   input: files(
     'ui/devel-window.blp',
@@ -44,15 +42,6 @@ systemd_sysusers_dir = systemd.get_variable(pkgconfig: 'sysusers_dir')
 systemd_tmpfiles_dir = systemd.get_variable(pkgconfig: 'tmpfiles_dir')
 systemd_user_unit_dir = systemd.get_variable(pkgconfig: 'systemd_user_unit_dir')
 
-configure_file(
-  input: meson.project_name() + '.service.in',
-  output: meson.project_name() + '.service',
-  configuration: {
-    'LIBEXECDIR': libexecdir
-  },
-  install_dir: systemd_user_unit_dir
-)
-
 install_data(
   files(meson.project_name() + '-sysusers.conf'),
   install_dir: systemd_sysusers_dir,
@@ -75,25 +64,10 @@ configure_file(
   },
 )
 
-configure_file(
-  input: meson.project_name() + '.session.conf.in',
-  output: meson.project_name() + '.session.conf',
-  configuration: {
-    'THIS': meson.project_name(),
-  },
-  install_dir: systemd_user_unit_dir / 'gnome-session@' + meson.project_name() + '.target.d',
-)
-
-install_data(
-  meson.project_name() + '.session',
-  install_dir: datadir / 'gnome-session' / 'sessions'
-)
-
-install_data(
-  'initial-setup.json',
-  install_dir: datadir / 'gnome-shell' / 'modes'
-)
-
 subdir('icons')
+if get_option('pretend_to_be_gis')
+  subdir('gnome-initial-setup')
+endif
 
 install_emptydir(sysconfdir / meson.project_name())
+install_emptydir(localstatedir/ 'lib' / meson.project_name())

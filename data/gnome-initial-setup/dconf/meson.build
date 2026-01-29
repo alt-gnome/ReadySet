@@ -1,11 +1,11 @@
 configure_file(
-  input: meson.project_name() + '.in',
+  input: gis + '.in',
   output: '@BASENAME@',
   configuration: {
     'DATADIR': datadir,
-    'PACKAGE': meson.project_name(),
+    'PACKAGE': gis,
   },
-  install_dir: get_option('datadir') / 'dconf' / 'profile',
+  install_dir: datadir / 'dconf' / 'profile',
 )
 
 custom_target('initial-setup-dconf-defaults',
@@ -21,5 +21,5 @@ custom_target('initial-setup-dconf-defaults',
     meson.current_source_dir() / 'defaults',
   ],
   install: true,
-  install_dir: get_option('datadir') / meson.project_name(),
+  install_dir: datadir / gis,
 )

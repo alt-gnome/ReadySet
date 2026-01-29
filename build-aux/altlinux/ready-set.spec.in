@@ -4,6 +4,7 @@
 %define libname lib%name
 %define girname ReadySet
 %define api_version 0
+%define gis_name gnome-initial-setup
 
 Name: ready-set
 Version: @VERSION@
@@ -53,6 +54,16 @@ Obsoletes: %name-translation <= 0.3.0-alt1
 Provides: %name-translation = %EVR
 
 %description common
+%summary.
+
+%package %gis_name
+Summary: Files to pretend to be %gis_name for gdm
+Group: Other
+
+Conflicts: %gis_name
+Requires: %name = %EVR
+
+%description %gis_name
 %summary.
 
 # %package cli
@@ -178,13 +189,18 @@ Requires: %name = %EVR
 %_iconsdir/hicolor/*/apps/%{app_id}*
 %_datadir/applications/%{app_id}*
 %_datadir/polkit-1/rules.d/%app_id.rules
-%_userunitdir/*
-%_datadir/dconf/profile/%name
-%_datadir/%name/initial-setup-dconf-defaults
-%_datadir/gnome-session/sessions/%name.session
-%_datadir/gnome-shell/modes/initial-setup.json
 
 # %files cli
+
+%files %gis_name
+%_libexecdir/%gis_name
+%_desktopdir/%gis_name.desktop
+%_datadir/dconf/profile/%gis_name
+%_datadir/%gis_name
+%_datadir/gnome-session/sessions/%gis_name.session
+%_datadir/gnome-shell/modes/initial-setup.json
+%_userunitdir/*
+%_sysusersdir/%gis_name.conf
 
 %files common -f %name.lang
 %_libexecdir/%app_id

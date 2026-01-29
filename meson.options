@@ -27,6 +27,12 @@ option(
   description: 'Build test pages ot not',
 )
 option(
+  'pretend_to_be_gis',
+  type: 'boolean',
+  value: false,
+  description: 'Pretend to be gnome-initial-setup',
+)
+option(
   'password_check_backend',
   type: 'combo',
   choices: ['passwdqc', 'pwquality', 'both'],
