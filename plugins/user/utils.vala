@@ -73,9 +73,10 @@ namespace User {
 
         error = "";
 
-        foreach (char c in fullname.to_utf8 ()) {
-            unichar uc = c.to_string ().get_char_validated ();
+        int next_index = 0;
+        unichar uc;
 
+        while (fullname.get_next_char (ref next_index, out uc)) {
             if (uc == (unichar) (-1) || uc == (unichar) (-2))
                 break;
 
