@@ -184,6 +184,10 @@ Requires: %name = %EVR
 %check
 %meson_test
 
+%pre
+%sysusers_create_package %name %name.conf
+%sysusers_create_package %gis_name %gis_name.conf
+
 %files
 %_libexecdir/%name
 %_iconsdir/hicolor/*/apps/%{app_id}*
@@ -197,6 +201,8 @@ Requires: %name = %EVR
 %_desktopdir/%gis_name.desktop
 %_datadir/dconf/profile/%gis_name
 %_datadir/%gis_name
+%_var/lib/%gis_name
+%_var/run/%gis_name
 %_datadir/gnome-session/sessions/%gis_name.session
 %_datadir/gnome-shell/modes/initial-setup.json
 %_userunitdir/*
@@ -207,6 +213,7 @@ Requires: %name = %EVR
 %_libexecdir/%app_id
 %_sysconfdir/%name
 %_datadir/%name
+%_var/lib/%name
 %_sysconfdir/dbus-1/system.d/%app_id.conf
 %_datadir/polkit-1/actions/%app_id.policy
 %_datadir/dbus-1/system-services/%app_id.service
