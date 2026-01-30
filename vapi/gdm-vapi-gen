@@ -1,0 +1,20 @@
+#!/usr/bin/bash -e
+
+# vapigen generate kinda broken .vapi with Gdm-1.0.h in cheader_filename field, so we need to fix it manually (at least we try)
+
+VAPI_DIR="$1"
+DATADIR="$2"
+
+VAPI_FILE="$VAPI_DIR/gdm.vapi"
+
+vapigen --pkg gio-2.0 --pkg glib-2.0 --pkg gobject-2.0 --library gdm -d $VAPI_DIR $DATADIR/gir-1.0/Gdm-1.0.gir
+
+sed -i '/get_session_ids\|get_session_name_and_description/{
+    s|cheader_filename\s*=\s*"Gdm-1\.0\.h"|cheader_filename = "gdm/gdm-sessions.h"|
+}' "$VAPI_FILE"
+
+sed -i '/goto_login_session_sync/{
+    s|cheader_filename\s*=\s*"Gdm-1\.0\.h"|cheader_filename = "gdm/gdm-user-switching.h"|
+}' "$VAPI_FILE"
+
+sed -i 's|cheader_filename\s*=\s*"Gdm-1\.0\.h"|cheader_filename = "gdm/gdm-client.h"|g' "$VAPI_FILE"

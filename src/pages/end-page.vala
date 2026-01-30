@@ -19,6 +19,12 @@
 [GtkTemplate (ui = "/org/altlinux/ReadySet/ui/end-page.ui")]
 public sealed class ReadySet.EndPage : BaseBarePage {
 
+    const string SERVICE_NAME = "gdm-password";
+
+    Gdm.Client client;
+    Gdm.Greeter greeter;
+    Gdm.UserVerifier user_verifier;
+
     [GtkChild]
     unowned Gtk.Stack stack;
     [GtkChild]
@@ -30,18 +36,37 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
     ProgressData progress_data = new ProgressData ();
 
+    bool password_sent = false;
+
+    construct {
+        Application.get_default ().on_finish.connect (done);
+    }
+
     public async void start_action () {
-        stack.visible_child_name = "applying";
-        var context = ReadySet.Application.get_default ().context;
+        var app = Application.get_default ();
+        var context = app.context;
         context.locked = true;
+
+        if (!app.has_installer && !context.intact) {
+            try {
+                client = new Gdm.Client ();
+                greeter = yield client.get_greeter (null);
+                user_verifier = yield client.get_user_verifier (null);
+            } catch (Error e) {
+                warning ("Failed to connect to GDM: %s", e.message);
+                client = null;
+                greeter = null;
+                user_verifier = null;
+            }
+        }
+
+        stack.visible_child_name = "applying";
 
         progress_data.bind_property ("message", apply_status_page, "description");
         progress_data.bind_property ("value", progress_bar, "fraction");
 
         progress_data.notify["value"].connect (update_progress_visibility);
         update_progress_visibility ();
-
-        var app = (ReadySet.Application) GLib.Application.get_default ();
 
         Gee.ArrayList<Applyable> applyable_arr = new Gee.ArrayList<Applyable> ();
 
@@ -82,6 +107,8 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                     progress_data.value = 1.0;
                 }
 
+                yield app.installer_plugin.install (progress_data);
+
                 var raw_context = context.get_raw_string ();
                 var env = new Gee.ArrayList<string> ();
 
@@ -114,5 +141,98 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
     void update_progress_visibility () {
         progress_bar.visible = 1.0 > progress_data.value > 0;
+    }
+
+    void done () {
+        var app = Application.get_default ();
+        var context = app.context;
+
+        if (context.intact) {
+            return;
+        }
+
+        if (!app.has_installer && client != null) {
+            activate_action ("app.hide-window", null);
+            log_user_in ();
+        } else {
+            app.quit ();
+        }
+    }
+
+    void request_info_query (Gdm.UserVerifier user_verifier, string question, bool is_secret) {
+        /* TODO: pop up modal dialog */
+        debug (
+            "user verifier asks%s question: %s",
+            is_secret ? " secret" : "",
+            question
+        );
+    }
+
+    void on_info (Gdm.UserVerifier user_verifier, string service_name, string info) {
+        debug ("PAM module info: %s", info);
+    }
+
+    void on_problem (Gdm.UserVerifier user_verifier, string service_name, string problem) {
+        warning ("PAM module error: %s", problem);
+    }
+
+    void on_info_query (Gdm.UserVerifier user_verifier, string service_name, string question) {
+        request_info_query (user_verifier, question, false);
+    }
+
+    void on_secret_info_query (Gdm.UserVerifier user_verifier, string service_name, string question) {
+        var context = Application.get_default ().context;
+
+        debug ("PAM module secret info query %s", question);
+        if (context.has_key ("user-password") && !password_sent) {
+            debug ("sending password\n");
+            user_verifier.call_answer_query.begin (service_name, context.get_string ("user-password"), null);
+            password_sent = true;
+        } else {
+            request_info_query (user_verifier, question, true);
+        }
+    }
+
+    void on_session_opened (Gdm.Greeter greeter, string service_name, string session_id) {
+        try {
+            greeter.call_start_session_when_ready_sync (service_name, true, null);
+        } catch (Error e) {
+            warning ("Failed to open session: %s", e.message);
+        }
+    }
+
+    void add_uid_file (int64 uid) {
+        var gis_uid_path = Path.build_filename (Environment.get_home_dir (), "gnome-initial-setup-uid");
+        var uid_str = uid.to_string ();
+
+        try {
+            FileUtils.set_contents (gis_uid_path, uid_str);
+        } catch (Error e) {
+            warning ("Unable to create %s: %s", gis_uid_path, e.message);
+        }
+    }
+
+    void log_user_in () {
+        var context = Application.get_default ().context;
+
+        if (client == null) {
+            warning ("No GDM connection; not initiating login");
+            return;
+        }
+
+        user_verifier.info.connect (on_info);
+        user_verifier.problem.connect (on_problem);
+        user_verifier.info_query.connect (on_info_query);
+        user_verifier.secret_info_query.connect (on_secret_info_query);
+
+        greeter.session_opened.connect (on_session_opened);
+
+        add_uid_file (context.get_int ("user-created-uid"));
+
+        try {
+            user_verifier.call_begin_verification_for_user_sync (SERVICE_NAME, context.get_string ("user-username"), null);
+        } catch (Error e) {
+            warning ("Could not begin verification: %s", e.message);
+        }
     }
 }

@@ -24,5 +24,5 @@ shared_module(
   dependencies: plugin_welcome_deps,
   c_args: plugin_welcome_c_args,
   install: true,
-  install_dir: libdir / meson.project_name() / 'plugins'
+  install_dir: steps_plugins_dir
 )

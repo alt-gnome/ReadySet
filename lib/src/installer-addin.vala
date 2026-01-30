@@ -18,20 +18,16 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Welcome.Addin : ReadySet.StepAddin {
+public abstract class ReadySet.InstallerAddin : Peas.ExtensionBase {
 
-    protected override string? resource_base_path {
-        get {
-            return "/org/altlinux/ReadySet/Plugin/Welcome/";
-        }
+    public Context context { get; set; default = new Context (true); }
+
+    public async virtual void install (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
+        return;
     }
 
-    public override ReadySet.BaseBarePage[] build_pages () {
-        return { new Welcome.Page () };
+    //  After context set action. Calls once. Calls before init
+    public virtual void init_once () {
+        return;
     }
-}
-
-public void peas_register_types (TypeModule module) {
-    var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySet.StepAddin), typeof (Welcome.Addin));
 }

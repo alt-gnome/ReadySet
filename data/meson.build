@@ -65,9 +65,7 @@ configure_file(
 )
 
 subdir('icons')
-if get_option('pretend_to_be_gis')
-  subdir('gnome-initial-setup')
-endif
+subdir('gnome-initial-setup')
 
 install_emptydir(sysconfdir / meson.project_name())
 install_emptydir(localstatedir/ 'lib' / meson.project_name())

@@ -12,4 +12,7 @@ namespace Config {
     public const string GETTEXT_PACKAGE;
     public const string GNOMELOCALEDIR;
     public const string SUPPORTED_LANGUAGES;
+    public const string GDMEXPORTDIR;
+    public const string STEPS_PLUGINS_DIR;
+    public const string INSTALLERS_PLUGINS_DIR;
 }

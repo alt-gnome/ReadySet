@@ -50,7 +50,7 @@ foreach pwcheck_backend : password_check_backend
       'VERSION': meson.project_version(),
     },
     install: true,
-    install_dir: libdir / meson.project_name() / 'plugins'
+    install_dir: steps_plugins_dir
   )
 
   plugin_user_c_args = [
@@ -74,6 +74,6 @@ foreach pwcheck_backend : password_check_backend
     c_args: plugin_user_c_args,
     vala_args: plugin_user_vala_args,
     install: true,
-    install_dir: libdir / meson.project_name() / 'plugins'
+    install_dir: steps_plugins_dir
   )
 endforeach

@@ -27,14 +27,13 @@ option(
   description: 'Build test pages ot not',
 )
 option(
-  'pretend_to_be_gis',
-  type: 'boolean',
-  value: false,
-  description: 'Pretend to be gnome-initial-setup',
-)
-option(
   'password_check_backend',
   type: 'combo',
   choices: ['passwdqc', 'pwquality', 'both'],
   value : 'passwdqc'
+)
+option('gdm_rundir',
+  type: 'string',
+  value: '/run/gdm',
+  description: 'GDM\'s runtime directory. The dynamic gnome-initial-setup user\'s home dir is exported here',
 )

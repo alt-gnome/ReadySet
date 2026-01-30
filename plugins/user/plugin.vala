@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class User.Addin : ReadySet.Addin {
+public class User.Addin : ReadySet.StepAddin {
 
     static Addin instance;
 
@@ -60,6 +60,8 @@ public class User.Addin : ReadySet.Addin {
                 user.set_icon_file (context.get_string ("user-avatar-file"));
             }
 
+            context.set_int ("user-created-uid", user.uid);
+
             if (context.get_string ("user-root-password") != "") {
                 set_root_password (context.get_string ("user-root-password"));
             } else {
@@ -87,6 +89,7 @@ public class User.Addin : ReadySet.Addin {
         vars["user-fullname"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["user-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["user-root-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["user-created-uid"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.INT);
         vars["user-autologin"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
         return vars;
     }
@@ -98,5 +101,5 @@ public class User.Addin : ReadySet.Addin {
 
 public void peas_register_types (TypeModule module) {
     var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySet.Addin), typeof (User.Addin));
+    obj.register_extension_type (typeof (ReadySet.StepAddin), typeof (User.Addin));
 }

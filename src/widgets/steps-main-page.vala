@@ -202,9 +202,4 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     void continue_clicked () {
         model?.select_item (model.get_selected () + 1, true);
     }
-
-    [GtkCallback]
-    void finish_clicked () {
-        GLib.Application.get_default ().quit ();
-    }
 }

@@ -1,5 +1,3 @@
-gis = 'gnome-initial-setup'
-
 install_symlink(
   gis,
   install_dir: libexecdir,
@@ -36,10 +34,13 @@ install_data(
   rename: [gis + '.conf']
 )
 
-install_data(
-  files(gis + '-tmpfiles.conf'),
+configure_file(
+  input: gis + '-tmpfiles.conf.in',
+  output: gis + '.conf',
+  configuration: {
+    'LOCALSTATEDIR': localstatedir,
+  },
   install_dir: systemd_tmpfiles_dir,
-  rename: [gis + '.conf']
 )
 
 configure_file(

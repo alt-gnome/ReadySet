@@ -18,9 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public abstract class ReadySet.Addin : Peas.ExtensionBase, Applyable {
-
-    public string start_apply_message { get; set; default = _("Applying changes…"); }
+public abstract class ReadySet.StepAddin : Peas.ExtensionBase, Applyable {
 
     protected virtual string? resource_base_path {
         get {

@@ -24,7 +24,7 @@ public sealed class ReadySet.PageInfo : Object {
 
     public BaseBarePage page { get; construct; }
 
-    public Addin? plugin { get; construct; }
+    public StepAddin? plugin { get; construct; }
 
     public bool apply_plugin { get; construct; }
 
@@ -38,7 +38,7 @@ public sealed class ReadySet.PageInfo : Object {
 
     public string icon_name { get; set; }
 
-    public PageInfo (BaseBarePage page, Addin? plugin, bool apply_plugin = true) {
+    public PageInfo (BaseBarePage page, StepAddin? plugin, bool apply_plugin = true) {
         Object (
             page: page,
             plugin: plugin,

@@ -141,7 +141,7 @@ template $ReadySetStepsMainPage: Adw.Bin {
             label: _("Go!");
             width-request: 156;
             can-shrink: true;
-            clicked => $finish_clicked();
+            action-name: "app.finish";
           };
         }
       };

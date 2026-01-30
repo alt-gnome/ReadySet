@@ -25,6 +25,7 @@ rs_app_vala_sources = files(
 )
 
 rs_app_dependencies = [
+  gdm_dep,
   gee_dep,
   libadwaita_dep,
   libpeas_dep,

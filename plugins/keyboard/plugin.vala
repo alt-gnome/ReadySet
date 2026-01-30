@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Keyboard.Addin : ReadySet.Addin {
+public class Keyboard.Addin : ReadySet.StepAddin {
 
     static Addin instance;
 
@@ -73,5 +73,5 @@ public class Keyboard.Addin : ReadySet.Addin {
 
 public void peas_register_types (TypeModule module) {
     var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySet.Addin), typeof (Keyboard.Addin));
+    obj.register_extension_type (typeof (ReadySet.StepAddin), typeof (Keyboard.Addin));
 }

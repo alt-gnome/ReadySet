@@ -73,7 +73,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup
-        run: meson setup _build -Dwith_lib_documentation=true -Dwith_test_pages=true  -Dpassword_check_backend=both -Dpretend_to_be_gis=true
+        run: meson setup _build -Dwith_lib_documentation=true -Dwith_test_pages=true  -Dpassword_check_backend=both
 
       - name: Build
         run: meson compile -C _build

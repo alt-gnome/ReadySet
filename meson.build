@@ -21,6 +21,7 @@ ibus_dep = dependency('ibus-1.0')
 libadwaita_dep = dependency('libadwaita-1', version: '>= 1.7')
 libpeas_dep = dependency('libpeas-2')
 polkit_dep = dependency('polkit-gobject-1')
+gdm_dep = dependency('gdm')
 posix_dep = meson.get_compiler('vala').find_library('posix')
 
 api_version = meson.project_version().split('.')[0]
@@ -41,13 +42,19 @@ foreach lang : linguas
 endforeach
 supported_languages_arr += ['en']
 
-datadir = get_option('prefix') / get_option('datadir')
-localedir = get_option('prefix') / get_option('localedir')
-libdir = get_option('prefix') / get_option('libdir')
-sysconfdir = get_option('prefix') / get_option('sysconfdir')
-libexecdir = get_option('prefix') / get_option('libexecdir')
+gis = 'gnome-initial-setup'
+
+prefix = get_option('prefix')
+datadir = prefix / get_option('datadir')
+localedir = prefix / get_option('localedir')
+libdir = prefix / get_option('libdir')
+sysconfdir = prefix / get_option('sysconfdir')
+libexecdir = prefix / get_option('libexecdir')
 rulesdir = datadir / 'polkit-1' / 'rules.d'
-localstatedir = get_option('prefix') / get_option('localstatedir')
+localstatedir = prefix / get_option('localstatedir')
+
+steps_plugins_dir = libdir / meson.project_name() / 'plugins' / 'steps'
+installers_plugins_dir = libdir / meson.project_name() / 'plugins' / 'installers'
 
 global_conf = configuration_data()
 global_conf.set_quoted('NAME', meson.project_name())
@@ -63,7 +70,11 @@ global_conf.set_quoted('DATADIR', datadir)
 global_conf.set_quoted('LIBEXECDIR', libexecdir)
 global_conf.set_quoted('GNOMELOCALEDIR', localedir)
 global_conf.set_quoted('SUPPORTED_LANGUAGES', '|'.join(supported_languages_arr))
+global_conf.set_quoted('GDMEXPORTDIR', join_paths(prefix, get_option('gdm_rundir'), gis))
+global_conf.set_quoted('STEPS_PLUGINS_DIR', steps_plugins_dir)
+global_conf.set_quoted('INSTALLERS_PLUGINS_DIR', installers_plugins_dir)
 
+subdir('vapi')
 subdir('data')
 subdir('po')
 subdir('service')

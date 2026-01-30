@@ -18,7 +18,14 @@
 
 public sealed class ReadySet.Application: Adw.Application {
 
-    const ActionEntry[] ACTION_ENTRIES = {};
+    const ActionEntry[] ACTION_ENTRIES = {
+        { "finish", finish },
+        { "reload-window", reload_window },
+        { "hide-window", hide_window },
+    };
+
+    Peas.Engine steps_engine;
+    Peas.Engine installers_engine;
 
     static string[] all_steps = {};
 
@@ -27,7 +34,26 @@ public sealed class ReadySet.Application: Adw.Application {
     public OptionsHandler options_handler;
     public Context context { get; private set; }
 
-    Gee.HashMap<string, Addin> plugins = new Gee.HashMap<string, Addin> ();
+    Gee.HashMap<string, StepAddin> steps_plugins = new Gee.HashMap<string, StepAddin> ();
+    Gee.HashMap<string, InstallerAddin> installers_plugins = new Gee.HashMap<string, InstallerAddin> ();
+
+    public signal void on_finish ();
+
+    public bool has_installer {
+        get {
+            return options_handler.installer != null;
+        }
+    }
+
+    public InstallerAddin? installer_plugin {
+        owned get {
+            if (!has_installer) {
+                return null;
+            }
+
+            return installers_plugins[options_handler.installer];
+        }
+    }
 
     public PagesModel? model { get; private set; default = null; }
 
@@ -74,7 +100,8 @@ public sealed class ReadySet.Application: Adw.Application {
     protected override void startup () {
         base.startup ();
 
-        init_plugins ();
+        init_steps_plugins ();
+        init_installers_plugins ();
 
         options_handler.fill_context (context);
         context.reload_window.connect (reload_window);
@@ -93,37 +120,53 @@ public sealed class ReadySet.Application: Adw.Application {
         base.shutdown ();
     }
 
-    Peas.Engine get_engine () {
-        var engine = Peas.Engine.get_default ();
-        engine.enable_loader ("python");
+    Peas.Engine get_steps_engine () {
+        if (steps_engine == null) {
+            steps_engine = new Peas.Engine ();
+            steps_engine.enable_loader ("python");
 
-        engine.add_search_path (
-            Path.build_filename (Config.LIBDIR, Config.NAME, "plugins"),
-            Path.build_filename (Config.DATADIR, Config.NAME, "plugins")
-        );
+            steps_engine.add_search_path (
+                Config.STEPS_PLUGINS_DIR,
+                Config.STEPS_PLUGINS_DIR
+            );
+        }
 
-        return engine;
+        return steps_engine;
     }
 
-    void init_plugins () {
-        var engine = get_engine ();
-        var addins = new Peas.ExtensionSet.with_properties (engine, typeof (Addin), {}, {});
+    Peas.Engine get_installers_engine () {
+        if (installers_engine == null) {
+            installers_engine = new Peas.Engine ();
+            installers_engine.enable_loader ("python");
+
+            installers_engine.add_search_path (
+                Config.INSTALLERS_PLUGINS_DIR,
+                Config.INSTALLERS_PLUGINS_DIR
+            );
+        }
+
+        return installers_engine;
+    }
+
+    void init_steps_plugins () {
+        var engine = get_steps_engine ();
+        var addins = new Peas.ExtensionSet.with_properties (engine, typeof (StepAddin), {}, {});
 
         for (int i = 0; i < engine.get_n_items (); i++) {
             engine.load_plugin ((Peas.PluginInfo) engine.get_item (i));
         }
 
-        plugins.clear ();
+        steps_plugins.clear ();
 
         addins.foreach ((_set, info, extension) => {
-            plugins[info.module_name] = (Addin) extension;
+            steps_plugins[info.module_name] = (StepAddin) extension;
         });
 
-        if (plugins.size == 0) {
+        if (steps_plugins.size == 0) {
             error ("\nNo plugins found\n");
         } else {
-            print ("\nFound plugins:\n");
-            foreach (var plugin in plugins) {
+            print ("\nFound steps plugins:\n");
+            foreach (var plugin in steps_plugins) {
                 print ("  %s\n", plugin.key);
             }
         }
@@ -131,8 +174,8 @@ public sealed class ReadySet.Application: Adw.Application {
         all_steps = get_all_steps ();
 
         for (int i = 0; i < all_steps.length; i++) {
-            if (plugins[all_steps[i]] != null) {
-                var addin = plugins[all_steps[i]];
+            if (steps_plugins[all_steps[i]] != null) {
+                var addin = steps_plugins[all_steps[i]];
 
                 context.register_vars (addin.get_context_vars ());
 
@@ -145,12 +188,40 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
+    void init_installers_plugins () {
+        var engine = get_installers_engine ();
+        var addins = new Peas.ExtensionSet.with_properties (engine, typeof (InstallerAddin), {}, {});
+
+        for (int i = 0; i < engine.get_n_items (); i++) {
+            engine.load_plugin ((Peas.PluginInfo) engine.get_item (i));
+        }
+
+        installers_plugins.clear ();
+
+        addins.foreach ((_set, info, extension) => {
+            installers_plugins[info.module_name] = (InstallerAddin) extension;
+        });
+
+        if (installers_plugins.size != 0) {
+            print ("\nFound installers plugins:\n");
+            foreach (var plugin in installers_plugins) {
+                print ("  %s\n", plugin.key);
+            }
+        }
+
+        if (has_installer) {
+            if (!installers_plugins.has_key (options_handler.installer)) {
+                error ("Unknown installer plugin");
+            }
+        }
+    }
+
     public void init_pages () {
         var pages = new Gee.ArrayList<PageInfo> ();
 
         print ("Loaded plugins:\n");
         for (int i = 0; i < all_steps.length; i++) {
-            if (plugins[all_steps[i]] == null) {
+            if (steps_plugins[all_steps[i]] == null) {
                 pages.add (new PageInfo (
                     new BasePage () {
                         is_ready = true
@@ -160,7 +231,7 @@ public sealed class ReadySet.Application: Adw.Application {
                 ));
                 print ("  broken step (%s)\n", all_steps[i]);
             } else {
-                var addin = plugins[all_steps[i]];
+                var addin = steps_plugins[all_steps[i]];
 
                 addin.context = context;
                 addin.load_css_for_display (Gdk.Display.get_default ());
@@ -216,6 +287,10 @@ public sealed class ReadySet.Application: Adw.Application {
         (active_window as ReadySet.Window)?.reload_window ();
     }
 
+    void hide_window () {
+        (active_window as ReadySet.Window)?.hide ();
+    }
+
     public override void activate () {
         base.activate ();
 
@@ -240,5 +315,9 @@ public sealed class ReadySet.Application: Adw.Application {
 
     public new static ReadySet.Application get_default () {
         return (ReadySet.Application) GLib.Application.get_default ();
+    }
+
+    void finish () {
+        on_finish ();
     }
 }
