@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Test.Addin : ReadySet.Addin {
+public class Test.Addin : ReadySet.StepAddin {
 
     static Addin instance;
 
@@ -58,5 +58,5 @@ public class Test.Addin : ReadySet.Addin {
 
 public void peas_register_types (TypeModule module) {
     var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySet.Addin), typeof (Test.Addin));
+    obj.register_extension_type (typeof (ReadySet.StepAddin), typeof (Test.Addin));
 }
