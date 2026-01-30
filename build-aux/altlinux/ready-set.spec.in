@@ -26,11 +26,13 @@ BuildRequires: rpm-build-vala
 BuildRequires: rpm-build-gir
 BuildRequires: meson
 BuildRequires: vala
+BuildRequires: vala-tools
 BuildRequires: gobject-introspection-devel
 BuildRequires: blueprint-compiler
 BuildRequires: gir(Adw) = 1
 BuildRequires: gir(Gtk) = 4.0
 BuildRequires: gir(Peas) = 2
+BuildRequires: gir(Gdm) = 1.0
 BuildRequires: pkgconfig(accountsservice)
 BuildRequires: pkgconfig(gee-0.8)
 BuildRequires: pkgconfig(gio-unix-2.0)
@@ -42,6 +44,7 @@ BuildRequires: pkgconfig(passwdqc)
 BuildRequires: pkgconfig(polkit-gobject-1)
 BuildRequires: pkgconfig(pwquality)
 BuildRequires: pkgconfig(systemd)
+BuildRequires: pkgconfig(gdm)
 
 %description
 %summary.

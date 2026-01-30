@@ -47,9 +47,11 @@ jobs:
           apt-get update
           apt-get install -y \
             'gir(Adw)=1' \
+            'gir(Gdm)=1.0' \
             'gir(Gtk)=4.0' \
             'gir(Peas)=2' \
             'pkgconfig(accountsservice)' \
+            'pkgconfig(gdm)' \
             'pkgconfig(gee-0.8)' \
             'pkgconfig(gio-unix-2.0)' \
             'pkgconfig(gnome-desktop-4)' \
@@ -67,6 +69,7 @@ jobs:
             /usr/bin/meson \
             /usr/bin/valac \
             /usr/bin/valadoc \
+            /usr/bin/vapigen \
             gettext-devel
  
       - name: Checkout repository
