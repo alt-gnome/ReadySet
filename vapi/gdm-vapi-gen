@@ -1,4 +1,4 @@
-#!/usr/bin/bash -e
+#!/usr/bin/bash -ex
 
 # vapigen generate kinda broken .vapi with Gdm-1.0.h in cheader_filename field, so we need to fix it manually (at least we try)
 

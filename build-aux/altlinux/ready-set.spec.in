@@ -19,6 +19,7 @@ VCS: https://altlinux.space/alt-gnome/ReadySet.git
 Source: %name-%version.tar
 
 Requires: %name-common = %EVR
+Conflicts: %gis_name
 
 BuildRequires(pre): rpm-macros-meson
 BuildRequires(pre): rpm-macros-systemd
@@ -57,16 +58,6 @@ Obsoletes: %name-translation <= 0.3.0-alt1
 Provides: %name-translation = %EVR
 
 %description common
-%summary.
-
-%package %gis_name
-Summary: Files to pretend to be %gis_name for gdm
-Group: Other
-
-Conflicts: %gis_name
-Requires: %name = %EVR
-
-%description %gis_name
 %summary.
 
 # %package cli
@@ -196,10 +187,6 @@ Requires: %name = %EVR
 %_iconsdir/hicolor/*/apps/%{app_id}*
 %_datadir/applications/%{app_id}*
 %_datadir/polkit-1/rules.d/%app_id.rules
-
-# %files cli
-
-%files %gis_name
 %_libexecdir/%gis_name
 %_desktopdir/%gis_name.desktop
 %_datadir/dconf/profile/%gis_name
@@ -211,6 +198,8 @@ Requires: %name = %EVR
 %_userunitdir/*
 %_sysusersdir/%gis_name.conf
 %_tmpfilesdir/%gis_name.conf
+
+# %files cli
 
 %files common -f %name.lang
 %_libexecdir/%app_id
@@ -244,26 +233,26 @@ Requires: %name = %EVR
 
 %files plugin-keyboard
 %_datadir/polkit-1/rules.d/%app_id.Plugin.Keyboard.rules
-%_libdir/%name/plugins/keyboard.plugin
-%_libdir/%name/plugins/libkeyboard.so
+%_libdir/%name/plugins/steps/keyboard.plugin
+%_libdir/%name/plugins/steps/libkeyboard.so
 
 %files plugin-language
 %_datadir/polkit-1/rules.d/%app_id.Plugin.Language.rules
-%_libdir/%name/plugins/language.plugin
-%_libdir/%name/plugins/liblanguage.so
+%_libdir/%name/plugins/steps/language.plugin
+%_libdir/%name/plugins/steps/liblanguage.so
 
 %files plugin-user-common
 %_datadir/polkit-1/rules.d/%app_id.Plugin.User.rules
 %_libexecdir/%name-set-root-password
 
 %files plugin-user-passwdqc
-%_libdir/%name/plugins/user-passwdqc.plugin
-%_libdir/%name/plugins/libuser-passwdqc.so
+%_libdir/%name/plugins/steps/user-passwdqc.plugin
+%_libdir/%name/plugins/steps/libuser-passwdqc.so
 
 %files plugin-user-pwquality
-%_libdir/%name/plugins/user-pwquality.plugin
-%_libdir/%name/plugins/libuser-pwquality.so
+%_libdir/%name/plugins/steps/user-pwquality.plugin
+%_libdir/%name/plugins/steps/libuser-pwquality.so
 
 %files plugin-welcome
-%_libdir/%name/plugins/welcome.plugin
-%_libdir/%name/plugins/libwelcome.so
+%_libdir/%name/plugins/steps/welcome.plugin
+%_libdir/%name/plugins/steps/libwelcome.so
