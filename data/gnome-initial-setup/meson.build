@@ -1,7 +1,7 @@
 install_symlink(
   gis,
   install_dir: libexecdir,
-  pointing_to: libexecdir / meson.project_name()
+  pointing_to: meson.project_name()
 )
 
 i18n.merge_file(
