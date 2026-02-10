@@ -45,7 +45,7 @@ configure_file(
 
 configure_file(
   input: gis + '.session.conf.in',
-  output: gis + '.session.conf',
+  output: gis + '.conf',
   configuration: {
     'THIS': gis,
   },
