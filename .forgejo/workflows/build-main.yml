@@ -141,7 +141,7 @@ jobs:
           - denviron: phrog
             image: altlinux.space/alt-atomic/minimal/phosh/nightly:latest
           - denviron: gnome
-            image: altlinux.space/alt-atomic/onyx/nightly:latest
+            image: altlinux.space/alt-atomic/onyx/nightly:20260130
 
     needs:
       - rpm-build
