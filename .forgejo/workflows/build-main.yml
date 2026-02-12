@@ -171,6 +171,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           registry-username: "<token>"
           registry-password: ${{ secrets.TOKEN }}
-          image-name: alt-gnome/ready-set-test-atomic
-          image-tag: ${{ matrix.denviron }}/${{ github.ref_name }}
+          image-name: alt-gnome/ready-set-test-atomic/${{ github.ref_name }}
+          image-tag: ${{ matrix.denviron }}
           local-build-name: ${{ env.LOCAL_BUILD_NAME }}
