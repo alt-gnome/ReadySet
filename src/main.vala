@@ -17,6 +17,17 @@
  */
 
 int main (string[] args) {
+    if (Config.IS_DEVEL) {
+        Log.set_debug_enabled (true);
+    }
+
+    Log.set_writer_func ((log_level, fields) => {
+        if (Config.IS_DEVEL) {
+            Log.writer_journald (log_level, fields);
+        }
+        return Log.writer_default (log_level, fields);
+    });
+
     Intl.bindtextdomain (Config.GETTEXT_PACKAGE, Config.GNOMELOCALEDIR);
     Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
     Intl.textdomain (Config.GETTEXT_PACKAGE);
