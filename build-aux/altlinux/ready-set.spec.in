@@ -178,10 +178,6 @@ Requires: %name = %EVR
 %check
 %meson_test
 
-%pre
-%sysusers_create_package %name %name.conf
-%sysusers_create_package %gis_name %gis_name.conf
-
 %files
 %_libexecdir/%name
 %_iconsdir/hicolor/*/apps/%{app_id}*
