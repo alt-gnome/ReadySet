@@ -4,8 +4,6 @@ on:
   pull_request:
   workflow_dispatch:
   push:
-    branches:
-      - 'main'
 
 jobs:
   lint-vala:
@@ -127,7 +125,7 @@ jobs:
         with:
           directory: ~/.cache/hasherc/ready-set/out/RPMS
           token: ${{ secrets.TOKEN }}
-          group: ready-set-nightly/${{ matrix.branch }}
+          group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
 
   build-test-image:
     name: Build ${{ matrix.denviron }} image
@@ -162,6 +160,7 @@ jobs:
             --tag $LOCAL_BUILD_NAME \
             --platform linux/amd64 \
             --build-arg IMAGE=${{ matrix.image }} \
+            --build-arg PKG_GROUP=${{ github.ref_name }} \
             --file ./test-atomic/${{ matrix.denviron }}/Containerfile \
             --label org.altlinux.installer.has-initial-setup=true \
             .
@@ -173,5 +172,5 @@ jobs:
           registry-username: "<token>"
           registry-password: ${{ secrets.TOKEN }}
           image-name: alt-gnome/ready-set-test-atomic
-          image-tag: ${{ matrix.denviron }}
+          image-tag: ${{ matrix.denviron }}/${{ github.ref_name }}
           local-build-name: ${{ env.LOCAL_BUILD_NAME }}

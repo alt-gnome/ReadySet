@@ -3,7 +3,7 @@ modules:
     type: repos
     body:
       custom:
-        - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/sisyphus.repo _arch_ classic
+        - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/${{ Env.PKG_GROUP }}/sisyphus.repo _arch_ classic
 
   - type: packages
     body:
