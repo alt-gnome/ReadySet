@@ -107,7 +107,9 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                     progress_data.value = 1.0;
                 }
 
-                yield app.installer_plugin.install (progress_data);
+                if (app.has_installer) {
+                    yield app.installer_plugin.install (progress_data);
+                }
 
                 var raw_context = context.get_raw_string ();
                 var env = new Gee.ArrayList<string> ();
