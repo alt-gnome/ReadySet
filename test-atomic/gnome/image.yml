@@ -19,6 +19,12 @@ modules:
       destination: /
       replace: true
 
+  - type: shell
+    body:
+      command: |
+        touch /var/ready-set-log
+        chmod 777 /var/ready-set-log
+
   - name: Update dconf
     type: shell
     body:

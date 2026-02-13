@@ -1,0 +1,4 @@
+#!/usr/bin/sh
+
+/usr/libexec/ready-set &> /var/ready-set-log
+echo "DONE" >> /var/ready-set-log
