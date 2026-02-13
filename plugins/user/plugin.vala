@@ -51,7 +51,9 @@ public class User.Addin : ReadySet.StepAddin {
                 null
             );
 
-            user.set_automatic_login (context.get_boolean ("user-autologin"));
+            if (!context.get_boolean ("hide-autologin")) {
+                user.set_automatic_login (context.get_boolean ("user-autologin"));
+            }
             user.set_password (context.get_string ("user-password"), "");
             if (context.has_key ("language-locale")) {
                 user.set_language (context.get_string ("language-locale"));
@@ -60,7 +62,7 @@ public class User.Addin : ReadySet.StepAddin {
                 user.set_icon_file (context.get_string ("user-avatar-file"));
             }
 
-            context.set_int ("user-created-uid", user.uid);
+            context.set_int ("user-created-uid", (int64) user.uid);
 
             if (context.get_string ("user-root-password") != "") {
                 set_root_password (context.get_string ("user-root-password"));
