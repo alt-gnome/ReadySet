@@ -83,6 +83,8 @@ public sealed class ReadySet.EndPage : BaseBarePage {
             applyable_arr.add (page_info.page);
         }
 
+        message ("1");
+
         if (context.intact) {
             Timeout.add_seconds (1, () => {
                 progress_data.value += 0.2;
@@ -120,6 +122,9 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
                 get_ready_set_proxy ().exec_post_hooks (env.to_array ());
 
+                stack.visible_child_name = "ready";
+                is_ready = true;
+
             } catch (ApplyError e) {
                 var apply_error_data = ApplyError.to_data (e);
 
@@ -136,9 +141,6 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                 is_ready = false;
             }
         }
-
-        stack.visible_child_name = "ready";
-        is_ready = true;
     }
 
     void update_progress_visibility () {
