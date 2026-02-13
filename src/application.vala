@@ -21,7 +21,6 @@ public sealed class ReadySet.Application: Adw.Application {
     const ActionEntry[] ACTION_ENTRIES = {
         { "finish", finish },
         { "reload-window", reload_window },
-        { "hide-window", hide_window },
     };
 
     Peas.Engine steps_engine;
@@ -287,10 +286,6 @@ public sealed class ReadySet.Application: Adw.Application {
         (active_window as ReadySet.Window)?.reload_window ();
     }
 
-    void hide_window () {
-        (active_window as ReadySet.Window)?.hide ();
-    }
-
     public override void activate () {
         base.activate ();
 
@@ -318,6 +313,10 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     void finish () {
+        debug ("App finish stage");
+        if (active_window != null) {
+            active_window.hide ();
+        }
         on_finish ();
     }
 }

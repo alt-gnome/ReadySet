@@ -152,11 +152,10 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         var app = Application.get_default ();
         var context = app.context;
 
-        if (!(!app.has_installer && client != null) && !context.intact) {
-            debug ("hide-window called");
-            activate_action ("app.hide-window", null);
+        if (!app.has_installer && client != null && !context.intact) {
             log_user_in ();
         } else {
+            debug ("No GDM connection: installer mode or intact mode");
             app.quit ();
         }
     }
