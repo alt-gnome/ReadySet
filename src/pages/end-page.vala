@@ -83,8 +83,6 @@ public sealed class ReadySet.EndPage : BaseBarePage {
             applyable_arr.add (page_info.page);
         }
 
-        message ("1");
-
         if (context.intact) {
             Timeout.add_seconds (1, () => {
                 progress_data.value += 0.2;
@@ -218,6 +216,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
         if (client == null) {
             warning ("No GDM connection; not initiating login");
+            Application.get_default ().quit ();
             return;
         }
 
