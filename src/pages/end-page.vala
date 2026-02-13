@@ -45,18 +45,22 @@ public sealed class ReadySet.EndPage : BaseBarePage {
     public async void start_action () {
         var app = Application.get_default ();
         var context = app.context;
+        context.locked = true;
 
         if (!app.has_installer && !context.intact) {
             try {
                 client = new Gdm.Client ();
                 greeter = yield client.get_greeter (null);
                 user_verifier = yield client.get_user_verifier (null);
+                debug ("Conected to GDM");
             } catch (Error e) {
                 warning ("Failed to connect to GDM: %s", e.message);
                 client = null;
                 greeter = null;
                 user_verifier = null;
             }
+        } else {
+            debug ("No GDM connection: installer mode or intact mode");
         }
 
         stack.visible_child_name = "applying";
