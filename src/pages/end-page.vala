@@ -52,7 +52,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                 client = new Gdm.Client ();
                 greeter = yield client.get_greeter (null);
                 user_verifier = yield client.get_user_verifier (null);
-                debug ("Conected to GDM");
+                debug ("Connected to GDM");
             } catch (Error e) {
                 warning ("Failed to connect to GDM: %s", e.message);
                 client = null;
@@ -197,6 +197,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
     void on_session_opened (Gdm.Greeter greeter, string service_name, string session_id) {
         try {
+            debug ("Starting session");
             greeter.call_start_session_when_ready_sync (service_name, true, null);
         } catch (Error e) {
             warning ("Failed to open session: %s", e.message);
@@ -227,11 +228,15 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         user_verifier.problem.connect (on_problem);
         user_verifier.info_query.connect (on_info_query);
         user_verifier.secret_info_query.connect (on_secret_info_query);
+        debug ("Connected callbacks to user-verifier");
 
         greeter.session_opened.connect (on_session_opened);
+        debug ("Connected callbacks to greeter");
 
         try {
+            debug ("Begin verification for user");
             user_verifier.call_begin_verification_for_user_sync (SERVICE_NAME, context.get_string ("user-username"), null);
+            debug ("Verification for user succeed");
         } catch (Error e) {
             warning ("Could not begin verification: %s", e.message);
         }
