@@ -226,8 +226,6 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
         greeter.session_opened.connect (on_session_opened);
 
-        add_uid_file (context.get_int ("user-created-uid"));
-
         try {
             user_verifier.call_begin_verification_for_user_sync (SERVICE_NAME, context.get_string ("user-username"), null);
         } catch (Error e) {

@@ -62,8 +62,6 @@ public class User.Addin : ReadySet.StepAddin {
                 user.set_icon_file (context.get_string ("user-avatar-file"));
             }
 
-            context.set_int ("user-created-uid", (int64) user.uid);
-
             if (context.get_string ("user-root-password") != "") {
                 set_root_password (context.get_string ("user-root-password"));
             } else {
@@ -91,7 +89,6 @@ public class User.Addin : ReadySet.StepAddin {
         vars["user-fullname"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["user-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["user-root-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
-        vars["user-created-uid"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.INT);
         vars["user-autologin"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
         return vars;
     }
