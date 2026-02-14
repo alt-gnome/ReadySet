@@ -102,16 +102,17 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
         } else {
             try {
-                foreach (var applyable in applyable_arr) {
-                    progress_data.value = 0.0;
-
-                    yield applyable.apply (progress_data);
-
-                    progress_data.value = 1.0;
-                }
-
                 if (app.has_installer) {
                     yield app.installer_plugin.install (progress_data);
+
+                } else {
+                    foreach (var applyable in applyable_arr) {
+                        progress_data.value = 0.0;
+
+                        yield applyable.apply (progress_data);
+
+                        progress_data.value = 1.0;
+                    }
                 }
 
                 var raw_context = context.get_raw_string ();
