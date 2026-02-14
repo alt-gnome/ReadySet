@@ -3,6 +3,9 @@ ARG IMAGE
 FROM $IMAGE
 
 ARG IMAGE
+ARG PKG_GROUP
+
+ENV PKG_GROUP=$PKG_GROUP
 
 RUN --mount=type=bind,source=./test-atomic/phrog/image.yml,target=/etc/apm/image.yml \
     --mount=type=bind,source=./test-atomic/phrog/resources,target=/etc/apm/resources \
