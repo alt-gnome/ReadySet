@@ -92,9 +92,9 @@ public sealed class Language.Box : Adw.Bin {
         foreach (var locale in language_locales) {
             locale_data = new LocaleData (locale);
             if (
+                locale_data.country_loc != "" &&
                 locale_data.country_cur != "" &&
-                locale_data.country_cur != "" &&
-                locale_data.country_cur != null &&
+                locale_data.country_loc != null &&
                 locale_data.country_cur != null
             ) {
                 model.append (locale_data);
