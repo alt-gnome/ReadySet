@@ -148,11 +148,11 @@ public sealed class Language.Box : Adw.Bin {
             null,
             "country-cur"
         ));
-        current_filter.bind_property (
-            "search",
-            search_entry,
+        search_entry.bind_property (
             "text",
-            GLib.BindingFlags.BIDIRECTIONAL
+            current_filter,
+            "search",
+            GLib.BindingFlags.SYNC_CREATE
         );
 
         var local_filter = new Gtk.StringFilter (new Gtk.PropertyExpression (
@@ -160,11 +160,11 @@ public sealed class Language.Box : Adw.Bin {
             null,
             "country-loc"
         ));
-        local_filter.bind_property (
-            "search",
-            search_entry,
+        search_entry.bind_property (
             "text",
-            GLib.BindingFlags.BIDIRECTIONAL
+            local_filter,
+            "search",
+            GLib.BindingFlags.SYNC_CREATE
         );
 
         multifilter.append (current_filter);
