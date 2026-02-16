@@ -56,7 +56,7 @@ public sealed class Language.Box : Adw.Bin {
             }
         );
 
-        set_supported_languages.begin ();
+        set_supported_languages ();
 
         search_entry.changed.connect (() => {
             saved_search_query = search_entry.text;
@@ -70,7 +70,7 @@ public sealed class Language.Box : Adw.Bin {
         });
     }
 
-    async void set_supported_languages () {
+    void set_supported_languages () {
         set_languages ({
             "ru_RU.UTF-8",
             "en_US.UTF-8",
