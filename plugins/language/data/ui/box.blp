@@ -30,12 +30,32 @@ template $LanguageBox: Adw.Bin {
       }
     }
 
-    ListBox languages_listbox {
-      styles [
-        "boxed-list",
-      ]
+    Stack languages_stack {
+      vhomogeneous: false;
+      hhomogeneous: false;
 
-      selection-mode: none;
+      StackPage {
+        name: "languages";
+        child: ListBox languages_listbox {
+          styles [
+            "boxed-list",
+          ]
+
+          selection-mode: none;
+        };
+      }
+
+      StackPage {
+        name: "nothing-found";
+        child: Label {
+          styles [
+            "card",
+          ]
+
+          label: _("Nothing found");
+          height-request: 48;
+        };
+      }
     }
 
     ListBox {

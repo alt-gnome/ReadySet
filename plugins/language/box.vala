@@ -23,11 +23,13 @@ public sealed class Language.Box : Adw.Bin {
     unowned Gtk.ListBox languages_listbox;
     [GtkChild]
     unowned Gtk.SearchEntry search_entry;
+    [GtkChild]
+    unowned Gtk.Stack languages_stack;
 
     public LocaleData current_locale { get; set; default = new LocaleData (Addin.get_instance ().current_locale); }
 
     static bool saved_show_more = false;
-    static string saved_search_query = "";
+    static string saved_search_query = ""; 
 
     bool _show_more = false;
     public bool show_more {
@@ -50,12 +52,6 @@ public sealed class Language.Box : Adw.Bin {
     }
 
     construct {
-        languages_listbox.set_placeholder (
-            new Gtk.Label (_("Nothing found")) {
-                height_request = 48
-            }
-        );
-
         set_supported_languages ();
 
         search_entry.changed.connect (() => {
@@ -111,12 +107,23 @@ public sealed class Language.Box : Adw.Bin {
 
         var filter_current_model = new Gtk.FilterListModel (filter_model, get_current_filter ());
 
+        filter_current_model.notify["n-items"].connect (model_n_items_changed);
+        model_n_items_changed (filter_current_model, filter_current_model.get_class ().find_property ("n-items"));
+
         languages_listbox.bind_model (
             filter_current_model,
             (obj) => {
                 return new Row ((LocaleData) obj);
             }
         );
+    }
+
+    void model_n_items_changed (Object obj, ParamSpec param) {
+        if (((ListModel) obj).get_n_items () > 0) {
+            languages_stack.visible_child_name = "languages";
+        } else {
+            languages_stack.visible_child_name = "nothing-found";
+        }
     }
 
     Gtk.Sorter get_sorter () {
