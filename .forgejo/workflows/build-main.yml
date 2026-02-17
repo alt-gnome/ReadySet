@@ -151,6 +151,9 @@ jobs:
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
+      - name: Prepare env
+        uses: alt-atomic/actions/prepare-env@main
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
