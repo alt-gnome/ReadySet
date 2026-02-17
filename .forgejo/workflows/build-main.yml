@@ -176,4 +176,4 @@ jobs:
           registry-password: ${{ secrets.TOKEN }}
           image-name: alt-gnome/ready-set-test-atomic/${{ github.ref_name }}
           image-tag: ${{ matrix.denviron }}
-          local-build-name: ${{ env.LOCAL_BUILD_NAME }}
+          local-build-name: container-storage://${{ env.LOCAL_BUILD_NAME }}
