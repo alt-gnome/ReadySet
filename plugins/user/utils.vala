@@ -128,7 +128,6 @@ namespace User {
             case 'ю': return "yu";
             case 'я': return "ya";
 
-            // Заглавные буквы
             case 'А': return "A";
             case 'Б': return "B";
             case 'В': return "V";
@@ -163,7 +162,6 @@ namespace User {
             case 'Ю': return "Yu";
             case 'Я': return "Ya";
 
-            // Если символ не из кириллицы — возвращаем его как есть
             default: return c.to_string ();
         }
     }
