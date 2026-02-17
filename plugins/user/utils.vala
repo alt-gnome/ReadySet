@@ -92,7 +92,7 @@ namespace User {
         return !is_empty;
     }
 
-    public string translit_char(unichar c) {
+    public string translit_char (unichar c) {
         switch (c) {
             case 'а': return "a";
             case 'б': return "b";
@@ -164,7 +164,7 @@ namespace User {
             case 'Я': return "Ya";
 
             // Если символ не из кириллицы — возвращаем его как есть
-            default: return c.to_string();
+            default: return c.to_string ();
         }
     }
 

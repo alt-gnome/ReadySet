@@ -29,7 +29,7 @@ public sealed class Language.Box : Adw.Bin {
     public LocaleData current_locale { get; set; default = new LocaleData (Addin.get_instance ().current_locale); }
 
     static bool saved_show_more = false;
-    static string saved_search_query = ""; 
+    static string saved_search_query = "";
 
     bool _show_more = false;
     public bool show_more {
