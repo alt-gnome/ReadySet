@@ -145,7 +145,7 @@ jobs:
       - rpm-build
     if: github.event_name != 'pull_request'
     env:
-      LOCAL_BUILD_NAME: localhost
+      LOCAL_BUILD_NAME: localhost/image
       REGISTRY: altlinux.space
       PARENT_IMAGE: altlinux.space/alt-atomic/minimal/phosh/nightly:latest
     container:
@@ -176,4 +176,4 @@ jobs:
           registry-password: ${{ secrets.TOKEN }}
           image-name: alt-gnome/ready-set-test-atomic/${{ github.ref_name }}
           image-tag: ${{ matrix.denviron }}
-          local-build-name: containers-storage:${{ env.LOCAL_BUILD_NAME }}
+          local-build-name: ${{ env.LOCAL_BUILD_NAME }}
