@@ -97,7 +97,11 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             css_classes = { "error" }
         });
         foreach (var info in get_current_inputs ()) {
-            current_input_list.append (new InputRow (info, get_row_name (info)) { is_selected = true });
+            var name = get_row_name (info);
+
+            if (name != null) {
+                current_input_list.append (new InputRow (info, name) { is_selected = true });
+            }
         }
 
         sync_all_checkmarks (true);
@@ -138,7 +142,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         return false;
     }
 
-    string get_row_name (InputInfo input_info) {
+    string? get_row_name (InputInfo input_info) {
         if (input_info.type_ == INPUT_SOURCE_TYPE_XKB) {
             string display_name;
             xkb_info.get_layout_info (input_info.id, out display_name, null, null, null);
@@ -155,7 +159,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
 #endif
         }
 
-        return "ERROR";
+        return null;
     }
 
     void sync_all_checkmarks (bool initial = false) {
@@ -318,10 +322,14 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             }
 
             var input_info = new InputInfo (type, id);
-            var widget = new InputRow (input_info, get_row_name (input_info), is_extra);
-            if (!input_rows.has_key (input_info)) {
-                input_rows.set (input_info, widget);
-                input_list.append (widget);
+            var name = get_row_name (input_info);
+
+            if (name != null) {
+                var widget = new InputRow (input_info, name, is_extra);
+                if (!input_rows.has_key (input_info)) {
+                    input_rows.set (input_info, widget);
+                    input_list.append (widget);
+                }
             }
         }
     }
