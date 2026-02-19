@@ -111,7 +111,7 @@ msgstr "Не выбраны источники ввода"
 
 #: plugins/keyboard/input-chooser.vala:417 plugins/language/box.vala:54
 msgid "Nothing found"
-msgstr "Нечего не найдено"
+msgstr "Ничего не найдено"
 
 #: plugins/keyboard/page.vala:77
 msgid "Error when setting keyboard layout"
