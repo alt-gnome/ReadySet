@@ -121,7 +121,10 @@ namespace Keyboard {
                 item.get ("(ss)", out input_type, out input_id);
                 input_sources.add (new InputInfo (input_type, input_id));
             }
-            set_current_inputs (input_sources);
+
+            if (input_sources.size != 0) {
+                set_current_inputs (input_sources);
+            }
 
         } else {
             foreach (var input in inputs_val) {
