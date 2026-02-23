@@ -16,8 +16,8 @@ Release: alt1
 Summary: The utility for configuring the system at the first start
 License: GPL-3.0-or-later
 Group: Other
-Url: https://altlinux.space/alt-gnome/ReadySet
-Vcs: https://altlinux.space/alt-gnome/ReadySet.git
+URL: https://altlinux.space/alt-gnome/ReadySet
+VCS: https://altlinux.space/alt-gnome/ReadySet.git
 
 Source: %name-%version.tar
 
