@@ -86,6 +86,10 @@ public sealed class Language.Box : Adw.Bin {
 
         LocaleData locale_data;
         foreach (var locale in language_locales) {
+            if (locale == "crh_UA.UTF-8") {
+                continue;
+            }
+
             locale_data = new LocaleData (locale);
             if (
                 locale_data.country_loc != "" &&
