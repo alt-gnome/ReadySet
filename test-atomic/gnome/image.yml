@@ -8,7 +8,7 @@ modules:
   - type: packages
     body:
       install:
-        - ready-set-plugin-gdm
+        - ready-set-gdm
         - ready-set-plugin-language
         - ready-set-plugin-keyboard
         - ready-set-plugin-user-passwdqc
