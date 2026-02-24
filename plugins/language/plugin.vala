@@ -18,9 +18,19 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Language.Addin : ReadySet.Addin {
+public class Language.Addin : ReadySet.StepAddin {
 
     static Addin instance;
+
+    bool _accessible;
+    public override bool accessible {
+        get {
+            return _accessible;
+        }
+        protected set {
+            _accessible = value;
+        }
+    }
 
     public string current_locale {
         owned get {
@@ -87,16 +97,26 @@ public class Language.Addin : ReadySet.Addin {
         return vars;
     }
 
-    public override ReadySet.BasePage[] build_pages () {
+    public override ReadySet.BaseBarePage[] build_pages () {
         return { new Language.Page () };
     }
 
     internal static Addin get_instance () {
         return instance;
     }
+
+    public override void init_once () {
+        if (!context.intact) {
+            try {
+                accessible = new Polkit.Permission.sync ("org.freedesktop.locale1.set-locale", null, null).allowed;
+            } catch (Error e) {
+                error (e.message);
+            }
+        }
+    }
 }
 
 public void peas_register_types (TypeModule module) {
     var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySet.Addin), typeof (Language.Addin));
+    obj.register_extension_type (typeof (ReadySet.StepAddin), typeof (Language.Addin));
 }

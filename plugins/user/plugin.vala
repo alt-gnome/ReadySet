@@ -18,9 +18,11 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class User.Addin : ReadySet.Addin {
+public class User.Addin : ReadySet.StepAddin {
 
     static Addin instance;
+
+    public override bool accessible { get; set; }
 
     protected override string? resource_base_path {
         get {
@@ -32,7 +34,7 @@ public class User.Addin : ReadySet.Addin {
         instance = this;
     }
 
-    public override ReadySet.BasePage[] build_pages () {
+    public override ReadySet.BaseBarePage[] build_pages () {
         bool with_root = context.get_boolean ("user-with-root");
         return {
             new User.PageUsername (),
@@ -40,7 +42,7 @@ public class User.Addin : ReadySet.Addin {
         };
     }
 
-    public async override void apply () throws ReadySet.ApplyError {
+    public async override void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
         try {
             var user = yield Act.UserManager.get_default ().create_user_async (
                 context.get_string ("user-username"),
@@ -49,7 +51,9 @@ public class User.Addin : ReadySet.Addin {
                 null
             );
 
-            user.set_automatic_login (context.get_boolean ("user-autologin"));
+            if (!context.get_boolean ("hide-autologin")) {
+                user.set_automatic_login (context.get_boolean ("user-autologin"));
+            }
             user.set_password (context.get_string ("user-password"), "");
             if (context.has_key ("language-locale")) {
                 user.set_language (context.get_string ("language-locale"));
@@ -96,5 +100,5 @@ public class User.Addin : ReadySet.Addin {
 
 public void peas_register_types (TypeModule module) {
     var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySet.Addin), typeof (User.Addin));
+    obj.register_extension_type (typeof (ReadySet.StepAddin), typeof (User.Addin));
 }

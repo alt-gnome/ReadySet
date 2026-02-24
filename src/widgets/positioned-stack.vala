@@ -20,11 +20,15 @@
 
 public class ReadySet.PositionedStack : Adw.Bin {
 
-    public delegate Gtk.Widget CreateFunc (BasePage page, int pos);
-
     public int position {
         get {
-            return childs.index_of (stack.get_page (stack.visible_child));
+            var name = stack.visible_child_name;
+            for (int i = 0; i < childs.size; i++) {
+                if (childs[i].id == name) {
+                    return i;
+                }
+            }
+            return -1;
         }
         set {
             if (childs.size == 0) {
@@ -39,7 +43,7 @@ public class ReadySet.PositionedStack : Adw.Bin {
                 tt = position > value ? Gtk.StackTransitionType.SLIDE_RIGHT : Gtk.StackTransitionType.SLIDE_LEFT;
             }
 
-            stack.set_visible_child_full (childs[(int) value].name, tt);
+            stack.set_visible_child_full (childs[(int) value].id, tt);
         }
     }
 
@@ -64,12 +68,14 @@ public class ReadySet.PositionedStack : Adw.Bin {
 
     public Gtk.StackTransitionType transition_type { get; set; default = Gtk.StackTransitionType.NONE; }
 
-    public Gtk.SingleSelection model { get; private set; }
+    public PagesModel? model { get; private set; }
 
     weak CreateFunc create_func;
     Gtk.Stack stack = new Gtk.Stack ();
 
-    new Gee.ArrayList<Gtk.StackPage> childs = new Gee.ArrayList<Gtk.StackPage> ();
+    new Gee.ArrayList<PageInfo> childs = new Gee.ArrayList<PageInfo> ((el1, el2) => {
+        return str_equal (el1.id, el2.id);
+    });
 
     construct {
         child = stack;
@@ -94,63 +100,81 @@ public class ReadySet.PositionedStack : Adw.Bin {
         });
     }
 
-    public void bind_model (Gtk.SingleSelection model, owned CreateFunc create_func) {
-        clear ();
+    public void bind_model (PagesModel? model, owned CreateFunc create_func) {
+        if (this.model != null) {
+            this.model.selection_changed.disconnect (on_selection_changed);
+            this.model.items_changed.disconnect (on_items_changed);
+
+            this.model = null;
+            clear ();
+        }
 
         this.model = model;
         this.create_func = create_func;
 
-        this.model.selection_changed.connect (on_selection_changed);
-        this.model.items_changed.connect (on_items_changed);
-
-        update ();
-    }
-
-    void add_page (Gtk.Widget widget, string? title = null) {
-        var page = stack.add_titled (widget, Uuid.string_random (), title ?? "UNKNOWN");
-        childs.add (page);
+        if (model != null) {
+            model.selection_changed.connect (on_selection_changed);
+            model.items_changed.connect (on_items_changed);
+            update ();
+        }
     }
 
     public void clear () {
-        if (model != null) {
-            model.selection_changed.disconnect (on_selection_changed);
-            model.items_changed.disconnect (on_items_changed);
-
-            model = null;
+        for (int i = 0; i < childs.size; i++) {
+            remove_page (childs[0]);
         }
-
-        light_clear ();
-    }
-
-    void light_clear () {
-        while (stack.get_first_child () != null) {
-            stack.remove (stack.get_first_child ());
-        }
-        childs.clear ();
     }
 
     void on_selection_changed (uint position, uint n_items) {
         this.position = (int) model.get_selected ();
     }
 
-    void on_items_changed () {
-        update ();
+    void on_items_changed (uint position, uint removed, uint added) {
+        for (uint i = 0; i < removed; i++) {
+            if (position >= childs.size) {
+                break;
+            }
+            remove_page (childs[(int) position]);
+        }
+
+        Gee.ArrayList<PageInfo> tail = new Gee.ArrayList<PageInfo> ();
+        while (childs.size > position) {
+            var page = childs[(int) position];
+            tail.add (page);
+            remove_page (page);
+        }
+
+        for (uint i = 0; i < added; i++) {
+            var page = (PageInfo) model.get_item (position + i);
+            add_page (page);
+        }
+
+        foreach (var page in tail) {
+            add_page (page);
+        }
+    }
+
+    void remove_page (PageInfo page_info) {
+        stack.remove (stack.get_child_by_name (page_info.id));
+        childs.remove (page_info);
+    }
+
+    void add_page (PageInfo page_info) {
+        var widget = create_func (page_info);
+
+        if (widget.get_parent () != null) {
+            widget.unparent ();
+        }
+
+        stack.add_titled (
+            widget,
+            page_info.id,
+            page_info.title_header ?? "UNKNOWN"
+        );
+        childs.add (page_info);
     }
 
     void update () {
-        light_clear ();
-
-        for (int i = 0; i < model.n_items; i++) {
-            var page = (BasePage) model.get_item (i);
-
-            add_page (
-                create_func (page, i),
-                page.title
-            );
-        }
-
-        if (model.n_items > 0) {
-            model.selection_changed (0, model.n_items);
-        }
+        on_items_changed (0, 0, model.get_n_items ());
     }
 }

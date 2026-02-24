@@ -38,7 +38,9 @@ template $ReadySetWindowContent: Adw.BreakpointBin {
       name: "main";
       title: _("Main");
 
-      child: $ReadySetStepsMainPage steps_main_page {};
+      child: $ReadySetStepsMainPage steps_main_page {
+        simple: bind template.simple;
+      };
     };
   }
 }

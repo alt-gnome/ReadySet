@@ -17,28 +17,73 @@ template $KeyboardInputChooser: Box {
     visible: bind template.show-more;
   }
 
-  ListBox current_input_list {
-    styles [
-      "boxed-list",
-    ]
+  Stack current_input_list_stack {
+    vhomogeneous: false;
+    hhomogeneous: false;
 
-    selection-mode: none;
-    vexpand: true;
-    halign: fill;
-    valign: start;
-    row-activated => $row_activated();
+    StackPage {
+      name: "sources";
+
+      child: ListBox current_input_list {
+        styles [
+          "boxed-list",
+        ]
+
+        selection-mode: none;
+        vexpand: true;
+        halign: fill;
+        valign: start;
+        row-activated => $row_activated();
+      };
+    }
+
+    StackPage {
+      name: "nothing-selected";
+
+      child: Label {
+        styles [
+          "error",
+          "card",
+        ]
+
+        label: _("No input sources selected");
+        height-request: 48;
+      };
+    }
   }
 
-  ListBox input_list {
-    styles [
-      "boxed-list",
-    ]
+  Stack input_list_stack {
+    vhomogeneous: false;
+    hhomogeneous: false;
 
-    selection-mode: none;
-    vexpand: true;
-    halign: fill;
-    valign: start;
-    row-activated => $row_activated();
+    StackPage {
+      name: "sources";
+
+      child: ListBox input_list {
+        styles [
+          "boxed-list",
+        ]
+
+        selection-mode: none;
+        vexpand: true;
+        halign: fill;
+        valign: start;
+        row-activated => $row_activated();
+      };
+    }
+
+    StackPage {
+      name: "nothing-found";
+
+      child: Label {
+        styles [
+          "card",
+        ]
+
+        label: _("Nothing found");
+        height-request: 48;
+      };
+    }
   }
 
   ListBox {

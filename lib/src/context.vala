@@ -116,6 +116,8 @@ public class ReadySet.ContextVarInfo : Object {
 
     public ContextType value_type { get; construct; }
 
+    public Value? initial_value { get; set; default = null; }
+
     public unowned ContextGetterFunc? getter_func = null;
 
     public unowned ContextSetterFunc? setter_func = null;
@@ -129,7 +131,7 @@ public class ReadySet.ContextVarInfo : Object {
 
 public class ReadySet.Context : Object {
 
-    public bool idle { get; construct; default = true; }
+    public bool intact { get; construct; default = true; }
 
     public signal void reload_window ();
 
@@ -137,9 +139,11 @@ public class ReadySet.Context : Object {
 
     HashTable<string, ValueObject> data = new HashTable<string, ValueObject> (str_hash, str_equal);
 
-    public Context (bool idle) {
+    public bool locked { get; set; default = false; }
+
+    public Context (bool intact) {
         Object (
-            idle: idle
+            intact: intact
         );
     }
 
@@ -237,6 +241,11 @@ public class ReadySet.Context : Object {
     }
 
     bool transform_prop_to_ctx (Binding binding, Value from_value, ref Value to_value) {
+        if (locked) {
+            warning ("Context is locked");
+            return false;
+        }
+
         var new_val = Value (from_value.type ());
         from_value.copy (ref new_val);
         to_value.set_boxed (&new_val);
@@ -249,13 +258,53 @@ public class ReadySet.Context : Object {
     }
 
     bool transform_prop_to_ctx_invert (Binding binding, Value from_value, ref Value to_value) {
+        if (locked) {
+            warning ("Context is locked");
+            return false;
+        }
+
         var new_val = Value (Type.BOOLEAN);
         new_val.set_boolean (!from_value.get_boolean ());
         to_value.set_boxed (&new_val);
         return true;
     }
 
+    public HashTable<string, string> get_raw_string () {
+        var raw_data = new HashTable<string, string> (str_hash, str_equal);
+
+        foreach (var key in get_keys ()) {
+            string str;
+            switch (data[key].value_type) {
+                case ContextType.STRING:
+                    str = get_string (key);
+                    break;
+                case ContextType.STRV:
+                    str = string.joinv (",", get_strv (key));
+                    break;
+                case ContextType.INT:
+                    str = get_int (key).to_string ();
+                    break;
+                case ContextType.DOUBLE:
+                    str = get_double (key).to_string ();
+                    break;
+                case ContextType.BOOLEAN:
+                    str = get_boolean (key).to_string ();
+                    break;
+                default:
+                    assert_not_reached ();
+            }
+            raw_data[key] = str;
+        }
+
+        return raw_data;
+    }
+
     public void set_raw (string key, string value) {
+        if (locked) {
+            warning ("Context is locked");
+            return;
+        }
+
         if (!check_key (key)) {
             return;
         }
@@ -302,6 +351,9 @@ public class ReadySet.Context : Object {
             }
             if (info.setter_func != null) {
                 data[key].set_setter (info.setter_func);
+            }
+            if (info.initial_value != null) {
+                set_value (key, info.initial_value);
             }
             data[key].notify["real-value"].connect (() => {
                 data_changed (key);
@@ -363,6 +415,11 @@ public class ReadySet.Context : Object {
     }
 
     public void set_value (string key, owned Value value) {
+        if (locked) {
+            warning ("Context is locked");
+            return;
+        }
+
         if (check_key (key, ContextType.from_gtype (value.type ()))) {
             data[key].real_value = value;
         }

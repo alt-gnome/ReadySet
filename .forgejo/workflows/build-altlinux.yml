@@ -3,8 +3,8 @@ name: Build ALT package
 on:
   workflow_dispatch:
   push:
-    branches:
-      - 'altlinux'
+    tags:
+      - '*-alt*'
 
 permissions:
   contents: read

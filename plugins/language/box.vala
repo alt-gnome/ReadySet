@@ -23,6 +23,8 @@ public sealed class Language.Box : Adw.Bin {
     unowned Gtk.ListBox languages_listbox;
     [GtkChild]
     unowned Gtk.SearchEntry search_entry;
+    [GtkChild]
+    unowned Gtk.Stack languages_stack;
 
     public LocaleData current_locale { get; set; default = new LocaleData (Addin.get_instance ().current_locale); }
 
@@ -50,13 +52,7 @@ public sealed class Language.Box : Adw.Bin {
     }
 
     construct {
-        languages_listbox.set_placeholder (
-            new Gtk.Label (_("Nothing found")) {
-                height_request = 48
-            }
-        );
-
-        set_supported_languages.begin ();
+        set_supported_languages ();
 
         search_entry.changed.connect (() => {
             saved_search_query = search_entry.text;
@@ -70,7 +66,7 @@ public sealed class Language.Box : Adw.Bin {
         });
     }
 
-    async void set_supported_languages () {
+    void set_supported_languages () {
         set_languages ({
             "ru_RU.UTF-8",
             "en_US.UTF-8",
@@ -92,9 +88,9 @@ public sealed class Language.Box : Adw.Bin {
         foreach (var locale in language_locales) {
             locale_data = new LocaleData (locale);
             if (
+                locale_data.country_loc != "" &&
                 locale_data.country_cur != "" &&
-                locale_data.country_cur != "" &&
-                locale_data.country_cur != null &&
+                locale_data.country_loc != null &&
                 locale_data.country_cur != null
             ) {
                 model.append (locale_data);
@@ -111,12 +107,23 @@ public sealed class Language.Box : Adw.Bin {
 
         var filter_current_model = new Gtk.FilterListModel (filter_model, get_current_filter ());
 
+        filter_current_model.notify["n-items"].connect (model_n_items_changed);
+        model_n_items_changed (filter_current_model, filter_current_model.get_class ().find_property ("n-items"));
+
         languages_listbox.bind_model (
             filter_current_model,
             (obj) => {
                 return new Row ((LocaleData) obj);
             }
         );
+    }
+
+    void model_n_items_changed (Object obj, ParamSpec param) {
+        if (((ListModel) obj).get_n_items () > 0) {
+            languages_stack.visible_child_name = "languages";
+        } else {
+            languages_stack.visible_child_name = "nothing-found";
+        }
     }
 
     Gtk.Sorter get_sorter () {
@@ -148,11 +155,11 @@ public sealed class Language.Box : Adw.Bin {
             null,
             "country-cur"
         ));
-        current_filter.bind_property (
-            "search",
-            search_entry,
+        search_entry.bind_property (
             "text",
-            GLib.BindingFlags.BIDIRECTIONAL
+            current_filter,
+            "search",
+            GLib.BindingFlags.SYNC_CREATE
         );
 
         var local_filter = new Gtk.StringFilter (new Gtk.PropertyExpression (
@@ -160,11 +167,11 @@ public sealed class Language.Box : Adw.Bin {
             null,
             "country-loc"
         ));
-        local_filter.bind_property (
-            "search",
-            search_entry,
+        search_entry.bind_property (
             "text",
-            GLib.BindingFlags.BIDIRECTIONAL
+            local_filter,
+            "search",
+            GLib.BindingFlags.SYNC_CREATE
         );
 
         multifilter.append (current_filter);

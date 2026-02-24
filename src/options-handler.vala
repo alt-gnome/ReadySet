@@ -34,12 +34,13 @@ public sealed class ReadySet.OptionsHandler : Object {
     internal const OptionEntry[] OPTION_ENTRIES = {
         { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
         { "steps", 's', 0, OptionArg.STRING, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
-        { "steps-no-apply", 's', 0, OptionArg.STRING, null, N_("Steps which will not apply. E.g: `steps=language,keyboard`"), "STEPS_NO_APPLY" },
+        { "steps-no-apply", '\0', 0, OptionArg.STRING, null, N_("Steps which will not apply. E.g: `steps=language,keyboard`"), "STEPS_NO_APPLY" },
         { "context", 'c', 0, OptionArg.STRING_ARRAY, null, N_("Context vars"), "CONTEXT" },
         { OPT_CONF_FILE, 'C', 0, OptionArg.FILENAME, null, N_("App config file"), "CONF-FILE" },
-        { "idle", 'i', 0, OptionArg.NONE, null, N_("Idle run without doing anything"), null },
+        { "intact", 'i', 0, OptionArg.NONE, null, N_("Intact run without doing anything"), null },
         { "fullscreen", 'F', 0, OptionArg.NONE, null, N_("Run window in fullscreen"), null },
-        { "user", 'u', 0, OptionArg.STRING, null, N_("User for which will be generated plugin polkit rules"), "STEPS_NO_APPLY" },
+        { "simple", 'S', 0, OptionArg.NONE, null, N_("Don't show indicators and keep window simple"), null },
+        { "installer", 'I', 0, OptionArg.STRING, null, N_("Specify installer plugin"), "INSTALLER" },
         { null }
     };
 
@@ -53,11 +54,13 @@ public sealed class ReadySet.OptionsHandler : Object {
 
     public string conf_file { get; set; }
 
-    public bool idle { get; set; }
+    public bool intact { get; set; }
 
     public bool fullscreen { get; set; }
 
-    public string user { get; set; default = Environment.get_user_name (); }
+    public bool simple { get; set; }
+
+    public string? installer { get; set; default = null; }
 
     public OptionsHandler.from_options (VariantDict options) {
         conf_keyfile = new KeyFile ();

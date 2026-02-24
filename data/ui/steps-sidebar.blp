@@ -24,6 +24,7 @@ template $ReadySetStepsSidebar: Adw.Bin {
 
         hexpand: true;
         selection-mode: single;
+        selected-rows-changed => $selected_rows_changed();
         row-activated => $request_close_sidebar();
       }
     };

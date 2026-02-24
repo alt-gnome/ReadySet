@@ -1,0 +1,16 @@
+polkit.addRule(function(action, subject) {
+    if (!subject.isInGroup('ready-set') && !subject.isInGroup('gnome-initial-setup'))
+        return;
+
+    var actionMatches =
+        action.id.indexOf("@SERVICE_NAME@.") === 0;
+
+    if (actionMatches) {
+        if (subject.local)
+            return polkit.Result.YES;
+        else
+            return polkit.Result.AUTH_ADMIN;
+    }
+
+    return;
+});

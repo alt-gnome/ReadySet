@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Test.Addin : ReadySet.Addin {
+public class Test.Addin : ReadySet.StepAddin {
 
     static Addin instance;
 
@@ -32,10 +32,11 @@ public class Test.Addin : ReadySet.Addin {
         instance = this;
     }
 
-    public override ReadySet.BasePage[] build_pages () {
+    public override ReadySet.BaseBarePage[] build_pages () {
         return {
             new Test.Page (),
-            new Test.ErrorPage ()
+            new Test.ErrorPage (),
+            new Test.AllowPage ()
         };
     }
 
@@ -43,12 +44,19 @@ public class Test.Addin : ReadySet.Addin {
         return instance;
     }
 
-    public override async void apply () throws ReadySet.ApplyError {
+    public async void apply () throws ReadySet.ApplyError {
         message ("Tests DONE");
+    }
+
+    public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
+        var vars = base.get_context_vars ();
+        vars["test-accessible"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        vars["test-throw-error"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        return vars;
     }
 }
 
 public void peas_register_types (TypeModule module) {
     var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySet.Addin), typeof (Test.Addin));
+    obj.register_extension_type (typeof (ReadySet.StepAddin), typeof (Test.Addin));
 }

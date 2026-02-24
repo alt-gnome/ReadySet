@@ -14,6 +14,21 @@ rs_app_blueprints = custom_target('blueprints',
   command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
 )
 
+i18n.merge_file(
+  input: configure_file(
+    input: files(app_id_dyn + '.desktop.in.in'),
+    output: app_id_dyn + '.desktop.in',
+    configuration: {
+      'LIBEXECDIR': libexecdir
+    }
+  ),
+  output: app_id_dyn + '.desktop',
+  install_dir: datadir / 'applications',
+  po_dir: meson.project_source_root() / 'po',
+  install: true,
+  type: 'desktop'
+)
+
 rs_app_resource_files = files('@0@.gresource.xml'.format(app_id))
 rs_app_resources = gnome.compile_resources(
   'ready-set-app-resources',
@@ -25,6 +40,7 @@ rs_app_resources = gnome.compile_resources(
 systemd = dependency('systemd')
 systemd_sysusers_dir = systemd.get_variable(pkgconfig: 'sysusers_dir')
 systemd_tmpfiles_dir = systemd.get_variable(pkgconfig: 'tmpfiles_dir')
+systemd_user_unit_dir = systemd.get_variable(pkgconfig: 'systemd_user_unit_dir')
 
 install_data(
   files(meson.project_name() + '-sysusers.conf'),
@@ -38,4 +54,18 @@ install_data(
   rename: [meson.project_name() + '.conf']
 )
 
+configure_file(
+  input: app_id + '.rules.in',
+  output: app_id + '.rules',
+  install: true,
+  install_dir: rulesdir,
+  configuration: {
+    'SERVICE_NAME': app_id
+  },
+)
+
 subdir('icons')
+subdir('gnome-initial-setup')
+
+install_emptydir(sysconfdir / meson.project_name())
+install_emptydir(localstatedir/ 'lib' / meson.project_name())

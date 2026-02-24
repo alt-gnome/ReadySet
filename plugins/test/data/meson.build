@@ -1,4 +1,5 @@
 plugin_test_blueprints = files(
+  'ui/allow-page.blp',
   'ui/error-page.blp',
   'ui/page.blp',
 )
@@ -26,5 +27,5 @@ configure_file(
     'VERSION': meson.project_version(),
   },
   install: true,
-  install_dir: libdir / meson.project_name() / 'plugins'
+  install_dir: steps_plugins_dir
 )

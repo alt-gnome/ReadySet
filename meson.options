@@ -32,3 +32,8 @@ option(
   choices: ['passwdqc', 'pwquality', 'both'],
   value : 'passwdqc'
 )
+option('gdm_rundir',
+  type: 'string',
+  value: '/run/gdm',
+  description: 'GDM\'s runtime directory. The dynamic gnome-initial-setup user\'s home dir is exported here',
+)

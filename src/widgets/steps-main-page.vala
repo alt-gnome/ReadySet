@@ -28,15 +28,15 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     [GtkChild]
     unowned Adw.HeaderBar header_bar;
     [GtkChild]
-    unowned Gtk.Label idle_label_left;
+    unowned Gtk.Label intact_label_left;
     [GtkChild]
-    unowned Gtk.Label idle_label_right;
+    unowned Gtk.Label intact_label_right;
     [GtkChild]
     unowned Gtk.Button context_button;
+    [GtkChild]
+    unowned Gtk.ToggleButton steps_list_button;
 
     Devel.Window devel_window;
-
-    static uint saved_last_position = 0;
 
     public string continue_state { get; set; default = "continue"; }
 
@@ -48,17 +48,25 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     public bool can_up { get; set; }
 
-    BasePage last_current_page;
+    static Gee.ArrayList<string> passed_pages = new Gee.ArrayList<string> ();
 
-    public BasePage current_page {
+    public bool simple { get; set; }
+
+    PageInfo _last_current_page;
+    PageInfo last_current_page {
         get {
-            return (BasePage) model.get_selected_item ();
+            return _last_current_page;
         }
-    }
+        set {
+            if (_last_current_page != null) {
+                _last_current_page.notify["is-ready"].disconnect (update_buttons);
+                _last_current_page.notify["scroll-on-top"].disconnect (update_scroll);
+            }
 
-    bool current_is_ready_to_continue {
-        get {
-            return current_page.is_ready;
+            _last_current_page = value;
+
+            _last_current_page.notify["is-ready"].connect (update_buttons);
+            _last_current_page.notify["scroll-on-top"].connect (update_scroll);
         }
     }
 
@@ -81,26 +89,56 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     public bool can_cancel { get; set; }
 
-    public Gtk.SingleSelection model { get; set; }
-
-    construct {
-        model = new Gtk.SingleSelection (new ListStore (typeof (BasePage)));
-
-        pages_indicator.model = model;
-        positioned_stack.bind_model (model, (page, pos) => {
-            if (pos <= saved_last_position) {
-                page.passed = true;
+    PagesModel _model;
+    public PagesModel? model {
+        get {
+            return _model;
+        }
+        set {
+            if (_model != null) {
+                _model.selection_changed.disconnect (selection_changed);
             }
 
-            return page;
-        });
+            _model = value;
 
-        model.selection_changed.connect (selection_changed);
+            positioned_stack.bind_model (_model, (page) => {
+                if (page.id in passed_pages) {
+                    page.passed = true;
+                }
+
+                return page.page;
+            });
+
+            if (_model != null) {
+                _model.selection_changed.connect (selection_changed);
+                selection_changed ();
+            }
+        }
+    }
+
+    construct {
+        Application.get_default ().bind_property ("model", this, "model", GLib.BindingFlags.SYNC_CREATE);
+        bind_property ("model", pages_indicator, "model", GLib.BindingFlags.SYNC_CREATE);
 
         header_bar.show_end_title_buttons = Config.IS_DEVEL;
         context_button.visible = Config.IS_DEVEL;
-        idle_label_left.visible = ReadySet.Application.get_default ().context.idle && Config.IS_DEVEL;
-        idle_label_right.visible = ReadySet.Application.get_default ().context.idle && !Config.IS_DEVEL;
+        intact_label_left.visible = ReadySet.Application.get_default ().context.intact && Config.IS_DEVEL;
+        intact_label_right.visible = ReadySet.Application.get_default ().context.intact && !Config.IS_DEVEL;
+
+        notify["show-steps-list"].connect (update_icons_visible);
+        notify["simple"].connect (update_icons_visible);
+        notify["dead-end"].connect (update_menu_button_visible);
+        notify["simple"].connect (update_menu_button_visible);
+        update_icons_visible ();
+        update_menu_button_visible ();
+    }
+
+    void update_icons_visible () {
+        pages_indicator.show_icons = !show_steps_list && !simple;
+    }
+
+    void update_menu_button_visible () {
+        steps_list_button.visible = !dead_end && !simple;
     }
 
     void selection_changed () {
@@ -108,7 +146,8 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         var n_items = model.get_n_items ();
 
         if (position == n_items - 1) {
-            var end_page = model.get_item (n_items - 1) as EndPage;
+            var page_info = (PageInfo) model.get_item (n_items - 1);
+            var end_page = page_info.page as EndPage;
             if (end_page != null) {
                 show_steps_list = false;
                 dead_end = true;
@@ -120,34 +159,20 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         update_buttons ();
         update_scroll ();
 
-        if (saved_last_position < position) {
-            saved_last_position = position;
-        }
+        last_current_page = model.get_selected_item ();
 
-        if (last_current_page != null) {
-            last_current_page.notify["is-ready"].connect (update_buttons);
-        }
-
-        last_current_page = current_page;
-        last_current_page.notify["is-ready"].connect (update_buttons);
-        last_current_page.notify["scroll-on-top"].connect (update_scroll);
-
-        current_page.passed = true;
+        passed_pages.add (last_current_page.id);
+        last_current_page.passed = true;
     }
 
     void update_scroll () {
-        can_up = !current_page.scroll_on_top;
+        can_up = !model.get_selected_item ().page.scroll_on_top;
     }
 
     void update_buttons () {
-        is_ready_to_continue = current_is_ready_to_continue;
+        is_ready_to_continue = model.get_selected_item ().is_ready;
         is_ready_to_finish = model.get_selected () == model.get_n_items () - 1;
         can_cancel = model.get_selected () > 0 && !dead_end;
-    }
-
-    public void add_page (BasePage page) {
-        page.hexpand = true;
-        ((ListStore) model.get_model ()).append (page);
     }
 
     [GtkCallback]
@@ -165,21 +190,16 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     [GtkCallback]
     void up_clicked () {
-        current_page.to_up ();
+        model?.get_selected_item ().page.to_up ();
     }
 
     [GtkCallback]
     void cancel_clicked () {
-        model.select_item (model.get_selected () - 1, true);
+        model?.select_item (model.get_selected () - 1, true);
     }
 
     [GtkCallback]
     void continue_clicked () {
-        model.select_item (model.get_selected () + 1, true);
-    }
-
-    [GtkCallback]
-    void finish_clicked () {
-        GLib.Application.get_default ().quit ();
+        model?.select_item (model.get_selected () + 1, true);
     }
 }

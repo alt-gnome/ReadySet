@@ -25,6 +25,10 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
     unowned Gtk.ListBox input_list;
     [GtkChild]
     unowned Gtk.ListBox current_input_list;
+    [GtkChild]
+    unowned Gtk.Stack current_input_list_stack;
+    [GtkChild]
+    unowned Gtk.Stack input_list_stack;
 
     const string INPUT_SOURCE_TYPE_XKB = "xkb";
     const string INPUT_SOURCE_TYPE_IBUS = "ibus";
@@ -74,9 +78,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         get_ibus_locale_infos ();
 #endif
 
-        filter_entry.changed.connect (() => {
-            input_list.invalidate_filter ();
-        });
+        filter_entry.changed.connect (invalidate_filter);
 
         Addin.get_instance ().context.data_changed.connect ((key) => {
             if (key == "keyboard-input-sources") {
@@ -92,18 +94,46 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
 
     void update_current () {
         current_input_list.remove_all ();
-        current_input_list.set_placeholder (new Gtk.Label (_("No input sources selected")) {
-            height_request = 48,
-            css_classes = { "error" }
-        });
-        foreach (var info in get_current_inputs ()) {
-            current_input_list.append (new InputRow (info, get_row_name (info)) { is_selected = true });
+
+        var current_inputs = get_current_inputs ();
+
+        if (current_inputs.size == 0) {
+            current_input_list_stack.visible_child_name = "nothing-selected";
+        } else {
+            current_input_list_stack.visible_child_name = "sources";
+        }
+
+        foreach (var info in current_inputs) {
+            var name = get_row_name (info);
+
+            if (name != null) {
+                current_input_list.append (new InputRow (info, name) { is_selected = true });
+            }
         }
 
         sync_all_checkmarks (true);
 
         input_list.invalidate_sort ();
+        invalidate_filter ();
+    }
+
+    void invalidate_filter () {
         input_list.invalidate_filter ();
+
+        bool has_visible_rows = false;
+        foreach (var entry in input_rows) {
+            var row = entry.value;
+            if (row.visible) {
+                has_visible_rows = true;
+                break;
+            }
+        }
+
+        if (has_visible_rows) {
+            input_list_stack.visible_child_name = "sources";
+        } else {
+            input_list_stack.visible_child_name = "nothing-found";
+        }
     }
 
     public bool get_layout (string type, string id, out string layout, out string variant) {
@@ -138,7 +168,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         return false;
     }
 
-    string get_row_name (InputInfo input_info) {
+    string? get_row_name (InputInfo input_info) {
         if (input_info.type_ == INPUT_SOURCE_TYPE_XKB) {
             string display_name;
             xkb_info.get_layout_info (input_info.id, out display_name, null, null, null);
@@ -155,7 +185,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
 #endif
         }
 
-        return "ERROR";
+        return null;
     }
 
     void sync_all_checkmarks (bool initial = false) {
@@ -186,7 +216,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
 
         if (invalidate) {
             input_list.invalidate_sort ();
-            input_list.invalidate_filter ();
+            invalidate_filter ();
         }
     }
 
@@ -302,7 +332,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
 
         input_list.invalidate_sort ();
-        input_list.invalidate_filter ();
+        invalidate_filter ();
     }
 
     void add_row_to_list (string type, string id, bool is_extra) {
@@ -318,10 +348,14 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             }
 
             var input_info = new InputInfo (type, id);
-            var widget = new InputRow (input_info, get_row_name (input_info), is_extra);
-            if (!input_rows.has_key (input_info)) {
-                input_rows.set (input_info, widget);
-                input_list.append (widget);
+            var name = get_row_name (input_info);
+
+            if (name != null) {
+                var widget = new InputRow (input_info, name, is_extra);
+                if (!input_rows.has_key (input_info)) {
+                    input_rows.set (input_info, widget);
+                    input_list.append (widget);
+                }
             }
         }
     }
@@ -351,7 +385,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
 
         if (invalidate) {
             input_list.invalidate_sort ();
-            input_list.invalidate_filter ();
+            invalidate_filter ();
         }
     }
 
@@ -414,14 +448,10 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
 
     [GtkCallback]
     void show_more_clicked () {
-        input_list.set_placeholder (new Gtk.Label (_("Nothing found")) {
-            height_request = 48
-        });
-
         filter_entry.grab_focus ();
 
         show_more = true;
-        input_list.invalidate_filter ();
+        invalidate_filter ();
 
         update_input_list_visible ();
     }

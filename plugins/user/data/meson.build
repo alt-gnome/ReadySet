@@ -27,7 +27,7 @@ configure_file(
   input: 'org.altlinux.ReadySet.Plugin.User.rules.in',
   output: 'org.altlinux.ReadySet.Plugin.User.rules',
   install: true,
-  install_dir: join_paths(get_option('datadir'), meson.project_name(), 'rules.d'),
+  install_dir: rulesdir,
   configuration: rules_conf,
 )
 

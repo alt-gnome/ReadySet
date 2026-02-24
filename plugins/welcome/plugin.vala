@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Welcome.Addin : ReadySet.Addin {
+public class Welcome.Addin : ReadySet.StepAddin {
 
     protected override string? resource_base_path {
         get {
@@ -26,12 +26,12 @@ public class Welcome.Addin : ReadySet.Addin {
         }
     }
 
-    public override ReadySet.BasePage[] build_pages () {
+    public override ReadySet.BaseBarePage[] build_pages () {
         return { new Welcome.Page () };
     }
 }
 
 public void peas_register_types (TypeModule module) {
     var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySet.Addin), typeof (Welcome.Addin));
+    obj.register_extension_type (typeof (ReadySet.StepAddin), typeof (Welcome.Addin));
 }

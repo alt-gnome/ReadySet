@@ -27,10 +27,10 @@ configure_file(
     'VERSION': meson.project_version(),
   },
   install: true,
-  install_dir: libdir / meson.project_name() / 'plugins'
+  install_dir: steps_plugins_dir
 )
 
 install_data(
   files('org.altlinux.ReadySet.Plugin.Language.rules'),
-  install_dir: join_paths(get_option('datadir'), meson.project_name(), 'rules.d'),
+  install_dir: rulesdir,
 )

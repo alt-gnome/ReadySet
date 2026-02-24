@@ -18,9 +18,19 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Keyboard.Addin : ReadySet.Addin {
+public class Keyboard.Addin : ReadySet.StepAddin {
 
     static Addin instance;
+
+    bool _accessible;
+    public override bool accessible {
+        get {
+            return _accessible;
+        }
+        protected set {
+            _accessible = value;
+        }
+    }
 
     protected override string? resource_base_path {
         get {
@@ -36,12 +46,22 @@ public class Keyboard.Addin : ReadySet.Addin {
         instance = this;
     }
 
-    public override ReadySet.BasePage[] build_pages () {
+    public override ReadySet.BaseBarePage[] build_pages () {
         return { new Keyboard.Page () };
     }
 
     internal static Addin get_instance () {
         return instance;
+    }
+
+    public override void init_once () {
+        if (!context.intact) {
+            try {
+                accessible = new Polkit.Permission.sync ("org.freedesktop.locale1.set-keyboard", null, null).allowed;
+            } catch (Error e) {
+                error (e.message);
+            }
+        }
     }
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
@@ -53,5 +73,5 @@ public class Keyboard.Addin : ReadySet.Addin {
 
 public void peas_register_types (TypeModule module) {
     var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySet.Addin), typeof (Keyboard.Addin));
+    obj.register_extension_type (typeof (ReadySet.StepAddin), typeof (Keyboard.Addin));
 }

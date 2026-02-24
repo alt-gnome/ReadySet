@@ -16,15 +16,16 @@ rs_app_vala_sources = files(
 
   'about.vala',
   'application.vala',
-  'data.vala',
   'main.vala',
   'options-handler.vala',
+  'pages-model.vala',
   'utils.vala',
   'window-content.vala',
   'window.vala',
 )
 
 rs_app_dependencies = [
+  gdm_dep,
   gee_dep,
   libadwaita_dep,
   libpeas_dep,

@@ -29,25 +29,29 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
     const int DEFAULT_PIXEL_SIZE = 13;
     const int CURRENT_PIXEL_SIZE = 16;
 
-    public Gtk.SingleSelection model {
+    PagesModel? _model;
+    public PagesModel? model {
         get {
-            return positioned_stack.model;
+            return _model;
         }
         set {
-            if (model != null) {
-                model.selection_changed.disconnect (on_selection_changed);
-                model.items_changed.disconnect (on_items_changed);
+            if (_model != null) {
+                _model.selection_changed.disconnect (on_selection_changed);
+                _model.items_changed.disconnect (on_items_changed);
             }
 
-            if (value != null) {
-                positioned_stack.bind_model (value, (page) => {
-                    return new Gtk.Label (page.title_header) {
-                        css_classes = { "heading" }
-                    };
-                });
+            _model = value;
 
+            positioned_stack.bind_model (_model, (page) => {
+                return new Gtk.Label (page.title_header) {
+                    css_classes = { "heading" }
+                };
+            });
+
+            if (_model != null) {
                 model.selection_changed.connect (on_selection_changed);
                 model.items_changed.connect (on_items_changed);
+                update ();
             }
         }
     }
@@ -83,8 +87,8 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
     void update () {
         light_clear ();
 
-        for (int i = 0; i < model.n_items; i++) {
-            var page = (BasePage) model.get_item (i);
+        for (int i = 0; i < model.get_n_items (); i++) {
+            var page = (PageInfo) model.get_item (i);
 
             var img = new Gtk.Image.from_icon_name (page.icon_name) {
                 valign = Gtk.Align.CENTER
@@ -94,6 +98,8 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
             indicators.add (img);
             icons_box.append (img);
         }
+
+        on_selection_changed ();
     }
 
     void light_clear () {

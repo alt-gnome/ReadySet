@@ -1,5 +1,6 @@
 librs_blueprints = custom_target('blueprints',
   input: files(
+    'ui/base-bare-page.blp',
     'ui/base-page-desc.blp',
     'ui/base-page.blp',
   ),
