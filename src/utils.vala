@@ -70,4 +70,48 @@ namespace ReadySet {
     public const string STEP_ID_LABEL = "step-id";
 
     public delegate Gtk.Widget CreateFunc (PageInfo page);
+
+    public bool env_exec (string program, string[] env) throws Error {
+        var launcher = new SubprocessLauncher (NONE);
+        launcher.set_environ (env);
+
+        var process = launcher.spawn (program);
+
+        return process.wait_check ();
+    }
+
+    public void exec_user_pre_hooks (string[] env = {}) throws Error {
+        exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "pre-hooks", "user"), env);
+    }
+
+    public void exec_user_post_hooks (string[] env) throws Error {
+        exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "post-hooks", "user"), env);
+    }
+
+    void exec_hooks (File hooks_dir, string[] env) throws Error {
+        var enumerator = hooks_dir.enumerate_children (
+            "%s,%s,%s".printf (
+                FileAttribute.STANDARD_NAME,
+                FileAttribute.STANDARD_TYPE,
+                FileAttribute.ACCESS_CAN_EXECUTE
+            ),
+            NONE
+        );
+
+        if (enumerator == null) {
+            return;
+        }
+
+        FileInfo? info;
+        while ((info = enumerator.next_file ()) != null) {
+            var type_ = info.get_file_type ();
+            if (type_ != FileType.REGULAR) {
+                continue;
+            }
+
+            var script = Path.build_filename (hooks_dir.get_path (), info.get_name ());
+
+            env_exec (script, env);
+        }
+    }
 }

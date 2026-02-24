@@ -27,15 +27,15 @@ namespace ReadySet {
         return process.wait_check ();
     }
 
-    public void exec_pre_hooks_internal (string[] env) throws Error {
-        exec_hooks_internal (File.new_build_filename (Config.DATADIR, Config.NAME, "pre-hooks"), env);
+    public void exec_user_pre_hooks (string[] env) throws Error {
+        exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "pre-hooks", "system"), env);
     }
 
-    public void exec_post_hooks_internal (string[] env) throws Error {
-        exec_hooks_internal (File.new_build_filename (Config.DATADIR, Config.NAME, "post-hooks"), env);
+    public void exec_user_post_hooks (string[] env) throws Error {
+        exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "post-hooks", "system"), env);
     }
 
-    void exec_hooks_internal (File hooks_dir, string[] env) throws Error {
+    void exec_hooks (File hooks_dir, string[] env) throws Error {
         var enumerator = hooks_dir.enumerate_children (
             "%s,%s,%s".printf (
                 FileAttribute.STANDARD_NAME,

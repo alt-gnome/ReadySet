@@ -22,12 +22,12 @@ public sealed class ReadySet.Service : Object {
     public void exec_pre_hooks (string[] env, BusName sender) throws Error {
         polkit_check (sender, "org.altlinux.ReadySet.ExecPreHooks");
 
-        exec_pre_hooks_internal (env);
+        exec_user_pre_hooks (env);
     }
 
     public void exec_post_hooks (string[] env, BusName sender) throws Error {
         polkit_check (sender, "org.altlinux.ReadySet.ExecPostHooks");
 
-        exec_post_hooks_internal (env);
+        exec_user_post_hooks (env);
     }
 }

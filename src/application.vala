@@ -104,15 +104,13 @@ public sealed class ReadySet.Application: Adw.Application {
 
         options_handler.fill_context (context);
         context.reload_window.connect (reload_window);
-    }
 
-    protected override void shutdown () {
         if (!options_handler.intact) {
             try {
-                var proxy = get_ready_set_proxy ();
-                proxy.exec_pre_hooks ();
+                exec_user_pre_hooks ();
+                get_ready_set_proxy ().exec_pre_hooks ();
             } catch (Error e) {
-                error ("Failed to clear generated rules: %s", e.message);
+                error ("Failed to executing pre hooks: %s", e.message);
             }
         }
 
