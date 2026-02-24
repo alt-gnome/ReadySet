@@ -207,7 +207,7 @@ Requires: %name = %EVR
 %_datadir/dconf/profile/%gis_name
 %_datadir/%gis_name
 %_sharedstatedir/%gis_name
-%ghost %_rundir/%gis_name
+%ghost /run/%gis_name
 %_datadir/gnome-session/sessions/%gis_name.session
 %_datadir/gnome-shell/modes/initial-setup.json
 %_userunitdir/*
