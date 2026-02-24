@@ -1,4 +1,8 @@
+# If you want to suggest changes, please send PR on
+# https://altlinux.space/alt-gnome/ReadySet to altlinux branch 
+
 %define _unpackaged_files_terminate_build 1
+
 %define app_id org.altlinux.ReadySet
 %define _libexecdir %_prefix/libexec
 %define libname lib%name
@@ -48,6 +52,19 @@ BuildRequires: pkgconfig(systemd)
 BuildRequires: pkgconfig(gdm)
 
 %description
+%summary.
+
+%package gdm
+Summary: Files needed for work as initial-setip in gdm
+Group: Other
+
+Requires: %name = %EVR
+# %_datadir/gnome-session
+Requires: gnome-session
+# %_datadir/gnome-shell
+Requires: gnome-shell-data
+
+%description gdm
 %summary.
 
 %package common
@@ -183,12 +200,14 @@ Requires: %name = %EVR
 %_iconsdir/hicolor/*/apps/%{app_id}*
 %_datadir/applications/%{app_id}*
 %_datadir/polkit-1/rules.d/%app_id.rules
+
+%files gdm
 %_libexecdir/%gis_name
 %_desktopdir/%gis_name.desktop
 %_datadir/dconf/profile/%gis_name
 %_datadir/%gis_name
-%_var/lib/%gis_name
-%_var/run/%gis_name
+%_sharedstatedir/%gis_name
+%ghost %_rundir/%gis_name
 %_datadir/gnome-session/sessions/%gis_name.session
 %_datadir/gnome-shell/modes/initial-setup.json
 %_userunitdir/*
@@ -201,7 +220,7 @@ Requires: %name = %EVR
 %_libexecdir/%app_id
 %_sysconfdir/%name
 %_datadir/%name
-%_var/lib/%name
+%_sharedstatedir/%name
 %_sysconfdir/dbus-1/system.d/%app_id.conf
 %_datadir/polkit-1/actions/%app_id.policy
 %_datadir/dbus-1/system-services/%app_id.service
