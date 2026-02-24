@@ -226,10 +226,6 @@ Requires: %name = %EVR
 %_unitdir/%name.service
 %_sysusersdir/%name.conf
 %_tmpfilesdir/%name.conf
-%_datadir/%name/pre-hooks/user
-%_datadir/%name/post-hooks/user
-%_datadir/%name/pre-hooks/system
-%_datadir/%name/post-hooks/system
 %doc README.en.md
 
 %files -n %libname%api_version
