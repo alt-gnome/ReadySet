@@ -100,6 +100,9 @@ public sealed class ReadySet.EndPage : BaseBarePage {
             });
             yield;
 
+            stack.visible_child_name = "ready";
+            is_ready = true;
+
         } else {
             try {
                 if (app.has_installer) {
