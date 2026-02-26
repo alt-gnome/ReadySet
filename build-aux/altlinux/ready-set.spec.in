@@ -2,7 +2,6 @@
 # https://altlinux.space/alt-gnome/ReadySet to altlinux branch 
 
 %define _unpackaged_files_terminate_build 1
-%define optflags_lto %nil
 
 %define app_id org.altlinux.ReadySet
 %define _libexecdir %_prefix/libexec
