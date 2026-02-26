@@ -113,8 +113,6 @@ public sealed class ReadySet.Application: Adw.Application {
                 error ("Failed to executing pre hooks: %s", e.message);
             }
         }
-
-        base.shutdown ();
     }
 
     Peas.Engine get_steps_engine () {
