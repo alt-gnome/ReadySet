@@ -106,7 +106,7 @@ public class User.PagePassword : ReadySet.BasePage {
     bool password_is_ready (string password) {
         bool no_password_security = Addin.get_instance ().context.get_boolean ("no-password-security");
         if (no_password_security) {
-            return true;
+            return password.length != 0;
         } else {
             return password_is_correct (password);
         }
@@ -120,8 +120,8 @@ public class User.PagePassword : ReadySet.BasePage {
         bool no_password_security = Addin.get_instance ().context.get_boolean ("no-password-security");
         if (no_password_security) {
             return {
-                hint: "",
-                strength_level: GOOD,
+                hint: _("The password must consist of at least one character"),
+                strength_level: password.length == 0 ? StrengthLevel.BAD : StrengthLevel.GOOD,
                 value: 0.0,
                 support_value: false
             };
