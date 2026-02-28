@@ -104,6 +104,9 @@ namespace ReadySet {
 
         FileInfo? info;
         while ((info = enumerator.next_file ()) != null) {
+            if (!info.get_attribute_boolean (FileAttribute.ACCESS_CAN_EXECUTE)) {
+                continue;
+            }
             var type_ = info.get_file_type ();
             if (type_ != FileType.REGULAR) {
                 continue;
