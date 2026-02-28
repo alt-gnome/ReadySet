@@ -62,10 +62,12 @@ public class User.Addin : ReadySet.StepAddin {
                 user.set_icon_file (context.get_string ("user-avatar-file"));
             }
 
-            if (context.get_string ("user-root-password") != "") {
-                set_root_password (context.get_string ("user-root-password"));
-            } else {
-                set_root_password (context.get_string ("user-password"));
+            if (context.get_boolean ("user-with-root")) {
+                if (context.get_string ("user-root-password") != "") {
+                    set_root_password (context.get_string ("user-root-password"));
+                } else {
+                    set_root_password (context.get_string ("user-password"));
+                }
             }
 
         } catch (Error e) {
