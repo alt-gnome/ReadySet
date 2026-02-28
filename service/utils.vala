@@ -61,13 +61,13 @@ namespace ReadySet {
 
             var script = Path.build_filename (hooks_dir.get_path (), info.get_name ());
 
-            var rs_env = new Array<string> ();
+            var rs_env = new string[env.length];
 
-            foreach (var e in env) {
-                rs_env.append_val ("READY_SET_" + e);
+            for (var i = 0; i < env.length; i++) {
+                rs_env[i] = "READY_SET_" + env[i];
             }
 
-            if (!env_exec (script, rs_env.data.copy ())) {
+            if (!env_exec (script, rs_env)) {
                 warning ("Failed to exec hook '%s'", script);
             }
         }
