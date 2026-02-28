@@ -60,10 +60,10 @@ public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
 
     public async abstract void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError;
 
-    public abstract BaseBarePage[] build_pages ();
+    public async abstract BaseBarePage[] build_pages ();
 
     //  After context set action. Calls once. Calls before init
-    public virtual void init_once () {
+    public async virtual void init_once () {
         return;
     }
 

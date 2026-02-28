@@ -85,10 +85,6 @@ public sealed class ReadySet.EndPage : BaseBarePage {
             }
         }
 
-        foreach (var step_addin in steps_addins_arr) {
-            message (step_addin.get_type ().name ());
-        }
-
         if (context.intact) {
             Timeout.add_seconds (1, () => {
                 progress_data.value += 0.2;

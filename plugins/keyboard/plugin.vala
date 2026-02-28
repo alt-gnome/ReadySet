@@ -46,7 +46,7 @@ public class Keyboard.Addin : ReadySet.StepAddin {
         instance = this;
     }
 
-    public override ReadySet.BaseBarePage[] build_pages () {
+    public async override ReadySet.BaseBarePage[] build_pages () {
         return { new Keyboard.Page () };
     }
 
@@ -54,10 +54,10 @@ public class Keyboard.Addin : ReadySet.StepAddin {
         return instance;
     }
 
-    public override void init_once () {
+    public async override void init_once () {
         if (!context.intact) {
             try {
-                accessible = new Polkit.Permission.sync ("org.freedesktop.locale1.set-keyboard", null, null).allowed;
+                accessible = (yield new Polkit.Permission ("org.freedesktop.locale1.set-keyboard", null, null)).allowed;
             } catch (Error e) {
                 error (e.message);
             }

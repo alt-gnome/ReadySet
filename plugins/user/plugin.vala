@@ -34,7 +34,7 @@ public class User.Addin : ReadySet.StepAddin {
         instance = this;
     }
 
-    public override ReadySet.BaseBarePage[] build_pages () {
+    public async override ReadySet.BaseBarePage[] build_pages () {
         bool with_root = context.get_boolean ("user-with-root");
         return {
             new User.PageUsername (),

@@ -33,11 +33,17 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
 
     construct {
         add_action_entries (ACTION_ENTRIES, this);
-        build_content ();
+
+        map.connect (window_initially_shown);
 
         if (Config.IS_DEVEL) {
             add_css_class ("devel");
         }
+    }
+
+    void window_initially_shown () {
+        reload_window ();
+        map.disconnect (window_initially_shown);
     }
 
     protected override bool close_request () {
@@ -50,17 +56,17 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
 
     public void reload_window () {
         stack.visible_child_name = "load";
-        Timeout.add_once (300, build_content);
+        build_content.begin ();
     }
 
-    void build_content () {
+    async void build_content () {
         var c = stack.get_child_by_name ("main");
 
         if (c != null) {
             stack.remove (c);
         }
 
-        Application.get_default ().init_pages ();
+        yield Application.get_default ().init_pages ();
         stack.add_named (new WindowContent (Application.get_default ().options_handler.simple), "main");
 
         stack.visible_child_name = "main";

@@ -73,9 +73,9 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         input_list.set_sort_func (sort_inputs);
         input_list.set_filter_func (input_visible);
 
-        get_locale_infos ();
+        get_locale_infos.begin ();
 #if HAVE_IBUS
-        get_ibus_locale_infos ();
+        get_ibus_locale_infos.begin ();
 #endif
 
         filter_entry.changed.connect (invalidate_filter);
@@ -295,7 +295,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         return search_query.match_string (input_row.title, true);
     }
 
-    void get_locale_infos () {
+    async void get_locale_infos () {
         string type = null;
         string id = null;
         string lang = null;
@@ -309,7 +309,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
                 set_current_inputs (current_inputs_info);
             }
 
-            add_row_to_list (type, id, false);
+            yield add_row_to_list (type, id, false);
         }
 
         if (!Gnome.Languages.parse_locale (get_current_language (), out lang, out country, null, null)) {
@@ -317,31 +317,31 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         }
 
         foreach (var mid in MAIN_SOURCES) {
-            add_row_to_list (INPUT_SOURCE_TYPE_XKB, mid, false);
+            yield add_row_to_list (INPUT_SOURCE_TYPE_XKB, mid, false);
         }
 
         var list = xkb_info.get_layouts_for_language (lang);
-        add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
+        yield add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
 
         if (country != null) {
             list = xkb_info.get_layouts_for_country (country);
-            add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
+            yield add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
         }
 
         list = xkb_info.get_all_layouts ();
-        add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
+        yield add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
 
         input_list.invalidate_sort ();
         invalidate_filter ();
     }
 
-    void add_row_to_list (string type, string id, bool is_extra) {
+    async void add_row_to_list (string type, string id, bool is_extra) {
         var tmp = new List<weak string> ();
         tmp.append (id);
-        add_rows_to_list (tmp, type, null, is_extra);
+        yield add_rows_to_list (tmp, type, null, is_extra);
     }
 
-    void add_rows_to_list (List<weak string> list, string type, string? default_id, bool is_extra) {
+    async void add_rows_to_list (List<weak string> list, string type, string? default_id, bool is_extra) {
         foreach (var id in list) {
             if (id == default_id) {
                 continue;
@@ -357,6 +357,9 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
                     input_list.append (widget);
                 }
             }
+
+            Idle.add (add_rows_to_list.callback);
+            yield;
         }
     }
 
@@ -389,13 +392,13 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         }
     }
 
-    void get_ibus_locale_infos () {
+    async void get_ibus_locale_infos () {
         if (ibus_engines == null) {
             return;
         }
 
         foreach (var entry in ibus_engines) {
-            add_row_to_list (INPUT_SOURCE_TYPE_IBUS, entry.key, true);
+            yield add_row_to_list (INPUT_SOURCE_TYPE_IBUS, entry.key, true);
         }
     }
 

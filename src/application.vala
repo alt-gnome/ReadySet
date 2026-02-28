@@ -215,7 +215,7 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
-    public void init_pages () {
+    public async void init_pages () {
         var pages = new Gee.ArrayList<PageInfo> ();
 
         print ("Loaded plugins:\n");
@@ -243,11 +243,11 @@ public sealed class ReadySet.Application: Adw.Application {
                 );
 
                 if (!(all_steps[i] in inited_plugins)) {
-                    addin.init_once ();
+                    yield addin.init_once ();
                     inited_plugins.add (all_steps[i]);
                 }
 
-                foreach (var page in addin.build_pages ()) {
+                foreach (var page in (yield addin.build_pages ())) {
                     pages.add (new PageInfo (
                         page,
                         addin,
@@ -256,6 +256,9 @@ public sealed class ReadySet.Application: Adw.Application {
                 }
                 print ("  %s\n", all_steps[i]);
             }
+
+            Idle.add (init_pages.callback);
+            yield;
         }
 
         pages.add (new PageInfo (

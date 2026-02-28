@@ -67,8 +67,8 @@ public class Language.Addin : ReadySet.StepAddin {
         var nv = new_value.get_string ();
         Intl.setlocale (LocaleCategory.ALL, nv);
 
-        Addin.get_instance ().context.reload_window ();
         this_value.set_string (nv);
+        Addin.get_instance ().context.reload_window ();
     }
 
     protected override string? resource_base_path {
@@ -97,7 +97,7 @@ public class Language.Addin : ReadySet.StepAddin {
         return vars;
     }
 
-    public override ReadySet.BaseBarePage[] build_pages () {
+    public async override ReadySet.BaseBarePage[] build_pages () {
         return { new Language.Page () };
     }
 
@@ -105,10 +105,10 @@ public class Language.Addin : ReadySet.StepAddin {
         return instance;
     }
 
-    public override void init_once () {
+    public async override void init_once () {
         if (!context.intact) {
             try {
-                accessible = new Polkit.Permission.sync ("org.freedesktop.locale1.set-locale", null, null).allowed;
+                accessible = (yield new Polkit.Permission ("org.freedesktop.locale1.set-locale", null, null)).allowed;
             } catch (Error e) {
                 error (e.message);
             }
