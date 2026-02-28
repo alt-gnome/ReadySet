@@ -18,7 +18,7 @@
 
 namespace ReadySet {
 
-    public bool env_exec (string program, string[] env) throws Error {
+    public bool env_exec (string program, owned string[] env) throws Error {
         var launcher = new SubprocessLauncher (NONE);
         launcher.set_environ (env);
 
@@ -58,7 +58,15 @@ namespace ReadySet {
 
             var script = Path.build_filename (hooks_dir.get_path (), info.get_name ());
 
-            env_exec (script, env);
+            var rs_env = new Array<string> ();
+
+            foreach (var e in env) {
+                rs_env.append_val ("READY_SET_" + e);
+            }
+
+            if (!env_exec (script, rs_env.data.copy ())) {
+                warning ("Failed to exec hook '%s'", script);
+            }
         }
     }
 
