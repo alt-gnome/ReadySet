@@ -125,8 +125,8 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                     env.add ("%s=\"%s\"".printf (context_key_to_env_key (key), raw_context[key]));
                 }
 
-                exec_user_post_hooks (env.to_array ());
-                get_ready_set_proxy ().exec_post_hooks (env.to_array ());
+                yield exec_user_post_hooks (env.to_array ());
+                yield get_ready_set_proxy ().exec_post_hooks (env.to_array ());
 
                 stack.visible_child_name = "ready";
                 is_ready = true;

@@ -106,12 +106,16 @@ public sealed class ReadySet.Application: Adw.Application {
         context.reload_window.connect (reload_window);
 
         if (!options_handler.intact) {
-            try {
-                exec_user_pre_hooks ();
-                get_ready_set_proxy ().exec_pre_hooks ();
-            } catch (Error e) {
-                error ("Failed to executing pre hooks: %s", e.message);
-            }
+            exec_pre_hooks.begin ();
+        }
+    }
+
+    async void exec_pre_hooks () {
+        try {
+            yield exec_user_pre_hooks ();
+            yield get_ready_set_proxy ().exec_pre_hooks ();
+        } catch (Error e) {
+            error ("Failed to executing pre hooks: %s", e.message);
         }
     }
 

@@ -21,11 +21,11 @@ namespace ReadySet {
     [DBus (name = "org.altlinux.ReadySet")]
     public interface Service : Object {
 
-        public abstract void exec_pre_hooks (
+        public abstract async void exec_pre_hooks (
             string[] env = {}
         ) throws Error;
 
-        public abstract void exec_post_hooks (
+        public abstract async void exec_post_hooks (
             string[] env = {}
         ) throws Error;
     }
@@ -71,24 +71,24 @@ namespace ReadySet {
 
     public delegate Gtk.Widget CreateFunc (PageInfo page);
 
-    public bool env_exec (string program, owned string[] env) throws Error {
+    public async bool env_exec (string program, owned string[] env) throws Error {
         var launcher = new SubprocessLauncher (NONE);
         launcher.set_environ (env);
 
         var process = launcher.spawn (program);
 
-        return process.wait_check ();
+        return yield process.wait_check_async ();
     }
 
-    public void exec_user_pre_hooks (string[] env = {}) throws Error {
-        exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "pre-hooks", "user"), env);
+    public async void exec_user_pre_hooks (string[] env = {}) throws Error {
+        yield exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "pre-hooks", "user"), env);
     }
 
-    public void exec_user_post_hooks (string[] env) throws Error {
-        exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "post-hooks", "user"), env);
+    public async void exec_user_post_hooks (string[] env) throws Error {
+        yield exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "post-hooks", "user"), env);
     }
 
-    void exec_hooks (File hooks_dir, string[] env) throws Error {
+    async void exec_hooks (File hooks_dir, string[] env) throws Error {
         var enumerator = hooks_dir.enumerate_children (
             "%s,%s,%s".printf (
                 FileAttribute.STANDARD_NAME,
@@ -120,7 +120,7 @@ namespace ReadySet {
                 rs_env.append_val ("READY_SET_" + e);
             }
 
-            if (!env_exec (script, rs_env.data.copy ())) {
+            if (!(yield env_exec (script, rs_env.data.copy ()))) {
                 warning ("Failed to exec hook '%s'", script);
             }
         }
