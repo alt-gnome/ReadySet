@@ -85,14 +85,17 @@ protected class ReadySet.ValueObject : Object {
         }
     }
 
+    public bool is_sensitive { get; construct; }
+
     unowned ContextGetterFunc? getter_func = null;
     unowned ContextSetterFunc? setter_func = null;
 
     public ContextType value_type { get; construct; }
 
-    public ValueObject (ContextType value_type) {
+    public ValueObject (ContextType value_type, bool is_sensitive = false) {
         Object (
-            value_type: value_type
+            value_type: value_type,
+            is_sensitive: is_sensitive
         );
     }
 
@@ -116,15 +119,18 @@ public class ReadySet.ContextVarInfo : Object {
 
     public ContextType value_type { get; construct; }
 
+    public bool is_sensitive { get; construct; }
+
     public Value? initial_value { get; set; default = null; }
 
     public unowned ContextGetterFunc? getter_func = null;
 
     public unowned ContextSetterFunc? setter_func = null;
 
-    public ContextVarInfo (ContextType value_type) {
+    public ContextVarInfo (ContextType value_type, bool is_sensitive = false) {
         Object (
-            value_type: value_type
+            value_type: value_type,
+            is_sensitive: is_sensitive
         );
     }
 }
@@ -273,6 +279,10 @@ public class ReadySet.Context : Object {
         var raw_data = new HashTable<string, string> (str_hash, str_equal);
 
         foreach (var key in get_keys ()) {
+            if (data[key].is_sensitive) {
+                continue;
+            }
+
             string str;
             switch (data[key].value_type) {
                 case ContextType.STRING:
@@ -345,7 +355,7 @@ public class ReadySet.Context : Object {
                 warning ("Key %s already exists in context, it will be overwriting", key);
             }
             debug ("Registering key %s with type %s", key, info.value_type.to_string ());
-            data[key] = new ValueObject (info.value_type);
+            data[key] = new ValueObject (info.value_type, info.is_sensitive);
             if (info.getter_func != null) {
                 data[key].set_getter (info.getter_func);
             }

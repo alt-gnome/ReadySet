@@ -87,8 +87,8 @@ public class User.Addin : ReadySet.StepAddin {
         //  Storage
         vars["user-username"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["user-fullname"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
-        vars["user-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
-        vars["user-root-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["user-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING, true);
+        vars["user-root-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING, true);
         vars["user-autologin"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
         return vars;
     }
