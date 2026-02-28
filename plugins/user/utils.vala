@@ -273,8 +273,9 @@ namespace User {
 
     bool set_root_password (string password) {
         try {
-            debug ("Setting root password: %s", password);
-            ReadySet.pkexec ({ Path.build_filename (Config.LIBEXECDIR, "ready-set-set-root-password"), password });
+            Environment.set_variable ("ROOT_PASSWORD", password, true);
+            ReadySet.pkexec ({ Path.build_filename (Config.LIBEXECDIR, "ready-set-set-root-password") });
+            Environment.unset_variable ("ROOT_PASSWORD");
             return true;
         } catch (Error e) {
             return false;
