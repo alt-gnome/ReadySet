@@ -22,10 +22,30 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
     [GtkChild]
     unowned Gtk.Stack stack;
 
+    const string A_NAME = "a";
+    const string B_NAME = "b";
+
     const ActionEntry[] ACTION_ENTRIES = {
         { "preferences", on_preferences_action },
         { "about", on_about_action },
     };
+
+    Gtk.Widget? a_child {
+        get {
+            return stack.get_child_by_name (A_NAME);
+        }
+    }
+
+    Gtk.Widget? b_child {
+        get {
+            return stack.get_child_by_name (B_NAME);
+        }
+    }
+
+    string active;
+    bool reloading = false;
+
+    bool simple;
 
     public Window (ReadySet.Application app) {
         Object (application: app);
@@ -35,6 +55,8 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         add_action_entries (ACTION_ENTRIES, this);
 
         map.connect (window_initially_shown);
+
+        simple = Application.get_default ().options_handler.simple;
 
         if (Config.IS_DEVEL) {
             add_css_class ("devel");
@@ -55,21 +77,40 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
     }
 
     public void reload_window () {
-        stack.visible_child_name = "load";
-        build_content.begin ();
-    }
-
-    async void build_content () {
-        var c = stack.get_child_by_name ("main");
-
-        if (c != null) {
-            stack.remove (c);
+        if (reloading) {
+            return;
         }
 
-        yield Application.get_default ().init_pages ();
-        stack.add_named (new WindowContent (Application.get_default ().options_handler.simple), "main");
+        reloading = true;
+        Application.get_default ().init_pages.begin (set_window_content);
+    }
 
-        stack.visible_child_name = "main";
+    void set_window_content () {
+        if (a_child == null) {
+            active = A_NAME;
+        } else if (b_child == null) {
+            active = B_NAME;
+        }
+
+        stack.add_named (new WindowContent (simple), active);
+        stack.set_visible_child_name (active);
+        Timeout.add_once (stack.transition_duration, on_transition_ended);
+    }
+
+    void on_transition_ended () {
+        Gtk.Widget? to_remove = null;
+
+        if (active == A_NAME) {
+            to_remove = b_child;
+        } else if (active == B_NAME) {
+            to_remove = a_child;
+        }
+
+        if (to_remove != null) {
+            stack.remove (to_remove);
+        }
+
+        reloading = false;
     }
 
     void on_preferences_action () {

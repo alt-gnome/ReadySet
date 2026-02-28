@@ -101,13 +101,7 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
             _model = value;
 
-            positioned_stack.bind_model (_model, (page) => {
-                if (page.id in passed_pages) {
-                    page.passed = true;
-                }
-
-                return page.page;
-            });
+            positioned_stack.bind_model (_model, page_creation_func);
 
             if (_model != null) {
                 _model.selection_changed.connect (selection_changed);
@@ -116,9 +110,17 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         }
     }
 
+    Gtk.Widget page_creation_func (PageInfo page) {
+        if (page.id in passed_pages) {
+            page.passed = true;
+        }
+
+        return page.page;
+    }
+
     construct {
-        Application.get_default ().bind_property ("model", this, "model", GLib.BindingFlags.SYNC_CREATE);
-        bind_property ("model", pages_indicator, "model", GLib.BindingFlags.SYNC_CREATE);
+        model = Application.get_default ().model;
+        pages_indicator.model = model;
 
         header_bar.show_end_title_buttons = Config.IS_DEVEL;
         context_button.visible = Config.IS_DEVEL;
