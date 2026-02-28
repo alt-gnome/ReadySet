@@ -69,6 +69,47 @@ public class Keyboard.Addin : ReadySet.StepAddin {
         vars["keyboard-input-sources"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV);
         return vars;
     }
+
+    public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
+        try {
+            var proxy = yield get_locale_proxy ();
+
+            var current_inputs_info = get_current_inputs ();
+            var inputs = current_inputs_info.to_array ();
+
+            var layouts = new Gee.ArrayList<string> ();
+            var variants = new Gee.ArrayList<string> ();
+
+            foreach (var input in inputs) {
+                var lv = input.id.split ("+");
+
+                string layout;
+                string variant;
+                if (lv.length > 1) {
+                    layout = lv[0];
+                    variant = lv[1];
+                } else {
+                    layout = lv[0];
+                    variant = "";
+                }
+
+                layouts.add (layout);
+                variants.add (variant);
+            }
+
+            yield proxy.set_x_11_keyboard (string.joinv (
+                ",",
+                layouts.to_array ()),
+                "",
+                string.joinv (",", variants.to_array ()),
+                "",
+                true,
+                true
+            );
+        } catch (Error e) {
+            throw ReadySet.ApplyError.build_error (_("Error when setting keyboard layout"), e.message);
+        }
+    }
 }
 
 public void peas_register_types (TypeModule module) {

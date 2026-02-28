@@ -18,14 +18,4 @@
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Language/ui/page.ui")]
 public sealed class Language.Page : ReadySet.BasePage {
-
-    public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
-        try {
-            var proxy = yield get_locale_proxy ();
-
-            yield proxy.set_locale ({ @"LANG=$(Addin.get_instance ().current_locale)" }, true);
-        } catch (Error e) {
-            throw ReadySet.ApplyError.build_error (_("Error when setting language"), e.message);
-        }
-    }
 }

@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public abstract class ReadySet.StepAddin : Peas.ExtensionBase, Applyable {
+public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
 
     protected virtual string? resource_base_path {
         get {
@@ -58,9 +58,7 @@ public abstract class ReadySet.StepAddin : Peas.ExtensionBase, Applyable {
         }
     }
 
-    public async virtual void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
-        return;
-    }
+    public async abstract void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError;
 
     public abstract BaseBarePage[] build_pages ();
 

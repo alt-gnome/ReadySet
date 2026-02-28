@@ -22,9 +22,7 @@ public abstract class ReadySet.InstallerAddin : Peas.ExtensionBase {
 
     public Context context { get; set; default = new Context (true); }
 
-    public async virtual void install (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
-        return;
-    }
+    public async abstract void install (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError;
 
     //  After context set action. Calls once. Calls before init
     public virtual void init_once () {

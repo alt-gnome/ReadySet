@@ -71,7 +71,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         progress_data.notify["value"].connect (update_progress_visibility);
         update_progress_visibility ();
 
-        Gee.ArrayList<Applyable> applyable_arr = new Gee.ArrayList<Applyable> ();
+        Gee.ArrayList<StepAddin> steps_addins_arr = new Gee.ArrayList<StepAddin> ();
 
         for (int i = 0; i < app.model.get_n_items (); i++) {
             var page_info = (PageInfo) app.model.get_item (i);
@@ -80,10 +80,13 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                 continue;
             }
 
-            if (!(page_info.plugin in applyable_arr)) {
-                applyable_arr.add (page_info.plugin);
+            if (!(page_info.plugin in steps_addins_arr)) {
+                steps_addins_arr.add (page_info.plugin);
             }
-            applyable_arr.add (page_info.page);
+        }
+
+        foreach (var step_addin in steps_addins_arr) {
+            message (step_addin.get_type ().name ());
         }
 
         if (context.intact) {
@@ -109,10 +112,10 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                     yield app.installer_plugin.install (progress_data);
 
                 } else {
-                    foreach (var applyable in applyable_arr) {
+                    foreach (var step_addin in steps_addins_arr) {
                         progress_data.value = 0.0;
 
-                        yield applyable.apply (progress_data);
+                        yield step_addin.apply (progress_data);
 
                         progress_data.value = 1.0;
                     }

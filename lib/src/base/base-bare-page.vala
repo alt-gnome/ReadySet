@@ -17,7 +17,7 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Lib/ui/base-bare-page.ui")]
-public class ReadySet.BaseBarePage : Adw.Bin, Applyable {
+public class ReadySet.BaseBarePage : Adw.Bin {
 
     [GtkChild]
     unowned Adw.Bin content_bin;
@@ -86,10 +86,6 @@ public class ReadySet.BaseBarePage : Adw.Bin, Applyable {
 
     void update_scroll_on_top () {
         scroll_on_top = scrolled_window.vadjustment.value <= 360.0;
-    }
-
-    public async virtual void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
-        return;
     }
 
     public void to_up () {
