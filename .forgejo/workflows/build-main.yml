@@ -69,12 +69,12 @@ jobs:
             /usr/bin/valadoc \
             /usr/bin/vapigen \
             gettext-devel
- 
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup
-        run: meson setup _build -Dwith_lib_documentation=true -Dwith_test_pages=true  -Dpassword_check_backend=both
+        run: meson setup _build -Dwith_lib_documentation=true -Dis_devel  -Dpassword_check_backend=both
 
       - name: Build
         run: meson compile -C _build
