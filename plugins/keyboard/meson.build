@@ -23,19 +23,22 @@ subdir('data')
 plugin_keyboard_c_args = [
   '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
   '-DGNOME_DESKTOP_USE_UNSTABLE_API',
-  '-w'
+  '-w',
 ]
 
+plugin_keyboard_vala_args = []
+
 if get_option('have_ibus')
-  rs_app_c_args += ['-DHAVE_IBUS']
+  plugin_keyboard_vala_args += ['-D', 'HAVE_IBUS']
 endif
 
 shared_module(
   plugin_keyboard_name,
   plugin_keyboard_resources,
   plugin_keyboard_sources,
+  vala_args: plugin_keyboard_vala_args,
   dependencies: plugin_keyboard_deps,
   c_args: plugin_keyboard_c_args,
   install: true,
-  install_dir: steps_plugins_dir
+  install_dir: steps_plugins_dir,
 )

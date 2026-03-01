@@ -23,9 +23,7 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
     unowned InputChooser input_chooser;
 
     construct {
-        input_chooser.changed.connect ((inputs) => {
-            is_ready = inputs.length > 0;
-        });
+        input_chooser.changed.connect (on_input_chooser_changed);
 
         var input_sources_val = Addin.get_instance ().context.get_strv ("keyboard-input-sources");
         if (input_sources_val.length > 0) {
@@ -35,5 +33,9 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
             }
             set_current_inputs (input_sources);
         }
+    }
+
+    void on_input_chooser_changed (InputInfo[] inputs) {
+        is_ready = inputs.length > 0;
     }
 }

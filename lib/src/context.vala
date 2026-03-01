@@ -63,7 +63,7 @@ public enum ReadySet.ContextType {
     }
 }
 
-protected class ReadySet.ValueObject : Object {
+internal class ReadySet.ValueObject : Object {
 
     Value _value;
     public Value real_value {
@@ -143,7 +143,7 @@ public class ReadySet.Context : Object {
 
     public signal void data_changed (string key);
 
-    HashTable<string, ValueObject> data = new HashTable<string, ValueObject> (str_hash, str_equal);
+    Gee.HashMap<string, ValueObject> data = new Gee.HashMap<string, ValueObject> ();
 
     public bool locked { get; set; default = false; }
 
@@ -340,40 +340,47 @@ public class ReadySet.Context : Object {
 
     public HashTable<string, Value?> get_raw_context () {
         var raw_data = new HashTable<string, Value?> (str_hash, str_equal);
-        data.foreach ((key, value) => {
-            var val = Value (value.value_type.to_gtype ());
-            var rv = value.real_value;
+
+        foreach (var e in data) {
+            var val = Value (e.value.value_type.to_gtype ());
+            var rv = e.value.real_value;
             rv.copy (ref val);
-            raw_data[key] = val;
-        });
+            raw_data[e.key] = val;
+        }
+
         return raw_data;
     }
 
     public void register_vars (HashTable<string, ContextVarInfo> vars) {
-        vars.foreach ((key, info) => {
-            if (data.contains (key)) {
-                warning ("Key %s already exists in context, it will be overwriting", key);
-            }
-            debug ("Registering key %s with type %s", key, info.value_type.to_string ());
-            data[key] = new ValueObject (info.value_type, info.is_sensitive);
-            if (info.getter_func != null) {
-                data[key].set_getter (info.getter_func);
-            }
-            if (info.setter_func != null) {
-                data[key].set_setter (info.setter_func);
-            }
-            if (info.initial_value != null) {
-                set_value (key, info.initial_value);
-            }
-            data[key].notify["real-value"].connect (() => {
-                data_changed (key);
-            });
-        });
+        vars.foreach (foreach_register_vars);
+    }
+
+    void foreach_register_vars (string key, ContextVarInfo info) {
+        if (data.has_key (key)) {
+            warning ("Key %s already exists in context, it will be overwriting", key);
+        }
+        debug ("Registering key %s with type %s", key, info.value_type.to_string ());
+        data[key] = new ValueObject (info.value_type, info.is_sensitive);
+        data[key].set_data<string> ("data-key", key);
+        if (info.getter_func != null) {
+            data[key].set_getter (info.getter_func);
+        }
+        if (info.setter_func != null) {
+            data[key].set_setter (info.setter_func);
+        }
+        if (info.initial_value != null) {
+            set_value (key, info.initial_value);
+        }
+        data[key].notify["real-value"].connect (real_value_changed);
+    }
+
+    void real_value_changed (Object caller, ParamSpec param) {
+        data_changed (((ValueObject) caller).get_data<string> ("data-key"));
     }
 
     public void load_from_keyfile (KeyFile keyfile, string group_name) throws Error {
         foreach (var key in keyfile.get_keys (group_name)) {
-            if (!data.contains (key)) {
+            if (!data.has_key (key)) {
                 warning ("Key %s not found in context, it will be ignored", key);
                 continue;
             }
@@ -409,11 +416,11 @@ public class ReadySet.Context : Object {
     }
 
     public string[] get_keys () {
-        return data.get_keys_as_array ();
+        return data.keys.to_array ();
     }
 
     public bool has_key (string key) {
-        return data.contains (key);
+        return data.has_key (key);
     }
 
     public ContextType get_value_type (string key) {

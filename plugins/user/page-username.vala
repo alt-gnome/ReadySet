@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -149,13 +149,16 @@ public class User.PageUsername : ReadySet.BasePage {
     [GtkCallback]
     void on_avatar_button_clicked () {
         var chooser = new AvatarChooser ();
-        chooser.closed.connect (() => {
-            if (chooser.avatar_filename != null) {
-                remove_avatar_button.visible = true;
-                user_avatar_file = chooser.avatar_filename;
-            }
-        });
+        chooser.closed.connect (on_chooser_closed);
         chooser.present (this);
+    }
+
+    void on_chooser_closed (Adw.Dialog dialog) {
+        var chooser = (AvatarChooser) dialog;
+        if (chooser.avatar_filename != null) {
+            remove_avatar_button.visible = true;
+            user_avatar_file = chooser.avatar_filename;
+        }
     }
 
     [GtkCallback]

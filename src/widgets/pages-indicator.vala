@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -42,11 +42,7 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
 
             _model = value;
 
-            positioned_stack.bind_model (_model, (page) => {
-                return new Gtk.Label (page.title_header) {
-                    css_classes = { "heading" }
-                };
-            });
+            positioned_stack.bind_model (_model, positioned_stack_create_func);
 
             if (_model != null) {
                 model.selection_changed.connect (on_selection_changed);
@@ -62,8 +58,16 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
 
     Gtk.Image last_image;
 
+    Adw.TimedAnimation ani;
+
     construct {
         icons_box.height_request = CURRENT_PIXEL_SIZE;
+    }
+
+    Gtk.Widget positioned_stack_create_func (PageInfo page) {
+        return new Gtk.Label (page.title_header) {
+            css_classes = { "heading" }
+        };
     }
 
     void on_selection_changed () {
@@ -118,24 +122,33 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
     }
 
     void animate_img (Gtk.Image img, double start, double end, int duration = 300) {
-        var ani = new Adw.TimedAnimation (
+        if (ani != null) {
+            ani.pause ();
+            ani = null;
+        }
+
+        ani = new Adw.TimedAnimation (
             img,
             start,
             end,
             duration,
-            new Adw.CallbackAnimationTarget ((value) => {
-                var old_min = double.min (start, end);
-                var old_max = double.max (start, end);
-                var new_min = (double) DEFAULT_PIXEL_SIZE;
-                var new_max = (double) CURRENT_PIXEL_SIZE;
-
-                var new_ps = new_min + (value - old_min) * (new_max - new_min) / (old_max - old_min);
-
-                img.pixel_size = (int) new_ps;
-                img.opacity = value;
-            })
+            new Adw.CallbackAnimationTarget (animation_func)
         );
 
         ani.play ();
+    }
+
+    void animation_func (double value) {
+        var img = (Gtk.Image) ani.widget;
+
+        var old_min = double.min (ani.value_from, ani.value_to);
+        var old_max = double.max (ani.value_from, ani.value_to);
+        var new_min = (double) DEFAULT_PIXEL_SIZE;
+        var new_max = (double) CURRENT_PIXEL_SIZE;
+
+        var new_ps = new_min + (value - old_min) * (new_max - new_min) / (old_max - old_min);
+
+        img.pixel_size = (int) new_ps;
+        img.opacity = value;
     }
 }

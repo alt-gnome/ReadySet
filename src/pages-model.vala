@@ -69,6 +69,10 @@ public sealed class ReadySet.PageInfo : Object {
         );
     }
 
+    internal inline static bool equal_id (PageInfo a, PageInfo b) {
+        return a.id == b.id;
+    }
+
     void update_accessible () {
         if (plugin != null) {
             accessible = plugin.accessible && page.accessible;
@@ -82,6 +86,12 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
 
     Gtk.SingleSelection real_model;
 
+    Gtk.BoolFilter filter = new Gtk.BoolFilter (new Gtk.PropertyExpression (
+        typeof (PageInfo),
+        null,
+        "accessible"
+    ));
+
     public Gee.ArrayList<PageInfo> pages { get; construct; }
 
     public PagesModel (Gee.ArrayList<PageInfo> pages) {
@@ -91,18 +101,11 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
     }
 
     construct {
-        var filter = new Gtk.BoolFilter (new Gtk.PropertyExpression (
-            typeof (PageInfo),
-            null,
-            "accessible"
-        ));
         var store = new ListStore (typeof (PageInfo));
         foreach (var page in pages) {
             store.append (page);
 
-            page.notify["accessible"].connect (() => {
-                filter.changed (Gtk.FilterChange.DIFFERENT);
-            });
+            page.notify["accessible"].connect (page_accessible_changed);
         }
         real_model = new Gtk.SingleSelection (new Gtk.FilterListModel (
             store, filter
@@ -112,6 +115,10 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
         real_model.items_changed.connect (on_real_model_items_changed);
 
         unselect_all ();
+    }
+
+    void page_accessible_changed () {
+        filter.changed (Gtk.FilterChange.DIFFERENT);
     }
 
     void on_real_model_selection_changed (uint position, uint n_items) {

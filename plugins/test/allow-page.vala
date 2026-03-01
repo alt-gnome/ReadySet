@@ -30,11 +30,17 @@ public sealed class Test.AllowPage : ReadySet.BaseBarePage {
     }
 
     construct {
-        Addin.get_instance ().context.data_changed.connect ((key) => {
-            if (key == "test-accessible") {
-                accessible = Addin.get_instance ().context.get_boolean ("test-accessible");
-            }
-        });
+        Addin.get_instance ().context.data_changed.connect (context_data_changed);
+        update_acessible ();
+    }
+
+    void context_data_changed (string key) {
+        if (key == "test-accessible") {
+            update_acessible ();
+        }
+    }
+
+    inline void update_acessible () {
         accessible = Addin.get_instance ().context.get_boolean ("test-accessible");
     }
 }

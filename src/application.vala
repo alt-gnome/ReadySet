@@ -157,9 +157,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
         steps_plugins.clear ();
 
-        addins.foreach ((_set, info, extension) => {
-            steps_plugins[info.module_name] = (StepAddin) extension;
-        });
+        addins.foreach (steps_addins_foreach_func);
 
         if (steps_plugins.size == 0) {
             error ("\nNo plugins found\n");
@@ -187,6 +185,10 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
+    void steps_addins_foreach_func (Peas.ExtensionSet _set, Peas.PluginInfo info, Object extension) {
+        steps_plugins[info.module_name] = (StepAddin) extension;
+    }
+
     void init_installers_plugins () {
         var engine = get_installers_engine ();
         var addins = new Peas.ExtensionSet.with_properties (engine, typeof (InstallerAddin), {}, {});
@@ -197,9 +199,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
         installers_plugins.clear ();
 
-        addins.foreach ((_set, info, extension) => {
-            installers_plugins[info.module_name] = (InstallerAddin) extension;
-        });
+        addins.foreach (installer_addins_foreach_func);
 
         if (installers_plugins.size != 0) {
             print ("\nFound installers plugins:\n");
@@ -213,6 +213,10 @@ public sealed class ReadySet.Application: Adw.Application {
                 error ("Unknown installer plugin");
             }
         }
+    }
+
+    void installer_addins_foreach_func (Peas.ExtensionSet _set, Peas.PluginInfo info, Object extension) {
+        installers_plugins[info.module_name] = (InstallerAddin) extension;
     }
 
     public async void init_pages () {

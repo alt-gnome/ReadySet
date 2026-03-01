@@ -73,9 +73,7 @@ public class ReadySet.PositionedStack : Adw.Bin {
     weak CreateFunc create_func;
     Gtk.Stack stack = new Gtk.Stack ();
 
-    new Gee.ArrayList<PageInfo> childs = new Gee.ArrayList<PageInfo> ((el1, el2) => {
-        return str_equal (el1.id, el2.id);
-    });
+    new Gee.ArrayList<PageInfo> childs = new Gee.ArrayList<PageInfo> (PageInfo.equal_id);
 
     construct {
         child = stack;
@@ -94,10 +92,12 @@ public class ReadySet.PositionedStack : Adw.Bin {
             BindingFlags.SYNC_CREATE
         );
 
-        stack.notify["visible-child"].connect (() => {
-            notify_property ("position");
-            notify_property ("visible-child");
-        });
+        stack.notify["visible-child"].connect (visible_child_changed);
+    }
+
+    void visible_child_changed () {
+        notify_property ("position");
+        notify_property ("visible-child");
     }
 
     public void bind_model (PagesModel? model, owned CreateFunc create_func) {

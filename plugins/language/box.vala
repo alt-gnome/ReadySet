@@ -54,16 +54,16 @@ public sealed class Language.Box : Adw.Bin {
     construct {
         set_supported_languages ();
 
-        search_entry.changed.connect (() => {
-            saved_search_query = search_entry.text;
-        });
+        search_entry.changed.connect (on_search_entry_changed);
 
         search_entry.text = saved_search_query;
         show_more = saved_show_more;
 
-        Idle.add_once (() => {
-            search_entry.can_focus = true;
-        });
+        search_entry.can_focus = true;
+    }
+
+    void on_search_entry_changed (Gtk.Editable obj) {
+        saved_search_query = obj.text;
     }
 
     void set_supported_languages () {
@@ -110,12 +110,11 @@ public sealed class Language.Box : Adw.Bin {
         filter_current_model.notify["n-items"].connect (model_n_items_changed);
         model_n_items_changed (filter_current_model, filter_current_model.get_class ().find_property ("n-items"));
 
-        languages_listbox.bind_model (
-            filter_current_model,
-            (obj) => {
-                return new Row ((LocaleData) obj);
-            }
-        );
+        languages_listbox.bind_model (filter_current_model, create_row_func);
+    }
+
+    Gtk.Widget create_row_func (Object item) {
+        return new Row ((LocaleData) item);
     }
 
     void model_n_items_changed (Object obj, ParamSpec param) {
@@ -181,9 +180,11 @@ public sealed class Language.Box : Adw.Bin {
     }
 
     Gtk.Filter get_current_filter () {
-        return new Gtk.CustomFilter ((item) => {
-            return ((LocaleData) item).locale != current_locale.locale;
-        });
+        return new Gtk.CustomFilter (filter_func);
+    }
+
+    bool filter_func (Object item) {
+        return ((LocaleData) item).locale != current_locale.locale;
     }
 
     [GtkCallback]

@@ -80,16 +80,16 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
 
         filter_entry.changed.connect (invalidate_filter);
 
-        Addin.get_instance ().context.data_changed.connect ((key) => {
-            if (key == "keyboard-input-sources") {
-                update_current ();
-            }
-        });
+        Addin.get_instance ().context.data_changed.connect (on_context_data_changed);
         update_current ();
 
-        Idle.add_once (() => {
-            filter_entry.can_focus = true;
-        });
+        filter_entry.can_focus = true;
+    }
+
+    void on_context_data_changed (string key) {
+        if (key == "keyboard-input-sources") {
+            update_current ();
+        }
     }
 
     void update_current () {
@@ -398,42 +398,46 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         }
 
         foreach (var entry in ibus_engines) {
-            yield add_row_to_list (INPUT_SOURCE_TYPE_IBUS, entry.key, true);
+           yield add_row_to_list (INPUT_SOURCE_TYPE_IBUS, entry.key, true);
         }
     }
 
     void fetch_ibus_engines () {
         ibus_cancellable = new Cancellable ();
 
-        ibus.list_engines_async.begin (-1, ibus_cancellable, (obj, res) => {
-            var list = new List<IBus.EngineDesc> ();
-
-            try {
-                list = ((IBus.Bus) obj).list_engines_async_finish (res);
-
-            } catch (Error e) {
-                warning ("Couldn't finish IBus request: %s", e.message);
-                return;
-            }
-
-            ibus_cancellable = null;
-
-            ibus_engines = new Gee.HashMap<string, IBus.EngineDesc> ();
-
-            foreach (var engine_desc in list) {
-                var engine_id = engine_desc.get_name ();
-                if (!engine_id.has_prefix ("xkb:")) {
-                    ibus_engines[engine_id] = engine_desc;
-                }
-            }
-
-            update_ibus_active_sources ();
-            get_ibus_locale_infos ();
-
-            sync_all_checkmarks ();
-        });
+        ibus.list_engines_async.begin (-1, ibus_cancellable, ibus_engines_callback);
 
         ibus.connected.disconnect (fetch_ibus_engines);
+    }
+
+    void ibus_engines_callback (Object? obj, AsyncResult res) {
+        var list = new List<IBus.EngineDesc> ();
+
+        try {
+            list = ((IBus.Bus) obj).list_engines_async_finish (res);
+
+        } catch (Error e) {
+            warning ("Couldn't finish IBus request: %s", e.message);
+            return;
+        }
+
+        ibus_cancellable = null;
+
+        ibus_engines = new Gee.HashMap<string, IBus.EngineDesc> ();
+
+        foreach (var engine_desc in list) {
+            var engine_id = engine_desc.get_name ();
+            if (!engine_id.has_prefix ("xkb:")) {
+                ibus_engines[engine_id] = engine_desc;
+            }
+        }
+
+        update_ibus_active_sources ();
+        get_ibus_locale_infos.begin (on_get_ibus_locale_infos_callback);
+    }
+
+    void on_get_ibus_locale_infos_callback () {
+        sync_all_checkmarks ();
     }
 
     void maybe_start_ibus () {
