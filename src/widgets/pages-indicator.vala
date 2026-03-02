@@ -58,8 +58,6 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
 
     Gtk.Image last_image;
 
-    Adw.TimedAnimation ani;
-
     construct {
         icons_box.height_request = CURRENT_PIXEL_SIZE;
     }
@@ -122,33 +120,24 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
     }
 
     void animate_img (Gtk.Image img, double start, double end, int duration = 300) {
-        if (ani != null) {
-            ani.pause ();
-            ani = null;
-        }
-
-        ani = new Adw.TimedAnimation (
+        var ani = new Adw.TimedAnimation (
             img,
             start,
             end,
             duration,
-            new Adw.CallbackAnimationTarget (animation_func)
+            new Adw.CallbackAnimationTarget ((value) => {
+                var old_min = double.min (start, end);
+                var old_max = double.max (start, end);
+                var new_min = (double) DEFAULT_PIXEL_SIZE;
+                var new_max = (double) CURRENT_PIXEL_SIZE;
+
+                var new_ps = new_min + (value - old_min) * (new_max - new_min) / (old_max - old_min);
+
+                img.pixel_size = (int) new_ps;
+                img.opacity = value;
+            })
         );
 
         ani.play ();
-    }
-
-    void animation_func (double value) {
-        var img = (Gtk.Image) ani.widget;
-
-        var old_min = double.min (ani.value_from, ani.value_to);
-        var old_max = double.max (ani.value_from, ani.value_to);
-        var new_min = (double) DEFAULT_PIXEL_SIZE;
-        var new_max = (double) CURRENT_PIXEL_SIZE;
-
-        var new_ps = new_min + (value - old_min) * (new_max - new_min) / (old_max - old_min);
-
-        img.pixel_size = (int) new_ps;
-        img.opacity = value;
     }
 }
