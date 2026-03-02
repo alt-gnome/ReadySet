@@ -129,11 +129,15 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     async void exec_pre_hooks () {
-        try {
-            yield exec_user_pre_hooks ();
-            yield get_ready_set_proxy ().exec_pre_hooks ();
-        } catch (Error e) {
-            error ("Failed to executing pre hooks: %s", e.message);
+        if (context.mode == Mode.INITIAL_SETUP || context.mode == Mode.INSTALLER) {
+            try {
+                if (context.mode == Mode.INITIAL_SETUP) {
+                    yield exec_user_pre_hooks ();
+                }
+                yield get_ready_set_proxy ().exec_pre_hooks ();
+            } catch (Error e) {
+                error ("Failed to executing pre hooks: %s", e.message);
+            }
         }
     }
 
