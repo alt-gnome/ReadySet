@@ -122,7 +122,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                     var env = new Gee.ArrayList<string> ();
 
                     foreach (var key in raw_context.get_keys ()) {
-                        env.add ("%s=\"%s\"".printf (context_key_to_env_key (key), raw_context[key]));
+                        env.add ("%s=%s".printf (context_key_to_env_key (key), raw_context[key]));
                     }
 
                     if (context.mode == Mode.INITIAL_SETUP) {

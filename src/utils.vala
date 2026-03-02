@@ -73,7 +73,15 @@ namespace ReadySet {
 
     public async bool env_exec (string program, owned string[] env) throws Error {
         var launcher = new SubprocessLauncher (NONE);
-        launcher.set_environ (env);
+
+        foreach (var e in env) {
+            var parts = e.split ("=", 2);
+            if (parts.length != 2) {
+                warning ("Invalid environment variable: %s", e);
+                return false;
+            }
+            launcher.setenv (parts[0], parts[1], true);
+        }
 
         var process = launcher.spawn (program);
 
