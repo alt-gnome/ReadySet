@@ -84,7 +84,7 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     construct {
-        add_main_option_entries (OptionsHandler.get_option_entries ());
+        add_main_option_entries (OptionsHandler.OPTION_ENTRIES);
         add_action_entries (ACTION_ENTRIES, this);
         set_accels_for_action ("app.quit", { "<primary>q" });
         set_accels_for_action ("win.about", { "<primary>o" });
@@ -111,7 +111,9 @@ public sealed class ReadySet.Application: Adw.Application {
         options_handler.fill_context (context);
         context.reload_window.connect (reload_window);
 
+#if DEVEL
         if (options_handler.force_mode == null) {
+#endif
             if (installer_plugin != null) {
                 context.mode = INSTALLER;
             } else if (in_group ("ready-set") || in_group ("gnome-initial-setup")) {
@@ -119,9 +121,11 @@ public sealed class ReadySet.Application: Adw.Application {
             } else {
                 context.mode = TOUR;
             }
+#if DEVEL
         } else {
             context.mode = Mode.from_string (options_handler.force_mode);
         }
+#endif
 
         if (!options_handler.intact) {
             exec_pre_hooks.begin ();
