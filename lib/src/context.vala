@@ -85,6 +85,8 @@ internal class ReadySet.ValueObject : Object {
         }
     }
 
+    public Value? default_value { get; construct; }
+
     public bool is_sensitive { get; construct; }
 
     unowned ContextGetterFunc? getter_func = null;
@@ -92,10 +94,11 @@ internal class ReadySet.ValueObject : Object {
 
     public ContextType value_type { get; construct; }
 
-    public ValueObject (ContextType value_type, bool is_sensitive = false) {
+    public ValueObject (ContextVarInfo info) {
         Object (
-            value_type: value_type,
-            is_sensitive: is_sensitive
+            value_type: info.value_type,
+            is_sensitive: info.is_sensitive,
+            default_value: info.default_value
         );
     }
 
@@ -109,8 +112,16 @@ internal class ReadySet.ValueObject : Object {
 
     construct {
         _value = Value (value_type.to_gtype ());
-        if (value_type == STRING) {
-            _value.set_string ("");
+        if (value_type == STRING && default_value == null) {
+            default_value = "";
+        }
+
+        reset ();
+    }
+
+    public void reset () {
+        if (default_value != null) {
+            real_value = default_value;
         }
     }
 }
@@ -121,17 +132,24 @@ public class ReadySet.ContextVarInfo : Object {
 
     public bool is_sensitive { get; construct; }
 
-    public Value? initial_value { get; set; default = null; }
+    public Value? default_value { get; construct; }
 
     public unowned ContextGetterFunc? getter_func = null;
 
     public unowned ContextSetterFunc? setter_func = null;
 
-    public ContextVarInfo (ContextType value_type, bool is_sensitive = false) {
+    public ContextVarInfo (ContextType value_type, bool is_sensitive = false, Value? default_value = null) {
         Object (
             value_type: value_type,
-            is_sensitive: is_sensitive
+            is_sensitive: is_sensitive,
+            default_value: default_value
         );
+    }
+
+    construct {
+        if (default_value != null) {
+            assert (value_type.to_gtype () == default_value.type ());
+        }
     }
 }
 
@@ -345,16 +363,13 @@ public class ReadySet.Context : Object {
             warning ("Key %s already exists in context, it will be overwriting", key);
         }
         debug ("Registering key %s with type %s", key, info.value_type.to_string ());
-        data[key] = new ValueObject (info.value_type, info.is_sensitive);
+        data[key] = new ValueObject (info);
         data[key].set_data<string> ("data-key", key);
         if (info.getter_func != null) {
             data[key].set_getter (info.getter_func);
         }
         if (info.setter_func != null) {
             data[key].set_setter (info.setter_func);
-        }
-        if (info.initial_value != null) {
-            set_value (key, info.initial_value);
         }
         data[key].notify["real-value"].connect (real_value_changed);
     }
