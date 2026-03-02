@@ -65,6 +65,7 @@ public class User.Addin : ReadySet.StepAddin {
             if (context.get_boolean ("user-with-root")) {
                 if (context.get_string ("user-root-password") != "") {
                     set_root_password (context.get_string ("user-root-password"));
+                    context.set_string ("user-root-password", "");
                 } else {
                     set_root_password (context.get_string ("user-password"));
                 }
