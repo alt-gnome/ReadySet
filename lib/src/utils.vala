@@ -46,6 +46,8 @@ namespace ReadySet {
                     return "installer";
                 case TOUR:
                     return "tour";
+                default:
+                    assert_not_reached ();
             }
         }
     }
