@@ -122,7 +122,7 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         model = Application.get_default ().model;
         pages_indicator.model = model;
 
-        header_bar.show_end_title_buttons = Config.IS_DEVEL;
+        header_bar.show_end_title_buttons = Application.get_default ().can_close;
         context_button.visible = Config.IS_DEVEL;
         intact_label_left.visible = ReadySet.Application.get_default ().context.intact && Config.IS_DEVEL;
         intact_label_right.visible = ReadySet.Application.get_default ().context.intact && !Config.IS_DEVEL;

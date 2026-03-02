@@ -69,7 +69,7 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
     }
 
     protected override bool close_request () {
-        if (Config.IS_DEVEL) {
+        if (Application.get_default ().can_close) {
             return base.close_request ();
         }
 

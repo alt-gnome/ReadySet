@@ -38,6 +38,12 @@ public sealed class ReadySet.Application: Adw.Application {
 
     public signal void on_finish ();
 
+    public bool can_close {
+        get {
+            return Config.IS_DEVEL || context.mode == Mode.TOUR || options_handler.can_close;
+        }
+    }
+
     bool has_installer {
         get {
             return options_handler.installer != null;
