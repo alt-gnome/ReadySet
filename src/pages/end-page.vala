@@ -45,7 +45,6 @@ public sealed class ReadySet.EndPage : BaseBarePage {
     public async void start_action () {
         var app = Application.get_default ();
         var context = app.context;
-        context.locked = true;
 
         if (context.mode == Mode.INITIAL_SETUP && !context.intact) {
             try {

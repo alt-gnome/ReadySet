@@ -147,8 +147,6 @@ public class ReadySet.Context : Object {
 
     Gee.HashMap<string, ValueObject> data = new Gee.HashMap<string, ValueObject> ();
 
-    public bool locked { get; set; default = false; }
-
     public Context (bool intact) {
         Object (
             intact: intact
@@ -249,11 +247,6 @@ public class ReadySet.Context : Object {
     }
 
     bool transform_prop_to_ctx (Binding binding, Value from_value, ref Value to_value) {
-        if (locked) {
-            warning ("Context is locked");
-            return false;
-        }
-
         var new_val = Value (from_value.type ());
         from_value.copy (ref new_val);
         to_value.set_boxed (&new_val);
@@ -266,11 +259,6 @@ public class ReadySet.Context : Object {
     }
 
     bool transform_prop_to_ctx_invert (Binding binding, Value from_value, ref Value to_value) {
-        if (locked) {
-            warning ("Context is locked");
-            return false;
-        }
-
         var new_val = Value (Type.BOOLEAN);
         new_val.set_boolean (!from_value.get_boolean ());
         to_value.set_boxed (&new_val);
@@ -312,11 +300,6 @@ public class ReadySet.Context : Object {
     }
 
     public void set_raw (string key, string value) {
-        if (locked) {
-            warning ("Context is locked");
-            return;
-        }
-
         if (!check_key (key)) {
             return;
         }
@@ -434,11 +417,6 @@ public class ReadySet.Context : Object {
     }
 
     public void set_value (string key, owned Value value) {
-        if (locked) {
-            warning ("Context is locked");
-            return;
-        }
-
         if (check_key (key, ContextType.from_gtype (value.type ()))) {
             data[key].real_value = value;
         }
