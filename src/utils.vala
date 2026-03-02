@@ -125,4 +125,27 @@ namespace ReadySet {
             }
         }
     }
+
+    public bool in_group (string group_name) {
+        unowned Posix.Passwd? passwd = Posix.getpwuid (Posix.getuid ());
+        if (passwd == null) {
+            return false;
+        }
+
+        var groups_n = Linux.getgroups (null);
+
+        Posix.gid_t[] all_group_ids = new Posix.gid_t[groups_n];
+        if (Linux.getgroups (all_group_ids) == -1) {
+            return false;
+        }
+
+        foreach (var gid in all_group_ids) {
+            unowned Posix.Group? gr = Posix.getgrgid (gid);
+            if (gr.gr_name == group_name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

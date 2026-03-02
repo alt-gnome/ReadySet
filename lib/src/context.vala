@@ -139,6 +139,8 @@ public class ReadySet.Context : Object {
 
     public bool intact { get; construct; default = true; }
 
+    public Mode mode { get; set; }
+
     public signal void reload_window ();
 
     public signal void data_changed (string key);

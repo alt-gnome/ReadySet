@@ -90,6 +90,12 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
     }
 
     void fill_context () {
+        list_box_context.append (new Adw.ActionRow () {
+            title = "mode",
+            subtitle = context.mode.to_string (),
+            css_classes = { "property" }
+        });
+
         foreach (var key in context.get_keys ()) {
             Adw.PreferencesRow row;
 

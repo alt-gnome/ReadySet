@@ -20,6 +20,36 @@
 
 namespace ReadySet {
 
+    public enum Mode {
+        INITIAL_SETUP,
+        INSTALLER,
+        TOUR;
+
+        public static Mode from_string (string str) {
+            switch (str) {
+                case "initial-setup":
+                    return INITIAL_SETUP;
+                case "installer":
+                    return INSTALLER;
+                case "tour":
+                    return TOUR;
+                default:
+                    error ("Unrecognized mode string");
+            }
+        }
+
+        public string to_string () {
+            switch (this) {
+                case INITIAL_SETUP:
+                    return "initial-setup";
+                case INSTALLER:
+                    return "installer";
+                case TOUR:
+                    return "tour";
+            }
+        }
+    }
+
     public struct ApplyErrorData {
         public string message;
         public string description;

@@ -47,7 +47,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         var context = app.context;
         context.locked = true;
 
-        if (!app.has_installer && !context.intact) {
+        if (context.mode == Mode.INITIAL_SETUP && !context.intact) {
             try {
                 client = new Gdm.Client ();
                 greeter = yield client.get_greeter (null);
@@ -104,10 +104,10 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
         } else {
             try {
-                if (app.has_installer) {
+                if (context.mode == Mode.INSTALLER) {
                     yield app.installer_plugin.install (progress_data);
 
-                } else {
+                } else if (context.mode == Mode.INITIAL_SETUP) {
                     foreach (var step_addin in steps_addins_arr) {
                         progress_data.value = 0.0;
 
@@ -156,7 +156,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         var app = Application.get_default ();
         var context = app.context;
 
-        if (!app.has_installer && client != null && !context.intact) {
+        if (context.mode == Mode.INITIAL_SETUP && client != null && !context.intact) {
             log_user_in ();
         } else {
             debug ("No GDM connection: installer mode or intact mode");

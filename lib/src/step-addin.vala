@@ -58,6 +58,9 @@ public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
         }
     }
 
+    /**
+     * Apply for initial setup
+     */
     public async abstract void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError;
 
     public async abstract BaseBarePage[] build_pages ();

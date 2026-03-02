@@ -17,10 +17,6 @@
  */
 
 int main (string[] args) {
-    if (Config.IS_DEVEL) {
-        Log.set_debug_enabled (true);
-    }
-
     Log.set_writer_func ((log_level, fields) => {
         if (Config.IS_DEVEL) {
             Log.writer_journald (log_level, fields);
