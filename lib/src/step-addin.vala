@@ -61,14 +61,12 @@ public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
     /**
      * Apply for initial setup
      */
-    public async abstract void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError;
+    public async virtual void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {}
 
     public async abstract BaseBarePage[] build_pages ();
 
     //  After context set action. Calls once. Calls before init
-    public async virtual void init_once () {
-        return;
-    }
+    public async virtual void init_once () {}
 
     //  For plugins better to use base.get_context_vars for getting empty HashTable.
     public virtual HashTable<string, ContextVarInfo> get_context_vars () {
