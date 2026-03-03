@@ -33,9 +33,9 @@ public sealed class ReadySet.OptionsHandler : Object {
 
     internal const OptionEntry[] OPTION_ENTRIES = {
         { "context", 'c', 0, OptionArg.STRING_ARRAY, null, N_("Context vars"), "CONTEXT" },
-#if DEVEL
+#if DEVEL // vala-lint=block-opening-brace-space-before
         { "force-mode", '\0', OptionFlags.HIDDEN, OptionArg.STRING, null, N_("Force run with mode"), "FORCE-MODE" },
-#endif
+#endif // vala-lint=block-opening-brace-space-before
         { "can-close", '\0', 0, OptionArg.NONE, null, N_("Make window closable always"), "CAN-CLOSE" },
         { "fullscreen", 'F', 0, OptionArg.NONE, null, N_("Run window in fullscreen"), null },
         { "installer", 'I', 0, OptionArg.STRING, null, N_("Specify installer plugin"), "INSTALLER" },
