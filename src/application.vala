@@ -204,7 +204,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
                 var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
                 var var_name = "step-%s-enabled".printf (all_steps[i]);
-                vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN, false, true);
+                vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN, true);
                 context.register_vars (vars);
             }
         }

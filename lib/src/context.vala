@@ -87,8 +87,6 @@ internal class ReadySet.ValueObject : Object {
 
     public Value? default_value { get; construct; }
 
-    public bool is_sensitive { get; construct; }
-
     unowned ContextGetterFunc? getter_func = null;
     unowned ContextSetterFunc? setter_func = null;
 
@@ -97,7 +95,6 @@ internal class ReadySet.ValueObject : Object {
     public ValueObject (ContextVarInfo info) {
         Object (
             value_type: info.value_type,
-            is_sensitive: info.is_sensitive,
             default_value: info.default_value
         );
     }
@@ -111,18 +108,23 @@ internal class ReadySet.ValueObject : Object {
     }
 
     construct {
-        _value = Value (value_type.to_gtype ());
         if (value_type == STRING && default_value == null) {
             default_value = "";
         }
 
-        reset ();
+        _value = get_new ();
+    }
+
+    Value get_new () {
+        var v = Value (value_type.to_gtype ());
+        if (default_value != null) {
+            default_value.copy (ref v);
+        }
+        return v;
     }
 
     public void reset () {
-        if (default_value != null) {
-            real_value = default_value;
-        }
+        real_value = get_new ();
     }
 }
 
@@ -130,18 +132,15 @@ public class ReadySet.ContextVarInfo : Object {
 
     public ContextType value_type { get; construct; }
 
-    public bool is_sensitive { get; construct; }
-
     public Value? default_value { get; construct; }
 
     public unowned ContextGetterFunc? getter_func = null;
 
     public unowned ContextSetterFunc? setter_func = null;
 
-    public ContextVarInfo (ContextType value_type, bool is_sensitive = false, Value? default_value = null) {
+    public ContextVarInfo (ContextType value_type, Value? default_value = null) {
         Object (
             value_type: value_type,
-            is_sensitive: is_sensitive,
             default_value: default_value
         );
     }
@@ -287,10 +286,6 @@ public class ReadySet.Context : Object {
         var raw_data = new HashTable<string, string> (str_hash, str_equal);
 
         foreach (var key in get_keys ()) {
-            if (data[key].is_sensitive) {
-                continue;
-            }
-
             string str;
             switch (data[key].value_type) {
                 case ContextType.STRING:
@@ -505,6 +500,12 @@ public class ReadySet.Context : Object {
             return data[key].real_value.get_double ();
         } else {
             return 0;
+        }
+    }
+
+    public void reset (string key) {
+        if (check_key (key)) {
+            data[key].reset ();
         }
     }
 }
