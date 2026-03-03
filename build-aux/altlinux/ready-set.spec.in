@@ -197,6 +197,8 @@ Requires: %name = %EVR
 %_iconsdir/hicolor/*/apps/%{app_id}*
 %_datadir/applications/%{app_id}*
 %_datadir/polkit-1/rules.d/%app_id.rules
+%_libdir/%nameplugins/steps/libtests.so
+%_libdir/%nameplugins/steps/tests.plugin
 
 %files gdm
 %_libexecdir/%gis_name
