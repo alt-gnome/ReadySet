@@ -64,19 +64,17 @@ template $UserPageUsername: $ReadySetBasePage {
     orientation: vertical;
     spacing: 18;
 
-    Adw.PreferencesGroup {
-      $UserContextRow fullname_context_row {
-        context: $UserMarginLabel fullname_label {
-          styles [
-            "error",
-          ]
-        };
+    $UserContextRow fullname_context_row {
+      context: $UserMarginLabel fullname_label {
+        styles [
+          "error",
+        ]
+      };
 
-        row: Adw.EntryRow fullname_entry {
-          title: _("Full Name");
-          changed => $fullname_changed();
-        };
-      }
+      row: Adw.EntryRow fullname_entry {
+        title: _("Full Name");
+        changed => $fullname_changed();
+      };
     }
 
     Adw.PreferencesGroup {

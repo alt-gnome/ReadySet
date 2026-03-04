@@ -32,18 +32,13 @@ template $ReadySetStepsMainPage: Adw.Bin {
         margin-start: 12;
         margin-end: 12;
         visible: false;
-        label: "intact";
+        label: _("intact");
       }
 
-      title-widget: Box {
-        orientation: vertical;
-        spacing: 2;
-
-        $ReadySetPagesIndicator pages_indicator {
-          vexpand: true;
-          valign: center;
-          show-icons: bind template.show-steps-list inverted;
-        }
+      title-widget: $ReadySetPagesIndicator pages_indicator {
+        vexpand: true;
+        valign: center;
+        show-icons: bind template.show-steps-list inverted;
       };
 
       [end]
@@ -52,6 +47,7 @@ template $ReadySetStepsMainPage: Adw.Bin {
           "flat",
         ]
 
+        tooltip-text: _("Open application menu");
         icon-name: "open-menu-symbolic";
         clicked => $on_context_button_clicked();
       }
@@ -65,7 +61,7 @@ template $ReadySetStepsMainPage: Adw.Bin {
         margin-start: 12;
         margin-end: 12;
         visible: false;
-        label: "intact";
+        label: _("intact");
       }
     }
 
@@ -94,6 +90,7 @@ template $ReadySetStepsMainPage: Adw.Bin {
             "circular",
           ]
 
+          tooltip-text: _("Go to previous page");
           icon-name: "go-previous-symbolic";
           can-shrink: true;
           width-request: 48;
@@ -159,6 +156,7 @@ template $ReadySetStepsMainPage: Adw.Bin {
           ]
 
           icon-name: "go-up-symbolic";
+          tooltip-text: _("Go up");
           width-request: 48;
           height-request: 48;
           clicked => $up_clicked();
