@@ -133,7 +133,19 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         notify["simple"].connect (update_menu_button_visible);
         update_icons_visible ();
         update_menu_button_visible ();
+
+        //  var ec = new Gtk.EventControllerKey ();
+        //  ec.key_pressed.connect (on_key_pressed);
+        //  add_controller (ec);
     }
+
+    //  bool on_key_pressed (Gtk.EventControllerKey controller, uint keyval, uint keycode, Gdk.ModifierType state) {
+    //      if ((keyval == Gdk.Key.Return || keyval == Gdk.Key.KP_Enter) && is_ready_to_continue) {
+    //          continue_clicked ();
+    //          return true;
+    //      }
+    //      return false;
+    //  }
 
     void update_icons_visible () {
         pages_indicator.show_icons = !show_steps_list && !simple;
