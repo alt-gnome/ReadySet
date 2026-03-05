@@ -21,6 +21,8 @@ gnome_desktop_dep = dependency('gnome-desktop-4')
 ibus_dep = dependency('ibus-1.0')
 libadwaita_dep = dependency('libadwaita-1', version: '>= 1.7')
 libpeas_dep = dependency('libpeas-2')
+network_manager_dep = dependency ('libnm', version: '>= 1.2')
+network_manager_gtk4_dep = dependency ('libnma-gtk4', version: '>= 1.0')
 polkit_dep = dependency('polkit-gobject-1')
 posix_dep = meson.get_compiler('vala').find_library('posix')
 

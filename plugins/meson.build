@@ -1,4 +1,10 @@
-plugins = ['keyboard', 'language', 'user', 'welcome']
+plugins = [
+  'keyboard',
+  'language',
+  'network',
+  'user',
+  'welcome'
+]
 
 if get_option('is_devel')
   plugins += ['test']
