@@ -35,7 +35,7 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
         }
     }
 
-    void on_context_data_changed (string key) {
+    async void on_context_data_changed (string key) {
         if (key == "keyboard-input-sources") {
             bool has_latin_is = false;
             foreach (var i in get_current_inputs ().to_array ()) {

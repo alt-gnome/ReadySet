@@ -72,7 +72,7 @@ public class Keyboard.Addin : ReadySet.StepAddin {
 
     public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
         try {
-            var proxy = yield get_locale_proxy ();
+            var proxy = get_locale_proxy ();
 
             var current_inputs_info = get_current_inputs ();
             var inputs = current_inputs_info.to_array ();
@@ -81,20 +81,8 @@ public class Keyboard.Addin : ReadySet.StepAddin {
             var variants = new Gee.ArrayList<string> ();
 
             foreach (var input in inputs) {
-                var lv = input.id.split ("+");
-
-                string layout;
-                string variant;
-                if (lv.length > 1) {
-                    layout = lv[0];
-                    variant = lv[1];
-                } else {
-                    layout = lv[0];
-                    variant = "";
-                }
-
-                layouts.add (layout);
-                variants.add (variant);
+                layouts.add (input.layout);
+                variants.add (input.variant ?? "");
             }
 
             yield proxy.set_x_11_keyboard (string.joinv (

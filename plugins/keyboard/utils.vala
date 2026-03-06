@@ -140,6 +140,10 @@ namespace Keyboard {
                 input_sources.add (new InputInfo (input_type, input_id));
             }
 
+            if (input_sources.size == 0) {
+                input_sources.add_all_array (get_system_inputs ());
+            }
+
             if (input_sources.size != 0) {
                 set_current_inputs (input_sources);
             }
@@ -175,8 +179,8 @@ namespace Keyboard {
         context.set_strv ("keyboard-input-sources", inputs_val.data);
     }
 
-    async Keyboard.Locale1 get_locale_proxy () throws Error {
-        var con = yield Bus.get (BusType.SYSTEM);
+    Keyboard.Locale1 get_locale_proxy () throws Error {
+        var con = Bus.get_sync (BusType.SYSTEM);
 
         if (con == null) {
             error ("Failed to connect to bus");
@@ -187,6 +191,48 @@ namespace Keyboard {
             "/org/freedesktop/locale1",
             DBusProxyFlags.NONE
         );
+    }
+
+    InputInfo[] get_system_inputs () {
+        try {
+            var proxy = get_locale_proxy ();
+
+            var raw_layouts = proxy.x_11_layout;
+            var raw_variants = proxy.x_11_variant;
+
+            string[] layouts;
+            string[] variants;
+
+            if (raw_layouts == "") {
+                layouts = { "us" };
+            } else {
+                layouts = raw_layouts.split (",");
+            }
+            if (raw_variants == "") {
+                variants = { "" };
+            } else {
+                variants = raw_variants.split (",");
+            }
+
+            if (layouts.length != variants.length) {
+                return {};
+            }
+
+            InputInfo[] inputs = new InputInfo[layouts.length];
+
+            for (int i = 0; i < layouts.length; i++) {
+                if (variants[i] == "") {
+                    inputs[i] = new InputInfo ("xkb", layouts[i]);
+                } else {
+                    inputs[i] = new InputInfo ("xkb", @"$(layouts[i])+$(variants[i])");
+                }
+            }
+
+            return inputs;
+
+        } catch (Error e) {
+            return {};
+        }
     }
 
     Xkb.Context? context;
