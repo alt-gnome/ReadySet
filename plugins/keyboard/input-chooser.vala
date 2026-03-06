@@ -199,6 +199,10 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
 
             row.is_selected = is_selected;
 
+            if (is_selected) {
+                message (row_input_info.format + " is selected");
+            }
+
             if (row.is_extra && is_selected) {
                 debug (
                     "Marking selected layout %s (%s:%s) as non-extra",
@@ -461,5 +465,6 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         invalidate_filter ();
 
         update_input_list_visible ();
+        sync_all_checkmarks ();
     }
 }
