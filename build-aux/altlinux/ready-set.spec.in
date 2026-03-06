@@ -50,6 +50,7 @@ BuildRequires: pkgconfig(polkit-gobject-1)
 BuildRequires: pkgconfig(pwquality)
 BuildRequires: pkgconfig(systemd)
 BuildRequires: pkgconfig(gdm)
+BuildRequires: pkgconfig(xkbcommon)
 
 %description
 %summary.

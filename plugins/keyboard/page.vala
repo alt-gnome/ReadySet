@@ -20,12 +20,10 @@
 public sealed class Keyboard.Page : ReadySet.BasePage {
 
     [GtkChild]
-    unowned InputChooser input_chooser;
+    unowned Adw.Banner select_at_least_one_banner;
 
     construct {
-        input_chooser.changed.connect ((inputs) => {
-            is_ready = inputs.length > 0;
-        });
+        Addin.get_instance ().context.data_changed.connect (on_context_data_changed);
 
         var input_sources_val = Addin.get_instance ().context.get_strv ("keyboard-input-sources");
         if (input_sources_val.length > 0) {
@@ -75,6 +73,20 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
             );
         } catch (Error e) {
             throw ReadySet.ApplyError.build_error (_("Error when setting keyboard layout"), e.message);
+        }
+    }
+
+    void on_context_data_changed (string key) {
+        if (key == "keyboard-input-sources") {
+            bool has_latin_is = false;
+            foreach (var i in get_current_inputs ().to_array ()) {
+                if (i.is_latin) {
+                    has_latin_is = true;
+                    break;
+                }
+            }
+            is_ready = has_latin_is;
+            select_at_least_one_banner.revealed = !has_latin_is;
         }
     }
 }

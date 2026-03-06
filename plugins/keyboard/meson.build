@@ -4,6 +4,7 @@ plugin_keyboard_deps = [
   ibus_dep,
   librs_dep,
   polkit_dep,
+  xkb_dep,
 ]
 
 plugin_keyboard_sources = files(
@@ -26,6 +27,10 @@ plugin_keyboard_c_args = [
   '-w'
 ]
 
+plugin_keyboard_vala_args = [
+  '--vapidir', meson.current_source_dir() / 'vapi',
+]
+
 if get_option('have_ibus')
   rs_app_c_args += ['-DHAVE_IBUS']
 endif
@@ -36,6 +41,7 @@ shared_module(
   plugin_keyboard_sources,
   dependencies: plugin_keyboard_deps,
   c_args: plugin_keyboard_c_args,
+  vala_args: plugin_keyboard_vala_args,
   install: true,
   install_dir: steps_plugins_dir
 )

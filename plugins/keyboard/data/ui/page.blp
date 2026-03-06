@@ -8,13 +8,9 @@ template $KeyboardPage: $ReadySetBasePage {
   description: _("Select your keyboard layout");
   is-ready: true;
 
-  top-widget: Box {
-    orientation: vertical;
-
-    Adw.Banner select_at_least_one_banner {
-      title: _("Make sure that at least one layout containing Latin characters is selected");
-      revealed: true;
-    }
+  top-widget: Adw.Banner select_at_least_one_banner {
+    title: _("You must select at least one layout containing Latin characters");
+    revealed: true;
   };
 
   content: $KeyboardInputChooser input_chooser {};
