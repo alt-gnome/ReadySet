@@ -54,9 +54,15 @@ public class Keyboard.InputInfo : Object {
 
     public string id { get; construct; }
 
+    public string layout { get; construct; }
+
+    public string? variant { get; construct; }
+
     public string type_ { get; construct; }
 
     public string format { get; construct; }
+
+    public bool is_latin { get; construct; }
 
     public InputInfo (string type, string id_) {
         Object (
@@ -76,6 +82,18 @@ public class Keyboard.InputInfo : Object {
             type_: parts[0],
             format: format
         );
+    }
+
+    construct {
+        var parts = id.split ("+", 2);
+        layout = parts[0];
+        if (parts.length == 2) {
+            variant = parts[1];
+        }
+
+        if (type_ == "xkb") {
+            is_latin = xkb_has_latin (layout, variant);
+        }
     }
 
     public uint _hash () {
@@ -169,5 +187,58 @@ namespace Keyboard {
             "/org/freedesktop/locale1",
             DBusProxyFlags.NONE
         );
+    }
+
+    Xkb.Context? context;
+
+    Xkb.Context? get_context () {
+        if (context == null) {
+            context = new Xkb.Context (Xkb.ContextFlags.NO_FLAGS);
+        }
+
+        return context;
+    }
+
+    public bool xkb_has_latin (string layout, string? variant = null) {
+        if (layout == "custom") {
+            return false;
+        }
+
+        var ctx = get_context ();
+        if (ctx == null) {
+            return false;
+        }
+
+        Xkb.RulesNames names = {
+            rules: "evdev",
+            model: "pc105",
+            layout: layout,
+            variant: variant,
+            options: null
+        };
+
+        var keymap = Xkb.Keymap.new_from_names (ctx, names, Xkb.KeymapCompileFlags.NO_FLAGS);
+        if (keymap == null) {
+            return false;
+        }
+
+        var state = new Xkb.State (keymap);
+        if (state == null) {
+            return false;
+        }
+
+        bool found_latin = false;
+        for (uint keycode = 8; keycode <= 255; keycode++) {
+            Xkb.Keysym ks = state.key_get_one_sym ((Xkb.Keycode) keycode);
+
+            // Check if keysym is latin character
+            // a-z = 0x0061-0x007A, A-Z = 0x0041-0x005A
+            if ((ks >= 0x0061 && ks <= 0x007A) || (ks >= 0x0041 && ks <= 0x005A)) {
+                found_latin = true;
+                break;
+            }
+        }
+
+        return found_latin;
     }
 }

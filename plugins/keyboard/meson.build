@@ -4,6 +4,7 @@ plugin_keyboard_deps = [
   ibus_dep,
   librs_dep,
   polkit_dep,
+  xkb_dep,
 ]
 
 plugin_keyboard_sources = files(
@@ -26,7 +27,8 @@ plugin_keyboard_c_args = [
   '-w',
 ]
 
-plugin_keyboard_vala_args = []
+plugin_keyboard_vala_args = [
+  '--vapidir', meson.current_source_dir() / 'vapi',]
 
 if get_option('have_ibus')
   plugin_keyboard_vala_args += ['-D', 'HAVE_IBUS']
