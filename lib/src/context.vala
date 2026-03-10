@@ -470,10 +470,14 @@ public class ReadySet.Context : Object {
 
     public string[] get_strv (string key) {
         if (check_key (key, STRV)) {
-            //  I don't know how boxed types works, but wuthout this hack
-            //  get_strv returns empty array
-            var god_protect_our_souls = Uuid.string_random ();
-            return string.joinv (god_protect_our_souls, (string[]) data[key].real_value.get_boxed ()).split (god_protect_our_souls);
+            char **arr = (char **) data[key].real_value.get_boxed ();
+
+            var builder = new StrvBuilder ();
+            for (int i = 0; arr[i] != null; i++) {
+                builder.add ((string) arr[i]);
+            }
+
+            return builder.end ();
         } else {
             return {};
         }
