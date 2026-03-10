@@ -12,7 +12,7 @@ librs_gir_name = librs_versioned_gir_name + '.gir'
 librs_typelib_name = librs_versioned_gir_name + '.typelib'
 
 librs_vapi_sources = files(
-  
+  'c-utils.vapi',
 )
 
 librs_vala_sources = files(
@@ -26,7 +26,13 @@ librs_vala_sources = files(
   'utils.vala',
 )
 
+librs_c_sources = files(
+  'c-utils.c',
+  'c-utils.h',
+)
+
 librs_sources = [
+  librs_c_sources,
   librs_vapi_sources,
   librs_vala_sources,
 ]

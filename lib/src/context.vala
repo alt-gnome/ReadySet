@@ -470,17 +470,13 @@ public class ReadySet.Context : Object {
 
     public string[] get_strv (string key) {
         if (check_key (key, STRV)) {
-            char **arr = (char **) data[key].real_value.get_boxed ();
-
-            var builder = new StrvBuilder ();
-            for (int i = 0; arr[i] != null; i++) {
-                builder.add ((string) arr[i]);
+            var arr = ReadySetC.safe_copy ((string[]) data[key].real_value.get_boxed ());
+            if (arr != null) {
+                return arr;
             }
-
-            return builder.end ();
-        } else {
-            return {};
         }
+
+        return {};
     }
 
     public void set_int (string key, int64 value) {
