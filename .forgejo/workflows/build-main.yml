@@ -60,6 +60,7 @@ jobs:
             'pkgconfig(polkit-gobject-1)' \
             'pkgconfig(pwquality)' \
             'pkgconfig(systemd)' \
+            'pkgconfig(xkbcommon)' \
             /usr/bin/blueprint-compiler \
             /usr/bin/g-ir-compiler \
             /usr/bin/gcc \
