@@ -24,15 +24,6 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
 
     construct {
         Addin.get_instance ().context.data_changed.connect (on_context_data_changed);
-
-        var input_sources_val = Addin.get_instance ().context.get_strv ("keyboard-input-sources");
-        if (input_sources_val.length > 0) {
-            var input_sources = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
-            foreach (var input in input_sources_val) {
-                input_sources.add (new InputInfo.from_format (input));
-            }
-            set_current_inputs (input_sources);
-        }
     }
 
     async void on_context_data_changed (string key) {

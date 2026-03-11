@@ -23,7 +23,8 @@ public enum ReadySet.ContextType {
     BOOLEAN,
     STRV,
     INT,
-    DOUBLE;
+    DOUBLE,
+    OBJECT;
 
     public static ContextType from_gtype (Type t) {
         if (t == Type.STRING) {
@@ -36,6 +37,8 @@ public enum ReadySet.ContextType {
             return INT;
         } else if (t == Type.DOUBLE) {
             return DOUBLE;
+        } else if (t == Type.OBJECT) {
+            return OBJECT;
         } else {
             error ("Unknown type: %s", t.name ());
         }
@@ -53,6 +56,8 @@ public enum ReadySet.ContextType {
                 return Type.INT;
             case DOUBLE:
                 return Type.DOUBLE;
+            case OBJECT:
+                return Type.OBJECT;
             default:
                 assert_not_reached ();
         }
@@ -303,6 +308,9 @@ public class ReadySet.Context : Object {
                 case ContextType.BOOLEAN:
                     str = get_boolean (key).to_string ();
                     break;
+                case ContextType.OBJECT:
+                    str = "";
+                    break;
                 default:
                     assert_not_reached ();
             }
@@ -435,6 +443,18 @@ public class ReadySet.Context : Object {
     public Value? get_value (string key) {
         if (check_key (key)) {
             return data[key].real_value;
+        } else {
+            return null;
+        }
+    }
+
+    public void set_object (string key, owned Object value) {
+        set_value (key, value);
+    }
+
+    public Object? get_object (string key) {
+        if (check_key (key, OBJECT)) {
+            return data[key].real_value.get_object ();
         } else {
             return null;
         }

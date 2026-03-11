@@ -123,10 +123,13 @@ namespace Keyboard {
     public Gee.HashSet<InputInfo> get_current_inputs () {
         var context = Addin.get_instance ().context;
 
-        var input_sources = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
-        var inputs_val = context.get_strv ("keyboard-input-sources");
+        var inputs = (Gee.HashSet<InputInfo>) context.get_object ("keyboard-input-sources");
 
-        if (inputs_val.length == 0) {
+        if (inputs == null) {
+            inputs = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
+        }
+
+        if (inputs.size == 0) {
             var settings = new Settings ("org.gnome.desktop.input-sources");
             var variant = settings.get_value ("sources");
 
@@ -137,24 +140,19 @@ namespace Keyboard {
                 string input_type, input_id;
 
                 item.get ("(ss)", out input_type, out input_id);
-                input_sources.add (new InputInfo (input_type, input_id));
+                inputs.add (new InputInfo (input_type, input_id));
             }
 
-            if (input_sources.size == 0) {
-                input_sources.add_all_array (get_system_inputs ());
+            if (inputs.size == 0) {
+                inputs.add_all_array (get_system_inputs ());
             }
 
-            if (input_sources.size != 0) {
-                set_current_inputs (input_sources);
-            }
-
-        } else {
-            foreach (var input in inputs_val) {
-                input_sources.add (new InputInfo.from_format (input));
+            if (inputs.size != 0) {
+                set_current_inputs (inputs);
             }
         }
 
-        return input_sources;
+        return inputs;
     }
 
     public void set_current_inputs (Gee.HashSet<InputInfo> inputs) {
@@ -176,7 +174,7 @@ namespace Keyboard {
             settings.set_value ("sources", builder.end ());
         }
 
-        context.set_strv ("keyboard-input-sources", inputs_val.data);
+        context.set_object ("keyboard-input-sources", inputs);
     }
 
     Keyboard.Locale1 get_locale_proxy () throws Error {
