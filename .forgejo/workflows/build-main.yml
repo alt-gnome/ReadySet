@@ -47,6 +47,7 @@ jobs:
             'gir(Adw)=1' \
             'gir(Gdm)=1.0' \
             'gir(Gtk)=4.0' \
+            'gir(NM)=1.0' \
             'gir(Peas)=2' \
             'pkgconfig(accountsservice)' \
             'pkgconfig(gdm)' \
@@ -55,6 +56,8 @@ jobs:
             'pkgconfig(gnome-desktop-4)' \
             'pkgconfig(ibus-1.0)' \
             'pkgconfig(libadwaita-1)>=1.7' \
+            'pkgconfig(libnm)' \
+            'pkgconfig(libnma-gtk4)' \
             'pkgconfig(libpeas-2)' \
             'pkgconfig(passwdqc)' \
             'pkgconfig(polkit-gobject-1)' \
