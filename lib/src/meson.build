@@ -28,7 +28,6 @@ librs_vala_sources = files(
 
 librs_c_sources = files(
   'c-utils.c',
-  'c-utils.h',
 )
 
 librs_sources = [
