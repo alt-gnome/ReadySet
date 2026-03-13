@@ -20,38 +20,6 @@
 
 namespace ReadySet {
 
-    [DBus (name = "org.altlinux.ReadySet")]
-    public interface Service : Object {
-
-        public abstract async void exec_pre_hooks (
-            string[] env = {}
-        ) throws Error;
-
-        public abstract async void exec_post_hooks (
-            string[] env = {}
-        ) throws Error;
-    }
-
-    Service proxy;
-
-    public Service get_ready_set_proxy () throws Error {
-        if (proxy == null) {
-            var con = Bus.get_sync (BusType.SYSTEM);
-
-            if (con == null) {
-                error ("Failed to connect to bus");
-            }
-
-            proxy = con.get_proxy_sync<Service> (
-                "org.altlinux.ReadySet",
-                "/org/altlinux/ReadySet",
-                DBusProxyFlags.NONE
-            );
-        }
-
-        return proxy;
-    }
-
     public string context_key_to_env_key (string key) {
         var builder = new StringBuilder ();
 
