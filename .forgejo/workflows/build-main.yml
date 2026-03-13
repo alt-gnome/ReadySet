@@ -8,7 +8,7 @@ on:
 jobs:
   lint-vala:
     name: Check vala files
-    runs-on: alt-sisyphus
+    runs-on: als-tiny
     container:
       image: altlinux.space/alt-gnome/coding-style-image:latest
 
@@ -21,7 +21,7 @@ jobs:
 
   lint-blueprint:
     name: Check blueprint files
-    runs-on: alt-sisyphus
+    runs-on: als-tiny
     container:
       image: altlinux.space/alt-gnome/coding-style-image:latest
 
@@ -34,7 +34,7 @@ jobs:
 
   build:
     name: Build and upload doc
-    runs-on: alt-sisyphus
+    runs-on: als-huge
     needs:
       - lint-vala
       - lint-blueprint
@@ -86,9 +86,21 @@ jobs:
         with:
           directory: ./_build/lib/doc/ready-set-vala
 
+  get-release:
+    name: Get release for RPM package
+    runs-on: als-tiny
+
+    outputs:
+      release: ${{ steps.get_release.outputs.release }}
+    steps:
+      - name: Get release
+        id: get_release
+        run: |
+          echo "release=$(date +%s)" >> $FORGEJO_OUTPUT
+
   rpm-build:
-    name: RPM build for ${{ matrix.branch }} and uploading
-    runs-on: alt-sisyphus
+    name: RPM build for ${{ matrix.branch }}.${{ matrix.arch }} and uploading
+    runs-on: als-huge
     container:
       image: altlinux.space/actions/runner/hasherc:sisyphus
 
@@ -97,9 +109,13 @@ jobs:
         branch:
           - sisyphus
           - p11
+        arch:
+          - amd64
+          - arm64
     needs:
       - lint-vala
       - lint-blueprint
+      - get-release
 
     steps:
       - name: Install utils
@@ -112,15 +128,16 @@ jobs:
 
       - name: Prepare RPM build
         run: |
-          ./build-aux/altlinux/prepare
+          ./build-aux/altlinux/prepare ${{ needs.get-release.outputs.release }}
           git add .
 
-      - uses: alt-gnome/build-rpm-action@main
+      - uses: actions/build-rpm-action@main
         name: Build RPMs
         with:
           branch: ${{ matrix.branch }}
+          arch: ${{ matrix.arch }}
 
-      - uses: alt-gnome/upload-rpm-action@main
+      - uses: actions/upload-rpm-action@main
         name: Upload RPMs
         if: github.event_name != 'pull_request'
         with:
@@ -130,7 +147,7 @@ jobs:
 
   build-test-image:
     name: Build ${{ matrix.denviron }} image
-    runs-on: alt-sisyphus
+    runs-on: als-huge
     strategy:
       matrix:
         denviron:
