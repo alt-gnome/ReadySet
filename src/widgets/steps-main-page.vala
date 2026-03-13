@@ -60,13 +60,13 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         set {
             if (_last_current_page != null) {
                 _last_current_page.notify["is-ready"].disconnect (update_buttons);
-                _last_current_page.notify["scroll-on-top"].disconnect (update_scroll);
+                _last_current_page.page.notify["scroll-on-top"].disconnect (update_scroll);
             }
 
             _last_current_page = value;
 
             _last_current_page.notify["is-ready"].connect (update_buttons);
-            _last_current_page.notify["scroll-on-top"].connect (update_scroll);
+            _last_current_page.page.notify["scroll-on-top"].connect (update_scroll);
         }
     }
 
