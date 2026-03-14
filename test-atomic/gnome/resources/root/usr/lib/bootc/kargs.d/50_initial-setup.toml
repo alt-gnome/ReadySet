@@ -1,1 +1,0 @@
-kargs = ["gnome.initial-setup=1", "systemd.debug_shell", "loglevel=7", "debug", "systemd.log_level=debug", "rd.debug"]
