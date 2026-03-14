@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-14 11:01+0300\n"
+"POT-Creation-Date: 2026-03-14 11:45+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -202,7 +202,8 @@ msgid "Generate root password"
 msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:5
-msgid "User name"
+#: plugins/user/data/ui/page-username.blp:91
+msgid "Username"
 msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:6
@@ -227,10 +228,6 @@ msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:81
 msgid "Username will be used to name your home folder and can't be changed."
-msgstr ""
-
-#: plugins/user/data/ui/page-username.blp:91
-msgid "Username"
 msgstr ""
 
 #: plugins/user/page-password.vala:125

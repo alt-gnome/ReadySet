@@ -28,8 +28,8 @@ plugins/welcome/data/ui/page.blp
 src/about.vala
 src/application.vala
 src/options-handler.vala
-src/pages/end-page.vala
 src/pages-model.vala
+src/pages/end-page.vala
 src/widgets/positioned-stack.vala
 src/widgets/steps-sidebar.vala
 src/window-content.vala
