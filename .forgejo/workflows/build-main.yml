@@ -105,7 +105,6 @@ jobs:
 
           git add .
           if git commit -m "i18n: Regular .pot file update" ; then
-            git remote set-url origin https://${{ secrets.REPO_TOKEN }}@altlinux.space/${{ github.repository }}.git
             git push
             exit 0
           fi
