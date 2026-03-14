@@ -5,6 +5,9 @@ on:
   workflow_dispatch:
   push:
 
+permissions:
+  contents: write
+
 jobs:
   lint-vala:
     name: Check vala files
@@ -85,6 +88,26 @@ jobs:
         uses: actions/deploy-pages@v1
         with:
           directory: ./_build/lib/doc/ready-set-vala
+
+      - name: Setup git
+        run: |
+          git config --global user.name "Translation updater"
+          git config --global user.email "auto@altlinux.space"
+          git config --global --add safe.directory '*'
+
+      - name: Update pot file for Weblate
+        if: github.event_name != 'pull_request'
+        run: |
+          ./po/update_potfiles
+          meson compile -C _build ready-set-pot
+
+          git add .
+          if git commit -m "i18n: Regular .pot file update" ; then
+            git push
+            exit 0
+          fi
+
+          echo "Nothing to do"
 
   rpm-build:
     name: RPM build for ${{ matrix.branch }} and uploading
