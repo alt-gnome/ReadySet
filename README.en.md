@@ -11,6 +11,10 @@
   
   <div align="center"><h4>A utility for configuring the system at the first startup</h4></div>
 
+  <a href="https://translate.alt-gnome.ru/engage/ready-set/">
+    <img src="https://translate.alt-gnome.ru/widget/ready-set/svg-badge.svg" alt="Состояние перевода" />
+  </a>
+
 </div>
 
 ## All possible steps for now:
