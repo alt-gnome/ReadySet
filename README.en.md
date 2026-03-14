@@ -11,10 +11,6 @@
   
   <div align="center"><h4>A utility for configuring the system at the first startup</h4></div>
 
-  <a href="https://translate.alt-gnome.ru/engage/ready-set/">
-    <img src="https://translate.alt-gnome.ru/widget/ready-set/svg-badge.svg" alt="Состояние перевода" />
-  </a>
-
 </div>
 
 ## All possible steps for now:
@@ -38,6 +34,14 @@ Priority of configuration files (When a file is found, the following are not rea
 Example for configuration can be found file [here](example/example.conf).
 
 Context configuration options can be found in plugins README.
+
+## Translating
+
+You can help with translations via [ALT Gnome Translate](https://translate.alt-gnome.ru/projects/ready-set/#languages)
+
+<a href="https://translate.alt-gnome.ru/engage/ready-set/">
+<img src="https://translate.alt-gnome.ru/widget/ready-set/ready-set/horizontal-red.svg" alt="Состояние перевода" />
+</a>
 
 ## Testing
 
