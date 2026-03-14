@@ -31,8 +31,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ github.event_name != 'pull_request' ?? secrets.REPO_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Check files
         uses: alt-gnome/coding-style-actions/blueprint@main
@@ -78,6 +76,8 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ github.event_name != 'pull_request' ?? secrets.REPO_TOKEN || github.token }}
 
       - name: Setup
         run: meson setup _build -Dwith_lib_documentation=true -Dis_devel=true  -Dpassword_check_backend=both
