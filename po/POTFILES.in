@@ -14,6 +14,7 @@ plugins/language/data/ui/page.blp
 plugins/language/plugin.vala
 plugins/language/row.vala
 plugins/language/select-title.vala
+plugins/test/data/ui/page.blp
 plugins/user/avatar-chooser.vala
 plugins/user/data/ui/avatar-chooser.blp
 plugins/user/data/ui/page-password.blp
