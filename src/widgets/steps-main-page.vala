@@ -177,7 +177,7 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
                 }
             });
 
-            update_osk_buton_apperence ();
+            update_osk_buton_apperence.begin ();
         } else {
             overlay_place.visible = false;
             button_center_box.end_widget = to_up_revealer;
