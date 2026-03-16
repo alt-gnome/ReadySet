@@ -159,8 +159,6 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
             overlay_place.child = to_up_revealer;
             button_center_box.end_widget = osk_button;
 
-            proxy.notify["visible"].connect (update_osk_buton_apperence);
-
             to_up_revealer.visible = false;
 
             to_up_revealer.notify["child-revealed"].connect (() => {
@@ -177,7 +175,6 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
                 }
             });
 
-            update_osk_buton_apperence.begin ();
         } else {
             overlay_place.visible = false;
             button_center_box.end_widget = to_up_revealer;
@@ -241,22 +238,6 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     bool on_devel_close_request () {
         devel_window = null;
         return false;
-    }
-
-    async void update_osk_buton_apperence () {
-        try {
-            var proxy = yield get_osk_proxy ();
-
-            if (proxy.visible) {
-                osk_button.icon_name = "keyboard-retract-symbolic";
-                osk_button.tooltip_text = _("Retract keyboard");
-            } else {
-                osk_button.icon_name = "keyboard-extend-symbolic";
-                osk_button.tooltip_text = _("Extend keyboard");
-            }
-        } catch (Error e) {
-            warning (e.message);
-        }
     }
 
     [GtkCallback]
