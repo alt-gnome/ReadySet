@@ -48,7 +48,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         var app = Application.get_default ();
         var context = app.context;
 
-        if (context.mode == Mode.INITIAL_SETUP && !context.intact) {
+        if (context.mode == Mode.INITIAL_SETUP && !context.sandbox) {
             try {
                 client = new Gdm.Client ();
                 greeter = yield client.get_greeter (null);
@@ -61,7 +61,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                 user_verifier = null;
             }
         } else {
-            debug ("No GDM connection: installer mode or intact mode");
+            debug ("No GDM connection: installer mode or sandbox mode");
         }
 
         stack.visible_child_name = "applying";
@@ -86,7 +86,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
             }
         }
 
-        if (context.intact) {
+        if (context.sandbox) {
             Timeout.add_seconds (1, () => {
                 progress_data.value += 0.2;
                 progress_data.message = _("Doing some stuff…");
@@ -161,10 +161,10 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         var app = Application.get_default ();
         var context = app.context;
 
-        if (context.mode == Mode.INITIAL_SETUP && client != null && !context.intact) {
+        if (context.mode == Mode.INITIAL_SETUP && client != null && !context.sandbox) {
             log_user_in ();
         } else {
-            debug ("No GDM connection: installer mode or intact mode");
+            debug ("No GDM connection: installer mode or sandbox mode");
             app.quit ();
         }
     }

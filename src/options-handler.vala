@@ -39,7 +39,7 @@ public sealed class ReadySet.OptionsHandler : Object {
         { "can-close", '\0', 0, OptionArg.NONE, null, N_("Make window closable always"), "CAN-CLOSE" },
         { "fullscreen", 'F', 0, OptionArg.NONE, null, N_("Run window in fullscreen"), null },
         { "installer", 'I', 0, OptionArg.STRING, null, N_("Specify installer plugin"), "INSTALLER" },
-        { "intact", 'i', 0, OptionArg.NONE, null, N_("Intact run without doing anything"), null },
+        { "sandbox", 'i', 0, OptionArg.NONE, null, N_("Sandbox run without doing anything in system"), null },
         { "simple", 'S', 0, OptionArg.NONE, null, N_("Don't show indicators and keep window simple"), null },
         { "steps-no-apply", '\0', 0, OptionArg.STRING, null, N_("Steps which will not apply. E.g: `steps=language,keyboard`"), "STEPS_NO_APPLY" },
         { "steps", 's', 0, OptionArg.STRING, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
@@ -58,7 +58,7 @@ public sealed class ReadySet.OptionsHandler : Object {
 
     public string conf_file { get; set; }
 
-    public bool intact { get; set; }
+    public bool sandbox { get; set; }
 
     public bool fullscreen { get; set; }
 

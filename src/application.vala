@@ -99,7 +99,7 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         options_handler = new OptionsHandler.from_options (options);
-        context = new Context (options_handler.intact);
+        context = new Context (options_handler.sandbox);
 
         return -1;
     }
@@ -129,7 +129,7 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 #endif
 
-        if (!options_handler.intact) {
+        if (!options_handler.sandbox) {
             exec_pre_hooks.begin ();
         }
     }

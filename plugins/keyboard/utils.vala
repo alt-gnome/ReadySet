@@ -163,7 +163,7 @@ namespace Keyboard {
             inputs_val.append_val (input.format);
         }
 
-        if (!context.intact) {
+        if (!context.sandbox) {
             VariantBuilder builder = new VariantBuilder (new VariantType ("a(ss)"));
 
             foreach (var info in inputs) {

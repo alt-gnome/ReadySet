@@ -45,7 +45,7 @@ You can help with translations via [ALT Gnome Translate](https://translate.alt-g
 
 ## Testing
 
-For test purpose you should use `--intact` option.
+For test purpose you should use `--sandbox` option.
 
 ## Install
 

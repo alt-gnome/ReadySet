@@ -159,7 +159,7 @@ public class ReadySet.ContextVarInfo : Object {
 
 public class ReadySet.Context : Object {
 
-    public bool intact { get; construct; default = true; }
+    public bool sandbox { get; construct; default = true; }
 
     public Mode mode { get; set; }
 
@@ -169,9 +169,9 @@ public class ReadySet.Context : Object {
 
     Gee.HashMap<string, ValueObject> data = new Gee.HashMap<string, ValueObject> ();
 
-    public Context (bool intact) {
+    public Context (bool sandbox) {
         Object (
-            intact: intact
+            sandbox: sandbox
         );
     }
 
