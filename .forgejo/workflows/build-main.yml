@@ -92,17 +92,29 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           ./po/update_potfiles
-          meson compile -C _build ready-set-pot
-
-          sed -i 's/^"POT-Creation-Date:.*/"POT-Creation-Date: 2026-03-14 11:45+0300\\n"/' po/ready-set.pot
 
           git add .
-          if git commit -m "i18n: Regular .pot file update" ; then
-            git push
-            exit 0
+          git commit -m "i18n: Update POTFILES" || true
+
+          meson compile -C _build ready-set-pot
+          git add .
+          changes=$(git diff --cached --numstat | awk '{s+=$1+$2} END {print s+0}')
+
+          # Don't commit if changed only POT-Creation-Date
+          if [ "$changes" -gt 2 ]; then
+            git commit -m "i18n: Update .pot file" || true
+          else
+            git reset --hard
           fi
 
-          echo "Nothing to do"
+          ORIG=$(grep '^"POT-Creation-Date:' po/ready-set.pot)
+          meson compile -C _build ready-set-update-po
+          sed -i "s|^\"POT-Creation-Date:.*|${ORIG}|" po/*.po
+
+          git add po/*.po
+          git commit -m "i18n: Update .po files" || true
+
+          git push
 
       - name: Deploy pages
         if: github.event_name != 'pull_request'
