@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-16 19:06+0000\n"
+"POT-Creation-Date: 2026-03-16 19:17+0000\n"
 "PO-Revision-Date: 2026-01-25 01:30+0300\n"
 "Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
 "Language-Team: Russian\n"
@@ -42,7 +42,7 @@ msgid "Nothing to show"
 msgstr "Нечего показывать"
 
 #: data/ui/steps-main-page.blp:35 data/ui/steps-main-page.blp:64
-msgid "intact"
+msgid "sandbox"
 msgstr ""
 
 #: data/ui/steps-main-page.blp:50
@@ -447,7 +447,8 @@ msgid "Specify installer plugin"
 msgstr ""
 
 #: src/options-handler.vala:42
-msgid "Intact run without doing anything"
+#, fuzzy
+msgid "Sandbox run without doing anything in system"
 msgstr "Запуск без применения изменений в конце"
 
 #: src/options-handler.vala:43
