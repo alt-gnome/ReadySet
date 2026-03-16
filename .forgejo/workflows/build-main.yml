@@ -32,8 +32,8 @@ jobs:
       - name: Check files
         uses: alt-gnome/coding-style-actions/blueprint@main
 
-  build:
-    name: Build and upload doc
+  build-doc-translation:
+    name: Build, update translation and upload doc
     runs-on: als-huge
     needs:
       - lint-vala
@@ -158,6 +158,7 @@ jobs:
       - lint-vala
       - lint-blueprint
       - get-release
+      - build-doc-translation
 
     steps:
       - name: Install utils
