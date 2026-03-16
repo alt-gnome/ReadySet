@@ -108,8 +108,9 @@ jobs:
           fi
 
           ORIG=$(grep '^"POT-Creation-Date:' po/ready-set.pot)
+          ORIG_ESC=${ORIG//\\/\\\\}
           meson compile -C _build ready-set-update-po
-          sed -i "s|^\"POT-Creation-Date:.*|${ORIG}|" po/*.po
+          sed -i "s|^\"POT-Creation-Date:.*|${ORIG_ESC}|" po/*.po
 
           git add po/*.po
           git commit -m "i18n: Update .po files" || true
