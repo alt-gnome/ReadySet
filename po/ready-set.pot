@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-14 11:45+0300\n"
+"POT-Creation-Date: 2026-03-16 19:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,6 +151,14 @@ msgstr ""
 #: plugins/language/select-title.vala:66
 msgid ""
 "Let's start by choosing the language for the application and for your system."
+msgstr ""
+
+#: plugins/test/data/ui/page.blp:4 plugins/test/data/ui/page.blp:9
+msgid "Test"
+msgstr ""
+
+#: plugins/test/data/ui/page.blp:5
+msgid "Test page"
 msgstr ""
 
 #: plugins/user/data/ui/avatar-chooser.blp:5
