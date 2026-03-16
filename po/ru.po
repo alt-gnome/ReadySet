@@ -6,17 +6,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: rirusha@altlinux.org\n"
 "POT-Creation-Date: 2026-03-16 19:17+0000\n"
-"PO-Revision-Date: 2026-01-25 01:30+0300\n"
-"Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
-"Language-Team: Russian\n"
+"PO-Revision-Date: 2026-03-16 19:40+0000\n"
+"Last-Translator: rirusha <rirusha@altlinux.org>\n"
+"Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
+"ready-set/ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.16.2\n"
 
 #: data/ui/end-page.blp:5
@@ -41,15 +42,15 @@ msgstr "Нечего показывать"
 
 #: data/ui/steps-main-page.blp:35 data/ui/steps-main-page.blp:64
 msgid "sandbox"
-msgstr ""
+msgstr "песочница"
 
 #: data/ui/steps-main-page.blp:50
 msgid "Open application menu"
-msgstr ""
+msgstr "Открыть меню приложения"
 
 #: data/ui/steps-main-page.blp:105
 msgid "Go to previous page"
-msgstr ""
+msgstr "К предыдущей странице"
 
 #: data/ui/steps-main-page.blp:133
 msgid "Next"
@@ -62,11 +63,11 @@ msgstr "Марш!"
 
 #: data/ui/steps-main-page.blp:173
 msgid "Go up"
-msgstr ""
+msgstr "Наверх"
 
 #: data/ui/steps-main-page.blp:188
 msgid "Extend/Retract keyboard"
-msgstr ""
+msgstr "Показать/Скрыть клавиатуру"
 
 #: data/ui/window-content.blp:27
 msgid "All steps"
@@ -123,10 +124,9 @@ msgid "Select your keyboard layout"
 msgstr "Выберите раскладку клавиатуры"
 
 #: plugins/keyboard/data/ui/page.blp:12
-#, fuzzy
 msgid "You must select at least one layout containing Latin characters"
 msgstr ""
-"Убедитесь, что выбрана хотя бы одна раскладка, содержащая латинские символы"
+"Должна быть выбрана хотя бы одна раскладка, содержащая латинские символы"
 
 #: plugins/keyboard/plugin.vala:98
 msgid "Error when setting keyboard layout"
@@ -182,14 +182,12 @@ msgid "Come up with a memorable password."
 msgstr "Придумайте запоминающийся пароль."
 
 #: plugins/user/data/ui/page-password.blp:22
-#, fuzzy
 msgid "Your user’s password"
 msgstr "Пароль Вашего пользователя"
 
 #: plugins/user/data/ui/page-password.blp:31
-#, fuzzy
 msgid "Generate user password"
-msgstr "Совпадает с паролем пользователя"
+msgstr "Сгенерировать пароль пользователя"
 
 #: plugins/user/data/ui/page-password.blp:46
 #: plugins/user/data/ui/page-password.blp:115
@@ -214,14 +212,12 @@ msgstr ""
 "пользователя"
 
 #: plugins/user/data/ui/page-password.blp:91
-#, fuzzy
 msgid "Administrator’s password"
 msgstr "Пароль администратора"
 
 #: plugins/user/data/ui/page-password.blp:100
-#, fuzzy
 msgid "Generate root password"
-msgstr "Повторите пароль"
+msgstr "Сгенерировать пароль администратора"
 
 #: plugins/user/data/ui/page-username.blp:5
 #: plugins/user/data/ui/page-username.blp:91
@@ -256,7 +252,7 @@ msgstr ""
 
 #: plugins/user/page-password.vala:125
 msgid "The password must consist of at least one character"
-msgstr ""
+msgstr "Пароль должен состоять минимум из одного символа"
 
 #: plugins/user/passwdqc-utils.vala:43
 msgid "Failed to generate password"
@@ -429,12 +425,12 @@ msgstr "Переменные контекста"
 #. vala-lint=block-opening-brace-space-before
 #: src/options-handler.vala:37
 msgid "Force run with mode"
-msgstr ""
+msgstr "Запустить в определенном режиме"
 
 #. vala-lint=block-opening-brace-space-before
 #: src/options-handler.vala:39
 msgid "Make window closable always"
-msgstr ""
+msgstr "Сделать окно всегда закрываемым"
 
 #: src/options-handler.vala:40
 msgid "Run window in fullscreen"
@@ -442,16 +438,15 @@ msgstr "Запуск окна в полноэкранном режиме"
 
 #: src/options-handler.vala:41
 msgid "Specify installer plugin"
-msgstr ""
+msgstr "Указать плагин-установщик"
 
 #: src/options-handler.vala:42
-#, fuzzy
 msgid "Sandbox run without doing anything in system"
-msgstr "Запуск без применения изменений в конце"
+msgstr "Запуск в \"песочнице\" без изменения системы"
 
 #: src/options-handler.vala:43
 msgid "Don't show indicators and keep window simple"
-msgstr ""
+msgstr "Не показывать индикаторы и сделать окно проще"
 
 #: src/options-handler.vala:44
 msgid "Steps which will not apply. E.g: `steps=language,keyboard`"
