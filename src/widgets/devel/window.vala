@@ -165,6 +165,14 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
                     row = erow;
                     break;
 
+                case OBJECT:
+                    var erow = new Adw.ActionRow () {
+                        title = key,
+                        subtitle = context.get_object (key).get_type ().name (),
+                    };
+                    row = erow;
+                    break;
+
                 default:
                     assert_not_reached ();
             }

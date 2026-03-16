@@ -35,6 +35,14 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     unowned Gtk.Button context_button;
     [GtkChild]
     unowned Gtk.ToggleButton steps_list_button;
+    [GtkChild]
+    unowned Adw.Bin overlay_place;
+    [GtkChild]
+    unowned Gtk.Revealer to_up_revealer;
+    [GtkChild]
+    unowned Gtk.CenterBox button_center_box;
+    [GtkChild]
+    unowned Gtk.Button osk_button;
 
     Devel.Window devel_window;
 
@@ -133,6 +141,46 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         notify["simple"].connect (update_menu_button_visible);
         update_icons_visible ();
         update_menu_button_visible ();
+
+        setup.begin ();
+    }
+
+    async void setup () {
+        Osk? proxy = null;
+        try {
+            proxy = yield get_osk_proxy ();
+        } catch (Error e) {
+            debug ("Can't get OSK proxy: %s", e.message);
+        }
+
+        var a11y_settings = new Settings ("org.gnome.desktop.a11y.applications");
+
+        if (proxy != null && a11y_settings.get_boolean ("screen-keyboard-enabled")) {
+            overlay_place.child = to_up_revealer;
+            button_center_box.end_widget = osk_button;
+
+            to_up_revealer.visible = false;
+
+            to_up_revealer.notify["child-revealed"].connect (() => {
+                if (!to_up_revealer.child_revealed) {
+                    to_up_revealer.visible = false;
+                }
+            });
+            notify["can-up"].connect (() => {
+                if (can_up) {
+                    to_up_revealer.visible = true;
+                    to_up_revealer.reveal_child = true;
+                } else {
+                    to_up_revealer.reveal_child = false;
+                }
+            });
+
+        } else {
+            overlay_place.visible = false;
+            button_center_box.end_widget = to_up_revealer;
+
+            bind_property ("can-up", to_up_revealer, "reveal-child");
+        }
     }
 
     void update_icons_visible () {
@@ -190,6 +238,16 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     bool on_devel_close_request () {
         devel_window = null;
         return false;
+    }
+
+    [GtkCallback]
+    async void osk_clicked () {
+        try {
+            var proxy = yield get_osk_proxy ();
+            yield proxy.set_visible (!proxy.visible);
+        } catch (Error e) {
+            warning (e.message);
+        }
     }
 
     [GtkCallback]

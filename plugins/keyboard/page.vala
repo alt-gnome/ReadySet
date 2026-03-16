@@ -26,19 +26,24 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
 
     construct {
         Addin.get_instance ().context.data_changed.connect (on_context_data_changed);
+        update_is_ready ();
     }
 
     async void on_context_data_changed (string key) {
         if (key == "keyboard-input-sources") {
-            bool has_latin_is = false;
-            foreach (var i in get_current_inputs ().to_array ()) {
-                if (i.is_latin) {
-                    has_latin_is = true;
-                    break;
-                }
-            }
-            is_ready = has_latin_is;
-            select_at_least_one_banner.revealed = !has_latin_is;
+            update_is_ready ();
         }
+    }
+
+    void update_is_ready () {
+        bool has_latin_is = false;
+        foreach (var i in get_current_inputs ().to_array ()) {
+            if (i.is_latin) {
+                has_latin_is = true;
+                break;
+            }
+        }
+        is_ready = has_latin_is;
+        select_at_least_one_banner.revealed = !has_latin_is;
     }
 }

@@ -2,6 +2,8 @@
 <gresources>
   <gresource prefix="/org/altlinux/ReadySet/icons/scalable/actions/">
     <file alias="org.altlinux.ReadySet-symbolic.svg">icons/hicolor/symbolic/apps/org.altlinux.ReadySet-symbolic.svg</file>
+    <file alias="keyboard-symbolic.svg">assets/icons/keyboard-symbolic.svg</file>
+    <file alias="top-large-symbolic.svg">assets/icons/top-large-symbolic.svg</file>
   </gresource>
   <gresource prefix="/org/altlinux/ReadySet/">
     <file>style.css</file>

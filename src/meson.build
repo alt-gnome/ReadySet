@@ -3,6 +3,9 @@ rs_app_vapi_sources = files(
 )
 
 rs_app_vala_sources = files(
+  'dbus/osk.vala',
+  'dbus/rs-system-service.vala',
+
   'pages/end-page.vala',
 
   'widgets/devel/window.vala',
