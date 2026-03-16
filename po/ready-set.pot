@@ -45,21 +45,25 @@ msgstr ""
 msgid "Open application menu"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:93
+#: data/ui/steps-main-page.blp:105
 msgid "Go to previous page"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:121
+#: data/ui/steps-main-page.blp:133
 msgid "Next"
 msgstr ""
 
 #. TRANSLATORS: Last word in "Ready Set ..." sentence
-#: data/ui/steps-main-page.blp:138
+#: data/ui/steps-main-page.blp:150
 msgid "Go!"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:159
+#: data/ui/steps-main-page.blp:173
 msgid "Go up"
+msgstr ""
+
+#: data/ui/steps-main-page.blp:188
+msgid "Extend/Retract keyboard"
 msgstr ""
 
 #: data/ui/window-content.blp:27
