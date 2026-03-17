@@ -183,7 +183,7 @@ Requires: %name = %EVR
 %setup
 
 %build
-%meson -Dpassword_check_backend=both -Dis_devel=true
+%meson -Dpassword_check_backend=both -Dis_devel=true -Duser_with_set_root=true
 %meson_build
 
 %install
@@ -198,6 +198,8 @@ Requires: %name = %EVR
 %_iconsdir/hicolor/*/apps/%{app_id}*
 %_datadir/applications/%{app_id}*
 %_datadir/polkit-1/rules.d/%app_id.rules
+%_libdir/%name/plugins/steps/libtests.so
+%_libdir/%name/plugins/steps/tests.plugin
 
 %files gdm
 %_libexecdir/%gis_name
@@ -256,6 +258,7 @@ Requires: %name = %EVR
 
 %files plugin-user-common
 %_datadir/polkit-1/rules.d/%app_id.Plugin.User.rules
+%_datadir/polkit-1/rules.d/%app_id.Plugin.User.SetRootPassword.rules
 %_libexecdir/%name-set-root-password
 
 %files plugin-user-passwdqc

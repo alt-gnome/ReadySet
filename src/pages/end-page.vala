@@ -1,18 +1,20 @@
-/* Copyright (C) 2024-2025 Vladimir Romanov <rirusha@altlinux.org>
- *
+/*
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * along with this program. If not, see
+ * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
+ * 
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -45,9 +47,8 @@ public sealed class ReadySet.EndPage : BaseBarePage {
     public async void start_action () {
         var app = Application.get_default ();
         var context = app.context;
-        context.locked = true;
 
-        if (!app.has_installer && !context.intact) {
+        if (context.mode == Mode.INITIAL_SETUP && !context.sandbox) {
             try {
                 client = new Gdm.Client ();
                 greeter = yield client.get_greeter (null);
@@ -60,7 +61,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                 user_verifier = null;
             }
         } else {
-            debug ("No GDM connection: installer mode or intact mode");
+            debug ("No GDM connection: installer mode or sandbox mode");
         }
 
         stack.visible_child_name = "applying";
@@ -71,7 +72,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         progress_data.notify["value"].connect (update_progress_visibility);
         update_progress_visibility ();
 
-        Gee.ArrayList<Applyable> applyable_arr = new Gee.ArrayList<Applyable> ();
+        Gee.ArrayList<StepAddin> steps_addins_arr = new Gee.ArrayList<StepAddin> ();
 
         for (int i = 0; i < app.model.get_n_items (); i++) {
             var page_info = (PageInfo) app.model.get_item (i);
@@ -80,13 +81,12 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                 continue;
             }
 
-            if (!(page_info.plugin in applyable_arr)) {
-                applyable_arr.add (page_info.plugin);
+            if (!(page_info.plugin in steps_addins_arr)) {
+                steps_addins_arr.add (page_info.plugin);
             }
-            applyable_arr.add (page_info.page);
         }
 
-        if (context.intact) {
+        if (context.sandbox) {
             Timeout.add_seconds (1, () => {
                 progress_data.value += 0.2;
                 progress_data.message = _("Doing some stuff…");
@@ -105,28 +105,32 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
         } else {
             try {
-                if (app.has_installer) {
+                if (context.mode == Mode.INSTALLER) {
                     yield app.installer_plugin.install (progress_data);
 
-                } else {
-                    foreach (var applyable in applyable_arr) {
+                } else if (context.mode == Mode.INITIAL_SETUP) {
+                    foreach (var step_addin in steps_addins_arr) {
                         progress_data.value = 0.0;
 
-                        yield applyable.apply (progress_data);
+                        yield step_addin.apply (progress_data);
 
                         progress_data.value = 1.0;
                     }
                 }
 
-                var raw_context = context.get_raw_string ();
-                var env = new Gee.ArrayList<string> ();
+                if (context.mode == Mode.INITIAL_SETUP || context.mode == Mode.INSTALLER) {
+                    var raw_context = context.get_raw_string ();
+                    var env = new Gee.ArrayList<string> ();
 
-                foreach (var key in raw_context.get_keys ()) {
-                    env.add ("%s=\"%s\"".printf (context_key_to_env_key (key), raw_context[key]));
+                    foreach (var key in raw_context.get_keys ()) {
+                        env.add ("%s=%s".printf (context_key_to_env_key (key), raw_context[key]));
+                    }
+
+                    if (context.mode == Mode.INITIAL_SETUP) {
+                        yield exec_user_post_hooks (env.to_array ());
+                    }
+                    yield get_ready_set_proxy ().exec_post_hooks (env.to_array ());
                 }
-
-                exec_user_post_hooks (env.to_array ());
-                get_ready_set_proxy ().exec_post_hooks (env.to_array ());
 
                 stack.visible_child_name = "ready";
                 is_ready = true;
@@ -157,10 +161,10 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         var app = Application.get_default ();
         var context = app.context;
 
-        if (!app.has_installer && client != null && !context.intact) {
+        if (context.mode == Mode.INITIAL_SETUP && client != null && !context.sandbox) {
             log_user_in ();
         } else {
-            debug ("No GDM connection: installer mode or intact mode");
+            debug ("No GDM connection: installer mode or sandbox mode");
             app.quit ();
         }
     }

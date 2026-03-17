@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,11 +42,7 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
 
             _model = value;
 
-            positioned_stack.bind_model (_model, (page) => {
-                return new Gtk.Label (page.title_header) {
-                    css_classes = { "heading" }
-                };
-            });
+            positioned_stack.bind_model (_model, positioned_stack_create_func);
 
             if (_model != null) {
                 model.selection_changed.connect (on_selection_changed);
@@ -64,6 +60,12 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
 
     construct {
         icons_box.height_request = CURRENT_PIXEL_SIZE;
+    }
+
+    Gtk.Widget positioned_stack_create_func (PageInfo page) {
+        return new Gtk.Label (page.title_header) {
+            css_classes = { "heading" }
+        };
     }
 
     void on_selection_changed () {

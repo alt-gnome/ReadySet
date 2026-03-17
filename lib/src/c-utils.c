@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2026 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,13 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public interface ReadySet.Applyable : Object {
-    public virtual async void apply (ProgressData progress_data) throws ReadySet.ApplyError {
-        return;
-    }
+#include <glib.h>
 
-    public abstract bool accessible { get; protected set; }
+gchar**
+str_safe_copy (gchar **str_array)
+{
+  if (str_array == NULL)
+    return NULL;
+
+  return g_strdupv (str_array);
 }

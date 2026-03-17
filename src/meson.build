@@ -3,6 +3,9 @@ rs_app_vapi_sources = files(
 )
 
 rs_app_vala_sources = files(
+  'dbus/osk.vala',
+  'dbus/rs-system-service.vala',
+
   'pages/end-page.vala',
 
   'widgets/devel/window.vala',
@@ -30,6 +33,7 @@ rs_app_dependencies = [
   libadwaita_dep,
   libpeas_dep,
   librs_dep,
+  posix_dep,
 ]
 
 rs_app_sources = [
@@ -47,6 +51,7 @@ rs_app_vala_args = [
   '--gresources', rs_app_resource_files,
   '--gresourcesdir=data/',
   '--vapidir', meson.project_source_root() / 'vapi',
+  '--pkg', 'linux',
 ]
 
 if get_option('is_devel')

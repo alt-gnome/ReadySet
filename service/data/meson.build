@@ -37,7 +37,10 @@ configure_file(
   install_dir: sysconfdir / 'dbus-1' / 'system.d'
 )
 
+# User hooks works only for service user under which executed initial-setip mode
+# Needs for phrog, for removing ready-set from first-run gsetting
 install_emptydir(datadir / meson.project_name() / 'pre-hooks' / 'user')
 install_emptydir(datadir / meson.project_name() / 'post-hooks' / 'user')
+# Works in installer or initial-setup modes
 install_emptydir(datadir / meson.project_name() / 'pre-hooks' / 'system')
 install_emptydir(datadir / meson.project_name() / 'post-hooks' / 'system')

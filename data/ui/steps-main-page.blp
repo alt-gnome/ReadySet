@@ -24,7 +24,7 @@ template $ReadySetStepsMainPage: Adw.Bin {
       }
 
       [start]
-      Label intact_label_left {
+      Label sandbox_label_left {
         styles [
           "warning",
         ]
@@ -32,18 +32,13 @@ template $ReadySetStepsMainPage: Adw.Bin {
         margin-start: 12;
         margin-end: 12;
         visible: false;
-        label: "intact";
+        label: _("sandbox");
       }
 
-      title-widget: Box {
-        orientation: vertical;
-        spacing: 2;
-
-        $ReadySetPagesIndicator pages_indicator {
-          vexpand: true;
-          valign: center;
-          show-icons: bind template.show-steps-list inverted;
-        }
+      title-widget: $ReadySetPagesIndicator pages_indicator {
+        vexpand: true;
+        valign: center;
+        show-icons: bind template.show-steps-list inverted;
       };
 
       [end]
@@ -52,12 +47,13 @@ template $ReadySetStepsMainPage: Adw.Bin {
           "flat",
         ]
 
+        tooltip-text: _("Open application menu");
         icon-name: "open-menu-symbolic";
         clicked => $on_context_button_clicked();
       }
 
       [end]
-      Label intact_label_right {
+      Label sandbox_label_right {
         styles [
           "warning",
         ]
@@ -65,11 +61,23 @@ template $ReadySetStepsMainPage: Adw.Bin {
         margin-start: 12;
         margin-end: 12;
         visible: false;
-        label: "intact";
+        label: _("sandbox");
       }
     }
 
-    content: $ReadySetPositionedStack positioned_stack {};
+    content: Overlay {
+      $ReadySetPositionedStack positioned_stack {}
+
+      [overlay]
+      Adw.Bin overlay_place {
+        halign: end;
+        valign: end;
+        hexpand: false;
+        vexpand: false;
+        margin-end: 18;
+        margin-bottom: 12;
+      }
+    };
 
     [bottom]
     CenterBox button_center_box {
@@ -94,6 +102,7 @@ template $ReadySetStepsMainPage: Adw.Bin {
             "circular",
           ]
 
+          tooltip-text: _("Go to previous page");
           icon-name: "go-previous-symbolic";
           can-shrink: true;
           width-request: 48;
@@ -145,26 +154,40 @@ template $ReadySetStepsMainPage: Adw.Bin {
           };
         }
       };
-
-      end-widget: Revealer {
-        transition-type: crossfade;
-        transition-duration: 200;
-        reveal-child: bind template.can-up;
-        halign: end;
-
-        Button {
-          styles [
-            "circular",
-            "flat",
-          ]
-
-          icon-name: "go-up-symbolic";
-          width-request: 48;
-          height-request: 48;
-          clicked => $up_clicked();
-          margin-start: 12;
-        }
-      };
     }
   }
+}
+
+Revealer to_up_revealer {
+  transition-type: crossfade;
+  transition-duration: 200;
+  halign: end;
+
+  Button {
+    styles [
+      "background",
+      "circular",
+    ]
+
+    icon-name: "top-large-symbolic";
+    tooltip-text: _("Go up");
+    width-request: 48;
+    height-request: 48;
+    clicked => $up_clicked();
+    margin-start: 12;
+  }
+}
+
+Button osk_button {
+  styles [
+    "circular",
+    "flat",
+  ]
+
+  icon-name: "keyboard-symbolic";
+  tooltip-text: _("Extend/Retract keyboard");
+  width-request: 48;
+  height-request: 48;
+  clicked => $osk_clicked();
+  margin-start: 12;
 }

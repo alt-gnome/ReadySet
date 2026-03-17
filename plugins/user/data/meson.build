@@ -31,4 +31,14 @@ configure_file(
   configuration: rules_conf,
 )
 
-subdir('tools')
+if (get_option('user_with_set_root'))
+  configure_file(
+    input: 'org.altlinux.ReadySet.Plugin.User.SetRootPassword.rules.in',
+    output: 'org.altlinux.ReadySet.Plugin.User.SetRootPassword.rules',
+    install: true,
+    install_dir: rulesdir,
+    configuration: rules_conf,
+  )
+
+  subdir('tools')
+endif

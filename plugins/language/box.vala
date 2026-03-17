@@ -1,18 +1,20 @@
-/* Copyright (C) 2024-2025 Vladimir Romanov <rirusha@altlinux.org>
- *
+/*
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * along with this program. If not, see
+ * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
+ * 
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -54,16 +56,16 @@ public sealed class Language.Box : Adw.Bin {
     construct {
         set_supported_languages ();
 
-        search_entry.changed.connect (() => {
-            saved_search_query = search_entry.text;
-        });
+        search_entry.changed.connect (on_search_entry_changed);
 
         search_entry.text = saved_search_query;
         show_more = saved_show_more;
 
-        Idle.add_once (() => {
-            search_entry.can_focus = true;
-        });
+        search_entry.can_focus = true;
+    }
+
+    void on_search_entry_changed (Gtk.Editable obj) {
+        saved_search_query = obj.text;
     }
 
     void set_supported_languages () {
@@ -114,12 +116,11 @@ public sealed class Language.Box : Adw.Bin {
         filter_current_model.notify["n-items"].connect (model_n_items_changed);
         model_n_items_changed (filter_current_model, filter_current_model.get_class ().find_property ("n-items"));
 
-        languages_listbox.bind_model (
-            filter_current_model,
-            (obj) => {
-                return new Row ((LocaleData) obj);
-            }
-        );
+        languages_listbox.bind_model (filter_current_model, create_row_func);
+    }
+
+    Gtk.Widget create_row_func (Object item) {
+        return new Row ((LocaleData) item);
     }
 
     void model_n_items_changed (Object obj, ParamSpec param) {
@@ -185,9 +186,11 @@ public sealed class Language.Box : Adw.Bin {
     }
 
     Gtk.Filter get_current_filter () {
-        return new Gtk.CustomFilter ((item) => {
-            return ((LocaleData) item).locale != current_locale.locale;
-        });
+        return new Gtk.CustomFilter (filter_func);
+    }
+
+    bool filter_func (Object item) {
+        return ((LocaleData) item).locale != current_locale.locale;
     }
 
     [GtkCallback]

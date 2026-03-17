@@ -35,9 +35,17 @@ Example for configuration can be found file [here](example/example.conf).
 
 Context configuration options can be found in plugins README.
 
+## Translating
+
+You can help with translations via [ALT Gnome Translate](https://translate.alt-gnome.ru/projects/ready-set/#languages)
+
+<a href="https://translate.alt-gnome.ru/engage/ready-set/">
+<img src="https://translate.alt-gnome.ru/widget/ready-set/ready-set/horizontal-red.svg" alt="Состояние перевода" />
+</a>
+
 ## Testing
 
-For test purpose you should use `--intact` option.
+For test purpose you should use `--sandbox` option.
 
 ## Install
 

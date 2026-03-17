@@ -1,18 +1,20 @@
-/* Copyright (C) 2024-2025 Vladimir Romanov <rirusha@altlinux.org>
- *
+/*
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * along with this program. If not, see
+ * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
+ * 
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -73,23 +75,23 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         input_list.set_sort_func (sort_inputs);
         input_list.set_filter_func (input_visible);
 
-        get_locale_infos ();
+        get_locale_infos.begin ();
 #if HAVE_IBUS
-        get_ibus_locale_infos ();
+        get_ibus_locale_infos.begin ();
 #endif
 
         filter_entry.changed.connect (invalidate_filter);
 
-        Addin.get_instance ().context.data_changed.connect ((key) => {
-            if (key == "keyboard-input-sources") {
-                update_current ();
-            }
-        });
+        Addin.get_instance ().context.data_changed.connect (on_context_data_changed);
         update_current ();
 
-        Idle.add_once (() => {
-            filter_entry.can_focus = true;
-        });
+        filter_entry.can_focus = true;
+    }
+
+    void on_context_data_changed (string key) {
+        if (key == "keyboard-input-sources") {
+            update_current ();
+        }
     }
 
     void update_current () {
@@ -295,21 +297,20 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         return search_query.match_string (input_row.title, true);
     }
 
-    void get_locale_infos () {
+    async void get_locale_infos () {
         string type = null;
         string id = null;
         string lang = null;
         string country = null;
 
+        Addin.get_instance ().context.reset ("keyboard-input-sources");
         var current_inputs_info = get_current_inputs ();
 
         if (Gnome.Languages.get_input_source_from_locale (get_current_language (), out type, out id)) {
-            if (current_inputs_info.size == 0) {
-                current_inputs_info.add (new InputInfo (type, id));
-                set_current_inputs (current_inputs_info);
-            }
+            current_inputs_info.add (new InputInfo (type, id));
+            set_current_inputs (current_inputs_info);
 
-            add_row_to_list (type, id, false);
+            yield add_row_to_list (type, id, false);
         }
 
         if (!Gnome.Languages.parse_locale (get_current_language (), out lang, out country, null, null)) {
@@ -317,31 +318,31 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         }
 
         foreach (var mid in MAIN_SOURCES) {
-            add_row_to_list (INPUT_SOURCE_TYPE_XKB, mid, false);
+            yield add_row_to_list (INPUT_SOURCE_TYPE_XKB, mid, false);
         }
 
         var list = xkb_info.get_layouts_for_language (lang);
-        add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
+        yield add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
 
         if (country != null) {
             list = xkb_info.get_layouts_for_country (country);
-            add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
+            yield add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
         }
 
         list = xkb_info.get_all_layouts ();
-        add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
+        yield add_rows_to_list (list, INPUT_SOURCE_TYPE_XKB, id, true);
 
         input_list.invalidate_sort ();
         invalidate_filter ();
     }
 
-    void add_row_to_list (string type, string id, bool is_extra) {
+    async void add_row_to_list (string type, string id, bool is_extra) {
         var tmp = new List<weak string> ();
         tmp.append (id);
-        add_rows_to_list (tmp, type, null, is_extra);
+        yield add_rows_to_list (tmp, type, null, is_extra);
     }
 
-    void add_rows_to_list (List<weak string> list, string type, string? default_id, bool is_extra) {
+    async void add_rows_to_list (List<weak string> list, string type, string? default_id, bool is_extra) {
         foreach (var id in list) {
             if (id == default_id) {
                 continue;
@@ -357,6 +358,9 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
                     input_list.append (widget);
                 }
             }
+
+            Idle.add (add_rows_to_list.callback);
+            yield;
         }
     }
 
@@ -389,48 +393,52 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         }
     }
 
-    void get_ibus_locale_infos () {
+    async void get_ibus_locale_infos () {
         if (ibus_engines == null) {
             return;
         }
 
         foreach (var entry in ibus_engines) {
-            add_row_to_list (INPUT_SOURCE_TYPE_IBUS, entry.key, true);
+           yield add_row_to_list (INPUT_SOURCE_TYPE_IBUS, entry.key, true);
         }
     }
 
     void fetch_ibus_engines () {
         ibus_cancellable = new Cancellable ();
 
-        ibus.list_engines_async.begin (-1, ibus_cancellable, (obj, res) => {
-            var list = new List<IBus.EngineDesc> ();
-
-            try {
-                list = ((IBus.Bus) obj).list_engines_async_finish (res);
-
-            } catch (Error e) {
-                warning ("Couldn't finish IBus request: %s", e.message);
-                return;
-            }
-
-            ibus_cancellable = null;
-
-            ibus_engines = new Gee.HashMap<string, IBus.EngineDesc> ();
-
-            foreach (var engine_desc in list) {
-                var engine_id = engine_desc.get_name ();
-                if (!engine_id.has_prefix ("xkb:")) {
-                    ibus_engines[engine_id] = engine_desc;
-                }
-            }
-
-            update_ibus_active_sources ();
-            get_ibus_locale_infos ();
-
-            sync_all_checkmarks ();
-        });
+        ibus.list_engines_async.begin (-1, ibus_cancellable, ibus_engines_callback);
 
         ibus.connected.disconnect (fetch_ibus_engines);
+    }
+
+    void ibus_engines_callback (Object? obj, AsyncResult res) {
+        var list = new List<IBus.EngineDesc> ();
+
+        try {
+            list = ((IBus.Bus) obj).list_engines_async_finish (res);
+
+        } catch (Error e) {
+            warning ("Couldn't finish IBus request: %s", e.message);
+            return;
+        }
+
+        ibus_cancellable = null;
+
+        ibus_engines = new Gee.HashMap<string, IBus.EngineDesc> ();
+
+        foreach (var engine_desc in list) {
+            var engine_id = engine_desc.get_name ();
+            if (!engine_id.has_prefix ("xkb:")) {
+                ibus_engines[engine_id] = engine_desc;
+            }
+        }
+
+        update_ibus_active_sources ();
+        get_ibus_locale_infos.begin (on_get_ibus_locale_infos_callback);
+    }
+
+    void on_get_ibus_locale_infos_callback () {
+        sync_all_checkmarks ();
     }
 
     void maybe_start_ibus () {
@@ -454,5 +462,6 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         invalidate_filter ();
 
         update_input_list_visible ();
+        sync_all_checkmarks ();
     }
 }

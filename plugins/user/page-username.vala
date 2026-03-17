@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -149,13 +149,16 @@ public class User.PageUsername : ReadySet.BasePage {
     [GtkCallback]
     void on_avatar_button_clicked () {
         var chooser = new AvatarChooser ();
-        chooser.closed.connect (() => {
-            if (chooser.avatar_filename != null) {
-                remove_avatar_button.visible = true;
-                user_avatar_file = chooser.avatar_filename;
-            }
-        });
+        chooser.closed.connect (on_chooser_closed);
         chooser.present (this);
+    }
+
+    void on_chooser_closed (Adw.Dialog dialog) {
+        var chooser = (AvatarChooser) dialog;
+        if (chooser.avatar_filename != null) {
+            remove_avatar_button.visible = true;
+            user_avatar_file = chooser.avatar_filename;
+        }
     }
 
     [GtkCallback]

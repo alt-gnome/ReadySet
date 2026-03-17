@@ -2,7 +2,7 @@
 
 #### Context fields:
 ###### `user-with-root`
-If `true`, root password can be set. Otherwise it will be equal to user password.
+If `true`, root password can be set. Otherwise it will not be set.
 
 ###### `no-password-security`
 If `true`, password will not be checked via passwdqc/pwquality and any password can be used.

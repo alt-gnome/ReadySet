@@ -1,25 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the ready-set package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # David Sultaniiazov <x1z53@alt-gnome.ru>, 2025.
 # Vladimir Romanov <rirusha@altlinux.org>, 2026.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-25 01:26+0300\n"
-"PO-Revision-Date: 2026-01-25 01:30+0300\n"
-"Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
-"Language-Team: Russian\n"
+"POT-Creation-Date: 2026-03-17 15:57+0000\n"
+"PO-Revision-Date: 2026-03-16 19:40+0000\n"
+"Last-Translator: rirusha <rirusha@altlinux.org>\n"
+"Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
+"ready-set/ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Gtranslator 49.0\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #: data/ui/end-page.blp:5
 msgid "Finishing"
@@ -41,14 +40,34 @@ msgstr "Система готова к использованию."
 msgid "Nothing to show"
 msgstr "Нечего показывать"
 
-#: data/ui/steps-main-page.blp:124
+#: data/ui/steps-main-page.blp:35 data/ui/steps-main-page.blp:64
+msgid "sandbox"
+msgstr "песочница"
+
+#: data/ui/steps-main-page.blp:50
+msgid "Open application menu"
+msgstr "Открыть меню приложения"
+
+#: data/ui/steps-main-page.blp:105
+msgid "Go to previous page"
+msgstr "К предыдущей странице"
+
+#: data/ui/steps-main-page.blp:133
 msgid "Next"
 msgstr "Дальше"
 
 #. TRANSLATORS: Last word in "Ready Set ..." sentence
-#: data/ui/steps-main-page.blp:141
+#: data/ui/steps-main-page.blp:150
 msgid "Go!"
 msgstr "Марш!"
+
+#: data/ui/steps-main-page.blp:173
+msgid "Go up"
+msgstr "Наверх"
+
+#: data/ui/steps-main-page.blp:188
+msgid "Extend/Retract keyboard"
+msgstr "Показать/Скрыть клавиатуру"
 
 #: data/ui/window-content.blp:27
 msgid "All steps"
@@ -58,23 +77,19 @@ msgstr "Все шаги"
 msgid "Main"
 msgstr "Главная"
 
-#: lib/src/addin.vala:23
-msgid "Applying changes…"
-msgstr "Применение изменения…"
-
-#: lib/src/base/base-bare-page.vala:60
+#: lib/src/base/base-bare-page.vala:62
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: lib/src/base/base-page.vala:48
+#: lib/src/base/base-page.vala:50
 msgid "Unknown page"
 msgstr "Неизвестная страница"
 
-#: lib/src/base/base-page.vala:50
+#: lib/src/base/base-page.vala:52
 msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
-#: lib/src/utils.vala:58
+#: lib/src/utils.vala:90
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
@@ -82,8 +97,17 @@ msgstr "Что-то пошло не так"
 msgid "Search keyboards and input methods"
 msgstr "Поиск раскладок и методов ввода"
 
-#: plugins/keyboard/data/ui/input-chooser.blp:53
-#: plugins/language/data/ui/box.blp:50
+#: plugins/keyboard/data/ui/input-chooser.blp:49
+msgid "No input sources selected"
+msgstr "Не выбраны источники ввода"
+
+#: plugins/keyboard/data/ui/input-chooser.blp:83
+#: plugins/language/data/ui/box.blp:57
+msgid "Nothing found"
+msgstr "Ничего не найдено"
+
+#: plugins/keyboard/data/ui/input-chooser.blp:98
+#: plugins/language/data/ui/box.blp:72
 msgid "Show more"
 msgstr "Показать больше"
 
@@ -99,21 +123,12 @@ msgstr "Настройки клавиатуры"
 msgid "Select your keyboard layout"
 msgstr "Выберите раскладку клавиатуры"
 
-#: plugins/keyboard/data/ui/page.blp:15
-msgid ""
-"Make sure that at least one layout containing Latin characters is selected"
+#: plugins/keyboard/data/ui/page.blp:12
+msgid "You must select at least one layout containing Latin characters"
 msgstr ""
-"Убедитесь, что выбрана хотя бы одна раскладка, содержащая латинские символы"
+"Должна быть выбрана хотя бы одна раскладка, содержащая латинские символы"
 
-#: plugins/keyboard/input-chooser.vala:95
-msgid "No input sources selected"
-msgstr "Не выбраны источники ввода"
-
-#: plugins/keyboard/input-chooser.vala:417 plugins/language/box.vala:54
-msgid "Nothing found"
-msgstr "Ничего не найдено"
-
-#: plugins/keyboard/page.vala:77
+#: plugins/keyboard/plugin.vala:121
 msgid "Error when setting keyboard layout"
 msgstr "Ошибка при настройке раскладки клавиатуры"
 
@@ -125,22 +140,30 @@ msgstr "Поиск языка"
 msgid "Language"
 msgstr "Язык"
 
-#: plugins/language/page.vala:28
+#: plugins/language/plugin.vala:124
 msgid "Error when setting language"
 msgstr "Ошибка при настройке языка"
 
-#: plugins/language/row.vala:34
+#: plugins/language/row.vala:36
 msgid "Current language"
 msgstr "Текущий язык"
 
-#: plugins/language/select-title.vala:63
+#: plugins/language/select-title.vala:65
 msgid "Hello!"
 msgstr "Привет!"
 
-#: plugins/language/select-title.vala:64
+#: plugins/language/select-title.vala:66
 msgid ""
 "Let's start by choosing the language for the application and for your system."
 msgstr "Давайте начнём с выбора языка для приложения и для Вашей системы."
+
+#: plugins/tests/data/ui/page.blp:4 plugins/tests/data/ui/page.blp:9
+msgid "Test"
+msgstr "Тест"
+
+#: plugins/tests/data/ui/page.blp:5
+msgid "Test page"
+msgstr "Тестовая страница"
 
 #: plugins/user/data/ui/avatar-chooser.blp:5
 msgid "Select Avatar"
@@ -158,9 +181,13 @@ msgstr "Настройте безопасность для Вашего устр
 msgid "Come up with a memorable password."
 msgstr "Придумайте запоминающийся пароль."
 
-#: plugins/user/data/ui/page-password.blp:23
-msgid "Your user's password"
+#: plugins/user/data/ui/page-password.blp:22
+msgid "Your user’s password"
 msgstr "Пароль Вашего пользователя"
+
+#: plugins/user/data/ui/page-password.blp:31
+msgid "Generate user password"
+msgstr "Сгенерировать пароль пользователя"
 
 #: plugins/user/data/ui/page-password.blp:46
 #: plugins/user/data/ui/page-password.blp:115
@@ -176,7 +203,7 @@ msgstr "Повторите пароль"
 msgid "Enable autologin"
 msgstr "Включить автоматический вход"
 
-#: plugins/user/data/ui/page-password.blp:72
+#: plugins/user/data/ui/page-password.blp:71
 msgid ""
 "Set administrator password manualy. Otherwise it will be equal to user "
 "password"
@@ -184,12 +211,17 @@ msgstr ""
 "Установить пароль администратора вручную. Иначе он будет равен паролю "
 "пользователя"
 
-#: plugins/user/data/ui/page-password.blp:92
-msgid "Administrator's password"
+#: plugins/user/data/ui/page-password.blp:91
+msgid "Administrator’s password"
 msgstr "Пароль администратора"
 
+#: plugins/user/data/ui/page-password.blp:100
+msgid "Generate root password"
+msgstr "Сгенерировать пароль администратора"
+
 #: plugins/user/data/ui/page-username.blp:5
-msgid "User name"
+#: plugins/user/data/ui/page-username.blp:91
+msgid "Username"
 msgstr "Имя пользователя"
 
 #: plugins/user/data/ui/page-username.blp:6
@@ -200,11 +232,11 @@ msgstr "О Вас"
 msgid "Set information about You"
 msgstr "Введите информацию о Вас"
 
-#: plugins/user/data/ui/page-username.blp:33
+#: plugins/user/data/ui/page-username.blp:34
 msgid "Change Avatar"
 msgstr "Изменить Аватар"
 
-#: plugins/user/data/ui/page-username.blp:54
+#: plugins/user/data/ui/page-username.blp:55
 msgid "Remove Avatar"
 msgstr "Удалить Аватар"
 
@@ -212,21 +244,21 @@ msgstr "Удалить Аватар"
 msgid "Full Name"
 msgstr "Полное имя"
 
-#: plugins/user/data/ui/page-username.blp:82
+#: plugins/user/data/ui/page-username.blp:81
 msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 "Имя пользователя будет использовано для имени Вашей домашней директории и не "
 "может быть изменено."
 
-#: plugins/user/data/ui/page-username.blp:92
-msgid "Username"
-msgstr "Имя пользователя"
+#: plugins/user/page-password.vala:127
+msgid "The password must consist of at least one character"
+msgstr "Пароль должен состоять минимум из одного символа"
 
 #: plugins/user/passwdqc-utils.vala:43
 msgid "Failed to generate password"
 msgstr "Не удалось сгенерироавть пароль"
 
-#: plugins/user/plugin.vala:70
+#: plugins/user/plugin.vala:81
 msgid "Error when creating a user"
 msgstr "Ошибка при создании пользователя"
 
@@ -339,23 +371,23 @@ msgstr ""
 "Добавьте больше букв, цифр и символов пунктуации, чтобы сделать пароль "
 "сильнее."
 
-#: plugins/user/utils.vala:89
+#: plugins/user/utils.vala:90
 msgid "Name cannot be empty"
 msgstr "Имя не может быть пустым"
 
-#: plugins/user/utils.vala:179
+#: plugins/user/utils.vala:255
 msgid "That username isn't available. Please try another"
 msgstr "Это имя пользователя недоступно. Пожалуйста, попробуйте другое"
 
-#: plugins/user/utils.vala:181
+#: plugins/user/utils.vala:257
 msgid "The username is too long"
 msgstr "Имя пользователя слишком длинное"
 
-#: plugins/user/utils.vala:183
+#: plugins/user/utils.vala:259
 msgid "The username must start with a lower case letter from a-z"
 msgstr "Имя пользователя должно начинаться со строчной буквы от «a» до «z»"
 
-#: plugins/user/utils.vala:185
+#: plugins/user/utils.vala:261
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
@@ -363,7 +395,7 @@ msgstr ""
 "Имя пользователя может содержать только строчные буквы от «a» до «z», цифры "
 "и следущие символы: «-», «_»"
 
-#: plugins/user/utils.vala:188
+#: plugins/user/utils.vala:264
 msgid "Username cannot be empty"
 msgstr "Имя пользователя не может быть пустым"
 
@@ -371,67 +403,90 @@ msgstr "Имя пользователя не может быть пустым"
 msgid "Welcome"
 msgstr "Добро пожаловать"
 
-#: src/about.vala:22
+#: src/about.vala:24
 msgid "Ready Set"
 msgstr "На Старт Внимание"
 
 #. Translators: NAME <EMAIL.COM> /n NAME <EMAIL.COM>
-#: src/about.vala:36
+#: src/about.vala:38
 msgid "translator-credits"
 msgstr ""
 "Vladimir Romanov <rirusha@altlinux.org>\n"
 "David Sultaniiazov <x1z53@altlinux.org>"
 
-#: src/application.vala:204
+#: src/application.vala:313
 msgid "No steps specified"
 msgstr "Не указан список шагов"
 
 #: src/options-handler.vala:35
-msgid "Print version information and exit"
-msgstr "Показать информацию о версии и выйти"
-
-#: src/options-handler.vala:36
-msgid "Steps. E.g: `steps=language,keyboard`"
-msgstr "Шаги. К примеру: `steps=language,keyboard`"
-
-#: src/options-handler.vala:37
-msgid "Steps which will not apply. E.g: `steps=language,keyboard`"
-msgstr ""
-"Шаги, которые не будут применены в конце. К примеру: "
-"`steps=language,keyboard`"
-
-#: src/options-handler.vala:38
 msgid "Context vars"
 msgstr "Переменные контекста"
 
+#. vala-lint=block-opening-brace-space-before
+#: src/options-handler.vala:37
+msgid "Force run with mode"
+msgstr "Запустить в определенном режиме"
+
+#. vala-lint=block-opening-brace-space-before
 #: src/options-handler.vala:39
-msgid "App config file"
-msgstr "Путь к файлу конфигурации приложения"
+msgid "Make window closable always"
+msgstr "Сделать окно всегда закрываемым"
 
 #: src/options-handler.vala:40
-msgid "Intact run without doing anything"
-msgstr "Запуск без применения изменений в конце"
-
-#: src/options-handler.vala:41
 msgid "Run window in fullscreen"
 msgstr "Запуск окна в полноэкранном режиме"
 
-#: src/options-handler.vala:42
-msgid "User for which will be generated plugin polkit rules"
-msgstr "Пользователь, для которого будут сгенерированы polkit правила"
+#: src/options-handler.vala:41
+msgid "Specify installer plugin"
+msgstr "Указать плагин-установщик"
 
-#: src/pages/end-page.vala:64
+#: src/options-handler.vala:42
+msgid "Sandbox run without doing anything in system"
+msgstr "Запуск в \"песочнице\" без изменения системы"
+
+#: src/options-handler.vala:43
+msgid "Don't show indicators and keep window simple"
+msgstr "Не показывать индикаторы и сделать окно проще"
+
+#: src/options-handler.vala:44
+msgid "Steps which will not apply. E.g: `steps=language,keyboard`"
+msgstr ""
+"Шаги, которые не будут применены в конце. К примеру: `steps=language,"
+"keyboard`"
+
+#: src/options-handler.vala:45
+msgid "Steps. E.g: `steps=language,keyboard`"
+msgstr "Шаги. К примеру: `steps=language,keyboard`"
+
+#: src/options-handler.vala:46
+msgid "Print version information and exit"
+msgstr "Показать информацию о версии и выйти"
+
+#: src/options-handler.vala:47
+msgid "App config file"
+msgstr "Путь к файлу конфигурации приложения"
+
+#: src/pages/end-page.vala:92
 msgid "Doing some stuff…"
 msgstr "Делаем стаф…"
 
-#: src/pages/end-page.vala:98 src/pages/end-page.vala:104
+#: src/pages/end-page.vala:142 src/pages/end-page.vala:148
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
-#: src/pages/end-page.vala:103
+#: src/pages/end-page.vala:147
 msgid "Error while execute post hooks"
 msgstr "Ошибка при выполнении пост скриптов"
+
+#~ msgid "Applying changes…"
+#~ msgstr "Применение изменения…"
+
+#~ msgid "User name"
+#~ msgstr "Имя пользователя"
+
+#~ msgid "User for which will be generated plugin polkit rules"
+#~ msgstr "Пользователь, для которого будут сгенерированы polkit правила"
 
 #~ msgid "Come up with a memorable password"
 #~ msgstr "Придумайте запоминающийся пароль"
@@ -451,12 +506,6 @@ msgstr "Ошибка при выполнении пост скриптов"
 
 #~ msgid "About Ready Set"
 #~ msgstr "О приложении"
-
-#~ msgid "Test"
-#~ msgstr "Тест"
-
-#~ msgid "Test page"
-#~ msgstr "Тестовая страница"
 
 #~ msgid "User"
 #~ msgstr "Пользователь"
@@ -485,6 +534,3 @@ msgstr "Ошибка при выполнении пост скриптов"
 #, c-format
 #~ msgid "Error loading steps file: %s"
 #~ msgstr "Ошибка при загрузке файла шагов: %s"
-
-#~ msgid "Equal to user password"
-#~ msgstr "Совпадает с паролем пользователя"

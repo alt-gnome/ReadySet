@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,13 +28,21 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     [GtkChild]
     unowned Adw.HeaderBar header_bar;
     [GtkChild]
-    unowned Gtk.Label intact_label_left;
+    unowned Gtk.Label sandbox_label_left;
     [GtkChild]
-    unowned Gtk.Label intact_label_right;
+    unowned Gtk.Label sandbox_label_right;
     [GtkChild]
     unowned Gtk.Button context_button;
     [GtkChild]
     unowned Gtk.ToggleButton steps_list_button;
+    [GtkChild]
+    unowned Adw.Bin overlay_place;
+    [GtkChild]
+    unowned Gtk.Revealer to_up_revealer;
+    [GtkChild]
+    unowned Gtk.CenterBox button_center_box;
+    [GtkChild]
+    unowned Gtk.Button osk_button;
 
     Devel.Window devel_window;
 
@@ -60,13 +68,13 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         set {
             if (_last_current_page != null) {
                 _last_current_page.notify["is-ready"].disconnect (update_buttons);
-                _last_current_page.notify["scroll-on-top"].disconnect (update_scroll);
+                _last_current_page.page.notify["scroll-on-top"].disconnect (update_scroll);
             }
 
             _last_current_page = value;
 
             _last_current_page.notify["is-ready"].connect (update_buttons);
-            _last_current_page.notify["scroll-on-top"].connect (update_scroll);
+            _last_current_page.page.notify["scroll-on-top"].connect (update_scroll);
         }
     }
 
@@ -101,13 +109,7 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
             _model = value;
 
-            positioned_stack.bind_model (_model, (page) => {
-                if (page.id in passed_pages) {
-                    page.passed = true;
-                }
-
-                return page.page;
-            });
+            positioned_stack.bind_model (_model, page_creation_func);
 
             if (_model != null) {
                 _model.selection_changed.connect (selection_changed);
@@ -116,14 +118,22 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         }
     }
 
-    construct {
-        Application.get_default ().bind_property ("model", this, "model", GLib.BindingFlags.SYNC_CREATE);
-        bind_property ("model", pages_indicator, "model", GLib.BindingFlags.SYNC_CREATE);
+    Gtk.Widget page_creation_func (PageInfo page) {
+        if (page.id in passed_pages) {
+            page.passed = true;
+        }
 
-        header_bar.show_end_title_buttons = Config.IS_DEVEL;
+        return page.page;
+    }
+
+    construct {
+        model = Application.get_default ().model;
+        pages_indicator.model = model;
+
+        header_bar.show_end_title_buttons = Application.get_default ().can_close;
         context_button.visible = Config.IS_DEVEL;
-        intact_label_left.visible = ReadySet.Application.get_default ().context.intact && Config.IS_DEVEL;
-        intact_label_right.visible = ReadySet.Application.get_default ().context.intact && !Config.IS_DEVEL;
+        sandbox_label_left.visible = ReadySet.Application.get_default ().context.sandbox && Config.IS_DEVEL;
+        sandbox_label_right.visible = ReadySet.Application.get_default ().context.sandbox && !Config.IS_DEVEL;
 
         notify["show-steps-list"].connect (update_icons_visible);
         notify["simple"].connect (update_icons_visible);
@@ -131,6 +141,46 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         notify["simple"].connect (update_menu_button_visible);
         update_icons_visible ();
         update_menu_button_visible ();
+
+        setup.begin ();
+    }
+
+    async void setup () {
+        Osk? proxy = null;
+        try {
+            proxy = yield get_osk_proxy ();
+        } catch (Error e) {
+            debug ("Can't get OSK proxy: %s", e.message);
+        }
+
+        var a11y_settings = new Settings ("org.gnome.desktop.a11y.applications");
+
+        if (proxy != null && a11y_settings.get_boolean ("screen-keyboard-enabled")) {
+            overlay_place.child = to_up_revealer;
+            button_center_box.end_widget = osk_button;
+
+            to_up_revealer.visible = false;
+
+            to_up_revealer.notify["child-revealed"].connect (() => {
+                if (!to_up_revealer.child_revealed) {
+                    to_up_revealer.visible = false;
+                }
+            });
+            notify["can-up"].connect (() => {
+                if (can_up) {
+                    to_up_revealer.visible = true;
+                    to_up_revealer.reveal_child = true;
+                } else {
+                    to_up_revealer.reveal_child = false;
+                }
+            });
+
+        } else {
+            overlay_place.visible = false;
+            button_center_box.end_widget = to_up_revealer;
+
+            bind_property ("can-up", to_up_revealer, "reveal-child");
+        }
     }
 
     void update_icons_visible () {
@@ -179,13 +229,25 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     void on_context_button_clicked () {
         if (devel_window == null) {
             devel_window = new Devel.Window ();
-            devel_window.close_request.connect (() => {
-                devel_window = null;
-                return false;
-            });
+            devel_window.close_request.connect (on_devel_close_request);
         }
 
         devel_window.present ();
+    }
+
+    bool on_devel_close_request () {
+        devel_window = null;
+        return false;
+    }
+
+    [GtkCallback]
+    async void osk_clicked () {
+        try {
+            var proxy = yield get_osk_proxy ();
+            yield proxy.set_visible (!proxy.visible);
+        } catch (Error e) {
+            warning (e.message);
+        }
     }
 
     [GtkCallback]

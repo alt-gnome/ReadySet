@@ -12,7 +12,7 @@ librs_gir_name = librs_versioned_gir_name + '.gir'
 librs_typelib_name = librs_versioned_gir_name + '.typelib'
 
 librs_vapi_sources = files(
-  
+  'c-utils.vapi',
 )
 
 librs_vala_sources = files(
@@ -20,14 +20,19 @@ librs_vala_sources = files(
   'base/base-page-desc.vala',
   'base/base-page.vala',
   'apply-callback.vala',
-  'applyable.vala',
+  'context-object.vala',
   'context.vala',
   'installer-addin.vala',
   'step-addin.vala',
   'utils.vala',
 )
 
+librs_c_sources = files(
+  'c-utils.c',
+)
+
 librs_sources = [
+  librs_c_sources,
   librs_vapi_sources,
   librs_vala_sources,
 ]

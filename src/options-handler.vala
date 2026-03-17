@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,15 +32,19 @@ public sealed class ReadySet.OptionsHandler : Object {
     File standard_local_conf_file = File.new_build_filename (Config.SYSCONFDIR, Config.NAME, "config");
 
     internal const OptionEntry[] OPTION_ENTRIES = {
-        { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
-        { "steps", 's', 0, OptionArg.STRING, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
-        { "steps-no-apply", '\0', 0, OptionArg.STRING, null, N_("Steps which will not apply. E.g: `steps=language,keyboard`"), "STEPS_NO_APPLY" },
         { "context", 'c', 0, OptionArg.STRING_ARRAY, null, N_("Context vars"), "CONTEXT" },
-        { OPT_CONF_FILE, 'C', 0, OptionArg.FILENAME, null, N_("App config file"), "CONF-FILE" },
-        { "intact", 'i', 0, OptionArg.NONE, null, N_("Intact run without doing anything"), null },
+#if DEVEL // vala-lint=block-opening-brace-space-before
+        { "force-mode", '\0', OptionFlags.HIDDEN, OptionArg.STRING, null, N_("Force run with mode"), "FORCE-MODE" },
+#endif // vala-lint=block-opening-brace-space-before
+        { "can-close", '\0', 0, OptionArg.NONE, null, N_("Make window closable always"), null },
         { "fullscreen", 'F', 0, OptionArg.NONE, null, N_("Run window in fullscreen"), null },
-        { "simple", 'S', 0, OptionArg.NONE, null, N_("Don't show indicators and keep window simple"), null },
         { "installer", 'I', 0, OptionArg.STRING, null, N_("Specify installer plugin"), "INSTALLER" },
+        { "sandbox", 'i', 0, OptionArg.NONE, null, N_("Sandbox run without doing anything in system"), null },
+        { "simple", 'S', 0, OptionArg.NONE, null, N_("Don't show indicators and keep window simple"), null },
+        { "steps-no-apply", '\0', 0, OptionArg.STRING, null, N_("Steps which will not apply. E.g: `steps=language,keyboard`"), "STEPS_NO_APPLY" },
+        { "steps", 's', 0, OptionArg.STRING, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
+        { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
+        { OPT_CONF_FILE, 'C', 0, OptionArg.FILENAME, null, N_("App config file"), "CONF-FILE" },
         { null }
     };
 
@@ -54,13 +58,19 @@ public sealed class ReadySet.OptionsHandler : Object {
 
     public string conf_file { get; set; }
 
-    public bool intact { get; set; }
+    public bool sandbox { get; set; }
 
     public bool fullscreen { get; set; }
 
     public bool simple { get; set; }
 
+    public bool can_close { get; set; }
+
     public string? installer { get; set; default = null; }
+
+#if DEVEL
+    public string? force_mode { get; set; default = null; }
+#endif
 
     public OptionsHandler.from_options (VariantDict options) {
         conf_keyfile = new KeyFile ();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2026 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,15 +30,17 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
 
     construct {
         context = ReadySet.Application.get_default ().context;
-        context.data_changed.connect (() => {
-            list_box_context.remove_all ();
-            fill_context ();
-        });
+        context.data_changed.connect (on_data_changed);
         fill_context ();
 
         fill_options ();
 
         list_box_context.set_placeholder (new Gtk.Label ("No Context?"));
+    }
+
+    void on_data_changed () {
+        list_box_context.remove_all ();
+        fill_context ();
     }
 
     void fill_options () {
@@ -88,6 +90,12 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
     }
 
     void fill_context () {
+        list_box_context.append (new Adw.ActionRow () {
+            title = "mode",
+            subtitle = context.mode.to_string (),
+            css_classes = { "property" }
+        });
+
         foreach (var key in context.get_keys ()) {
             Adw.PreferencesRow row;
 
@@ -101,8 +109,8 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
                         show_apply_button = true,
                     };
                     erow.apply.connect (row_apply_string);
-                    erow.activate.connect (() => {
-                        row_apply_string (erow);
+                    erow.activate.connect ((list_box_row) => {
+                        row_apply_string ((Adw.EntryRow) list_box_row);
                     });
                     row = erow;
                     break;
@@ -112,8 +120,8 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
                         title = key,
                         active = context.get_boolean (key),
                     };
-                    srow.notify["active"].connect (() => {
-                        row_apply_boolean (srow);
+                    srow.notify["active"].connect ((list_box_row, param) => {
+                        row_apply_boolean ((Adw.SwitchRow) list_box_row);
                     });
                     row = srow;
                     break;
@@ -125,8 +133,8 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
                         show_apply_button = true,
                     };
                     erow.apply.connect (row_apply_strv);
-                    erow.activate.connect (() => {
-                        row_apply_strv (erow);
+                    erow.activate.connect ((list_box_row) => {
+                        row_apply_strv ((Adw.EntryRow) list_box_row);
                     });
                     row = erow;
                     break;
@@ -138,8 +146,8 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
                         show_apply_button = true,
                     };
                     erow.apply.connect (row_apply_int);
-                    erow.activate.connect (() => {
-                        row_apply_int (erow);
+                    erow.activate.connect ((list_box_row) => {
+                        row_apply_int ((Adw.EntryRow) list_box_row);
                     });
                     row = erow;
                     break;
@@ -151,17 +159,23 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
                         show_apply_button = true,
                     };
                     erow.apply.connect (row_apply_double);
-                    erow.activate.connect (() => {
-                        row_apply_double (erow);
+                    erow.activate.connect ((list_box_row) => {
+                        row_apply_double ((Adw.EntryRow) list_box_row);
                     });
+                    row = erow;
+                    break;
+
+                case OBJECT:
+                    var erow = new Adw.ActionRow () {
+                        title = key,
+                        subtitle = context.get_object (key).get_type ().name (),
+                    };
                     row = erow;
                     break;
 
                 default:
                     assert_not_reached ();
             }
-
-            context.bind_property ("locked", row, "sensitive", INVERT_BOOLEAN | SYNC_CREATE);
 
             list_box_context.append (row);
         }

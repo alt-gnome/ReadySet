@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,11 +42,13 @@ public class Language.SelectTitle : Adw.Bin {
 
         Intl.setlocale (LocaleCategory.MESSAGES, cur_locale);
 
-        Timeout.add_seconds (5, () => {
-            next ();
+        Timeout.add_seconds (5, next_func);
+    }
 
-            return true;
-        });
+    bool next_func () {
+        next ();
+
+        return true;
     }
 
     void append () {

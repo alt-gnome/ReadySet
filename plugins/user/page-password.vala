@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,13 +59,6 @@ public class User.PagePassword : ReadySet.BasePage {
         );
 
         Addin.get_instance ().context.bind_context_to_property (
-            "user-root-password",
-            root_password_entry,
-            "text",
-            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
-        );
-
-        Addin.get_instance ().context.bind_context_to_property (
             "user-autologin",
             autologin_switch_row,
             "active",
@@ -79,13 +72,15 @@ public class User.PagePassword : ReadySet.BasePage {
             BindingFlags.INVERT_BOOLEAN | BindingFlags.SYNC_CREATE
         );
 
-        Addin.get_instance ().context.data_changed.connect ((key) => {
-            if (key == "hide-autologin") {
-                if (Addin.get_instance ().context.get_boolean ("hide-autologin")) {
-                    autologin_switch_row.active = false;
-                }
-            }
-        });
+        Addin.get_instance ().context.data_changed.connect (on_context_data_changed);
+
+#if WITH_ROOT_SET
+        Addin.get_instance ().context.bind_context_to_property (
+            "user-root-password",
+            root_password_entry,
+            "text",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
 
         Addin.get_instance ().context.bind_context_to_property (
             "user-with-root",
@@ -93,6 +88,15 @@ public class User.PagePassword : ReadySet.BasePage {
             "with-root-password",
             BindingFlags.SYNC_CREATE
         );
+#endif
+    }
+
+    void on_context_data_changed (string key) {
+        if (key == "hide-autologin") {
+            if (Addin.get_instance ().context.get_boolean ("hide-autologin")) {
+                autologin_switch_row.active = false;
+            }
+        }
     }
 
     void update_is_ready () {
@@ -106,7 +110,7 @@ public class User.PagePassword : ReadySet.BasePage {
     bool password_is_ready (string password) {
         bool no_password_security = Addin.get_instance ().context.get_boolean ("no-password-security");
         if (no_password_security) {
-            return true;
+            return password.length != 0;
         } else {
             return password_is_correct (password);
         }
@@ -120,8 +124,8 @@ public class User.PagePassword : ReadySet.BasePage {
         bool no_password_security = Addin.get_instance ().context.get_boolean ("no-password-security");
         if (no_password_security) {
             return {
-                hint: "",
-                strength_level: GOOD,
+                hint: _("The password must consist of at least one character"),
+                strength_level: password.length == 0 ? StrengthLevel.BAD : StrengthLevel.GOOD,
                 value: 0.0,
                 support_value: false
             };

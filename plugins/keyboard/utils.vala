@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,49 +123,22 @@ namespace Keyboard {
     public Gee.HashSet<InputInfo> get_current_inputs () {
         var context = Addin.get_instance ().context;
 
-        var input_sources = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
-        var inputs_val = context.get_strv ("keyboard-input-sources");
+        var inputs = context.get_object ("keyboard-input-sources");
 
-        if (inputs_val.length == 0) {
-            var settings = new Settings ("org.gnome.desktop.input-sources");
-            var variant = settings.get_value ("sources");
-
-            var iterator = variant.iterator ();
-
-            Variant? item;
-            while ((item = iterator.next_value ()) != null) {
-                string input_type, input_id;
-
-                item.get ("(ss)", out input_type, out input_id);
-                input_sources.add (new InputInfo (input_type, input_id));
-            }
-
-            if (input_sources.size == 0) {
-                input_sources.add_all_array (get_system_inputs ());
-            }
-
-            if (input_sources.size != 0) {
-                set_current_inputs (input_sources);
-            }
-
-        } else {
-            foreach (var input in inputs_val) {
-                input_sources.add (new InputInfo.from_format (input));
-            }
+        if (inputs == null) {
+            inputs = new InputSources ();
         }
 
-        return input_sources;
+        return ((InputSources) inputs).data;
     }
 
     public void set_current_inputs (Gee.HashSet<InputInfo> inputs) {
+        var isources = new InputSources ();
+        isources.data = inputs;
+
         var context = Addin.get_instance ().context;
-        var inputs_val = new Array<string> ();
 
-        foreach (var input in inputs) {
-            inputs_val.append_val (input.format);
-        }
-
-        if (!context.intact) {
+        if (!context.sandbox) {
             VariantBuilder builder = new VariantBuilder (new VariantType ("a(ss)"));
 
             foreach (var info in inputs) {
@@ -176,7 +149,7 @@ namespace Keyboard {
             settings.set_value ("sources", builder.end ());
         }
 
-        context.set_strv ("keyboard-input-sources", inputs_val.data);
+        context.set_object ("keyboard-input-sources", isources);
     }
 
     Keyboard.Locale1 get_locale_proxy () throws Error {

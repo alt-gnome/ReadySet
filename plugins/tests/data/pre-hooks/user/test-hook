@@ -1,0 +1,4 @@
+#!/bin/sh
+
+mkdir -p ~/ready-set-tests
+touch ~/ready-set-tests/test-pre-hook-success

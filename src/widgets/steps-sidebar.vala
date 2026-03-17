@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,23 +38,7 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
 
             _model = value;
 
-            menu_list_box.bind_model (_model, (item) => {
-                var page = (PageInfo) item;
-
-                var row = new StepRow (
-                    page.title_header,
-                    page.icon_name
-                );
-
-                page.bind_property (
-                    "passed",
-                    row,
-                    "sensitive",
-                    BindingFlags.SYNC_CREATE
-                );
-
-                return row;
-            });
+            menu_list_box.bind_model (_model, box_create_func);
 
             if (_model != null) {
                 model.selection_changed.connect (update_selection);
@@ -67,6 +51,24 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
 
     construct {
         menu_list_box.selected_rows_changed.connect (selected_rows_changed);
+    }
+
+    Gtk.Widget box_create_func (Object item) {
+        var page = (PageInfo) item;
+
+        var row = new StepRow (
+            page.title_header,
+            page.icon_name
+        );
+
+        page.bind_property (
+            "passed",
+            row,
+            "sensitive",
+            BindingFlags.SYNC_CREATE
+        );
+
+        return row;
     }
 
     [GtkCallback]

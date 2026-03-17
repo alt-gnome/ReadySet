@@ -4,9 +4,7 @@ polkit.addRule(function(action, subject) {
 
     var actionMatches =
         action.id.indexOf("org.freedesktop.accounts.") === 0 ||
-        action.id.indexOf("com.endlessm.ParentalControls.") === 0 ||
-        (action.id === "org.freedesktop.policykit.exec" &&
-         action.lookup("program") == "@LIBEXECDIR@/ready-set-set-root-password");
+        action.id.indexOf("com.endlessm.ParentalControls.") === 0;
 
     if (actionMatches) {
         if (subject.local)

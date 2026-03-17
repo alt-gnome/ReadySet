@@ -1,18 +1,20 @@
-/* Copyright (C) 2024-2025 Vladimir Romanov <rirusha@altlinux.org>
- *
+/*
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * along with this program. If not, see
+ * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
+ * 
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -38,7 +40,13 @@ public sealed class ReadySet.Application: Adw.Application {
 
     public signal void on_finish ();
 
-    public bool has_installer {
+    public bool can_close {
+        get {
+            return Config.IS_DEVEL || context.mode == Mode.TOUR || options_handler.can_close;
+        }
+    }
+
+    bool has_installer {
         get {
             return options_handler.installer != null;
         }
@@ -91,7 +99,7 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         options_handler = new OptionsHandler.from_options (options);
-        context = new Context (options_handler.intact);
+        context = new Context (options_handler.sandbox);
 
         return -1;
     }
@@ -105,10 +113,34 @@ public sealed class ReadySet.Application: Adw.Application {
         options_handler.fill_context (context);
         context.reload_window.connect (reload_window);
 
-        if (!options_handler.intact) {
+#if DEVEL
+        if (options_handler.force_mode == null) {
+#endif
+            if (installer_plugin != null) {
+                context.mode = INSTALLER;
+            } else if (in_group ("ready-set") || in_group ("gnome-initial-setup")) {
+                context.mode = INITIAL_SETUP;
+            } else {
+                context.mode = TOUR;
+            }
+#if DEVEL
+        } else {
+            context.mode = Mode.from_string (options_handler.force_mode);
+        }
+#endif
+
+        if (!options_handler.sandbox) {
+            exec_pre_hooks.begin ();
+        }
+    }
+
+    async void exec_pre_hooks () {
+        if (context.mode == Mode.INITIAL_SETUP || context.mode == Mode.INSTALLER) {
             try {
-                exec_user_pre_hooks ();
-                get_ready_set_proxy ().exec_pre_hooks ();
+                if (context.mode == Mode.INITIAL_SETUP) {
+                    yield exec_user_pre_hooks ();
+                }
+                yield get_ready_set_proxy ().exec_pre_hooks ();
             } catch (Error e) {
                 error ("Failed to executing pre hooks: %s", e.message);
             }
@@ -153,9 +185,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
         steps_plugins.clear ();
 
-        addins.foreach ((_set, info, extension) => {
-            steps_plugins[info.module_name] = (StepAddin) extension;
-        });
+        addins.foreach (steps_addins_foreach_func);
 
         if (steps_plugins.size == 0) {
             error ("\nNo plugins found\n");
@@ -176,11 +206,14 @@ public sealed class ReadySet.Application: Adw.Application {
 
                 var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
                 var var_name = "step-%s-enabled".printf (all_steps[i]);
-                vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN);
-                vars[var_name].initial_value = true;
+                vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN, true);
                 context.register_vars (vars);
             }
         }
+    }
+
+    void steps_addins_foreach_func (Peas.ExtensionSet _set, Peas.PluginInfo info, Object extension) {
+        steps_plugins[info.module_name] = (StepAddin) extension;
     }
 
     void init_installers_plugins () {
@@ -193,9 +226,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
         installers_plugins.clear ();
 
-        addins.foreach ((_set, info, extension) => {
-            installers_plugins[info.module_name] = (InstallerAddin) extension;
-        });
+        addins.foreach (installer_addins_foreach_func);
 
         if (installers_plugins.size != 0) {
             print ("\nFound installers plugins:\n");
@@ -211,7 +242,11 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
-    public void init_pages () {
+    void installer_addins_foreach_func (Peas.ExtensionSet _set, Peas.PluginInfo info, Object extension) {
+        installers_plugins[info.module_name] = (InstallerAddin) extension;
+    }
+
+    public async void init_pages () {
         var pages = new Gee.ArrayList<PageInfo> ();
 
         print ("Loaded plugins:\n");
@@ -239,11 +274,11 @@ public sealed class ReadySet.Application: Adw.Application {
                 );
 
                 if (!(all_steps[i] in inited_plugins)) {
-                    addin.init_once ();
+                    yield addin.init_once ();
                     inited_plugins.add (all_steps[i]);
                 }
 
-                foreach (var page in addin.build_pages ()) {
+                foreach (var page in (yield addin.build_pages ())) {
                     pages.add (new PageInfo (
                         page,
                         addin,
@@ -252,6 +287,9 @@ public sealed class ReadySet.Application: Adw.Application {
                 }
                 print ("  %s\n", all_steps[i]);
             }
+
+            Idle.add (init_pages.callback);
+            yield;
         }
 
         pages.add (new PageInfo (

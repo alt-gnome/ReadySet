@@ -1,26 +1,36 @@
-/* Copyright (C) 2024-2025 Vladimir Romanov <rirusha@altlinux.org>
- *
+/*
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * along with this program. If not, see
+ * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
+ * 
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 namespace ReadySet {
 
-    public bool env_exec (string program, string[] env) throws Error {
+    public bool env_exec (string program, owned string[] env) throws Error {
         var launcher = new SubprocessLauncher (NONE);
-        launcher.set_environ (env);
+
+        foreach (var e in env) {
+            var parts = e.split ("=", 2);
+            if (parts.length != 2) {
+                warning ("Invalid environment variable: %s", e);
+                return false;
+            }
+            launcher.setenv (parts[0], parts[1], true);
+        }
 
         var process = launcher.spawn (program);
 
@@ -51,6 +61,9 @@ namespace ReadySet {
 
         FileInfo? info;
         while ((info = enumerator.next_file ()) != null) {
+            if (!info.get_attribute_boolean (FileAttribute.ACCESS_CAN_EXECUTE)) {
+                continue;
+            }
             var type_ = info.get_file_type ();
             if (type_ != FileType.REGULAR) {
                 continue;
@@ -58,7 +71,15 @@ namespace ReadySet {
 
             var script = Path.build_filename (hooks_dir.get_path (), info.get_name ());
 
-            env_exec (script, env);
+            var rs_env = new string[env.length];
+
+            for (var i = 0; i < env.length; i++) {
+                rs_env[i] = "READY_SET_" + env[i];
+            }
+
+            if (!env_exec (script, rs_env)) {
+                warning ("Failed to exec hook '%s'", script);
+            }
         }
     }
 

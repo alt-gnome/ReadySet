@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,8 +34,12 @@ public class User.Addin : ReadySet.StepAddin {
         instance = this;
     }
 
-    public override ReadySet.BaseBarePage[] build_pages () {
+    public async override ReadySet.BaseBarePage[] build_pages () {
+#if WITH_ROOT_SET
         bool with_root = context.get_boolean ("user-with-root");
+#else
+        bool with_root = false;
+#endif
         return {
             new User.PageUsername (),
             new User.PagePassword () { with_root_password = with_root }
@@ -62,11 +66,16 @@ public class User.Addin : ReadySet.StepAddin {
                 user.set_icon_file (context.get_string ("user-avatar-file"));
             }
 
-            if (context.get_string ("user-root-password") != "") {
-                set_root_password (context.get_string ("user-root-password"));
-            } else {
-                set_root_password (context.get_string ("user-password"));
+#if WITH_ROOT_SET
+            if (context.get_boolean ("user-with-root")) {
+                if (context.get_string ("user-root-password") != "") {
+                    set_root_password (context.get_string ("user-root-password"));
+                    context.set_string ("user-root-password", "");
+                } else {
+                    set_root_password (context.get_string ("user-password"));
+                }
             }
+#endif
 
         } catch (Error e) {
             throw ReadySet.ApplyError.build_error (_("Error when creating a user"), e.message);
@@ -78,7 +87,9 @@ public class User.Addin : ReadySet.StepAddin {
 
         //  Settings
         vars["user-avatar-file"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+#if WITH_ROOT_SET
         vars["user-with-root"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+#endif
         vars["no-password-security"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
         vars["passwd-conf-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["user-avatar-directories"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV);
@@ -88,7 +99,9 @@ public class User.Addin : ReadySet.StepAddin {
         vars["user-username"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["user-fullname"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["user-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+#if WITH_ROOT_SET
         vars["user-root-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+#endif
         vars["user-autologin"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
         return vars;
     }

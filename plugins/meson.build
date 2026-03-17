@@ -1,12 +1,7 @@
-plugins = [
-  'keyboard',
-  'language',
-  'user',
-  'welcome'
-]
+plugins = ['keyboard', 'language', 'user', 'welcome']
 
-if get_option('with_test_pages')
-  plugins += ['test']
+if get_option('is_devel')
+  plugins += ['tests']
 endif
 
 foreach plugin : plugins

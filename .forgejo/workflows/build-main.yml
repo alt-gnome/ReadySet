@@ -8,7 +8,7 @@ on:
 jobs:
   lint-vala:
     name: Check vala files
-    runs-on: alt-sisyphus
+    runs-on: als-tiny
     container:
       image: altlinux.space/alt-gnome/coding-style-image:latest
 
@@ -21,7 +21,7 @@ jobs:
 
   lint-blueprint:
     name: Check blueprint files
-    runs-on: alt-sisyphus
+    runs-on: als-tiny
     container:
       image: altlinux.space/alt-gnome/coding-style-image:latest
 
@@ -32,9 +32,9 @@ jobs:
       - name: Check files
         uses: alt-gnome/coding-style-actions/blueprint@main
 
-  build:
-    name: Build and upload doc
-    runs-on: alt-sisyphus
+  build-doc-translation:
+    name: Build, update translation and upload doc
+    runs-on: als-huge
     needs:
       - lint-vala
       - lint-blueprint
@@ -60,6 +60,7 @@ jobs:
             'pkgconfig(polkit-gobject-1)' \
             'pkgconfig(pwquality)' \
             'pkgconfig(systemd)' \
+            'pkgconfig(xkbcommon)' \
             /usr/bin/blueprint-compiler \
             /usr/bin/g-ir-compiler \
             /usr/bin/gcc \
@@ -69,15 +70,52 @@ jobs:
             /usr/bin/valadoc \
             /usr/bin/vapigen \
             gettext-devel
- 
+
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ github.event_name == 'pull_request' && github.token || secrets.REPO_TOKEN }}
 
       - name: Setup
-        run: meson setup _build -Dwith_lib_documentation=true -Dwith_test_pages=true  -Dpassword_check_backend=both
+        run: meson setup _build -Duser_with_set_root=true -Dwith_lib_documentation=true -Dis_devel=true  -Dpassword_check_backend=both
 
       - name: Build
         run: meson compile -C _build
+
+      - name: Setup git
+        run: |
+          git config --global user.name "CI Bot"
+          git config --global user.email "ci@altlinux.space"
+          git config --global --add safe.directory '*'
+
+      - name: Update pot file for Weblate
+        if: github.event_name != 'pull_request'
+        run: |
+          ./po/update_potfiles
+
+          git add .
+          git commit -m "i18n: Update POTFILES" || true
+
+          meson compile -C _build ready-set-pot
+          git add .
+          changes=$(git diff --cached --numstat | awk '{s+=$1+$2} END {print s+0}')
+
+          # Don't commit if changed only POT-Creation-Date
+          if [ "$changes" -gt 2 ]; then
+            git commit -m "i18n: Update .pot file" || true
+          else
+            git reset --hard
+          fi
+
+          ORIG=$(grep '^"POT-Creation-Date:' po/ready-set.pot)
+          ORIG_ESC=${ORIG//\\/\\\\}
+          meson compile -C _build ready-set-update-po
+          sed -i "s|^\"POT-Creation-Date:.*|${ORIG_ESC}|" po/*.po
+
+          git add po/*.po
+          git commit -m "i18n: Update .po files" || true
+
+          git push
 
       - name: Deploy pages
         if: github.event_name != 'pull_request'
@@ -85,9 +123,21 @@ jobs:
         with:
           directory: ./_build/lib/doc/ready-set-vala
 
-  rpm-build:
-    name: RPM build for ${{ matrix.branch }} and uploading
-    runs-on: alt-sisyphus
+  get-release:
+    name: Get release for RPM package
+    runs-on: als-tiny
+
+    outputs:
+      release: ${{ steps.get_release.outputs.release }}
+    steps:
+      - name: Get release
+        id: get_release
+        run: |
+          echo "release=$(date +%s)" >> $FORGEJO_OUTPUT
+
+  rpm-build-amd64:
+    name: RPM build for ${{ matrix.branch }}.amd64 and uploading
+    runs-on: als-huge
     container:
       image: altlinux.space/actions/runner/hasherc:sisyphus
 
@@ -99,6 +149,8 @@ jobs:
     needs:
       - lint-vala
       - lint-blueprint
+      - get-release
+      - build-doc-translation
 
     steps:
       - name: Install utils
@@ -111,15 +163,16 @@ jobs:
 
       - name: Prepare RPM build
         run: |
-          ./build-aux/altlinux/prepare
+          ./build-aux/altlinux/prepare ${{ needs.get-release.outputs.release }}
           git add .
 
-      - uses: alt-gnome/build-rpm-action@main
+      - uses: actions/build-rpm-action@main
         name: Build RPMs
         with:
           branch: ${{ matrix.branch }}
+          arch: amd64
 
-      - uses: alt-gnome/upload-rpm-action@main
+      - uses: actions/upload-rpm-action@main
         name: Upload RPMs
         if: github.event_name != 'pull_request'
         with:
@@ -127,9 +180,55 @@ jobs:
           token: ${{ secrets.TOKEN }}
           group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
 
+  rpm-build-arm64:
+    name: RPM build for ${{ matrix.branch }}.arm64 and uploading
+    runs-on: self-hosted-arm64-huge
+    container:
+      image: altlinux.space/actions/runner/hasherc:sisyphus
+
+    strategy:
+      matrix:
+        branch:
+          - sisyphus
+          - p11
+    needs:
+      - lint-vala
+      - lint-blueprint
+      - get-release
+      - build-doc-translation
+
+    steps:
+      - name: Install utils
+        run: |
+          apt-get update
+          apt-get install -y meson jq /usr/bin/add_changelog
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare RPM build
+        run: |
+          ./build-aux/altlinux/prepare ${{ needs.get-release.outputs.release }}
+          git add .
+
+      - uses: actions/build-rpm-action@main
+        name: Build RPMs
+        with:
+          branch: ${{ matrix.branch }}
+          arch: arm64
+
+      - uses: actions/upload-rpm-action@main
+        name: Upload RPMs
+        if: github.event_name != 'pull_request'
+        with:
+          directory: ~/.cache/hasherc/ready-set/out/RPMS
+          token: ${{ secrets.TOKEN }}
+          group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
+
+
   build-test-image:
     name: Build ${{ matrix.denviron }} image
-    runs-on: alt-sisyphus
+    runs-on: als-huge
     strategy:
       matrix:
         denviron:
@@ -142,18 +241,14 @@ jobs:
             image: altlinux.space/alt-atomic/onyx/nightly:latest
 
     needs:
-      - rpm-build
+      - rpm-build-amd64
     if: github.event_name != 'pull_request'
     env:
       LOCAL_BUILD_NAME: localhost/image
       REGISTRY: altlinux.space
-      PARENT_IMAGE: altlinux.space/alt-atomic/minimal/phosh/nightly:latest
     container:
-      image: altlinux.space/actions/runner/containers:sisyphus
+      image: altlinux.space/alt-atomic/builder-image:sisyphus
     steps:
-      - name: Prepare env
-        uses: alt-atomic/actions/prepare-env@main
-
       - name: Checkout repository
         uses: actions/checkout@v4
 

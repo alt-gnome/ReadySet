@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,38 @@
  */
 
 namespace ReadySet {
+
+    public enum Mode {
+        INITIAL_SETUP,
+        INSTALLER,
+        TOUR;
+
+        public static Mode from_string (string str) {
+            switch (str) {
+                case "initial-setup":
+                    return INITIAL_SETUP;
+                case "installer":
+                    return INSTALLER;
+                case "tour":
+                    return TOUR;
+                default:
+                    error ("Unrecognized mode string");
+            }
+        }
+
+        public string to_string () {
+            switch (this) {
+                case INITIAL_SETUP:
+                    return "initial-setup";
+                case INSTALLER:
+                    return "installer";
+                case TOUR:
+                    return "tour";
+                default:
+                    assert_not_reached ();
+            }
+        }
+    }
 
     public struct ApplyErrorData {
         public string message;

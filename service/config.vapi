@@ -17,6 +17,7 @@
  * 
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
+
 [CCode (cprefix = "", lower_case_cprefix = "", cheader_filename = "config.h")]
 namespace Config {
     public const string NAME;

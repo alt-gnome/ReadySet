@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,7 @@ public abstract class ReadySet.InstallerAddin : Peas.ExtensionBase {
 
     public Context context { get; set; default = new Context (true); }
 
-    public async virtual void install (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
-        return;
-    }
+    public async abstract void install (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError;
 
     //  After context set action. Calls once. Calls before init
     public virtual void init_once () {

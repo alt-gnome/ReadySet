@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public abstract class ReadySet.StepAddin : Peas.ExtensionBase, Applyable {
+public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
 
     protected virtual string? resource_base_path {
         get {
@@ -58,16 +58,15 @@ public abstract class ReadySet.StepAddin : Peas.ExtensionBase, Applyable {
         }
     }
 
-    public async virtual void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
-        return;
-    }
+    /**
+     * Apply for initial setup
+     */
+    public async virtual void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {}
 
-    public abstract BaseBarePage[] build_pages ();
+    public async abstract BaseBarePage[] build_pages ();
 
     //  After context set action. Calls once. Calls before init
-    public virtual void init_once () {
-        return;
-    }
+    public async virtual void init_once () {}
 
     //  For plugins better to use base.get_context_vars for getting empty HashTable.
     public virtual HashTable<string, ContextVarInfo> get_context_vars () {

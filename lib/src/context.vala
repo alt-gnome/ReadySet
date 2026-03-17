@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,8 @@ public enum ReadySet.ContextType {
     BOOLEAN,
     STRV,
     INT,
-    DOUBLE;
+    DOUBLE,
+    OBJECT;
 
     public static ContextType from_gtype (Type t) {
         if (t == Type.STRING) {
@@ -36,6 +37,8 @@ public enum ReadySet.ContextType {
             return INT;
         } else if (t == Type.DOUBLE) {
             return DOUBLE;
+        } else if (t.is_a (typeof (ContextObject))) {
+            return OBJECT;
         } else {
             error ("Unknown type: %s", t.name ());
         }
@@ -53,6 +56,8 @@ public enum ReadySet.ContextType {
                 return Type.INT;
             case DOUBLE:
                 return Type.DOUBLE;
+            case OBJECT:
+                return typeof (ContextObject);
             default:
                 assert_not_reached ();
         }
@@ -63,7 +68,7 @@ public enum ReadySet.ContextType {
     }
 }
 
-protected class ReadySet.ValueObject : Object {
+internal class ReadySet.ValueObject : Object {
 
     Value _value;
     public Value real_value {
@@ -85,14 +90,17 @@ protected class ReadySet.ValueObject : Object {
         }
     }
 
+    public Value? default_value { get; construct; }
+
     unowned ContextGetterFunc? getter_func = null;
     unowned ContextSetterFunc? setter_func = null;
 
     public ContextType value_type { get; construct; }
 
-    public ValueObject (ContextType value_type) {
+    public ValueObject (ContextVarInfo info) {
         Object (
-            value_type: value_type
+            value_type: info.value_type,
+            default_value: info.default_value
         );
     }
 
@@ -105,9 +113,23 @@ protected class ReadySet.ValueObject : Object {
     }
 
     construct {
+        if (value_type == STRING && default_value == null) {
+            default_value = "";
+        }
+
         _value = Value (value_type.to_gtype ());
-        if (value_type == STRING) {
-            _value.set_string ("");
+        reset ();
+    }
+
+    public void reset () {
+        if (default_value == null) {
+            return;
+        }
+
+        if (value_type == OBJECT) {
+            real_value = ((ContextObject) default_value.get_object ()).copy ();
+        } else {
+            real_value = default_value;
         }
     }
 }
@@ -116,34 +138,41 @@ public class ReadySet.ContextVarInfo : Object {
 
     public ContextType value_type { get; construct; }
 
-    public Value? initial_value { get; set; default = null; }
+    public Value? default_value { get; construct; }
 
     public unowned ContextGetterFunc? getter_func = null;
 
     public unowned ContextSetterFunc? setter_func = null;
 
-    public ContextVarInfo (ContextType value_type) {
+    public ContextVarInfo (ContextType value_type, Value? default_value = null) {
         Object (
-            value_type: value_type
+            value_type: value_type,
+            default_value: default_value
         );
+    }
+
+    construct {
+        if (default_value != null) {
+            assert (value_type == ContextType.from_gtype (default_value.type ()));
+        }
     }
 }
 
 public class ReadySet.Context : Object {
 
-    public bool intact { get; construct; default = true; }
+    public bool sandbox { get; construct; default = true; }
+
+    public Mode mode { get; set; }
 
     public signal void reload_window ();
 
     public signal void data_changed (string key);
 
-    HashTable<string, ValueObject> data = new HashTable<string, ValueObject> (str_hash, str_equal);
+    Gee.HashMap<string, ValueObject> data = new Gee.HashMap<string, ValueObject> ();
 
-    public bool locked { get; set; default = false; }
-
-    public Context (bool intact) {
+    public Context (bool sandbox) {
         Object (
-            intact: intact
+            sandbox: sandbox
         );
     }
 
@@ -241,11 +270,6 @@ public class ReadySet.Context : Object {
     }
 
     bool transform_prop_to_ctx (Binding binding, Value from_value, ref Value to_value) {
-        if (locked) {
-            warning ("Context is locked");
-            return false;
-        }
-
         var new_val = Value (from_value.type ());
         from_value.copy (ref new_val);
         to_value.set_boxed (&new_val);
@@ -258,11 +282,6 @@ public class ReadySet.Context : Object {
     }
 
     bool transform_prop_to_ctx_invert (Binding binding, Value from_value, ref Value to_value) {
-        if (locked) {
-            warning ("Context is locked");
-            return false;
-        }
-
         var new_val = Value (Type.BOOLEAN);
         new_val.set_boolean (!from_value.get_boolean ());
         to_value.set_boxed (&new_val);
@@ -290,6 +309,9 @@ public class ReadySet.Context : Object {
                 case ContextType.BOOLEAN:
                     str = get_boolean (key).to_string ();
                     break;
+                case ContextType.OBJECT:
+                    str = "";
+                    break;
                 default:
                     assert_not_reached ();
             }
@@ -300,11 +322,6 @@ public class ReadySet.Context : Object {
     }
 
     public void set_raw (string key, string value) {
-        if (locked) {
-            warning ("Context is locked");
-            return;
-        }
-
         if (!check_key (key)) {
             return;
         }
@@ -330,40 +347,44 @@ public class ReadySet.Context : Object {
 
     public HashTable<string, Value?> get_raw_context () {
         var raw_data = new HashTable<string, Value?> (str_hash, str_equal);
-        data.foreach ((key, value) => {
-            var val = Value (value.value_type.to_gtype ());
-            var rv = value.real_value;
+
+        foreach (var e in data) {
+            var val = Value (e.value.value_type.to_gtype ());
+            var rv = e.value.real_value;
             rv.copy (ref val);
-            raw_data[key] = val;
-        });
+            raw_data[e.key] = val;
+        }
+
         return raw_data;
     }
 
     public void register_vars (HashTable<string, ContextVarInfo> vars) {
-        vars.foreach ((key, info) => {
-            if (data.contains (key)) {
-                warning ("Key %s already exists in context, it will be overwriting", key);
-            }
-            debug ("Registering key %s with type %s", key, info.value_type.to_string ());
-            data[key] = new ValueObject (info.value_type);
-            if (info.getter_func != null) {
-                data[key].set_getter (info.getter_func);
-            }
-            if (info.setter_func != null) {
-                data[key].set_setter (info.setter_func);
-            }
-            if (info.initial_value != null) {
-                set_value (key, info.initial_value);
-            }
-            data[key].notify["real-value"].connect (() => {
-                data_changed (key);
-            });
-        });
+        vars.foreach (foreach_register_vars);
+    }
+
+    void foreach_register_vars (string key, ContextVarInfo info) {
+        if (data.has_key (key)) {
+            warning ("Key %s already exists in context, it will be overwriting", key);
+        }
+        debug ("Registering key %s with type %s", key, info.value_type.to_string ());
+        data[key] = new ValueObject (info);
+        data[key].set_data<string> ("data-key", key);
+        if (info.getter_func != null) {
+            data[key].set_getter (info.getter_func);
+        }
+        if (info.setter_func != null) {
+            data[key].set_setter (info.setter_func);
+        }
+        data[key].notify["real-value"].connect (real_value_changed);
+    }
+
+    void real_value_changed (Object caller, ParamSpec param) {
+        data_changed (((ValueObject) caller).get_data<string> ("data-key"));
     }
 
     public void load_from_keyfile (KeyFile keyfile, string group_name) throws Error {
         foreach (var key in keyfile.get_keys (group_name)) {
-            if (!data.contains (key)) {
+            if (!data.has_key (key)) {
                 warning ("Key %s not found in context, it will be ignored", key);
                 continue;
             }
@@ -399,11 +420,11 @@ public class ReadySet.Context : Object {
     }
 
     public string[] get_keys () {
-        return data.get_keys_as_array ();
+        return data.keys.to_array ();
     }
 
     public bool has_key (string key) {
-        return data.contains (key);
+        return data.has_key (key);
     }
 
     public ContextType get_value_type (string key) {
@@ -415,11 +436,6 @@ public class ReadySet.Context : Object {
     }
 
     public void set_value (string key, owned Value value) {
-        if (locked) {
-            warning ("Context is locked");
-            return;
-        }
-
         if (check_key (key, ContextType.from_gtype (value.type ()))) {
             data[key].real_value = value;
         }
@@ -428,6 +444,24 @@ public class ReadySet.Context : Object {
     public Value? get_value (string key) {
         if (check_key (key)) {
             return data[key].real_value;
+        } else {
+            return null;
+        }
+    }
+
+    public void set_object (string key, owned ContextObject value) {
+        set_value (key, value);
+    }
+
+    public void set_object_string (string key, owned ContextObject value) {
+        if (check_key (key, OBJECT)) {
+            data[key].real_value = value;
+        }
+    }
+
+    public ContextObject? get_object (string key) {
+        if (check_key (key, OBJECT)) {
+            return (ContextObject?) data[key].real_value.get_object ();
         } else {
             return null;
         }
@@ -463,13 +497,13 @@ public class ReadySet.Context : Object {
 
     public string[] get_strv (string key) {
         if (check_key (key, STRV)) {
-            //  I don't know how boxed types works, but wuthout this hack
-            //  get_strv returns empty array
-            var god_protect_our_souls = Uuid.string_random ();
-            return string.joinv (god_protect_our_souls, (string[]) data[key].real_value.get_boxed ()).split (god_protect_our_souls);
-        } else {
-            return {};
+            var arr = ReadySetC.safe_copy ((string[]) data[key].real_value.get_boxed ());
+            if (arr != null) {
+                return arr;
+            }
         }
+
+        return {};
     }
 
     public void set_int (string key, int64 value) {
@@ -493,6 +527,12 @@ public class ReadySet.Context : Object {
             return data[key].real_value.get_double ();
         } else {
             return 0;
+        }
+    }
+
+    public void reset (string key) {
+        if (check_key (key)) {
+            data[key].reset ();
         }
     }
 }
