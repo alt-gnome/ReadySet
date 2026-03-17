@@ -29,7 +29,8 @@ plugin_keyboard_c_args = [
 ]
 
 plugin_keyboard_vala_args = [
-  '--vapidir', meson.current_source_dir() / 'vapi',]
+  '--vapidir', meson.current_source_dir() / 'vapi',
+]
 
 if get_option('have_ibus')
   plugin_keyboard_vala_args += ['-D', 'HAVE_IBUS']

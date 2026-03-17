@@ -40,13 +40,11 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
     bool password_sent = false;
 
-    construct {
-        Application.get_default ().on_finish.connect (done);
-    }
-
     public async void start_action () {
         var app = Application.get_default ();
         var context = app.context;
+
+        app.on_finish.connect (done);
 
         if (context.mode == Mode.INITIAL_SETUP && !context.sandbox) {
             try {
@@ -161,12 +159,18 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         var app = Application.get_default ();
         var context = app.context;
 
-        if (context.mode == Mode.INITIAL_SETUP && client != null && !context.sandbox) {
-            log_user_in ();
+        if (context.mode != Mode.INITIAL_SETUP) {
+            debug ("Doing nothing in %s mode", context.mode.to_string ());
+        } else if (client == null) {
+            debug ("No GDM connection");
+        } else if (context.sandbox) {
+            debug ("Doing nothing in sandbox");
         } else {
-            debug ("No GDM connection: installer mode or sandbox mode");
-            app.quit ();
+            log_user_in ();
+            return;
         }
+
+        app.quit ();
     }
 
     void request_info_query (Gdm.UserVerifier user_verifier, string question, bool is_secret) {

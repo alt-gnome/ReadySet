@@ -39,6 +39,8 @@ public sealed class ReadySet.WindowContent : Adw.BreakpointBin {
             "show-sidebar",
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
+
+        split_view.enable_show_gesture = !simple;
     }
 
     [GtkCallback]

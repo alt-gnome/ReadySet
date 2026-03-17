@@ -44,41 +44,15 @@ jobs:
       - lint-blueprint
 
     steps:
-      - name: Install deps
-        run: |
-          apt-get update
-          apt-get install -y \
-            'gir(Adw)=1' \
-            'gir(Gdm)=1.0' \
-            'gir(Gtk)=4.0' \
-            'gir(Peas)=2' \
-            'pkgconfig(accountsservice)' \
-            'pkgconfig(gdm)' \
-            'pkgconfig(gee-0.8)' \
-            'pkgconfig(gio-unix-2.0)' \
-            'pkgconfig(gnome-desktop-4)' \
-            'pkgconfig(ibus-1.0)' \
-            'pkgconfig(libadwaita-1)>=1.7' \
-            'pkgconfig(libpeas-2)' \
-            'pkgconfig(passwdqc)' \
-            'pkgconfig(polkit-gobject-1)' \
-            'pkgconfig(pwquality)' \
-            'pkgconfig(systemd)' \
-            'pkgconfig(xkbcommon)' \
-            /usr/bin/blueprint-compiler \
-            /usr/bin/g-ir-compiler \
-            /usr/bin/gcc \
-            /usr/bin/gtkdoc-scan \
-            /usr/bin/meson \
-            /usr/bin/valac \
-            /usr/bin/valadoc \
-            /usr/bin/vapigen \
-            gettext-devel
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           token: ${{ github.event_name == 'pull_request' && github.token || secrets.REPO_TOKEN }}
+
+      - name: Install deps
+        run: |
+          apt-get update
+          xargs apt-get install -y < ./build-aux/altlinux/build-deps
 
       - name: Setup
         run: meson setup _build -Duser_with_set_root=true -Dwith_lib_documentation=true -Dis_devel=true  -Dpassword_check_backend=both

@@ -223,6 +223,11 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         is_ready_to_continue = model.get_selected_item ().is_ready;
         is_ready_to_finish = model.get_selected () == model.get_n_items () - 1;
         can_cancel = model.get_selected () > 0 && !dead_end;
+
+        if (dead_end) {
+            osk_button.visible = false;
+            to_up_revealer.visible = false;
+        }
     }
 
     [GtkCallback]

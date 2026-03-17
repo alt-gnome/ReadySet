@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 15:57+0000\n"
+"POT-Creation-Date: 2026-03-17 19:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -429,15 +429,15 @@ msgstr ""
 msgid "App config file"
 msgstr ""
 
-#: src/pages/end-page.vala:92
+#: src/pages/end-page.vala:90
 msgid "Doing some stuff…"
 msgstr ""
 
-#: src/pages/end-page.vala:142 src/pages/end-page.vala:148
+#: src/pages/end-page.vala:140 src/pages/end-page.vala:146
 #, c-format
 msgid "Error message: %s"
 msgstr ""
 
-#: src/pages/end-page.vala:147
+#: src/pages/end-page.vala:145
 msgid "Error while execute post hooks"
 msgstr ""
