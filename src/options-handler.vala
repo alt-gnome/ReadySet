@@ -36,7 +36,7 @@ public sealed class ReadySet.OptionsHandler : Object {
 #if DEVEL // vala-lint=block-opening-brace-space-before
         { "force-mode", '\0', OptionFlags.HIDDEN, OptionArg.STRING, null, N_("Force run with mode"), "FORCE-MODE" },
 #endif // vala-lint=block-opening-brace-space-before
-        { "can-close", '\0', 0, OptionArg.NONE, null, N_("Make window closable always"), "CAN-CLOSE" },
+        { "can-close", '\0', 0, OptionArg.NONE, null, N_("Make window closable always"), null },
         { "fullscreen", 'F', 0, OptionArg.NONE, null, N_("Run window in fullscreen"), null },
         { "installer", 'I', 0, OptionArg.STRING, null, N_("Specify installer plugin"), "INSTALLER" },
         { "sandbox", 'i', 0, OptionArg.NONE, null, N_("Sandbox run without doing anything in system"), null },
