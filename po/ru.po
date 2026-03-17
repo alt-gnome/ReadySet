@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 10:40+0000\n"
+"POT-Creation-Date: 2026-03-17 12:35+0000\n"
 "PO-Revision-Date: 2026-03-16 19:40+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -250,7 +250,7 @@ msgstr ""
 "Имя пользователя будет использовано для имени Вашей домашней директории и не "
 "может быть изменено."
 
-#: plugins/user/page-password.vala:125
+#: plugins/user/page-password.vala:127
 msgid "The password must consist of at least one character"
 msgstr "Пароль должен состоять минимум из одного символа"
 
@@ -258,7 +258,7 @@ msgstr "Пароль должен состоять минимум из одно�
 msgid "Failed to generate password"
 msgstr "Не удалось сгенерироавть пароль"
 
-#: plugins/user/plugin.vala:75
+#: plugins/user/plugin.vala:81
 msgid "Error when creating a user"
 msgstr "Ошибка при создании пользователя"
 
