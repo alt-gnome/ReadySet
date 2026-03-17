@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 10:40+0000\n"
+"POT-Creation-Date: 2026-03-17 12:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -242,7 +242,7 @@ msgstr ""
 msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 
-#: plugins/user/page-password.vala:125
+#: plugins/user/page-password.vala:127
 msgid "The password must consist of at least one character"
 msgstr ""
 
@@ -250,7 +250,7 @@ msgstr ""
 msgid "Failed to generate password"
 msgstr ""
 
-#: plugins/user/plugin.vala:75
+#: plugins/user/plugin.vala:81
 msgid "Error when creating a user"
 msgstr ""
 
