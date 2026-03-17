@@ -1,7 +1,7 @@
 plugins = ['keyboard', 'language', 'user', 'welcome']
 
 if get_option('is_devel')
-  plugins += ['test']
+  plugins += ['tests']
 endif
 
 foreach plugin : plugins
