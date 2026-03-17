@@ -4,6 +4,10 @@ on:
   pull_request:
   workflow_dispatch:
   push:
+    branches:
+    - 'altlinux'
+    tags-ignore:
+      - '*'
 
 jobs:
   lint-vala:
