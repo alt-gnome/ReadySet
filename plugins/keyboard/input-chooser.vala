@@ -303,7 +303,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         string lang = null;
         string country = null;
 
-        var current_inputs_info = get_current_inputs ();
+        var current_inputs_info = get_current_inputs (true);
 
         if (Gnome.Languages.get_input_source_from_locale (get_current_language (), out type, out id)) {
             if (current_inputs_info.size == 0) {

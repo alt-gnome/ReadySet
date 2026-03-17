@@ -120,7 +120,7 @@ namespace Keyboard {
         return "C";
     }
 
-    public Gee.HashSet<InputInfo> get_current_inputs () {
+    public Gee.HashSet<InputInfo> get_current_inputs (bool initial = false) {
         var context = Addin.get_instance ().context;
 
         var inputs = (Gee.HashSet<InputInfo>) context.get_object ("keyboard-input-sources");
@@ -143,7 +143,7 @@ namespace Keyboard {
                 inputs.add (new InputInfo (input_type, input_id));
             }
 
-            if (inputs.size == 0) {
+            if (inputs.size == 0 && initial) {
                 inputs.add_all_array (get_system_inputs ());
             }
 
