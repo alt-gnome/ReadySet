@@ -135,9 +135,9 @@ jobs:
         run: |
           echo "release=$(date +%s)" >> $FORGEJO_OUTPUT
 
-  rpm-build:
-    name: RPM build for ${{ matrix.branch }}.${{ matrix.arch }} and uploading
-    runs-on: ${{ matrix.runner }}
+  rpm-build-amd64:
+    name: RPM build for ${{ matrix.branch }}.amd64 and uploading
+    runs-on: als-huge
     container:
       image: altlinux.space/actions/runner/hasherc:sisyphus
 
@@ -146,14 +146,6 @@ jobs:
         branch:
           - sisyphus
           - p11
-        arch:
-          - amd64
-          - arm64
-        include:
-          - arch: amd64
-            runner: als-huge
-          - arch: arm64
-            runner: self-hosted-arm64-huge
     needs:
       - lint-vala
       - lint-blueprint
@@ -178,7 +170,7 @@ jobs:
         name: Build RPMs
         with:
           branch: ${{ matrix.branch }}
-          arch: ${{ matrix.arch }}
+          arch: amd64
 
       - uses: actions/upload-rpm-action@main
         name: Upload RPMs
@@ -187,6 +179,52 @@ jobs:
           directory: ~/.cache/hasherc/ready-set/out/RPMS
           token: ${{ secrets.TOKEN }}
           group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
+
+  rpm-build-arm64:
+    name: RPM build for ${{ matrix.branch }}.arm64 and uploading
+    runs-on: self-hosted-arm64-huge
+    container:
+      image: altlinux.space/actions/runner/hasherc:sisyphus
+
+    strategy:
+      matrix:
+        branch:
+          - sisyphus
+          - p11
+    needs:
+      - lint-vala
+      - lint-blueprint
+      - get-release
+      - build-doc-translation
+
+    steps:
+      - name: Install utils
+        run: |
+          apt-get update
+          apt-get install -y meson jq /usr/bin/add_changelog
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare RPM build
+        run: |
+          ./build-aux/altlinux/prepare ${{ needs.get-release.outputs.release }}
+          git add .
+
+      - uses: actions/build-rpm-action@main
+        name: Build RPMs
+        with:
+          branch: ${{ matrix.branch }}
+          arch: arm64
+
+      - uses: actions/upload-rpm-action@main
+        name: Upload RPMs
+        if: github.event_name != 'pull_request'
+        with:
+          directory: ~/.cache/hasherc/ready-set/out/RPMS
+          token: ${{ secrets.TOKEN }}
+          group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
+
 
   build-test-image:
     name: Build ${{ matrix.denviron }} image
@@ -203,7 +241,7 @@ jobs:
             image: altlinux.space/alt-atomic/onyx/nightly:latest
 
     needs:
-      - rpm-build
+      - rpm-build-amd64
     if: github.event_name != 'pull_request'
     env:
       LOCAL_BUILD_NAME: localhost/image
