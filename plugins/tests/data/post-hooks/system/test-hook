@@ -1,0 +1,4 @@
+#!/bin/sh
+
+mkdir -p /var/ready-set-tests
+touch /var/ready-set-tests/test-post-hook-success
