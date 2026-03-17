@@ -40,13 +40,11 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
     bool password_sent = false;
 
-    construct {
-        Application.get_default ().on_finish.connect (done);
-    }
-
     public async void start_action () {
         var app = Application.get_default ();
         var context = app.context;
+
+        app.on_finish.connect (done);
 
         if (context.mode == Mode.INITIAL_SETUP && !context.sandbox) {
             try {
