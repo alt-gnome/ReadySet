@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-16 19:17+0000\n"
+"POT-Creation-Date: 2026-03-17 10:40+0000\n"
 "PO-Revision-Date: 2026-03-16 19:40+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -157,11 +157,11 @@ msgid ""
 "Let's start by choosing the language for the application and for your system."
 msgstr "Давайте начнём с выбора языка для приложения и для Вашей системы."
 
-#: plugins/test/data/ui/page.blp:4 plugins/test/data/ui/page.blp:9
+#: plugins/tests/data/ui/page.blp:4 plugins/tests/data/ui/page.blp:9
 msgid "Test"
 msgstr "Тест"
 
-#: plugins/test/data/ui/page.blp:5
+#: plugins/tests/data/ui/page.blp:5
 msgid "Test page"
 msgstr "Тестовая страница"
 
