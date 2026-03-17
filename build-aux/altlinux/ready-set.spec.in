@@ -183,7 +183,7 @@ Requires: %name = %EVR
 %setup
 
 %build
-%meson -Dpassword_check_backend=both -Dis_devel=true
+%meson -Dpassword_check_backend=both -Dis_devel=true -Duser_with_set_root=true
 %meson_build
 
 %install
@@ -258,6 +258,7 @@ Requires: %name = %EVR
 
 %files plugin-user-common
 %_datadir/polkit-1/rules.d/%app_id.Plugin.User.rules
+%_datadir/polkit-1/rules.d/%app_id.Plugin.User.SetRootPassword.rules
 %_libexecdir/%name-set-root-password
 
 %files plugin-user-passwdqc

@@ -271,15 +271,16 @@ namespace User {
         return Password.strength (password).level != BAD;
     }
 
+#if WITH_ROOT_SET
     bool set_root_password (string password) {
         try {
-            debug ("Setting root password: %s", password);
             ReadySet.pkexec ({ Path.build_filename (Config.LIBEXECDIR, "ready-set-set-root-password"), password });
             return true;
         } catch (Error e) {
             return false;
         }
     }
+#endif
 
     public string[] get_context_facesdirs () {
         var context = Addin.get_instance ().context;

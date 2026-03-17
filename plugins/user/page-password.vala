@@ -59,13 +59,6 @@ public class User.PagePassword : ReadySet.BasePage {
         );
 
         Addin.get_instance ().context.bind_context_to_property (
-            "user-root-password",
-            root_password_entry,
-            "text",
-            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
-        );
-
-        Addin.get_instance ().context.bind_context_to_property (
             "user-autologin",
             autologin_switch_row,
             "active",
@@ -81,12 +74,21 @@ public class User.PagePassword : ReadySet.BasePage {
 
         Addin.get_instance ().context.data_changed.connect (on_context_data_changed);
 
+#if WITH_ROOT_SET
+        Addin.get_instance ().context.bind_context_to_property (
+            "user-root-password",
+            root_password_entry,
+            "text",
+            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
+        );
+
         Addin.get_instance ().context.bind_context_to_property (
             "user-with-root",
             this,
             "with-root-password",
             BindingFlags.SYNC_CREATE
         );
+#endif
     }
 
     void on_context_data_changed (string key) {

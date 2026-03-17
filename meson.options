@@ -31,3 +31,8 @@ option('gdm_rundir',
   value: '/run/gdm',
   description: 'GDM\'s runtime directory. The dynamic gnome-initial-setup user\'s home dir is exported here',
 )
+option('user_with_set_root',
+  type: 'boolean',
+  value: false,
+  description: 'Enable option with setting root by user at initial-setup mode. It can be not secure, so it disabled by default'
+)
