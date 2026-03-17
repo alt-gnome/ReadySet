@@ -1,0 +1,10 @@
+object 42746f6afc6cc68412b964896f9a3e320cb13a36
+type commit
+tag v0.6.1
+tagger Gitea <gitea@fake.local> 1773780654 +0300
+
+Hotfix 0.6.1
+
+- Fixed quitting app before GDM verification.
+- Fixed visibility of OSK button at end page.
+- Don't allow to show steps via gesture with `simple`.
