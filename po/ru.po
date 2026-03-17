@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 15:57+0000\n"
+"POT-Creation-Date: 2026-03-17 19:41+0000\n"
 "PO-Revision-Date: 2026-03-16 19:40+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -466,16 +466,16 @@ msgstr "Показать информацию о версии и выйти"
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
-#: src/pages/end-page.vala:92
+#: src/pages/end-page.vala:90
 msgid "Doing some stuff…"
 msgstr "Делаем стаф…"
 
-#: src/pages/end-page.vala:142 src/pages/end-page.vala:148
+#: src/pages/end-page.vala:140 src/pages/end-page.vala:146
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
-#: src/pages/end-page.vala:147
+#: src/pages/end-page.vala:145
 msgid "Error while execute post hooks"
 msgstr "Ошибка при выполнении пост скриптов"
 
