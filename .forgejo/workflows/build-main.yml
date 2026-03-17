@@ -77,7 +77,7 @@ jobs:
           token: ${{ github.event_name == 'pull_request' && github.token || secrets.REPO_TOKEN }}
 
       - name: Setup
-        run: meson setup _build -Dwith_lib_documentation=true -Dis_devel=true  -Dpassword_check_backend=both
+        run: meson setup _build -Duser_with_set_root=true -Dwith_lib_documentation=true -Dis_devel=true  -Dpassword_check_backend=both
 
       - name: Build
         run: meson compile -C _build
