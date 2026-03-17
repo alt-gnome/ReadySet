@@ -106,7 +106,7 @@ public class Language.Addin : ReadySet.StepAddin {
     }
 
     public async override void init_once () {
-        if (!context.sandbox) {
+        if (!context.sandbox && context.mode == INITIAL_SETUP) {
             try {
                 accessible = (yield new Polkit.Permission ("org.freedesktop.locale1.set-locale", null, null)).allowed;
             } catch (Error e) {
