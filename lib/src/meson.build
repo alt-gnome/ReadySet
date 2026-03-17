@@ -20,6 +20,7 @@ librs_vala_sources = files(
   'base/base-page-desc.vala',
   'base/base-page.vala',
   'apply-callback.vala',
+  'context-object.vala',
   'context.vala',
   'installer-addin.vala',
   'step-addin.vala',

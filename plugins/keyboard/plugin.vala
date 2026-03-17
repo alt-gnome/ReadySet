@@ -66,8 +66,31 @@ public class Keyboard.Addin : ReadySet.StepAddin {
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
-        vars["keyboard-input-sources"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.OBJECT);
+        vars["keyboard-input-sources"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.OBJECT, get_default ());
         return vars;
+    }
+
+    ReadySet.ContextObject get_default () {
+        var inputs = new InputSources ();
+
+        var settings = new Settings ("org.gnome.desktop.input-sources");
+        var variant = settings.get_value ("sources");
+
+        var iterator = variant.iterator ();
+
+        Variant? item;
+        while ((item = iterator.next_value ()) != null) {
+            string input_type, input_id;
+
+            item.get ("(ss)", out input_type, out input_id);
+            inputs.data.add (new InputInfo (input_type, input_id));
+        }
+
+        if (inputs.data.size == 0) {
+            inputs.data.add_all_array (get_system_inputs ());
+        }
+
+        return inputs;
     }
 
     public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {

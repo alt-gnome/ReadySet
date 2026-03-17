@@ -11,6 +11,7 @@ plugin_keyboard_sources = files(
   'ibus-utils.vala',
   'input-chooser.vala',
   'input-row.vala',
+  'input-sources.vala',
   'page.vala',
   'plugin.vala',
   'utils.vala',

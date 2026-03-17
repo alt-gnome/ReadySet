@@ -303,13 +303,12 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         string lang = null;
         string country = null;
 
-        var current_inputs_info = get_current_inputs (true);
+        Addin.get_instance ().context.reset ("keyboard-input-sources");
+        var current_inputs_info = get_current_inputs ();
 
         if (Gnome.Languages.get_input_source_from_locale (get_current_language (), out type, out id)) {
-            if (current_inputs_info.size == 0) {
-                current_inputs_info.add (new InputInfo (type, id));
-                set_current_inputs (current_inputs_info);
-            }
+            current_inputs_info.add (new InputInfo (type, id));
+            set_current_inputs (current_inputs_info);
 
             yield add_row_to_list (type, id, false);
         }

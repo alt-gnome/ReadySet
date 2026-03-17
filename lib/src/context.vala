@@ -37,7 +37,7 @@ public enum ReadySet.ContextType {
             return INT;
         } else if (t == Type.DOUBLE) {
             return DOUBLE;
-        } else if (t == Type.OBJECT) {
+        } else if (t.is_a (typeof (ContextObject))) {
             return OBJECT;
         } else {
             error ("Unknown type: %s", t.name ());
@@ -57,7 +57,7 @@ public enum ReadySet.ContextType {
             case DOUBLE:
                 return Type.DOUBLE;
             case OBJECT:
-                return Type.OBJECT;
+                return typeof (ContextObject);
             default:
                 assert_not_reached ();
         }
@@ -117,19 +117,20 @@ internal class ReadySet.ValueObject : Object {
             default_value = "";
         }
 
-        _value = get_new ();
-    }
-
-    Value get_new () {
-        var v = Value (value_type.to_gtype ());
-        if (default_value != null) {
-            default_value.copy (ref v);
-        }
-        return v;
+        _value = Value (value_type.to_gtype ());
+        reset ();
     }
 
     public void reset () {
-        real_value = get_new ();
+        if (default_value == null) {
+            return;
+        }
+
+        if (value_type == OBJECT) {
+            real_value = ((ContextObject) default_value.get_object ()).copy ();
+        } else {
+            real_value = default_value;
+        }
     }
 }
 
@@ -152,7 +153,7 @@ public class ReadySet.ContextVarInfo : Object {
 
     construct {
         if (default_value != null) {
-            assert (value_type.to_gtype () == default_value.type ());
+            assert (value_type == ContextType.from_gtype (default_value.type ()));
         }
     }
 }
@@ -448,13 +449,19 @@ public class ReadySet.Context : Object {
         }
     }
 
-    public void set_object (string key, owned Object value) {
+    public void set_object (string key, owned ContextObject value) {
         set_value (key, value);
     }
 
-    public Object? get_object (string key) {
+    public void set_object_string (string key, owned ContextObject value) {
         if (check_key (key, OBJECT)) {
-            return data[key].real_value.get_object ();
+            data[key].real_value = value;
+        }
+    }
+
+    public ContextObject? get_object (string key) {
+        if (check_key (key, OBJECT)) {
+            return (ContextObject?) data[key].real_value.get_object ();
         } else {
             return null;
         }

@@ -120,48 +120,23 @@ namespace Keyboard {
         return "C";
     }
 
-    public Gee.HashSet<InputInfo> get_current_inputs (bool initial = false) {
+    public Gee.HashSet<InputInfo> get_current_inputs () {
         var context = Addin.get_instance ().context;
 
-        var inputs = (Gee.HashSet<InputInfo>) context.get_object ("keyboard-input-sources");
+        var inputs = context.get_object ("keyboard-input-sources");
 
         if (inputs == null) {
-            inputs = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
+            inputs = new InputSources ();
         }
 
-        if (inputs.size == 0) {
-            var settings = new Settings ("org.gnome.desktop.input-sources");
-            var variant = settings.get_value ("sources");
-
-            var iterator = variant.iterator ();
-
-            Variant? item;
-            while ((item = iterator.next_value ()) != null) {
-                string input_type, input_id;
-
-                item.get ("(ss)", out input_type, out input_id);
-                inputs.add (new InputInfo (input_type, input_id));
-            }
-
-            if (inputs.size == 0 && initial) {
-                inputs.add_all_array (get_system_inputs ());
-            }
-
-            if (inputs.size != 0) {
-                set_current_inputs (inputs);
-            }
-        }
-
-        return inputs;
+        return ((InputSources) inputs).data;
     }
 
     public void set_current_inputs (Gee.HashSet<InputInfo> inputs) {
-        var context = Addin.get_instance ().context;
-        var inputs_val = new Array<string> ();
+        var isources = new InputSources ();
+        isources.data = inputs;
 
-        foreach (var input in inputs) {
-            inputs_val.append_val (input.format);
-        }
+        var context = Addin.get_instance ().context;
 
         if (!context.sandbox) {
             VariantBuilder builder = new VariantBuilder (new VariantType ("a(ss)"));
@@ -174,7 +149,7 @@ namespace Keyboard {
             settings.set_value ("sources", builder.end ());
         }
 
-        context.set_object ("keyboard-input-sources", inputs);
+        context.set_object ("keyboard-input-sources", isources);
     }
 
     Keyboard.Locale1 get_locale_proxy () throws Error {
