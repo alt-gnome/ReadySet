@@ -2,6 +2,7 @@ plugin_keyboard_blueprints = files(
   'ui/input-chooser.blp',
   'ui/input-row.blp',
   'ui/page.blp',
+  'ui/preview-dialog.blp',
 )
 
 plugin_keyboard_resources = gnome.compile_resources(

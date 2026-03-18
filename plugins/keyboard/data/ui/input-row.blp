@@ -21,4 +21,18 @@ template $KeyboardInputRow: Adw.ActionRow {
       margin-end: 4;
     }
   }
+
+  [suffix]
+  Button {
+    styles [
+      "flat",
+      "dimmed",
+    ]
+
+    valign: center;
+    halign: center;
+    icon-name: "text-insert-symbolic";
+    clicked => $on_preview_clicked();
+    tooltip-text: _("Preview");
+  }
 }

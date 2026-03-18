@@ -37,6 +37,20 @@ public sealed class Keyboard.InputRow : Adw.ActionRow {
         );
     }
 
+    [GtkCallback]
+    void on_preview_clicked () {
+        var current_inputs = get_current_inputs ();
+        set_user_inputs ({input_info});
+
+        var dialog = new PreviewDialog ();
+
+        dialog.title = title;
+        dialog.present (this);
+        dialog.closed.connect (() => {
+            set_user_inputs (current_inputs.to_array ());
+        });
+    }
+
     public Gdk.Paintable paintable () {
         var sshot = new Gtk.Snapshot ();
         snapshot (sshot);

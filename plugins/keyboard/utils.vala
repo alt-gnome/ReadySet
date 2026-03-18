@@ -145,13 +145,7 @@ namespace Keyboard {
         var context = Addin.get_instance ().context;
 
         if (!context.sandbox) {
-            VariantBuilder builder = new VariantBuilder (new VariantType ("a(ss)"));
-
-            foreach (var info in inputs.to_array ()) {
-                builder.add ("(ss)", info.type_, info.id);
-            }
-
-            get_input_sources_settings ().set_value ("sources", builder.end ());
+            set_user_inputs (inputs.to_array ());
         }
 
         context.set_object ("keyboard-input-sources", inputs);
@@ -169,6 +163,16 @@ namespace Keyboard {
             "/org/freedesktop/locale1",
             DBusProxyFlags.NONE
         );
+    }
+
+    void set_user_inputs (InputInfo[] inputs) {
+        VariantBuilder builder = new VariantBuilder (new VariantType ("a(ss)"));
+
+        foreach (var info in inputs) {
+            builder.add ("(ss)", info.type_, info.id);
+        }
+
+        get_input_sources_settings ().set_value ("sources", builder.end ());
     }
 
     InputInfo[] get_system_inputs () {
