@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-18 11:25+0000\n"
+"POT-Creation-Date: 2026-03-18 15:00+0000\n"
 "PO-Revision-Date: 2026-03-16 19:40+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -111,6 +111,10 @@ msgstr "Ничего не найдено"
 msgid "Show more"
 msgstr "Показать больше"
 
+#: plugins/keyboard/data/ui/input-row.blp:20
+msgid "This layout selected"
+msgstr ""
+
 #: plugins/keyboard/data/ui/page.blp:5
 msgid "Keyboard"
 msgstr "Клавиатура"
@@ -128,7 +132,7 @@ msgid "You must select at least one layout containing Latin characters"
 msgstr ""
 "Должна быть выбрана хотя бы одна раскладка, содержащая латинские символы"
 
-#: plugins/keyboard/plugin.vala:121
+#: plugins/keyboard/plugin.vala:120
 msgid "Error when setting keyboard layout"
 msgstr "Ошибка при настройке раскладки клавиатуры"
 
