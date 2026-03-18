@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 19:41+0000\n"
+"POT-Creation-Date: 2026-03-18 11:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,24 +45,24 @@ msgstr ""
 msgid "Open application menu"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:105
+#: data/ui/steps-main-page.blp:107
 msgid "Go to previous page"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:133
+#: data/ui/steps-main-page.blp:135
 msgid "Next"
 msgstr ""
 
 #. TRANSLATORS: Last word in "Ready Set ..." sentence
-#: data/ui/steps-main-page.blp:150
+#: data/ui/steps-main-page.blp:152
 msgid "Go!"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:173
+#: data/ui/steps-main-page.blp:175
 msgid "Go up"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:188
+#: data/ui/steps-main-page.blp:190
 msgid "Extend/Retract keyboard"
 msgstr ""
 
