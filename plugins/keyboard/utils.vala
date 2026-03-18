@@ -132,6 +132,15 @@ namespace Keyboard {
         return (InputSources) inputs;
     }
 
+    Settings input_sources_settings;
+    Settings get_input_sources_settings () {
+        if (input_sources_settings == null) {
+            input_sources_settings = new Settings ("org.gnome.desktop.input-sources");
+        }
+
+        return input_sources_settings;
+    }
+
     public void set_current_inputs (InputSources inputs) {
         var context = Addin.get_instance ().context;
 
@@ -142,8 +151,7 @@ namespace Keyboard {
                 builder.add ("(ss)", info.type_, info.id);
             }
 
-            var settings = new Settings ("org.gnome.desktop.input-sources");
-            settings.set_value ("sources", builder.end ());
+            get_input_sources_settings ().set_value ("sources", builder.end ());
         }
 
         context.set_object ("keyboard-input-sources", inputs);
@@ -227,7 +235,7 @@ namespace Keyboard {
 
         Xkb.RulesNames names = {
             rules: "evdev",
-            model: "pc105",
+            model: get_input_sources_settings ().get_string ("xkb-model"),
             layout: layout,
             variant: variant,
             options: null
