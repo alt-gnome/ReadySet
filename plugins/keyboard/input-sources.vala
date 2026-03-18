@@ -58,7 +58,7 @@ public sealed class Keyboard.InputSources : ReadySet.ContextObject {
     }
 
     public void insert_before (InputInfo what, InputInfo where) {
-        if (!(where in this)) {
+        if (!(where in this) || what == where) {
             return;
         }
 
