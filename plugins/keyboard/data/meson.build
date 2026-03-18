@@ -14,6 +14,7 @@ plugin_keyboard_resources = gnome.compile_resources(
     input: plugin_keyboard_blueprints,
     output: '.',
     command: [ find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@' ],
+    build_always_stale: true,
   )
 )
 
