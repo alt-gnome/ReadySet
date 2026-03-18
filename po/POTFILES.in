@@ -6,6 +6,7 @@ lib/src/base/base-bare-page.vala
 lib/src/base/base-page.vala
 lib/src/utils.vala
 plugins/keyboard/data/ui/input-chooser.blp
+plugins/keyboard/data/ui/input-row.blp
 plugins/keyboard/data/ui/page.blp
 plugins/keyboard/plugin.vala
 plugins/language/box.vala
