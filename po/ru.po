@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 19:41+0000\n"
+"POT-Creation-Date: 2026-03-18 11:25+0000\n"
 "PO-Revision-Date: 2026-03-16 19:40+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -48,24 +48,24 @@ msgstr "песочница"
 msgid "Open application menu"
 msgstr "Открыть меню приложения"
 
-#: data/ui/steps-main-page.blp:105
+#: data/ui/steps-main-page.blp:107
 msgid "Go to previous page"
 msgstr "К предыдущей странице"
 
-#: data/ui/steps-main-page.blp:133
+#: data/ui/steps-main-page.blp:135
 msgid "Next"
 msgstr "Дальше"
 
 #. TRANSLATORS: Last word in "Ready Set ..." sentence
-#: data/ui/steps-main-page.blp:150
+#: data/ui/steps-main-page.blp:152
 msgid "Go!"
 msgstr "Марш!"
 
-#: data/ui/steps-main-page.blp:173
+#: data/ui/steps-main-page.blp:175
 msgid "Go up"
 msgstr "Наверх"
 
-#: data/ui/steps-main-page.blp:188
+#: data/ui/steps-main-page.blp:190
 msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
 
