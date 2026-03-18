@@ -71,7 +71,6 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
 
         input_rows = new Gee.HashMap<InputInfo, InputRow> (InputInfo.hash, InputInfo.equal);
 
-        current_input_list.set_sort_func (sort_inputs);
         input_list.set_sort_func (sort_inputs);
         input_list.set_filter_func (input_visible);
 
@@ -105,11 +104,51 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             current_input_list_stack.visible_child_name = "sources";
         }
 
-        foreach (var info in current_inputs) {
+        foreach (var info in current_inputs.to_array ()) {
             var name = get_row_name (info);
 
             if (name != null) {
-                current_input_list.append (new InputRow (info, name) { is_selected = true });
+                var row = new InputRow (info, name) { is_selected = true, draggable = true };
+
+                var dnd_src = new Gtk.DragSource ();
+                dnd_src.actions = Gdk.DragAction.MOVE;
+                row.add_controller (dnd_src);
+
+                dnd_src.prepare.connect ((dnd_src, x, y) => {
+                    dnd_src.set_icon (row.paintable (), (int) x, (int) y);
+                    return new Gdk.ContentProvider.for_value (info);
+                });
+                dnd_src.drag_begin.connect ((drag) => {
+                    row.add_css_class ("view");
+                });
+                dnd_src.drag_end.connect ((drag, delete_data) => {
+                    row.remove_css_class ("view");
+                });
+
+                var dnd_tgt = new Gtk.DropTarget (typeof (InputInfo), Gdk.DragAction.MOVE);
+                row.add_controller (dnd_tgt);
+
+                dnd_tgt.enter.connect ((x, y) => {
+                    current_input_list.drag_highlight_row (row);
+                    return Gdk.DragAction.MOVE;
+                });
+
+                dnd_tgt.leave.connect (() => {
+                    current_input_list.drag_unhighlight_row ();
+                });
+
+                dnd_tgt.drop.connect ((value, x, y) => {
+                    var where = row.input_info;
+                    var what = (InputInfo) value.get_object ();
+
+                    var cu = get_current_inputs ();
+                    cu.insert_before (what, where);
+
+                    set_current_inputs (cu);
+                    return true;
+                });
+
+                current_input_list.append (row);
             }
         }
 
@@ -228,19 +267,19 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             return;
         }
 
-        var current_inputs_info = get_current_inputs ();
+        var inputs = get_current_inputs ();
 
         var input_row = (InputRow) row;
         input_row.is_selected = !input_row.is_selected;
 
         if (input_row.is_selected) {
-            current_inputs_info.add (input_row.input_info);
+            inputs.add (input_row.input_info);
         } else {
-            current_inputs_info.remove (input_row.input_info);
+            inputs.remove (input_row.input_info);
         }
 
-        set_current_inputs (current_inputs_info);
-        changed (current_inputs_info.to_array ());
+        set_current_inputs (inputs);
+        changed (inputs.to_array ());
 
         sync_all_checkmarks ();
 
@@ -283,7 +322,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             return false;
         }
 
-        foreach (var input_info in get_current_inputs ()) {
+        foreach (var input_info in get_current_inputs ().to_array ()) {
             if (!show_more && input_row.input_info.format == input_info.format) {
                 return false;
             }
@@ -304,11 +343,11 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         string country = null;
 
         Addin.get_instance ().context.reset ("keyboard-input-sources");
-        var current_inputs_info = get_current_inputs ();
+        var inputs = get_current_inputs ();
 
         if (Gnome.Languages.get_input_source_from_locale (get_current_language (), out type, out id)) {
-            current_inputs_info.add (new InputInfo (type, id));
-            set_current_inputs (current_inputs_info);
+            inputs.add (new InputInfo (type, id));
+            set_current_inputs (inputs);
 
             yield add_row_to_list (type, id, false);
         }

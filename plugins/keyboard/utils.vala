@@ -120,7 +120,7 @@ namespace Keyboard {
         return "C";
     }
 
-    public Gee.HashSet<InputInfo> get_current_inputs () {
+    public InputSources get_current_inputs () {
         var context = Addin.get_instance ().context;
 
         var inputs = context.get_object ("keyboard-input-sources");
@@ -129,19 +129,16 @@ namespace Keyboard {
             inputs = new InputSources ();
         }
 
-        return ((InputSources) inputs).data;
+        return (InputSources) inputs;
     }
 
-    public void set_current_inputs (Gee.HashSet<InputInfo> inputs) {
-        var isources = new InputSources ();
-        isources.data = inputs;
-
+    public void set_current_inputs (InputSources inputs) {
         var context = Addin.get_instance ().context;
 
         if (!context.sandbox) {
             VariantBuilder builder = new VariantBuilder (new VariantType ("a(ss)"));
 
-            foreach (var info in inputs) {
+            foreach (var info in inputs.to_array ()) {
                 builder.add ("(ss)", info.type_, info.id);
             }
 
@@ -149,7 +146,7 @@ namespace Keyboard {
             settings.set_value ("sources", builder.end ());
         }
 
-        context.set_object ("keyboard-input-sources", isources);
+        context.set_object ("keyboard-input-sources", inputs);
     }
 
     Keyboard.Locale1 get_locale_proxy () throws Error {

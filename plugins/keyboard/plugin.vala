@@ -83,11 +83,11 @@ public class Keyboard.Addin : ReadySet.StepAddin {
             string input_type, input_id;
 
             item.get ("(ss)", out input_type, out input_id);
-            inputs.data.add (new InputInfo (input_type, input_id));
+            inputs.add (new InputInfo (input_type, input_id));
         }
 
-        if (inputs.data.size == 0) {
-            inputs.data.add_all_array (get_system_inputs ());
+        if (inputs.size == 0) {
+            inputs.add_many (get_system_inputs ());
         }
 
         return inputs;
@@ -97,13 +97,12 @@ public class Keyboard.Addin : ReadySet.StepAddin {
         try {
             var proxy = get_locale_proxy ();
 
-            var current_inputs_info = get_current_inputs ();
-            var inputs = current_inputs_info.to_array ();
+            var inputs = get_current_inputs ();
 
             var layouts = new Gee.ArrayList<string> ();
             var variants = new Gee.ArrayList<string> ();
 
-            foreach (var input in inputs) {
+            foreach (var input in inputs.to_array ()) {
                 layouts.add (input.layout);
                 variants.add (input.variant ?? "");
             }

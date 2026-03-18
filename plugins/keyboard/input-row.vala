@@ -27,11 +27,28 @@ public sealed class Keyboard.InputRow : Adw.ActionRow {
 
     public new bool is_selected { get; set; }
 
+    public bool draggable { get; set; }
+
     public InputRow (InputInfo input_info, string name, bool is_extra = false) {
         Object (
             input_info: input_info,
             title: name,
             is_extra: is_extra
         );
+    }
+
+    public Gdk.Paintable paintable () {
+        var sshot = new Gtk.Snapshot ();
+        snapshot (sshot);
+        var node = sshot.to_node ();
+
+        Graphene.Rect bounds;
+        compute_bounds (this, out bounds);
+
+        var s2shot = new Gtk.Snapshot ();
+        s2shot.append_node (node);
+        s2shot.render_background (get_style_context (), 0, 0, bounds.get_width (), bounds.get_height ());
+
+        return s2shot.to_paintable (null);
     }
 }
