@@ -108,47 +108,10 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             var name = get_row_name (info);
 
             if (name != null) {
-                var row = new InputRow (info, name) { is_selected = true, draggable = true };
-
-                var dnd_src = new Gtk.DragSource ();
-                dnd_src.actions = Gdk.DragAction.MOVE;
-                row.add_controller (dnd_src);
-
-                dnd_src.prepare.connect ((dnd_src, x, y) => {
-                    dnd_src.set_icon (row.paintable (), (int) x, (int) y);
-                    return new Gdk.ContentProvider.for_value (info);
+                current_input_list.append (new InputRow (info, name) {
+                    is_selected = true,
+                    draggable = true
                 });
-                dnd_src.drag_begin.connect ((drag) => {
-                    row.add_css_class ("view");
-                });
-                dnd_src.drag_end.connect ((drag, delete_data) => {
-                    row.remove_css_class ("view");
-                });
-
-                var dnd_tgt = new Gtk.DropTarget (typeof (InputInfo), Gdk.DragAction.MOVE);
-                row.add_controller (dnd_tgt);
-
-                dnd_tgt.enter.connect ((x, y) => {
-                    current_input_list.drag_highlight_row (row);
-                    return Gdk.DragAction.MOVE;
-                });
-
-                dnd_tgt.leave.connect (() => {
-                    current_input_list.drag_unhighlight_row ();
-                });
-
-                dnd_tgt.drop.connect ((value, x, y) => {
-                    var where = row.input_info;
-                    var what = (InputInfo) value.get_object ();
-
-                    var cu = get_current_inputs ();
-                    cu.insert_before (what, where);
-
-                    set_current_inputs (cu);
-                    return true;
-                });
-
-                current_input_list.append (row);
             }
         }
 
