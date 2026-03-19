@@ -69,6 +69,13 @@ jobs:
       - name: Update pot file for Weblate
         if: github.event_name != 'pull_request'
         run: |
+          has_real_changes() {
+            git diff --cached -U0 | grep -E '^[+-]' \
+              | grep -Ev '^[+-]{3}' \
+              | grep -Ev '^[+-]["#]' \
+              | grep -q '.'
+          }
+
           ./po/update_potfiles
 
           git add .
@@ -76,22 +83,17 @@ jobs:
 
           meson compile -C _build ready-set-pot
           git add .
-          changes=$(git diff --cached --numstat | awk '{s+=$1+$2} END {print s+0}')
 
-          # Don't commit if changed only POT-Creation-Date
-          if [ "$changes" -gt 2 ]; then
+          if has_real_changes; then
             git commit -m "i18n: Update .pot file" || true
+
+            meson compile -C _build ready-set-update-po
+
+            git add po/*.po
+            git commit -m "i18n: Update .po files" || true
           else
             git reset --hard
           fi
-
-          ORIG=$(grep '^"POT-Creation-Date:' po/ready-set.pot)
-          ORIG_ESC=${ORIG//\\/\\\\}
-          meson compile -C _build ready-set-update-po
-          sed -i "s|^\"POT-Creation-Date:.*|${ORIG_ESC}|" po/*.po
-
-          git add po/*.po
-          git commit -m "i18n: Update .po files" || true
 
           git push
 
