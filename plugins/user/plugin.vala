@@ -22,8 +22,6 @@ public class User.Addin : ReadySet.StepAddin {
 
     static Addin instance;
 
-    public override bool accessible { get; set; }
-
     protected override string? resource_base_path {
         get {
             return "/org/altlinux/ReadySet/Plugin/User/";

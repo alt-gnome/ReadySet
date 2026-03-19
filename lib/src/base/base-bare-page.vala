@@ -30,14 +30,7 @@ public class ReadySet.BaseBarePage : Adw.Bin {
     [GtkChild]
     unowned Gtk.ScrolledWindow scrolled_window;
 
-    public virtual bool accessible {
-        get {
-            return true;
-        }
-        protected set {
-            return;
-        }
-    }
+    public virtual bool accessible { get; set; default = true; }
 
     public Gtk.Widget top_widget {
         get {

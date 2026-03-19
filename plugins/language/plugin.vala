@@ -22,16 +22,6 @@ public class Language.Addin : ReadySet.StepAddin {
 
     static Addin instance;
 
-    bool _accessible;
-    public override bool accessible {
-        get {
-            return _accessible;
-        }
-        protected set {
-            _accessible = value;
-        }
-    }
-
     public string current_locale {
         owned get {
             return context.get_string ("language-locale");
