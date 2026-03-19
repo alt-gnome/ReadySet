@@ -6,19 +6,19 @@
         {
             "label": "Lint check",
             "type": "shell",
-            "command": "io.elementary.vala-lint -d . -c vala-lint.conf",
+            "command": "tools/check-vala",
             "problemMatcher": []
         },
         {
             "label": "Lint .blp check",
             "type": "shell",
-            "command": ".vscode/check-all-blp",
+            "command": "tools/check-blp",
             "problemMatcher": []
         },
         {
             "label": "Fix all .blp",
             "type": "shell",
-            "command": ".vscode/fix-all-blp",
+            "command": "tools/fix-blp",
             "problemMatcher": []
         }
     ]
