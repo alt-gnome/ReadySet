@@ -6,6 +6,10 @@ template $KeyboardInputRow: Adw.ActionRow {
 
   [prefix]
   Image {
+    styles [
+      "dimmed",
+    ]
+
     icon-name: "list-drag-handle-symbolic";
     visible: bind template.draggable;
   }
