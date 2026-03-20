@@ -41,7 +41,9 @@ public sealed class Keyboard.InputRow : Adw.ActionRow {
     }
 
     construct {
-        drop_target.set_gtypes ({typeof (InputInfo)});
+        if (draggable) {
+            drop_target.set_gtypes ({typeof (InputInfo)});
+        }
     }
 
     [GtkCallback]

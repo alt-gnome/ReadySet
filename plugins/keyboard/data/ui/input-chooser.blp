@@ -24,16 +24,33 @@ template $KeyboardInputChooser: Box {
     StackPage {
       name: "sources";
 
-      child: ListBox current_input_list {
-        styles [
-          "boxed-list",
-        ]
+      child: Box {
+        orientation: vertical;
+        spacing: 12;
+        
+        ListBox current_input_list {
+          styles [
+            "boxed-list",
+          ]
 
-        selection-mode: none;
-        vexpand: true;
-        halign: fill;
-        valign: start;
-        row-activated => $row_activated();
+          selection-mode: none;
+          vexpand: true;
+          halign: fill;
+          valign: start;
+          row-activated => $row_activated();
+        }
+
+        ListBox switch_box {
+          styles [
+            "boxed-list",
+          ]
+
+          selection-mode: none;
+
+          $KeyboardLayoutSwitchRow {
+            title: _("You can specify additional layout switch combination");
+          }
+        }
       };
     }
 

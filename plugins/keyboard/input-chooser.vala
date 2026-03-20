@@ -31,6 +31,8 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
     unowned Gtk.Stack current_input_list_stack;
     [GtkChild]
     unowned Gtk.Stack input_list_stack;
+    [GtkChild]
+    unowned Gtk.ListBox switch_box;
 
     const string INPUT_SOURCE_TYPE_XKB = "xkb";
     const string INPUT_SOURCE_TYPE_IBUS = "ibus";
@@ -44,14 +46,20 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
     Gee.HashMap<InputInfo, InputRow> input_rows;
     Gnome.XkbInfo xkb_info;
 
+    bool has_hw_keybaord = try_to_detect_hw_keyboatd ();
+
 #if HAVE_IBUS
     IBus.Bus ibus;
     Gee.HashMap<string, IBus.EngineDesc> ibus_engines;
     Cancellable ibus_cancellable;
 #endif
 
+    static construct {
+        typeof (LayoutSwitchRow).ensure ();
+    }
+
     construct {
-        xkb_info = new Gnome.XkbInfo ();
+        xkb_info = get_xkb_info ();
 
 #if HAVE_IBUS
         IBus.init ();
@@ -102,6 +110,8 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             current_input_list_stack.visible_child_name = "nothing-selected";
         } else {
             current_input_list_stack.visible_child_name = "sources";
+
+            switch_box.visible = current_inputs.size > 1 && has_hw_keybaord;
         }
 
         foreach (var info in current_inputs.to_array ()) {

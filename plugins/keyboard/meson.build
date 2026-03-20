@@ -12,6 +12,7 @@ plugin_keyboard_sources = files(
   'input-chooser.vala',
   'input-row.vala',
   'input-sources.vala',
+  'layout-switch-button.vala',
   'page.vala',
   'plugin.vala',
   'preview-dialog.vala',

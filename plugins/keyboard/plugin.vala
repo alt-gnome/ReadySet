@@ -86,6 +86,7 @@ public class Keyboard.Addin : ReadySet.StepAddin {
     public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
         try {
             var proxy = get_locale_proxy ();
+            var settings = get_input_sources_settings ();
 
             var inputs = get_current_inputs ();
 
@@ -97,12 +98,11 @@ public class Keyboard.Addin : ReadySet.StepAddin {
                 variants.add (input.variant ?? "");
             }
 
-            yield proxy.set_x_11_keyboard (string.joinv (
-                ",",
-                layouts.to_array ()),
-                "",
+            yield proxy.set_x_11_keyboard (
+                string.joinv (",", layouts.to_array ()),
+                settings.get_string ("xkb-model"),
                 string.joinv (",", variants.to_array ()),
-                "",
+                string.joinv (",", settings.get_strv ("xkb-options")),
                 true,
                 true
             );

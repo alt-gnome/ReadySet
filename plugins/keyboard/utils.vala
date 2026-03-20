@@ -111,6 +111,71 @@ public class Keyboard.InputInfo : Object {
 
 namespace Keyboard {
 
+    Gnome.XkbInfo xkb_info;
+
+    Gnome.XkbInfo get_xkb_info () {
+        if (xkb_info == null) {
+            xkb_info = new Gnome.XkbInfo ();
+        }
+
+        return xkb_info;
+    }
+
+    public enum AdditionalLayoutSwitch {
+        NONE,
+        ALT_SHIFT,
+        CTRL_SHIFT,
+        CAPS;
+
+        public static AdditionalLayoutSwitch from_string (string ls) {
+            switch (ls) {
+                case "grp:alt_shift_toggle":
+                    return ALT_SHIFT;
+                case "grp:ctrl_shift_toggle":
+                    return CTRL_SHIFT;
+                case "grp:caps_toggle":
+                    return CAPS;
+                default:
+                    return NONE;
+            }
+        }
+
+        public string to_string () {
+            switch (this) {
+                case ALT_SHIFT:
+                    return "grp:alt_shift_toggle";
+                case CTRL_SHIFT:
+                    return "grp:ctrl_shift_toggle";
+                case CAPS:
+                    return "grp:caps_toggle";
+                default:
+                    assert_not_reached ();
+            }
+        }
+
+        public string[] to_buttons () {
+            switch (this) {
+                case NONE:
+                    return {};
+                case ALT_SHIFT:
+                    return { "Alt", "Shift" };
+                case CTRL_SHIFT:
+                    return { "Ctrl", "Shift" };
+                case CAPS:
+                    return { "Caps Lock" };
+                default:
+                    assert_not_reached ();
+            }
+        }
+
+        public string get_description () {
+            if (this == NONE) {
+                return _("None");
+            }
+            return get_xkb_info ().description_for_option ("grp", to_string ());
+        }
+    }
+
     public string get_current_language () {
         var context = Addin.get_instance ().context;
         if (context.has_key ("language-locale")) {
@@ -268,5 +333,21 @@ namespace Keyboard {
         }
 
         return found_latin;
+    }
+
+    // This function is trying its best
+    bool try_to_detect_hw_keyboatd () {
+        string cmd = "cat /proc/bus/input/devices | grep -i keyboard";
+
+        try {
+            var sp = new Subprocess.newv (
+                {"sh", "-c", cmd},
+                GLib.SubprocessFlags.STDOUT_SILENCE | GLib.SubprocessFlags.STDERR_SILENCE
+            );
+            return sp.wait_check ();
+        } catch (Error e) {
+            warning ("Failed to exec '%s': %s", cmd, e.message);
+            return false;
+        }
     }
 }
