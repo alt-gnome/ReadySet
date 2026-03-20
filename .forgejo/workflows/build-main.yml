@@ -61,13 +61,14 @@ jobs:
         run: meson compile -C _build
 
       - name: Setup git
+        if: github.event_name != 'pull_request' && github.ref_name == 'main'
         run: |
           git config --global user.name "CI Bot"
           git config --global user.email "ci@altlinux.space"
           git config --global --add safe.directory '*'
 
       - name: Update pot file for Weblate
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.ref_name == 'main'
         run: |
           has_real_changes() {
             git diff --cached -U0 | grep -E '^[+-]' \
@@ -98,7 +99,7 @@ jobs:
           git push
 
       - name: Deploy pages
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.ref_name == 'main'
         uses: actions/deploy-pages@v1
         with:
           directory: ./_build/lib/doc/ready-set-vala
