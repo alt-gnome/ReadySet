@@ -8,6 +8,8 @@ lib/src/utils.vala
 plugins/keyboard/data/ui/input-chooser.blp
 plugins/keyboard/data/ui/input-row.blp
 plugins/keyboard/data/ui/page.blp
+plugins/keyboard/enums.vala
+plugins/keyboard/layout-switch-button.vala
 plugins/keyboard/plugin.vala
 plugins/language/box.vala
 plugins/language/data/ui/box.blp
