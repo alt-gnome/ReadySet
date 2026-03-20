@@ -118,9 +118,8 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             var name = get_row_name (info);
 
             if (name != null) {
-                current_input_list.append (new InputRow (info, name) {
-                    is_selected = true,
-                    draggable = true
+                current_input_list.append (new InputRow (info, name, false, true) {
+                    is_selected = true
                 });
             }
         }

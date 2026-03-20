@@ -21,48 +21,54 @@
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Keyboard/ui/input-row.ui")]
 public sealed class Keyboard.InputRow : Adw.ActionRow {
 
-    [GtkChild]
-    unowned Gtk.DropTarget drop_target;
-
     public InputInfo input_info { get; construct; }
 
     public bool is_extra { get; construct set; }
 
     public new bool is_selected { get; set; }
 
-    public bool draggable { get; set; }
+    public bool draggable { get; construct; }
 
-    public InputRow (InputInfo input_info, string name, bool is_extra = false) {
+    public InputRow (InputInfo input_info, string name, bool is_extra = false, bool draggable = false) {
         Object (
             input_info: input_info,
             title: name,
-            is_extra: is_extra
+            is_extra: is_extra,
+            draggable: draggable
         );
     }
 
     construct {
         if (draggable) {
-            drop_target.set_gtypes ({typeof (InputInfo)});
+            var drag_src = new Gtk.DragSource ();
+            var drop_trg = new Gtk.DropTarget (typeof (InputInfo), MOVE);
+
+            drag_src.actions = MOVE;
+
+            drag_src.prepare.connect (on_dragsource_prepare);
+            drag_src.drag_begin.connect (on_dragsource_drag_begin);
+            drag_src.drag_end.connect (on_dragsource_drag_end);
+
+            drop_trg.drop.connect (on_droptarget_drop);
+
+            add_controller (drag_src);
+            add_controller (drop_trg);
         }
     }
 
-    [GtkCallback]
     Gdk.ContentProvider? on_dragsource_prepare (Gtk.DragSource dnd_src, double x, double y) {
         dnd_src.set_icon (paintable (), (int) x, (int) y);
         return new Gdk.ContentProvider.for_value (input_info);
     }
 
-    [GtkCallback]
     void on_dragsource_drag_begin (Gtk.DragSource dnd_src, Gdk.Drag drag) {
         add_css_class ("view");
     }
 
-    [GtkCallback]
     void on_dragsource_drag_end (Gtk.DragSource dnd_src, Gdk.Drag drag, bool delete_data) {
         remove_css_class ("view");
     }
 
-    [GtkCallback]
     bool on_droptarget_drop (Gtk.DropTarget drop_trg, Value value, double x, double y) {
         var where = input_info;
         var what = (InputInfo) value.get_object ();
@@ -88,7 +94,7 @@ public sealed class Keyboard.InputRow : Adw.ActionRow {
         });
     }
 
-    public Gdk.Paintable paintable () {
+    Gdk.Paintable paintable () {
         var sshot = new Gtk.Snapshot ();
         snapshot (sshot);
         var node = sshot.to_node ();

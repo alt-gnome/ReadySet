@@ -39,16 +39,4 @@ template $KeyboardInputRow: Adw.ActionRow {
     clicked => $on_preview_clicked();
     tooltip-text: _("Preview");
   }
-
-  DragSource {
-    actions: move;
-    prepare => $on_dragsource_prepare();
-    drag-begin => $on_dragsource_drag_begin();
-    drag-end => $on_dragsource_drag_end();
-  }
-
-  DropTarget drop_target {
-    actions: move;
-    drop => $on_droptarget_drop();
-  }
 }
