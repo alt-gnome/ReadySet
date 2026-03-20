@@ -50,69 +50,9 @@ public interface Keyboard.Locale1 : Object {
     ) throws Error;
 }
 
-public class Keyboard.InputInfo : Object {
-
-    public string id { get; construct; }
-
-    public string layout { get; construct; }
-
-    public string? variant { get; construct; }
-
-    public string type_ { get; construct; }
-
-    public string format { get; construct; }
-
-    public bool is_latin { get; construct; }
-
-    public InputInfo (string type, string id_) {
-        Object (
-            id: id_,
-            type_: type,
-            format: "%s::%s".printf (type, id_)
-        );
-    }
-
-    public InputInfo.from_format (string format) {
-        var parts = format.split ("::", 2);
-        if (parts.length != 2) {
-            error ("Invalid input sources format: `%s`", format);
-        }
-        Object (
-            id: parts[1],
-            type_: parts[0],
-            format: format
-        );
-    }
-
-    construct {
-        var parts = id.split ("+", 2);
-        layout = parts[0];
-        if (parts.length == 2) {
-            variant = parts[1];
-        }
-
-        if (type_ == "xkb") {
-            is_latin = xkb_has_latin (layout, variant);
-        }
-    }
-
-    public uint _hash () {
-        return format.hash ();
-    }
-
-    public static uint hash (InputInfo a) {
-        return a._hash ();
-    }
-
-    public static bool equal (InputInfo a, InputInfo b) {
-        return strcmp (a.format, b.format) == 0;
-    }
-}
-
 namespace Keyboard {
 
     Gnome.XkbInfo xkb_info;
-
     Gnome.XkbInfo get_xkb_info () {
         if (xkb_info == null) {
             xkb_info = new Gnome.XkbInfo ();
@@ -121,59 +61,22 @@ namespace Keyboard {
         return xkb_info;
     }
 
-    public enum AdditionalLayoutSwitch {
-        NONE,
-        ALT_SHIFT,
-        CTRL_SHIFT,
-        CAPS;
-
-        public static AdditionalLayoutSwitch from_string (string ls) {
-            switch (ls) {
-                case "grp:alt_shift_toggle":
-                    return ALT_SHIFT;
-                case "grp:ctrl_shift_toggle":
-                    return CTRL_SHIFT;
-                case "grp:caps_toggle":
-                    return CAPS;
-                default:
-                    return NONE;
-            }
+    Xkb.Context? context;
+    Xkb.Context? get_context () {
+        if (context == null) {
+            context = new Xkb.Context (Xkb.ContextFlags.NO_FLAGS);
         }
 
-        public string to_string () {
-            switch (this) {
-                case ALT_SHIFT:
-                    return "grp:alt_shift_toggle";
-                case CTRL_SHIFT:
-                    return "grp:ctrl_shift_toggle";
-                case CAPS:
-                    return "grp:caps_toggle";
-                default:
-                    assert_not_reached ();
-            }
+        return context;
+    }
+
+    Settings input_sources_settings;
+    Settings get_input_sources_settings () {
+        if (input_sources_settings == null) {
+            input_sources_settings = new Settings ("org.gnome.desktop.input-sources");
         }
 
-        public string[] to_buttons () {
-            switch (this) {
-                case NONE:
-                    return {};
-                case ALT_SHIFT:
-                    return { "Alt", "Shift" };
-                case CTRL_SHIFT:
-                    return { "Ctrl", "Shift" };
-                case CAPS:
-                    return { "Caps Lock" };
-                default:
-                    assert_not_reached ();
-            }
-        }
-
-        public string get_description () {
-            if (this == NONE) {
-                return _("None");
-            }
-            return get_xkb_info ().description_for_option ("grp", to_string ());
-        }
+        return input_sources_settings;
     }
 
     public string get_current_language () {
@@ -195,15 +98,6 @@ namespace Keyboard {
         }
 
         return (InputSources) inputs;
-    }
-
-    Settings input_sources_settings;
-    Settings get_input_sources_settings () {
-        if (input_sources_settings == null) {
-            input_sources_settings = new Settings ("org.gnome.desktop.input-sources");
-        }
-
-        return input_sources_settings;
     }
 
     public void set_current_inputs (InputSources inputs) {
@@ -280,16 +174,6 @@ namespace Keyboard {
         } catch (Error e) {
             return {};
         }
-    }
-
-    Xkb.Context? context;
-
-    Xkb.Context? get_context () {
-        if (context == null) {
-            context = new Xkb.Context (Xkb.ContextFlags.NO_FLAGS);
-        }
-
-        return context;
     }
 
     public bool xkb_has_latin (string layout, string? variant = null) {

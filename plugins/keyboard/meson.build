@@ -8,8 +8,10 @@ plugin_keyboard_deps = [
 ]
 
 plugin_keyboard_sources = files(
+  'enums.vala',
   'ibus-utils.vala',
   'input-chooser.vala',
+  'input-info.vala',
   'input-row.vala',
   'input-sources.vala',
   'layout-switch-button.vala',
