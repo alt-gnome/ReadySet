@@ -216,16 +216,16 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         }
     }
 
-    void add_uid_file (int64 uid) {
-        var gis_uid_path = Path.build_filename (Environment.get_home_dir (), "gnome-initial-setup-uid");
-        var uid_str = uid.to_string ();
+    // void add_uid_file (int64 uid) {
+    //     var gis_uid_path = Path.build_filename (Environment.get_home_dir (), "gnome-initial-setup-uid");
+    //     var uid_str = uid.to_string ();
 
-        try {
-            FileUtils.set_contents (gis_uid_path, uid_str);
-        } catch (Error e) {
-            warning ("Unable to create %s: %s", gis_uid_path, e.message);
-        }
-    }
+    //     try {
+    //         FileUtils.set_contents (gis_uid_path, uid_str);
+    //     } catch (Error e) {
+    //         warning ("Unable to create %s: %s", gis_uid_path, e.message);
+    //     }
+    // }
 
     void log_user_in () {
         var context = Application.get_default ().context;
@@ -247,7 +247,11 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
         try {
             debug ("Begin verification for user");
-            user_verifier.call_begin_verification_for_user_sync (SERVICE_NAME, context.get_string ("user-username"), null);
+            user_verifier.call_begin_verification_for_user_sync (
+                SERVICE_NAME,
+                context.get_string ("user-username"),
+                null
+            );
             debug ("Verification for user succeed");
         } catch (Error e) {
             warning ("Could not begin verification: %s", e.message);
