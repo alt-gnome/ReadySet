@@ -57,7 +57,7 @@ public sealed class Keyboard.InputRow : Adw.ActionRow {
     }
 
     Gdk.ContentProvider? on_dragsource_prepare (Gtk.DragSource dnd_src, double x, double y) {
-        dnd_src.set_icon (paintable (), (int) x, (int) y);
+        dnd_src.set_icon (new Gtk.WidgetPaintable (this).get_current_image (), (int) x, (int) y);
         return new Gdk.ContentProvider.for_value (input_info);
     }
 
@@ -92,20 +92,5 @@ public sealed class Keyboard.InputRow : Adw.ActionRow {
         dialog.closed.connect (() => {
             set_user_inputs (current_inputs.to_array ());
         });
-    }
-
-    Gdk.Paintable paintable () {
-        var sshot = new Gtk.Snapshot ();
-        snapshot (sshot);
-        var node = sshot.to_node ();
-
-        Graphene.Rect bounds;
-        compute_bounds (this, out bounds);
-
-        var s2shot = new Gtk.Snapshot ();
-        s2shot.append_node (node);
-        s2shot.render_background (get_style_context (), 0, 0, bounds.get_width (), bounds.get_height ());
-
-        return s2shot.to_paintable (null);
     }
 }
