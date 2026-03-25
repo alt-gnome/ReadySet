@@ -141,6 +141,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
                 stack.visible_child_name = "error";
                 is_ready = false;
+
             } catch (Error e) {
                 error_status_page.title = _("Error while execute post hooks");
                 error_status_page.description = _("Error message: %s").printf (e.message);
