@@ -1,0 +1,22 @@
+object dbb44df5d68c68ff01305e14abe223ba795cae97
+type commit
+tag v0.6.2
+tagger Gitea <gitea@fake.local> 1774465637 +0300
+
+Little update 0.6.2
+
+- Hook execution errors (IOError) are now `warning` instead of `error`.
+- Increased ReadySet service timeout for long-running hooks.
+- Increased default window size.
+
+- Added Drag & Drop for reordering input sources.
+- Added layout preview dialog.
+- Added option to select layout switch combination (Alt+Shift, Ctrl+Shift, Caps Lock).
+- Used system `xkb-model` instead of hardcoded value.
+- Fixed crash when dropping an item on itself.
+
+- Used standard `GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT` transition.
+
+- Added pre-commit hooks for Vala and Blueprint linting.
+
+- Moved `gnome-initial-setup` conflict to `gdm` subpackage.
