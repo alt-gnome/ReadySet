@@ -116,18 +116,22 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                     }
                 }
 
-                if (context.mode == Mode.INITIAL_SETUP || context.mode == Mode.INSTALLER) {
-                    var raw_context = context.get_raw_string ();
-                    var env = new Gee.ArrayList<string> ();
+                try {
+                    if (context.mode == Mode.INITIAL_SETUP || context.mode == Mode.INSTALLER) {
+                        var raw_context = context.get_raw_string ();
+                        var env = new Gee.ArrayList<string> ();
 
-                    foreach (var key in raw_context.get_keys ()) {
-                        env.add ("%s=%s".printf (context_key_to_env_key (key), raw_context[key]));
-                    }
+                        foreach (var key in raw_context.get_keys ()) {
+                            env.add ("%s=%s".printf (context_key_to_env_key (key), raw_context[key]));
+                        }
 
-                    if (context.mode == Mode.INITIAL_SETUP) {
-                        yield exec_user_post_hooks (env.to_array ());
+                        if (context.mode == Mode.INITIAL_SETUP) {
+                            yield exec_user_post_hooks (env.to_array ());
+                        }
+                        yield get_ready_set_proxy ().exec_post_hooks (env.to_array ());
                     }
-                    yield get_ready_set_proxy ().exec_post_hooks (env.to_array ());
+                } catch (IOError e) {
+                    warning ("IOError on executing post hooks: %s", e.message);
                 }
 
                 stack.visible_child_name = "ready";

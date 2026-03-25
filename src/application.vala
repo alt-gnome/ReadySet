@@ -141,6 +141,8 @@ public sealed class ReadySet.Application: Adw.Application {
                     yield exec_user_pre_hooks ();
                 }
                 yield get_ready_set_proxy ().exec_pre_hooks ();
+            } catch (IOError e) {
+                warning ("IOError on executing pre hooks: %s", e.message);
             } catch (Error e) {
                 error ("Failed to executing pre hooks: %s", e.message);
             }
