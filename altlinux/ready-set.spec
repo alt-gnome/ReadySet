@@ -24,7 +24,6 @@ Source: %name-%version.tar
 Patch: %name-%version-%release.patch
 
 Requires: %name-common = %EVR
-Conflicts: %gis_name
 
 BuildRequires(pre): rpm-macros-meson
 BuildRequires(pre): rpm-macros-systemd
@@ -62,6 +61,7 @@ Group: Graphical desktop/Other
 
 Requires: %name = %EVR
 Requires: gdm
+Conflicts: %gis_name
 
 %description gdm
 %summary.
