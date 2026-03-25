@@ -31,6 +31,8 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
     unowned Gtk.Stack current_input_list_stack;
     [GtkChild]
     unowned Gtk.Stack input_list_stack;
+    [GtkChild]
+    unowned Gtk.ListBox switch_box;
 
     const string INPUT_SOURCE_TYPE_XKB = "xkb";
     const string INPUT_SOURCE_TYPE_IBUS = "ibus";
@@ -44,14 +46,20 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
     Gee.HashMap<InputInfo, InputRow> input_rows;
     Gnome.XkbInfo xkb_info;
 
+    bool has_hw_keybaord = try_to_detect_hw_keyboatd ();
+
 #if HAVE_IBUS
     IBus.Bus ibus;
     Gee.HashMap<string, IBus.EngineDesc> ibus_engines;
     Cancellable ibus_cancellable;
 #endif
 
+    static construct {
+        typeof (LayoutSwitchRow).ensure ();
+    }
+
     construct {
-        xkb_info = new Gnome.XkbInfo ();
+        xkb_info = get_xkb_info ();
 
 #if HAVE_IBUS
         IBus.init ();
@@ -71,7 +79,6 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
 
         input_rows = new Gee.HashMap<InputInfo, InputRow> (InputInfo.hash, InputInfo.equal);
 
-        current_input_list.set_sort_func (sort_inputs);
         input_list.set_sort_func (sort_inputs);
         input_list.set_filter_func (input_visible);
 
@@ -103,13 +110,17 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             current_input_list_stack.visible_child_name = "nothing-selected";
         } else {
             current_input_list_stack.visible_child_name = "sources";
+
+            switch_box.visible = current_inputs.size > 1 && has_hw_keybaord;
         }
 
-        foreach (var info in current_inputs) {
+        foreach (var info in current_inputs.to_array ()) {
             var name = get_row_name (info);
 
             if (name != null) {
-                current_input_list.append (new InputRow (info, name) { is_selected = true });
+                current_input_list.append (new InputRow (info, name, false, true) {
+                    is_selected = true
+                });
             }
         }
 
@@ -228,19 +239,19 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             return;
         }
 
-        var current_inputs_info = get_current_inputs ();
+        var inputs = get_current_inputs ();
 
         var input_row = (InputRow) row;
         input_row.is_selected = !input_row.is_selected;
 
         if (input_row.is_selected) {
-            current_inputs_info.add (input_row.input_info);
+            inputs.add (input_row.input_info);
         } else {
-            current_inputs_info.remove (input_row.input_info);
+            inputs.remove (input_row.input_info);
         }
 
-        set_current_inputs (current_inputs_info);
-        changed (current_inputs_info.to_array ());
+        set_current_inputs (inputs);
+        changed (inputs.to_array ());
 
         sync_all_checkmarks ();
 
@@ -283,7 +294,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             return false;
         }
 
-        foreach (var input_info in get_current_inputs ()) {
+        foreach (var input_info in get_current_inputs ().to_array ()) {
             if (!show_more && input_row.input_info.format == input_info.format) {
                 return false;
             }
@@ -304,11 +315,11 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         string country = null;
 
         Addin.get_instance ().context.reset ("keyboard-input-sources");
-        var current_inputs_info = get_current_inputs ();
+        var inputs = get_current_inputs ();
 
         if (Gnome.Languages.get_input_source_from_locale (get_current_language (), out type, out id)) {
-            current_inputs_info.add (new InputInfo (type, id));
-            set_current_inputs (current_inputs_info);
+            inputs.add (new InputInfo (type, id));
+            set_current_inputs (inputs);
 
             yield add_row_to_list (type, id, false);
         }

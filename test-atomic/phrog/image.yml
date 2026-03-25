@@ -5,6 +5,7 @@ modules:
         - systemd-stateless
         - icon-theme-adwaita
         - phrog
+      update: true
 
   - type: systemd
     body:

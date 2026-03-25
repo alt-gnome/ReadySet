@@ -50,66 +50,34 @@ public interface Keyboard.Locale1 : Object {
     ) throws Error;
 }
 
-public class Keyboard.InputInfo : Object {
-
-    public string id { get; construct; }
-
-    public string layout { get; construct; }
-
-    public string? variant { get; construct; }
-
-    public string type_ { get; construct; }
-
-    public string format { get; construct; }
-
-    public bool is_latin { get; construct; }
-
-    public InputInfo (string type, string id_) {
-        Object (
-            id: id_,
-            type_: type,
-            format: "%s::%s".printf (type, id_)
-        );
-    }
-
-    public InputInfo.from_format (string format) {
-        var parts = format.split ("::", 2);
-        if (parts.length != 2) {
-            error ("Invalid input sources format: `%s`", format);
-        }
-        Object (
-            id: parts[1],
-            type_: parts[0],
-            format: format
-        );
-    }
-
-    construct {
-        var parts = id.split ("+", 2);
-        layout = parts[0];
-        if (parts.length == 2) {
-            variant = parts[1];
-        }
-
-        if (type_ == "xkb") {
-            is_latin = xkb_has_latin (layout, variant);
-        }
-    }
-
-    public uint _hash () {
-        return format.hash ();
-    }
-
-    public static uint hash (InputInfo a) {
-        return a._hash ();
-    }
-
-    public static bool equal (InputInfo a, InputInfo b) {
-        return strcmp (a.format, b.format) == 0;
-    }
-}
-
 namespace Keyboard {
+
+    Gnome.XkbInfo xkb_info;
+    Gnome.XkbInfo get_xkb_info () {
+        if (xkb_info == null) {
+            xkb_info = new Gnome.XkbInfo ();
+        }
+
+        return xkb_info;
+    }
+
+    Xkb.Context? context;
+    Xkb.Context? get_context () {
+        if (context == null) {
+            context = new Xkb.Context (Xkb.ContextFlags.NO_FLAGS);
+        }
+
+        return context;
+    }
+
+    Settings input_sources_settings;
+    Settings get_input_sources_settings () {
+        if (input_sources_settings == null) {
+            input_sources_settings = new Settings ("org.gnome.desktop.input-sources");
+        }
+
+        return input_sources_settings;
+    }
 
     public string get_current_language () {
         var context = Addin.get_instance ().context;
@@ -120,7 +88,7 @@ namespace Keyboard {
         return "C";
     }
 
-    public Gee.HashSet<InputInfo> get_current_inputs () {
+    public InputSources get_current_inputs () {
         var context = Addin.get_instance ().context;
 
         var inputs = context.get_object ("keyboard-input-sources");
@@ -129,27 +97,17 @@ namespace Keyboard {
             inputs = new InputSources ();
         }
 
-        return ((InputSources) inputs).data;
+        return (InputSources) inputs;
     }
 
-    public void set_current_inputs (Gee.HashSet<InputInfo> inputs) {
-        var isources = new InputSources ();
-        isources.data = inputs;
-
+    public void set_current_inputs (InputSources inputs) {
         var context = Addin.get_instance ().context;
 
         if (!context.sandbox) {
-            VariantBuilder builder = new VariantBuilder (new VariantType ("a(ss)"));
-
-            foreach (var info in inputs) {
-                builder.add ("(ss)", info.type_, info.id);
-            }
-
-            var settings = new Settings ("org.gnome.desktop.input-sources");
-            settings.set_value ("sources", builder.end ());
+            set_user_inputs (inputs.to_array ());
         }
 
-        context.set_object ("keyboard-input-sources", isources);
+        context.set_object ("keyboard-input-sources", inputs);
     }
 
     Keyboard.Locale1 get_locale_proxy () throws Error {
@@ -164,6 +122,16 @@ namespace Keyboard {
             "/org/freedesktop/locale1",
             DBusProxyFlags.NONE
         );
+    }
+
+    void set_user_inputs (InputInfo[] inputs) {
+        VariantBuilder builder = new VariantBuilder (new VariantType ("a(ss)"));
+
+        foreach (var info in inputs) {
+            builder.add ("(ss)", info.type_, info.id);
+        }
+
+        get_input_sources_settings ().set_value ("sources", builder.end ());
     }
 
     InputInfo[] get_system_inputs () {
@@ -208,16 +176,6 @@ namespace Keyboard {
         }
     }
 
-    Xkb.Context? context;
-
-    Xkb.Context? get_context () {
-        if (context == null) {
-            context = new Xkb.Context (Xkb.ContextFlags.NO_FLAGS);
-        }
-
-        return context;
-    }
-
     public bool xkb_has_latin (string layout, string? variant = null) {
         if (layout == "custom") {
             return false;
@@ -230,7 +188,7 @@ namespace Keyboard {
 
         Xkb.RulesNames names = {
             rules: "evdev",
-            model: "pc105",
+            model: get_input_sources_settings ().get_string ("xkb-model"),
             layout: layout,
             variant: variant,
             options: null
@@ -259,5 +217,21 @@ namespace Keyboard {
         }
 
         return found_latin;
+    }
+
+    // This function is trying its best
+    bool try_to_detect_hw_keyboatd () {
+        string cmd = "cat /proc/bus/input/devices | grep -i keyboard";
+
+        try {
+            var sp = new Subprocess.newv (
+                {"sh", "-c", cmd},
+                GLib.SubprocessFlags.STDOUT_SILENCE | GLib.SubprocessFlags.STDERR_SILENCE
+            );
+            return sp.wait_check ();
+        } catch (Error e) {
+            warning ("Failed to exec '%s': %s", cmd, e.message);
+            return false;
+        }
     }
 }

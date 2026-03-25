@@ -22,16 +22,6 @@ public class Keyboard.Addin : ReadySet.StepAddin {
 
     static Addin instance;
 
-    bool _accessible;
-    public override bool accessible {
-        get {
-            return _accessible;
-        }
-        protected set {
-            _accessible = value;
-        }
-    }
-
     protected override string? resource_base_path {
         get {
             return "/org/altlinux/ReadySet/Plugin/Keyboard/";
@@ -83,11 +73,11 @@ public class Keyboard.Addin : ReadySet.StepAddin {
             string input_type, input_id;
 
             item.get ("(ss)", out input_type, out input_id);
-            inputs.data.add (new InputInfo (input_type, input_id));
+            inputs.add (new InputInfo (input_type, input_id));
         }
 
-        if (inputs.data.size == 0) {
-            inputs.data.add_all_array (get_system_inputs ());
+        if (inputs.size == 0) {
+            inputs.add_many (get_system_inputs ());
         }
 
         return inputs;
@@ -96,24 +86,23 @@ public class Keyboard.Addin : ReadySet.StepAddin {
     public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
         try {
             var proxy = get_locale_proxy ();
+            var settings = get_input_sources_settings ();
 
-            var current_inputs_info = get_current_inputs ();
-            var inputs = current_inputs_info.to_array ();
+            var inputs = get_current_inputs ();
 
             var layouts = new Gee.ArrayList<string> ();
             var variants = new Gee.ArrayList<string> ();
 
-            foreach (var input in inputs) {
+            foreach (var input in inputs.to_array ()) {
                 layouts.add (input.layout);
                 variants.add (input.variant ?? "");
             }
 
-            yield proxy.set_x_11_keyboard (string.joinv (
-                ",",
-                layouts.to_array ()),
-                "",
+            yield proxy.set_x_11_keyboard (
+                string.joinv (",", layouts.to_array ()),
+                settings.get_string ("xkb-model"),
                 string.joinv (",", variants.to_array ()),
-                "",
+                string.joinv (",", settings.get_strv ("xkb-options")),
                 true,
                 true
             );

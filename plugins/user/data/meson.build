@@ -17,6 +17,7 @@ plugin_user_resources = gnome.compile_resources(
     input: plugin_user_blueprints,
     output: '.',
     command: [ find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@' ],
+    build_always_stale: true,
   )
 )
 

@@ -26,14 +26,7 @@ public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
         }
     }
 
-    public virtual bool accessible {
-        get {
-            return true;
-        }
-        protected set {
-            return;
-        }
-    }
+    public virtual bool accessible { get; set; default = true; }
 
     public Context context { get; set; default = new Context (true); }
 

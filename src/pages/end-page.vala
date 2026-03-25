@@ -116,18 +116,22 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                     }
                 }
 
-                if (context.mode == Mode.INITIAL_SETUP || context.mode == Mode.INSTALLER) {
-                    var raw_context = context.get_raw_string ();
-                    var env = new Gee.ArrayList<string> ();
+                try {
+                    if (context.mode == Mode.INITIAL_SETUP || context.mode == Mode.INSTALLER) {
+                        var raw_context = context.get_raw_string ();
+                        var env = new Gee.ArrayList<string> ();
 
-                    foreach (var key in raw_context.get_keys ()) {
-                        env.add ("%s=%s".printf (context_key_to_env_key (key), raw_context[key]));
-                    }
+                        foreach (var key in raw_context.get_keys ()) {
+                            env.add ("%s=%s".printf (context_key_to_env_key (key), raw_context[key]));
+                        }
 
-                    if (context.mode == Mode.INITIAL_SETUP) {
-                        yield exec_user_post_hooks (env.to_array ());
+                        if (context.mode == Mode.INITIAL_SETUP) {
+                            yield exec_user_post_hooks (env.to_array ());
+                        }
+                        yield get_ready_set_proxy ().exec_post_hooks (env.to_array ());
                     }
-                    yield get_ready_set_proxy ().exec_post_hooks (env.to_array ());
+                } catch (IOError e) {
+                    warning ("IOError on executing post hooks: %s", e.message);
                 }
 
                 stack.visible_child_name = "ready";
@@ -141,6 +145,7 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
                 stack.visible_child_name = "error";
                 is_ready = false;
+
             } catch (Error e) {
                 error_status_page.title = _("Error while execute post hooks");
                 error_status_page.description = _("Error message: %s").printf (e.message);
@@ -216,16 +221,16 @@ public sealed class ReadySet.EndPage : BaseBarePage {
         }
     }
 
-    void add_uid_file (int64 uid) {
-        var gis_uid_path = Path.build_filename (Environment.get_home_dir (), "gnome-initial-setup-uid");
-        var uid_str = uid.to_string ();
+    // void add_uid_file (int64 uid) {
+    //     var gis_uid_path = Path.build_filename (Environment.get_home_dir (), "gnome-initial-setup-uid");
+    //     var uid_str = uid.to_string ();
 
-        try {
-            FileUtils.set_contents (gis_uid_path, uid_str);
-        } catch (Error e) {
-            warning ("Unable to create %s: %s", gis_uid_path, e.message);
-        }
-    }
+    //     try {
+    //         FileUtils.set_contents (gis_uid_path, uid_str);
+    //     } catch (Error e) {
+    //         warning ("Unable to create %s: %s", gis_uid_path, e.message);
+    //     }
+    // }
 
     void log_user_in () {
         var context = Application.get_default ().context;
@@ -247,7 +252,11 @@ public sealed class ReadySet.EndPage : BaseBarePage {
 
         try {
             debug ("Begin verification for user");
-            user_verifier.call_begin_verification_for_user_sync (SERVICE_NAME, context.get_string ("user-username"), null);
+            user_verifier.call_begin_verification_for_user_sync (
+                SERVICE_NAME,
+                context.get_string ("user-username"),
+                null
+            );
             debug ("Verification for user succeed");
         } catch (Error e) {
             warning ("Could not begin verification: %s", e.message);

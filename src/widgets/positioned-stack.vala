@@ -37,13 +37,7 @@ public class ReadySet.PositionedStack : Adw.Bin {
 
             value = value.clamp (0, childs.size - 1);
 
-            Gtk.StackTransitionType tt = transition_type;
-
-            if (tt == Gtk.StackTransitionType.NONE) {
-                tt = position > value ? Gtk.StackTransitionType.SLIDE_RIGHT : Gtk.StackTransitionType.SLIDE_LEFT;
-            }
-
-            stack.set_visible_child_full (childs[(int) value].id, tt);
+            stack.visible_child_name = childs[(int) value].id;
         }
     }
 
@@ -77,6 +71,13 @@ public class ReadySet.PositionedStack : Adw.Bin {
 
     construct {
         child = stack;
+
+        bind_property (
+            "transition-type",
+            stack,
+            "transition-type",
+            GLib.BindingFlags.SYNC_CREATE
+        );
 
         bind_property (
             "hhomogeneous",

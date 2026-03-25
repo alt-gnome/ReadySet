@@ -47,6 +47,8 @@ namespace ReadySet {
                 "/org/altlinux/ReadySet",
                 DBusProxyFlags.NONE
             );
+
+            ((DBusProxy) ready_set_proxy).set_default_timeout (int.MAX);
         }
 
         return ready_set_proxy;

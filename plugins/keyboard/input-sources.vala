@@ -18,13 +18,58 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-internal sealed class Keyboard.InputSources : ReadySet.ContextObject {
+public sealed class Keyboard.InputSources : ReadySet.ContextObject {
 
-    public Gee.HashSet<InputInfo> data = new Gee.HashSet<InputInfo> (InputInfo.hash, InputInfo.equal);
+    Gee.ArrayList<InputInfo> data = new Gee.ArrayList<InputInfo> (InputInfo.equal);
+
+    public int size {
+        get {
+            return data.size;
+        }
+    }
+
+    public bool contains (InputInfo item) {
+        return data.contains (item);
+    }
+
+    public InputSources.take (owned InputInfo[] input_infos) {
+        this.data.add_all_array (input_infos);
+    }
+
+    public void remove (InputInfo input_info) {
+        data.remove (input_info);
+    }
+
+    public void add (owned InputInfo input_info) {
+        if (input_info in data) {
+            return;
+        }
+        data.add (input_info);
+    }
+
+    public void add_many (owned InputInfo[] input_infos) {
+        foreach (var input_info in input_infos) {
+            add (input_info);
+        }
+    }
+
+    public InputInfo[] to_array () {
+        return data.to_array ();
+    }
+
+    public void insert_before (InputInfo what, InputInfo where) {
+        if (!(where in this) || what == where) {
+            return;
+        }
+
+        remove (what);
+
+        data.insert (data.index_of (where), what);
+    }
 
     public override ReadySet.ContextObject copy () {
         var new_set = new InputSources ();
-        new_set.data.add_all (data);
+        new_set.add_many (data.to_array ());
         return new_set;
     }
 }

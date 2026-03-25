@@ -4,6 +4,16 @@ using Adw 1;
 template $KeyboardInputRow: Adw.ActionRow {
   activatable: true;
 
+  [prefix]
+  Image {
+    styles [
+      "dimmed",
+    ]
+
+    icon-name: "list-drag-handle-symbolic";
+    visible: bind template.draggable;
+  }
+
   [suffix]
   Revealer {
     transition-type: crossfade;
@@ -11,7 +21,22 @@ template $KeyboardInputRow: Adw.ActionRow {
 
     Image {
       icon-name: "object-select-symbolic";
+      tooltip-text: _("This layout selected");
       margin-end: 4;
     }
+  }
+
+  [suffix]
+  Button {
+    styles [
+      "flat",
+      "dimmed",
+    ]
+
+    valign: center;
+    halign: center;
+    icon-name: "text-insert-symbolic";
+    clicked => $on_preview_clicked();
+    tooltip-text: _("Preview");
   }
 }

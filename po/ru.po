@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 19:41+0000\n"
+"POT-Creation-Date: 2026-03-20 11:49+0000\n"
 "PO-Revision-Date: 2026-03-16 19:40+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -48,24 +48,24 @@ msgstr "песочница"
 msgid "Open application menu"
 msgstr "Открыть меню приложения"
 
-#: data/ui/steps-main-page.blp:105
+#: data/ui/steps-main-page.blp:107
 msgid "Go to previous page"
 msgstr "К предыдущей странице"
 
-#: data/ui/steps-main-page.blp:133
+#: data/ui/steps-main-page.blp:135
 msgid "Next"
 msgstr "Дальше"
 
 #. TRANSLATORS: Last word in "Ready Set ..." sentence
-#: data/ui/steps-main-page.blp:150
+#: data/ui/steps-main-page.blp:152
 msgid "Go!"
 msgstr "Марш!"
 
-#: data/ui/steps-main-page.blp:173
+#: data/ui/steps-main-page.blp:175
 msgid "Go up"
 msgstr "Наверх"
 
-#: data/ui/steps-main-page.blp:188
+#: data/ui/steps-main-page.blp:190
 msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
 
@@ -77,7 +77,7 @@ msgstr "Все шаги"
 msgid "Main"
 msgstr "Главная"
 
-#: lib/src/base/base-bare-page.vala:62
+#: lib/src/base/base-bare-page.vala:55
 msgid "Unknown"
 msgstr "Неизвестно"
 
@@ -97,19 +97,31 @@ msgstr "Что-то пошло не так"
 msgid "Search keyboards and input methods"
 msgstr "Поиск раскладок и методов ввода"
 
-#: plugins/keyboard/data/ui/input-chooser.blp:49
+#: plugins/keyboard/data/ui/input-chooser.blp:51
+msgid "You can specify additional layout switch combination"
+msgstr ""
+
+#: plugins/keyboard/data/ui/input-chooser.blp:66
 msgid "No input sources selected"
 msgstr "Не выбраны источники ввода"
 
-#: plugins/keyboard/data/ui/input-chooser.blp:83
+#: plugins/keyboard/data/ui/input-chooser.blp:100
 #: plugins/language/data/ui/box.blp:57
 msgid "Nothing found"
 msgstr "Ничего не найдено"
 
-#: plugins/keyboard/data/ui/input-chooser.blp:98
+#: plugins/keyboard/data/ui/input-chooser.blp:115
 #: plugins/language/data/ui/box.blp:72
 msgid "Show more"
 msgstr "Показать больше"
+
+#: plugins/keyboard/data/ui/input-row.blp:24
+msgid "This layout selected"
+msgstr ""
+
+#: plugins/keyboard/data/ui/input-row.blp:40
+msgid "Preview"
+msgstr ""
 
 #: plugins/keyboard/data/ui/page.blp:5
 msgid "Keyboard"
@@ -128,7 +140,11 @@ msgid "You must select at least one layout containing Latin characters"
 msgstr ""
 "Должна быть выбрана хотя бы одна раскладка, содержащая латинские символы"
 
-#: plugins/keyboard/plugin.vala:121
+#: plugins/keyboard/enums.vala:72 plugins/keyboard/layout-switch-button.vala:62
+msgid "None"
+msgstr ""
+
+#: plugins/keyboard/plugin.vala:110
 msgid "Error when setting keyboard layout"
 msgstr "Ошибка при настройке раскладки клавиатуры"
 
@@ -140,7 +156,7 @@ msgstr "Поиск языка"
 msgid "Language"
 msgstr "Язык"
 
-#: plugins/language/plugin.vala:124
+#: plugins/language/plugin.vala:114
 msgid "Error when setting language"
 msgstr "Ошибка при настройке языка"
 
@@ -258,7 +274,7 @@ msgstr "Пароль должен состоять минимум из одно�
 msgid "Failed to generate password"
 msgstr "Не удалось сгенерироавть пароль"
 
-#: plugins/user/plugin.vala:81
+#: plugins/user/plugin.vala:79
 msgid "Error when creating a user"
 msgstr "Ошибка при создании пользователя"
 

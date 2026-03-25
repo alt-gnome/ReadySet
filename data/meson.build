@@ -12,6 +12,7 @@ rs_app_blueprints = custom_target('blueprints',
   ),
   output: '.',
   command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
+  build_always_stale: true,
 )
 
 i18n.merge_file(
