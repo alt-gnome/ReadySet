@@ -59,6 +59,7 @@ template $ReadySetStepsMainPage: Adw.Bin {
         vexpand: true;
         valign: center;
         show-icons: bind template.show-steps-list inverted;
+        visible: bind template.dead-end inverted;
       };
 
       [end]
