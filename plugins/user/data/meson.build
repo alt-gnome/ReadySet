@@ -3,6 +3,7 @@ plugin_user_blueprints = files(
   'ui/context-row.blp',
   'ui/margin-label.blp',
   'ui/page-password.blp',
+  'ui/page-root-password.blp',
   'ui/page-username.blp',
   'ui/password-strength.blp',
 )

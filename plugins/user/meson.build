@@ -32,6 +32,10 @@ foreach pwcheck_backend : password_check_backend
     pwcheck_backend + '-utils.vala',
   )
 
+  if get_option('user_with_set_root')
+    plugin_user_vala_sources += 'page-root-password.vala'
+  endif
+
   plugin_user_sources = [
     plugin_user_vapi_sources,
     plugin_user_vala_sources,

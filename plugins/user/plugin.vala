@@ -33,14 +33,12 @@ public class User.Addin : ReadySet.StepAddin {
     }
 
     public async override ReadySet.BaseBarePage[] build_pages () {
-#if WITH_ROOT_SET
-        bool with_root = context.get_boolean ("user-with-root");
-#else
-        bool with_root = false;
-#endif
         return {
             new User.PageUsername (),
-            new User.PagePassword () { with_root_password = with_root }
+            new User.PagePassword ()
+#if WITH_ROOT_SET
+            , new User.PageRootPassword ()
+#endif
         };
     }
 
