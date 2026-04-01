@@ -22,9 +22,11 @@
 public sealed class ReadySet.PagesIndicator : Gtk.Box {
 
     [GtkChild]
-    unowned Gtk.Box icons_box;
+    unowned Adw.Carousel icons_box;
     [GtkChild]
     unowned PositionedStack positioned_stack;
+
+    public int animation_duration { get; set; default = 200; }
 
     const int DEFAULT_PIXEL_SIZE = 13;
     const int CURRENT_PIXEL_SIZE = 16;
@@ -112,6 +114,7 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
     }
 
     void indicator_selected (Gtk.Image img) {
+        icons_box.scroll_to (img, true);
         animate_img (img, 0.5, 1.0);
     }
 
@@ -119,12 +122,12 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
         animate_img (img, 1.0, 0.5);
     }
 
-    void animate_img (Gtk.Image img, double start, double end, int duration = 300) {
+    void animate_img (Gtk.Image img, double start, double end) {
         var ani = new Adw.TimedAnimation (
             img,
             start,
             end,
-            duration,
+            animation_duration,
             new Adw.CallbackAnimationTarget ((value) => {
                 var old_min = double.min (start, end);
                 var old_max = double.max (start, end);
