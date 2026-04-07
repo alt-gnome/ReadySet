@@ -2,7 +2,6 @@ data/ui/end-page.blp
 data/ui/nothing-to-show.blp
 data/ui/steps-main-page.blp
 data/ui/window-content.blp
-lib/src/base/base-bare-page.vala
 lib/src/base/base-page.vala
 lib/src/utils.vala
 plugins/keyboard/data/ui/input-chooser.blp
@@ -21,8 +20,10 @@ plugins/tests/data/ui/page.blp
 plugins/user/avatar-chooser.vala
 plugins/user/data/ui/avatar-chooser.blp
 plugins/user/data/ui/page-password.blp
+plugins/user/data/ui/page-root-password.blp
 plugins/user/data/ui/page-username.blp
 plugins/user/page-password.vala
+plugins/user/page-root-password.vala
 plugins/user/page-username.vala
 plugins/user/passwdqc-utils.vala
 plugins/user/plugin.vala
@@ -35,5 +36,6 @@ src/options-handler.vala
 src/pages-model.vala
 src/pages/end-page.vala
 src/widgets/positioned-stack.vala
+src/widgets/steps-main-page.vala
 src/widgets/steps-sidebar.vala
 src/window-content.vala
