@@ -21,7 +21,6 @@
 public sealed class ReadySet.Application: Adw.Application {
 
     const ActionEntry[] ACTION_ENTRIES = {
-        { "finish", finish },
         { "reload-window", reload_window },
     };
 
@@ -37,8 +36,6 @@ public sealed class ReadySet.Application: Adw.Application {
 
     Gee.HashMap<string, StepAddin> steps_plugins = new Gee.HashMap<string, StepAddin> ();
     Gee.HashMap<string, InstallerAddin> installers_plugins = new Gee.HashMap<string, InstallerAddin> ();
-
-    public signal void on_finish ();
 
     public bool can_close {
         get {
@@ -345,11 +342,9 @@ public sealed class ReadySet.Application: Adw.Application {
         return (ReadySet.Application) GLib.Application.get_default ();
     }
 
-    void finish () {
-        debug ("App finish stage");
+    public void hide_window () {
         if (active_window != null) {
             active_window.hide ();
         }
-        on_finish ();
     }
 }

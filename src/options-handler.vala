@@ -150,7 +150,7 @@ public sealed class ReadySet.OptionsHandler : Object {
 
     public int width { get; set; default = 1000; }
 
-    public int height { get; set; default = 900; }
+    public int height { get; set; default = 800; }
 
     public string[] steps_no_apply { get; set; }
 

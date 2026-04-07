@@ -50,8 +50,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     unowned Gtk.Button go_prev_button;
     [GtkChild]
     unowned Gtk.Button go_next_button;
-    [GtkChild]
-    unowned Gtk.Button finish_button;
 
     [GtkChild]
     unowned Adw.Breakpoint big_breakpoint;
@@ -114,7 +112,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                     32;
                 button_center_box.margin_bottom = 6;
                 go_next_button.remove_css_class ("pill");
-                finish_button.remove_css_class ("pill");
 
             } else {
                 osk_button.width_request =
@@ -126,7 +123,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                     48;
                 button_center_box.margin_bottom = 12;
                 go_next_button.add_css_class ("pill");
-                finish_button.add_css_class ("pill");
             }
         }
     }
@@ -351,9 +347,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
         if (position == n_items - 1) {
             main_stack.visible_child_name = "finish";
-            end_page.start_action.begin ((obj, res) => {
-                finish_button.visible = ((EndPage) obj).is_ready;
-            });
+            end_page.start_action.begin ();
         } else {
             model.select_item (model.get_selected () + 1, true);
         }

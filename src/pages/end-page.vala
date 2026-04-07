@@ -44,8 +44,6 @@ public sealed class ReadySet.EndPage : BasePage {
         var app = Application.get_default ();
         var context = app.context;
 
-        app.on_finish.connect (done);
-
         if (context.mode == Mode.INITIAL_SETUP && !context.sandbox) {
             try {
                 client = new Gdm.Client ();
@@ -154,6 +152,12 @@ public sealed class ReadySet.EndPage : BasePage {
                 is_ready = false;
             }
         }
+    }
+
+    [GtkCallback]
+    void on_finish () {
+        Application.get_default ().hide_window ();
+        done ();
     }
 
     void update_progress_visibility () {

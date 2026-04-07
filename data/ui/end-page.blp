@@ -55,6 +55,20 @@ template $ReadySetEndPage: $ReadySetBasePage {
         icon-name: "org.altlinux.ReadySet-symbolic";
         title: _("Ready Set…");
         description: _("The system is ready for use.");
+
+        Button finish_button {
+          styles [
+            "pill",
+            "suggested-action",
+          ]
+
+          halign: center;
+          // TRANSLATORS: Last word in "Ready Set ..." sentence
+          label: _("Go!");
+          width-request: 156;
+          can-shrink: true;
+          clicked => $on_finish();
+        }
       };
     }
 

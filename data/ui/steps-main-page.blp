@@ -518,27 +518,6 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
         }
 
         content: $ReadySetEndPage end_page {};
-
-        [bottom]
-        Button finish_button {
-          styles [
-            "pill",
-            "suggested-action",
-          ]
-
-          margin-bottom: 12;
-          margin-top: 6;
-          margin-start: 12;
-          margin-end: 12;
-          hexpand: true;
-          halign: center;
-          visible: false;
-          // TRANSLATORS: Last word in "Ready Set ..." sentence
-          label: _("Go!");
-          width-request: 156;
-          can-shrink: true;
-          action-name: "app.finish";
-        }
       };
     }
   }
