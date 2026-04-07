@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-20 11:49+0000\n"
+"POT-Creation-Date: 2026-04-07 13:33+0000\n"
 "PO-Revision-Date: 2026-03-16 19:40+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -20,19 +20,19 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.16.2\n"
 
-#: data/ui/end-page.blp:5
+#: data/ui/end-page.blp:24
 msgid "Finishing"
 msgstr "Завершение"
 
-#: data/ui/end-page.blp:20
+#: data/ui/end-page.blp:39
 msgid "Setting up the system…"
 msgstr "Настройка вашей системы…"
 
-#: data/ui/end-page.blp:37
+#: data/ui/end-page.blp:56
 msgid "Ready Set…"
 msgstr "На Старт Внимание…"
 
-#: data/ui/end-page.blp:38
+#: data/ui/end-page.blp:57
 msgid "The system is ready for use."
 msgstr "Система готова к использованию."
 
@@ -40,56 +40,56 @@ msgstr "Система готова к использованию."
 msgid "Nothing to show"
 msgstr "Нечего показывать"
 
-#: data/ui/steps-main-page.blp:35 data/ui/steps-main-page.blp:64
-msgid "sandbox"
-msgstr "песочница"
+#: data/ui/steps-main-page.blp:373 data/ui/steps-main-page.blp:403
+msgid "s&box"
+msgstr ""
 
-#: data/ui/steps-main-page.blp:50
+#: data/ui/steps-main-page.blp:389
 msgid "Open application menu"
 msgstr "Открыть меню приложения"
 
-#: data/ui/steps-main-page.blp:107
-msgid "Go to previous page"
-msgstr "К предыдущей странице"
-
-#: data/ui/steps-main-page.blp:135
-msgid "Next"
-msgstr "Дальше"
-
-#. TRANSLATORS: Last word in "Ready Set ..." sentence
-#: data/ui/steps-main-page.blp:152
-msgid "Go!"
-msgstr "Марш!"
-
-#: data/ui/steps-main-page.blp:175
+#: data/ui/steps-main-page.blp:426
 msgid "Go up"
 msgstr "Наверх"
 
-#: data/ui/steps-main-page.blp:190
+#: data/ui/steps-main-page.blp:469
+msgid "Go to previous page"
+msgstr "К предыдущей странице"
+
+#: data/ui/steps-main-page.blp:488
+msgid "Next"
+msgstr "Дальше"
+
+#: data/ui/steps-main-page.blp:500
 msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
 
-#: data/ui/window-content.blp:27
+#. TRANSLATORS: Last word in "Ready Set ..." sentence
+#: data/ui/steps-main-page.blp:537
+msgid "Go!"
+msgstr "Марш!"
+
+#: data/ui/window-content.blp:43
 msgid "All steps"
 msgstr "Все шаги"
 
-#: data/ui/window-content.blp:39
+#: data/ui/window-content.blp:54
 msgid "Main"
 msgstr "Главная"
 
-#: lib/src/base/base-bare-page.vala:55
-msgid "Unknown"
-msgstr "Неизвестно"
-
-#: lib/src/base/base-page.vala:50
+#: lib/src/base/base-page.vala:24
 msgid "Unknown page"
 msgstr "Неизвестная страница"
 
-#: lib/src/base/base-page.vala:52
+#: lib/src/base/base-page.vala:25
 msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
-#: lib/src/utils.vala:90
+#: lib/src/base/base-page.vala:35
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: lib/src/utils.vala:106
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
@@ -123,19 +123,19 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#: plugins/keyboard/data/ui/page.blp:5
+#: plugins/keyboard/data/ui/page.blp:24
 msgid "Keyboard"
 msgstr "Клавиатура"
 
-#: plugins/keyboard/data/ui/page.blp:6
+#: plugins/keyboard/data/ui/page.blp:29
 msgid "Keyboard settings"
 msgstr "Настройки клавиатуры"
 
-#: plugins/keyboard/data/ui/page.blp:8
+#: plugins/keyboard/data/ui/page.blp:30
 msgid "Select your keyboard layout"
 msgstr "Выберите раскладку клавиатуры"
 
-#: plugins/keyboard/data/ui/page.blp:12
+#: plugins/keyboard/data/ui/page.blp:35
 msgid "You must select at least one layout containing Latin characters"
 msgstr ""
 "Должна быть выбрана хотя бы одна раскладка, содержащая латинские символы"
@@ -152,11 +152,11 @@ msgstr "Ошибка при настройке раскладки клавиат
 msgid "Search language"
 msgstr "Поиск языка"
 
-#: plugins/language/data/ui/page.blp:4
+#: plugins/language/data/ui/page.blp:24
 msgid "Language"
 msgstr "Язык"
 
-#: plugins/language/plugin.vala:114
+#: plugins/language/plugin.vala:117
 msgid "Error when setting language"
 msgstr "Ошибка при настройке языка"
 
@@ -173,11 +173,11 @@ msgid ""
 "Let's start by choosing the language for the application and for your system."
 msgstr "Давайте начнём с выбора языка для приложения и для Вашей системы."
 
-#: plugins/tests/data/ui/page.blp:4 plugins/tests/data/ui/page.blp:9
+#: plugins/tests/data/ui/page.blp:23 plugins/tests/data/ui/page.blp:32
 msgid "Test"
 msgstr "Тест"
 
-#: plugins/tests/data/ui/page.blp:5
+#: plugins/tests/data/ui/page.blp:27
 msgid "Test page"
 msgstr "Тестовая страница"
 
@@ -185,96 +185,101 @@ msgstr "Тестовая страница"
 msgid "Select Avatar"
 msgstr "Выбрать Аватар"
 
-#: plugins/user/data/ui/page-password.blp:5
+#: plugins/user/data/ui/page-password.blp:24
 msgid "Security"
 msgstr "Безопасность"
 
-#: plugins/user/data/ui/page-password.blp:6
+#: plugins/user/data/ui/page-password.blp:28
+#: plugins/user/data/ui/page-root-password.blp:28
 msgid "Set up security for Your device"
 msgstr "Настройте безопасность для Вашего устройства"
 
-#: plugins/user/data/ui/page-password.blp:7
+#: plugins/user/data/ui/page-password.blp:29
 msgid "Come up with a memorable password."
 msgstr "Придумайте запоминающийся пароль."
 
-#: plugins/user/data/ui/page-password.blp:22
+#: plugins/user/data/ui/page-password.blp:48
 msgid "Your user’s password"
 msgstr "Пароль Вашего пользователя"
 
-#: plugins/user/data/ui/page-password.blp:31
+#: plugins/user/data/ui/page-password.blp:57
 msgid "Generate user password"
 msgstr "Сгенерировать пароль пользователя"
 
-#: plugins/user/data/ui/page-password.blp:46
-#: plugins/user/data/ui/page-password.blp:115
+#: plugins/user/data/ui/page-password.blp:72
+#: plugins/user/data/ui/page-root-password.blp:84
 msgid "Passwords do not match"
 msgstr "Пароли не совпадают"
 
-#: plugins/user/data/ui/page-password.blp:50
-#: plugins/user/data/ui/page-password.blp:119
+#: plugins/user/data/ui/page-password.blp:76
+#: plugins/user/data/ui/page-root-password.blp:88
 msgid "Repeat password"
 msgstr "Повторите пароль"
 
-#: plugins/user/data/ui/page-password.blp:64
+#: plugins/user/data/ui/page-password.blp:90
 msgid "Enable autologin"
 msgstr "Включить автоматический вход"
 
-#: plugins/user/data/ui/page-password.blp:71
-msgid ""
-"Set administrator password manualy. Otherwise it will be equal to user "
-"password"
-msgstr ""
-"Установить пароль администратора вручную. Иначе он будет равен паролю "
-"пользователя"
+#: plugins/user/data/ui/page-root-password.blp:24
+#, fuzzy
+msgid "Administrator"
+msgstr "Пароль администратора"
 
-#: plugins/user/data/ui/page-password.blp:91
+#: plugins/user/data/ui/page-root-password.blp:29
+msgid "You also can set password for administrator."
+msgstr ""
+
+#: plugins/user/data/ui/page-root-password.blp:41
+#, fuzzy
+msgid "Set administrator same as user password"
+msgstr "Повторите пароль администратора"
+
+#: plugins/user/data/ui/page-root-password.blp:60
 msgid "Administrator’s password"
 msgstr "Пароль администратора"
 
-#: plugins/user/data/ui/page-password.blp:100
+#: plugins/user/data/ui/page-root-password.blp:69
 msgid "Generate root password"
 msgstr "Сгенерировать пароль администратора"
 
-#: plugins/user/data/ui/page-username.blp:5
-#: plugins/user/data/ui/page-username.blp:91
+#: plugins/user/data/ui/page-username.blp:24
+#: plugins/user/data/ui/page-username.blp:135
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: plugins/user/data/ui/page-username.blp:6
+#: plugins/user/data/ui/page-username.blp:29
+#: plugins/user/data/ui/page-username.blp:105
 msgid "About You"
 msgstr "О Вас"
 
-#: plugins/user/data/ui/page-username.blp:7
+#: plugins/user/data/ui/page-username.blp:30
+#: plugins/user/data/ui/page-username.blp:106
 msgid "Set information about You"
 msgstr "Введите информацию о Вас"
 
-#: plugins/user/data/ui/page-username.blp:34
+#: plugins/user/data/ui/page-username.blp:74
 msgid "Change Avatar"
 msgstr "Изменить Аватар"
 
-#: plugins/user/data/ui/page-username.blp:55
+#: plugins/user/data/ui/page-username.blp:95
 msgid "Remove Avatar"
 msgstr "Удалить Аватар"
 
-#: plugins/user/data/ui/page-username.blp:75
+#: plugins/user/data/ui/page-username.blp:119
 msgid "Full Name"
 msgstr "Полное имя"
 
-#: plugins/user/data/ui/page-username.blp:81
+#: plugins/user/data/ui/page-username.blp:125
 msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 "Имя пользователя будет использовано для имени Вашей домашней директории и не "
 "может быть изменено."
 
-#: plugins/user/page-password.vala:127
-msgid "The password must consist of at least one character"
-msgstr "Пароль должен состоять минимум из одного символа"
-
 #: plugins/user/passwdqc-utils.vala:43
 msgid "Failed to generate password"
 msgstr "Не удалось сгенерироавть пароль"
 
-#: plugins/user/plugin.vala:79
+#: plugins/user/plugin.vala:77
 msgid "Error when creating a user"
 msgstr "Ошибка при создании пользователя"
 
@@ -415,6 +420,10 @@ msgstr ""
 msgid "Username cannot be empty"
 msgstr "Имя пользователя не может быть пустым"
 
+#: plugins/user/utils.vala:365
+msgid "The password must consist of at least one character"
+msgstr "Пароль должен состоять минимум из одного символа"
+
 #: plugins/welcome/data/ui/page.blp:4 plugins/welcome/data/ui/page.blp:5
 msgid "Welcome"
 msgstr "Добро пожаловать"
@@ -430,55 +439,69 @@ msgstr ""
 "Vladimir Romanov <rirusha@altlinux.org>\n"
 "David Sultaniiazov <x1z53@altlinux.org>"
 
-#: src/application.vala:313
+#: src/application.vala:309
 msgid "No steps specified"
 msgstr "Не указан список шагов"
 
-#: src/options-handler.vala:35
+#: src/options-handler.vala:39
 msgid "Context vars"
 msgstr "Переменные контекста"
 
-#. vala-lint=block-opening-brace-space-before
-#: src/options-handler.vala:37
+#: src/options-handler.vala:47
 msgid "Force run with mode"
 msgstr "Запустить в определенном режиме"
 
-#. vala-lint=block-opening-brace-space-before
-#: src/options-handler.vala:39
+#: src/options-handler.vala:55
 msgid "Make window closable always"
 msgstr "Сделать окно всегда закрываемым"
 
-#: src/options-handler.vala:40
+#: src/options-handler.vala:62
 msgid "Run window in fullscreen"
 msgstr "Запуск окна в полноэкранном режиме"
 
-#: src/options-handler.vala:41
+#: src/options-handler.vala:69
 msgid "Specify installer plugin"
 msgstr "Указать плагин-установщик"
 
-#: src/options-handler.vala:42
+#: src/options-handler.vala:76
 msgid "Sandbox run without doing anything in system"
 msgstr "Запуск в \"песочнице\" без изменения системы"
 
-#: src/options-handler.vala:43
+#: src/options-handler.vala:83
 msgid "Don't show indicators and keep window simple"
 msgstr "Не показывать индикаторы и сделать окно проще"
 
-#: src/options-handler.vala:44
+#: src/options-handler.vala:90
 msgid "Steps which will not apply. E.g: `steps=language,keyboard`"
 msgstr ""
 "Шаги, которые не будут применены в конце. К примеру: `steps=language,"
 "keyboard`"
 
-#: src/options-handler.vala:45
+#: src/options-handler.vala:97
 msgid "Steps. E.g: `steps=language,keyboard`"
 msgstr "Шаги. К примеру: `steps=language,keyboard`"
 
-#: src/options-handler.vala:46
+#: src/options-handler.vala:104
+msgid "Window can be resized or not"
+msgstr ""
+
+#: src/options-handler.vala:111
+msgid "Width of a window"
+msgstr ""
+
+#: src/options-handler.vala:118
+msgid "Height of a window"
+msgstr ""
+
+#: src/options-handler.vala:125
+msgid "Set layout for window: `big`, `small`, `vertical`, `horizontal`"
+msgstr ""
+
+#: src/options-handler.vala:132
 msgid "Print version information and exit"
 msgstr "Показать информацию о версии и выйти"
 
-#: src/options-handler.vala:47
+#: src/options-handler.vala:139
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
@@ -486,14 +509,24 @@ msgstr "Путь к файлу конфигурации приложения"
 msgid "Doing some stuff…"
 msgstr "Делаем стаф…"
 
-#: src/pages/end-page.vala:140 src/pages/end-page.vala:146
+#: src/pages/end-page.vala:144 src/pages/end-page.vala:151
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
-#: src/pages/end-page.vala:145
+#: src/pages/end-page.vala:150
 msgid "Error while execute post hooks"
 msgstr "Ошибка при выполнении пост скриптов"
+
+#~ msgid "sandbox"
+#~ msgstr "песочница"
+
+#~ msgid ""
+#~ "Set administrator password manualy. Otherwise it will be equal to user "
+#~ "password"
+#~ msgstr ""
+#~ "Установить пароль администратора вручную. Иначе он будет равен паролю "
+#~ "пользователя"
 
 #~ msgid "Applying changes…"
 #~ msgstr "Применение изменения…"
@@ -528,9 +561,6 @@ msgstr "Ошибка при выполнении пост скриптов"
 
 #~ msgid "Password"
 #~ msgstr "Пароль"
-
-#~ msgid "Repeat administrator password"
-#~ msgstr "Повторите пароль администратора"
 
 #~ msgid "Folder manager"
 #~ msgstr "Менеджер папок"
