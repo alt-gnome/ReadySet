@@ -7,6 +7,7 @@ plugin_language_deps = [
 
 plugin_language_sources = files(
   'box.vala',
+  'info.vala',
   'locale-data.vala',
   'page.vala',
   'plugin.vala',

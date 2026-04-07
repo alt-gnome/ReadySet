@@ -74,14 +74,14 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     static construct {
-        typeof (BasePageDesc).ensure ();
+        init ();
+
         typeof (PagesIndicator).ensure ();
         typeof (PositionedStack).ensure ();
         typeof (StepRow).ensure ();
         typeof (StepsMainPage).ensure ();
         typeof (StepsSidebar).ensure ();
 
-        typeof (BasePage).ensure ();
         typeof (EndPage).ensure ();
     }
 
@@ -294,12 +294,6 @@ public sealed class ReadySet.Application: Adw.Application {
             yield;
         }
 
-        pages.add (new PageInfo (
-            new EndPage (),
-            null,
-            false
-        ));
-
         model = new PagesModel (pages);
     }
 
@@ -334,7 +328,10 @@ public sealed class ReadySet.Application: Adw.Application {
             }
 
             var win = new Window (this) {
-                fullscreened = options_handler.fullscreen
+                fullscreened = options_handler.fullscreen,
+                default_width = options_handler.width,
+                default_height = options_handler.height,
+                resizable = options_handler.resizable
             };
 
             win.present ();

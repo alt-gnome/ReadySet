@@ -94,7 +94,7 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
         for (int i = 0; i < model.get_n_items (); i++) {
             var page = (PageInfo) model.get_item (i);
 
-            var img = new Gtk.Image.from_icon_name (page.icon_name) {
+            var img = new Gtk.Image.from_icon_name (page.title_icon_name) {
                 valign = Gtk.Align.CENTER
             };
             indicator_not_selected (img);

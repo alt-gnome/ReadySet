@@ -19,7 +19,7 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Test/ui/allow-page.ui")]
-public sealed class Test.AllowPage : ReadySet.BaseBarePage {
+public sealed class Test.AllowPage : ReadySet.BasePage {
 
     bool _accessible = true;
     public override bool accessible {

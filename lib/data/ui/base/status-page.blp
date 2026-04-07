@@ -1,0 +1,76 @@
+/*
+ * Copyright (C) 2026 Vladimir Romanov <rirusha@altlinux.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see
+ * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+using Gtk 4.0;
+using Adw 1;
+
+template $ReadySetStatusPage: Adw.Bin {
+  accessibility {
+    labelled-by: [
+      title_label,
+    ];
+
+    described-by: [
+      description_label,
+    ];
+  }
+
+  Box {
+    orientation: vertical;
+    valign: center;
+
+    Image image {
+      accessible-role: presentation;
+      halign: center;
+      visible: bind $has_image(image.icon-name, image.paintable) as <bool>;
+      icon-name: bind template.icon-name;
+      paintable: bind template.paintable;
+
+      styles [
+        "icon",
+      ]
+    }
+
+    Label title_label {
+      wrap: true;
+      wrap-mode: word_char;
+      justify: center;
+      visible: bind $string_is_not_empty(title_label.label) as <bool>;
+      label: bind template.title;
+
+      styles [
+        "title",
+      ]
+    }
+
+    Label description_label {
+      wrap: true;
+      wrap-mode: word_char;
+      justify: center;
+      use-markup: true;
+      visible: bind $string_is_not_empty(description_label.label) as <bool>;
+      label: bind template.description;
+
+      styles [
+        "body",
+        "description",
+      ]
+    }
+  }
+}

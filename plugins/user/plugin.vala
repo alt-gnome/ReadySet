@@ -32,7 +32,7 @@ public class User.Addin : ReadySet.StepAddin {
         instance = this;
     }
 
-    public async override ReadySet.BaseBarePage[] build_pages () {
+    public async override ReadySet.BasePage[] build_pages () {
         return {
             new User.PageUsername (),
             new User.PagePassword ()

@@ -1,216 +1,543 @@
 /*
  * Copyright (C) 2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-
 using Gtk 4.0;
 using Adw 1;
 
-template $ReadySetStepsMainPage: Adw.Bin {
+template $ReadySetStepsMainPage: Adw.BreakpointBin {
+  width-request: 360;
+  height-request: 294;
   show-steps-list: bind steps_list_button.active bidirectional;
 
-  Adw.ToolbarView {
-    [top]
-    Adw.HeaderBar header_bar {
-      show-back-button: false;
-      show-end-title-buttons: false;
-      show-start-title-buttons: false;
+  Adw.Breakpoint big_breakpoint {
+    condition ("min-height: 400px and min-width: 719px")
 
-      [start]
-      ToggleButton steps_list_button {
-        styles [
-          "flat",
-        ]
-
-        icon-name: "view-list-symbolic";
-        active: false;
-        valign: start;
-        visible: bind template.dead-end inverted;
-      }
-
-      [start]
-      Label sandbox_label_left {
-        styles [
-          "warning",
-        ]
-
-        margin-start: 12;
-        margin-end: 12;
-        visible: false;
-        label: _("s&box");
-      }
-
-      title-widget: $ReadySetPagesIndicator pages_indicator {
-        vexpand: true;
-        valign: center;
-        show-icons: bind template.show-steps-list inverted;
-        visible: bind template.dead-end inverted;
-      };
-
-      [end]
-      Button context_button {
-        styles [
-          "flat",
-        ]
-
-        tooltip-text: _("Open application menu");
-        icon-name: "open-menu-symbolic";
-        clicked => $on_context_button_clicked();
-      }
-
-      [end]
-      Label sandbox_label_right {
-        styles [
-          "warning",
-        ]
-
-        margin-start: 12;
-        margin-end: 12;
-        visible: false;
-        label: _("s&box");
-      }
+    setters {
+      template.current-scrolled-window: regular_scrolled_window;
+      mlv.layout-name: "regular";
+      template.layout-mode: big;
     }
+  }
 
-    content: Overlay {
-      $ReadySetPositionedStack positioned_stack {
-        transition-type: slide-left-right;
-      }
+  Adw.Breakpoint small_breakpoint {
+    condition ("max-height: 400px and max-width: 719px")
 
-      [overlay]
-      Adw.Bin overlay_place {
-        halign: end;
-        valign: end;
-        hexpand: false;
-        vexpand: false;
-        margin-end: 18;
-        margin-bottom: 12;
-      }
-    };
+    setters {
+      template.is-compact: true;
+      template.current-scrolled-window: vertical_scrolled_window;
+      mlv.layout-name: "vertical";
+      info_positioned_stack.transition-type: slide-left-right;
+      template.layout-mode: small;
+    }
+  }
 
-    [bottom]
-    CenterBox button_center_box {
-      orientation: horizontal;
-      margin-bottom: 12;
-      margin-top: 12;
-      margin-start: 12;
-      margin-end: 12;
-      halign: fill;
-      hexpand: true;
+  Adw.Breakpoint vertical_breakpoint {
+    condition ("min-height: 400px and max-width: 719px")
 
-      start-widget: Revealer {
-        transition-type: crossfade;
-        transition-duration: 200;
-        reveal-child: bind template.can-cancel;
-        visible: bind template.dead-end inverted;
-        halign: end;
-        hexpand: true;
+    setters {
+      template.current-scrolled-window: vertical_scrolled_window;
+      mlv.layout-name: "vertical";
+      info_positioned_stack.transition-type: slide-left-right;
+      template.layout-mode: vertical;
+    }
+  }
 
-        Button {
+  Adw.Breakpoint horizontal_breakpoint {
+    condition ("max-height: 400px and min-width: 719px")
+
+    setters {
+      template.is-compact: true;
+      template.current-scrolled-window: horizontal_scrolled_window;
+      mlv.layout-name: "horizontal";
+      template.layout-mode: horizontal;
+    }
+  }
+
+  Stack main_stack {
+    transition-type: crossfade;
+    transition-duration: 300;
+
+    StackPage {
+      name: "main";
+      child: Adw.MultiLayoutView mlv {
+        Adw.Layout {
+          name: "vertical";
+
+          content: Adw.ToolbarView {
+            [top]
+            Adw.HeaderBar {
+              show-back-button: false;
+              show-end-title-buttons: bind template.can-close;
+              show-start-title-buttons: false;
+
+              [start]
+              Adw.LayoutSlot {
+                id: "steps-button";
+              }
+
+              [start]
+              Adw.LayoutSlot {
+                id: "sandbox-label-left";
+              }
+
+              title-widget: Adw.LayoutSlot {
+                id: "pages-indicator";
+              };
+
+              [end]
+              Adw.LayoutSlot {
+                id: "context-button";
+              }
+
+              [end]
+              Adw.LayoutSlot {
+                id: "sandbox-label-right";
+              }
+            }
+
+            [top]
+            Adw.LayoutSlot {
+              id: "top-widget";
+            }
+
+            content: Overlay {
+              ScrolledWindow vertical_scrolled_window {
+                propagate-natural-height: true;
+                hscrollbar-policy: never;
+
+                Box {
+                  valign: center;
+                  orientation: vertical;
+                  spacing: 12;
+
+                  Adw.LayoutSlot {
+                    id: "info-body";
+                  }
+
+                  Adw.LayoutSlot {
+                    id: "main-body";
+                  }
+                }
+              }
+
+              [overlay]
+              Adw.LayoutSlot {
+                halign: end;
+                valign: end;
+                hexpand: false;
+                vexpand: false;
+                id: "overlay-place";
+              }
+            };
+
+            [bottom]
+            Adw.LayoutSlot {
+              id: "bottom";
+            }
+
+            [bottom]
+            Adw.LayoutSlot {
+              id: "bottom-widget";
+            }
+          };
+        }
+
+        Adw.Layout {
+          name: "regular";
+
+          Adw.OverlaySplitView {
+            pin-sidebar: true;
+            min-sidebar-width: 340;
+
+            sidebar: Adw.ToolbarView {
+              extend-content-to-top-edge: true;
+
+              [top]
+              Adw.HeaderBar {
+                show-title: false;
+
+                [start]
+                Adw.LayoutSlot {
+                  id: "steps-button";
+                }
+
+                [start]
+                Adw.LayoutSlot {
+                  id: "sandbox-label-left";
+                }
+              }
+
+              content: ScrolledWindow {
+                propagate-natural-height: true;
+                hscrollbar-policy: never;
+
+                Adw.LayoutSlot {
+                  id: "info-body";
+                }
+              };
+            };
+
+            content: Adw.ToolbarView {
+              [top]
+              Adw.HeaderBar {
+                show-back-button: false;
+                show-end-title-buttons: bind template.can-close;
+                show-start-title-buttons: false;
+
+                title-widget: Adw.LayoutSlot {
+                  id: "pages-indicator";
+                };
+
+                [end]
+                Adw.LayoutSlot {
+                  id: "context-button";
+                }
+
+                [end]
+                Adw.LayoutSlot {
+                  id: "sandbox-label-right";
+                }
+              }
+
+              [top]
+              Adw.LayoutSlot {
+                id: "top-widget";
+              }
+
+              content: Overlay {
+                ScrolledWindow regular_scrolled_window {
+                  propagate-natural-height: true;
+                  hscrollbar-policy: never;
+
+                  Adw.LayoutSlot {
+                    id: "main-body";
+                  }
+                }
+
+                [overlay]
+                Adw.LayoutSlot {
+                  halign: end;
+                  valign: end;
+                  hexpand: false;
+                  vexpand: false;
+                  id: "overlay-place";
+                }
+              };
+
+              [bottom]
+              Adw.LayoutSlot {
+                id: "bottom";
+              }
+
+              [bottom]
+              Adw.LayoutSlot {
+                id: "bottom-widget";
+              }
+            };
+          }
+        }
+
+        Adw.Layout {
+          name: "horizontal";
+
+          Adw.OverlaySplitView {
+            pin-sidebar: true;
+            min-sidebar-width: 340;
+
+            sidebar: Adw.ToolbarView {
+              extend-content-to-top-edge: true;
+
+              [top]
+              Adw.HeaderBar {
+                show-title: false;
+
+                [start]
+                Adw.LayoutSlot {
+                  id: "steps-button";
+                }
+
+                [start]
+                Adw.LayoutSlot {
+                  id: "sandbox-label-left";
+                }
+              }
+
+              content: ScrolledWindow {
+                propagate-natural-height: true;
+                hscrollbar-policy: never;
+
+                Adw.LayoutSlot {
+                  id: "info-body";
+                }
+              };
+
+              [bottom]
+              Adw.LayoutSlot {
+                id: "bottom";
+              }
+            };
+
+            content: Adw.ToolbarView {
+              [top]
+              Adw.HeaderBar {
+                show-back-button: false;
+                show-end-title-buttons: bind template.can-close;
+                show-start-title-buttons: false;
+
+                title-widget: Adw.LayoutSlot {
+                  id: "pages-indicator";
+                };
+
+                [end]
+                Adw.LayoutSlot {
+                  id: "context-button";
+                }
+
+                [end]
+                Adw.LayoutSlot {
+                  id: "sandbox-label-right";
+                }
+              }
+
+              [top]
+              Adw.LayoutSlot {
+                id: "top-widget";
+              }
+
+              content: Overlay {
+                ScrolledWindow horizontal_scrolled_window {
+                  propagate-natural-height: true;
+                  hscrollbar-policy: never;
+
+                  Adw.LayoutSlot {
+                    id: "main-body";
+                  }
+                }
+
+                [overlay]
+                Adw.LayoutSlot {
+                  halign: end;
+                  valign: end;
+                  hexpand: false;
+                  vexpand: false;
+                  id: "overlay-place";
+                }
+              };
+
+              [bottom]
+              Adw.LayoutSlot {
+                id: "bottom-widget";
+              }
+            };
+          }
+        }
+
+        [steps-button]
+        ToggleButton steps_list_button {
           styles [
-            "circular",
+            "flat",
           ]
 
-          tooltip-text: _("Go to previous page");
-          icon-name: "go-previous-symbolic";
-          can-shrink: true;
-          width-request: 48;
-          height-request: 48;
-          clicked => $cancel_clicked();
-          margin-end: 12;
+          icon-name: "view-list-symbolic";
+          active: false;
+          valign: start;
+          visible: bind template.simple inverted;
         }
-      };
 
-      center-widget: Stack {
-        transition-duration: 200;
-        transition-type: crossfade;
-        hhomogeneous: true;
-        visible-child-name: bind template.continue_state;
-        halign: center;
+        [sandbox-label-left]
+        Label sandbox_label_left {
+          styles [
+            "warning",
+          ]
 
-        StackPage {
-          name: "continue";
+          margin-start: 12;
+          margin-end: 12;
+          visible: false;
+          label: _("s&box");
+        }
 
-          child: Button {
+        [pages-indicator]
+        $ReadySetPagesIndicator pages_indicator {
+          vexpand: true;
+          valign: center;
+          show-icons: bind template.show-steps-list inverted;
+        }
+
+        [context-button]
+        Button context_button {
+          styles [
+            "flat",
+          ]
+
+          tooltip-text: _("Open application menu");
+          icon-name: "open-menu-symbolic";
+          clicked => $on_context_button_clicked();
+        }
+
+        [sandbox-label-right]
+        Label sandbox_label_right {
+          styles [
+            "warning",
+          ]
+
+          margin-start: 12;
+          margin-end: 12;
+          visible: false;
+          label: _("s&box");
+        }
+
+        [main-body]
+        $ReadySetPositionedStack positioned_stack {
+          transition-type: slide-left-right;
+        }
+
+        [overlay-place]
+        Revealer to_up_revealer {
+          margin-end: 18;
+          margin-bottom: 12;
+          transition-type: crossfade;
+          transition-duration: 200;
+          halign: end;
+
+          Button to_up_button {
+            styles [
+              "background",
+              "circular",
+            ]
+
+            icon-name: "top-large-symbolic";
+            tooltip-text: _("Go up");
+            width-request: 48;
+            height-request: 48;
+            valign: center;
+            clicked => $up_clicked();
+          }
+        }
+
+        [info-body]
+        $ReadySetPositionedStack info_positioned_stack {
+          valign: center;
+          vexpand: false;
+          transition-type: crossfade;
+        }
+
+        [top-widget]
+        Adw.Bin top_bin {}
+
+        [Bottom-widget]
+        Adw.Bin bottom_bin {}
+
+        [bottom]
+        CenterBox button_center_box {
+          orientation: horizontal;
+          margin-bottom: 12;
+          margin-top: 6;
+          margin-start: 12;
+          margin-end: 12;
+          halign: fill;
+          hexpand: true;
+
+          start-widget: Revealer {
+            transition-type: crossfade;
+            transition-duration: 200;
+            reveal-child: bind template.can-cancel;
+            halign: end;
+            hexpand: true;
+
+            Button go_prev_button {
+              styles [
+                "circular",
+              ]
+
+              tooltip-text: _("Go to previous page");
+              icon-name: "go-previous-symbolic";
+              can-shrink: true;
+              width-request: 48;
+              height-request: 48;
+              clicked => $cancel_clicked();
+              valign: center;
+              margin-end: 12;
+            }
+          };
+
+          center-widget: Button go_next_button {
             styles [
               "pill",
               "suggested-action",
             ]
 
+            halign: center;
             sensitive: bind template.is-ready-to-continue;
-            visible: bind template.dead-end inverted;
             label: _("Next");
             width-request: 156;
             clicked => $continue_clicked();
           };
-        }
 
-        StackPage {
-          name: "finish";
-
-          child: Button {
+          end-widget: Button osk_button {
             styles [
-              "pill",
-              "suggested-action",
+              "circular",
+              "flat",
             ]
 
-            visible: bind template.is-ready-to-continue;
-            // TRANSLATORS: Last word in "Ready Set ..." sentence
-            label: _("Go!");
-            width-request: 156;
-            can-shrink: true;
-            action-name: "app.finish";
+            icon-name: "keyboard-symbolic";
+            tooltip-text: _("Extend/Retract keyboard");
+            width-request: 48;
+            height-request: 48;
+            valign: center;
+            clicked => $osk_clicked();
+            margin-start: 12;
           };
         }
       };
     }
+
+    StackPage {
+      name: "finish";
+      child: Adw.ToolbarView {
+        [top]
+        Adw.HeaderBar {
+          show-title: false;
+        }
+
+        content: $ReadySetEndPage end_page {};
+
+        [bottom]
+        Button finish_button {
+          styles [
+            "pill",
+            "suggested-action",
+          ]
+
+          margin-bottom: 12;
+          margin-top: 6;
+          margin-start: 12;
+          margin-end: 12;
+          hexpand: true;
+          halign: center;
+          visible: false;
+          // TRANSLATORS: Last word in "Ready Set ..." sentence
+          label: _("Go!");
+          width-request: 156;
+          can-shrink: true;
+          action-name: "app.finish";
+        }
+      };
+    }
   }
-}
-
-Revealer to_up_revealer {
-  transition-type: crossfade;
-  transition-duration: 200;
-  halign: end;
-
-  Button {
-    styles [
-      "background",
-      "circular",
-    ]
-
-    icon-name: "top-large-symbolic";
-    tooltip-text: _("Go up");
-    width-request: 48;
-    height-request: 48;
-    clicked => $up_clicked();
-    margin-start: 12;
-  }
-}
-
-Button osk_button {
-  styles [
-    "circular",
-    "flat",
-  ]
-
-  icon-name: "keyboard-symbolic";
-  tooltip-text: _("Extend/Retract keyboard");
-  width-request: 48;
-  height-request: 48;
-  clicked => $osk_clicked();
-  margin-start: 12;
 }

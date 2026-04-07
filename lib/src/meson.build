@@ -16,13 +16,14 @@ librs_vapi_sources = files(
 )
 
 librs_vala_sources = files(
-  'base/base-bare-page.vala',
-  'base/base-page-desc.vala',
   'base/base-page.vala',
+  'base/status-page.vala',
+
   'apply-callback.vala',
   'context-object.vala',
   'context.vala',
   'installer-addin.vala',
+  'main.vala',
   'step-addin.vala',
   'utils.vala',
 )

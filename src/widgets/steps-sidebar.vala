@@ -58,7 +58,7 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
 
         var row = new StepRow (
             page.title_header,
-            page.icon_name
+            page.title_icon_name
         );
 
         page.bind_property (

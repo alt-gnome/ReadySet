@@ -32,7 +32,7 @@ public class Test.Addin : ReadySet.StepAddin {
         instance = this;
     }
 
-    public async override ReadySet.BaseBarePage[] build_pages () {
+    public async override ReadySet.BasePage[] build_pages () {
         return {
             new Test.Page (),
             new Test.ErrorPage (),

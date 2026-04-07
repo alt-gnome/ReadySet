@@ -1,8 +1,6 @@
 librs_blueprints = custom_target('blueprints',
   input: files(
-    'ui/base-bare-page.blp',
-    'ui/base-page-desc.blp',
-    'ui/base-page.blp',
+    'ui/base/status-page.blp',
   ),
   output: '.',
   command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],

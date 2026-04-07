@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,73 +18,38 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/Lib/ui/base-page.ui")]
-public class ReadySet.BasePage : BaseBarePage {
+public class ReadySet.BasePage : Adw.BreakpointBin {
 
-    [GtkChild]
-    unowned Adw.Bin title_bin;
-    [GtkChild]
-    unowned Gtk.Box nbox;
+    public Gtk.Widget info { get; set; default = new StatusPage () {
+        title = _("Unknown page"),
+        description = _("This page says that your distribution has made a mistake."),
+        icon_name = "dialog-error-symbolic"
+    }; }
 
-    bool icon_widget_set = false;
+    public Gtk.Widget top_widget { get; set; }
 
-    public Gtk.Widget? icon_widget {
+    public Gtk.Widget bottom_widget { get; set; }
+
+    public string title_icon_name { get; set; default = "dialog-error-symbolic"; }
+
+    public string title_header { get; set; default = _("Unknown"); }
+
+    public bool is_ready { get; set; default = false; }
+
+    public virtual bool accessible { get; set; default = true; }
+
+    public virtual LayoutMode layout_mode { get; set; }
+
+    public Gtk.Widget content {
         get {
-            if (icon_widget_set) {
-                return nbox.get_first_child ();
-            } else {
-                return null;
-            }
+            return child;
         }
         set {
-            if (value == null) {
-                return;
-            }
-
-            nbox.remove (nbox.get_first_child ());
-            nbox.prepend (value);
-            icon_widget_set = true;
+            child = value;
         }
-    }
-
-    public string title { get; set; default = _("Unknown page"); }
-
-    public string description { get; set; default = _("This page says that your distribution has made a mistake."); }
-
-    public Gtk.Widget title_widget {
-        get {
-            return title_bin.child;
-        }
-        set {
-            title_bin.child = value;
-        }
-    }
-
-    bool content_widget_set = false;
-
-    public new Gtk.Widget? content {
-        get {
-            if (content_widget_set) {
-                return nbox.get_last_child ();
-            }
-
-            return null;
-        }
-        set {
-            if (content_widget_set) {
-                nbox.remove (nbox.get_last_child ());
-            }
-
-            nbox.append (value);
-            content_widget_set = true;
-        }
-    }
-
-    static construct {
-        set_css_name ("basepage");
     }
 
     construct {
-        base.content = nbox;
+        valign = CENTER;
     }
 }

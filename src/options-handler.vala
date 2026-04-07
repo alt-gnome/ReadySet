@@ -43,6 +43,10 @@ public sealed class ReadySet.OptionsHandler : Object {
         { "simple", 'S', 0, OptionArg.NONE, null, N_("Don't show indicators and keep window simple"), null },
         { "steps-no-apply", '\0', 0, OptionArg.STRING, null, N_("Steps which will not apply. E.g: `steps=language,keyboard`"), "STEPS_NO_APPLY" },
         { "steps", 's', 0, OptionArg.STRING, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
+        { "resizable", 'r', 0, OptionArg.NONE, null, N_("Window can be resized or not"), null },
+        { "width", 'w', 0, OptionArg.INT, null, N_("Width of a window"), "WIDTH" },
+        { "height", 'h', 0, OptionArg.INT, null, N_("Height of a window"), "HEIGHT" },
+        { "force-layout", '\0', 0, OptionArg.STRING, null, N_("Set layout for window: `big`, `small`, `vertical`, `horizontal`"), "FORCE_LAYOUT" },
         { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
         { OPT_CONF_FILE, 'C', 0, OptionArg.FILENAME, null, N_("App config file"), "CONF-FILE" },
         { null }
@@ -51,6 +55,12 @@ public sealed class ReadySet.OptionsHandler : Object {
     public bool version { get; set; }
 
     public string[] steps { get; set; }
+
+    public bool resizable { get; set; default = false; }
+
+    public int width { get; set; default = 1000; }
+
+    public int height { get; set; default = 900; }
 
     public string[] steps_no_apply { get; set; }
 
@@ -65,6 +75,8 @@ public sealed class ReadySet.OptionsHandler : Object {
     public bool simple { get; set; }
 
     public bool can_close { get; set; }
+
+    public string? force_layout { get; set; }
 
     public string? installer { get; set; default = null; }
 
@@ -163,8 +175,11 @@ public sealed class ReadySet.OptionsHandler : Object {
                 return opt.get_string ();
             } else if (opt.get_type ().dup_string () == VariantType.BYTESTRING.dup_string ()) {
                 return opt.get_bytestring ();
-            } else {
-                error ("Unknown opt type. Desired: %s; Present %s", value_type.name (), opt.get_type ().dup_string ());
+            }
+
+        } else if (value_type == Type.INT) {
+            if (opt.get_type ().dup_string () == VariantType.INT32.dup_string ()) {
+                return opt.get_int32 ();
             }
 
         } else if (value_type == typeof (string[])) {
@@ -175,13 +190,10 @@ public sealed class ReadySet.OptionsHandler : Object {
                 return val;
             } else if (opt.get_type ().dup_string () == VariantType.STRING.dup_string ()) {
                 return opt.get_string ().strip ().split (SEP.to_string ());
-            } else {
-                error ("Unknown opt type. Desired: %s; Present %s", value_type.name (), opt.get_type ().dup_string ());
             }
-
-        } else {
-            error ("Unknown keyfile desired type: %s", value_type.name ());
         }
+
+        error ("Unknown opt type. Desired: %s; Present %s", value_type.name (), opt.get_type ().dup_string ());
     }
 
     bool kf_has_key (KeyFile keyfile, string group_name, string key) throws Error {

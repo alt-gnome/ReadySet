@@ -19,14 +19,14 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/ui/steps-main-page.ui")]
-public sealed class ReadySet.StepsMainPage : Adw.Bin {
+public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
     [GtkChild]
     unowned PositionedStack positioned_stack;
     [GtkChild]
-    unowned PagesIndicator pages_indicator;
+    unowned PositionedStack info_positioned_stack;
     [GtkChild]
-    unowned Adw.HeaderBar header_bar;
+    unowned PagesIndicator pages_indicator;
     [GtkChild]
     unowned Gtk.Label sandbox_label_left;
     [GtkChild]
@@ -34,31 +34,116 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
     [GtkChild]
     unowned Gtk.Button context_button;
     [GtkChild]
-    unowned Gtk.ToggleButton steps_list_button;
-    [GtkChild]
-    unowned Adw.Bin overlay_place;
-    [GtkChild]
     unowned Gtk.Revealer to_up_revealer;
     [GtkChild]
     unowned Gtk.CenterBox button_center_box;
     [GtkChild]
     unowned Gtk.Button osk_button;
+    [GtkChild]
+    unowned Gtk.Stack main_stack;
+    [GtkChild]
+    unowned EndPage end_page;
+
+    [GtkChild]
+    unowned Gtk.Button to_up_button;
+    [GtkChild]
+    unowned Gtk.Button go_prev_button;
+    [GtkChild]
+    unowned Gtk.Button go_next_button;
+    [GtkChild]
+    unowned Gtk.Button finish_button;
+
+    [GtkChild]
+    unowned Adw.Breakpoint big_breakpoint;
+    [GtkChild]
+    unowned Adw.Breakpoint small_breakpoint;
+    [GtkChild]
+    unowned Adw.Breakpoint vertical_breakpoint;
+    [GtkChild]
+    unowned Adw.Breakpoint horizontal_breakpoint;
+
+    [GtkChild]
+    unowned Adw.Bin top_bin;
+    [GtkChild]
+    unowned Adw.Bin bottom_bin;
 
     Devel.Window devel_window;
 
-    public string continue_state { get; set; default = "continue"; }
+    Gtk.ScrolledWindow _current_scrolled_window;
+    protected Gtk.ScrolledWindow current_scrolled_window {
+        get {
+            return _current_scrolled_window;
+        }
+        set {
+            if (_current_scrolled_window != null) {
+                //  Reset value of a previous scroll
+                _current_scrolled_window.vadjustment.value = 0;
+                _current_scrolled_window.vadjustment.notify["value"].disconnect (update_scroll_on_top);
+            }
+
+            _current_scrolled_window = value;
+
+            if (_current_scrolled_window != null) {
+                _current_scrolled_window.vadjustment.notify["value"].connect (update_scroll_on_top);
+                scroll_anim_target = new Adw.PropertyAnimationTarget (_current_scrolled_window.vadjustment, "value");
+            }
+            update_scroll_on_top ();
+        }
+    }
+
+    Adw.PropertyAnimationTarget scroll_anim_target;
+    Adw.TimedAnimation scroll_animation;
+
+    protected bool scroll_on_top { get; private set; default = true; }
+
+    bool _is_compact;
+    protected bool is_compact {
+        get {
+            return _is_compact;
+        }
+        set {
+            _is_compact = value;
+
+            if (_is_compact) {
+                osk_button.width_request =
+                    osk_button.height_request =
+                    go_prev_button.height_request =
+                    go_prev_button.width_request =
+                    to_up_button.height_request =
+                    to_up_button.width_request =
+                    32;
+                button_center_box.margin_bottom = 6;
+                go_next_button.remove_css_class ("pill");
+                finish_button.remove_css_class ("pill");
+
+            } else {
+                osk_button.width_request =
+                    osk_button.height_request =
+                    go_prev_button.height_request =
+                    go_prev_button.width_request =
+                    to_up_button.height_request =
+                    to_up_button.width_request =
+                    48;
+                button_center_box.margin_bottom = 12;
+                go_next_button.add_css_class ("pill");
+                finish_button.add_css_class ("pill");
+            }
+        }
+    }
+
+    public bool can_close { get; set; }
 
     public bool show_steps_list { get; set; }
 
     public bool is_ready_to_continue { get; set; }
-
-    public bool dead_end { get; set; default = false; }
 
     public bool can_up { get; set; }
 
     static Gee.ArrayList<string> passed_pages = new Gee.ArrayList<string> ();
 
     public bool simple { get; set; }
+
+    public virtual LayoutMode layout_mode { get; set; }
 
     PageInfo _last_current_page;
     PageInfo last_current_page {
@@ -68,30 +153,14 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         set {
             if (_last_current_page != null) {
                 _last_current_page.notify["is-ready"].disconnect (update_buttons);
-                _last_current_page.page.notify["scroll-on-top"].disconnect (update_scroll);
+                notify["scroll-on-top"].disconnect (update_scroll);
             }
 
             _last_current_page = value;
 
             _last_current_page.notify["is-ready"].connect (update_buttons);
-            _last_current_page.page.notify["scroll-on-top"].connect (update_scroll);
-        }
-    }
-
-    bool _is_ready_to_finish = false;
-    public bool is_ready_to_finish {
-        get {
-            return _is_ready_to_finish;
-        }
-        set {
-            _is_ready_to_finish = value;
-
-            if (_is_ready_to_finish) {
-                continue_state = "finish";
-
-            } else {
-                continue_state = "continue";
-            }
+            notify["scroll-on-top"].connect (update_scroll);
+            update_scroll ();
         }
     }
 
@@ -110,6 +179,7 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
             _model = value;
 
             positioned_stack.bind_model (_model, page_creation_func);
+            info_positioned_stack.bind_model (_model, page_info_creation_func);
 
             if (_model != null) {
                 _model.selection_changed.connect (selection_changed);
@@ -123,24 +193,36 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
             page.passed = true;
         }
 
+        bind_property ("layout-mode", page.page, "layout-mode", SYNC_CREATE);
+
         return page.page;
+    }
+
+    Gtk.Widget page_info_creation_func (PageInfo page) {
+        notify["is-compact"].connect (() => {
+            if (is_compact) {
+                page.page.info.add_css_class ("compact");
+            } else {
+                page.page.info.remove_css_class ("compact");
+            }
+        });
+        return page.page.info;
     }
 
     construct {
         model = Application.get_default ().model;
         pages_indicator.model = model;
 
-        header_bar.show_end_title_buttons = Application.get_default ().can_close;
+        can_close = Application.get_default ().can_close;
         context_button.visible = Config.IS_DEVEL;
         sandbox_label_left.visible = ReadySet.Application.get_default ().context.sandbox && Config.IS_DEVEL;
         sandbox_label_right.visible = ReadySet.Application.get_default ().context.sandbox && !Config.IS_DEVEL;
 
         notify["show-steps-list"].connect (update_icons_visible);
         notify["simple"].connect (update_icons_visible);
-        notify["dead-end"].connect (update_menu_button_visible);
-        notify["simple"].connect (update_menu_button_visible);
         update_icons_visible ();
-        update_menu_button_visible ();
+
+        set_breakpoints ();
 
         setup.begin ();
     }
@@ -155,79 +237,53 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
         var a11y_settings = new Settings ("org.gnome.desktop.a11y.applications");
 
-        if (proxy != null && a11y_settings.get_boolean ("screen-keyboard-enabled")) {
-            overlay_place.child = to_up_revealer;
-            button_center_box.end_widget = osk_button;
+        osk_button.visible = (proxy != null && a11y_settings.get_boolean ("screen-keyboard-enabled")) ||
+             Environment.get_variable ("READY_SET_SHOW_OSK") == "always";
 
-            to_up_revealer.visible = false;
-
-            to_up_revealer.notify["child-revealed"].connect (() => {
-                if (!to_up_revealer.child_revealed) {
-                    to_up_revealer.visible = false;
-                }
-            });
-            notify["can-up"].connect (() => {
-                if (can_up) {
-                    to_up_revealer.visible = true;
-                    to_up_revealer.reveal_child = true;
-                } else {
-                    to_up_revealer.reveal_child = false;
-                }
-            });
-
-        } else {
-            overlay_place.visible = false;
-            button_center_box.end_widget = to_up_revealer;
-
-            bind_property ("can-up", to_up_revealer, "reveal-child");
-        }
+        to_up_revealer.notify["child-revealed"].connect (() => {
+            if (!to_up_revealer.child_revealed) {
+                to_up_revealer.visible = false;
+            }
+        });
+        notify["can-up"].connect (() => {
+            if (can_up) {
+                to_up_revealer.visible = true;
+                to_up_revealer.reveal_child = true;
+            } else {
+                to_up_revealer.reveal_child = false;
+            }
+        });
     }
 
     void update_icons_visible () {
         pages_indicator.show_icons = !show_steps_list && !simple;
     }
 
-    void update_menu_button_visible () {
-        steps_list_button.visible = !dead_end && !simple;
-    }
-
     void selection_changed () {
-        var position = model.get_selected ();
-        var n_items = model.get_n_items ();
-
-        if (position == n_items - 1) {
-            var page_info = (PageInfo) model.get_item (n_items - 1);
-            var end_page = page_info.page as EndPage;
-            if (end_page != null) {
-                show_steps_list = false;
-                dead_end = true;
-
-                end_page.start_action.begin ();
-            };
-        }
-
         update_buttons ();
         update_scroll ();
 
         last_current_page = model.get_selected_item ();
+
+        var base_page = last_current_page.page;
+        top_bin.child = base_page.top_widget;
+        bottom_bin.child = base_page.bottom_widget;
 
         passed_pages.add (last_current_page.id);
         last_current_page.passed = true;
     }
 
     void update_scroll () {
-        can_up = !model.get_selected_item ().page.scroll_on_top;
+        if (current_scrolled_window != null) {
+            if (current_scrolled_window.vadjustment != null) {
+                can_up = !(current_scrolled_window.vadjustment.value <= 360.0);
+            }
+        }
     }
 
     void update_buttons () {
         is_ready_to_continue = model.get_selected_item ().is_ready;
-        is_ready_to_finish = model.get_selected () == model.get_n_items () - 1;
-        can_cancel = model.get_selected () > 0 && !dead_end;
-
-        if (dead_end) {
-            osk_button.visible = false;
-            to_up_revealer.visible = false;
-        }
+        can_cancel = model.get_selected () > 0;
     }
 
     [GtkCallback]
@@ -245,6 +301,10 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
         return false;
     }
 
+    void update_scroll_on_top () {
+        scroll_on_top = current_scrolled_window?.vadjustment.value <= 360.0;
+    }
+
     [GtkCallback]
     async void osk_clicked () {
         try {
@@ -257,7 +317,26 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     [GtkCallback]
     void up_clicked () {
-        model?.get_selected_item ().page.to_up ();
+        current_scrolled_window.set_kinetic_scrolling (false);
+
+        if (scroll_anim_target == null) {
+            return;
+        }
+
+        if (scroll_animation != null) {
+            scroll_animation.reset ();
+        }
+
+        scroll_animation = new Adw.TimedAnimation (
+            current_scrolled_window,
+            current_scrolled_window.vadjustment.value,
+            0.0,
+            100,
+            scroll_anim_target
+        );
+
+        scroll_animation.play ();
+        current_scrolled_window.set_kinetic_scrolling (true);
     }
 
     [GtkCallback]
@@ -267,6 +346,54 @@ public sealed class ReadySet.StepsMainPage : Adw.Bin {
 
     [GtkCallback]
     void continue_clicked () {
-        model?.select_item (model.get_selected () + 1, true);
+        var position = model.get_selected ();
+        var n_items = model.get_n_items ();
+
+        if (position == n_items - 1) {
+            main_stack.visible_child_name = "finish";
+            end_page.start_action.begin ((obj, res) => {
+                finish_button.visible = ((EndPage) obj).is_ready;
+            });
+        } else {
+            model.select_item (model.get_selected () + 1, true);
+        }
+    }
+
+    void set_breakpoints () {
+        var force_layout = Application.get_default ().options_handler.force_layout;
+
+        if (force_layout != null) {
+            Adw.Breakpoint? force_breakpoint = null;
+            switch (LayoutMode.from_string (force_layout)) {
+                case BIG:
+                    force_breakpoint = big_breakpoint;
+                    break;
+                case SMALL:
+                    force_breakpoint = small_breakpoint;
+                    break;
+                case VERTICAL:
+                    force_breakpoint = vertical_breakpoint;
+                    break;
+                case HORIZONTAL:
+                    force_breakpoint = horizontal_breakpoint;
+                    break;
+            }
+
+            Adw.Breakpoint[] all_breakpoints = {
+                big_breakpoint,
+                small_breakpoint,
+                vertical_breakpoint,
+                horizontal_breakpoint
+            };
+
+            foreach (var bp in all_breakpoints) {
+                if (bp != force_breakpoint) {
+                    remove_breakpoint (bp);
+                }
+            }
+
+            //  Set breakpoint condition for all cases
+            force_breakpoint.condition = new Adw.BreakpointCondition.length (Adw.BreakpointConditionLengthType.MIN_HEIGHT, 0, Adw.LengthUnit.SP);
+        }
     }
 }

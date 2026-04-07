@@ -20,6 +20,22 @@
 
 namespace ReadySet {
 
+    public enum LayoutMode {
+        VERTICAL,
+        HORIZONTAL,
+        BIG,
+        SMALL;
+
+        public static LayoutMode from_string (string str) {
+            unowned EnumClass enum_class = (EnumClass) typeof (LayoutMode).class_peek ();
+            var enum_value = enum_class.get_value_by_nick (str);
+            if (enum_value == null) {
+                error ("Unsupported unum value: %s", str);
+            }
+            return (LayoutMode) enum_value.value;
+        }
+    }
+
     public enum Mode {
         INITIAL_SETUP,
         INSTALLER,

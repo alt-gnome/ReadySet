@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/altlinux/ReadySet/Lib/">
-    <file preprocess="xml-stripblanks">ui/base-bare-page.ui</file>
-    <file preprocess="xml-stripblanks">ui/base-page-desc.ui</file>
-    <file preprocess="xml-stripblanks">ui/base-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/base/status-page.ui</file>
   </gresource>
   <gresource prefix="/org/altlinux/ReadySet/Lib/">
     <file>style.css</file>

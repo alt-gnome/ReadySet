@@ -1,38 +1,26 @@
-barebasepage > toolbarview > scrolledwindow > viewport > widget {
-    margin: 24px 12px;
-    border-spacing: 36px;
+rsstatuspage > box > label {
+    margin-left: 12px;
+    margin-right: 12px;
 }
 
-barebasepage > toolbarview > scrolledwindow > viewport > widget > clamp > widget {
-    border-spacing: 12px;
+rsstatuspage > box > .icon {
+    margin-top: 12px;
 }
 
-basepage > toolbarview > scrolledwindow > viewport > widget {
-    margin: 24px 12px;
-    border-spacing: 36px;
-}
+rsstatuspage > box { border-spacing: 12px; }
 
-basepage > toolbarview > scrolledwindow > viewport > widget > clamp > widget {
-    border-spacing: 12px;
-}
+rsstatuspage > box > .icon { color: color-mix(in srgb, currentColor var(--dim-opacity), transparent); -gtk-icon-size: 128px; }
 
-basepage > toolbarview > scrolledwindow > viewport > widget > clamp > widget > box > .icon {
-    color: color-mix(in srgb, currentColor var(--dim-opacity), transparent);
-    -gtk-icon-size: 128px;
-}
+rsstatuspage > box > .icon:disabled { opacity: var(--disabled-opacity); }
 
-basepage > toolbarview > scrolledwindow > viewport > widget > clamp > widget > box > .icon:disabled {
-    opacity: var(--disabled-opacity);
-}
+rsstatuspage > box > .icon:not(:last-child) { margin-bottom: 24px; }
 
-basepage > toolbarview > scrolledwindow > viewport > widget > clamp > widget > box > .icon:not(:last-child) {
-    margin-bottom: 24px;
-}
+rsstatuspage.compact > scrolledwindow > viewport > box, sidebar.empty:not(.page) rsstatuspage > scrolledwindow > viewport > box { margin: 24px 12px; border-spacing: 24px; }
 
-basepage > toolbarview > scrolledwindow > viewport > widget > clamp > widget > box > .icon:not(:last-child) {
-    margin-bottom: 24px;
-}
+rsstatuspage.compact > box > .icon, sidebar.empty:not(.page) rsstatuspage > box > .icon { -gtk-icon-size: 96px; }
 
-basepage > toolbarview > scrolledwindow > viewport > widget > clamp > widget > box > .desc:not(:last-child) {
-    margin-bottom: 48px;
-}
+rsstatuspage.compact > box > .icon:not(:last-child), sidebar.empty:not(.page) rsstatuspage > box > .icon:not(:last-child) { margin-bottom: 12px; }
+
+rsstatuspage > box > .title { font-weight: 800; font-size: 181%; }
+
+rsstatuspage.compact > box > .title, sidebar.empty:not(.page) rsstatuspage > box > .title { font-weight: 800; font-size: 136%; }

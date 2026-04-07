@@ -19,7 +19,7 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/ui/end-page.ui")]
-public sealed class ReadySet.EndPage : BaseBarePage {
+public sealed class ReadySet.EndPage : BasePage {
 
     const string SERVICE_NAME = "gdm-password";
 
