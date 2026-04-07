@@ -393,7 +393,9 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
             }
 
             //  Set breakpoint condition for all cases
-            force_breakpoint.condition = new Adw.BreakpointCondition.length (Adw.BreakpointConditionLengthType.MIN_HEIGHT, 0, Adw.LengthUnit.SP);
+            force_breakpoint.condition = new Adw.BreakpointCondition.length (
+                Adw.BreakpointConditionLengthType.MIN_HEIGHT, 0, Adw.LengthUnit.SP
+            );
         }
     }
 }

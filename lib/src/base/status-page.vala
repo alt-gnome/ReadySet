@@ -28,7 +28,7 @@ public sealed class ReadySet.StatusPage : Adw.Bin {
     public string title { get; set; }
 
     public string description { get; set; }
- 
+
     static construct {
         set_css_name ("rsstatuspage");
     }

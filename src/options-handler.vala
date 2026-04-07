@@ -32,23 +32,113 @@ public sealed class ReadySet.OptionsHandler : Object {
     File standard_local_conf_file = File.new_build_filename (Config.SYSCONFDIR, Config.NAME, "config");
 
     internal const OptionEntry[] OPTION_ENTRIES = {
-        { "context", 'c', 0, OptionArg.STRING_ARRAY, null, N_("Context vars"), "CONTEXT" },
+        {
+            "context", 'c',
+            0, OptionArg.STRING_ARRAY,
+            null,
+            N_("Context vars"),
+            "CONTEXT"
+        },
 #if DEVEL // vala-lint=block-opening-brace-space-before
-        { "force-mode", '\0', OptionFlags.HIDDEN, OptionArg.STRING, null, N_("Force run with mode"), "FORCE-MODE" },
+        {
+            "force-mode", '\0',
+            OptionFlags.HIDDEN, OptionArg.STRING,
+            null,
+            N_("Force run with mode"),
+            "FORCE-MODE"
+        },
 #endif // vala-lint=block-opening-brace-space-before
-        { "can-close", '\0', 0, OptionArg.NONE, null, N_("Make window closable always"), null },
-        { "fullscreen", 'F', 0, OptionArg.NONE, null, N_("Run window in fullscreen"), null },
-        { "installer", 'I', 0, OptionArg.STRING, null, N_("Specify installer plugin"), "INSTALLER" },
-        { "sandbox", 'i', 0, OptionArg.NONE, null, N_("Sandbox run without doing anything in system"), null },
-        { "simple", 'S', 0, OptionArg.NONE, null, N_("Don't show indicators and keep window simple"), null },
-        { "steps-no-apply", '\0', 0, OptionArg.STRING, null, N_("Steps which will not apply. E.g: `steps=language,keyboard`"), "STEPS_NO_APPLY" },
-        { "steps", 's', 0, OptionArg.STRING, null, N_("Steps. E.g: `steps=language,keyboard`"), "STEPS" },
-        { "resizable", 'r', 0, OptionArg.NONE, null, N_("Window can be resized or not"), null },
-        { "width", 'w', 0, OptionArg.INT, null, N_("Width of a window"), "WIDTH" },
-        { "height", 'h', 0, OptionArg.INT, null, N_("Height of a window"), "HEIGHT" },
-        { "force-layout", '\0', 0, OptionArg.STRING, null, N_("Set layout for window: `big`, `small`, `vertical`, `horizontal`"), "FORCE_LAYOUT" },
-        { "version", 'v', 0, OptionArg.NONE, null, N_("Print version information and exit"), null },
-        { OPT_CONF_FILE, 'C', 0, OptionArg.FILENAME, null, N_("App config file"), "CONF-FILE" },
+        {
+            "can-close", '\0',
+            0, OptionArg.NONE,
+            null,
+            N_("Make window closable always"),
+            null
+        },
+        {
+            "fullscreen", 'F',
+            0, OptionArg.NONE,
+            null,
+            N_("Run window in fullscreen"),
+            null
+        },
+        {
+            "installer", 'I',
+            0, OptionArg.STRING,
+            null,
+            N_("Specify installer plugin"),
+            "INSTALLER"
+        },
+        {
+            "sandbox", 'i',
+            0, OptionArg.NONE,
+            null,
+            N_("Sandbox run without doing anything in system"),
+            null
+        },
+        {
+            "simple", 'S',
+            0, OptionArg.NONE,
+            null,
+            N_("Don't show indicators and keep window simple"),
+            null
+        },
+        {
+            "steps-no-apply", '\0',
+            0, OptionArg.STRING,
+            null,
+            N_("Steps which will not apply. E.g: `steps=language,keyboard`"),
+            "STEPS_NO_APPLY"
+        },
+        {
+            "steps", 's',
+            0, OptionArg.STRING,
+            null,
+            N_("Steps. E.g: `steps=language,keyboard`"),
+            "STEPS"
+        },
+        {
+            "resizable", 'r',
+            0, OptionArg.NONE,
+            null,
+            N_("Window can be resized or not"),
+            null
+        },
+        {
+            "width", 'w',
+            0, OptionArg.INT,
+            null,
+            N_("Width of a window"),
+            "WIDTH"
+        },
+        {
+            "height", 'h',
+            0, OptionArg.INT,
+            null,
+            N_("Height of a window"),
+            "HEIGHT"
+        },
+        {
+            "force-layout", '\0',
+            0, OptionArg.STRING,
+            null,
+            N_("Set layout for window: `big`, `small`, `vertical`, `horizontal`"),
+            "FORCE_LAYOUT"
+        },
+        {
+            "version", 'v',
+            0, OptionArg.NONE,
+            null,
+            N_("Print version information and exit"),
+            null
+        },
+        {
+            OPT_CONF_FILE, 'C',
+            0, OptionArg.FILENAME,
+            null,
+            N_("App config file"),
+            "CONF-FILE"
+        },
         { null }
     };
 
