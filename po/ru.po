@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-07 13:33+0000\n"
+"POT-Creation-Date: 2026-04-07 20:20+0000\n"
 "PO-Revision-Date: 2026-03-16 19:40+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -36,6 +36,11 @@ msgstr "На Старт Внимание…"
 msgid "The system is ready for use."
 msgstr "Система готова к использованию."
 
+#. TRANSLATORS: Last word in "Ready Set ..." sentence
+#: data/ui/end-page.blp:67
+msgid "Go!"
+msgstr "Марш!"
+
 #: data/ui/nothing-to-show.blp:30
 msgid "Nothing to show"
 msgstr "Нечего показывать"
@@ -63,11 +68,6 @@ msgstr "Дальше"
 #: data/ui/steps-main-page.blp:500
 msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
-
-#. TRANSLATORS: Last word in "Ready Set ..." sentence
-#: data/ui/steps-main-page.blp:537
-msgid "Go!"
-msgstr "Марш!"
 
 #: data/ui/window-content.blp:43
 msgid "All steps"
@@ -439,7 +439,7 @@ msgstr ""
 "Vladimir Romanov <rirusha@altlinux.org>\n"
 "David Sultaniiazov <x1z53@altlinux.org>"
 
-#: src/application.vala:309
+#: src/application.vala:306
 msgid "No steps specified"
 msgstr "Не указан список шагов"
 
@@ -505,16 +505,16 @@ msgstr "Показать информацию о версии и выйти"
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
-#: src/pages/end-page.vala:90
+#: src/pages/end-page.vala:88
 msgid "Doing some stuff…"
 msgstr "Делаем стаф…"
 
-#: src/pages/end-page.vala:144 src/pages/end-page.vala:151
+#: src/pages/end-page.vala:142 src/pages/end-page.vala:149
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
-#: src/pages/end-page.vala:150
+#: src/pages/end-page.vala:148
 msgid "Error while execute post hooks"
 msgstr "Ошибка при выполнении пост скриптов"
 
