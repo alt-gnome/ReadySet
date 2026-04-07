@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-07 13:33+0000\n"
+"POT-Creation-Date: 2026-04-07 20:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,6 +31,11 @@ msgstr ""
 
 #: data/ui/end-page.blp:57
 msgid "The system is ready for use."
+msgstr ""
+
+#. TRANSLATORS: Last word in "Ready Set ..." sentence
+#: data/ui/end-page.blp:67
+msgid "Go!"
 msgstr ""
 
 #: data/ui/nothing-to-show.blp:30
@@ -59,11 +64,6 @@ msgstr ""
 
 #: data/ui/steps-main-page.blp:500
 msgid "Extend/Retract keyboard"
-msgstr ""
-
-#. TRANSLATORS: Last word in "Ready Set ..." sentence
-#: data/ui/steps-main-page.blp:537
-msgid "Go!"
 msgstr ""
 
 #: data/ui/window-content.blp:43
@@ -404,7 +404,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/application.vala:309
+#: src/application.vala:306
 msgid "No steps specified"
 msgstr ""
 
@@ -468,15 +468,15 @@ msgstr ""
 msgid "App config file"
 msgstr ""
 
-#: src/pages/end-page.vala:90
+#: src/pages/end-page.vala:88
 msgid "Doing some stuff…"
 msgstr ""
 
-#: src/pages/end-page.vala:144 src/pages/end-page.vala:151
+#: src/pages/end-page.vala:142 src/pages/end-page.vala:149
 #, c-format
 msgid "Error message: %s"
 msgstr ""
 
-#: src/pages/end-page.vala:150
+#: src/pages/end-page.vala:148
 msgid "Error while execute post hooks"
 msgstr ""
