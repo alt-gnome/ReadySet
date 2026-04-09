@@ -79,7 +79,7 @@ subdir('vapi')
 subdir('data')
 subdir('po')
 subdir('service')
-subdir('libs')
+subdir('lib')
 subdir('src')
 subdir('plugins')
 
