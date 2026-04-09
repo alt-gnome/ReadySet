@@ -37,6 +37,7 @@ BuildRequires: gir(Adw) = 1
 BuildRequires: gir(Gtk) = 4.0
 BuildRequires: gir(Peas) = 2
 BuildRequires: gir(Gdm) = 1.0
+BuildRequires: gir(NM) = 1.0
 BuildRequires: pkgconfig(accountsservice)
 BuildRequires: pkgconfig(gee-0.8)
 BuildRequires: pkgconfig(gio-unix-2.0)
@@ -50,6 +51,8 @@ BuildRequires: pkgconfig(pwquality)
 BuildRequires: pkgconfig(systemd)
 BuildRequires: pkgconfig(gdm)
 BuildRequires: pkgconfig(xkbcommon)
+BuildRequires: pkgconfig(libnm)
+BuildRequires: pkgconfig(libnma-gtk4)
 
 %description
 %summary.
@@ -120,6 +123,15 @@ BuildArch: noarch
 Requires: %libname%api_version-gir = %EVR
 
 %description -n %libname-gir-devel
+%summary.
+
+%package plugin-network
+Summary: %name network plugin
+Group: Other
+
+Requires: %name = %EVR
+
+%description plugin-network
 %summary.
 
 %package plugin-keyboard
@@ -245,6 +257,11 @@ Requires: %name = %EVR
 
 %files -n %libname-gir-devel
 %_girdir/%girname-%api_version.gir
+
+%files plugin-network
+%_datadir/polkit-1/rules.d/%app_id.Plugin.Network.rules
+%_libdir/%name/plugins/steps/network.plugin
+%_libdir/%name/plugins/steps/libnetwork.so
 
 %files plugin-keyboard
 %_datadir/polkit-1/rules.d/%app_id.Plugin.Keyboard.rules
