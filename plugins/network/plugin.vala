@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2025-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ public class Network.Addin : ReadySet.StepAddin {
     }
 
     public async override void init_once () {
-        if (!context.intact) {
+        if (!context.sandbox) {
             try {
                 var client = new NM.Client (null);
                 var devices = client.get_devices ();
