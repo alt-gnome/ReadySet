@@ -48,7 +48,7 @@ public class Network.Addin : ReadySet.StepAddin {
         return vars;
     }
 
-    public async override ReadySet.BaseBarePage[] build_pages () {
+    public async override ReadySet.BasePage[] build_pages () {
         return { new Network.Page () };
     }
 
