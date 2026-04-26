@@ -26,7 +26,7 @@ namespace User.Password {
         if (_pwq_settings == null) {
             _pwq_settings = new PasswordQuality.Settings ();
 
-            string? config_path = Addin.get_instance ().context.get_string ("passwd-conf-path");
+            string? config_path = Addin.get_instance ().context.get_string ("user-passwd-conf-path");
             if (config_path == "") {
                 config_path = null;
             }

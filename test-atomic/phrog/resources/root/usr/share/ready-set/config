@@ -4,5 +4,4 @@ simple=true
 
 [Context]
 user-with-root=true
-hide-autologin=true
-no-password-security=true
+user-no-password-security=true
