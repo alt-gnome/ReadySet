@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/altlinux/ReadySet/Plugin/LicenseAgreement/">
+    <file preprocess="xml-stripblanks">ui/page.ui</file>
+  </gresource>
+  <gresource prefix="/org/altlinux/ReadySet/icons/scalable/actions/">
+    <file alias="document-text-symbolic.svg">icons/document-text-symbolic.svg</file>
+  </gresource>
+</gresources>
