@@ -264,16 +264,13 @@ public sealed class ReadySet.Application: Adw.Application {
             }
         }
 
-        string[] passed_steps = {};
+        if (installers_plugins[options_handler.installer] != null) {
+            var deps = installers_plugins[options_handler.installer].get_data<Array<string>> ("dependencies").data;
 
-        for (int i = 0; i < all_steps.length; i++) {
-            if (steps_plugins[all_steps[i]] != null) {
-                var deps = steps_plugins[all_steps[i]].get_data<Array<string>> ("dependencies").data;
-
-                foreach (var dep in deps) {
-                    if (!(dep in passed_steps)) {
-                        critical ("Installer plugin '%s' has an unsatisfied dependency on '%s'", all_steps[i], dep);
-                    }
+            foreach (var dep in deps) {
+                if (!(dep in all_steps)) {
+                    critical (
+                        "Installer plugin '%s' has an unsatisfied dependency on '%s'", options_handler.installer, dep);
                 }
             }
         }
