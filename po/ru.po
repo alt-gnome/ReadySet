@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
-"Report-Msgid-Bugs-To: rirusha@altlinux.org\n"
-"POT-Creation-Date: 2026-04-07 20:20+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-26 14:48+0000\n"
 "PO-Revision-Date: 2026-04-09 11:25+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -16,8 +16,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.16.2\n"
 
 #: data/ui/end-page.blp:24
@@ -77,17 +77,17 @@ msgstr "Все шаги"
 msgid "Main"
 msgstr "Главная"
 
-#: lib/src/base/base-page.vala:24
+#: lib/src/base/base-page.vala:31
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: lib/src/base/base-page.vala:52
 msgid "Unknown page"
 msgstr "Неизвестная страница"
 
-#: lib/src/base/base-page.vala:25
+#: lib/src/base/base-page.vala:55
 msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
-
-#: lib/src/base/base-page.vala:35
-msgid "Unknown"
-msgstr "Неизвестно"
 
 #: lib/src/utils.vala:106
 msgid "Something went wrong"
@@ -439,7 +439,7 @@ msgstr ""
 "Vladimir Romanov <rirusha@altlinux.org>\n"
 "David Sultaniiazov <x1z53@altlinux.org>"
 
-#: src/application.vala:306
+#: src/application.vala:314
 msgid "No steps specified"
 msgstr "Не указан список шагов"
 
