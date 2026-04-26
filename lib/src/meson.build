@@ -41,8 +41,7 @@ librs_sources = [
 librs_sources_with_resources = librs_sources + [librs_resources]
 
 librs_c_args = [
-  '-DGETTEXT_PACKAGE="@0@"'.format(librs_name),
-  '-w',
+
 ]
 
 rs_app_vala_args = [

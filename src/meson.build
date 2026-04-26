@@ -43,8 +43,6 @@ rs_app_sources = [
 ]
 
 rs_app_c_args = [
-  '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
-  '-w'
 ]
 
 rs_app_vala_args = [

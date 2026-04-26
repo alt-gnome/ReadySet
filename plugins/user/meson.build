@@ -58,9 +58,7 @@ foreach pwcheck_backend : password_check_backend
   )
 
   plugin_user_c_args = [
-    '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
     '-DGNOME_DESKTOP_USE_UNSTABLE_API',
-    '-w'
   ]
 
   plugin_user_vala_args = [

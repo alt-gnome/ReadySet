@@ -22,9 +22,7 @@ plugin_language_name = 'language'
 subdir('data')
 
 plugin_language_c_args = [
-  '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
   '-DGNOME_DESKTOP_USE_UNSTABLE_API',
-  '-w'
 ]
 
 shared_module(

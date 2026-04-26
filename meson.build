@@ -13,6 +13,12 @@ pkgconfig = import('pkgconfig')
 
 glib_min_version = '2.76'
 
+add_project_arguments(
+  '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
+  '-w',
+  language: 'c',
+)
+
 accountsservice_desktop_dep = dependency('accountsservice')
 gdm_dep = dependency('gdm')
 gee_dep = dependency('gee-0.8')

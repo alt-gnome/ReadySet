@@ -27,9 +27,7 @@ plugin_keyboard_name = 'keyboard'
 subdir('data')
 
 plugin_keyboard_c_args = [
-  '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
   '-DGNOME_DESKTOP_USE_UNSTABLE_API',
-  '-w',
 ]
 
 plugin_keyboard_vala_args = [
