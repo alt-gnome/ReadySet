@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-26 16:04+0000\n"
+"POT-Creation-Date: 2026-04-26 20:20+0000\n"
 "PO-Revision-Date: 2026-04-09 11:25+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -53,19 +53,19 @@ msgstr ""
 msgid "Open application menu"
 msgstr "Открыть меню приложения"
 
-#: data/ui/steps-main-page.blp:426
+#: data/ui/steps-main-page.blp:427
 msgid "Go up"
 msgstr "Наверх"
 
-#: data/ui/steps-main-page.blp:469
+#: data/ui/steps-main-page.blp:470
 msgid "Go to previous page"
 msgstr "К предыдущей странице"
 
-#: data/ui/steps-main-page.blp:488
+#: data/ui/steps-main-page.blp:489
 msgid "Next"
 msgstr "Дальше"
 
-#: data/ui/steps-main-page.blp:500
+#: data/ui/steps-main-page.blp:501
 msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
 
@@ -81,11 +81,11 @@ msgstr "Главная"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: lib/src/base/base-page.vala:52
+#: lib/src/base/base-page.vala:58
 msgid "Unknown page"
 msgstr "Неизвестная страница"
 
-#: lib/src/base/base-page.vala:55
+#: lib/src/base/base-page.vala:61
 msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
@@ -153,7 +153,7 @@ msgstr "Поиск языка"
 msgid "Language"
 msgstr "Язык"
 
-#: plugins/language/plugin.vala:117
+#: plugins/language/plugin.vala:124
 msgid "Error when setting language"
 msgstr "Ошибка при настройке языка"
 
@@ -169,6 +169,15 @@ msgstr "Привет!"
 msgid ""
 "Let's start by choosing the language for the application and for your system."
 msgstr "Давайте начнём с выбора языка для приложения и для Вашей системы."
+
+#: plugins/license-agreement/data/ui/page.blp:5
+#: plugins/license-agreement/data/ui/page.blp:11
+msgid "License Agreement"
+msgstr ""
+
+#: plugins/license-agreement/data/ui/page.blp:32
+msgid "I have read the license and accept it"
+msgstr ""
 
 #: plugins/tests/data/ui/page.blp:23 plugins/tests/data/ui/page.blp:32
 msgid "Test"
@@ -439,7 +448,7 @@ msgstr ""
 "Vladimir Romanov <rirusha@altlinux.org>\n"
 "David Sultaniiazov <x1z53@altlinux.org>"
 
-#: src/application.vala:314
+#: src/application.vala:351
 msgid "No steps specified"
 msgstr "Не указан список шагов"
 
