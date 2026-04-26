@@ -213,7 +213,11 @@ public sealed class ReadySet.Application: Adw.Application {
 
                 foreach (var dep in deps) {
                     if (!(dep in passed_steps)) {
-                        critical ("Plugin '%s' has an unsatisfied dependency on '%s'", all_steps[i], dep);
+                        critical (
+                            "Plugin '%s' has an unsatisfied dependency on '%s'",
+                            all_steps[i],
+                            dep
+                        );
                     }
                 }
 
@@ -270,7 +274,9 @@ public sealed class ReadySet.Application: Adw.Application {
             foreach (var dep in deps) {
                 if (!(dep in all_steps)) {
                     critical (
-                        "Installer plugin '%s' has an unsatisfied dependency on '%s'", options_handler.installer, dep);
+                        "Installer plugin '%s' has an unsatisfied dependency on '%s'", options_handler.installer,
+                        dep
+                    );
                 }
             }
         }
