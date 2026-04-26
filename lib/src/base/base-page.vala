@@ -36,6 +36,12 @@ public class ReadySet.BasePage : Adw.BreakpointBin {
 
     public virtual LayoutMode layout_mode { get; set; }
 
+    /**
+     * Show or hide "Go up" button in main application when scroll
+     * go down far enough.
+     */
+    public bool need_go_up_button { get; construct; default = true; }
+
     public Gtk.Widget content {
         get {
             return child;

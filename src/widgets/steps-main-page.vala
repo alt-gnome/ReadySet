@@ -241,14 +241,22 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                 to_up_revealer.visible = false;
             }
         });
-        notify["can-up"].connect (() => {
-            if (can_up) {
-                to_up_revealer.visible = true;
-                to_up_revealer.reveal_child = true;
-            } else {
-                to_up_revealer.reveal_child = false;
-            }
-        });
+        notify["can-up"].connect (update_go_up_button);
+    }
+
+    void update_go_up_button () {
+        if (!last_current_page.page.need_go_up_button) {
+            to_up_revealer.visible = false;
+            to_up_revealer.reveal_child = false;
+            return;
+        }
+
+        if (can_up) {
+            to_up_revealer.visible = true;
+            to_up_revealer.reveal_child = true;
+        } else {
+            to_up_revealer.reveal_child = false;
+        }
     }
 
     void update_icons_visible () {
@@ -267,6 +275,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
         passed_pages.add (last_current_page.id);
         last_current_page.passed = true;
+        update_go_up_button ();
     }
 
     void update_scroll () {
