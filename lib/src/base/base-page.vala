@@ -20,11 +20,7 @@
 
 public class ReadySet.BasePage : Adw.BreakpointBin {
 
-    public Gtk.Widget info { get; set; default = new StatusPage () {
-        title = _("Unknown page"),
-        description = _("This page says that your distribution has made a mistake."),
-        icon_name = "dialog-error-symbolic"
-    }; }
+    public Gtk.Widget info { get; set; }
 
     public Gtk.Widget top_widget { get; set; }
 
@@ -47,6 +43,18 @@ public class ReadySet.BasePage : Adw.BreakpointBin {
         set {
             child = value;
         }
+    }
+
+    public ReadySet.BasePage.unknown () {
+        Object (
+            info: new StatusPage () {
+                icon_name = "dialog-error-symbolic",
+                title = _("Unknown page")
+            },
+            content: new StatusPage () {
+                description = _("This page says that your distribution has made a mistake.")
+            }
+        );
     }
 
     construct {

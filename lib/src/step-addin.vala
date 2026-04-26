@@ -33,7 +33,7 @@ public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
     public void load_css_for_display (Gdk.Display display) {
         var provider = new Gtk.CssProvider ();
         provider.load_from_resource ("/org/altlinux/ReadySet/Lib/style.css");
-        Gtk.StyleContext.add_provider_for_display (display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        Gtk.StyleContext.add_provider_for_display (display, provider, Gtk.STYLE_PROVIDER_PRIORITY_THEME);
 
         if (resource_base_path != null) {
             try {

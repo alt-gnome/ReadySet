@@ -252,7 +252,7 @@ public sealed class ReadySet.Application: Adw.Application {
         for (int i = 0; i < all_steps.length; i++) {
             if (steps_plugins[all_steps[i]] == null) {
                 pages.add (new PageInfo (
-                    new BasePage () {
+                    new BasePage.unknown () {
                         is_ready = true
                     },
                     null,
