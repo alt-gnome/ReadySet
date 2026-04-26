@@ -117,6 +117,7 @@ jobs:
           echo "release=$(date +%s)" >> $FORGEJO_OUTPUT
 
   rpm-build-amd64:
+    if: github.event_name != 'pull_request' && github.ref_name == 'main'
     name: RPM build for ${{ matrix.branch }}.amd64 and uploading
     runs-on: als-huge
     container:
@@ -162,6 +163,7 @@ jobs:
           group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
 
   rpm-build-arm64:
+    if: github.event_name != 'pull_request' && github.ref_name == 'main'
     name: RPM build for ${{ matrix.branch }}.arm64 and uploading
     runs-on: self-hosted-arm64-huge
     container:
@@ -205,7 +207,6 @@ jobs:
           directory: ~/.cache/hasherc/ready-set/out/RPMS
           token: ${{ secrets.TOKEN }}
           group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
-
 
   build-test-image:
     name: Build ${{ matrix.denviron }} image
