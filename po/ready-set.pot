@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-26 16:04+0000\n"
+"POT-Creation-Date: 2026-04-26 20:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,19 +50,19 @@ msgstr ""
 msgid "Open application menu"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:426
+#: data/ui/steps-main-page.blp:427
 msgid "Go up"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:469
+#: data/ui/steps-main-page.blp:470
 msgid "Go to previous page"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:488
+#: data/ui/steps-main-page.blp:489
 msgid "Next"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:500
+#: data/ui/steps-main-page.blp:501
 msgid "Extend/Retract keyboard"
 msgstr ""
 
@@ -78,11 +78,11 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: lib/src/base/base-page.vala:52
+#: lib/src/base/base-page.vala:58
 msgid "Unknown page"
 msgstr ""
 
-#: lib/src/base/base-page.vala:55
+#: lib/src/base/base-page.vala:61
 msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
@@ -148,7 +148,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: plugins/language/plugin.vala:117
+#: plugins/language/plugin.vala:124
 msgid "Error when setting language"
 msgstr ""
 
@@ -163,6 +163,15 @@ msgstr ""
 #: plugins/language/select-title.vala:66
 msgid ""
 "Let's start by choosing the language for the application and for your system."
+msgstr ""
+
+#: plugins/license-agreement/data/ui/page.blp:5
+#: plugins/license-agreement/data/ui/page.blp:11
+msgid "License Agreement"
+msgstr ""
+
+#: plugins/license-agreement/data/ui/page.blp:32
+msgid "I have read the license and accept it"
 msgstr ""
 
 #: plugins/tests/data/ui/page.blp:23 plugins/tests/data/ui/page.blp:32
@@ -403,7 +412,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/application.vala:314
+#: src/application.vala:351
 msgid "No steps specified"
 msgstr ""
 
