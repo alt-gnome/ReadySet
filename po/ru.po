@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-26 14:48+0000\n"
+"POT-Creation-Date: 2026-04-26 16:04+0000\n"
 "PO-Revision-Date: 2026-04-09 11:25+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -123,16 +123,13 @@ msgstr "Эта раскладка выбрана"
 msgid "Preview"
 msgstr "Превью"
 
-#: plugins/keyboard/data/ui/page.blp:24
-msgid "Keyboard"
-msgstr "Клавиатура"
-
-#: plugins/keyboard/data/ui/page.blp:29
-msgid "Keyboard settings"
-msgstr "Настройки клавиатуры"
+#: plugins/keyboard/data/ui/page.blp:24 plugins/keyboard/data/ui/page.blp:29
+msgid "Typing"
+msgstr ""
 
 #: plugins/keyboard/data/ui/page.blp:30
-msgid "Select your keyboard layout"
+#, fuzzy
+msgid "Select your keyboard layout or an input method"
 msgstr "Выберите раскладку клавиатуры"
 
 #: plugins/keyboard/data/ui/page.blp:35
@@ -189,41 +186,36 @@ msgstr "Выбрать Аватар"
 msgid "Security"
 msgstr "Безопасность"
 
-#: plugins/user/data/ui/page-password.blp:28
-#: plugins/user/data/ui/page-root-password.blp:28
-msgid "Set up security for Your device"
-msgstr "Настройте безопасность для Вашего устройства"
+#: plugins/user/data/ui/page-password.blp:37
+msgid "Be careful not to lose your password."
+msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:29
-msgid "Come up with a memorable password."
-msgstr "Придумайте запоминающийся пароль."
-
-#: plugins/user/data/ui/page-password.blp:48
+#: plugins/user/data/ui/page-password.blp:56
 msgid "Your user’s password"
 msgstr "Пароль Вашего пользователя"
 
-#: plugins/user/data/ui/page-password.blp:57
+#: plugins/user/data/ui/page-password.blp:65
 msgid "Generate user password"
 msgstr "Сгенерировать пароль пользователя"
 
-#: plugins/user/data/ui/page-password.blp:72
+#: plugins/user/data/ui/page-password.blp:80
 #: plugins/user/data/ui/page-root-password.blp:84
 msgid "Passwords do not match"
 msgstr "Пароли не совпадают"
 
-#: plugins/user/data/ui/page-password.blp:76
+#: plugins/user/data/ui/page-password.blp:84
 #: plugins/user/data/ui/page-root-password.blp:88
 msgid "Repeat password"
 msgstr "Повторите пароль"
-
-#: plugins/user/data/ui/page-password.blp:90
-msgid "Enable autologin"
-msgstr "Включить автоматический вход"
 
 #: plugins/user/data/ui/page-root-password.blp:24
 #, fuzzy
 msgid "Administrator"
 msgstr "Пароль администратора"
+
+#: plugins/user/data/ui/page-root-password.blp:28
+msgid "Set up security for Your device"
+msgstr "Настройте безопасность для Вашего устройства"
 
 #: plugins/user/data/ui/page-root-password.blp:29
 msgid "You also can set password for administrator."
@@ -253,9 +245,8 @@ msgid "About You"
 msgstr "О Вас"
 
 #: plugins/user/data/ui/page-username.blp:30
-#: plugins/user/data/ui/page-username.blp:106
-msgid "Set information about You"
-msgstr "Введите информацию о Вас"
+msgid "We need a few details to complete setup."
+msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:74
 msgid "Change Avatar"
@@ -264,6 +255,10 @@ msgstr "Изменить Аватар"
 #: plugins/user/data/ui/page-username.blp:95
 msgid "Remove Avatar"
 msgstr "Удалить Аватар"
+
+#: plugins/user/data/ui/page-username.blp:106
+msgid "Set information about You"
+msgstr "Введите информацию о Вас"
 
 #: plugins/user/data/ui/page-username.blp:119
 msgid "Full Name"
@@ -275,11 +270,16 @@ msgstr ""
 "Имя пользователя будет использовано для имени Вашей домашней директории и не "
 "может быть изменено."
 
+#: plugins/user/page-password.vala:60
+#, c-format
+msgid "Set a Password for %s"
+msgstr ""
+
 #: plugins/user/passwdqc-utils.vala:43
 msgid "Failed to generate password"
 msgstr "Не удалось сгенерироавть пароль"
 
-#: plugins/user/plugin.vala:77
+#: plugins/user/plugin.vala:74
 msgid "Error when creating a user"
 msgstr "Ошибка при создании пользователя"
 
@@ -519,6 +519,18 @@ msgstr "Сообщение об ошибке: %s"
 #: src/pages/end-page.vala:148
 msgid "Error while execute post hooks"
 msgstr "Ошибка при выполнении пост скриптов"
+
+#~ msgid "Keyboard"
+#~ msgstr "Клавиатура"
+
+#~ msgid "Keyboard settings"
+#~ msgstr "Настройки клавиатуры"
+
+#~ msgid "Come up with a memorable password."
+#~ msgstr "Придумайте запоминающийся пароль."
+
+#~ msgid "Enable autologin"
+#~ msgstr "Включить автоматический вход"
 
 #~ msgid "sandbox"
 #~ msgstr "песочница"
