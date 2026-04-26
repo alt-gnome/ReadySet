@@ -31,10 +31,6 @@ public class User.PagePassword : ReadySet.BasePage {
     unowned ContextRow password_repeat_context_row;
     [GtkChild]
     unowned Adw.PasswordEntryRow password_repeat_entry;
-    [GtkChild]
-    unowned Adw.SwitchRow autologin_switch_row;
-    [GtkChild]
-    unowned Gtk.ListBox autologin_list_box;
 
     construct {
         Addin.get_instance ().context.bind_context_to_property (
@@ -44,31 +40,7 @@ public class User.PagePassword : ReadySet.BasePage {
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
 
-        Addin.get_instance ().context.bind_context_to_property (
-            "user-autologin",
-            autologin_switch_row,
-            "active",
-            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
-        );
-
-        Addin.get_instance ().context.bind_context_to_property (
-            "hide-autologin",
-            autologin_list_box,
-            "visible",
-            BindingFlags.INVERT_BOOLEAN | BindingFlags.SYNC_CREATE
-        );
-
-        Addin.get_instance ().context.data_changed.connect (on_context_data_changed);
-
         update_is_ready ();
-    }
-
-    void on_context_data_changed (string key) {
-        if (key == "hide-autologin") {
-            if (Addin.get_instance ().context.get_boolean ("hide-autologin")) {
-                autologin_switch_row.active = false;
-            }
-        }
     }
 
     void update_is_ready () {
