@@ -1,0 +1,36 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $LicenseAgreementPage: $ReadySetBasePage {
+  title-header: _("License Agreement");
+  title-icon-name: "document-text-symbolic";
+  is-ready: bind check_button.active;
+  notify::license-file-path => $read_license_file();
+
+  info: $ReadySetStatusPage {
+    title: _("License Agreement");
+    icon-name: "document-text-symbolic";
+  };
+
+  content: Adw.Clamp {
+    Box {
+      orientation: vertical;
+      margin-top: 12;
+      margin-end: 12;
+      margin-bottom: 12;
+      margin-start: 12;
+      spacing: 12;
+
+      Label {
+        use-markup: true;
+        wrap: true;
+        label: bind template.license-text;
+      }
+
+      CheckButton check_button {
+        halign: center;
+        label: _("I have read the license and accept it");
+      }
+    }
+  };
+}
