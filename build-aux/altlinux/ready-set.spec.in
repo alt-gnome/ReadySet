@@ -127,8 +127,19 @@ Summary: %name keyboard plugin
 Group: Other
 
 Requires: %name = %EVR
+Requires: %name-plugin-language = %EVR
 
 %description plugin-keyboard
+%summary.
+
+%package plugin-license-agreement
+Summary: %name license agreement plugin
+Group: Other
+
+Requires: %name = %EVR
+Requires: %name-plugin-language = %EVR
+
+%description plugin-license-agreement
 %summary.
 
 %package plugin-language
@@ -255,6 +266,10 @@ Requires: %name = %EVR
 %_datadir/polkit-1/rules.d/%app_id.Plugin.Language.rules
 %_libdir/%name/plugins/steps/language.plugin
 %_libdir/%name/plugins/steps/liblanguage.so
+
+%files plugin-license-agreement
+%_libdir/%name/plugins/steps/license-agreement.plugin
+%_libdir/%name/plugins/steps/liblicense-agreement.so
 
 %files plugin-user-common
 %_datadir/polkit-1/rules.d/%app_id.Plugin.User.rules
