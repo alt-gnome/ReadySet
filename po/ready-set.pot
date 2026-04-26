@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-26 14:48+0000\n"
+"POT-Creation-Date: 2026-04-26 16:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -120,16 +120,12 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#: plugins/keyboard/data/ui/page.blp:24
-msgid "Keyboard"
-msgstr ""
-
-#: plugins/keyboard/data/ui/page.blp:29
-msgid "Keyboard settings"
+#: plugins/keyboard/data/ui/page.blp:24 plugins/keyboard/data/ui/page.blp:29
+msgid "Typing"
 msgstr ""
 
 #: plugins/keyboard/data/ui/page.blp:30
-msgid "Select your keyboard layout"
+msgid "Select your keyboard layout or an input method"
 msgstr ""
 
 #: plugins/keyboard/data/ui/page.blp:35
@@ -185,39 +181,34 @@ msgstr ""
 msgid "Security"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:28
-#: plugins/user/data/ui/page-root-password.blp:28
-msgid "Set up security for Your device"
+#: plugins/user/data/ui/page-password.blp:37
+msgid "Be careful not to lose your password."
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:29
-msgid "Come up with a memorable password."
-msgstr ""
-
-#: plugins/user/data/ui/page-password.blp:48
+#: plugins/user/data/ui/page-password.blp:56
 msgid "Your user’s password"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:57
+#: plugins/user/data/ui/page-password.blp:65
 msgid "Generate user password"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:72
+#: plugins/user/data/ui/page-password.blp:80
 #: plugins/user/data/ui/page-root-password.blp:84
 msgid "Passwords do not match"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:76
+#: plugins/user/data/ui/page-password.blp:84
 #: plugins/user/data/ui/page-root-password.blp:88
 msgid "Repeat password"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:90
-msgid "Enable autologin"
-msgstr ""
-
 #: plugins/user/data/ui/page-root-password.blp:24
 msgid "Administrator"
+msgstr ""
+
+#: plugins/user/data/ui/page-root-password.blp:28
+msgid "Set up security for Your device"
 msgstr ""
 
 #: plugins/user/data/ui/page-root-password.blp:29
@@ -247,8 +238,7 @@ msgid "About You"
 msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:30
-#: plugins/user/data/ui/page-username.blp:106
-msgid "Set information about You"
+msgid "We need a few details to complete setup."
 msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:74
@@ -259,6 +249,10 @@ msgstr ""
 msgid "Remove Avatar"
 msgstr ""
 
+#: plugins/user/data/ui/page-username.blp:106
+msgid "Set information about You"
+msgstr ""
+
 #: plugins/user/data/ui/page-username.blp:119
 msgid "Full Name"
 msgstr ""
@@ -267,11 +261,16 @@ msgstr ""
 msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 
+#: plugins/user/page-password.vala:60
+#, c-format
+msgid "Set a Password for %s"
+msgstr ""
+
 #: plugins/user/passwdqc-utils.vala:43
 msgid "Failed to generate password"
 msgstr ""
 
-#: plugins/user/plugin.vala:77
+#: plugins/user/plugin.vala:74
 msgid "Error when creating a user"
 msgstr ""
 
