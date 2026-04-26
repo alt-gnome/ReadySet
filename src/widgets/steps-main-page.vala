@@ -269,6 +269,11 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
         last_current_page = model.get_selected_item ();
 
+        if (last_current_page == null) {
+            warning ("Model has no acessible pages");
+            return;
+        }
+
         var base_page = last_current_page.page;
         top_bin.child = base_page.top_widget;
         bottom_bin.child = base_page.bottom_widget;
@@ -287,7 +292,14 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     }
 
     void update_buttons () {
-        is_ready_to_continue = model.get_selected_item ().is_ready;
+        var selected_item = model.get_selected_item ();
+
+        if (selected_item == null) {
+            warning ("Model has no acessible pages");
+            return;
+        }
+
+        is_ready_to_continue = selected_item.is_ready;
         can_cancel = model.get_selected () > 0;
     }
 
