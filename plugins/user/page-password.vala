@@ -31,6 +31,12 @@ public class User.PagePassword : ReadySet.BasePage {
     unowned ContextRow password_repeat_context_row;
     [GtkChild]
     unowned Adw.PasswordEntryRow password_repeat_entry;
+    [GtkChild]
+    unowned Adw.Avatar avatar;
+    [GtkChild]
+    unowned ReadySet.StatusPage info_status_page;
+
+    public string user_avatar_file { get; set; }
 
     construct {
         Addin.get_instance ().context.bind_context_to_property (
@@ -40,7 +46,46 @@ public class User.PagePassword : ReadySet.BasePage {
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
 
+        var context = Addin.get_instance ().context;
+        context.data_changed.connect (on_context_data_changed);
+        on_context_data_changed (context, "user-fullname");
+        on_context_data_changed (context, "user-avatar-file");
+
         update_is_ready ();
+    }
+
+    void on_context_data_changed (ReadySet.Context context, string key) {
+        switch (key) {
+            case "user-fullname":
+                info_status_page.title = _("Set a Password for %s").printf (context.get_string (key));
+                avatar.text = context.get_string (key);
+                break;
+            case "user-avatar-file":
+                var path = context.get_string (key);
+                if (path == null) {
+                    avatar.custom_image = null;
+                } else {
+                    try {
+                        avatar.custom_image = Gdk.Texture.from_filename (path);
+                    } catch (Error e) {}
+                }
+                break;
+        }
+    }
+
+    bool file_to_texture_transform (Binding b, Value value_from, ref Value value_to) {
+        var path = value_from.dup_string ();
+        if (path == null) {
+            value_to.set_object (null);
+            return true;
+        }
+
+        try {
+            value_to.set_object (Gdk.Texture.from_filename (path));
+            return true;
+        } catch (Error e) {
+            return false;
+        }
     }
 
     void update_is_ready () {
