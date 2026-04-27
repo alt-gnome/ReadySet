@@ -170,6 +170,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         set {
             if (_model != null) {
                 _model.selection_changed.disconnect (selection_changed);
+                _model.items_changed.disconnect (on_model_items_changed);
             }
 
             _model = value;
@@ -179,31 +180,14 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
             if (_model != null) {
                 _model.selection_changed.connect (selection_changed);
+                _model.items_changed.connect (on_model_items_changed);
                 selection_changed ();
+                on_model_items_changed ();
             }
         }
     }
 
-    Gtk.Widget page_creation_func (PageInfo page) {
-        if (page.id in passed_pages) {
-            page.passed = true;
-        }
-
-        bind_property ("layout-mode", page.page, "layout-mode", SYNC_CREATE);
-
-        return page.page;
-    }
-
-    Gtk.Widget page_info_creation_func (PageInfo page) {
-        notify["is-compact"].connect (() => {
-            if (is_compact) {
-                page.page.info.add_css_class ("compact");
-            } else {
-                page.page.info.remove_css_class ("compact");
-            }
-        });
-        return page.page.info;
-    }
+    Binding[] model_pages_bindings = {};
 
     construct {
         model = Application.get_default ().model;
@@ -223,6 +207,35 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         setup.begin ();
     }
 
+    void on_model_items_changed () {
+        foreach (var b in model_pages_bindings) {
+            b.unbind ();
+        }
+
+        for (uint i = 0; i < model.get_n_items (); i++) {
+            model_pages_bindings += bind_property (
+                "is-compact",
+                model.get_item (i),
+                "is-compact",
+                SYNC_CREATE
+            );
+        }
+    }
+
+    Gtk.Widget page_creation_func (PageInfo page) {
+        if (page.id in passed_pages) {
+            page.passed = true;
+        }
+
+        bind_property ("layout-mode", page.page, "layout-mode", SYNC_CREATE);
+
+        return page.page;
+    }
+
+    Gtk.Widget page_info_creation_func (PageInfo page) {
+        return page.page.info;
+    }
+
     async void setup () {
         Osk? proxy = null;
         try {
@@ -236,12 +249,16 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         osk_button.visible = (proxy != null && a11y_settings.get_boolean ("screen-keyboard-enabled")) ||
              Environment.get_variable ("READY_SET_SHOW_OSK") == "always";
 
-        to_up_revealer.notify["child-revealed"].connect (() => {
-            if (!to_up_revealer.child_revealed) {
-                to_up_revealer.visible = false;
-            }
-        });
         notify["can-up"].connect (update_go_up_button);
+    }
+
+    [GtkCallback]
+    void on_to_up_revealer_child_revealed (Object obj, ParamSpec param) {
+        var tur = (Gtk.Revealer) obj;
+
+        if (!tur.child_revealed) {
+            tur.visible = false;
+        }
     }
 
     void update_go_up_button () {

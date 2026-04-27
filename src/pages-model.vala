@@ -38,6 +38,19 @@ public sealed class ReadySet.PageInfo : Object {
 
     public string title_icon_name { get; set; }
 
+    public bool is_compact {
+        get {
+            return page.info.has_css_class ("compact");
+        }
+        set {
+            if (value) {
+                page.info.add_css_class ("compact");
+            } else {
+                page.info.remove_css_class ("compact");
+            }
+        }
+    }
+
     public PageInfo (BasePage page, StepAddin? plugin, bool apply_plugin = true) {
         Object (
             page: page,

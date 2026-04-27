@@ -416,6 +416,7 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
           transition-duration: 200;
           halign: end;
           visible: false;
+          notify::reveal-child => $on_to_up_revealer_child_revealed();
 
           Button to_up_button {
             styles [
