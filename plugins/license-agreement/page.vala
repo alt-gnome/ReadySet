@@ -36,6 +36,7 @@ public sealed class LicenseAgreement.Page : ReadySet.BasePage {
             "license-agreement-file-path",
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
+        read_license_file ();
     }
 
     [GtkCallback]
