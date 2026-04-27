@@ -69,7 +69,9 @@ librs = shared_library(
   vala_gir: librs_gir_name,
   version: meson.project_version(),
   install: true,
-  install_dir: [ true, true, true, true ],
+  install_vala_header: true,
+  install_vala_vapi: true,
+  install_vala_gir: true,
   c_args: librs_c_args,
   vala_args: rs_app_vala_args,
 )

@@ -28,20 +28,8 @@ configure_file(
   install_dir: systemd_user_unit_dir
 )
 
-install_data(
-  files(gis + '-sysusers.conf'),
-  install_dir: systemd_sysusers_dir,
-  rename: [gis + '.conf']
-)
-
-configure_file(
-  input: gis + '-tmpfiles.conf.in',
-  output: gis + '.conf',
-  configuration: {
-    'LOCALSTATEDIR': localstatedir,
-  },
-  install_dir: systemd_tmpfiles_dir,
-)
+subdir('sysusers')
+subdir('tmpfiles')
 
 configure_file(
   input: gis + '.session.conf.in',
