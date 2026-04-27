@@ -43,6 +43,7 @@ rs_app_sources = [
 ]
 
 rs_app_c_args = [
+  '-DG_LOG_DOMAIN="ReadySet"',
 ]
 
 rs_app_vala_args = [

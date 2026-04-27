@@ -23,6 +23,7 @@ subdir('data')
 
 plugin_language_c_args = [
   '-DGNOME_DESKTOP_USE_UNSTABLE_API',
+  '-DG_LOG_DOMAIN="Language"',
 ]
 
 shared_module(

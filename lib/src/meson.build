@@ -41,7 +41,7 @@ librs_sources = [
 librs_sources_with_resources = librs_sources + [librs_resources]
 
 librs_c_args = [
-
+  '-DG_LOG_DOMAIN="libready-set"',
 ]
 
 rs_app_vala_args = [

@@ -28,6 +28,7 @@ subdir('data')
 
 plugin_keyboard_c_args = [
   '-DGNOME_DESKTOP_USE_UNSTABLE_API',
+  '-DG_LOG_DOMAIN="Keyboard"',
 ]
 
 plugin_keyboard_vala_args = [

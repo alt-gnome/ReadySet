@@ -13,6 +13,7 @@ plugin_welcome_name = 'welcome'
 subdir('data')
 
 plugin_welcome_c_args = [
+  '-DG_LOG_DOMAIN="Welcome"',
 ]
 
 shared_module(
