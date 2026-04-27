@@ -28,13 +28,3 @@ configure_file(
   install: true,
   install_dir: steps_plugins_dir
 )
-
-install_subdir(
-  'post-hooks',
-  install_dir: datadir / meson.project_name()
-)
-
-install_subdir(
-  'pre-hooks',
-  install_dir: datadir / meson.project_name()
-)
