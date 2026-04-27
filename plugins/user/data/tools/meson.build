@@ -3,5 +3,5 @@ install_data(
     'ready-set-set-root-password',
   ),
   install_mode: 'rwxr-xr-x',
-  install_dir: get_option('prefix') / get_option('libexecdir')
+  install_dir: get_option('libexecdir')
 )
