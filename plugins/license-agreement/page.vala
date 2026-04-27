@@ -20,7 +20,7 @@
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/LicenseAgreement/ui/page.ui")]
 public sealed class LicenseAgreement.Page : ReadySet.BasePage {
-    public string license_file_path { get; set; }
+    public string license_agreement_file_path { get; set; }
     public string license_text { get; set; default = ""; }
 
     public Page () {
@@ -41,7 +41,7 @@ public sealed class LicenseAgreement.Page : ReadySet.BasePage {
 
     [GtkCallback]
     void read_license_file () {
-        if (license_file_path == null || license_file_path == "") {
+        if (license_agreement_file_path == null || license_agreement_file_path == "") {
             license_text = "";
             accessible = false;
             return;
@@ -52,7 +52,7 @@ public sealed class LicenseAgreement.Page : ReadySet.BasePage {
         var found = false;
         File? file = null;
         foreach (var variant in variants) {
-            var path = license_file_path.replace ("LANG", variant);
+            var path = license_agreement_file_path.replace ("LANG", variant);
 
             file = File.new_for_path (path);
 
