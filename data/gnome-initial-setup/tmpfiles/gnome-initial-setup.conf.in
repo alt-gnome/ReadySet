@@ -1,2 +1,3 @@
 #Type   Path                            Mode    User    Group   Age Argument
-d       @LOCALSTATEDIR@/lib/gnome-initial-setup    0755    @GIS@   @GIS@   -
+d       @LOCALSTATEDIR@/lib/gnome-initial-setup    1770    @GIS@   @GIS@   -
+d       /run/gnome-initial-setup        1777    root    @GIS@   -
