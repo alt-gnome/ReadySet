@@ -73,21 +73,6 @@ public class User.PagePassword : ReadySet.BasePage {
         }
     }
 
-    bool file_to_texture_transform (Binding b, Value value_from, ref Value value_to) {
-        var path = value_from.dup_string ();
-        if (path == null) {
-            value_to.set_object (null);
-            return true;
-        }
-
-        try {
-            value_to.set_object (Gdk.Texture.from_filename (path));
-            return true;
-        } catch (Error e) {
-            return false;
-        }
-    }
-
     void update_is_ready () {
         is_ready = password_is_ready (password_entry.text) &&
                    password_entry.text == password_repeat_entry.text;
