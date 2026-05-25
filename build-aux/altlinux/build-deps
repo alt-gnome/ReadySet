@@ -10,6 +10,7 @@
 'pkgconfig(ibus-1.0)'
 'pkgconfig(libadwaita-1)>=1.7'
 'pkgconfig(libpeas-2)'
+'pkgconfig(libserialize-7)'
 'pkgconfig(passwdqc)'
 'pkgconfig(polkit-gobject-1)'
 'pkgconfig(pwquality)'

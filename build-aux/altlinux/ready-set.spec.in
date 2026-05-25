@@ -38,17 +38,18 @@ BuildRequires: gir(Gtk) = 4.0
 BuildRequires: gir(Peas) = 2
 BuildRequires: gir(Gdm) = 1.0
 BuildRequires: pkgconfig(accountsservice)
+BuildRequires: pkgconfig(gdm)
 BuildRequires: pkgconfig(gee-0.8)
 BuildRequires: pkgconfig(gio-unix-2.0)
 BuildRequires: pkgconfig(gnome-desktop-4)
 BuildRequires: pkgconfig(ibus-1.0)
 BuildRequires: pkgconfig(libadwaita-1) >= 1.7
 BuildRequires: pkgconfig(libpeas-2)
+BuildRequires: pkgconfig(libserialize-7) >= 7.5
 BuildRequires: pkgconfig(passwdqc)
 BuildRequires: pkgconfig(polkit-gobject-1)
 BuildRequires: pkgconfig(pwquality)
 BuildRequires: pkgconfig(systemd)
-BuildRequires: pkgconfig(gdm)
 BuildRequires: pkgconfig(xkbcommon)
 
 %description
