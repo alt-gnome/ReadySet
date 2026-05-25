@@ -118,6 +118,9 @@ namespace ReadySet {
 
     const string RSS = "\n::READY-SET-SEPARATOR::\n";
 
+    /**
+     * Runs `pkexec` with SHELL fixing.
+     */
     public async void pkexec (owned string[] cmd, string? user = null, Cancellable? cancellable = null) throws Error {
         var launcher = new SubprocessLauncher (NONE);
         var argv = new Gee.ArrayList<string>.wrap ({ "pkexec" });
