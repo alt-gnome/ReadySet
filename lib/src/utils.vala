@@ -68,9 +68,14 @@ namespace ReadySet {
         }
     }
 
-    public struct ApplyErrorData {
-        public string message;
-        public string description;
+    public class ApplyErrorData : Serialize.DataObject {
+        public string message { get; set; }
+        public string description { get; set; }
+
+        public ApplyErrorData (string message, string descriprtion) {
+            this.message = message;
+            this.description = description;
+        }
     }
 
     public sealed class ProgressData : Object {
@@ -86,26 +91,15 @@ namespace ReadySet {
         NO_PERMISSION;
 
         public static ApplyError build_error (string message, string description) {
-            return new ApplyError.BASE ("%s%s%s".printf (
-                message,
-                RSS,
-                description
-            ));
+            return new ApplyError.BASE (new ApplyErrorData (message, description).to_json ());
         }
 
         public static ApplyErrorData to_data (ApplyError error) {
-            var parts = error.message.split (RSS, 2);
-
-            if (parts.length == 2) {
-                return {
-                    message: parts[0],
-                    description: parts[1]
-                };
-            } else {
-                return {
-                    message: _("Something went wrong"),
-                    description: parts[0]
-                };
+            try {
+                return Serialize.JsonWorker.simple_from_json<ApplyErrorData> (error.message);
+            } catch (Serialize.Error e) {
+                //  It's not json string, just return message
+                return new ApplyErrorData (_("Something went wrong"), error.message);
             }
         }
     }
@@ -115,8 +109,6 @@ namespace ReadySet {
     public delegate Value ContextGetterFunc (ref Value this_value);
 
     public delegate void ContextSetterFunc (ref Value this_value, Value new_value);
-
-    const string RSS = "\n::READY-SET-SEPARATOR::\n";
 
     /**
      * Runs `pkexec` with SHELL fixing.

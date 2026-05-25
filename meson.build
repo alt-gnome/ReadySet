@@ -30,6 +30,7 @@ libpeas_dep = dependency('libpeas-2')
 polkit_dep = dependency('polkit-gobject-1')
 posix_dep = meson.get_compiler('vala').find_library('posix')
 xkb_dep = dependency('xkbcommon')
+libserialize_dep = dependency('libserialize-7', version: '>= 7.5')
 
 api_version = meson.project_version().split('.')[0]
 pascal_name = 'ReadySet'

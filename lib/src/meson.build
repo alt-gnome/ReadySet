@@ -53,6 +53,7 @@ librs_dependencies = [
   gio_dep,
   libadwaita_dep,
   libpeas_dep,
+  libserialize_dep,
 ]
 
 librs_deps_pkgs = []
