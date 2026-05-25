@@ -118,7 +118,7 @@ namespace ReadySet {
 
     const string RSS = "\n::READY-SET-SEPARATOR::\n";
 
-    public void pkexec (owned string[] cmd, string? user = null) throws Error {
+    public async void pkexec (owned string[] cmd, string? user = null, Cancellable? cancellable = null) throws Error {
         var launcher = new SubprocessLauncher (NONE);
         var argv = new Gee.ArrayList<string>.wrap ({ "pkexec" });
 
@@ -133,7 +133,7 @@ namespace ReadySet {
         launcher.unsetenv ("SHELL");
         var process = launcher.spawnv (argv.to_array ().copy ());
 
-        process.wait_check ();
+        yield process.wait_check_async (cancellable);
     }
 
     public Value kf_value_to_value (KeyFile keyfile, string group_name, string key, Type value_type) throws Error {
