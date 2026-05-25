@@ -274,7 +274,10 @@ namespace User {
 #if WITH_ROOT_SET
     async bool set_root_password (string password) {
         try {
-            yield ReadySet.pkexec ({ Path.build_filename (Config.LIBEXECDIR, "ready-set-set-root-password"), password });
+            yield ReadySet.pkexec ({
+                Path.build_filename (Config.LIBEXECDIR, "ready-set-set-root-password"),
+                password
+            });
             return true;
         } catch (Error e) {
             return false;
