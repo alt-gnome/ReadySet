@@ -38,6 +38,7 @@ rs_app_dependencies = [
 
 rs_app_sources = [
   rs_app_vala_sources,
+  common_sources,
   rs_app_vapi_sources,
   rs_app_resources,
 ]

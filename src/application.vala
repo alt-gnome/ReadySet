@@ -71,7 +71,9 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     static construct {
-        init ();
+        //  Ensure some libready-set types
+        typeof (StatusPage).ensure ();
+        typeof (BasePage).ensure ();
 
         typeof (PagesIndicator).ensure ();
         typeof (PositionedStack).ensure ();

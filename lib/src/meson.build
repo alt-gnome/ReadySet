@@ -19,11 +19,9 @@ librs_vala_sources = files(
   'base/base-page.vala',
   'base/status-page.vala',
 
-  'apply-callback.vala',
   'context-object.vala',
   'context.vala',
   'installer-addin.vala',
-  'main.vala',
   'step-addin.vala',
   'utils.vala',
 )
@@ -34,6 +32,7 @@ librs_c_sources = files(
 
 librs_sources = [
   librs_c_sources,
+  common_sources,
   librs_vapi_sources,
   librs_vala_sources,
 ]

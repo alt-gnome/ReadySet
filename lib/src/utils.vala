@@ -68,8 +68,19 @@ namespace ReadySet {
         }
     }
 
+    /**
+     * Data that handles {@link StepAddin.apply} error data.
+     */
     public class ApplyErrorData : Serialize.DataObject {
+
+        /**
+         * Error message. Will be used as title on error page.
+         */
         public string message { get; set; }
+
+        /**
+         * Error description. Will be used as body on error page.
+         */
         public string description { get; set; }
 
         public ApplyErrorData (string message, string descriprtion) {
@@ -86,6 +97,22 @@ namespace ReadySet {
         public string message { get; set; }
     }
 
+    /**
+     * Can hold either json string or something else, so you should use
+     * {@link ApplyError.to_data} to get real data as {@link ApplyErrorData}.
+     *
+     * Also you can build both with
+     * {{{
+     *   throw new ApplyError.BASE ("Message");
+     * }}}
+     * and
+     * {{{
+     *   throw ApplyError.build_error ("Title", "Body");
+     * }}}
+     *
+     * If you creating error manually, "Something went wrong" will be
+     * used as title.
+     */
     public errordomain ApplyError {
         BASE,
         NO_PERMISSION;
@@ -104,10 +131,14 @@ namespace ReadySet {
         }
     }
 
-    public delegate void ApplyFunc () throws ApplyError;
-
+    /**
+     * Function that uses as getter in {@link Context} value.
+     */
     public delegate Value ContextGetterFunc (ref Value this_value);
 
+    /**
+     * Function that uses as setter in {@link Context} value.
+     */
     public delegate void ContextSetterFunc (ref Value this_value, Value new_value);
 
     /**
@@ -129,21 +160,5 @@ namespace ReadySet {
         var process = launcher.spawnv (argv.to_array ().copy ());
 
         yield process.wait_check_async (cancellable);
-    }
-
-    public Value kf_value_to_value (KeyFile keyfile, string group_name, string key, Type value_type) throws Error {
-        if (value_type == Type.BOOLEAN) {
-            return keyfile.get_boolean (group_name, key);
-        } else if (value_type == Type.STRING) {
-            return keyfile.get_string (group_name, key);
-        } else if (value_type == typeof (string[])) {
-            return keyfile.get_string_list (group_name, key);
-        } else if (value_type == Type.INT || value_type == Type.INT64) {
-            return keyfile.get_int64 (group_name, key);
-        } else if (value_type == Type.DOUBLE) {
-            return keyfile.get_double (group_name, key);
-        } else {
-            error ("Unknown keyfile desired type %s for key %s", value_type.name (), key);
-        }
     }
 }
