@@ -2,6 +2,7 @@
 'gir(Gdm)=1.0'
 'gir(Gtk)=4.0'
 'gir(Peas)=2'
+'gir(Serialize)=7'
 'pkgconfig(accountsservice)'
 'pkgconfig(gdm)'
 'pkgconfig(gee-0.8)'

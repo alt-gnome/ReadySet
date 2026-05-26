@@ -37,6 +37,7 @@ BuildRequires: gir(Adw) = 1
 BuildRequires: gir(Gtk) = 4.0
 BuildRequires: gir(Peas) = 2
 BuildRequires: gir(Gdm) = 1.0
+BuildRequires: gir(Serialize)=7
 BuildRequires: pkgconfig(accountsservice)
 BuildRequires: pkgconfig(gdm)
 BuildRequires: pkgconfig(gee-0.8)

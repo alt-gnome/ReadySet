@@ -4,6 +4,8 @@ modules:
     body:
       custom:
         - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/${{ Env.PKG_GROUP }}/sisyphus.repo _arch_ classic
+      tasks:
+        - '419190'
 
   - type: packages
     body:
@@ -12,6 +14,7 @@ modules:
         - ready-set-plugin-language
         - ready-set-plugin-keyboard
         - ready-set-plugin-user-passwdqc
+      upgrade: true
 
   - name: Copy configuration
     type: copy
