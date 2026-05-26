@@ -383,6 +383,11 @@ public class ReadySet.Context : Object {
     }
 
     public void load_from_keyfile (KeyFile keyfile, string group_name) throws Error {
+        if (!keyfile.has_group (group_name)) {
+            debug ("Keyfile doesn't have group '%s'", group_name);
+            return;
+        }
+
         foreach (var key in keyfile.get_keys (group_name)) {
             if (!data.has_key (key)) {
                 warning ("Key %s not found in context, it will be ignored", key);
