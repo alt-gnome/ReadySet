@@ -19,7 +19,7 @@ App using steps. Curently available steps:
 
 - keyboard (Choosing layouts)
 - language (Users language)
-- license-argument (License agreement)
+- license-agreement (License agreement)
 - user (User creation. Available both pwquality and passwdqc)
 
 ## Configuration
