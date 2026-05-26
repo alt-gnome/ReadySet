@@ -26,3 +26,4 @@
 /usr/bin/valadoc
 /usr/bin/vapigen
 gettext-devel
+graphviz
