@@ -3,7 +3,7 @@ data/ui/nothing-to-show.blp
 data/ui/steps-main-page.blp
 data/ui/window-content.blp
 lib/src/base/base-page.vala
-lib/src/utils.vala
+lib/src/lib-utils.vala
 plugins/keyboard/data/ui/input-chooser.blp
 plugins/keyboard/data/ui/input-row.blp
 plugins/keyboard/data/ui/page.blp
