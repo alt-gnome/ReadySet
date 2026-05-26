@@ -32,16 +32,14 @@ rs_app_dependencies = [
   gee_dep,
   libadwaita_dep,
   libpeas_dep,
-  librs_dep,
   posix_dep,
-]
+] + librs_dependencies
 
 rs_app_sources = [
   rs_app_vala_sources,
-  common_sources,
   rs_app_vapi_sources,
   rs_app_resources,
-]
+] + librs_sources
 
 rs_app_c_args = [
   '-DG_LOG_DOMAIN="ReadySet"',
@@ -50,6 +48,8 @@ rs_app_c_args = [
 rs_app_vala_args = [
   '--gresources', rs_app_resource_files,
   '--gresourcesdir=data/',
+  '--gresources', librs_resource_files,
+  '--gresourcesdir=lib/data/',
   '--vapidir', meson.project_source_root() / 'vapi',
   '--pkg', 'linux',
 ]
@@ -66,7 +66,10 @@ rs_app_config_h_dir = include_directories('.')
 executable(
   'ready-set',
   rs_app_sources,
-  include_directories: rs_app_config_h_dir,
+  include_directories: [
+    rs_app_config_h_dir,
+    '../lib/src',
+  ],
   dependencies: rs_app_dependencies,
   link_args: ['-lm'],
   c_args: rs_app_c_args,

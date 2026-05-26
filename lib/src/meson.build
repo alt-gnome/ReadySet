@@ -22,8 +22,8 @@ librs_vala_sources = files(
   'context-object.vala',
   'context.vala',
   'installer-addin.vala',
+  'lib-utils.vala',
   'step-addin.vala',
-  'utils.vala',
 )
 
 librs_c_sources = files(
@@ -32,7 +32,6 @@ librs_c_sources = files(
 
 librs_sources = [
   librs_c_sources,
-  common_sources,
   librs_vapi_sources,
   librs_vala_sources,
 ]

@@ -112,17 +112,12 @@ public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
             assert (_context != null);
             return _context;
         }
-        set {
-            _context = context;
+        internal set {
+            _context = value;
         }
     }
 
-    /**
-     * Tries to find `style.css` at gresource and load for
-     * `display`. You don't need to call it manually, application do
-     * it by itself.
-     */
-    public void load_css_for_display (Gdk.Display display) {
+    internal void load_css_for_display (Gdk.Display display) {
         var provider = new Gtk.CssProvider ();
         if (resource_base_path != null) {
             try {

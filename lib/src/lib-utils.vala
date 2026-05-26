@@ -26,7 +26,7 @@ namespace ReadySet {
         BIG,
         SMALL;
 
-        public static LayoutMode from_string (string str) {
+        internal static LayoutMode from_string (string str) {
             unowned EnumClass enum_class = (EnumClass) typeof (LayoutMode).class_peek ();
             var enum_value = enum_class.get_value_by_nick (str);
             if (enum_value == null) {
@@ -121,7 +121,7 @@ namespace ReadySet {
             return new ApplyError.BASE (new ApplyErrorData (message, description).to_json ());
         }
 
-        public static ApplyErrorData to_data (ApplyError error) {
+        internal static ApplyErrorData to_data (ApplyError error) {
             try {
                 return Serialize.JsonWorker.simple_from_json<ApplyErrorData> (error.message);
             } catch (Serialize.Error e) {
@@ -160,5 +160,21 @@ namespace ReadySet {
         var process = launcher.spawnv (argv.to_array ().copy ());
 
         yield process.wait_check_async (cancellable);
+    }
+
+    internal Value kf_value_to_value (KeyFile keyfile, string group_name, string key, Type value_type) throws Error {
+        if (value_type == Type.BOOLEAN) {
+            return keyfile.get_boolean (group_name, key);
+        } else if (value_type == Type.STRING) {
+            return keyfile.get_string (group_name, key);
+        } else if (value_type == typeof (string[])) {
+            return keyfile.get_string_list (group_name, key);
+        } else if (value_type == Type.INT || value_type == Type.INT64) {
+            return keyfile.get_int64 (group_name, key);
+        } else if (value_type == Type.DOUBLE) {
+            return keyfile.get_double (group_name, key);
+        } else {
+            error ("Unknown keyfile desired type %s for key %s", value_type.name (), key);
+        }
     }
 }
