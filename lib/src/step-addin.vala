@@ -80,7 +80,7 @@ public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
     /**
      * Whether `step` accessible or not.
      *
-     * @see {@link ReadySet.StepAddin}
+     * @see ReadySet.StepAddin
      */
     public virtual bool accessible { get; set; default = true; }
 
@@ -88,7 +88,7 @@ public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
     /**
      * A way of communicating between plugins or an application.
      * 
-     * @see {@link ReadySet.StepAddin}
+     * @see ReadySet.StepAddin
      */
     public Context context {
         get {
