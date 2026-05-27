@@ -70,6 +70,8 @@ namespace ReadySet {
 
     /**
      * Data that handles {@link StepAddin.apply} error data.
+     *
+     * @see ApplyError
      */
     public class ApplyErrorData : Serialize.DataObject {
 
@@ -114,9 +116,23 @@ namespace ReadySet {
      * used as title.
      */
     public errordomain ApplyError {
+
+        /**
+         * Base error.
+         */
         BASE,
+
+        /**
+         * Should be thrown when not enough permission.
+         */
         NO_PERMISSION;
 
+        /**
+         * Build error from message and description. Returns error with
+         * json serialized {@link ApplyErrorData} in message.
+         *
+         * @see ApplyErrorData
+         */
         public static ApplyError build_error (string message, string description) {
             return new ApplyError.BASE (new ApplyErrorData (message, description).to_json ());
         }
