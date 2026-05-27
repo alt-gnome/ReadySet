@@ -69,6 +69,8 @@ public class ReadySet.BasePage : Adw.BreakpointBin {
     public bool is_ready { get; set; default = false; }
 
     /**
+     * Show page or not.
+     *
      * @see ReadySet.StepAddin
      */
     public virtual bool accessible { get; set; default = true; }
