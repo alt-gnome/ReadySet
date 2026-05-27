@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-26 20:20+0000\n"
+"POT-Creation-Date: 2026-05-27 21:55+0000\n"
 "PO-Revision-Date: 2026-05-28 00:53+0300\n"
 "Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
 "Language-Team: Russian <rirusha@altlinux.org>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Gtranslator 50.0\n"
 
 #: data/ui/end-page.blp:24
@@ -45,27 +45,27 @@ msgstr "Марш!"
 msgid "Nothing to show"
 msgstr "Нечего показывать"
 
-#: data/ui/steps-main-page.blp:373 data/ui/steps-main-page.blp:403
-msgid "s&box"
-msgstr ""
-
 #: data/ui/steps-main-page.blp:389
 msgid "Open application menu"
 msgstr "Открыть меню приложения"
 
-#: data/ui/steps-main-page.blp:427
+#: data/ui/steps-main-page.blp:403
+msgid "s&box"
+msgstr ""
+
+#: data/ui/steps-main-page.blp:428
 msgid "Go up"
 msgstr "Наверх"
 
-#: data/ui/steps-main-page.blp:470
+#: data/ui/steps-main-page.blp:471
 msgid "Go to previous page"
 msgstr "К предыдущей странице"
 
-#: data/ui/steps-main-page.blp:489
+#: data/ui/steps-main-page.blp:490
 msgid "Next"
 msgstr "Дальше"
 
-#: data/ui/steps-main-page.blp:501
+#: data/ui/steps-main-page.blp:502
 msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
 
@@ -77,19 +77,23 @@ msgstr "Все шаги"
 msgid "Main"
 msgstr "Главная"
 
-#: lib/src/base/base-page.vala:31
+#. *
+#. * Title that will be shown at header or steps sidebar.
+#.
+#: lib/src/base/base-page.vala:63
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: lib/src/base/base-page.vala:58
+#: lib/src/base/base-page.vala:108
 msgid "Unknown page"
 msgstr "Неизвестная страница"
 
-#: lib/src/base/base-page.vala:61
+#: lib/src/base/base-page.vala:111
 msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
-#: lib/src/utils.vala:106
+#. It's not json string, just return message
+#: lib/src/lib-utils.vala:154
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
@@ -426,7 +430,7 @@ msgstr ""
 msgid "Username cannot be empty"
 msgstr "Имя пользователя не может быть пустым"
 
-#: plugins/user/utils.vala:365
+#: plugins/user/utils.vala:368
 msgid "The password must consist of at least one character"
 msgstr "Пароль должен состоять минимум из одного символа"
 
@@ -445,7 +449,7 @@ msgstr ""
 "Vladimir Romanov <rirusha@altlinux.org>\n"
 "David Sultaniiazov <x1z53@altlinux.org>"
 
-#: src/application.vala:351
+#: src/application.vala:353
 msgid "No steps specified"
 msgstr "Не указан список шагов"
 
@@ -480,8 +484,8 @@ msgstr "Не показывать индикаторы и сделать окн�
 #: src/options-handler.vala:90
 msgid "Steps which will not apply. E.g: `steps=language,keyboard`"
 msgstr ""
-"Шаги, которые не будут применены в конце. К примеру: "
-"`steps=language,keyboard`"
+"Шаги, которые не будут применены в конце. К примеру: `steps=language,"
+"keyboard`"
 
 #: src/options-handler.vala:97
 msgid "Steps. E.g: `steps=language,keyboard`"
