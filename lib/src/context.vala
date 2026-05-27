@@ -53,7 +53,7 @@ public enum ReadySet.ContextType {
             case STRV:
                 return typeof (string[]);
             case INT:
-                return Type.INT;
+                return Type.INT64;
             case DOUBLE:
                 return Type.DOUBLE;
             case OBJECT:
