@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-26 20:20+0000\n"
+"POT-Creation-Date: 2026-05-27 21:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,27 +42,27 @@ msgstr ""
 msgid "Nothing to show"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:373 data/ui/steps-main-page.blp:403
-msgid "s&box"
-msgstr ""
-
 #: data/ui/steps-main-page.blp:389
 msgid "Open application menu"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:427
+#: data/ui/steps-main-page.blp:403
+msgid "s&box"
+msgstr ""
+
+#: data/ui/steps-main-page.blp:428
 msgid "Go up"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:470
+#: data/ui/steps-main-page.blp:471
 msgid "Go to previous page"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:489
+#: data/ui/steps-main-page.blp:490
 msgid "Next"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:501
+#: data/ui/steps-main-page.blp:502
 msgid "Extend/Retract keyboard"
 msgstr ""
 
@@ -74,19 +74,23 @@ msgstr ""
 msgid "Main"
 msgstr ""
 
-#: lib/src/base/base-page.vala:31
+#. *
+#. * Title that will be shown at header or steps sidebar.
+#.
+#: lib/src/base/base-page.vala:63
 msgid "Unknown"
 msgstr ""
 
-#: lib/src/base/base-page.vala:58
+#: lib/src/base/base-page.vala:108
 msgid "Unknown page"
 msgstr ""
 
-#: lib/src/base/base-page.vala:61
+#: lib/src/base/base-page.vala:111
 msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
-#: lib/src/utils.vala:106
+#. It's not json string, just return message
+#: lib/src/lib-utils.vala:154
 msgid "Something went wrong"
 msgstr ""
 
@@ -395,7 +399,7 @@ msgstr ""
 msgid "Username cannot be empty"
 msgstr ""
 
-#: plugins/user/utils.vala:365
+#: plugins/user/utils.vala:368
 msgid "The password must consist of at least one character"
 msgstr ""
 
@@ -412,7 +416,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/application.vala:351
+#: src/application.vala:353
 msgid "No steps specified"
 msgstr ""
 
