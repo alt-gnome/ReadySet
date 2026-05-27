@@ -18,6 +18,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/**
+ * Similar to {@link Adw.StatusPage}, but without {@link Gtk.ScrolledWindow}
+ * and {@link Adw.Clamp}.
+ */
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Lib/ui/base/status-page.ui")]
 public sealed class ReadySet.StatusPage : Adw.Bin {
 

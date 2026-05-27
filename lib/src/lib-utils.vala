@@ -91,11 +91,20 @@ namespace ReadySet {
         }
     }
 
+    /**
+     * Class for handling progress data for continius operation in 
+     * {@link InstallAddin.install} and {@link StepAddin.apply}.
+     */
     public sealed class ProgressData : Object {
 
-        //  Value from 0.0 to 1.0
+        /**
+         * Progress value from 0.0 to 1.0.
+         */
         public double value { get; set; default = 0.0; }
 
+        /**
+         * Message that will be presented as current log.
+         */
         public string message { get; set; }
     }
 
@@ -149,11 +158,15 @@ namespace ReadySet {
 
     /**
      * Function that uses as getter in {@link Context} value.
+     *
+     * @see ReadySet.ContextVarInfo
      */
     public delegate Value ContextGetterFunc (ref Value this_value);
 
     /**
      * Function that uses as setter in {@link Context} value.
+     *
+     * @see ReadySet.ContextVarInfo
      */
     public delegate void ContextSetterFunc (ref Value this_value, Value new_value);
 

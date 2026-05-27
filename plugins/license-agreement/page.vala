@@ -23,11 +23,7 @@ public sealed class LicenseAgreement.Page : ReadySet.BasePage {
     public string license_agreement_file_path { get; set; }
     public string license_text { get; set; default = ""; }
 
-    public Page () {
-        Object (
-            need_go_up_button: false
-        );
-    }
+    public override bool need_go_up_button { get { return false; } }
 
     construct {
         Addin.get_instance ().context.bind_context_to_property (

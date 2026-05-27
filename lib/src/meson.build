@@ -21,6 +21,7 @@ librs_vala_sources = files(
 
   'context-object.vala',
   'context.vala',
+  'extension-base.vala',
   'installer-addin.vala',
   'lib-utils.vala',
   'step-addin.vala',

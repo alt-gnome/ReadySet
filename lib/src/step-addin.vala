@@ -62,9 +62,9 @@
  * {@link ReadySet.Context} is a way of communicating between plugins or an
  * application.
  *
- * {@link ReadySet.StepAddin.context} set somewhere at application
+ * {@link ReadySet.ExtensionBase.context} set somewhere at application
  * initialization. It seting after construction and before
- * {@link ReadySet.StepAddin.init_once}. It's an program error try to call to 
+ * {@link ReadySet.ExtensionBase.init_once}. It's an program error try to call to 
  * context before it set.
  *
  * == Dependencies ==
@@ -86,7 +86,7 @@
  * @see ReadySet.BasePage
  * @see ReadySet.InstallerAddin
  */
-public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
+public abstract class ReadySet.StepAddin : ExtensionBase {
 
     protected virtual string? resource_base_path {
         get {
@@ -100,22 +100,6 @@ public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
      * @see ReadySet.StepAddin
      */
     public virtual bool accessible { get; set; default = true; }
-
-    Context _context;
-    /**
-     * A way of communicating between plugins or an application.
-     * 
-     * @see ReadySet.StepAddin
-     */
-    public Context context {
-        get {
-            assert (_context != null);
-            return _context;
-        }
-        internal set {
-            _context = value;
-        }
-    }
 
     internal void load_css_for_display (Gdk.Display display) {
         var provider = new Gtk.CssProvider ();
@@ -144,12 +128,6 @@ public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
      * Build pages for application.
      */
     public async abstract BasePage[] build_pages ();
-
-    /**
-     * Init plugin. Calls by application after context was set.
-     * Calls once.
-     */
-    public async virtual void init_once () {}
 
     /**
      * Get context variables for registration. Calls by application.

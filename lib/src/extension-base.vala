@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2026 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,12 +19,32 @@
  */
 
 /**
- * Object that {@link ReadySet.Context} understand and which
- * can be registered.
+ * Extension base with common logic between
+ * {@link ReadySet.InstallerAddin} and 
+ * {@link ReadySet.StepAddin}.
  */
-public abstract class ReadySet.ContextObject : Object {
+public abstract class ReadySet.ExtensionBase : Peas.ExtensionBase {
+
+    Context _context;
     /**
-     * Copy func for {@link ContextObject}.
+     * A way of communicating between plugins or an application.
+     * 
+     * @see ReadySet.StepAddin
+     * @see ReadySet.Context
      */
-    public abstract ContextObject copy ();
+    public Context context {
+        get {
+            assert (_context != null);
+            return _context;
+        }
+        internal set {
+            _context = value;
+        }
+    }
+
+    /**
+     * Init plugin. Calls by application after context was set.
+     * Calls once.
+     */
+    public async virtual void init_once () {}
 }

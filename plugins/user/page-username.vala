@@ -44,18 +44,6 @@ public class User.PageUsername : ReadySet.BasePage {
 
     bool username_manually_entered = false;
 
-    ReadySet.LayoutMode _layout_mode;
-    public override ReadySet.LayoutMode layout_mode {
-        get {
-            return _layout_mode;
-        }
-        set {
-            _layout_mode = value;
-
-            info_status_page.visible = _layout_mode == HORIZONTAL || _layout_mode == BIG;
-        }
-    }
-
     string _user_avatar_file;
     public string user_avatar_file {
         get {
@@ -88,6 +76,9 @@ public class User.PageUsername : ReadySet.BasePage {
             }
         });
 
+        notify["layout-mode"].connect (layout_mode_changed);
+        layout_mode_changed ();
+
         Addin.get_instance ().context.bind_context_to_property (
             "user-username",
             username_entry,
@@ -108,6 +99,10 @@ public class User.PageUsername : ReadySet.BasePage {
             "user-avatar-file",
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
+    }
+
+    void layout_mode_changed () {
+        info_status_page.visible = layout_mode == HORIZONTAL || layout_mode == BIG;
     }
 
     void update_is_ready () {

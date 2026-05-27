@@ -18,6 +18,12 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/**
+ * Value type stored in context. {@link ReadySet.ContextType.OBJECT}
+ * allows to store only {@link ReadySet.ContextObject}.
+ *
+ * @see ReadySet.Context
+ */
 public enum ReadySet.ContextType {
     STRING,
     BOOLEAN,
@@ -134,14 +140,29 @@ internal class ReadySet.ValueObject : Object {
     }
 }
 
+/**
+ * Information about context value. Needs for registration and used in
+ * {@link ReadySet.StepAddin.get_context_vars}.
+ *
+ * @see ReadySet.Context
+ */
 public class ReadySet.ContextVarInfo : Object {
 
     public ContextType value_type { get; construct; }
 
+    /**
+     * Default value. Needs for resettings value via {@link Context.reset}.
+     */
     public Value? default_value { get; construct; }
 
+    /**
+     * Func that will be used as get function.
+     */
     public unowned ContextGetterFunc? getter_func = null;
 
+    /**
+     * Func that will be used as set function.
+     */
     public unowned ContextSetterFunc? setter_func = null;
 
     public ContextVarInfo (ContextType value_type, Value? default_value = null) {
@@ -158,12 +179,29 @@ public class ReadySet.ContextVarInfo : Object {
     }
 }
 
+/**
+ * A way of communicating between plugins or an application.
+ *
+ * Store application state and varoius variables between plugins.
+ */
 public class ReadySet.Context : Object {
 
+    /**
+     * Whether application run in sandbox mode or not. Plugon should hold it
+     * and not do any changes in system if this is true.
+     * Also better not to call system dbus, so application can be run in
+     * sandbox environment e.g. distrobox for test purpose.
+     */
     public bool sandbox { get; construct; default = true; }
 
-    public Mode mode { get; set; }
+    /**
+     * Current application mode. Plugins can handle various modes different.
+     */
+    public Mode mode { get; internal set; }
 
+    /**
+     * Call application to reload window.
+     */
     public signal void reload_window ();
 
     public signal void data_changed (string key);
@@ -288,7 +326,7 @@ public class ReadySet.Context : Object {
         return true;
     }
 
-    public HashTable<string, string> get_raw_string () {
+    internal HashTable<string, string> get_raw_string () {
         var raw_data = new HashTable<string, string> (str_hash, str_equal);
 
         foreach (var key in get_keys ()) {
@@ -321,7 +359,7 @@ public class ReadySet.Context : Object {
         return raw_data;
     }
 
-    public void set_raw (string key, string value) {
+    internal void set_raw (string key, string value) {
         if (!check_key (key)) {
             return;
         }
@@ -345,7 +383,7 @@ public class ReadySet.Context : Object {
         }
     }
 
-    public HashTable<string, Value?> get_raw_context () {
+    internal HashTable<string, Value?> get_raw_context () {
         var raw_data = new HashTable<string, Value?> (str_hash, str_equal);
 
         foreach (var e in data) {
@@ -358,7 +396,7 @@ public class ReadySet.Context : Object {
         return raw_data;
     }
 
-    public void register_vars (HashTable<string, ContextVarInfo> vars) {
+    internal void register_vars (HashTable<string, ContextVarInfo> vars) {
         vars.foreach (foreach_register_vars);
     }
 
@@ -382,7 +420,7 @@ public class ReadySet.Context : Object {
         data_changed (((ValueObject) caller).get_data<string> ("data-key"));
     }
 
-    public void load_from_keyfile (KeyFile keyfile, string group_name) throws Error {
+    internal void load_from_keyfile (KeyFile keyfile, string group_name) throws Error {
         if (!keyfile.has_group (group_name)) {
             debug ("Keyfile doesn't have group '%s'", group_name);
             return;
