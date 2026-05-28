@@ -2,7 +2,7 @@ using Gtk 4.0;
 using Adw 1;
 
 template $LicenseAgreementPage: $ReadySetBasePage {
-  title-header: _("License Agreement");
+  title-header: _("License");
   title-icon-name: "document-text-symbolic";
   is-ready: bind check_button.active;
   notify::license-file-path => $read_license_file();
@@ -29,7 +29,12 @@ template $LicenseAgreementPage: $ReadySetBasePage {
 
       CheckButton check_button {
         halign: center;
-        label: _("I have read the license and accept it");
+
+        Label {
+          label: _("I have read the license and accept it");
+          wrap: true;
+          wrap-mode: word_char;
+        }
       }
     }
   };
