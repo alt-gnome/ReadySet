@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-28 12:31+0300\n"
+"POT-Creation-Date: 2026-05-28 21:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,24 +17,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data/ui/end-page.blp:24
-msgid "Finishing"
-msgstr ""
-
-#: data/ui/end-page.blp:39
+#: data/ui/end-page.blp:36
 msgid "Setting up the system…"
 msgstr ""
 
-#: data/ui/end-page.blp:56
+#: data/ui/end-page.blp:53
 msgid "Ready Set…"
 msgstr ""
 
-#: data/ui/end-page.blp:57
+#: data/ui/end-page.blp:54
 msgid "The system is ready for use."
 msgstr ""
 
 #. TRANSLATORS: Last word in "Ready Set ..." sentence
-#: data/ui/end-page.blp:67
+#: data/ui/end-page.blp:64
 msgid "Go!"
 msgstr ""
 
@@ -42,23 +38,23 @@ msgstr ""
 msgid "Nothing to show"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:389
+#: data/ui/steps-main-page.blp:391
 msgid "Open application menu"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:428
+#: data/ui/steps-main-page.blp:430
 msgid "Go up"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:471
+#: data/ui/steps-main-page.blp:474
 msgid "Go to previous page"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:490
+#: data/ui/steps-main-page.blp:493
 msgid "Next"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:502
+#: data/ui/steps-main-page.blp:505
 msgid "Extend/Retract keyboard"
 msgstr ""
 
@@ -77,16 +73,16 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: lib/src/base/base-page.vala:108
+#: lib/src/base/base-page.vala:113
 msgid "Unknown page"
 msgstr ""
 
-#: lib/src/base/base-page.vala:111
+#: lib/src/base/base-page.vala:116
 msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
 #. It's not json string, just return message
-#: lib/src/lib-utils.vala:157
+#: lib/src/lib-utils.vala:164
 msgid "Something went wrong"
 msgstr ""
 
@@ -148,7 +144,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: plugins/language/plugin.vala:124
+#: plugins/language/plugin.vala:117
 msgid "Error when setting language"
 msgstr ""
 
@@ -402,8 +398,19 @@ msgstr ""
 msgid "The password must consist of at least one character"
 msgstr ""
 
-#: plugins/welcome/data/ui/page.blp:4 plugins/welcome/data/ui/page.blp:5
+#: plugins/welcome/data/ui/page.blp:5
 msgid "Welcome"
+msgstr ""
+
+#: plugins/welcome/data/ui/page.blp:19
+msgid ""
+"The setup will guide you from creating an account to enabling some features. "
+"We will help you prepare everything in a moment."
+msgstr ""
+
+#: plugins/welcome/page.vala:30
+#, c-format
+msgid "Welcome to %s!"
 msgstr ""
 
 #: src/about.vala:24
@@ -415,7 +422,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/application.vala:353
+#: src/application.vala:345
 msgid "No steps specified"
 msgstr ""
 
@@ -483,11 +490,11 @@ msgstr ""
 msgid "Doing some stuff…"
 msgstr ""
 
-#: src/pages/end-page.vala:142 src/pages/end-page.vala:149
+#: src/pages/end-page.vala:140 src/pages/end-page.vala:146
 #, c-format
 msgid "Error message: %s"
 msgstr ""
 
-#: src/pages/end-page.vala:148
+#: src/pages/end-page.vala:145
 msgid "Error while execute post hooks"
 msgstr ""
