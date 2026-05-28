@@ -94,6 +94,8 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
     protected bool scroll_on_top { get; private set; default = true; }
 
+    public bool standalone { get; set; }
+
     bool _is_compact;
     protected bool is_compact {
         get {
@@ -233,7 +235,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     }
 
     Gtk.Widget page_info_creation_func (PageInfo page) {
-        return page.page.info;
+        return page.page.info ?? new StatusPage ();
     }
 
     async void setup () {
@@ -297,6 +299,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
         passed_pages.add (last_current_page.id);
         last_current_page.passed = true;
+        standalone = last_current_page.page.standalone;
         update_go_up_button ();
     }
 

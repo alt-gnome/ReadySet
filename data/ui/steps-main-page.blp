@@ -165,6 +165,7 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
           Adw.OverlaySplitView {
             pin-sidebar: true;
             min-sidebar-width: 340;
+            show-sidebar: bind template.standalone inverted;
 
             sidebar: Adw.ToolbarView {
               extend-content-to-top-edge: true;
@@ -260,6 +261,7 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
           Adw.OverlaySplitView {
             pin-sidebar: true;
             min-sidebar-width: 340;
+            show-sidebar: bind template.standalone inverted;
 
             sidebar: Adw.ToolbarView {
               extend-content-to-top-edge: true;
@@ -435,6 +437,7 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
 
         [info-body]
         $ReadySetPositionedStack info_positioned_stack {
+          visible: bind template.standalone inverted;
           valign: center;
           vexpand: false;
           transition-type: crossfade;

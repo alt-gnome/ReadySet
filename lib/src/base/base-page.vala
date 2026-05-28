@@ -69,6 +69,11 @@ public class ReadySet.BasePage : Adw.BreakpointBin {
     public bool is_ready { get; set; default = false; }
 
     /**
+     * If `true`, info will not be used and sidebar will be hidden.
+     */
+    public virtual bool standalone { get { return false; } }
+
+    /**
      * Show page or not.
      *
      * @see ReadySet.StepAddin

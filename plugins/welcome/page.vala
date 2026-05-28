@@ -19,4 +19,14 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Welcome/ui/page.ui")]
-public sealed class Welcome.Page : ReadySet.BasePage {}
+public sealed class Welcome.Page : ReadySet.BasePage {
+
+    [GtkChild]
+    unowned ReadySet.StatusPage status_page;
+
+    public override bool standalone { get { return true; } }
+
+    construct {
+        status_page.title = _("Welcome to %s!").printf (Environment.get_os_info ("PRETTY_NAME"));
+    }
+}

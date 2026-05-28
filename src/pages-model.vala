@@ -44,9 +44,9 @@ public sealed class ReadySet.PageInfo : Object {
         }
         set {
             if (value) {
-                page.info.add_css_class ("compact");
+                page.info?.add_css_class ("compact");
             } else {
-                page.info.remove_css_class ("compact");
+                page.info?.remove_css_class ("compact");
             }
         }
     }
