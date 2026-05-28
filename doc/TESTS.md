@@ -1,1 +1,7 @@
-## This file contains a description of the expected behavior of the various components of the project
+This file contains a description of the expected behavior of the various components of the project
+
+## Common
+
+## Plugins
+
+### License Agreement
