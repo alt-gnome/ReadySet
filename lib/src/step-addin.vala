@@ -24,7 +24,7 @@
  * What is `step`?
  *
  * This class provides a page or series of pages that serve as a "step"
- * to set up the current session (for initial setup, tour modes) or to
+ * to set up the current session (for initial setup mode) or to
  * save settings for future use (initial-setup with
  * {@link ReadySet.StepAddin.apply} or installer with
  * {@link ReadySet.InstallerAddin.install}).

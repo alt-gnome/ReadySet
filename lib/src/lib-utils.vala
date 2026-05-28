@@ -52,8 +52,7 @@ namespace ReadySet {
 
     public enum Mode {
         INITIAL_SETUP,
-        INSTALLER,
-        TOUR;
+        INSTALLER;
 
         public static Mode from_string (string str) {
             switch (str) {
@@ -61,8 +60,6 @@ namespace ReadySet {
                     return INITIAL_SETUP;
                 case "installer":
                     return INSTALLER;
-                case "tour":
-                    return TOUR;
                 default:
                     error ("Unrecognized mode string");
             }
@@ -74,8 +71,6 @@ namespace ReadySet {
                     return "initial-setup";
                 case INSTALLER:
                     return "installer";
-                case TOUR:
-                    return "tour";
                 default:
                     assert_not_reached ();
             }

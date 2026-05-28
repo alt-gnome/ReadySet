@@ -39,7 +39,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
     public bool can_close {
         get {
-            return Config.IS_DEVEL || context.mode == Mode.TOUR || options_handler.can_close;
+            return Config.IS_DEVEL || options_handler.can_close;
         }
     }
 
@@ -119,10 +119,8 @@ public sealed class ReadySet.Application: Adw.Application {
 #endif
             if (installer_plugin != null) {
                 context.mode = INSTALLER;
-            } else if (in_group ("ready-set") || in_group ("gnome-initial-setup")) {
-                context.mode = INITIAL_SETUP;
             } else {
-                context.mode = TOUR;
+                context.mode = INITIAL_SETUP;
             }
 #if DEVEL
         } else {
