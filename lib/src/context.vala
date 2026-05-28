@@ -110,6 +110,7 @@ internal class ReadySet.ValueObject : Object {
         );
     }
 
+#if FOR_APPLICATION
     public void set_getter (ContextGetterFunc func) {
         getter_func = func;
     }
@@ -117,6 +118,7 @@ internal class ReadySet.ValueObject : Object {
     public void set_setter (ContextSetterFunc func) {
         setter_func = func;
     }
+#endif
 
     construct {
         if (value_type == STRING && default_value == null) {
@@ -326,6 +328,7 @@ public class ReadySet.Context : Object {
         return true;
     }
 
+#if FOR_APPLICATION
     internal HashTable<string, string> get_raw_string () {
         var raw_data = new HashTable<string, string> (str_hash, str_equal);
 
@@ -358,7 +361,9 @@ public class ReadySet.Context : Object {
 
         return raw_data;
     }
+#endif
 
+#if FOR_APPLICATION
     internal void set_raw (string key, string value) {
         if (!check_key (key)) {
             return;
@@ -382,24 +387,28 @@ public class ReadySet.Context : Object {
             warning ("Error setting row value for key %s: %s", key, e.message);
         }
     }
+#endif
 
-    internal HashTable<string, Value?> get_raw_context () {
-        var raw_data = new HashTable<string, Value?> (str_hash, str_equal);
+    //  internal HashTable<string, Value?> get_raw_context () {
+    //      var raw_data = new HashTable<string, Value?> (str_hash, str_equal);
 
-        foreach (var e in data) {
-            var val = Value (e.value.value_type.to_gtype ());
-            var rv = e.value.real_value;
-            rv.copy (ref val);
-            raw_data[e.key] = val;
-        }
+    //      foreach (var e in data) {
+    //          var val = Value (e.value.value_type.to_gtype ());
+    //          var rv = e.value.real_value;
+    //          rv.copy (ref val);
+    //          raw_data[e.key] = val;
+    //      }
 
-        return raw_data;
-    }
+    //      return raw_data;
+    //  }
 
+#if FOR_APPLICATION
     internal void register_vars (HashTable<string, ContextVarInfo> vars) {
         vars.foreach (foreach_register_vars);
     }
+#endif
 
+#if FOR_APPLICATION
     void foreach_register_vars (string key, ContextVarInfo info) {
         if (data.has_key (key)) {
             warning ("Key %s already exists in context, it will be overwriting", key);
@@ -419,7 +428,9 @@ public class ReadySet.Context : Object {
     void real_value_changed (Object caller, ParamSpec param) {
         data_changed (((ValueObject) caller).get_data<string> ("data-key"));
     }
+#endif
 
+#if FOR_APPLICATION
     internal void load_from_keyfile (KeyFile keyfile, string group_name) throws Error {
         if (!keyfile.has_group (group_name)) {
             debug ("Keyfile doesn't have group '%s'", group_name);
@@ -440,6 +451,7 @@ public class ReadySet.Context : Object {
             ));
         }
     }
+#endif
 
     bool check_key (string key, ContextType? value_type = null) {
         if (!has_key (key)) {
