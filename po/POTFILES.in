@@ -32,6 +32,7 @@ plugins/user/plugin.vala
 plugins/user/pwquality-utils.vala
 plugins/user/utils.vala
 plugins/welcome/data/ui/page.blp
+plugins/welcome/page.vala
 src/about.vala
 src/application.vala
 src/options-handler.vala
