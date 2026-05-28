@@ -26,7 +26,7 @@ public sealed class ReadySet.EndPage : Adw.Bin {
     Gdm.Client client;
     Gdm.Greeter greeter;
     Gdm.UserVerifier user_verifier;
- 
+
     [GtkChild]
     unowned Gtk.Stack stack;
     [GtkChild]
