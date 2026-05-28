@@ -17,14 +17,12 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
+
 using Gtk 4.0;
 using Adw 1;
 
-template $ReadySetEndPage: $ReadySetBasePage {
-  title-header: _("Finishing");
-  title-icon-name: "org.altlinux.ReadySet-symbolic";
-
-  content: Stack stack {
+template $ReadySetEndPage: Adw.Bin {
+  Stack stack {
     transition-duration: 300;
     transition-type: crossfade;
 
@@ -79,5 +77,5 @@ template $ReadySetEndPage: $ReadySetBasePage {
         icon-name: "dialog-error-symbolic";
       };
     }
-  };
+  }
 }

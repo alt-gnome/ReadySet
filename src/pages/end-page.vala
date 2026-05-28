@@ -19,14 +19,14 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/ui/end-page.ui")]
-public sealed class ReadySet.EndPage : BasePage {
+public sealed class ReadySet.EndPage : Adw.Bin {
 
     const string SERVICE_NAME = "gdm-password";
 
     Gdm.Client client;
     Gdm.Greeter greeter;
     Gdm.UserVerifier user_verifier;
-
+ 
     [GtkChild]
     unowned Gtk.Stack stack;
     [GtkChild]
@@ -97,7 +97,6 @@ public sealed class ReadySet.EndPage : BasePage {
             yield;
 
             stack.visible_child_name = "ready";
-            is_ready = true;
 
         } else {
             try {
@@ -133,7 +132,6 @@ public sealed class ReadySet.EndPage : BasePage {
                 }
 
                 stack.visible_child_name = "ready";
-                is_ready = true;
 
             } catch (ApplyError e) {
                 var apply_error_data = ApplyError.to_data (e);
@@ -142,14 +140,12 @@ public sealed class ReadySet.EndPage : BasePage {
                 error_status_page.description = _("Error message: %s").printf (apply_error_data.description);
 
                 stack.visible_child_name = "error";
-                is_ready = false;
 
             } catch (Error e) {
                 error_status_page.title = _("Error while execute post hooks");
                 error_status_page.description = _("Error message: %s").printf (e.message);
 
                 stack.visible_child_name = "error";
-                is_ready = false;
             }
         }
     }
