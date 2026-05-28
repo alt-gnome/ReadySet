@@ -66,7 +66,8 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
 
     Gtk.Widget positioned_stack_create_func (PageInfo page) {
         return new Gtk.Label (page.title_header) {
-            css_classes = { "heading" }
+            css_classes = { "heading" },
+            ellipsize = END,
         };
     }
 
