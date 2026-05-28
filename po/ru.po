@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-28 12:31+0300\n"
+"POT-Creation-Date: 2026-05-28 21:31+0000\n"
 "PO-Revision-Date: 2026-05-28 12:30+0300\n"
 "Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
 "Language-Team: Russian <rirusha@altlinux.org>\n"
@@ -20,24 +20,20 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Gtranslator 50.0\n"
 
-#: data/ui/end-page.blp:24
-msgid "Finishing"
-msgstr "Завершение"
-
-#: data/ui/end-page.blp:39
+#: data/ui/end-page.blp:36
 msgid "Setting up the system…"
 msgstr "Настройка вашей системы…"
 
-#: data/ui/end-page.blp:56
+#: data/ui/end-page.blp:53
 msgid "Ready Set…"
 msgstr "На Старт Внимание…"
 
-#: data/ui/end-page.blp:57
+#: data/ui/end-page.blp:54
 msgid "The system is ready for use."
 msgstr "Система готова к использованию."
 
 #. TRANSLATORS: Last word in "Ready Set ..." sentence
-#: data/ui/end-page.blp:67
+#: data/ui/end-page.blp:64
 msgid "Go!"
 msgstr "Марш!"
 
@@ -45,23 +41,23 @@ msgstr "Марш!"
 msgid "Nothing to show"
 msgstr "Нечего показывать"
 
-#: data/ui/steps-main-page.blp:389
+#: data/ui/steps-main-page.blp:391
 msgid "Open application menu"
 msgstr "Открыть меню приложения"
 
-#: data/ui/steps-main-page.blp:428
+#: data/ui/steps-main-page.blp:430
 msgid "Go up"
 msgstr "Наверх"
 
-#: data/ui/steps-main-page.blp:471
+#: data/ui/steps-main-page.blp:474
 msgid "Go to previous page"
 msgstr "К предыдущей странице"
 
-#: data/ui/steps-main-page.blp:490
+#: data/ui/steps-main-page.blp:493
 msgid "Next"
 msgstr "Дальше"
 
-#: data/ui/steps-main-page.blp:502
+#: data/ui/steps-main-page.blp:505
 msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
 
@@ -80,16 +76,16 @@ msgstr "Главная"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: lib/src/base/base-page.vala:108
+#: lib/src/base/base-page.vala:113
 msgid "Unknown page"
 msgstr "Неизвестная страница"
 
-#: lib/src/base/base-page.vala:111
+#: lib/src/base/base-page.vala:116
 msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
 #. It's not json string, just return message
-#: lib/src/lib-utils.vala:157
+#: lib/src/lib-utils.vala:164
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
@@ -152,7 +148,7 @@ msgstr "Поиск языка"
 msgid "Language"
 msgstr "Язык"
 
-#: plugins/language/plugin.vala:124
+#: plugins/language/plugin.vala:117
 msgid "Error when setting language"
 msgstr "Ошибка при настройке языка"
 
@@ -433,8 +429,19 @@ msgstr "Имя пользователя не может быть пустым"
 msgid "The password must consist of at least one character"
 msgstr "Пароль должен состоять минимум из одного символа"
 
-#: plugins/welcome/data/ui/page.blp:4 plugins/welcome/data/ui/page.blp:5
+#: plugins/welcome/data/ui/page.blp:5
 msgid "Welcome"
+msgstr "Добро пожаловать"
+
+#: plugins/welcome/data/ui/page.blp:19
+msgid ""
+"The setup will guide you from creating an account to enabling some features. "
+"We will help you prepare everything in a moment."
+msgstr ""
+
+#: plugins/welcome/page.vala:30
+#, fuzzy, c-format
+msgid "Welcome to %s!"
 msgstr "Добро пожаловать"
 
 #: src/about.vala:24
@@ -448,7 +455,7 @@ msgstr ""
 "Vladimir Romanov <rirusha@altlinux.org>\n"
 "David Sultaniiazov <x1z53@altlinux.org>"
 
-#: src/application.vala:353
+#: src/application.vala:345
 msgid "No steps specified"
 msgstr "Не указан список шагов"
 
@@ -520,14 +527,17 @@ msgstr "Путь к файлу конфигурации приложения"
 msgid "Doing some stuff…"
 msgstr "Делаем стаф…"
 
-#: src/pages/end-page.vala:142 src/pages/end-page.vala:149
+#: src/pages/end-page.vala:140 src/pages/end-page.vala:146
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
-#: src/pages/end-page.vala:148
+#: src/pages/end-page.vala:145
 msgid "Error while execute post hooks"
 msgstr "Ошибка при выполнении пост скриптов"
+
+#~ msgid "Finishing"
+#~ msgstr "Завершение"
 
 #~ msgid "Keyboard"
 #~ msgstr "Клавиатура"
