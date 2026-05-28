@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-27 21:55+0000\n"
+"POT-Creation-Date: 2026-05-28 12:31+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,10 +44,6 @@ msgstr ""
 
 #: data/ui/steps-main-page.blp:389
 msgid "Open application menu"
-msgstr ""
-
-#: data/ui/steps-main-page.blp:403
-msgid "s&box"
 msgstr ""
 
 #: data/ui/steps-main-page.blp:428
@@ -90,7 +86,7 @@ msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
 #. It's not json string, just return message
-#: lib/src/lib-utils.vala:154
+#: lib/src/lib-utils.vala:157
 msgid "Something went wrong"
 msgstr ""
 
@@ -170,11 +166,14 @@ msgid ""
 msgstr ""
 
 #: plugins/license-agreement/data/ui/page.blp:5
+msgid "License"
+msgstr ""
+
 #: plugins/license-agreement/data/ui/page.blp:11
 msgid "License Agreement"
 msgstr ""
 
-#: plugins/license-agreement/data/ui/page.blp:32
+#: plugins/license-agreement/data/ui/page.blp:34
 msgid "I have read the license and accept it"
 msgstr ""
 

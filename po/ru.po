@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-27 21:55+0000\n"
-"PO-Revision-Date: 2026-05-28 00:53+0300\n"
+"POT-Creation-Date: 2026-05-28 12:31+0300\n"
+"PO-Revision-Date: 2026-05-28 12:30+0300\n"
 "Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
 "Language-Team: Russian <rirusha@altlinux.org>\n"
 "Language: ru\n"
@@ -48,10 +48,6 @@ msgstr "Нечего показывать"
 #: data/ui/steps-main-page.blp:389
 msgid "Open application menu"
 msgstr "Открыть меню приложения"
-
-#: data/ui/steps-main-page.blp:403
-msgid "s&box"
-msgstr ""
 
 #: data/ui/steps-main-page.blp:428
 msgid "Go up"
@@ -93,7 +89,7 @@ msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
 #. It's not json string, just return message
-#: lib/src/lib-utils.vala:154
+#: lib/src/lib-utils.vala:157
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
@@ -174,11 +170,14 @@ msgid ""
 msgstr "Давайте начнём с выбора языка для приложения и для Вашей системы."
 
 #: plugins/license-agreement/data/ui/page.blp:5
+msgid "License"
+msgstr "Лицензия"
+
 #: plugins/license-agreement/data/ui/page.blp:11
 msgid "License Agreement"
 msgstr "Лицензионное соглашение"
 
-#: plugins/license-agreement/data/ui/page.blp:32
+#: plugins/license-agreement/data/ui/page.blp:34
 msgid "I have read the license and accept it"
 msgstr "Я ознакомился с лицензией и принимаю ее"
 
