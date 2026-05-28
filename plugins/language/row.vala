@@ -34,6 +34,7 @@ public sealed class Language.Row : Adw.ActionRow {
                 if (is_current_language) {
                     add_css_class ("property");
                     title = _("Current language");
+                    activatable = false;
                     subtitle = value.country_cur;
                 } else {
                     remove_css_class ("property");
