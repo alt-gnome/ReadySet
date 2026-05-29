@@ -23,10 +23,18 @@ public sealed class Welcome.Page : ReadySet.BasePage {
 
     [GtkChild]
     unowned ReadySet.StatusPage status_page;
-
-    public override bool standalone { get { return true; } }
+    [GtkChild]
+    unowned Adw.Clamp clamp;
 
     construct {
+        clamp.notify["css-classes"].connect (() => {
+            if (clamp.has_css_class ("compact")) {
+                status_page.add_css_class ("compact");
+            } else {
+                status_page.remove_css_class ("compact");
+            }
+        });
+
         status_page.title = _("Welcome to %s!").printf (Environment.get_os_info ("PRETTY_NAME"));
     }
 }

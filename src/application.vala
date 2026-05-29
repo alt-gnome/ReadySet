@@ -287,6 +287,8 @@ public sealed class ReadySet.Application: Adw.Application {
     public async void init_pages () {
         var pages = new Gee.ArrayList<PageInfo> ();
 
+        var initial_position = model == null ? 0 : model.get_selected ();
+
         print ("Loaded plugins:\n");
         for (int i = 0; i < all_steps.length; i++) {
             if (steps_plugins[all_steps[i]] == null) {
@@ -331,6 +333,7 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         model = new PagesModel (pages);
+        model.select_item (initial_position, true);
     }
 
     string[] get_all_steps () {

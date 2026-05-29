@@ -40,7 +40,7 @@ public class ReadySet.BasePage : Adw.BreakpointBin {
      *
      * You shouldn't place any actionable widgets for better UX.
      */
-    public Gtk.Widget info { get; set; }
+    public Gtk.Widget? info { get; set; default = null; }
 
     /**
      * Widget that will be shown at top of the page in any layout.
@@ -67,11 +67,6 @@ public class ReadySet.BasePage : Adw.BreakpointBin {
      * Better to show message with information, why user can't go next.
      */
     public bool is_ready { get; set; default = false; }
-
-    /**
-     * If `true`, info will not be used and sidebar will be hidden.
-     */
-    public virtual bool standalone { get { return false; } }
 
     /**
      * Show page or not.

@@ -24,6 +24,8 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     [GtkChild]
     unowned PositionedStack positioned_stack;
     [GtkChild]
+    unowned PositionedStack vertical_stack;
+    [GtkChild]
     unowned PositionedStack info_positioned_stack;
     [GtkChild]
     unowned PagesIndicator pages_indicator;
@@ -76,23 +78,21 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
             if (_current_scrolled_window != null) {
                 //  Reset value of a previous scroll
                 _current_scrolled_window.vadjustment.value = 0;
-                _current_scrolled_window.vadjustment.notify["value"].disconnect (update_scroll_on_top);
+                _current_scrolled_window.vadjustment.notify["value"].disconnect (update_scroll);
             }
 
             _current_scrolled_window = value;
 
             if (_current_scrolled_window != null) {
-                _current_scrolled_window.vadjustment.notify["value"].connect (update_scroll_on_top);
+                _current_scrolled_window.vadjustment.notify["value"].connect (update_scroll);
                 scroll_anim_target = new Adw.PropertyAnimationTarget (_current_scrolled_window.vadjustment, "value");
             }
-            update_scroll_on_top ();
+            update_scroll ();
         }
     }
 
     Adw.PropertyAnimationTarget scroll_anim_target;
     Adw.TimedAnimation scroll_animation;
-
-    protected bool scroll_on_top { get; private set; default = true; }
 
     public bool standalone { get; set; }
 
@@ -141,7 +141,19 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
     public bool simple { get; set; }
 
-    public virtual LayoutMode layout_mode { get; set; }
+    LayoutMode _layout_mode;
+    public LayoutMode layout_mode {
+        get {
+            return _layout_mode;
+        }
+        set {
+            _layout_mode = value;
+
+            update_model_binds ();
+            update_vertical_current_scroll ();
+            update_scroll ();
+        }
+    }
 
     PageInfo _last_current_page;
     PageInfo last_current_page {
@@ -177,8 +189,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
             _model = value;
 
-            positioned_stack.bind_model (_model, page_creation_func);
-            info_positioned_stack.bind_model (_model, page_info_creation_func);
+            update_model_binds ();
 
             if (_model != null) {
                 _model.selection_changed.connect (selection_changed);
@@ -209,6 +220,48 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         setup.begin ();
     }
 
+    void update_model_binds () {
+        if (layout_mode == VERTICAL || layout_mode == SMALL) {
+            if (positioned_stack.model != null) {
+                positioned_stack.bind_model (
+                    null,
+                    page_creation_func
+                );
+            }
+            if (info_positioned_stack.model != null) {
+                info_positioned_stack.bind_model (
+                    null,
+                    page_info_creation_func
+                );
+            }
+            if (vertical_stack.model == null) {
+                vertical_stack.bind_model (
+                    _model,
+                    vertical_stack_creation_func
+                );
+            }
+        } else {
+            if (vertical_stack.model != null) {
+                vertical_stack.bind_model (
+                    null,
+                    vertical_stack_creation_func
+                );
+            }
+            if (positioned_stack.model == null) {
+                positioned_stack.bind_model (
+                    _model,
+                    page_creation_func
+                );
+            }
+            if (info_positioned_stack.model == null) {
+                info_positioned_stack.bind_model (
+                    _model,
+                    page_info_creation_func
+                );
+            }
+        }
+    }
+
     void on_model_items_changed () {
         foreach (var b in model_pages_bindings) {
             b.unbind ();
@@ -236,6 +289,25 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
     Gtk.Widget page_info_creation_func (PageInfo page) {
         return page.page.info ?? new StatusPage ();
+    }
+
+    Gtk.Widget vertical_stack_creation_func (PageInfo page) {
+        var scrolled_window = new Gtk.ScrolledWindow () {
+            propagate_natural_height = true,
+            hscrollbar_policy = NEVER
+        };
+
+        var box = new Gtk.Box (VERTICAL, 12) {
+            valign = CENTER
+        };
+        scrolled_window.child = box;
+
+        if (page.page.info != null) {
+            box.append (page.page.info);
+        }
+        box.append (page.page);
+
+        return scrolled_window;
     }
 
     async void setup () {
@@ -299,8 +371,16 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
         passed_pages.add (last_current_page.id);
         last_current_page.passed = true;
-        standalone = last_current_page.page.standalone;
+        standalone = base_page.info == null;
+        update_vertical_current_scroll ();
+        _current_scrolled_window.vadjustment.value = 0;
         update_go_up_button ();
+    }
+
+    void update_vertical_current_scroll () {
+        if (layout_mode == VERTICAL || layout_mode == SMALL) {
+            current_scrolled_window = (Gtk.ScrolledWindow) vertical_stack.visible_child;
+        }
     }
 
     void update_scroll () {
@@ -336,10 +416,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     bool on_devel_close_request () {
         devel_window = null;
         return false;
-    }
-
-    void update_scroll_on_top () {
-        scroll_on_top = current_scrolled_window?.vadjustment.value <= 360.0;
     }
 
     [GtkCallback]

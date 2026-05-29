@@ -40,7 +40,6 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
 
     setters {
       template.is-compact: true;
-      template.current-scrolled-window: vertical_scrolled_window;
       mlv.layout-name: "vertical";
       info_positioned_stack.transition-type: slide-left-right;
       template.layout-mode: small;
@@ -51,7 +50,6 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
     condition ("min-height: 400px and max-width: 719px")
 
     setters {
-      template.current-scrolled-window: vertical_scrolled_window;
       mlv.layout-name: "vertical";
       info_positioned_stack.transition-type: slide-left-right;
       template.layout-mode: vertical;
@@ -118,23 +116,10 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
             }
 
             content: Overlay {
-              ScrolledWindow vertical_scrolled_window {
-                propagate-natural-height: true;
-                hscrollbar-policy: never;
-
-                Box {
-                  valign: center;
-                  orientation: vertical;
-                  spacing: 12;
-
-                  Adw.LayoutSlot {
-                    id: "info-body";
-                  }
-
-                  Adw.LayoutSlot {
-                    id: "main-body";
-                  }
-                }
+              $ReadySetPositionedStack vertical_stack {
+                valign: center;
+                vexpand: false;
+                transition-type: slide-left-right;
               }
 
               [overlay]
@@ -418,7 +403,7 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
           transition-duration: 200;
           halign: end;
           visible: false;
-          notify::reveal-child => $on_to_up_revealer_child_revealed();
+          notify::child-revealed => $on_to_up_revealer_child_revealed();
 
           Button to_up_button {
             styles [

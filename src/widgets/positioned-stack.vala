@@ -20,24 +20,24 @@
 
 public class ReadySet.PositionedStack : Adw.Bin {
 
-    public int position {
+    public uint position {
         get {
             var name = stack.visible_child_name;
-            for (int i = 0; i < childs.size; i++) {
-                if (childs[i].id == name) {
+            for (uint i = 0; i < stack.pages.get_n_items (); i++) {
+                if (get_page (i).name == name) {
                     return i;
                 }
             }
             return -1;
         }
         set {
-            if (childs.size == 0) {
+            if (stack.pages.get_n_items () == 0) {
                 return;
             }
 
-            value = value.clamp (0, childs.size - 1);
+            value = value.clamp (0, stack.pages.get_n_items () - 1);
 
-            stack.visible_child_name = childs[(int) value].id;
+            stack.visible_child_name = get_page (value).name;
         }
     }
 
@@ -52,7 +52,7 @@ public class ReadySet.PositionedStack : Adw.Bin {
 
     public uint n_items {
         get {
-            return childs.size;
+            return stack.pages.get_n_items ();
         }
     }
 
@@ -66,8 +66,6 @@ public class ReadySet.PositionedStack : Adw.Bin {
 
     weak CreateFunc create_func;
     Gtk.Stack stack = new Gtk.Stack ();
-
-    new Gee.ArrayList<PageInfo> childs = new Gee.ArrayList<PageInfo> (PageInfo.equal_id);
 
     construct {
         child = stack;
@@ -96,6 +94,10 @@ public class ReadySet.PositionedStack : Adw.Bin {
         stack.notify["visible-child"].connect (visible_child_changed);
     }
 
+    Gtk.StackPage get_page (uint position) {
+        return (Gtk.StackPage) stack.pages.get_item (position);
+    } 
+
     void visible_child_changed () {
         notify_property ("position");
         notify_property ("visible-child");
@@ -116,13 +118,19 @@ public class ReadySet.PositionedStack : Adw.Bin {
         if (model != null) {
             model.selection_changed.connect (on_selection_changed);
             model.items_changed.connect (on_items_changed);
-            update ();
+            fill ();
         }
     }
 
     public void clear () {
-        for (int i = 0; i < childs.size; i++) {
-            remove_page (childs[0]);
+        var pages_names = new Array<string> ();
+
+        for (uint i = 0; i < stack.pages.get_n_items (); i++) {
+            pages_names.append_val (get_page (i).name);
+        }
+
+        foreach (var name in pages_names) {
+            remove_page (name);
         }
     }
 
@@ -131,33 +139,43 @@ public class ReadySet.PositionedStack : Adw.Bin {
     }
 
     void on_items_changed (uint position, uint removed, uint added) {
-        for (uint i = 0; i < removed; i++) {
-            if (position >= childs.size) {
-                break;
+        if (removed > 0 && added > 0) {
+            clear ();
+            fill ();
+            return;
+        }
+
+        if (removed > 0) {
+            for (uint i = position; i < removed; i++) {
+                remove_page (get_page (position).name);
             }
-            remove_page (childs[(int) position]);
         }
 
-        Gee.ArrayList<PageInfo> tail = new Gee.ArrayList<PageInfo> ();
-        while (childs.size > position) {
-            var page = childs[(int) position];
-            tail.add (page);
-            remove_page (page);
-        }
+        if (added > 0) {
+            Gee.ArrayList<PageInfo> tail = new Gee.ArrayList<PageInfo> ();
 
-        for (uint i = 0; i < added; i++) {
-            var page = (PageInfo) model.get_item (position + i);
-            add_page (page);
-        }
+            for (uint i = position; i < stack.pages.get_n_items (); i++) {
+                var id = get_page (i).name;
+                tail.add (find_page_info (id));
+                remove_page (id);
+            }
 
-        foreach (var page in tail) {
-            add_page (page);
+            for (uint i = position; i < added; i++) {
+                var page = (PageInfo) model.get_item (position + i);
+                add_page (page);
+            }
+
+            foreach (var page in tail) {
+                add_page (page);
+            }
         }
     }
 
-    void remove_page (PageInfo page_info) {
-        stack.remove (stack.get_child_by_name (page_info.id));
-        childs.remove (page_info);
+    void remove_page (string id) {
+        var child = stack.get_child_by_name (id);
+        if (child != null) {
+            stack.remove (stack.get_child_by_name (id));
+        }
     }
 
     void add_page (PageInfo page_info) {
@@ -172,10 +190,23 @@ public class ReadySet.PositionedStack : Adw.Bin {
             page_info.id,
             page_info.title_header ?? "UNKNOWN"
         );
-        childs.add (page_info);
     }
 
-    void update () {
-        on_items_changed (0, 0, model.get_n_items ());
+    PageInfo find_page_info (string id) {
+        for (uint i = position; i < model.get_n_items (); i++) {
+            var page = (PageInfo) model.get_item (i);
+            if (page.id == id) {
+                return page;
+            }
+        }
+
+        error ("What?");
+    }
+
+    void fill () {
+        for (uint i = 0; i < model.get_n_items (); i++) {
+            add_page ((PageInfo) model.get_item (i));
+        }
+        on_selection_changed (model.get_selected (), 1);
     }
 }
