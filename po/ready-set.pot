@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-28 21:31+0000\n"
+"POT-Creation-Date: 2026-05-29 16:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,24 +38,24 @@ msgstr ""
 msgid "Nothing to show"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:391
-msgid "Open application menu"
-msgstr ""
-
-#: data/ui/steps-main-page.blp:430
-msgid "Go up"
-msgstr ""
-
-#: data/ui/steps-main-page.blp:474
+#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:565
 msgid "Go to previous page"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:493
+#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:584
 msgid "Next"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:505
+#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:596
 msgid "Extend/Retract keyboard"
+msgstr ""
+
+#: data/ui/steps-main-page.blp:482
+msgid "Open application menu"
+msgstr ""
+
+#: data/ui/steps-main-page.blp:521
+msgid "Go up"
 msgstr ""
 
 #: data/ui/window-content.blp:43
@@ -73,11 +73,11 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: lib/src/base/base-page.vala:113
+#: lib/src/base/base-page.vala:108
 msgid "Unknown page"
 msgstr ""
 
-#: lib/src/base/base-page.vala:116
+#: lib/src/base/base-page.vala:111
 msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
@@ -408,7 +408,7 @@ msgid ""
 "We will help you prepare everything in a moment."
 msgstr ""
 
-#: plugins/welcome/page.vala:30
+#: plugins/welcome/page.vala:38
 #, c-format
 msgid "Welcome to %s!"
 msgstr ""
@@ -422,7 +422,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/application.vala:345
+#: src/application.vala:348
 msgid "No steps specified"
 msgstr ""
 
