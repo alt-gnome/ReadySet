@@ -3,22 +3,22 @@
 # This file is distributed under the same license as the ready-set package.
 # David Sultaniiazov <x1z53@alt-gnome.ru>, 2025.
 # Vladimir Romanov <rirusha@altlinux.org>, 2026.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: rirusha@altlinux.org\n"
 "POT-Creation-Date: 2026-05-29 16:53+0000\n"
-"PO-Revision-Date: 2026-05-28 12:30+0300\n"
-"Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
-"Language-Team: Russian <rirusha@altlinux.org>\n"
+"PO-Revision-Date: 2026-05-29 17:01+0000\n"
+"Last-Translator: rirusha <rirusha@altlinux.org>\n"
+"Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
+"ready-set/ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Gtranslator 50.0\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #: data/ui/end-page.blp:36
 msgid "Setting up the system…"
@@ -438,11 +438,13 @@ msgid ""
 "The setup will guide you from creating an account to enabling some features. "
 "We will help you prepare everything in a moment."
 msgstr ""
+"Настройка проведет вас от создания учетной записи до подключения некоторых "
+"возможностей. Мы поможем вам все подготовить за мгновение."
 
 #: plugins/welcome/page.vala:38
-#, fuzzy, c-format
+#, c-format
 msgid "Welcome to %s!"
-msgstr "Добро пожаловать"
+msgstr "Добро пожаловать в %s!"
 
 #: src/about.vala:24
 msgid "Ready Set"
