@@ -24,8 +24,6 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
     [GtkChild]
     unowned Gtk.ListBox menu_list_box;
 
-    public bool show_close_button { get; set; }
-
     PagesModel? _model;
     public PagesModel? model {
         get {

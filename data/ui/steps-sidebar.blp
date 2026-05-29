@@ -7,7 +7,6 @@ template $ReadySetStepsSidebar: Adw.Bin {
     Adw.HeaderBar {
       [end]
       Button {
-        visible: bind template.show-close-button;
         icon-name: "go-previous-symbolic";
         clicked => $request_close_sidebar();
       }
@@ -25,7 +24,7 @@ template $ReadySetStepsSidebar: Adw.Bin {
         hexpand: true;
         selection-mode: single;
         selected-rows-changed => $selected_rows_changed();
-        row-activated => $request_close_sidebar();
+        row-activated => $on_row_activated();
       }
     };
   }

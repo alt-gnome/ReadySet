@@ -449,7 +449,7 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
           ]
 
           icon-name: "view-list-symbolic";
-          active: false;
+          active: bind steps_list_button.active bidirectional;
           valign: start;
           visible: bind template.simple inverted;
         }
