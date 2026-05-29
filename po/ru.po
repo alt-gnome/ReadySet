@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-28 21:31+0000\n"
+"POT-Creation-Date: 2026-05-29 16:53+0000\n"
 "PO-Revision-Date: 2026-05-28 12:30+0300\n"
 "Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
 "Language-Team: Russian <rirusha@altlinux.org>\n"
@@ -41,25 +41,25 @@ msgstr "Марш!"
 msgid "Nothing to show"
 msgstr "Нечего показывать"
 
-#: data/ui/steps-main-page.blp:391
-msgid "Open application menu"
-msgstr "Открыть меню приложения"
-
-#: data/ui/steps-main-page.blp:430
-msgid "Go up"
-msgstr "Наверх"
-
-#: data/ui/steps-main-page.blp:474
+#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:565
 msgid "Go to previous page"
 msgstr "К предыдущей странице"
 
-#: data/ui/steps-main-page.blp:493
+#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:584
 msgid "Next"
 msgstr "Дальше"
 
-#: data/ui/steps-main-page.blp:505
+#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:596
 msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
+
+#: data/ui/steps-main-page.blp:482
+msgid "Open application menu"
+msgstr "Открыть меню приложения"
+
+#: data/ui/steps-main-page.blp:521
+msgid "Go up"
+msgstr "Наверх"
 
 #: data/ui/window-content.blp:43
 msgid "All steps"
@@ -76,11 +76,11 @@ msgstr "Главная"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: lib/src/base/base-page.vala:113
+#: lib/src/base/base-page.vala:108
 msgid "Unknown page"
 msgstr "Неизвестная страница"
 
-#: lib/src/base/base-page.vala:116
+#: lib/src/base/base-page.vala:111
 msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
@@ -439,7 +439,7 @@ msgid ""
 "We will help you prepare everything in a moment."
 msgstr ""
 
-#: plugins/welcome/page.vala:30
+#: plugins/welcome/page.vala:38
 #, fuzzy, c-format
 msgid "Welcome to %s!"
 msgstr "Добро пожаловать"
@@ -455,7 +455,7 @@ msgstr ""
 "Vladimir Romanov <rirusha@altlinux.org>\n"
 "David Sultaniiazov <x1z53@altlinux.org>"
 
-#: src/application.vala:345
+#: src/application.vala:348
 msgid "No steps specified"
 msgstr "Не указан список шагов"
 
