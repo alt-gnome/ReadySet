@@ -30,7 +30,13 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     [GtkChild]
     unowned PagesIndicator pages_indicator;
     [GtkChild]
+    unowned Gtk.Label standalone_sandbox_label;
+    [GtkChild]
+    unowned Gtk.ToggleButton standalone_steps_list_button;
+    [GtkChild]
     unowned Gtk.Label sandbox_label_left;
+    [GtkChild]
+    unowned Gtk.CenterBox standalone_horizontal_bottom;
     [GtkChild]
     unowned Gtk.Label sandbox_label_right;
     [GtkChild]
@@ -152,6 +158,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
             update_model_binds ();
             update_vertical_current_scroll ();
             update_scroll ();
+            update_standalone ();
         }
     }
 
@@ -375,6 +382,13 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         update_vertical_current_scroll ();
         _current_scrolled_window.vadjustment.value = 0;
         update_go_up_button ();
+        update_standalone ();
+    }
+
+    void update_standalone () {
+        standalone_sandbox_label.visible = ReadySet.Application.get_default ().context.sandbox && Config.IS_DEVEL && standalone;
+        standalone_steps_list_button.visible = !simple && standalone;
+        standalone_horizontal_bottom.visible = layout_mode == HORIZONTAL && standalone;
     }
 
     void update_vertical_current_scroll () {

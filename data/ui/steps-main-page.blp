@@ -187,6 +187,16 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
                 show-end-title-buttons: bind template.can-close;
                 show-start-title-buttons: false;
 
+                [start]
+                Adw.LayoutSlot {
+                  id: "standalone-steps-button";
+                }
+
+                [start]
+                Adw.LayoutSlot {
+                  id: "standalone-sandbox-label-left";
+                }
+
                 title-widget: Adw.LayoutSlot {
                   id: "pages-indicator";
                 };
@@ -288,6 +298,16 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
                 show-end-title-buttons: bind template.can-close;
                 show-start-title-buttons: false;
 
+                [start]
+                Adw.LayoutSlot {
+                  id: "standalone-steps-button";
+                }
+
+                [start]
+                Adw.LayoutSlot {
+                  id: "standalone-sandbox-label-left";
+                }
+
                 title-widget: Adw.LayoutSlot {
                   id: "pages-indicator";
                 };
@@ -332,6 +352,68 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
               Adw.LayoutSlot {
                 id: "bottom-widget";
               }
+
+              [bottom]
+              CenterBox standalone_horizontal_bottom {
+                orientation: horizontal;
+                margin-bottom: 6;
+                margin-top: 6;
+                margin-start: 12;
+                margin-end: 12;
+                halign: fill;
+                hexpand: true;
+
+                start-widget: Revealer {
+                  transition-type: crossfade;
+                  transition-duration: 200;
+                  reveal-child: bind template.can-cancel;
+                  halign: end;
+                  hexpand: true;
+
+                  Button {
+                    styles [
+                      "circular",
+                    ]
+
+                    tooltip-text: _("Go to previous page");
+                    icon-name: "go-previous-symbolic";
+                    can-shrink: true;
+                    width-request: 32;
+                    height-request: 32;
+                    clicked => $cancel_clicked();
+                    valign: center;
+                    margin-end: 12;
+                  }
+                };
+
+                center-widget: Button {
+                  styles [
+                    "suggested-action",
+                  ]
+
+                  halign: center;
+                  sensitive: bind template.is-ready-to-continue;
+                  label: _("Next");
+                  width-request: 156;
+                  clicked => $continue_clicked();
+                };
+
+                end-widget: Button {
+                  styles [
+                    "circular",
+                    "flat",
+                  ]
+
+                  icon-name: "keyboard-symbolic";
+                  tooltip-text: _("Extend/Retract keyboard");
+                  visible: bind osk_button.visible;
+                  width-request: 32;
+                  height-request: 32;
+                  valign: center;
+                  clicked => $osk_clicked();
+                  margin-start: 12;
+                };
+              }
             };
           }
         }
@@ -350,6 +432,30 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
 
         [sandbox-label-left]
         Label sandbox_label_left {
+          styles [
+            "warning",
+          ]
+
+          margin-start: 12;
+          margin-end: 12;
+          visible: false;
+          label: "s&box";
+        }
+
+        [standalone-steps-button]
+        ToggleButton standalone_steps_list_button {
+          styles [
+            "flat",
+          ]
+
+          icon-name: "view-list-symbolic";
+          active: false;
+          valign: start;
+          visible: bind template.simple inverted;
+        }
+
+        [standalone-sandbox-label-left]
+        Label standalone_sandbox_label {
           styles [
             "warning",
           ]
