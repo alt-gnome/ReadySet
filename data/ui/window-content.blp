@@ -44,7 +44,6 @@ template $ReadySetWindowContent: Adw.BreakpointBin {
 
       child: $ReadySetStepsSidebar steps_sidebar {
         model: bind steps_main_page.model;
-        show-close-button: bind split_view.collapsed;
         request-close => $close_sidebar();
       };
     };

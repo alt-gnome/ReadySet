@@ -86,8 +86,11 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
 
     [GtkCallback]
     void request_close_sidebar () {
-        if (show_close_button) {
-            request_close ();
-        }
+        request_close ();
+    }
+
+    [GtkCallback]
+    void on_row_activated () {
+        request_close ();
     }
 }
