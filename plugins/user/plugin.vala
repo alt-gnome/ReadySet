@@ -32,15 +32,13 @@ public class User.Addin : ReadySet.StepAddin {
         instance = this;
     }
 
-    public async override ReadySet.BaseBarePage[] build_pages () {
-#if WITH_ROOT_SET
-        bool with_root = context.get_boolean ("user-with-root");
-#else
-        bool with_root = false;
-#endif
+    public async override ReadySet.BasePage[] build_pages () {
         return {
             new User.PageUsername (),
-            new User.PagePassword () { with_root_password = with_root }
+            new User.PagePassword ()
+#if WITH_ROOT_SET
+            , new User.PageRootPassword ()
+#endif
         };
     }
 
@@ -53,9 +51,6 @@ public class User.Addin : ReadySet.StepAddin {
                 null
             );
 
-            if (!context.get_boolean ("hide-autologin")) {
-                user.set_automatic_login (context.get_boolean ("user-autologin"));
-            }
             user.set_password (context.get_string ("user-password"), "");
             if (context.has_key ("language-locale")) {
                 user.set_language (context.get_string ("language-locale"));
@@ -67,10 +62,10 @@ public class User.Addin : ReadySet.StepAddin {
 #if WITH_ROOT_SET
             if (context.get_boolean ("user-with-root")) {
                 if (context.get_string ("user-root-password") != "") {
-                    set_root_password (context.get_string ("user-root-password"));
+                    yield set_root_password (context.get_string ("user-root-password"));
                     context.set_string ("user-root-password", "");
                 } else {
-                    set_root_password (context.get_string ("user-password"));
+                    yield set_root_password (context.get_string ("user-password"));
                 }
             }
 #endif
@@ -88,10 +83,9 @@ public class User.Addin : ReadySet.StepAddin {
 #if WITH_ROOT_SET
         vars["user-with-root"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
 #endif
-        vars["no-password-security"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
-        vars["passwd-conf-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["user-no-password-security"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        vars["user-passwd-conf-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["user-avatar-directories"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV);
-        vars["hide-autologin"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
 
         //  Storage
         vars["user-username"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
@@ -100,7 +94,6 @@ public class User.Addin : ReadySet.StepAddin {
 #if WITH_ROOT_SET
         vars["user-root-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
 #endif
-        vars["user-autologin"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
         return vars;
     }
 

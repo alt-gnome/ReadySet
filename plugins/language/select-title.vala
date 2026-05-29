@@ -61,12 +61,13 @@ public class Language.SelectTitle : Adw.Bin {
             num = widget.get_data<int> ("num") + 1;
         }
 
-        var desc = new ReadySet.BasePageDesc (
-            _("Hello!"),
-            _("Let's start by choosing the language for the application and for your system.")
-        ) {
+        var desc = new ReadySet.StatusPage () {
+            title = _("Hello!"),
+            description = _("Let's start by choosing the language for the application and for your system."),
             hexpand = true
         };
+
+        bind_property ("css-classes", desc, "css-classes", SYNC_CREATE);
 
         desc.set_data<int> ("num", num);
 

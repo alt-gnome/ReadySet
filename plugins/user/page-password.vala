@@ -32,23 +32,11 @@ public class User.PagePassword : ReadySet.BasePage {
     [GtkChild]
     unowned Adw.PasswordEntryRow password_repeat_entry;
     [GtkChild]
-    unowned Gtk.Switch equal_switch_row;
+    unowned Adw.Avatar avatar;
     [GtkChild]
-    unowned Adw.SwitchRow autologin_switch_row;
-    [GtkChild]
-    unowned ContextRow root_password_context_row;
-    [GtkChild]
-    unowned Adw.PasswordEntryRow root_password_entry;
-    [GtkChild]
-    unowned PasswordStrength root_password_strength;
-    [GtkChild]
-    unowned ContextRow root_password_repeat_context_row;
-    [GtkChild]
-    unowned Adw.PasswordEntryRow root_password_repeat_entry;
-    [GtkChild]
-    unowned Gtk.ListBox autologin_list_box;
+    unowned ReadySet.StatusPage info_status_page;
 
-    public bool with_root_password { get; construct set; default = false; }
+    public string user_avatar_file { get; set; }
 
     construct {
         Addin.get_instance ().context.bind_context_to_property (
@@ -58,84 +46,36 @@ public class User.PagePassword : ReadySet.BasePage {
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
 
-        Addin.get_instance ().context.bind_context_to_property (
-            "user-autologin",
-            autologin_switch_row,
-            "active",
-            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
-        );
+        var context = Addin.get_instance ().context;
+        context.data_changed.connect (on_context_data_changed);
+        on_context_data_changed (context, "user-fullname");
+        on_context_data_changed (context, "user-avatar-file");
 
-        Addin.get_instance ().context.bind_context_to_property (
-            "hide-autologin",
-            autologin_list_box,
-            "visible",
-            BindingFlags.INVERT_BOOLEAN | BindingFlags.SYNC_CREATE
-        );
-
-        Addin.get_instance ().context.data_changed.connect (on_context_data_changed);
-
-#if WITH_ROOT_SET
-        Addin.get_instance ().context.bind_context_to_property (
-            "user-root-password",
-            root_password_entry,
-            "text",
-            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
-        );
-
-        Addin.get_instance ().context.bind_context_to_property (
-            "user-with-root",
-            this,
-            "with-root-password",
-            BindingFlags.SYNC_CREATE
-        );
-#endif
+        update_is_ready ();
     }
 
-    void on_context_data_changed (string key) {
-        if (key == "hide-autologin") {
-            if (Addin.get_instance ().context.get_boolean ("hide-autologin")) {
-                autologin_switch_row.active = false;
-            }
+    void on_context_data_changed (ReadySet.Context context, string key) {
+        switch (key) {
+            case "user-fullname":
+                info_status_page.title = _("Set a Password for %s").printf (context.get_string (key));
+                avatar.text = context.get_string (key);
+                break;
+            case "user-avatar-file":
+                var path = context.get_string (key);
+                if (path == null) {
+                    avatar.custom_image = null;
+                } else {
+                    try {
+                        avatar.custom_image = Gdk.Texture.from_filename (path);
+                    } catch (Error e) {}
+                }
+                break;
         }
     }
 
     void update_is_ready () {
         is_ready = password_is_ready (password_entry.text) &&
-                   password_entry.text == password_repeat_entry.text &&
-                   (!equal_switch_row.active || (equal_switch_row.active &&
-                   (password_is_ready (root_password_entry.text) &&
-                   root_password_entry.text == root_password_repeat_entry.text)));
-    }
-
-    bool password_is_ready (string password) {
-        bool no_password_security = Addin.get_instance ().context.get_boolean ("no-password-security");
-        if (no_password_security) {
-            return password.length != 0;
-        } else {
-            return password_is_correct (password);
-        }
-    }
-
-    Strength get_password_strength (
-        string password,
-        string? old_password = null,
-        string? username = null
-    ) {
-        bool no_password_security = Addin.get_instance ().context.get_boolean ("no-password-security");
-        if (no_password_security) {
-            return {
-                hint: _("The password must consist of at least one character"),
-                strength_level: password.length == 0 ? StrengthLevel.BAD : StrengthLevel.GOOD,
-                value: 0.0,
-                support_value: false
-            };
-        } else {
-            return Password.strength (
-                password,
-                old_password,
-                username
-            );
-        }
+                   password_entry.text == password_repeat_entry.text;
     }
 
     [GtkCallback]
@@ -166,56 +106,9 @@ public class User.PagePassword : ReadySet.BasePage {
     }
 
     [GtkCallback]
-    void root_password_changed () {
-        var strength = get_password_strength (
-            root_password_entry.text,
-            null,
-            "root"
-        );
-
-        root_password_strength.strength_level = strength.level;
-        root_password_strength.strength = strength.value;
-        root_password_strength.label = strength.hint;
-        update_css_by_strength (root_password_entry, strength.level);
-        root_password_strength.progress_bar_visible = strength.support_value;
-        root_password_context_row.reveal_context = strength.level != GOOD;
-
-        root_password_repeat_changed ();
-    }
-
-    [GtkCallback]
-    void root_password_repeat_changed () {
-        var is_correct = root_password_entry.text == root_password_repeat_entry.text;
-        root_password_repeat_context_row.reveal_context = !is_correct;
-        update_correct (root_password_repeat_entry, is_correct);
-
-        update_is_ready ();
-    }
-
-    [GtkCallback]
-    void switch_changed () {
-        root_password_entry.text = "";
-        root_password_repeat_entry.text = "";
-
-        root_password_entry.remove_css_class ("error");
-        root_password_context_row.reveal_context = false;
-        root_password_repeat_entry.remove_css_class ("error");
-        root_password_repeat_context_row.reveal_context = false;
-
-        update_is_ready ();
-    }
-
-    [GtkCallback]
     void generate_user_password () {
         var password = Password.generate ();
 
         password_entry.text = password;
-    }
-
-    [GtkCallback]
-    void generate_root_password () {
-        var password = Password.generate ();
-
-        root_password_entry.text = password;
     }
 }

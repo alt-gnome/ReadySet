@@ -16,7 +16,8 @@ subdir('data')
 
 plugin_test_c_args = [
   '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
-  '-w'
+  '-w',
+  '-DG_LOG_DOMAIN="Tests"',
 ]
 
 shared_module(

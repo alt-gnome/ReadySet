@@ -19,7 +19,7 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/ui/end-page.ui")]
-public sealed class ReadySet.EndPage : BaseBarePage {
+public sealed class ReadySet.EndPage : Adw.Bin {
 
     const string SERVICE_NAME = "gdm-password";
 
@@ -43,8 +43,6 @@ public sealed class ReadySet.EndPage : BaseBarePage {
     public async void start_action () {
         var app = Application.get_default ();
         var context = app.context;
-
-        app.on_finish.connect (done);
 
         if (context.mode == Mode.INITIAL_SETUP && !context.sandbox) {
             try {
@@ -99,7 +97,6 @@ public sealed class ReadySet.EndPage : BaseBarePage {
             yield;
 
             stack.visible_child_name = "ready";
-            is_ready = true;
 
         } else {
             try {
@@ -135,7 +132,6 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                 }
 
                 stack.visible_child_name = "ready";
-                is_ready = true;
 
             } catch (ApplyError e) {
                 var apply_error_data = ApplyError.to_data (e);
@@ -144,16 +140,20 @@ public sealed class ReadySet.EndPage : BaseBarePage {
                 error_status_page.description = _("Error message: %s").printf (apply_error_data.description);
 
                 stack.visible_child_name = "error";
-                is_ready = false;
 
             } catch (Error e) {
                 error_status_page.title = _("Error while execute post hooks");
                 error_status_page.description = _("Error message: %s").printf (e.message);
 
                 stack.visible_child_name = "error";
-                is_ready = false;
             }
         }
+    }
+
+    [GtkCallback]
+    void on_finish () {
+        Application.get_default ().hide_window ();
+        done ();
     }
 
     void update_progress_visibility () {

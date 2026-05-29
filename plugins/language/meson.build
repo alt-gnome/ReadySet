@@ -7,6 +7,7 @@ plugin_language_deps = [
 
 plugin_language_sources = files(
   'box.vala',
+  'info.vala',
   'locale-data.vala',
   'page.vala',
   'plugin.vala',
@@ -21,9 +22,8 @@ plugin_language_name = 'language'
 subdir('data')
 
 plugin_language_c_args = [
-  '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
   '-DGNOME_DESKTOP_USE_UNSTABLE_API',
-  '-w'
+  '-DG_LOG_DOMAIN="Language"',
 ]
 
 shared_module(

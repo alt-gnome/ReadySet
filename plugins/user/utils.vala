@@ -272,9 +272,12 @@ namespace User {
     }
 
 #if WITH_ROOT_SET
-    bool set_root_password (string password) {
+    async bool set_root_password (string password) {
         try {
-            ReadySet.pkexec ({ Path.build_filename (Config.LIBEXECDIR, "ready-set-set-root-password"), password });
+            yield ReadySet.pkexec ({
+                Path.build_filename (Config.LIBEXECDIR, "ready-set-set-root-password"),
+                password
+            });
             return true;
         } catch (Error e) {
             return false;
@@ -343,5 +346,36 @@ namespace User {
         }
 
         return builder.free_and_steal ();
+    }
+
+    bool password_is_ready (string password) {
+        bool no_password_security = Addin.get_instance ().context.get_boolean ("user-no-password-security");
+        if (no_password_security) {
+            return password.length != 0;
+        } else {
+            return password_is_correct (password);
+        }
+    }
+
+    Strength get_password_strength (
+        string password,
+        string? old_password = null,
+        string? username = null
+    ) {
+        bool no_password_security = Addin.get_instance ().context.get_boolean ("user-no-password-security");
+        if (no_password_security) {
+            return {
+                hint: _("The password must consist of at least one character"),
+                strength_level: password.length == 0 ? StrengthLevel.BAD : StrengthLevel.GOOD,
+                value: 0.0,
+                support_value: false
+            };
+        } else {
+            return Password.strength (
+                password,
+                old_password,
+                username
+            );
+        }
     }
 }

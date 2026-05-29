@@ -13,8 +13,7 @@ plugin_welcome_name = 'welcome'
 subdir('data')
 
 plugin_welcome_c_args = [
-  '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
-  '-w'
+  '-DG_LOG_DOMAIN="Welcome"',
 ]
 
 shared_module(

@@ -39,6 +39,7 @@ jobs:
   build-doc-translation:
     name: Build, update translation and upload doc
     runs-on: als-huge
+    container: registry.altlinux.org/sisyphus/node:latest
     needs:
       - lint-vala
       - lint-blueprint
@@ -117,6 +118,7 @@ jobs:
           echo "release=$(date +%s)" >> $FORGEJO_OUTPUT
 
   rpm-build-amd64:
+    if: github.event_name != 'pull_request' && github.ref_name == 'main'
     name: RPM build for ${{ matrix.branch }}.amd64 and uploading
     runs-on: als-huge
     container:
@@ -126,7 +128,7 @@ jobs:
       matrix:
         branch:
           - sisyphus
-          - p11
+          # - p11
     needs:
       - lint-vala
       - lint-blueprint
@@ -162,6 +164,7 @@ jobs:
           group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
 
   rpm-build-arm64:
+    if: github.event_name != 'pull_request' && github.ref_name == 'main'
     name: RPM build for ${{ matrix.branch }}.arm64 and uploading
     runs-on: self-hosted-arm64-huge
     container:
@@ -171,7 +174,7 @@ jobs:
       matrix:
         branch:
           - sisyphus
-          - p11
+          # - p11
     needs:
       - lint-vala
       - lint-blueprint
@@ -206,7 +209,6 @@ jobs:
           token: ${{ secrets.TOKEN }}
           group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
 
-
   build-test-image:
     name: Build ${{ matrix.denviron }} image
     runs-on: als-huge
@@ -215,10 +217,13 @@ jobs:
         denviron:
           - phrog
           - gnome
+          - gnome-gis
         include:
           - denviron: phrog
             image: altlinux.space/alt-atomic/minimal/phosh/nightly:latest
           - denviron: gnome
+            image: altlinux.space/alt-atomic/onyx/nightly:latest
+          - denviron: gnome-gis
             image: altlinux.space/alt-atomic/onyx/nightly:latest
 
     needs:

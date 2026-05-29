@@ -16,15 +16,15 @@ librs_vapi_sources = files(
 )
 
 librs_vala_sources = files(
-  'base/base-bare-page.vala',
-  'base/base-page-desc.vala',
   'base/base-page.vala',
-  'apply-callback.vala',
+  'base/status-page.vala',
+
   'context-object.vala',
   'context.vala',
+  'extension-base.vala',
   'installer-addin.vala',
+  'lib-utils.vala',
   'step-addin.vala',
-  'utils.vala',
 )
 
 librs_c_sources = files(
@@ -40,8 +40,7 @@ librs_sources = [
 librs_sources_with_resources = librs_sources + [librs_resources]
 
 librs_c_args = [
-  '-DGETTEXT_PACKAGE="@0@"'.format(librs_name),
-  '-w',
+  '-DG_LOG_DOMAIN="libready-set"',
 ]
 
 rs_app_vala_args = [
@@ -53,6 +52,7 @@ librs_dependencies = [
   gio_dep,
   libadwaita_dep,
   libpeas_dep,
+  libserialize_dep,
 ]
 
 librs_deps_pkgs = []
@@ -69,7 +69,10 @@ librs = shared_library(
   vala_gir: librs_gir_name,
   version: meson.project_version(),
   install: true,
-  install_dir: [ true, true, true, true ],
+  install_dir: [true, true, true, true],
+  # install_vala_header: true,
+  # install_vala_vapi: true,
+  # install_vala_gir: true,
   c_args: librs_c_args,
   vala_args: rs_app_vala_args,
 )

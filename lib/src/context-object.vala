@@ -18,7 +18,13 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/**
+ * Object that {@link ReadySet.Context} understand and which
+ * can be registered.
+ */
 public abstract class ReadySet.ContextObject : Object {
-
+    /**
+     * Copy func for {@link ContextObject}.
+     */
     public abstract ContextObject copy ();
 }

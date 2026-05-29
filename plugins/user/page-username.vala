@@ -37,6 +37,10 @@ public class User.PageUsername : ReadySet.BasePage {
     unowned Adw.Avatar avatar_image;
     [GtkChild]
     unowned Gtk.Button remove_avatar_button;
+    [GtkChild]
+    unowned ReadySet.StatusPage info_status_page;
+    [GtkChild]
+    unowned Adw.Bin info_bin;
 
     bool username_manually_entered = false;
 
@@ -62,6 +66,19 @@ public class User.PageUsername : ReadySet.BasePage {
     }
 
     construct {
+        info_bin.notify["css-classes"].connect (() => {
+            if (info_bin.has_css_class ("compact")) {
+                info_status_page.add_css_class ("compact");
+                avatar_image.size = 96;
+            } else {
+                info_status_page.remove_css_class ("compact");
+                avatar_image.size = 128;
+            }
+        });
+
+        notify["layout-mode"].connect (layout_mode_changed);
+        layout_mode_changed ();
+
         Addin.get_instance ().context.bind_context_to_property (
             "user-username",
             username_entry,
@@ -82,6 +99,10 @@ public class User.PageUsername : ReadySet.BasePage {
             "user-avatar-file",
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
+    }
+
+    void layout_mode_changed () {
+        info_status_page.visible = layout_mode == HORIZONTAL || layout_mode == BIG;
     }
 
     void update_is_ready () {

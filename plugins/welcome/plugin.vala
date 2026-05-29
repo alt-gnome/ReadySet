@@ -26,11 +26,8 @@ public class Welcome.Addin : ReadySet.StepAddin {
         }
     }
 
-    public async override ReadySet.BaseBarePage[] build_pages () {
+    public async override ReadySet.BasePage[] build_pages () {
         return { new Welcome.Page () };
-    }
-    public async override void apply (ReadySet.ProgressData progres_data) {
-        assert_not_reached ();
     }
 }
 

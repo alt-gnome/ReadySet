@@ -1,5 +1,6 @@
 [Plugin]
 Name=@NAME@
+Depends=language
 Module=@MODULE@
 Version=@VERSION@
 Authors=Vladimir Romanov

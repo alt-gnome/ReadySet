@@ -2,6 +2,7 @@
 'gir(Gdm)=1.0'
 'gir(Gtk)=4.0'
 'gir(Peas)=2'
+'gir(Serialize)=7'
 'pkgconfig(accountsservice)'
 'pkgconfig(gdm)'
 'pkgconfig(gee-0.8)'
@@ -10,6 +11,7 @@
 'pkgconfig(ibus-1.0)'
 'pkgconfig(libadwaita-1)>=1.7'
 'pkgconfig(libpeas-2)'
+'pkgconfig(libserialize-7)'
 'pkgconfig(passwdqc)'
 'pkgconfig(polkit-gobject-1)'
 'pkgconfig(pwquality)'
@@ -24,3 +26,5 @@
 /usr/bin/valadoc
 /usr/bin/vapigen
 gettext-devel
+graphviz
+fonts-ttf-adwaita

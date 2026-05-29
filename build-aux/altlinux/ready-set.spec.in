@@ -37,18 +37,20 @@ BuildRequires: gir(Adw) = 1
 BuildRequires: gir(Gtk) = 4.0
 BuildRequires: gir(Peas) = 2
 BuildRequires: gir(Gdm) = 1.0
+BuildRequires: gir(Serialize) = 7
 BuildRequires: pkgconfig(accountsservice)
+BuildRequires: pkgconfig(gdm)
 BuildRequires: pkgconfig(gee-0.8)
 BuildRequires: pkgconfig(gio-unix-2.0)
 BuildRequires: pkgconfig(gnome-desktop-4)
 BuildRequires: pkgconfig(ibus-1.0)
 BuildRequires: pkgconfig(libadwaita-1) >= 1.7
 BuildRequires: pkgconfig(libpeas-2)
+BuildRequires: pkgconfig(libserialize-7) >= 7.5
 BuildRequires: pkgconfig(passwdqc)
 BuildRequires: pkgconfig(polkit-gobject-1)
 BuildRequires: pkgconfig(pwquality)
 BuildRequires: pkgconfig(systemd)
-BuildRequires: pkgconfig(gdm)
 BuildRequires: pkgconfig(xkbcommon)
 
 %description
@@ -127,8 +129,19 @@ Summary: %name keyboard plugin
 Group: Other
 
 Requires: %name = %EVR
+Requires: %name-plugin-language = %EVR
 
 %description plugin-keyboard
+%summary.
+
+%package plugin-license-agreement
+Summary: %name license agreement plugin
+Group: Other
+
+Requires: %name = %EVR
+Requires: %name-plugin-language = %EVR
+
+%description plugin-license-agreement
 %summary.
 
 %package plugin-language
@@ -255,6 +268,10 @@ Requires: %name = %EVR
 %_datadir/polkit-1/rules.d/%app_id.Plugin.Language.rules
 %_libdir/%name/plugins/steps/language.plugin
 %_libdir/%name/plugins/steps/liblanguage.so
+
+%files plugin-license-agreement
+%_libdir/%name/plugins/steps/license-agreement.plugin
+%_libdir/%name/plugins/steps/liblicense-agreement.so
 
 %files plugin-user-common
 %_datadir/polkit-1/rules.d/%app_id.Plugin.User.rules

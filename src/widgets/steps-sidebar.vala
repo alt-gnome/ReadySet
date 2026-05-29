@@ -24,8 +24,6 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
     [GtkChild]
     unowned Gtk.ListBox menu_list_box;
 
-    public bool show_close_button { get; set; }
-
     PagesModel? _model;
     public PagesModel? model {
         get {
@@ -58,7 +56,7 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
 
         var row = new StepRow (
             page.title_header,
-            page.icon_name
+            page.title_icon_name
         );
 
         page.bind_property (
@@ -86,8 +84,11 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
 
     [GtkCallback]
     void request_close_sidebar () {
-        if (show_close_button) {
-            request_close ();
-        }
+        request_close ();
+    }
+
+    [GtkCallback]
+    void on_row_activated () {
+        request_close ();
     }
 }

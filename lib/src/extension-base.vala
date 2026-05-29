@@ -18,14 +18,33 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/Lib/ui/base-page-desc.ui")]
-public sealed class ReadySet.BasePageDesc : Gtk.Box {
+/**
+ * Extension base with common logic between
+ * {@link ReadySet.InstallerAddin} and 
+ * {@link ReadySet.StepAddin}.
+ */
+public abstract class ReadySet.ExtensionBase : Peas.ExtensionBase {
 
-    public string title { get; set; }
-
-    public string description { get; set; }
-
-    public BasePageDesc (string title, string description) {
-        Object (title: title, description: description);
+    Context _context;
+    /**
+     * A way of communicating between plugins or an application.
+     * 
+     * @see ReadySet.StepAddin
+     * @see ReadySet.Context
+     */
+    public Context context {
+        get {
+            assert (_context != null);
+            return _context;
+        }
+        internal set {
+            _context = value;
+        }
     }
+
+    /**
+     * Init plugin. Calls by application after context was set.
+     * Calls once.
+     */
+    public async virtual void init_once () {}
 }

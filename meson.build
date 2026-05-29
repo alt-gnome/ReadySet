@@ -1,8 +1,8 @@
 project(
   'ready-set',
   'vala',
-  version: '0.6.2',
-  meson_version: '>= 1.1',
+  version: '0.7.1',
+  meson_version: '>= 1.9',
   license: 'GPL-3.0-or-later',
 )
 
@@ -12,6 +12,12 @@ gnome = import('gnome')
 pkgconfig = import('pkgconfig')
 
 glib_min_version = '2.76'
+
+add_project_arguments(
+  '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
+  '-w',
+  language: 'c',
+)
 
 accountsservice_desktop_dep = dependency('accountsservice')
 gdm_dep = dependency('gdm')
@@ -24,6 +30,7 @@ libpeas_dep = dependency('libpeas-2')
 polkit_dep = dependency('polkit-gobject-1')
 posix_dep = meson.get_compiler('vala').find_library('posix')
 xkb_dep = dependency('xkbcommon')
+libserialize_dep = dependency('libserialize-7', version: '>= 7.5')
 
 api_version = meson.project_version().split('.')[0]
 pascal_name = 'ReadySet'

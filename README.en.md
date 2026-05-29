@@ -17,10 +17,10 @@
 
 App using steps. Curently available steps:
 
-- user-passwdqc
-- user-pwquality
 - keyboard (Choosing layouts)
 - language (Users language)
+- license-agreement (License agreement)
+- user (User creation. Available both pwquality and passwdqc)
 
 ## Configuration
 
@@ -47,47 +47,11 @@ You can help with translations via [ALT Gnome Translate](https://translate.alt-g
 
 For test purpose you should use `--sandbox` option.
 
-## Install
-
-### ALT Linux
-
-```sh
-sudo apt-get update
-sudo apt-get install ready-set
-```
-
 ## Building from sources
-
-#### Dependencies
-
-- meson
-- vala
-- gtk4
-- libadwaita-1
-- gnome-desktop-4
-- gee-0.8
-- accountsservice
-- ibus-1.0
-- pwquality/passwdqc
-- blueprint-compiler
 
 #### Building
 
-```sh
-meson setup _build -Dis_devel=true
-```
-
-#### Installing
-
-```sh
-ninja install -C _build
-```
-
-#### Uninstalling
-
-```sh
-ninja uninstall -C _build
-```
+Meson build system used in this project. All available build option for this project you can find [here](meson.options)
 
 #### Mentions
 

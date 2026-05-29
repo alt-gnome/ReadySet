@@ -22,7 +22,7 @@ public sealed class ReadySet.PageInfo : Object {
 
     public string id { get; construct; }
 
-    public BaseBarePage page { get; construct; }
+    public BasePage page { get; construct; }
 
     public StepAddin? plugin { get; construct; }
 
@@ -36,9 +36,34 @@ public sealed class ReadySet.PageInfo : Object {
 
     public string title_header { get; set; }
 
-    public string icon_name { get; set; }
+    public string title_icon_name { get; set; }
 
-    public PageInfo (BaseBarePage page, StepAddin? plugin, bool apply_plugin = true) {
+    public bool is_compact {
+        get {
+            if (page.info == null) {
+                return page.content.has_css_class ("compact");
+            } else {
+                return page.info.has_css_class ("compact");
+            }
+        }
+        set {
+            if (value) {
+                if (page.info == null) {
+                    page.content.add_css_class ("compact");
+                } else {
+                    page.info.add_css_class ("compact");
+                }
+            } else {
+                if (page.info == null) {
+                    page.content.remove_css_class ("compact");
+                } else {
+                    page.info.remove_css_class ("compact");
+                }
+            }
+        }
+    }
+
+    public PageInfo (BasePage page, StepAddin? plugin, bool apply_plugin = true) {
         Object (
             page: page,
             plugin: plugin,
@@ -50,11 +75,11 @@ public sealed class ReadySet.PageInfo : Object {
         string[] props = {
             "is-ready",
             "title-header",
-            "icon-name"
+            "title-icon-name"
         };
 
         foreach (var prop in props) {
-            page.bind_property (prop, this, prop, BIDIRECTIONAL | SYNC_CREATE);
+            page.bind_property (prop, this, prop, SYNC_CREATE);
         }
 
         page.notify["accessible"].connect (update_accessible);

@@ -1,0 +1,14 @@
+ARG IMAGE
+
+FROM $IMAGE
+
+ARG IMAGE
+ARG PKG_GROUP
+
+RUN --mount=type=bind,source=./test-atomic/gnome-gis/image.yml,target=/etc/apm/image.yml \
+    --mount=type=bind,source=./test-atomic/gnome-gis/resources,target=/etc/apm/resources \
+    apm system image build
+
+WORKDIR /
+
+CMD ["/sbin/init"]

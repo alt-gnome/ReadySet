@@ -69,6 +69,7 @@ public class Language.Addin : ReadySet.StepAddin {
 
     static construct {
         typeof (SelectTitle).ensure ();
+        typeof (Info).ensure ();
         typeof (Box).ensure ();
         typeof (Row).ensure ();
     }
@@ -87,8 +88,10 @@ public class Language.Addin : ReadySet.StepAddin {
         return vars;
     }
 
-    public async override ReadySet.BaseBarePage[] build_pages () {
-        return { new Language.Page () };
+    public async override ReadySet.BasePage[] build_pages () {
+        return {
+            new Language.Page ()
+        };
     }
 
     internal static Addin get_instance () {

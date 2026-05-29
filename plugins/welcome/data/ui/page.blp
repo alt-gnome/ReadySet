@@ -1,8 +1,23 @@
 using Gtk 4.0;
+using Adw 1;
 
 template $WelcomePage: $ReadySetBasePage {
   title-header: _("Welcome");
-  title: _("Welcome");
-  icon-name: "altmobile-symbolic";
+  title-icon-name: "org.altlinux.ReadySet-symbolic";
   is-ready: true;
+
+  content: Adw.Clamp clamp {
+    maximum-size: 500;
+    margin-start: 12;
+    margin-end: 12;
+    margin-bottom: 12;
+    margin-top: 12;
+
+    $ReadySetStatusPage status_page {
+      icon-name: "org.altlinux.ReadySet";
+      description: _(
+        "The setup will guide you from creating an account to enabling some features. We will help you prepare everything in a moment."
+      );
+    }
+  };
 }

@@ -1,0 +1,12 @@
+modules:
+  - type: packages
+    body:
+      install:
+        - gnome-initial-setup
+
+  - name: Copy configuration
+    type: copy
+    body:
+      source: root
+      destination: /
+      replace: true

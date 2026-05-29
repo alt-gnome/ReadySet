@@ -21,7 +21,6 @@
 public sealed class ReadySet.Application: Adw.Application {
 
     const ActionEntry[] ACTION_ENTRIES = {
-        { "finish", finish },
         { "reload-window", reload_window },
     };
 
@@ -38,11 +37,9 @@ public sealed class ReadySet.Application: Adw.Application {
     Gee.HashMap<string, StepAddin> steps_plugins = new Gee.HashMap<string, StepAddin> ();
     Gee.HashMap<string, InstallerAddin> installers_plugins = new Gee.HashMap<string, InstallerAddin> ();
 
-    public signal void on_finish ();
-
     public bool can_close {
         get {
-            return Config.IS_DEVEL || context.mode == Mode.TOUR || options_handler.can_close;
+            return Config.IS_DEVEL || options_handler.can_close;
         }
     }
 
@@ -74,14 +71,16 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     static construct {
-        typeof (BasePageDesc).ensure ();
+        //  Ensure some libready-set types
+        typeof (StatusPage).ensure ();
+        typeof (BasePage).ensure ();
+
         typeof (PagesIndicator).ensure ();
         typeof (PositionedStack).ensure ();
         typeof (StepRow).ensure ();
         typeof (StepsMainPage).ensure ();
         typeof (StepsSidebar).ensure ();
 
-        typeof (BasePage).ensure ();
         typeof (EndPage).ensure ();
     }
 
@@ -110,6 +109,8 @@ public sealed class ReadySet.Application: Adw.Application {
         init_steps_plugins ();
         init_installers_plugins ();
 
+        init_lib_css ();
+
         options_handler.fill_context (context);
         context.reload_window.connect (reload_window);
 
@@ -118,10 +119,8 @@ public sealed class ReadySet.Application: Adw.Application {
 #endif
             if (installer_plugin != null) {
                 context.mode = INSTALLER;
-            } else if (in_group ("ready-set") || in_group ("gnome-initial-setup")) {
-                context.mode = INITIAL_SETUP;
             } else {
-                context.mode = TOUR;
+                context.mode = INITIAL_SETUP;
             }
 #if DEVEL
         } else {
@@ -200,8 +199,22 @@ public sealed class ReadySet.Application: Adw.Application {
 
         all_steps = get_all_steps ();
 
+        string[] passed_steps = {};
+
         for (int i = 0; i < all_steps.length; i++) {
             if (steps_plugins[all_steps[i]] != null) {
+                var deps = steps_plugins[all_steps[i]].get_data<Array<string>> ("dependencies").data;
+
+                foreach (var dep in deps) {
+                    if (!(dep in passed_steps)) {
+                        critical (
+                            "Plugin '%s' has an unsatisfied dependency on '%s'",
+                            all_steps[i],
+                            dep
+                        );
+                    }
+                }
+
                 var addin = steps_plugins[all_steps[i]];
 
                 context.register_vars (addin.get_context_vars ());
@@ -210,12 +223,18 @@ public sealed class ReadySet.Application: Adw.Application {
                 var var_name = "step-%s-enabled".printf (all_steps[i]);
                 vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN, true);
                 context.register_vars (vars);
+
+                passed_steps += all_steps[i];
             }
         }
     }
 
     void steps_addins_foreach_func (Peas.ExtensionSet _set, Peas.PluginInfo info, Object extension) {
         steps_plugins[info.module_name] = (StepAddin) extension;
+        steps_plugins[info.module_name].set_data<Array<string>> (
+            "dependencies",
+            new Array<string>.take (info.dependencies)
+        );
     }
 
     void init_installers_plugins () {
@@ -242,20 +261,39 @@ public sealed class ReadySet.Application: Adw.Application {
                 error ("Unknown installer plugin");
             }
         }
+
+        if (installers_plugins[options_handler.installer] != null) {
+            var deps = installers_plugins[options_handler.installer].get_data<Array<string>> ("dependencies").data;
+
+            foreach (var dep in deps) {
+                if (!(dep in all_steps)) {
+                    critical (
+                        "Installer plugin '%s' has an unsatisfied dependency on '%s'", options_handler.installer,
+                        dep
+                    );
+                }
+            }
+        }
     }
 
     void installer_addins_foreach_func (Peas.ExtensionSet _set, Peas.PluginInfo info, Object extension) {
         installers_plugins[info.module_name] = (InstallerAddin) extension;
+        installers_plugins[info.module_name].set_data<Array<string>> (
+            "dependencies",
+            new Array<string>.take (info.dependencies)
+        );
     }
 
     public async void init_pages () {
         var pages = new Gee.ArrayList<PageInfo> ();
 
+        var initial_position = model == null ? 0 : model.get_selected ();
+
         print ("Loaded plugins:\n");
         for (int i = 0; i < all_steps.length; i++) {
             if (steps_plugins[all_steps[i]] == null) {
                 pages.add (new PageInfo (
-                    new BasePage () {
+                    new BasePage.unknown () {
                         is_ready = true
                     },
                     null,
@@ -294,13 +332,8 @@ public sealed class ReadySet.Application: Adw.Application {
             yield;
         }
 
-        pages.add (new PageInfo (
-            new EndPage (),
-            null,
-            false
-        ));
-
         model = new PagesModel (pages);
+        model.select_item (initial_position, true);
     }
 
     string[] get_all_steps () {
@@ -334,7 +367,10 @@ public sealed class ReadySet.Application: Adw.Application {
             }
 
             var win = new Window (this) {
-                fullscreened = options_handler.fullscreen
+                fullscreened = options_handler.fullscreen,
+                default_width = options_handler.width,
+                default_height = options_handler.height,
+                resizable = options_handler.resizable
             };
 
             win.present ();
@@ -348,11 +384,9 @@ public sealed class ReadySet.Application: Adw.Application {
         return (ReadySet.Application) GLib.Application.get_default ();
     }
 
-    void finish () {
-        debug ("App finish stage");
+    public void hide_window () {
         if (active_window != null) {
             active_window.hide ();
         }
-        on_finish ();
     }
 }

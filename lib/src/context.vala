@@ -18,6 +18,12 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/**
+ * Value type stored in context. {@link ReadySet.ContextType.OBJECT}
+ * allows to store only {@link ReadySet.ContextObject}.
+ *
+ * @see ReadySet.Context
+ */
 public enum ReadySet.ContextType {
     STRING,
     BOOLEAN,
@@ -53,7 +59,7 @@ public enum ReadySet.ContextType {
             case STRV:
                 return typeof (string[]);
             case INT:
-                return Type.INT;
+                return Type.INT64;
             case DOUBLE:
                 return Type.DOUBLE;
             case OBJECT:
@@ -104,6 +110,7 @@ internal class ReadySet.ValueObject : Object {
         );
     }
 
+#if FOR_APPLICATION
     public void set_getter (ContextGetterFunc func) {
         getter_func = func;
     }
@@ -111,6 +118,7 @@ internal class ReadySet.ValueObject : Object {
     public void set_setter (ContextSetterFunc func) {
         setter_func = func;
     }
+#endif
 
     construct {
         if (value_type == STRING && default_value == null) {
@@ -134,14 +142,29 @@ internal class ReadySet.ValueObject : Object {
     }
 }
 
+/**
+ * Information about context value. Needs for registration and used in
+ * {@link ReadySet.StepAddin.get_context_vars}.
+ *
+ * @see ReadySet.Context
+ */
 public class ReadySet.ContextVarInfo : Object {
 
     public ContextType value_type { get; construct; }
 
+    /**
+     * Default value. Needs for resettings value via {@link Context.reset}.
+     */
     public Value? default_value { get; construct; }
 
+    /**
+     * Func that will be used as get function.
+     */
     public unowned ContextGetterFunc? getter_func = null;
 
+    /**
+     * Func that will be used as set function.
+     */
     public unowned ContextSetterFunc? setter_func = null;
 
     public ContextVarInfo (ContextType value_type, Value? default_value = null) {
@@ -158,12 +181,29 @@ public class ReadySet.ContextVarInfo : Object {
     }
 }
 
+/**
+ * A way of communicating between plugins or an application.
+ *
+ * Store application state and varoius variables between plugins.
+ */
 public class ReadySet.Context : Object {
 
+    /**
+     * Whether application run in sandbox mode or not. Plugon should hold it
+     * and not do any changes in system if this is true.
+     * Also better not to call system dbus, so application can be run in
+     * sandbox environment e.g. distrobox for test purpose.
+     */
     public bool sandbox { get; construct; default = true; }
 
-    public Mode mode { get; set; }
+    /**
+     * Current application mode. Plugins can handle various modes different.
+     */
+    public Mode mode { get; internal set; }
 
+    /**
+     * Call application to reload window.
+     */
     public signal void reload_window ();
 
     public signal void data_changed (string key);
@@ -288,7 +328,8 @@ public class ReadySet.Context : Object {
         return true;
     }
 
-    public HashTable<string, string> get_raw_string () {
+#if FOR_APPLICATION
+    internal HashTable<string, string> get_raw_string () {
         var raw_data = new HashTable<string, string> (str_hash, str_equal);
 
         foreach (var key in get_keys ()) {
@@ -320,8 +361,10 @@ public class ReadySet.Context : Object {
 
         return raw_data;
     }
+#endif
 
-    public void set_raw (string key, string value) {
+#if FOR_APPLICATION
+    internal void set_raw (string key, string value) {
         if (!check_key (key)) {
             return;
         }
@@ -344,24 +387,28 @@ public class ReadySet.Context : Object {
             warning ("Error setting row value for key %s: %s", key, e.message);
         }
     }
+#endif
 
-    public HashTable<string, Value?> get_raw_context () {
-        var raw_data = new HashTable<string, Value?> (str_hash, str_equal);
+    //  internal HashTable<string, Value?> get_raw_context () {
+    //      var raw_data = new HashTable<string, Value?> (str_hash, str_equal);
 
-        foreach (var e in data) {
-            var val = Value (e.value.value_type.to_gtype ());
-            var rv = e.value.real_value;
-            rv.copy (ref val);
-            raw_data[e.key] = val;
-        }
+    //      foreach (var e in data) {
+    //          var val = Value (e.value.value_type.to_gtype ());
+    //          var rv = e.value.real_value;
+    //          rv.copy (ref val);
+    //          raw_data[e.key] = val;
+    //      }
 
-        return raw_data;
-    }
+    //      return raw_data;
+    //  }
 
-    public void register_vars (HashTable<string, ContextVarInfo> vars) {
+#if FOR_APPLICATION
+    internal void register_vars (HashTable<string, ContextVarInfo> vars) {
         vars.foreach (foreach_register_vars);
     }
+#endif
 
+#if FOR_APPLICATION
     void foreach_register_vars (string key, ContextVarInfo info) {
         if (data.has_key (key)) {
             warning ("Key %s already exists in context, it will be overwriting", key);
@@ -381,8 +428,15 @@ public class ReadySet.Context : Object {
     void real_value_changed (Object caller, ParamSpec param) {
         data_changed (((ValueObject) caller).get_data<string> ("data-key"));
     }
+#endif
 
-    public void load_from_keyfile (KeyFile keyfile, string group_name) throws Error {
+#if FOR_APPLICATION
+    internal void load_from_keyfile (KeyFile keyfile, string group_name) throws Error {
+        if (!keyfile.has_group (group_name)) {
+            debug ("Keyfile doesn't have group '%s'", group_name);
+            return;
+        }
+
         foreach (var key in keyfile.get_keys (group_name)) {
             if (!data.has_key (key)) {
                 warning ("Key %s not found in context, it will be ignored", key);
@@ -397,6 +451,7 @@ public class ReadySet.Context : Object {
             ));
         }
     }
+#endif
 
     bool check_key (string key, ContextType? value_type = null) {
         if (!has_key (key)) {

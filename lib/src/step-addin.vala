@@ -18,7 +18,75 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
+/**
+ * Base class for plugin that provides `step`.
+ *
+ * What is `step`?
+ *
+ * This class provides a page or series of pages that serve as a "step"
+ * to set up the current session (for initial setup mode) or to
+ * save settings for future use (initial-setup with
+ * {@link ReadySet.StepAddin.apply} or installer with
+ * {@link ReadySet.InstallerAddin.install}).
+ *
+ * == Using gresource ==
+ * 
+ * If you using gresource, you should override {@link ReadySet.StepAddin.resource_base_path}
+ * and return your base path as get method. `style.css` will be loaded
+ * from resource if file with this name exists.
+ *
+ * Example:
+ * {{{
+ *  protected override string? resource_base_path {
+ *      get {
+ *          return "/com/example/MyPlugin/";
+ *      }
+ *  }
+ * }}}
+ *
+ * == Acessible ==
+ *
+ * If necessary, you can hide entire plugin via {@link ReadySet.StepAddin.accessible}
+ * or pages separately via {@link ReadySet.BasePage.acessible} if your plugin
+ * is in unsuitable conditions for work (there are no permissions to perform
+ * actions, there are not enough executable files in the system, or a
+ * different desktop environment).
+ *
+ * The acessibility of your plugin can be changed by other plugins. For each
+ * plugin, a context variable `step-<step-id>-enabled` is created (the step id
+ * is determined by the `Module` field in the plugin file), which bind with
+ * the property.
+ *
+ * == Context ==
+ * 
+ * {@link ReadySet.Context} is a way of communicating between plugins or an
+ * application.
+ *
+ * {@link ReadySet.ExtensionBase.context} set somewhere at application
+ * initialization. It seting after construction and before
+ * {@link ReadySet.ExtensionBase.init_once}. It's an program error try to call to 
+ * context before it set.
+ *
+ * == Dependencies ==
+ *
+ * You can describe plugins dependencies in .plugin file. The application will
+ * check that all dependencies are queued up to the current plugin.
+ * Otherwise error will be thrown and application will be aborted. 
+ *
+ * Example:
+ * {{{
+ *  [Plugin]
+ *  Name=Cool Plugin
+ *  Depends=language,keyboard
+ *  Module=cool-plugin
+ *  Version=0.1.0
+ *  Authors=David Hacker
+ * }}}
+ *
+ * @see ReadySet.BasePage
+ * @see ReadySet.InstallerAddin
+ */
+public abstract class ReadySet.StepAddin : ExtensionBase {
 
     protected virtual string? resource_base_path {
         get {
@@ -26,15 +94,16 @@ public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
         }
     }
 
+    /**
+     * Whether `step` accessible or not.
+     *
+     * @see ReadySet.StepAddin
+     */
     public virtual bool accessible { get; set; default = true; }
 
-    public Context context { get; set; default = new Context (true); }
-
-    public void load_css_for_display (Gdk.Display display) {
+#if FOR_APPLICATION
+    internal void load_css_for_display (Gdk.Display display) {
         var provider = new Gtk.CssProvider ();
-        provider.load_from_resource ("/org/altlinux/ReadySet/Lib/style.css");
-        Gtk.StyleContext.add_provider_for_display (display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-
         if (resource_base_path != null) {
             try {
                 var bytes = resources_lookup_data (
@@ -50,18 +119,26 @@ public abstract class ReadySet.StepAddin : Peas.ExtensionBase {
             }
         }
     }
+#endif
 
     /**
-     * Apply for initial setup
+     * Apply for initial setup.
      */
     public async virtual void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {}
 
-    public async abstract BaseBarePage[] build_pages ();
+    /**
+     * Build pages for application.
+     */
+    public async abstract BasePage[] build_pages ();
 
-    //  After context set action. Calls once. Calls before init
-    public async virtual void init_once () {}
-
-    //  For plugins better to use base.get_context_vars for getting empty HashTable.
+    /**
+     * Get context variables for registration. Calls by application.
+     * Better to this for getting created {@link HashTable}.
+     * {{{
+     *  base.get_context_vars ()
+     * }}}
+     *
+     */
     public virtual HashTable<string, ContextVarInfo> get_context_vars () {
         var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
         return vars;
