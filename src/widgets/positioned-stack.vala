@@ -96,7 +96,7 @@ public class ReadySet.PositionedStack : Adw.Bin {
 
     Gtk.StackPage get_page (uint position) {
         return (Gtk.StackPage) stack.pages.get_item (position);
-    } 
+    }
 
     void visible_child_changed () {
         notify_property ("position");
