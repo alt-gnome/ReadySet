@@ -29,9 +29,6 @@ public class Welcome.Addin : ReadySet.StepAddin {
     public async override ReadySet.BasePage[] build_pages () {
         return { new Welcome.Page () };
     }
-    public async override void apply (ReadySet.ProgressData progres_data) {
-        assert_not_reached ();
-    }
 }
 
 public void peas_register_types (TypeModule module) {
