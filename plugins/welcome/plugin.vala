@@ -29,6 +29,14 @@ public class Welcome.Addin : ReadySet.StepAddin {
     public async override ReadySet.BasePage[] build_pages () {
         return { new Welcome.Page () };
     }
+
+    public async override void init_once () {
+        //  Welcome page exists for situations where language page
+        //  Doesn't needed or just useless.
+        if (context.has_key ("step-language-enabled")) {
+            context.set_boolean ("step-language-enabled", false);
+        }
+    }
 }
 
 public void peas_register_types (TypeModule module) {

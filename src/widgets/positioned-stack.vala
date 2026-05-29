@@ -147,7 +147,7 @@ public class ReadySet.PositionedStack : Adw.Bin {
         }
 
         if (removed > 0) {
-            for (uint i = position; i < removed; i++) {
+            for (uint i = position; i < position + removed; i++) {
                 remove_page (get_page (position).name);
             }
         }
@@ -158,11 +158,14 @@ public class ReadySet.PositionedStack : Adw.Bin {
             for (uint i = position; i < stack.pages.get_n_items (); i++) {
                 var id = get_page (i).name;
                 tail.add (find_page_info (id));
-                remove_page (id);
             }
 
-            for (uint i = position; i < added; i++) {
-                var page = (PageInfo) model.get_item (position + i);
+            foreach (var page in tail) {
+                remove_page (page.id);
+            }
+
+            for (uint i = position; i < position + added; i++) {
+                var page = (PageInfo) model.get_item (i);
                 add_page (page);
             }
 
@@ -175,7 +178,7 @@ public class ReadySet.PositionedStack : Adw.Bin {
     void remove_page (string id) {
         var child = stack.get_child_by_name (id);
         if (child != null) {
-            stack.remove (stack.get_child_by_name (id));
+            stack.remove (child);
         }
     }
 
@@ -194,14 +197,16 @@ public class ReadySet.PositionedStack : Adw.Bin {
     }
 
     PageInfo find_page_info (string id) {
-        for (uint i = position; i < model.get_n_items (); i++) {
+        var pages_names = new Array<string> ();
+        for (uint i = 0; i < model.get_n_items (); i++) {
             var page = (PageInfo) model.get_item (i);
             if (page.id == id) {
                 return page;
             }
+            pages_names.append_val (page.id);
         }
 
-        error ("What?");
+        error ("Can't find page %s. All pages: %s", id, string.joinv (", ", pages_names.data));
     }
 
     void fill () {
