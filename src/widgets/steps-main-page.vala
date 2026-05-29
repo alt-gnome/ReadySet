@@ -386,7 +386,8 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     }
 
     void update_standalone () {
-        standalone_sandbox_label.visible = ReadySet.Application.get_default ().context.sandbox && Config.IS_DEVEL && standalone;
+        standalone_sandbox_label.visible = ReadySet.Application.get_default ().context.sandbox &&
+            Config.IS_DEVEL && standalone;
         standalone_steps_list_button.visible = !simple && standalone;
         standalone_horizontal_bottom.visible = layout_mode == HORIZONTAL && standalone;
     }
