@@ -47,6 +47,7 @@ public class ReadySet.PositionedStack : Adw.Bin {
         }
         set {
             stack.set_visible_child (value);
+            notify_property ("position");
         }
     }
 
