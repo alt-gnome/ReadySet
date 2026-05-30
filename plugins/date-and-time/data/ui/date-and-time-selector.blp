@@ -1,0 +1,148 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
+  notify::month => $on_month_changed();
+  notify::year => $on_year_changed();
+
+  Adw.PreferencesPage {
+    title: _("Date & Time");
+
+    Adw.PreferencesGroup {
+      Gtk.Stack stack {
+        Gtk.StackPage {
+          name: "selector";
+          
+          child: Box {
+            halign: center;
+            hexpand: true;
+            spacing: 24;
+
+            $DateAndTimeInfinityCarousel hour_carousel { 
+              orientation: vertical;
+              height-request: 200;
+            }
+
+            Label {
+              styles [
+                "title-1",
+              ]
+              
+              label: ":";
+            }
+
+            $DateAndTimeInfinityCarousel minute_carousel {
+              orientation: vertical;
+              height-request: 200;
+            }
+
+            Gtk.GestureClick gesture_click {
+              pressed => $on_gesture_click_pressed();
+            }
+          };
+        }
+
+        Gtk.StackPage {
+          name: "entry";
+
+          child: Box {
+            halign: center;
+            valign: center;
+            orientation: vertical;
+            spacing: 24;
+
+            Box {
+              halign: center;
+              valign: center;
+              spacing: 9;
+
+              Gtk.Text hour_text {
+                styles [
+                  "highlight",
+                ]
+
+                max-length: 3;
+                xalign: 0.5;
+                input-purpose: digits;
+                input-hints: no_emoji;
+                overwrite-mode: true;
+                propagate-text-width: true;
+
+                activate => $on_hour_changed();
+                notify::has-focus => $on_hour_changed();
+                insert-text => $on_hour_edited();
+              }
+
+              Gtk.Label {
+                styles [
+                  "title-1",
+                ]
+
+                label: ":";
+              }
+              
+              Gtk.Text minute_text {
+                styles [
+                  "highlight",
+                ]
+
+                max-length: 3;
+                xalign: 0.5;
+                input-purpose: digits;
+                input-hints: no_emoji;
+                overwrite-mode: true;
+                propagate-text-width: true;
+
+                activate => $on_minute_changed();
+                notify::has-focus => $on_minute_changed();
+                insert-text => $on_minute_edited();
+              }
+            }
+
+            Button {
+              styles [
+                "suggested-action",
+              ]
+
+              halign: center;
+              valign: center;
+              label: "Apply";
+
+              clicked => $on_apply_button_clicked();
+            }
+          };
+        }
+      }
+    }
+
+    Adw.PreferencesGroup {
+      Adw.SpinRow {
+        title: _("Date");
+
+        adjustment: Adjustment {
+          value: bind template.day bidirectional;
+          lower: 1;
+          upper: bind template.day_limit;
+          step-increment: 1;
+        };
+      }
+
+      Adw.ComboRow {
+        title: _("Month");
+        selected: bind template.month bidirectional;
+        model: bind template.months;
+      }
+
+      Adw.SpinRow {
+        title: _("Year");
+
+        adjustment: Adjustment {
+          value: bind template.year bidirectional;
+          lower: 0;
+          upper: 3000;
+          step-increment: 1;
+        };
+      }
+    }
+  }
+}

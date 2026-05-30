@@ -1,0 +1,54 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DateAndTimeInfinityCarousel: Gtk.Box {
+  elements-count: bind carousel.n-pages;
+  orientation: vertical;
+
+  Adw.ToolbarView {
+    [top]
+    Box {
+      styles [
+        "shadow-down",
+      ]
+
+      Button previous_button {
+        styles [
+          "circular",
+          "flat",
+        ]
+
+        clicked => $on_previous_button_clicked();
+        icon-name: "go-up-symbolic";
+        halign: center;
+        valign: center;
+      }
+    }
+
+    Adw.Carousel carousel {
+      vexpand: true;
+      spacing: 6;
+      allow-long-swipes: true;
+      orientation: vertical;
+    }
+
+    [bottom]
+    Box {
+      styles [
+        "shadow-up",
+      ]
+
+      Button next_button {
+        styles [
+          "circular",
+          "flat",
+        ]
+
+        clicked => $on_next_button_clicked();
+        icon-name: "go-down-symbolic";
+        halign: center;
+        valign: center;
+      }
+    }
+  }
+}
