@@ -30,6 +30,10 @@ template $DateAndTimeInfinityCarousel: Gtk.Box {
       spacing: 6;
       allow-long-swipes: true;
       orientation: vertical;
+
+      Gtk.GestureClick gesture_click {
+        released => $on_items_pressed();
+      }
     }
 
     [bottom]
