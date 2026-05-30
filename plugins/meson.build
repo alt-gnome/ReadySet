@@ -4,6 +4,7 @@ plugins = [
   'user',
   'welcome',
   'license-agreement',
+  'date-and-time',
 ]
 
 foreach plugin : plugins

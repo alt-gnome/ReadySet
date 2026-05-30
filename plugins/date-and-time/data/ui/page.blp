@@ -1,0 +1,103 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DateAndTimePage: $ReadySetBasePage {
+  title-header: _("Date and Time");
+  title-icon-name: "preferences-system-time-symbolic";
+
+  notify::automatic_timezone => $on_automatic_timezone_changed();
+
+  info: $ReadySetStatusPage {
+    title: _("Date and Time");
+    description: _("Select your time zone");
+    icon-name: "preferences-system-time-symbolic";
+  };
+
+  content: Adw.Clamp {
+    margin-start: 12;
+    margin-end: 12;
+
+    Box {
+      orientation: vertical;
+      spacing: 12;
+
+      Box {
+        orientation: vertical;
+        spacing: 9;
+
+        Adw.PreferencesGroup {
+          title: _("Set time zone");
+
+          Adw.SwitchRow automatic_timezone_switch {
+            title: _("Automatic time zone");
+            active: bind template.automatic_timezone;
+          }
+
+          Adw.ButtonRow {
+            activated => $on_timezone_row_clicked();
+            sensitive: bind automatic_timezone_switch.active inverted;
+
+            Box {
+              Label {
+                label: bind template.timezone_label;
+                xalign: 0;
+                ellipsize: end;
+              }
+
+              Separator {
+                styles [
+                  "spacer",
+                ]
+
+                hexpand: true;
+              }
+              
+              Image {
+                icon-name: "go-next-symbolic";
+              }
+            }
+          }
+        }
+      }
+
+      Box {
+        orientation: vertical;
+        spacing: 9;
+
+        Adw.PreferencesGroup {
+          title: _("Set date and time");
+
+          Adw.SwitchRow automatic_date_and_time_switch {
+            title: _("Automatic date and time");
+            active: bind template.automatic_date_and_time;
+          }
+
+          Adw.ButtonRow {
+            activated => $on_date_and_time_row_clicked();
+            sensitive: bind automatic_date_and_time_switch.active inverted;
+
+            Box {
+              Label {
+                label: bind template.date_label;
+                xalign: 0;
+                ellipsize: end;
+              }
+
+              Separator {
+                styles [
+                  "spacer",
+                ]
+
+                hexpand: true;
+              }
+              
+              Image {
+                icon-name: "go-next-symbolic";
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+}

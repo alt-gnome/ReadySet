@@ -1,0 +1,37 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DateAndTimeTimezoneList: Adw.PreferencesDialog {
+  Adw.PreferencesPage {
+    SearchEntry search_entry {}
+
+    ScrolledWindow {
+      propagate-natural-height: true;
+
+      ListView {
+        styles [
+          "navigation-sidebar",
+        ]
+
+        factory: BuilderListItemFactory {
+          template ListItem {
+            child: Adw.ActionRow {
+              title: bind (template.item as <Gtk.StringObject>).string;
+            };
+          }
+        };
+
+        model: SingleSelection {
+          model: FilterListModel {
+            model: bind template.model;
+
+            filter: StringFilter {
+              search: bind search_entry.text;
+              expression: expr (item as <Gtk.StringObject>).string;
+            };
+          };
+        };
+      }
+    }
+  }
+}
