@@ -62,5 +62,5 @@ calendar grid label:focus {
 }
 
 .highlight:focus {
-  animation: blink-animation 1s infinite;
+  animation: blink-animation 2s infinite;
 }

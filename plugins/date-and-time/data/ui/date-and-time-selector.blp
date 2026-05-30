@@ -21,6 +21,8 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
             $DateAndTimeInfinityCarousel hour_carousel { 
               orientation: vertical;
               height-request: 200;
+              item-pressed => $on_gesture_click_pressed();
+              page-changed => $on_hour_changed();
             }
 
             Label {
@@ -34,10 +36,8 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
             $DateAndTimeInfinityCarousel minute_carousel {
               orientation: vertical;
               height-request: 200;
-            }
-
-            Gtk.GestureClick gesture_click {
-              pressed => $on_gesture_click_pressed();
+              item-pressed => $on_gesture_click_pressed();
+              page-changed => $on_minute_changed();
             }
           };
         }
@@ -52,50 +52,24 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
             spacing: 24;
 
             Box {
-              halign: center;
-              valign: center;
-              spacing: 9;
-
-              Gtk.Text hour_text {
-                styles [
-                  "highlight",
-                ]
-
-                max-length: 3;
-                xalign: 0.5;
-                input-purpose: digits;
-                input-hints: no_emoji;
-                overwrite-mode: true;
-                propagate-text-width: true;
-
-                activate => $on_hour_changed();
-                notify::has-focus => $on_hour_changed();
-                insert-text => $on_hour_edited();
-              }
-
-              Gtk.Label {
-                styles [
-                  "title-1",
-                ]
-
-                label: ":";
-              }
+              css-name: "entry";
               
-              Gtk.Text minute_text {
-                styles [
-                  "highlight",
-                ]
-
-                max-length: 3;
+              Gtk.Text time_text {
+                max-length: 5;
                 xalign: 0.5;
                 input-purpose: digits;
                 input-hints: no_emoji;
                 overwrite-mode: true;
                 propagate-text-width: true;
 
-                activate => $on_minute_changed();
-                notify::has-focus => $on_minute_changed();
-                insert-text => $on_minute_edited();
+                delete-from-cursor => $on_delete_from_cursor();
+                cut-clipboard => $on_cut_clipboard();
+                backspace => $on_backspace();
+                move-cursor => $on_move_cursor();
+
+                Gtk.EventControllerKey event_controller_key {
+                  key-pressed => $on_key_pressed();
+                }
               }
             }
 

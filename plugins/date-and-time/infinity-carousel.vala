@@ -14,6 +14,10 @@ public class DateAndTime.InfinityCarousel : Gtk.Box {
 
     int items_center;
 
+    public signal void item_pressed ();
+
+    public signal void page_changed (int distance);
+
     [GtkCallback]
     public void on_previous_button_clicked () {
         uint n_pages = carousel.get_n_pages ();
@@ -79,6 +83,8 @@ public class DateAndTime.InfinityCarousel : Gtk.Box {
                 carousel.append (item);
             }
         }
+
+        page_changed (distance);
     }
 
     public void bind_model (ListModel? model, owned Gtk.ListBoxCreateWidgetFunc? create_widget_func) {
@@ -111,6 +117,11 @@ public class DateAndTime.InfinityCarousel : Gtk.Box {
         }
 
         carousel.page_changed.connect (on_page_changed);
+    }
+
+    [GtkCallback]
+    public void on_items_pressed () {
+        item_pressed ();
     }
 }
 

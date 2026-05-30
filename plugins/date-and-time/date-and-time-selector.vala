@@ -7,9 +7,9 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
     [GtkChild]
     unowned Gtk.Stack stack;
     [GtkChild]
-    unowned Gtk.Text hour_text;
+    unowned Gtk.Text time_text;
     [GtkChild]
-    unowned Gtk.Text minute_text;
+    unowned Gtk.EventControllerKey event_controller_key;
 
     public int hour { get; set; }
     public int minute { get; set; }
@@ -24,6 +24,11 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
 
     Gtk.StringList hour_model = new Gtk.StringList (null);
     Gtk.StringList minute_model = new Gtk.StringList (null);
+
+    const int SEPARATOR_INDEX = 2;
+    public const int TEXT_MAX_LENGTH = 5;
+
+    public bool is_am_pm { get; set; }
 
     public Gtk.StringList months {
         get; set;
@@ -47,16 +52,7 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
         hour = date.get_hour ();
         minute = date.get_minute ();
 
-        for (int i = 0; i < 24; ++i) {
-            hour_model.append ("%02d".printf (i));
-        }
-
-        for (int i = 0; i < 60; ++i) {
-            minute_model.append ("%02d".printf (i));
-        }
-
-        hour_carousel.bind_model (hour_model, build_carousel_item);
-        minute_carousel.bind_model (minute_model, build_carousel_item);
+        refill_models ();
 
         int year, month, day;
         date.get_ymd (out year, out month, out day);
@@ -71,8 +67,28 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
         text_attributes.insert(Pango.attr_weight_new (Pango.Weight.LIGHT));
         text_attributes.insert(new Pango.AttrFontFeatures ("tnum"));
 
-        hour_text.set_attributes (text_attributes);
-        minute_text.set_attributes (text_attributes);
+        time_text.set_attributes (text_attributes);
+    }
+
+    public void refill_models () {
+        while (hour_model.n_items != 0) {
+            hour_model.remove (0);
+        }
+
+        for (int i = hour; i < 24 + hour; ++i) {
+            hour_model.append ("%02d".printf (clamp_hour (i)));
+        }
+
+        while (minute_model.n_items != 0) {
+            minute_model.remove (0);
+        }
+
+        for (int i = minute; i < 60 + minute; ++i) {
+            minute_model.append ("%02d".printf (clamp_minute (i)));
+        }
+
+        hour_carousel.bind_model (hour_model, build_carousel_item);
+        minute_carousel.bind_model (minute_model, build_carousel_item);
     }
 
     public Gtk.Widget build_carousel_item (Object object) {
@@ -84,40 +100,52 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
 
     [GtkCallback]
     public void on_gesture_click_pressed () {
+        update_time ();
         stack.set_visible_child_name ("entry");
-        update_hour ();
-        update_minute ();
     }
 
     [GtkCallback]
     public void on_apply_button_clicked () {
+        refill_models ();
         stack.set_visible_child_name ("selector");
     }
 
     [GtkCallback]
-    public void on_hour_changed () {
-        hour = int.parse (hour_text.get_text ()).clamp (0, 23);
-        update_hour ();
+    public void on_delete_from_cursor (Gtk.Text widget, Gtk.DeleteType delete_type, int _) {
+        Signal.stop_emission_by_name (widget, "delete-from-cursor");
     }
 
     [GtkCallback]
-    public void on_hour_edited () {
-        hour_text.insert_text.disconnect (on_hour_edited);
-        update_hour ();
-        hour_text.insert_text.connect (on_hour_edited);
+    public void on_backspace (Gtk.Text widget) {
+        Signal.stop_emission_by_name (widget, "backspace");
     }
 
     [GtkCallback]
-    public void on_minute_changed () {
-        minute = int.parse (minute_text.get_text ()).clamp (0, 59);
-        update_minute ();
+    public void on_cut_clipboard (Gtk.Text widget) {
+        Signal.stop_emission_by_name (widget, "cut-clipboard");
     }
 
     [GtkCallback]
-    public void on_minute_edited () {
-        minute_text.insert_text.disconnect (on_minute_edited);
-        update_minute ();
-        minute_text.insert_text.connect (on_minute_edited);
+    public void on_move_cursor (Gtk.MovementStep step, int count, bool extend) {
+        var current_pos = time_text.get_position ();
+
+        if (step == Gtk.MovementStep.LOGICAL_POSITIONS || step == Gtk.MovementStep.VISUAL_POSITIONS) {
+            if (current_pos + count == SEPARATOR_INDEX) {
+                count > 0 ? count++ : count--;
+            } else if (current_pos + count < 0) {
+                current_pos = TEXT_MAX_LENGTH - 1;
+                count = 0;
+            } else if (current_pos + count == TEXT_MAX_LENGTH) {
+                current_pos = 0;
+                count = 0;
+            }
+        }
+
+        SignalHandler.block_by_func (time_text, (void*) on_move_cursor, this);
+        time_text.set_position (current_pos + count);
+        SignalHandler.unblock_by_func (time_text, (void*) on_move_cursor, this);
+
+        Signal.stop_emission_by_name (time_text, "move-cursor");
     }
 
     [GtkCallback]
@@ -130,16 +158,12 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
         update_day_limit ();
     }
 
-    void update_hour () {
-        hour_text.set_text ("%02d".printf (hour));
-    }
-
-    void update_minute () {
-        minute_text.set_text ("%02d".printf (minute));
+    void update_time () {
+        time_text.set_text ("%02d:%02d".printf (hour, minute));
     }
 
     int clamp_hour (int hour) {
-        return clamp_value (hour, 0, 24);
+        return clamp_value (hour, 0, is_am_pm ? 12 : 24);
     }
 
     int clamp_minute (int minute) {
@@ -189,5 +213,50 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
         }
 
         return 30;
+    }
+
+    [GtkCallback]
+    public bool on_key_pressed (uint keyval, uint keycode = 0, Gdk.ModifierType state = 0) {
+        bool increment = keyval == Gdk.Key.Up || keyval == Gdk.Key.KP_Up;
+        bool decrement = keyval == Gdk.Key.Down || keyval == Gdk.Key.KP_Down ;
+
+        if (!increment && !decrement) {
+            return Gdk.EVENT_PROPAGATE;
+        }
+
+        var position = time_text.get_position ();
+
+        if (position > SEPARATOR_INDEX) {
+            if (increment) {
+                minute++;
+            } else if (decrement) {
+                minute--;
+            }
+
+            minute = clamp_minute (minute);
+        } else {
+            if (increment) {
+                hour++;
+            } else if (decrement) {
+                hour--;
+            }
+
+            hour = clamp_hour (hour);
+        }
+
+        update_time ();
+        time_text.set_position (position);
+
+        return Gdk.EVENT_STOP;
+    }
+
+    [GtkCallback]
+    public void on_hour_changed (int distance) {
+        hour = clamp_hour (hour - distance);
+    }
+
+    [GtkCallback]
+    public void on_minute_changed (int distance) {
+        minute = clamp_minute (minute - distance);
     }
 }
