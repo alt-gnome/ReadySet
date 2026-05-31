@@ -23,7 +23,7 @@ namespace ReadySet {
     public void copy_to_user (string src, string destination, string username) throws Error {
         unowned Posix.Passwd? pwd = Posix.getpwnam (username);
         if (pwd == null) {
-            throw new FileError.FAILED("User not found");
+            throw new FileError.FAILED ("User not found");
         }
 
         var src_file = File.new_for_path (src);
@@ -39,29 +39,38 @@ namespace ReadySet {
     }
 
     void copy_with_chown (File src, File dest, Posix.uid_t uid, Posix.gid_t gid) throws Error {
-        var info = src.query_info("standard::type,unix::mode", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
-        bool is_dir = info.get_file_type() == FileType.DIRECTORY;
+        var info = src.query_info ("standard::type,unix::mode", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+        bool is_dir = info.get_file_type () == FileType.DIRECTORY;
 
         if (is_dir) {
             if (!dest.query_exists ()) {
-                dest.make_directory_with_parents(null);
+                dest.make_directory_with_parents (null);
             }
         } else {
             if (dest.query_exists ()) {
                 dest.delete ();
             }
-            src.copy(dest, FileCopyFlags.OVERWRITE, null);
+            src.copy (dest, FileCopyFlags.OVERWRITE, null);
         }
 
-        dest.set_attribute_uint32("unix::mode", info.get_attribute_uint32("unix::mode"), FileQueryInfoFlags.NONE, null);
+        dest.set_attribute_uint32 (
+            "unix::mode",
+            info.get_attribute_uint32 ("unix::mode"),
+            FileQueryInfoFlags.NONE,
+            null
+        );
 
-        Posix.chown(dest.get_path(), uid, gid);
+        Posix.chown (dest.get_path (), uid, gid);
 
         if (is_dir) {
-            var en = src.enumerate_children("standard::name,standard::type", FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
+            var en = src.enumerate_children (
+                "standard::name,standard::type",
+                FileQueryInfoFlags.NOFOLLOW_SYMLINKS,
+                null
+            );
             FileInfo? child;
-            while ((child = en.next_file(null)) != null) {
-                copy_with_chown(src.get_child(child.get_name()), dest.get_child(child.get_name()), uid, gid);
+            while ((child = en.next_file (null)) != null) {
+                copy_with_chown (src.get_child (child.get_name ()), dest.get_child (child.get_name ()), uid, gid);
             }
         }
     }
