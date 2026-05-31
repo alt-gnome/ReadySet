@@ -33,7 +33,7 @@ public sealed class ReadySet.Service : Object {
         exec_user_post_hooks (env);
     }
 
-    public void copy_to_user (string src, string username, string dest, BusName sender) throws Error {
+    public void copy_to_user (string src, string dest, string username, BusName sender) throws Error {
         polkit_check (sender, "org.altlinux.ReadySet.CopyToUser");
 
         ReadySet.copy_to_user (src, dest, username);

@@ -20,22 +20,29 @@
 
 namespace ReadySet {
 
-    public void copy_to_user (string src, string destination, string username) throws Error {
+    //  src should be an absolute path
+    //  dest should be an relative to user home dir path
+    public void copy_to_user (string src, string dest, string username) throws Error {
         unowned Posix.Passwd? pwd = Posix.getpwnam (username);
         if (pwd == null) {
             throw new FileError.FAILED ("User not found");
         }
 
-        var src_file = File.new_for_path (src);
-        var destination_file = File.new_build_filename (
+        var src_file = File.new_build_filename (src);
+
+        if (!src_file.query_exists ()) {
+            return;
+        }
+
+        var dest_file = File.new_build_filename (
             pwd.pw_dir,
-            destination == "" ? src_file.get_basename () : destination
+            dest
         );
 
         var uid = pwd.pw_uid;
         var gid = pwd.pw_gid;
 
-        copy_with_chown (src_file, destination_file, uid, gid);
+        copy_with_chown (src_file, dest_file, uid, gid);
     }
 
     void copy_with_chown (File src, File dest, Posix.uid_t uid, Posix.gid_t gid) throws Error {

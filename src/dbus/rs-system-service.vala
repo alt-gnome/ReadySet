@@ -33,8 +33,8 @@ namespace ReadySet {
 
         public abstract async void copy_to_user (
             string src,
-            string username,
-            string dest = ""
+            string dest,
+            string username
         ) throws Error;
     }
 
