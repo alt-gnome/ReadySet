@@ -493,7 +493,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
             main_stack.add_child (view);
             main_stack.visible_child = view;
-            
+
         } else {
             model.select_item (model.get_selected () + 1, true);
         }

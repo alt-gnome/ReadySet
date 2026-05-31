@@ -30,7 +30,8 @@ public sealed class ReadySet.ExistingUserEndPage : Adw.Bin {
         for (int i = 0; i < app.model.get_n_items (); i++) {
             var page_info = (PageInfo) app.model.get_item (i);
 
-            if (!(page_info.plugin in steps_addins_arr) && page_info.plugin.enabled && page_info.plugin_info.module_name != "welcome") {
+            if (!(page_info.plugin in steps_addins_arr) &&
+                page_info.plugin.enabled && page_info.plugin_info.module_name != "welcome") {
                 steps_addins_arr.add (page_info.plugin);
             }
         }
