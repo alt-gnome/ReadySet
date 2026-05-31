@@ -368,7 +368,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         last_current_page = model.get_selected_item ();
 
         if (last_current_page == null) {
-            warning ("Model has no acessible pages");
+            warning ("Model has no enabled pages");
             return;
         }
 
@@ -410,7 +410,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         var selected_item = model.get_selected_item ();
 
         if (selected_item == null) {
-            warning ("Model has no acessible pages");
+            warning ("Model has no enabled pages");
             return;
         }
 

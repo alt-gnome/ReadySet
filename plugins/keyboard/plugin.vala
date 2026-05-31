@@ -47,7 +47,7 @@ public class Keyboard.Addin : ReadySet.StepAddin {
     public async override void init_once () {
         if (!context.sandbox && context.mode == INITIAL_SETUP) {
             try {
-                accessible = (yield new Polkit.Permission ("org.freedesktop.locale1.set-keyboard", null, null)).allowed;
+                enabled = (yield new Polkit.Permission ("org.freedesktop.locale1.set-keyboard", null, null)).allowed;
             } catch (Error e) {
                 error (e.message);
             }

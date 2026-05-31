@@ -73,28 +73,45 @@ public sealed class ReadySet.EndPage : Adw.Bin {
         for (int i = 0; i < app.model.get_n_items (); i++) {
             var page_info = (PageInfo) app.model.get_item (i);
 
-            if (!page_info.apply_plugin) {
-                continue;
-            }
-
-            if (!(page_info.plugin in steps_addins_arr)) {
+            if (!(page_info.plugin in steps_addins_arr) && page_info.plugin.enabled) {
+                message ("%s : %s", page_info.plugin.plugin_info.module_name, page_info.plugin.enabled.to_string ());
                 steps_addins_arr.add (page_info.plugin);
             }
         }
 
         if (context.sandbox) {
-            Timeout.add_seconds (1, () => {
-                progress_data.value += 0.2;
-                progress_data.message = _("Doing some stuff…");
+            if (context.mode == Mode.INSTALLER) {
+                progress_data.message = _("Installing system…");
 
-                if (progress_data.value >= 1.0) {
-                    Idle.add (start_action.callback);
-                    return false;
+                Timeout.add_seconds (1, () => {
+                    progress_data.value += 0.2;
+
+                    if (progress_data.value >= 1.0) {
+                        Idle.add (start_action.callback);
+                        return false;
+                    }
+
+                    return true;
+                });
+                yield;
+
+            } else if (context.mode == Mode.INITIAL_SETUP) {
+                progress_data.value = 0.0;
+
+                var progress_step = 1.0 / steps_addins_arr.size;
+
+                foreach (var step_addin in steps_addins_arr) {
+
+                    progress_data.message = _("Applying %s…").printf (step_addin.plugin_info.module_name);
+
+                    Timeout.add_seconds_once (1, () => {
+                        Idle.add (start_action.callback);
+                    });
+                    yield;
+
+                    progress_data.value += progress_step;
                 }
-
-                return true;
-            });
-            yield;
+            }
 
             stack.visible_child_name = "ready";
 

@@ -296,8 +296,7 @@ public sealed class ReadySet.Application: Adw.Application {
                     new BasePage.unknown () {
                         is_ready = true
                     },
-                    null,
-                    false
+                    null
                 ));
                 print ("  broken step (%s)\n", all_steps[i]);
             } else {
@@ -309,8 +308,8 @@ public sealed class ReadySet.Application: Adw.Application {
                 context.bind_context_to_property (
                     "step-%s-enabled".printf (all_steps[i]),
                     addin,
-                    "accessible",
-                    SYNC_CREATE
+                    "enabled",
+                    SYNC_CREATE | BIDIRECTIONAL
                 );
 
                 if (!(all_steps[i] in inited_plugins)) {
@@ -321,8 +320,7 @@ public sealed class ReadySet.Application: Adw.Application {
                 foreach (var page in (yield addin.build_pages ())) {
                     pages.add (new PageInfo (
                         page,
-                        addin,
-                        !(all_steps[i] in options_handler.steps_no_apply)
+                        addin
                     ));
                 }
                 print ("  %s\n", all_steps[i]);
