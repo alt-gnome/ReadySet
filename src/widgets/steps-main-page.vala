@@ -478,8 +478,22 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         var n_items = model.get_n_items ();
 
         if (position == n_items - 1) {
-            main_stack.visible_child_name = "finish";
-            end_page.start_action.begin ();
+            var view = new Adw.ToolbarView ();
+            view.add_top_bar (new Adw.HeaderBar () {
+                show_title = false
+            });
+
+            if (Application.get_default ().context.mode == EXISTING_USER) {
+                view.content = new ExistingUserEndPage ();
+
+            } else {
+                view.content = new EndPage ();
+                end_page.start_action.begin ();
+            }
+
+            main_stack.add_child (view);
+            main_stack.visible_child = view;
+            
         } else {
             model.select_item (model.get_selected () + 1, true);
         }

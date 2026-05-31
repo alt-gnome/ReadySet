@@ -119,8 +119,10 @@ public sealed class ReadySet.Application: Adw.Application {
 #endif
             if (installer_plugin != null) {
                 context.mode = INSTALLER;
-            } else {
+            } else if (in_group ("ready-set") || in_group ("gnome-initial-setup")) {
                 context.mode = INITIAL_SETUP;
+            } else {
+                context.mode = EXISTING_USER;
             }
 #if DEVEL
         } else {
@@ -287,6 +289,11 @@ public sealed class ReadySet.Application: Adw.Application {
     public async void init_pages () {
         var pages = new Gee.ArrayList<PageInfo> ();
 
+        string[] enabled_plugins = {};
+
+        var rs_settings = new Settings ("org.altlinux.ReadySet");
+        string[] performed_steps = rs_settings.get_strv ("performed-steps");
+
         var initial_position = model == null ? 0 : model.get_selected ();
 
         print ("Loaded plugins:\n");
@@ -317,6 +324,15 @@ public sealed class ReadySet.Application: Adw.Application {
                     inited_plugins.add (all_steps[i]);
                 }
 
+                if (addin.plugin_info.module_name in performed_steps ||
+                    (!addin.existing_user && context.mode == EXISTING_USER)) {
+                    addin.enabled = false;
+                }
+
+                if (addin.enabled) {
+                    enabled_plugins += addin.plugin_info.module_name;
+                }
+
                 foreach (var page in (yield addin.build_pages ())) {
                     pages.add (new PageInfo (
                         page,
@@ -330,8 +346,28 @@ public sealed class ReadySet.Application: Adw.Application {
             yield;
         }
 
+        if (check_nothing_to_do (enabled_plugins)) {
+            print ("There is nothing to do\n");
+            quit ();
+            return;
+        }
+
         model = new PagesModel (pages);
         model.select_item (initial_position, true);
+    }
+
+    bool check_nothing_to_do (string[] enabled_plugins) {
+        bool ntd = false;
+
+        if (enabled_plugins.length == 1) {
+            if (enabled_plugins[0] == "welcome") {
+                ntd = true;
+            }
+        } else if (enabled_plugins.length == 0) {
+            ntd = true;
+        }
+
+        return ntd;
     }
 
     string[] get_all_steps () {
@@ -371,7 +407,16 @@ public sealed class ReadySet.Application: Adw.Application {
                 resizable = options_handler.resizable
             };
 
-            win.present ();
+            //  If mode is existing-user, window presents by itself after
+            //  init. 
+            //  We do this because of in install/initial-setup modes
+            //  we should show at  least one page with setup. In existing-user
+            //  there can be situation where  there is nothing to do because
+            //  of all steps where done at initial-setup stage. And if nothing
+            //  to do, we can't show window for loading because blink.
+            if (context.mode != EXISTING_USER) {
+                win.present ();
+            }
 
         } else {
             active_window.present ();

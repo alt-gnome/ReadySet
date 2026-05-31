@@ -28,6 +28,8 @@ public class LicenseAgreement.Addin : ReadySet.StepAddin {
         }
     }
 
+    public override bool existing_user { get { return true; } }
+
     construct {
         instance = this;
     }

@@ -7,6 +7,7 @@ rs_app_vala_sources = files(
   'dbus/rs-system-service.vala',
 
   'pages/end-page.vala',
+  'pages/existing-user-end-page.vala',
 
   'widgets/devel/window.vala',
 

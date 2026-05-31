@@ -20,14 +20,26 @@
 
 public class Welcome.Addin : ReadySet.StepAddin {
 
+    static Addin instance;
+
     protected override string? resource_base_path {
         get {
             return "/org/altlinux/ReadySet/Plugin/Welcome/";
         }
     }
 
+    public override bool existing_user { get { return true; } }
+
+    construct {
+        instance = this;
+    }
+
     public async override ReadySet.BasePage[] build_pages () {
         return { new Welcome.Page () };
+    }
+
+    internal static Addin get_instance () {
+        return instance;
     }
 
     public async override void init_once () {

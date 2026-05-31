@@ -24,7 +24,7 @@
  * What is `step`?
  *
  * This class provides a page or series of pages that serve as a "step"
- * to set up the current session (for initial setup mode) or to
+ * to set up the current session (for initial setup or existing-user modes) or to
  * save settings for future use (initial-setup with
  * {@link ReadySet.StepAddin.apply} or installer with
  * {@link ReadySet.InstallerAddin.install}).
@@ -120,6 +120,12 @@ public abstract class ReadySet.StepAddin : ExtensionBase {
         }
     }
 #endif
+
+    /**
+     * Whether plugin support running without special permissuin for
+     * settings up current user.
+     */
+    public virtual bool existing_user { get { return false; } }
 
     /**
      * Apply for initial setup.

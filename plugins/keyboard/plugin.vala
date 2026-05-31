@@ -28,6 +28,8 @@ public class Keyboard.Addin : ReadySet.StepAddin {
         }
     }
 
+    public override bool existing_user { get { return true; } }
+
     static construct {
         typeof (InputChooser).ensure ();
     }

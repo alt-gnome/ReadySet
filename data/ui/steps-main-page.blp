@@ -616,5 +616,18 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
         content: $ReadySetEndPage end_page {};
       };
     }
+
+    StackPage {
+      name: "finish-eu";
+
+      child: Adw.ToolbarView {
+        [top]
+        Adw.HeaderBar {
+          show-title: false;
+        }
+
+        content: $ReadySetExistingUserEndPage existing_user_end_page {};
+      };
+    }
   }
 }

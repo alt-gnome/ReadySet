@@ -67,6 +67,10 @@ public class Language.Addin : ReadySet.StepAddin {
         }
     }
 
+    //  We can't change shell's language, so hide page.
+    //  This plugin can still provides getter/setter for current language.
+    public override bool existing_user { get { return false; } }
+
     static construct {
         typeof (SelectTitle).ensure ();
         typeof (Info).ensure ();
