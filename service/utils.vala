@@ -25,7 +25,7 @@ namespace ReadySet {
     public void copy_to_user (string src, string dest, string username) throws Error {
         unowned Posix.Passwd? pwd = Posix.getpwnam (username);
         if (pwd == null) {
-            throw new FileError.FAILED ("User not found");
+            throw new FileError.FAILED ("User '%s' not found", username);
         }
 
         var src_file = File.new_build_filename (src);
