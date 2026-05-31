@@ -3,6 +3,7 @@
         "prince781.vala",
         "colinkiama.linter-vala",
         "bodil.blueprint-gtk",
-        "elagil.pre-commit-helper"
+        "elagil.pre-commit-helper",
+        "editorconfig.editorconfig"
     ]
 }
