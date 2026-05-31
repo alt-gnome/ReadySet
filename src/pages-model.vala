@@ -24,6 +24,12 @@ public sealed class ReadySet.PageInfo : Object {
 
     public BasePage page { get; construct; }
 
+    public Peas.PluginInfo? plugin_info {
+        get {
+            return plugin?.plugin_info;
+        }
+    }
+
     public StepAddin? plugin { get; construct; }
 
     public bool accessible { get; private set; }
