@@ -56,16 +56,9 @@ namespace ReadySet {
 
         if (dest.query_exists ()) {
             dest_info = src.query_info ("standard::type,unix::mode", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
-        }
 
-        dest_is_dir = dest_info.get_file_type () == FileType.DIRECTORY;
-
-        var dest_parent = dest.get_parent ();
-        if (dest_parent != null) {
-            if (!dest_parent.query_exists ()) {
-                ensure_dir_exist (dest, uid, gid);
-            }
-        }
+            dest_is_dir = dest_info.get_file_type () == FileType.DIRECTORY;
+        }        
 
         if (src_is_dir) {
             if (dest_info != null) {
@@ -78,16 +71,17 @@ namespace ReadySet {
         } else {
             if (dest_info != null) {
                 if (dest_is_dir) {
-                    //  TODO: Remove tree recursively
-                    throw new FileError.FAILED (
-                        "Can't replace dir '%s' with file '%s'",
-                        src.get_path (),
-                        dest.get_path ()
-                    );
+                    dest.trash ();
                 } else {
                     dest.delete ();
                 }
             }
+
+            var dest_parent = dest.get_parent ();
+            if (dest_parent != null) {
+                ensure_dir_exist (dest_parent, uid, gid);
+            }
+
             src.copy (dest, FileCopyFlags.OVERWRITE, null);
         }
 
