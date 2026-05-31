@@ -7,7 +7,7 @@ plugins = [
 ]
 
 if get_option('is_devel')
-  plugins += ['tests']
+  plugins += ['tests', 'test-installer']
 endif
 
 foreach plugin : plugins
