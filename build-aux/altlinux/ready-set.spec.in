@@ -210,7 +210,7 @@ Requires: %name = %EVR
 %_libexecdir/%name
 %_iconsdir/hicolor/*/apps/%{app_id}*
 %_datadir/applications/%{app_id}*
-%_datadir/polkit-1/ru.les.d/%app_id.rules
+%_datadir/polkit-1/rules.d/%app_id.rules
 %_libdir/%name/plugins/steps/libtests.so
 %_libdir/%name/plugins/steps/tests.plugin
 
