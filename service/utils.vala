@@ -39,6 +39,8 @@ namespace ReadySet {
             dest
         );
 
+        message ("Copy '%s' to '%s'", src_file.get_path (), dest_file.get_path ());
+
         var uid = pwd.pw_uid;
         var gid = pwd.pw_gid;
 
@@ -46,30 +48,59 @@ namespace ReadySet {
     }
 
     void copy_with_chown (File src, File dest, Posix.uid_t uid, Posix.gid_t gid) throws Error {
-        var info = src.query_info ("standard::type,unix::mode", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
-        bool is_dir = info.get_file_type () == FileType.DIRECTORY;
+        var src_info = src.query_info ("standard::type,unix::mode", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+        FileInfo? dest_info = null;
 
-        if (is_dir) {
-            if (!dest.query_exists ()) {
-                dest.make_directory_with_parents (null);
+        bool src_is_dir = src_info.get_file_type () == FileType.DIRECTORY;
+        bool dest_is_dir = false;
+
+        if (dest.query_exists ()) {
+            dest_info = src.query_info ("standard::type,unix::mode", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+        }
+
+        dest_is_dir = dest_info.get_file_type () == FileType.DIRECTORY;
+
+        var dest_parent = dest.get_parent ();
+        if (dest_parent != null) {
+            if (!dest_parent.query_exists ()) {
+                ensure_dir_exist (dest, uid, gid);
             }
+        }
+
+        if (src_is_dir) {
+            if (dest_info != null) {
+                if (!dest_is_dir) {
+                    dest.delete ();
+                }
+            }
+
+            ensure_dir_exist (dest, uid, gid);
         } else {
-            if (dest.query_exists ()) {
-                dest.delete ();
+            if (dest_info != null) {
+                if (dest_is_dir) {
+                    //  TODO: Remove tree recursively
+                    throw new FileError.FAILED (
+                        "Can't replace dir '%s' with file '%s'",
+                        src.get_path (),
+                        dest.get_path ()
+                    );
+                } else {
+                    dest.delete ();
+                }
             }
             src.copy (dest, FileCopyFlags.OVERWRITE, null);
         }
 
         dest.set_attribute_uint32 (
             "unix::mode",
-            info.get_attribute_uint32 ("unix::mode"),
+            src_info.get_attribute_uint32 ("unix::mode"),
             FileQueryInfoFlags.NONE,
             null
         );
 
         Posix.chown (dest.get_path (), uid, gid);
 
-        if (is_dir) {
+        if (src_is_dir) {
             var en = src.enumerate_children (
                 "standard::name,standard::type",
                 FileQueryInfoFlags.NOFOLLOW_SYMLINKS,
@@ -79,6 +110,22 @@ namespace ReadySet {
             while ((child = en.next_file (null)) != null) {
                 copy_with_chown (src.get_child (child.get_name ()), dest.get_child (child.get_name ()), uid, gid);
             }
+        }
+    }
+
+    void ensure_dir_exist (File dir, Posix.uid_t uid, Posix.gid_t gid) throws Error {
+        if (dir.query_exists ()) {
+            return;
+        }
+
+        var parent = dir.get_parent ();
+        if (parent != null && !parent.query_exists ()) {
+            ensure_dir_exist (parent, uid, gid);
+        }
+
+        if (!dir.query_exists ()) {
+            dir.make_directory (null);
+            Posix.chown (dir.get_path (), uid, gid);
         }
     }
 

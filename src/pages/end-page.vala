@@ -155,29 +155,22 @@ public sealed class ReadySet.EndPage : Adw.Bin {
                         passed_plugins += step_addin.plugin_info.module_name;
                     }
 
-                    try {
-                        var rs_settings = new Settings ("org.altlinux.ReadySet");
-                        rs_settings.set_strv ("performed-steps", passed_plugins);
+                    var rs_settings = new Settings ("org.altlinux.ReadySet");
+                    rs_settings.set_strv ("performed-steps", passed_plugins);
 
-                        const string[] FILES_TO_COPY = {
-                            ".config/dconf/user"
-                        };
+                    const string[] FILES_TO_COPY = {
+                        ".config/dconf/user"
+                    };
 
-                        foreach (var file in FILES_TO_COPY) {
-                            yield get_ready_set_proxy ().copy_to_user (
-                                Path.build_filename (
-                                    Environment.get_home_dir (),
-                                    file
-                                ),
-                                file,
-                                context.get_string ("user-username")
-                            );
-                        }
-
-                    } catch (Error e) {
-                        warning ("Failed to copy to user: %s", e.message);
-                        //  Copy is not necessary
-                        stack.visible_child_name = "ready";
+                    foreach (var file in FILES_TO_COPY) {
+                        yield get_ready_set_proxy ().copy_to_user (
+                            Path.build_filename (
+                                Environment.get_home_dir (),
+                                file
+                            ),
+                            file,
+                            context.get_string ("user-username")
+                        );
                     }
                 }
 
