@@ -148,6 +148,31 @@ public sealed class ReadySet.EndPage : Adw.Bin {
                     warning ("IOError on executing post hooks: %s", e.message);
                 }
 
+                if (context.mode == Mode.INITIAL_SETUP) {
+                    string[] passed_plugins = {};
+
+                    foreach (var step_addin in steps_addins_arr) {
+                        passed_plugins += step_addin.plugin_info.module_name;
+                    }
+
+                    try {
+                        var rs_settings = new Settings ("org.altlinux.ReadySet");
+                        rs_settings.set_strv ("performed-steps", passed_plugins);
+
+                        const string[] FILES_TO_COPY = {
+                            ".config/dconf/user",
+                            ".config/ready-set-done"
+                        };
+
+                        foreach (var file in FILES_TO_COPY) {
+                            yield get_ready_set_proxy ().copy_to_user (file, "rirusha");
+                        }
+
+                    } catch (Error e) {
+                        warning ("Failed to copy to user: %s", e.message);
+                    }
+                }
+
                 stack.visible_child_name = "ready";
 
             } catch (ApplyError e) {

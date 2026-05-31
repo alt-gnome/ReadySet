@@ -12,6 +12,7 @@ rs_internal_dependencies = [
   gee_dep,
   gio_dep,
   polkit_dep,
+  posix_dep,
 ]
 
 rs_internal_sources = [

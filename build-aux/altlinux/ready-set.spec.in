@@ -210,7 +210,7 @@ Requires: %name = %EVR
 %_libexecdir/%name
 %_iconsdir/hicolor/*/apps/%{app_id}*
 %_datadir/applications/%{app_id}*
-%_datadir/polkit-1/rules.d/%app_id.rules
+%_datadir/polkit-1/ru.les.d/%app_id.rules
 %_libdir/%name/plugins/steps/libtests.so
 %_libdir/%name/plugins/steps/tests.plugin
 
@@ -237,6 +237,7 @@ Requires: %name = %EVR
 %_sysconfdir/dbus-1/system.d/%app_id.conf
 %_datadir/polkit-1/actions/%app_id.policy
 %_datadir/dbus-1/system-services/%app_id.service
+%_datadir/glib-2.0/schemas/%app_id.gschema.xml
 %_unitdir/%name.service
 %_sysusersdir/%name.conf
 %_tmpfilesdir/%name.conf
