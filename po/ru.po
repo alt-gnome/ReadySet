@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
-"Report-Msgid-Bugs-To: rirusha@altlinux.org\n"
-"POT-Creation-Date: 2026-05-29 16:53+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-31 14:38+0000\n"
 "PO-Revision-Date: 2026-05-29 17:01+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -16,8 +16,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.17.1\n"
 
 #: data/ui/end-page.blp:36
@@ -65,7 +65,7 @@ msgstr "Наверх"
 msgid "All steps"
 msgstr "Все шаги"
 
-#: data/ui/window-content.blp:54
+#: data/ui/window-content.blp:53
 msgid "Main"
 msgstr "Главная"
 
@@ -457,7 +457,7 @@ msgstr ""
 "Vladimir Romanov <rirusha@altlinux.org>\n"
 "David Sultaniiazov <x1z53@altlinux.org>"
 
-#: src/application.vala:348
+#: src/application.vala:346
 msgid "No steps specified"
 msgstr "Не указан список шагов"
 
@@ -490,53 +490,61 @@ msgid "Don't show indicators and keep window simple"
 msgstr "Не показывать индикаторы и сделать окно проще"
 
 #: src/options-handler.vala:90
-msgid "Steps which will not apply. E.g: `steps=language,keyboard`"
-msgstr ""
-"Шаги, которые не будут применены в конце. К примеру: `steps=language,"
-"keyboard`"
-
-#: src/options-handler.vala:97
 msgid "Steps. E.g: `steps=language,keyboard`"
 msgstr "Шаги. К примеру: `steps=language,keyboard`"
 
-#: src/options-handler.vala:104
+#: src/options-handler.vala:97
 msgid "Window can be resized or not"
 msgstr "Может размер окна быть изменен или нет"
 
-#: src/options-handler.vala:111
+#: src/options-handler.vala:104
 msgid "Width of a window"
 msgstr "Ширина окна"
 
-#: src/options-handler.vala:118
+#: src/options-handler.vala:111
 msgid "Height of a window"
 msgstr "Высота окна"
 
-#: src/options-handler.vala:125
+#: src/options-handler.vala:118
 msgid "Set layout for window: `big`, `small`, `vertical`, `horizontal`"
 msgstr ""
 "Назначить используемый внешний вид приложения: `big`, `small`, `vertical`, "
 "`horizontal`"
 
-#: src/options-handler.vala:132
+#: src/options-handler.vala:125
 msgid "Print version information and exit"
 msgstr "Показать информацию о версии и выйти"
 
-#: src/options-handler.vala:139
+#: src/options-handler.vala:132
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
-#: src/pages/end-page.vala:88
-msgid "Doing some stuff…"
-msgstr "Делаем стаф…"
+#: src/pages/end-page.vala:84
+#, fuzzy
+msgid "Installing system…"
+msgstr "Настройка вашей системы…"
 
-#: src/pages/end-page.vala:140 src/pages/end-page.vala:146
+#: src/pages/end-page.vala:105
+#, fuzzy, c-format
+msgid "Applying %s…"
+msgstr "Применение изменения…"
+
+#: src/pages/end-page.vala:157 src/pages/end-page.vala:163
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
-#: src/pages/end-page.vala:145
+#: src/pages/end-page.vala:162
 msgid "Error while execute post hooks"
 msgstr "Ошибка при выполнении пост скриптов"
+
+#~ msgid "Steps which will not apply. E.g: `steps=language,keyboard`"
+#~ msgstr ""
+#~ "Шаги, которые не будут применены в конце. К примеру: `steps=language,"
+#~ "keyboard`"
+
+#~ msgid "Doing some stuff…"
+#~ msgstr "Делаем стаф…"
 
 #~ msgid "Finishing"
 #~ msgstr "Завершение"
@@ -562,9 +570,6 @@ msgstr "Ошибка при выполнении пост скриптов"
 #~ msgstr ""
 #~ "Установить пароль администратора вручную. Иначе он будет равен паролю "
 #~ "пользователя"
-
-#~ msgid "Applying changes…"
-#~ msgstr "Применение изменения…"
 
 #~ msgid "User name"
 #~ msgstr "Имя пользователя"
