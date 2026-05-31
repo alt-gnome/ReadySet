@@ -160,8 +160,7 @@ public sealed class ReadySet.EndPage : Adw.Bin {
                         rs_settings.set_strv ("performed-steps", passed_plugins);
 
                         const string[] FILES_TO_COPY = {
-                            ".config/dconf/user",
-                            ".config/ready-set-done"
+                            ".config/dconf/user"
                         };
 
                         foreach (var file in FILES_TO_COPY) {
