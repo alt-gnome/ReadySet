@@ -148,7 +148,7 @@ public sealed class ReadySet.EndPage : Adw.Bin {
                     warning ("IOError on executing post hooks: %s", e.message);
                 }
 
-                if (context.mode == Mode.INITIAL_SETUP) {
+                if (context.mode == Mode.INITIAL_SETUP && context.has_key ("user-username")) {
                     string[] passed_plugins = {};
 
                     foreach (var step_addin in steps_addins_arr) {
@@ -164,7 +164,7 @@ public sealed class ReadySet.EndPage : Adw.Bin {
                         };
 
                         foreach (var file in FILES_TO_COPY) {
-                            yield get_ready_set_proxy ().copy_to_user (file, "rirusha");
+                            yield get_ready_set_proxy ().copy_to_user (file, context.get_string ("user-username"));
                         }
 
                     } catch (Error e) {
