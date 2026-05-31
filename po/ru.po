@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: rirusha@altlinux.org\n"
 "POT-Creation-Date: 2026-05-31 20:41+0000\n"
-"PO-Revision-Date: 2026-05-29 17:01+0000\n"
+"PO-Revision-Date: 2026-06-01 21:26+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
 "ready-set/ru/>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.17.1\n"
 
 #: data/ui/end-page.blp:36
@@ -39,16 +39,15 @@ msgstr "Марш!"
 
 #: data/ui/existing-user-end-page.blp:26
 msgid "Setup complete!"
-msgstr ""
+msgstr "Настройка завершена!"
 
 #: data/ui/existing-user-end-page.blp:27
-#, fuzzy
 msgid "Everything is ready to use."
-msgstr "Система готова к использованию."
+msgstr "Всё готово к использованию."
 
 #: data/ui/existing-user-end-page.blp:36
 msgid "Complete the setup"
-msgstr ""
+msgstr "Завершите настройку"
 
 #: data/ui/nothing-to-show.blp:30
 msgid "Nothing to show"
@@ -208,7 +207,7 @@ msgstr "Безопасность"
 
 #: plugins/user/data/ui/page-password.blp:37
 msgid "Be careful not to lose your password."
-msgstr "Be careful not to lose your password."
+msgstr "Будьте внимательны, не потеряйте пароль."
 
 #: plugins/user/data/ui/page-password.blp:56
 msgid "Your user’s password"
@@ -453,23 +452,22 @@ msgstr "Добро пожаловать в %s!"
 
 #: plugins/welcome/page.vala:40
 msgid "The system requires completion of the setup."
-msgstr ""
+msgstr "Система требует завершения настройки."
 
 #: plugins/welcome/page.vala:40
 msgid "We will guide you through the necessary steps."
-msgstr ""
+msgstr "Мы проведём вас по необходимым шагам."
 
 #: plugins/welcome/page.vala:43
-#, fuzzy
 msgid ""
 "The setup will guide you from creating an account to enabling some features."
 msgstr ""
 "Настройка проведет вас от создания учетной записи до подключения некоторых "
-"возможностей. Мы поможем вам все подготовить за мгновение."
+"возможностей."
 
 #: plugins/welcome/page.vala:43
 msgid "We will help you prepare everything in a moment."
-msgstr ""
+msgstr "Мы поможем вам все подготовить за мгновение."
 
 #: src/about.vala:24
 msgid "Ready Set"
@@ -478,9 +476,7 @@ msgstr "На Старт Внимание"
 #. Translators: NAME <EMAIL.COM> /n NAME <EMAIL.COM>
 #: src/about.vala:38
 msgid "translator-credits"
-msgstr ""
-"Vladimir Romanov <rirusha@altlinux.org>\n"
-"David Sultaniiazov <x1z53@altlinux.org>"
+msgstr "Vladimir Romanov <rirusha@altlinux.org>"
 
 #: src/application.vala:382
 msgid "No steps specified"
@@ -545,14 +541,13 @@ msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
 #: src/pages/end-page.vala:84
-#, fuzzy
 msgid "Installing system…"
-msgstr "Настройка вашей системы…"
+msgstr "Установка системы…"
 
 #: src/pages/end-page.vala:105
-#, fuzzy, c-format
+#, c-format
 msgid "Applying %s…"
-msgstr "Применение изменения…"
+msgstr "Применение %s…"
 
 #: src/pages/end-page.vala:182 src/pages/end-page.vala:188
 #, c-format
