@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-31 14:38+0000\n"
+"POT-Creation-Date: 2026-05-31 20:41+0000\n"
 "PO-Revision-Date: 2026-05-29 17:01+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -36,6 +36,19 @@ msgstr "Система готова к использованию."
 #: data/ui/end-page.blp:64
 msgid "Go!"
 msgstr "Марш!"
+
+#: data/ui/existing-user-end-page.blp:26
+msgid "Setup complete!"
+msgstr ""
+
+#: data/ui/existing-user-end-page.blp:27
+#, fuzzy
+msgid "Everything is ready to use."
+msgstr "Система готова к использованию."
+
+#: data/ui/existing-user-end-page.blp:36
+msgid "Complete the setup"
+msgstr ""
 
 #: data/ui/nothing-to-show.blp:30
 msgid "Nothing to show"
@@ -85,7 +98,7 @@ msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
 #. It's not json string, just return message
-#: lib/src/lib-utils.vala:164
+#: lib/src/lib-utils.vala:169
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
@@ -136,7 +149,7 @@ msgstr ""
 msgid "None"
 msgstr "Ничего"
 
-#: plugins/keyboard/plugin.vala:110
+#: plugins/keyboard/plugin.vala:112
 msgid "Error when setting keyboard layout"
 msgstr "Ошибка при настройке раскладки клавиатуры"
 
@@ -148,7 +161,7 @@ msgstr "Поиск языка"
 msgid "Language"
 msgstr "Язык"
 
-#: plugins/language/plugin.vala:117
+#: plugins/language/plugin.vala:121
 msgid "Error when setting language"
 msgstr "Ошибка при настройке языка"
 
@@ -433,18 +446,30 @@ msgstr "Пароль должен состоять минимум из одно�
 msgid "Welcome"
 msgstr "Добро пожаловать"
 
-#: plugins/welcome/data/ui/page.blp:19
-msgid ""
-"The setup will guide you from creating an account to enabling some features. "
-"We will help you prepare everything in a moment."
-msgstr ""
-"Настройка проведет вас от создания учетной записи до подключения некоторых "
-"возможностей. Мы поможем вам все подготовить за мгновение."
-
 #: plugins/welcome/page.vala:38
 #, c-format
 msgid "Welcome to %s!"
 msgstr "Добро пожаловать в %s!"
+
+#: plugins/welcome/page.vala:40
+msgid "The system requires completion of the setup."
+msgstr ""
+
+#: plugins/welcome/page.vala:40
+msgid "We will guide you through the necessary steps."
+msgstr ""
+
+#: plugins/welcome/page.vala:43
+#, fuzzy
+msgid ""
+"The setup will guide you from creating an account to enabling some features."
+msgstr ""
+"Настройка проведет вас от создания учетной записи до подключения некоторых "
+"возможностей. Мы поможем вам все подготовить за мгновение."
+
+#: plugins/welcome/page.vala:43
+msgid "We will help you prepare everything in a moment."
+msgstr ""
 
 #: src/about.vala:24
 msgid "Ready Set"
@@ -457,7 +482,7 @@ msgstr ""
 "Vladimir Romanov <rirusha@altlinux.org>\n"
 "David Sultaniiazov <x1z53@altlinux.org>"
 
-#: src/application.vala:346
+#: src/application.vala:382
 msgid "No steps specified"
 msgstr "Не указан список шагов"
 
@@ -529,12 +554,12 @@ msgstr "Настройка вашей системы…"
 msgid "Applying %s…"
 msgstr "Применение изменения…"
 
-#: src/pages/end-page.vala:157 src/pages/end-page.vala:163
+#: src/pages/end-page.vala:182 src/pages/end-page.vala:188
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
-#: src/pages/end-page.vala:162
+#: src/pages/end-page.vala:187
 msgid "Error while execute post hooks"
 msgstr "Ошибка при выполнении пост скриптов"
 
