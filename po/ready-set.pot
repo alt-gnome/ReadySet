@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-29 16:53+0000\n"
+"POT-Creation-Date: 2026-05-31 14:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,7 +62,7 @@ msgstr ""
 msgid "All steps"
 msgstr ""
 
-#: data/ui/window-content.blp:54
+#: data/ui/window-content.blp:53
 msgid "Main"
 msgstr ""
 
@@ -422,7 +422,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/application.vala:348
+#: src/application.vala:346
 msgid "No steps specified"
 msgstr ""
 
@@ -455,46 +455,47 @@ msgid "Don't show indicators and keep window simple"
 msgstr ""
 
 #: src/options-handler.vala:90
-msgid "Steps which will not apply. E.g: `steps=language,keyboard`"
-msgstr ""
-
-#: src/options-handler.vala:97
 msgid "Steps. E.g: `steps=language,keyboard`"
 msgstr ""
 
-#: src/options-handler.vala:104
+#: src/options-handler.vala:97
 msgid "Window can be resized or not"
 msgstr ""
 
-#: src/options-handler.vala:111
+#: src/options-handler.vala:104
 msgid "Width of a window"
 msgstr ""
 
-#: src/options-handler.vala:118
+#: src/options-handler.vala:111
 msgid "Height of a window"
 msgstr ""
 
-#: src/options-handler.vala:125
+#: src/options-handler.vala:118
 msgid "Set layout for window: `big`, `small`, `vertical`, `horizontal`"
 msgstr ""
 
-#: src/options-handler.vala:132
+#: src/options-handler.vala:125
 msgid "Print version information and exit"
 msgstr ""
 
-#: src/options-handler.vala:139
+#: src/options-handler.vala:132
 msgid "App config file"
 msgstr ""
 
-#: src/pages/end-page.vala:88
-msgid "Doing some stuff…"
+#: src/pages/end-page.vala:84
+msgid "Installing system…"
 msgstr ""
 
-#: src/pages/end-page.vala:140 src/pages/end-page.vala:146
+#: src/pages/end-page.vala:105
+#, c-format
+msgid "Applying %s…"
+msgstr ""
+
+#: src/pages/end-page.vala:157 src/pages/end-page.vala:163
 #, c-format
 msgid "Error message: %s"
 msgstr ""
 
-#: src/pages/end-page.vala:145
+#: src/pages/end-page.vala:162
 msgid "Error while execute post hooks"
 msgstr ""
