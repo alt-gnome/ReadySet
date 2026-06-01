@@ -215,6 +215,8 @@ Requires: %name = %EVR
 %_libdir/%name/plugins/steps/tests.plugin
 %_libdir/%name/plugins/installers/libtest-installer.so
 %_libdir/%name/plugins/installers/test-installer.plugin
+%_userunitdir/gnome-session.target.wants/%name-existing-user.service
+%_userunitdir/%name-existing-user.service
 
 %files gdm
 %_libexecdir/%gis_name
