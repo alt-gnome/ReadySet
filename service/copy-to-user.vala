@@ -48,14 +48,20 @@ namespace ReadySet {
     }
 
     internal void copy_with_chown (File src, File dest, Posix.uid_t uid, Posix.gid_t gid) throws Error {
-        var src_info = src.query_info (FileAttribute.STANDARD_TYPE + "," + FileAttribute.UNIX_MODE, FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+        var src_info = src.query_info (
+            FileAttribute.STANDARD_TYPE + "," + FileAttribute.UNIX_MODE,
+            FileQueryInfoFlags.NOFOLLOW_SYMLINKS
+        );
         FileInfo? dest_info = null;
 
         bool src_is_dir = src_info.get_file_type () == FileType.DIRECTORY;
         bool dest_is_dir = false;
 
         if (dest.query_exists ()) {
-            dest_info = dest.query_info (FileAttribute.STANDARD_TYPE + "," + FileAttribute.UNIX_MODE, FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+            dest_info = dest.query_info (
+                FileAttribute.STANDARD_TYPE + "," + FileAttribute.UNIX_MODE,
+                FileQueryInfoFlags.NOFOLLOW_SYMLINKS
+            );
 
             dest_is_dir = dest_info.get_file_type () == FileType.DIRECTORY;
         }
