@@ -49,8 +49,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     unowned Gtk.Button osk_button;
     [GtkChild]
     unowned Gtk.Stack main_stack;
-    [GtkChild]
-    unowned EndPage end_page;
 
     [GtkChild]
     unowned Gtk.Button to_up_button;
@@ -487,7 +485,8 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                 view.content = new ExistingUserEndPage ();
 
             } else {
-                view.content = new EndPage ();
+                var end_page = new EndPage (); 
+                view.content = end_page;
                 end_page.start_action.begin ();
             }
 
