@@ -296,32 +296,45 @@ public sealed class ReadySet.Application: Adw.Application {
 
         var initial_position = model == null ? 0 : model.get_selected ();
 
+        string[] steps = all_steps.copy ();
+        if (all_steps.length > 0) {
+            if (context.mode == EXISTING_USER && all_steps[0] != "welcome" && steps_plugins.has_key ("welcome")) {
+                steps = { "welcome" };
+                foreach (var s in all_steps) {
+                    steps += s;
+                }
+            }
+        }
+
         print ("Loaded plugins:\n");
-        for (int i = 0; i < all_steps.length; i++) {
-            if (steps_plugins[all_steps[i]] == null) {
+        for (int i = 0; i < steps.length; i++) {
+            if (steps_plugins[steps[i]] == null) {
                 pages.add (new PageInfo (
                     new BasePage.unknown () {
                         is_ready = true
                     },
                     null
                 ));
-                print ("  broken step (%s)\n", all_steps[i]);
+                print ("  broken step (%s)\n", steps[i]);
             } else {
-                var addin = steps_plugins[all_steps[i]];
+                var addin = steps_plugins[steps[i]];
 
                 addin.context = context;
                 addin.load_css_for_display (Gdk.Display.get_default ());
 
-                context.bind_context_to_property (
-                    "step-%s-enabled".printf (all_steps[i]),
-                    addin,
-                    "enabled",
-                    SYNC_CREATE | BIDIRECTIONAL
-                );
+                //  There is not need in disabling welcome plugin in existing-user mode
+                if (steps[i] != "welcome" && context.mode == EXISTING_USER) {
+                    context.bind_context_to_property (
+                        "step-%s-enabled".printf (steps[i]),
+                        addin,
+                        "enabled",
+                        SYNC_CREATE | BIDIRECTIONAL
+                    );
+                }
 
-                if (!(all_steps[i] in inited_plugins)) {
+                if (!(steps[i] in inited_plugins)) {
                     yield addin.init_once ();
-                    inited_plugins.add (all_steps[i]);
+                    inited_plugins.add (steps[i]);
                 }
 
                 if (addin.plugin_info.module_name in performed_steps ||
@@ -339,7 +352,7 @@ public sealed class ReadySet.Application: Adw.Application {
                         addin
                     ));
                 }
-                print ("  %s\n", all_steps[i]);
+                print ("  %s\n", steps[i]);
             }
 
             Idle.add (init_pages.callback);
