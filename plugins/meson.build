@@ -1,9 +1,10 @@
 plugins = [
   'keyboard',
   'language',
+  'license-agreement',
+  'network',
   'user',
   'welcome',
-  'license-agreement',
 ]
 
 if get_option('is_devel')
