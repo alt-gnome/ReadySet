@@ -163,14 +163,19 @@ public sealed class ReadySet.EndPage : Adw.Bin {
                     };
 
                     foreach (var file in FILES_TO_COPY) {
-                        yield get_ready_set_proxy ().copy_to_user (
-                            Path.build_filename (
-                                Environment.get_home_dir (),
-                                file
-                            ),
-                            file,
-                            context.get_string ("user-username")
-                        );
+                        try {
+                            yield get_ready_set_proxy ().copy_to_user (
+                                Path.build_filename (
+                                    Environment.get_home_dir (),
+                                    file
+                                ),
+                                file,
+                                context.get_string ("user-username")
+                            );
+                        } catch (Error e) {
+                            //  This fail is not so critical to stop initial-setup
+                            warning ("Fail to copy to user: %s", e.message);
+                        }
                     }
                 }
 
