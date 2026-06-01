@@ -2,7 +2,7 @@ polkit.addRule(function(action, subject) {
     if (!subject.isInGroup('ready-set') && !subject.isInGroup('gnome-initial-setup'))
         return;
 
-    if (action.id.indexOf("org.freedesktop.locale1.") === 0) {
+    if (action.id.indexOf("org.freedesktop.NetworkManager.") === 0) {
         if (subject.local)
             return polkit.Result.YES;
         else
