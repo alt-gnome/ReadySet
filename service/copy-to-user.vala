@@ -47,18 +47,18 @@ namespace ReadySet {
         copy_with_chown (src_file, dest_file, uid, gid);
     }
 
-    void copy_with_chown (File src, File dest, Posix.uid_t uid, Posix.gid_t gid) throws Error {
-        var src_info = src.query_info ("standard::type,unix::mode", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+    internal void copy_with_chown (File src, File dest, Posix.uid_t uid, Posix.gid_t gid) throws Error {
+        var src_info = src.query_info (FileAttribute.STANDARD_TYPE + "," + FileAttribute.UNIX_MODE, FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
         FileInfo? dest_info = null;
 
         bool src_is_dir = src_info.get_file_type () == FileType.DIRECTORY;
         bool dest_is_dir = false;
 
         if (dest.query_exists ()) {
-            dest_info = src.query_info ("standard::type,unix::mode", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+            dest_info = dest.query_info (FileAttribute.STANDARD_TYPE + "," + FileAttribute.UNIX_MODE, FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
 
             dest_is_dir = dest_info.get_file_type () == FileType.DIRECTORY;
-        }        
+        }
 
         if (src_is_dir) {
             if (dest_info != null) {
@@ -71,7 +71,7 @@ namespace ReadySet {
         } else {
             if (dest_info != null) {
                 if (dest_is_dir) {
-                    dest.trash ();
+                    rmtree (dest);
                 } else {
                     dest.delete ();
                 }
@@ -87,7 +87,7 @@ namespace ReadySet {
 
         dest.set_attribute_uint32 (
             "unix::mode",
-            src_info.get_attribute_uint32 ("unix::mode"),
+            src_info.get_attribute_uint32 (FileAttribute.UNIX_MODE),
             FileQueryInfoFlags.NONE,
             null
         );
@@ -96,7 +96,7 @@ namespace ReadySet {
 
         if (src_is_dir) {
             var en = src.enumerate_children (
-                "standard::name,standard::type",
+                FileAttribute.STANDARD_NAME + "," + FileAttribute.STANDARD_TYPE,
                 FileQueryInfoFlags.NOFOLLOW_SYMLINKS,
                 null
             );
@@ -107,7 +107,7 @@ namespace ReadySet {
         }
     }
 
-    void ensure_dir_exist (File dir, Posix.uid_t uid, Posix.gid_t gid) throws Error {
+    internal void ensure_dir_exist (File dir, Posix.uid_t uid, Posix.gid_t gid) throws Error {
         if (dir.query_exists ()) {
             return;
         }
@@ -123,89 +123,31 @@ namespace ReadySet {
         }
     }
 
-    public bool env_exec (string program, owned string[] env) throws Error {
-        var launcher = new SubprocessLauncher (NONE);
-
-        foreach (var e in env) {
-            var parts = e.split ("=", 2);
-            if (parts.length != 2) {
-                warning ("Invalid environment variable: %s", e);
-                return false;
-            }
-            launcher.setenv (parts[0], parts[1], true);
-        }
-
-        var process = launcher.spawn (program);
-
-        return process.wait_check ();
-    }
-
-    public void exec_user_pre_hooks (string[] env) throws Error {
-        exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "pre-hooks", "system"), env);
-    }
-
-    public void exec_user_post_hooks (string[] env) throws Error {
-        exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "post-hooks", "system"), env);
-    }
-
-    void exec_hooks (File hooks_dir, string[] env) throws Error {
-        var enumerator = hooks_dir.enumerate_children (
-            "%s,%s,%s".printf (
-                FileAttribute.STANDARD_NAME,
-                FileAttribute.STANDARD_TYPE,
-                FileAttribute.ACCESS_CAN_EXECUTE
-            ),
-            NONE
-        );
-
-        if (enumerator == null) {
+    void rmtree (File dir) {
+        if (!dir.query_exists ()) {
             return;
         }
 
-        FileInfo? info;
-        while ((info = enumerator.next_file ()) != null) {
-            if (!info.get_attribute_boolean (FileAttribute.ACCESS_CAN_EXECUTE)) {
-                continue;
-            }
-            var type_ = info.get_file_type ();
-            if (type_ != FileType.REGULAR) {
-                continue;
-            }
-
-            var script = Path.build_filename (hooks_dir.get_path (), info.get_name ());
-
-            var rs_env = new string[env.length];
-
-            for (var i = 0; i < env.length; i++) {
-                rs_env[i] = "READY_SET_" + env[i];
-            }
-
-            if (!env_exec (script, rs_env)) {
-                warning ("Failed to exec hook '%s'", script);
-            }
-        }
-    }
-
-    void polkit_check (BusName sender, string action_id) throws DBusError {
-        Polkit.AuthorizationResult result;
-
         try {
-            var authority = Polkit.Authority.get_sync (null);
-            var subject = new Polkit.SystemBusName (sender);
-            result = authority.check_authorization_sync (
-                subject,
-                action_id,
-                null,
-                Polkit.CheckAuthorizationFlags.ALLOW_USER_INTERACTION,
-                null
+            var enumerator = dir.enumerate_children (
+                FileAttribute.STANDARD_NAME + "," + FileAttribute.STANDARD_TYPE,
+                FileQueryInfoFlags.NOFOLLOW_SYMLINKS
             );
+            FileInfo? info;
 
+            while ((info = enumerator.next_file ()) != null) {
+                var file = dir.resolve_relative_path (info.get_name ());
+
+                if (info.get_file_type () == FileType.DIRECTORY) {
+                    rmtree (file);
+                } else {
+                    file.delete ();
+                }
+            }
+
+            dir.delete ();
         } catch (Error e) {
-            throw new DBusError.ACCESS_DENIED ("Failed to check authorization: " + e.message);
-        }
-
-        if (!result.get_is_authorized ()) {
-            throw new DBusError.ACCESS_DENIED ("Not authorized");
+            error (e.message);
         }
     }
 }

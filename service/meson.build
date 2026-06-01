@@ -3,9 +3,10 @@ rs_internal_vapi_sources = files(
 )
 
 rs_internal_vala_sources = files(
+  'copy-to-user.vala',
+  'hooks.vala',
   'main.vala',
   'service.vala',
-  'utils.vala',
 )
 
 rs_internal_dependencies = [
@@ -47,5 +48,7 @@ executable(
   install: true,
   install_dir: libexecdir
 )
+
+service_sources = meson.current_source_dir()
 
 subdir('data')
