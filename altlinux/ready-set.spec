@@ -292,6 +292,7 @@ Requires: %name = %EVR
 
 %changelog
 * Sat May 30 2026 Vladimir Romanov <rirusha@altlinux.org> 0.7.2-alt1
+- New version: 0.7.2.
 - Fixed error or strange behavior on enabling pages.
 - `welcome` page now hide `language` page.
 - Full release note here:
