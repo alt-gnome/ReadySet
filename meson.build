@@ -89,6 +89,7 @@ subdir('service')
 subdir('lib')
 subdir('src')
 subdir('plugins')
+subdir('tests')
 
 gnome.post_install(
   glib_compile_schemas: true,
