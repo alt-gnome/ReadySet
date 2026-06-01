@@ -81,5 +81,25 @@ endif
 subdir('icons')
 subdir('gnome-initial-setup')
 
+unit_files = {
+  gis / gis + '.service' : [],
+  meson.project_name() + '-existing-user.service' : [ 'gnome-session.target.wants/' ],
+}
+
+foreach unit, wants: unit_files
+  configure_file(
+    input: unit + '.in',
+    output: fs.name (unit),
+    configuration: {
+      'LIBEXECDIR': libexecdir
+    },
+    install_dir: systemd_user_unit_dir
+  )
+
+  foreach target: wants
+    meson.add_install_script('meson-add-wants.sh', systemd_user_unit_dir, target, unit)
+  endforeach
+endforeach
+
 install_emptydir(sysconfdir / meson.project_name())
 install_emptydir(localstatedir/ 'lib' / meson.project_name())
