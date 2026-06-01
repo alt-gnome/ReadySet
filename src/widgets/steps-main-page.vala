@@ -485,7 +485,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                 view.content = new ExistingUserEndPage ();
 
             } else {
-                var end_page = new EndPage (); 
+                var end_page = new EndPage ();
                 view.content = end_page;
                 end_page.start_action.begin ();
             }
