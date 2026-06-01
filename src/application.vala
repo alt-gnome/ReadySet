@@ -323,7 +323,7 @@ public sealed class ReadySet.Application: Adw.Application {
                 addin.load_css_for_display (Gdk.Display.get_default ());
 
                 //  There is not need in disabling welcome plugin in existing-user mode
-                if (steps[i] != "welcome" && context.mode == EXISTING_USER) {
+                if (steps[i] != "welcome") {
                     context.bind_context_to_property (
                         "step-%s-enabled".printf (steps[i]),
                         addin,
