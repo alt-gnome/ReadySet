@@ -18,40 +18,14 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Welcome.Addin : ReadySet.StepAddin {
+public class TestInstaller.Addin : ReadySet.InstallerAddin {
 
-    static Addin instance;
-
-    protected override string? resource_base_path {
-        get {
-            return "/org/altlinux/ReadySet/Plugin/Welcome/";
-        }
-    }
-
-    public override bool existing_user { get { return true; } }
-
-    construct {
-        instance = this;
-    }
-
-    public async override ReadySet.BasePage[] build_pages () {
-        return { new Welcome.Page () };
-    }
-
-    internal static Addin get_instance () {
-        return instance;
-    }
-
-    public async override void init_once () {
-        //  Welcome page exists for situations where language page
-        //  Doesn't needed or just useless.
-        if (context.has_key ("step-language-enabled")) {
-            context.set_boolean ("step-language-enabled", false);
-        }
+    public async override void install (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
+        message ("Test Installer GOOD");
     }
 }
 
 public void peas_register_types (TypeModule module) {
     var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySet.StepAddin), typeof (Welcome.Addin));
+    obj.register_extension_type (typeof (ReadySet.InstallerAddin), typeof (TestInstaller.Addin));
 }

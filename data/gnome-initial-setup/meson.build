@@ -19,15 +19,6 @@ i18n.merge_file(
   type: 'desktop'
 )
 
-configure_file(
-  input: gis + '.service.in',
-  output: gis + '.service',
-  configuration: {
-    'LIBEXECDIR': libexecdir
-  },
-  install_dir: systemd_user_unit_dir
-)
-
 subdir('sysusers')
 subdir('tmpfiles')
 

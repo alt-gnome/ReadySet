@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="ready-set">
+	<schema id="org.altlinux.ReadySet" path="/org/altlinux/ReadySet/">
+
+		<key name="performed-steps" type="as">
+			<default>[]</default>
+			<summary>Performed steps</summary>
+            <description>The steps that were performed during the initial setup stage. If the field is empty, the initial setup was not performed.</description>
+		</key>
+
+	</schema>
+
+</schemalist>

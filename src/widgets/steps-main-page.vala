@@ -49,8 +49,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     unowned Gtk.Button osk_button;
     [GtkChild]
     unowned Gtk.Stack main_stack;
-    [GtkChild]
-    unowned EndPage end_page;
 
     [GtkChild]
     unowned Gtk.Button to_up_button;
@@ -368,7 +366,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         last_current_page = model.get_selected_item ();
 
         if (last_current_page == null) {
-            warning ("Model has no acessible pages");
+            warning ("Model has no enabled pages");
             return;
         }
 
@@ -410,7 +408,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         var selected_item = model.get_selected_item ();
 
         if (selected_item == null) {
-            warning ("Model has no acessible pages");
+            warning ("Model has no enabled pages");
             return;
         }
 
@@ -478,8 +476,23 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         var n_items = model.get_n_items ();
 
         if (position == n_items - 1) {
-            main_stack.visible_child_name = "finish";
-            end_page.start_action.begin ();
+            var view = new Adw.ToolbarView ();
+            view.add_top_bar (new Adw.HeaderBar () {
+                show_title = false
+            });
+
+            if (Application.get_default ().context.mode == EXISTING_USER) {
+                view.content = new ExistingUserEndPage ();
+
+            } else {
+                var end_page = new EndPage ();
+                view.content = end_page;
+                end_page.start_action.begin ();
+            }
+
+            main_stack.add_child (view);
+            main_stack.visible_child = view;
+
         } else {
             model.select_item (model.get_selected () + 1, true);
         }

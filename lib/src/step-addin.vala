@@ -24,7 +24,7 @@
  * What is `step`?
  *
  * This class provides a page or series of pages that serve as a "step"
- * to set up the current session (for initial setup mode) or to
+ * to set up the current session (for initial setup or existing-user modes) or to
  * save settings for future use (initial-setup with
  * {@link ReadySet.StepAddin.apply} or installer with
  * {@link ReadySet.InstallerAddin.install}).
@@ -44,18 +44,18 @@
  *  }
  * }}}
  *
- * == Acessible ==
+ * == Enabling ==
  *
- * If necessary, you can hide entire plugin via {@link ReadySet.StepAddin.accessible}
- * or pages separately via {@link ReadySet.BasePage.acessible} if your plugin
+ * If necessary, you can disable entire plugin via {@link ReadySet.StepAddin.enabled}
+ * or pages separately via {@link ReadySet.BasePage.accessible} if your plugin
  * is in unsuitable conditions for work (there are no permissions to perform
  * actions, there are not enough executable files in the system, or a
  * different desktop environment).
  *
- * The acessibility of your plugin can be changed by other plugins. For each
+ * The enabling of your plugin can be changed by other plugins. For each
  * plugin, a context variable `step-<step-id>-enabled` is created (the step id
  * is determined by the `Module` field in the plugin file), which bind with
- * the property.
+ * the {@link ReadySet.StepAddin.enabled} property.
  *
  * == Context ==
  * 
@@ -95,11 +95,11 @@ public abstract class ReadySet.StepAddin : ExtensionBase {
     }
 
     /**
-     * Whether `step` accessible or not.
+     * Whether `step` enabled or not.
      *
      * @see ReadySet.StepAddin
      */
-    public virtual bool accessible { get; set; default = true; }
+    public virtual bool enabled { get; set; default = true; }
 
 #if FOR_APPLICATION
     internal void load_css_for_display (Gdk.Display display) {
@@ -120,6 +120,12 @@ public abstract class ReadySet.StepAddin : ExtensionBase {
         }
     }
 #endif
+
+    /**
+     * Whether plugin support running without special permissuin for
+     * settings up current user.
+     */
+    public virtual bool existing_user { get { return false; } }
 
     /**
      * Apply for initial setup.

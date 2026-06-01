@@ -34,7 +34,7 @@ namespace ReadySet {
             developers = {
                 "Vladimir Romanov <rirusha@altlinux.org>"
             },
-            // Translators: NAME <EMAIL.COM> /n NAME <EMAIL.COM>
+            // Translators: NAME <EMAIL.COM>
             translator_credits = _("translator-credits"),
             license_type = Gtk.License.GPL_3_0,
             copyright = "© 2024-2025 ALT Linux Team",

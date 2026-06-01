@@ -56,7 +56,17 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
     construct {
         add_action_entries (ACTION_ENTRIES, this);
 
-        map.connect (window_initially_shown);
+        var app = Application.get_default ();
+
+        if (app.context.mode == EXISTING_USER) {
+            reload_window.begin (() => {
+                present ();
+            });
+        } else {
+            //  We start loading things after window appears on screen
+            //  So that the spinner is shown, and not just nothing
+            map.connect (window_initially_shown);
+        }
 
         simple = Application.get_default ().options_handler.simple;
 
@@ -66,7 +76,7 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
     }
 
     void window_initially_shown () {
-        reload_window ();
+        reload_window.begin ();
         map.disconnect (window_initially_shown);
     }
 
@@ -78,13 +88,14 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         return true;
     }
 
-    public void reload_window () {
+    public async void reload_window () {
         if (reloading) {
             return;
         }
 
         reloading = true;
-        Application.get_default ().init_pages.begin (set_window_content);
+        yield Application.get_default ().init_pages ();
+        set_window_content ();
     }
 
     void set_window_content () {

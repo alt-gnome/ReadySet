@@ -2,6 +2,7 @@ rs_app_blueprints = custom_target('blueprints',
   input: files(
     'ui/devel-window.blp',
     'ui/end-page.blp',
+    'ui/existing-user-end-page.blp',
     'ui/nothing-to-show.blp',
     'ui/pages-indicator.blp',
     'ui/step-row.blp',
@@ -65,8 +66,40 @@ configure_file(
   },
 )
 
+install_data(
+  'org.altlinux.ReadySet.gschema.xml',
+  install_dir: get_option('datadir') / 'glib-2.0' / 'schemas',
+)
+
+compile_schemas = find_program('glib-compile-schemas', required: false)
+if compile_schemas.found()
+  test('Validate schema file',
+  compile_schemas,
+  args: ['--strict', '--dry-run', meson.current_source_dir()])
+endif
+
 subdir('icons')
 subdir('gnome-initial-setup')
+
+unit_files = {
+  gis / gis + '.service' : [],
+  meson.project_name() + '-existing-user.service' : [ 'gnome-session.target.wants/' ],
+}
+
+foreach unit, wants: unit_files
+  configure_file(
+    input: unit + '.in',
+    output: fs.name (unit),
+    configuration: {
+      'LIBEXECDIR': libexecdir
+    },
+    install_dir: systemd_user_unit_dir
+  )
+
+  foreach target: wants
+    meson.add_install_script('meson-add-wants.sh', systemd_user_unit_dir, target, unit)
+  endforeach
+endforeach
 
 install_emptydir(sysconfdir / meson.project_name())
 install_emptydir(localstatedir/ 'lib' / meson.project_name())

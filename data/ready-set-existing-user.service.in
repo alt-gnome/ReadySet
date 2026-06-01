@@ -1,0 +1,14 @@
+[Unit]
+Description=ReadySet setup fpr existing user
+
+BindsTo=gnome-session.target
+After=gnome-session.target
+
+# Never run in GDM
+ConditionUser=!@system
+ConditionEnvironment=XDG_SESSION_CLASS=user
+
+[Service]
+Type=oneshot
+ExecStart=@LIBEXECDIR@/ready-set
+Restart=no

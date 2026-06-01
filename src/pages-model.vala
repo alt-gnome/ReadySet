@@ -24,9 +24,13 @@ public sealed class ReadySet.PageInfo : Object {
 
     public BasePage page { get; construct; }
 
-    public StepAddin? plugin { get; construct; }
+    public Peas.PluginInfo? plugin_info {
+        get {
+            return plugin?.plugin_info;
+        }
+    }
 
-    public bool apply_plugin { get; construct; }
+    public StepAddin? plugin { get; construct; }
 
     public bool accessible { get; private set; }
 
@@ -63,11 +67,10 @@ public sealed class ReadySet.PageInfo : Object {
         }
     }
 
-    public PageInfo (BasePage page, StepAddin? plugin, bool apply_plugin = true) {
+    public PageInfo (BasePage page, StepAddin? plugin) {
         Object (
             page: page,
-            plugin: plugin,
-            apply_plugin: apply_plugin
+            plugin: plugin
         );
     }
 
@@ -100,7 +103,7 @@ public sealed class ReadySet.PageInfo : Object {
 
     void update_accessible () {
         if (plugin != null) {
-            accessible = plugin.accessible && page.accessible;
+            accessible = plugin.enabled && page.accessible;
         } else {
             accessible = page.accessible;
         }

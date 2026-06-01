@@ -67,6 +67,10 @@ public class Language.Addin : ReadySet.StepAddin {
         }
     }
 
+    //  We can't change shell's language, so hide page.
+    //  This plugin can still provides getter/setter for current language.
+    public override bool existing_user { get { return false; } }
+
     static construct {
         typeof (SelectTitle).ensure ();
         typeof (Info).ensure ();
@@ -101,7 +105,7 @@ public class Language.Addin : ReadySet.StepAddin {
     public async override void init_once () {
         if (!context.sandbox && context.mode == INITIAL_SETUP) {
             try {
-                accessible = (yield new Polkit.Permission ("org.freedesktop.locale1.set-locale", null, null)).allowed;
+                enabled = (yield new Polkit.Permission ("org.freedesktop.locale1.set-locale", null, null)).allowed;
             } catch (Error e) {
                 error (e.message);
             }

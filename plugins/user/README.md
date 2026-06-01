@@ -1,16 +1,22 @@
 # User plugin
 
-#### Context fields:
-###### `user-with-root`
-If `true`, root password can be set. Otherwise it will not be set.
+Bunch of pages for creating user or collection user information.
 
-###### `user-no-password-security`
-If `true`, password will not be checked via passwdqc/pwquality and any password can be used.
+## Settings Context variables
 
-###### `user-passwd-conf-path`
-Path to desired passwdqc config file.
-If empty, `/etc/passwdqc.conf` or pwquality default will be used.
+| Variable                              | Description                                                                                               | Default value |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------- |
+| `user-avatar-file`                    | Path to user avatar file                                                                                  | -             |
+| `user-with-root`                      | Set password for root or not. Needs build option `user_with_set_root`                                     | -             |
+| `user-no-password-security`           | Disable password security check via password lib                                                          | -             |
+| `user-passwd-conf-path`               | Config for password lib                                                                                   | -             |
+| `user-avatar-directories`             | Directory where avatar file located. `org.gnome.desktop.interface` `avatar-directories` will also be used | -             |
 
-###### `user-avatar-directories`
-Paths to directories with avatar files.
-Override system dirs and gsettings.
+## Storage Context variables
+
+| Variable             |
+| -------------------- |
+| `user-username`      |
+| `user-fullname`      |
+| `user-password`      |
+| `user-root-password` |

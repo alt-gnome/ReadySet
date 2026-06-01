@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-29 16:53+0000\n"
+"POT-Creation-Date: 2026-05-31 20:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,6 +32,18 @@ msgstr ""
 #. TRANSLATORS: Last word in "Ready Set ..." sentence
 #: data/ui/end-page.blp:64
 msgid "Go!"
+msgstr ""
+
+#: data/ui/existing-user-end-page.blp:26
+msgid "Setup complete!"
+msgstr ""
+
+#: data/ui/existing-user-end-page.blp:27
+msgid "Everything is ready to use."
+msgstr ""
+
+#: data/ui/existing-user-end-page.blp:36
+msgid "Complete the setup"
 msgstr ""
 
 #: data/ui/nothing-to-show.blp:30
@@ -62,7 +74,7 @@ msgstr ""
 msgid "All steps"
 msgstr ""
 
-#: data/ui/window-content.blp:54
+#: data/ui/window-content.blp:53
 msgid "Main"
 msgstr ""
 
@@ -82,7 +94,7 @@ msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
 #. It's not json string, just return message
-#: lib/src/lib-utils.vala:164
+#: lib/src/lib-utils.vala:169
 msgid "Something went wrong"
 msgstr ""
 
@@ -132,7 +144,7 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: plugins/keyboard/plugin.vala:110
+#: plugins/keyboard/plugin.vala:112
 msgid "Error when setting keyboard layout"
 msgstr ""
 
@@ -144,7 +156,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: plugins/language/plugin.vala:117
+#: plugins/language/plugin.vala:121
 msgid "Error when setting language"
 msgstr ""
 
@@ -402,15 +414,26 @@ msgstr ""
 msgid "Welcome"
 msgstr ""
 
-#: plugins/welcome/data/ui/page.blp:19
-msgid ""
-"The setup will guide you from creating an account to enabling some features. "
-"We will help you prepare everything in a moment."
-msgstr ""
-
 #: plugins/welcome/page.vala:38
 #, c-format
 msgid "Welcome to %s!"
+msgstr ""
+
+#: plugins/welcome/page.vala:40
+msgid "The system requires completion of the setup."
+msgstr ""
+
+#: plugins/welcome/page.vala:40
+msgid "We will guide you through the necessary steps."
+msgstr ""
+
+#: plugins/welcome/page.vala:43
+msgid ""
+"The setup will guide you from creating an account to enabling some features."
+msgstr ""
+
+#: plugins/welcome/page.vala:43
+msgid "We will help you prepare everything in a moment."
 msgstr ""
 
 #: src/about.vala:24
@@ -422,7 +445,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/application.vala:348
+#: src/application.vala:382
 msgid "No steps specified"
 msgstr ""
 
@@ -455,46 +478,47 @@ msgid "Don't show indicators and keep window simple"
 msgstr ""
 
 #: src/options-handler.vala:90
-msgid "Steps which will not apply. E.g: `steps=language,keyboard`"
-msgstr ""
-
-#: src/options-handler.vala:97
 msgid "Steps. E.g: `steps=language,keyboard`"
 msgstr ""
 
-#: src/options-handler.vala:104
+#: src/options-handler.vala:97
 msgid "Window can be resized or not"
 msgstr ""
 
-#: src/options-handler.vala:111
+#: src/options-handler.vala:104
 msgid "Width of a window"
 msgstr ""
 
-#: src/options-handler.vala:118
+#: src/options-handler.vala:111
 msgid "Height of a window"
 msgstr ""
 
-#: src/options-handler.vala:125
+#: src/options-handler.vala:118
 msgid "Set layout for window: `big`, `small`, `vertical`, `horizontal`"
 msgstr ""
 
-#: src/options-handler.vala:132
+#: src/options-handler.vala:125
 msgid "Print version information and exit"
 msgstr ""
 
-#: src/options-handler.vala:139
+#: src/options-handler.vala:132
 msgid "App config file"
 msgstr ""
 
-#: src/pages/end-page.vala:88
-msgid "Doing some stuff…"
+#: src/pages/end-page.vala:84
+msgid "Installing system…"
 msgstr ""
 
-#: src/pages/end-page.vala:140 src/pages/end-page.vala:146
+#: src/pages/end-page.vala:105
+#, c-format
+msgid "Applying %s…"
+msgstr ""
+
+#: src/pages/end-page.vala:182 src/pages/end-page.vala:188
 #, c-format
 msgid "Error message: %s"
 msgstr ""
 
-#: src/pages/end-page.vala:145
+#: src/pages/end-page.vala:187
 msgid "Error while execute post hooks"
 msgstr ""

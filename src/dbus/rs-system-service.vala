@@ -30,6 +30,12 @@ namespace ReadySet {
         public abstract async void exec_post_hooks (
             string[] env = {}
         ) throws Error;
+
+        public abstract async void copy_to_user (
+            string src,
+            string dest,
+            string username
+        ) throws Error;
     }
 
     Service ready_set_proxy;

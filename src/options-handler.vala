@@ -84,13 +84,6 @@ public sealed class ReadySet.OptionsHandler : Object {
             null
         },
         {
-            "steps-no-apply", '\0',
-            0, OptionArg.STRING,
-            null,
-            N_("Steps which will not apply. E.g: `steps=language,keyboard`"),
-            "STEPS_NO_APPLY"
-        },
-        {
             "steps", 's',
             0, OptionArg.STRING,
             null,
@@ -151,8 +144,6 @@ public sealed class ReadySet.OptionsHandler : Object {
     public int width { get; set; default = 1000; }
 
     public int height { get; set; default = 800; }
-
-    public string[] steps_no_apply { get; set; }
 
     public string[] context { get; set; }
 
