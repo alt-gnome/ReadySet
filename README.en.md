@@ -17,10 +17,11 @@
 
 App using steps. Curently available steps:
 
-- keyboard (Choosing layouts)
-- language (Users language)
-- license-agreement (License agreement)
-- user (User creation. Available both pwquality and passwdqc)
+- [keyboard](plugins/keyboard/README.en.md)
+- [language](plugins/language/README.en.md)
+- [license-agreement](plugins/license-agreement/README.en.md)
+- [user](plugins/user/README.en.md)
+- [welcome](plugins/welcome/README.en.md)
 
 ## Configuration
 
@@ -40,7 +41,7 @@ Context configuration options can be found in plugins README.
 You can help with translations via [ALT Gnome Translate](https://translate.alt-gnome.ru/projects/ready-set/#languages)
 
 <a href="https://translate.alt-gnome.ru/engage/ready-set/">
-<img src="https://translate.alt-gnome.ru/widget/ready-set/ready-set/horizontal-red.svg" alt="Состояние перевода" />
+<img src="https://translate.alt-gnome.ru/widget/ready-set/ready-set/horizontal-red.svg" alt="Translation progress" />
 </a>
 
 ## Testing
