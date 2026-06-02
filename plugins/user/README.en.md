@@ -2,6 +2,8 @@
 
 Bunch of pages for creating user or collection user information.
 
+Present in two variants with two different backends: `pwaquality` and `passwdqc`. Plugins named accordingly `user-pwquality` and `user-passwdqc`.
+
 ## Settings Context variables
 
 | Variable                              | Description                                                                                               | Default value |
