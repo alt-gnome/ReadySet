@@ -212,7 +212,7 @@ Requires: %name = %EVR
 %_sysusersdir/%name.conf
 %_tmpfilesdir/%name.conf
 %doc README.*.md
-%doc /plugins/*/README.*.md
+%doc plugins/*/README.*.md
 
 %files gdm
 %_libexecdir/%gis_name
