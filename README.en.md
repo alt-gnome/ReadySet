@@ -36,6 +36,53 @@ Example for configuration can be found file [here](example/example.conf).
 
 Context configuration options can be found in plugins README.
 
+### Options
+
+#### `context`
+Cumulative option with `VAR=VALUE` format.
+
+#### `force-mode`
+Run application with this mode. Can be used only in `is_devel=true` build. Auto by default.
+
+#### `can-close`
+Make window closable anyway. `false` by default.
+
+#### `can-close`
+Make window closable anyway.
+
+#### `fullscreen`
+Run window in fullscreen.
+
+#### `installer`
+Specify installer plugin.
+
+#### `sandbox`
+Run without doing anything in system.
+
+#### `simple`
+Don't show indicators and keep window simple.
+
+#### `steps`
+Steps. E.g: `language,keyboard`.
+
+#### `resizable`
+Window can be resized or not. `false` by default.
+
+#### `width`
+Initial width of a window. 1000 by default.
+
+#### `height`
+Initial height of a window. 800 by default.
+
+#### `force-layout`
+Set layout for window: `big`, `small`, `vertical`, `horizontal`. Auto by default.
+
+#### `version`
+Print version information and exit.
+
+#### `conf-file`
+App config file.
+
 ## Translating
 
 You can help with translations via [ALT Gnome Translate](https://translate.alt-gnome.ru/projects/ready-set/#languages)
