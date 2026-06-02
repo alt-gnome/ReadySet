@@ -24,6 +24,11 @@ Source: %name-%version.tar
 
 Requires: %name-common = %EVR
 
+Obsoletes: %name-translation <= 0.3.0-alt1
+Provides: %name-translation = %EVR
+Obsoletes: %name-common <= 0.7.3-alt1
+Provides: %name-common = %EVR
+
 BuildRequires(pre): rpm-macros-meson
 BuildRequires(pre): rpm-macros-systemd
 BuildRequires: rpm-build-vala
@@ -66,28 +71,6 @@ Conflicts: %gis_name
 
 %description gdm
 %summary.
-
-%package common
-Summary: Common files for %name frontends
-Group: Other
-
-Obsoletes: %name-translation <= 0.3.0-alt1
-Provides: %name-translation = %EVR
-
-%description common
-%summary.
-
-# %package cli
-# Summary: CLI %name frontend
-# Group: Other
-
-# BuildArch: noarch
-
-# Requires: %name-common = %EVR
-# Conflicts: %name = %EVR
-
-# %description cli
-# %summary.
 
 %package -n %libname%api_version
 Summary: %name library
@@ -206,7 +189,7 @@ Requires: %name = %EVR
 %check
 %meson_test
 
-%files
+%files -f %name.lang
 %_libexecdir/%name
 %_iconsdir/hicolor/*/apps/%{app_id}*
 %_datadir/applications/%{app_id}*
@@ -217,6 +200,19 @@ Requires: %name = %EVR
 %_libdir/%name/plugins/installers/test-installer.plugin
 %_userunitdir/gnome-session.target.wants/%name-existing-user.service
 %_userunitdir/%name-existing-user.service
+%_libexecdir/%app_id
+%_sysconfdir/%name
+%_datadir/%name
+%_sharedstatedir/%name
+%_sysconfdir/dbus-1/system.d/%app_id.conf
+%_datadir/polkit-1/actions/%app_id.policy
+%_datadir/dbus-1/system-services/%app_id.service
+%_datadir/glib-2.0/schemas/%app_id.gschema.xml
+%_unitdir/%name.service
+%_sysusersdir/%name.conf
+%_tmpfilesdir/%name.conf
+%doc README.*.md
+%doc /plugins/*/README.*.md
 
 %files gdm
 %_libexecdir/%gis_name
@@ -230,22 +226,6 @@ Requires: %name = %EVR
 %_userunitdir/gnome-session@%gis_name.target.d
 %_sysusersdir/%gis_name.conf
 %_tmpfilesdir/%gis_name.conf
-
-# %files cli
-
-%files common -f %name.lang
-%_libexecdir/%app_id
-%_sysconfdir/%name
-%_datadir/%name
-%_sharedstatedir/%name
-%_sysconfdir/dbus-1/system.d/%app_id.conf
-%_datadir/polkit-1/actions/%app_id.policy
-%_datadir/dbus-1/system-services/%app_id.service
-%_datadir/glib-2.0/schemas/%app_id.gschema.xml
-%_unitdir/%name.service
-%_sysusersdir/%name.conf
-%_tmpfilesdir/%name.conf
-%doc README.en.md
 
 %files -n %libname%api_version
 %_libdir/%libname-%api_version.so.%api_version
