@@ -211,8 +211,6 @@ Requires: %name = %EVR
 %_unitdir/%name.service
 %_sysusersdir/%name.conf
 %_tmpfilesdir/%name.conf
-%doc README.*.md
-%doc plugins/*/README.*.md
 
 %files gdm
 %_libexecdir/%gis_name
