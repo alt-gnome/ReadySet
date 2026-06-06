@@ -34,6 +34,8 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
                 model.selection_changed.disconnect (update_selection);
             }
 
+            menu_list_box.bind_model (null, box_create_func);
+
             _model = value;
 
             menu_list_box.bind_model (_model, box_create_func);

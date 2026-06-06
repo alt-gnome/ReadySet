@@ -42,6 +42,9 @@ public sealed class ReadySet.PagesIndicator : Gtk.Box {
                 _model.items_changed.disconnect (on_items_changed);
             }
 
+            light_clear ();
+            positioned_stack.bind_model (null, positioned_stack_create_func);
+
             _model = value;
 
             positioned_stack.bind_model (_model, positioned_stack_create_func);
