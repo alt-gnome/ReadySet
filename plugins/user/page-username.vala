@@ -66,6 +66,8 @@ public class User.PageUsername : ReadySet.BasePage {
     }
 
     construct {
+        username_entry.changed.connect (username_changed);
+
         info_bin.notify["css-classes"].connect (() => {
             if (info_bin.has_css_class ("compact")) {
                 info_status_page.add_css_class ("compact");
@@ -115,7 +117,15 @@ public class User.PageUsername : ReadySet.BasePage {
     }
 
     void auto_enter_username () {
+        username_entry.changed.disconnect (username_changed);
         username_entry.text = get_auto_username ();
+        username_entry.changed.connect (username_changed);
+
+        if (username_entry.text == "") {
+            return;
+        }
+
+        check_username ();
     }
 
     [GtkCallback]
@@ -124,6 +134,10 @@ public class User.PageUsername : ReadySet.BasePage {
             auto_enter_username ();
         }
 
+        check_fullname ();
+    }
+
+    void check_fullname () {
         string error;
         var is_correct = fullname_is_correct (fullname_entry.text, out error);
         fullname_context_row.reveal_context = !is_correct;
@@ -137,12 +151,12 @@ public class User.PageUsername : ReadySet.BasePage {
 
     [GtkCallback]
     void username_changed () {
-        username_manually_entered = username_entry.text != get_auto_username ();
+        username_manually_entered = true;
 
-        if (!username_manually_entered && username_entry.text == "") {
-            return;
-        }
+        check_username ();
+    }
 
+    void check_username () {
         string error;
         var is_correct = username_is_correct (username_entry.text, false, out error);
         username_label.label = error;
