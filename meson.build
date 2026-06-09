@@ -1,7 +1,7 @@
 project(
   'ready-set',
   'vala',
-  version: '0.7.4',
+  version: '0.7.6',
   meson_version: '>= 1.9',
   license: 'GPL-3.0-or-later',
 )
@@ -32,7 +32,8 @@ posix_dep = meson.get_compiler('vala').find_library('posix')
 xkb_dep = dependency('xkbcommon')
 libserialize_dep = dependency('libserialize-7', version: '>= 7.5')
 
-api_version = meson.project_version().split('.')[0]
+libversion = meson.project_version().replace('.rc', '')
+soversion = libversion.split('.')[0]
 pascal_name = 'ReadySet'
 app_id = 'org.altlinux.' + pascal_name
 

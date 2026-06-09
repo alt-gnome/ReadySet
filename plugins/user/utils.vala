@@ -92,81 +92,6 @@ namespace User {
         return !is_empty;
     }
 
-    public string translit_char (unichar c) {
-        switch (c) {
-            case 'а': return "a";
-            case 'б': return "b";
-            case 'в': return "v";
-            case 'г': return "g";
-            case 'д': return "d";
-            case 'е': return "e";
-            case 'ё': return "yo";
-            case 'ж': return "zh";
-            case 'з': return "z";
-            case 'и': return "i";
-            case 'й': return "y";
-            case 'к': return "k";
-            case 'л': return "l";
-            case 'м': return "m";
-            case 'н': return "n";
-            case 'о': return "o";
-            case 'п': return "p";
-            case 'р': return "r";
-            case 'с': return "s";
-            case 'т': return "t";
-            case 'у': return "u";
-            case 'ф': return "f";
-            case 'х': return "kh";
-            case 'ц': return "ts";
-            case 'ч': return "ch";
-            case 'ш': return "sh";
-            case 'щ': return "shch";
-            case 'ъ': return "";
-            case 'ы': return "y";
-            case 'ь': return "";
-            case 'э': return "e";
-            case 'ю': return "yu";
-            case 'я': return "ya";
-
-            case 'А': return "A";
-            case 'Б': return "B";
-            case 'В': return "V";
-            case 'Г': return "G";
-            case 'Д': return "D";
-            case 'Е': return "E";
-            case 'Ё': return "Yo";
-            case 'Ж': return "Zh";
-            case 'З': return "Z";
-            case 'И': return "I";
-            case 'Й': return "Y";
-            case 'К': return "K";
-            case 'Л': return "L";
-            case 'М': return "M";
-            case 'Н': return "N";
-            case 'О': return "O";
-            case 'П': return "P";
-            case 'Р': return "R";
-            case 'С': return "S";
-            case 'Т': return "T";
-            case 'У': return "U";
-            case 'Ф': return "F";
-            case 'Х': return "Kh";
-            case 'Ц': return "Ts";
-            case 'Ч': return "Ch";
-            case 'Ш': return "Sh";
-            case 'Щ': return "Shch";
-            case 'Ъ': return "";
-            case 'Ы': return "Y";
-            case 'Ь': return "";
-            case 'Э': return "E";
-            case 'Ю': return "Yu";
-            case 'Я': return "Ya";
-
-            default: return c.to_string ();
-        }
-    }
-
-
     string correct_username (string username) {
         const int MAXNAMELEN = 32;
 
@@ -190,9 +115,9 @@ namespace User {
             } else if (c >= 'a' && c <= 'z') {
                 corrected_builder.append_unichar (c);
             } else if (c >= 'А' && c <= 'Я') {
-                corrected_builder.append (translit_char (c.tolower ()));
+                corrected_builder.append (translit_char_cyrillic (c.tolower ()));
             } else if (c >= 'а' && c <= 'я') {
-                corrected_builder.append (translit_char (c));
+                corrected_builder.append (translit_char_cyrillic (c));
             } else if (c >= '0' && c <= '9') {
                 if (corrected_builder.len > 0) {
                     corrected_builder.append_unichar (c);

@@ -22,8 +22,6 @@ VCS: https://altlinux.space/alt-gnome/ReadySet.git
 
 Source: %name-%version.tar
 
-Requires: %name-common = %EVR
-
 Obsoletes: %name-translation <= 0.3.0-alt1
 Provides: %name-translation = %EVR
 Obsoletes: %name-common <= 0.7.3-alt1

@@ -13,7 +13,7 @@ custom_target(
     librs_sources,
     '--target-glib=' + glib_min_version,
     '--package-name=' + librs_versioned_name,
-    '--package-version=' + meson.project_version(),
+    '--package-version=' + libversion,
     '--verbose',
     '--force',
     '-o', meson.current_build_dir() / valadoc_vala_dir,
@@ -21,25 +21,5 @@ custom_target(
   build_by_default: true,
   input : librs_sources,
   output: valadoc_vala_dir,
-  depends: librs,
-)
-
-valadoc_cdocs_dir = meson.project_name() + '-cdocs'
-custom_target(
-  'cdocs',
-  command: [ valadoc ] + pkgs +
-  [
-    librs_sources,
-    '--target-glib=' + glib_min_version,
-    '--package-name=' + librs_versioned_name,
-    '--package-version=' + meson.project_version(),
-    '--verbose',
-    '--force',
-    '-o', meson.current_build_dir() / valadoc_cdocs_dir,
-    '--doclet-arg=' + 'lib' / 'src' / librs_header_name,
-    '--doclet=gtkdoc',
-  ],
-  build_by_default: true,
-  output: valadoc_cdocs_dir,
   depends: librs,
 )
