@@ -37,6 +37,8 @@ public sealed class ReadySet.Application: Adw.Application {
     Gee.HashMap<string, StepAddin> steps_plugins = new Gee.HashMap<string, StepAddin> ();
     Gee.HashMap<string, InstallerAddin> installers_plugins = new Gee.HashMap<string, InstallerAddin> ();
 
+    Gee.ArrayList<Binding> context_bindings = new Gee.ArrayList<Binding> ();
+
     public bool can_close {
         get {
             return Config.IS_DEVEL || options_handler.can_close;
@@ -289,6 +291,11 @@ public sealed class ReadySet.Application: Adw.Application {
     public async void init_pages () {
         var pages = new Gee.ArrayList<PageInfo> ();
 
+        foreach (var binding in context_bindings) {
+            binding.unbind ();
+        }
+        context_bindings.clear ();
+
         string[] enabled_plugins = {};
 
         var rs_settings = new Settings ("org.altlinux.ReadySet");
@@ -324,12 +331,13 @@ public sealed class ReadySet.Application: Adw.Application {
 
                 //  There is not need in disabling welcome plugin in existing-user mode
                 if (steps[i] != "welcome") {
-                    context.bind_context_to_property (
+                    var binding = context.bind_context_to_property (
                         "step-%s-enabled".printf (steps[i]),
                         addin,
                         "enabled",
                         SYNC_CREATE | BIDIRECTIONAL
                     );
+                    context_bindings.add (binding);
                 }
 
                 if (!(steps[i] in inited_plugins)) {

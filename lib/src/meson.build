@@ -60,9 +60,10 @@ foreach dep : librs_dependencies
   librs_deps_pkgs += [dep.name()]
 endforeach
 
-librs = shared_library(
+librs = library(
   librs_versioned_name,
   librs_sources_with_resources,
+  soversion: api_version,
   dependencies: librs_dependencies,
   vala_header: librs_header_name,
   vala_vapi: librs_vapi_name,

@@ -33,7 +33,7 @@ public sealed class ReadySet.OptionsHandler : Object {
 
     internal const OptionEntry[] OPTION_ENTRIES = {
         {
-            "context", 'c',
+            "context", '\0',
             0, OptionArg.STRING_ARRAY,
             null,
             N_("Context vars"),
@@ -56,56 +56,56 @@ public sealed class ReadySet.OptionsHandler : Object {
             null
         },
         {
-            "fullscreen", 'F',
+            "fullscreen", '\0',
             0, OptionArg.NONE,
             null,
             N_("Run window in fullscreen"),
             null
         },
         {
-            "installer", 'I',
+            "installer", '\0',
             0, OptionArg.STRING,
             null,
             N_("Specify installer plugin"),
             "INSTALLER"
         },
         {
-            "sandbox", 'i',
+            "sandbox", '\0',
             0, OptionArg.NONE,
             null,
             N_("Sandbox run without doing anything in system"),
             null
         },
         {
-            "simple", 'S',
+            "simple", '\0',
             0, OptionArg.NONE,
             null,
             N_("Don't show indicators and keep window simple"),
             null
         },
         {
-            "steps", 's',
+            "steps", '\0',
             0, OptionArg.STRING,
             null,
             N_("Steps. E.g: `steps=language,keyboard`"),
             "STEPS"
         },
         {
-            "resizable", 'r',
+            "resizable", '\0',
             0, OptionArg.NONE,
             null,
             N_("Window can be resized or not"),
             null
         },
         {
-            "width", 'w',
+            "width", '\0',
             0, OptionArg.INT,
             null,
             N_("Width of a window"),
             "WIDTH"
         },
         {
-            "height", 'h',
+            "height", '\0',
             0, OptionArg.INT,
             null,
             N_("Height of a window"),
@@ -119,14 +119,14 @@ public sealed class ReadySet.OptionsHandler : Object {
             "FORCE_LAYOUT"
         },
         {
-            "version", 'v',
+            "version", '\0',
             0, OptionArg.NONE,
             null,
             N_("Print version information and exit"),
             null
         },
         {
-            OPT_CONF_FILE, 'C',
+            OPT_CONF_FILE, '\0',
             0, OptionArg.FILENAME,
             null,
             N_("App config file"),
