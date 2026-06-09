@@ -1,9 +1,9 @@
 librs_name = 'lib' + meson.project_name()
 librs_gir_name = pascal_name
 
-librs_versioned_name = meson.project_name() + '-' + api_version
-librs_versioned_lib_name = librs_name + '-' + api_version
-librs_versioned_gir_name = librs_gir_name + '-' + api_version
+librs_versioned_name = meson.project_name() + '-' + soversion
+librs_versioned_lib_name = librs_name + '-' + soversion
+librs_versioned_gir_name = librs_gir_name + '-' + soversion
 
 librs_deps_name = librs_versioned_lib_name + '.deps'
 librs_header_name = librs_versioned_lib_name + '.h'
@@ -64,12 +64,12 @@ endforeach
 librs = library(
   librs_versioned_name,
   librs_sources_with_resources,
-  soversion: api_version,
+  soversion: soversion,
   dependencies: librs_dependencies,
   vala_header: librs_header_name,
   vala_vapi: librs_vapi_name,
   vala_gir: librs_gir_name,
-  version: meson.project_version(),
+  version: libversion,
   install: true,
   install_dir: [true, true, true, true],
   # install_vala_header: true,
@@ -121,6 +121,6 @@ pkgconfig.generate(
   requires: librs_dependencies,
   subdirs: [ librs_versioned_name ],
   description: 'ReadySet library',
-  version: meson.project_version(),
+  version: libversion,
   url: 'https://altlinux.space/alt-gnome/ReadySet',
 )
