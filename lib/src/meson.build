@@ -45,6 +45,7 @@ librs_c_args = [
 
 rs_app_vala_args = [
   '--vapidir', meson.project_source_root() / 'vapi',
+  '--vapi-comments',
 ]
 
 librs_dependencies = [
