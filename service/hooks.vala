@@ -45,7 +45,7 @@ namespace ReadySet {
         exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "post-hooks", "system"), env);
     }
 
-    void exec_hooks (File hooks_dir, string[] env) throws Error {
+    internal void exec_hooks (File hooks_dir, string[] env) throws Error {
         var enumerator = hooks_dir.enumerate_children (
             "%s,%s,%s".printf (
                 FileAttribute.STANDARD_NAME,

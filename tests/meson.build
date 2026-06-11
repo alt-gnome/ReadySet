@@ -37,3 +37,35 @@ test('context',
     dependencies: librs_dependencies,
   )
 )
+
+test('service-env-exec',
+  executable('service-env-exec',
+    sources: [
+      'test-service-env-exec.vala',
+      service_sources / 'hooks.vala',
+      rs_internal_vapi_sources,
+    ],
+    include_directories: rs_internal_config_h_dir,
+    dependencies: [
+      gio_dep,
+      polkit_dep,
+      posix_dep,
+    ],
+  )
+)
+
+test('service-hooks',
+  executable('service-hooks',
+    sources: [
+      'test-service-hooks.vala',
+      service_sources / 'hooks.vala',
+      rs_internal_vapi_sources,
+    ],
+    include_directories: rs_internal_config_h_dir,
+    dependencies: [
+      gio_dep,
+      polkit_dep,
+      posix_dep,
+    ],
+  )
+)
