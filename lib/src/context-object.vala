@@ -23,6 +23,12 @@
  * can be registered.
  */
 public abstract class ReadySet.ContextObject : Object {
+
+    /**
+     * String interpretation of `this`.
+     */
+    public abstract string string_value { get; set; }
+
     /**
      * Copy func for {@link ContextObject}.
      */
