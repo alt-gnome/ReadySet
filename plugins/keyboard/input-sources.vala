@@ -20,6 +20,23 @@
 
 public sealed class Keyboard.InputSources : ReadySet.ContextObject {
 
+    public override string string_format {
+        owned get {
+            string[] parts = {};
+            foreach (var info in data) {
+                parts += info.format;
+            }
+            return string.joinv (",", parts);
+        }
+        set {
+            data.clear ();
+            var parts = value.split (",");
+            foreach (var part in parts) {
+                add (new InputInfo.from_format (part));
+            }
+        }
+    }
+
     Gee.ArrayList<InputInfo> data = new Gee.ArrayList<InputInfo> (InputInfo.equal);
 
     public int size {

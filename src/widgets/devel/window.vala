@@ -168,7 +168,7 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
                 case OBJECT:
                     var erow = new Adw.ActionRow () {
                         title = key,
-                        subtitle = context.get_object (key).get_type ().name (),
+                        subtitle = ((ContextObject) context.get_object (key)).string_format,
                     };
                     row = erow;
                     break;
