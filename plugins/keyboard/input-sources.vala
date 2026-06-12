@@ -84,6 +84,16 @@ public sealed class Keyboard.InputSources : ReadySet.ContextObject {
         data.insert (data.index_of (where), what);
     }
 
+    public void clear_automatically_added () {
+        var to_remove = new Gee.ArrayList<InputInfo> (InputInfo.equal);
+        to_remove.add_all_iterator (data.filter (automatically_added_filter_func));
+        data.remove_all (to_remove);
+    }
+
+    bool automatically_added_filter_func (InputInfo info) {
+        return info.added_automatically;
+    }
+
     public override ReadySet.ContextObject copy () {
         var new_set = new InputSources ();
         new_set.add_many (data.to_array ());

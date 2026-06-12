@@ -32,6 +32,8 @@ public class Keyboard.InputInfo : Object {
 
     public bool is_latin { get; construct; }
 
+    public bool added_automatically { get; set; }
+
     public InputInfo (string type, string id_) {
         Object (
             id: id_,
