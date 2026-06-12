@@ -21,8 +21,8 @@
 private class TestContextObject : ReadySet.ContextObject {
     public string data { get; set; }
 
-    public override string string_value {
-        get { return data; }
+    public override string string_format {
+        owned get { return data; }
         set { data = value; }
     }
 
@@ -69,7 +69,7 @@ ReadySet.Context create_test_context () {
     vars.insert (KEY_STRV, new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV, new string[] { "a", "b" }));
 
     var default_obj = new TestContextObject (DEFAULT_OBJECT_DATA);
-    vars.insert (KEY_OBJECT, new ReadySet.ContextVarInfo (ReadySet.ContextType.OBJECT, default_obj));
+    vars.insert (KEY_OBJECT, new ReadySet.ContextVarInfo.object (typeof (TestContextObject), default_obj));
 
     ctx.register_vars (vars);
     return ctx;
