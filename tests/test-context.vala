@@ -235,7 +235,9 @@ void test_object_default () {
         Test.fail_printf ("Expected object to not be null");
     }
     if (((TestContextObject) obj).data != DEFAULT_OBJECT_DATA) {
-        Test.fail_printf ("Expected object data to be '%s', got '%s'", DEFAULT_OBJECT_DATA, ((TestContextObject) obj).data);
+        Test.fail_printf (
+            "Expected object data to be '%s', got '%s'", DEFAULT_OBJECT_DATA, ((TestContextObject) obj).data
+        );
     }
 }
 
@@ -624,7 +626,11 @@ void test_context_reset_object () {
 
     ctx.reset (KEY_OBJECT);
     if (((TestContextObject) ctx.get_object (KEY_OBJECT)).data != DEFAULT_OBJECT_DATA) {
-        Test.fail_printf ("Expected '%s' after reset, got '%s'", DEFAULT_OBJECT_DATA, ((TestContextObject) ctx.get_object (KEY_OBJECT)).data);
+        Test.fail_printf (
+            "Expected '%s' after reset, got '%s'", DEFAULT_OBJECT_DATA, (
+                (TestContextObject) ctx.get_object (KEY_OBJECT)
+            ).data
+        );
     }
 }
 
