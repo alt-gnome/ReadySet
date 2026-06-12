@@ -566,6 +566,15 @@ public class ReadySet.Context : Object {
         set_value (key, value);
     }
 
+    public void set_object_string (string key, owned string value) {
+        if (check_key (key)) {
+            set_object (key, (ContextObject) Object.new (
+                data[key].object_type,
+                "string-format", value ?? ""
+            ));
+        }
+    }
+
     public ContextObject? get_object (string key) {
         if (check_key (key, OBJECT)) {
             return (ContextObject?) data[key].real_value.get_object ();
