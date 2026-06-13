@@ -47,9 +47,8 @@ public sealed class ReadySet.PluginManager : Object {
     }
 
     public InstallerAddin get_installer_plugin ()
-        requires (installer_name != null)
-        requires (installers_plugins.contains (installer_name))
-    {
+    requires (installer_name != null)
+    requires (installers_plugins.contains (installer_name)) {
         return installers_plugins[installer_name];
     }
 
@@ -82,10 +81,9 @@ public sealed class ReadySet.PluginManager : Object {
     }
 
     public BasePage build_installer_page (string page_id)
-        requires (installer_name != null)
-        requires (page_id.has_prefix (INSTALLER_STEP_PREFIX))
-        requires (get_installer_plugin ().has_page (get_real_page_id (page_id)))
-    {
+    requires (installer_name != null)
+    requires (page_id.has_prefix (INSTALLER_STEP_PREFIX))
+    requires (get_installer_plugin ().has_page (get_real_page_id (page_id))) {
         return get_installer_plugin ().build_page (get_real_page_id (page_id));
     }
 
