@@ -43,7 +43,7 @@ namespace ReadySet {
             unowned EnumClass enum_class = (EnumClass) typeof (LayoutMode).class_peek ();
             var enum_value = enum_class.get_value_by_nick (str);
             if (enum_value == null) {
-                error ("Unsupported unum value: %s", str);
+                error ("Unsupported enum value: %s", str);
             }
             return (LayoutMode) enum_value.value;
         }
