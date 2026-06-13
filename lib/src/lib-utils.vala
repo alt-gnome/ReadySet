@@ -20,7 +20,6 @@
 
 namespace ReadySet {
 
-#if FOR_APPLICATION
     internal void init_lib_css () {
         var provider = new Gtk.CssProvider ();
         provider.load_from_resource ("/org/altlinux/ReadySet/Lib/style.css");
@@ -30,7 +29,6 @@ namespace ReadySet {
             Gtk.STYLE_PROVIDER_PRIORITY_THEME
         );
     }
-#endif
 
     public enum LayoutMode {
         VERTICAL,
@@ -38,7 +36,6 @@ namespace ReadySet {
         BIG,
         SMALL;
 
-#if FOR_APPLICATION
         internal static LayoutMode from_string (string str) {
             unowned EnumClass enum_class = (EnumClass) typeof (LayoutMode).class_peek ();
             var enum_value = enum_class.get_value_by_nick (str);
@@ -47,7 +44,6 @@ namespace ReadySet {
             }
             return (LayoutMode) enum_value.value;
         }
-#endif
     }
 
     public enum Mode {
@@ -160,7 +156,6 @@ namespace ReadySet {
             return new ApplyError.BASE (new ApplyErrorData (message, description).to_json ());
         }
 
-#if FOR_APPLICATION
         internal static ApplyErrorData to_data (ApplyError error) {
             try {
                 return Serialize.JsonWorker.simple_from_json<ApplyErrorData> (error.message);
@@ -169,7 +164,6 @@ namespace ReadySet {
                 return new ApplyErrorData (_("Something went wrong"), error.message);
             }
         }
-#endif
     }
 
     /**
@@ -207,7 +201,6 @@ namespace ReadySet {
         yield process.wait_check_async (cancellable);
     }
 
-#if FOR_APPLICATION
     internal Value kf_value_to_value (KeyFile keyfile, string group_name, string key, Type value_type) throws Error {
         if (value_type == Type.BOOLEAN) {
             return keyfile.get_boolean (group_name, key);
@@ -223,5 +216,4 @@ namespace ReadySet {
             error ("Unknown keyfile desired type %s for key %s", value_type.name (), key);
         }
     }
-#endif
 }

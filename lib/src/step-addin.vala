@@ -101,7 +101,6 @@ public abstract class ReadySet.StepAddin : ExtensionBase {
      */
     public virtual bool enabled { get; set; default = true; }
 
-#if FOR_APPLICATION
     internal void load_css_for_display (Gdk.Display display) {
         var provider = new Gtk.CssProvider ();
         if (resource_base_path != null) {
@@ -119,7 +118,6 @@ public abstract class ReadySet.StepAddin : ExtensionBase {
             }
         }
     }
-#endif
 
     /**
      * Whether plugin support running without special permissuin for
