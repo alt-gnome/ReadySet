@@ -193,10 +193,10 @@ public sealed class ReadySet.Application: Adw.Application {
                     addin.context = context;
                     addin.load_css_for_display (Gdk.Display.get_default ());
 
-                    //  There is no need in disabling welcome plugin
-                    if (steps[i] != "welcome") {
+                    var ckey = "step-%s-enabled".printf (steps[i]);
+                    if (context.has_key (ckey)) {
                         var binding = context.bind_context_to_property (
-                            "step-%s-enabled".printf (steps[i]),
+                            ckey,
                             addin,
                             "enabled",
                             SYNC_CREATE | BIDIRECTIONAL
