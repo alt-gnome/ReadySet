@@ -173,6 +173,15 @@ Requires: %name = %EVR
 %description plugin-welcome
 %summary.
 
+%package plugin-tests
+Summary: %name tests plugins
+Group: Other
+
+Requires: %name = %EVR
+
+%description plugin-tests
+%summary.
+
 %prep
 %setup
 
@@ -192,10 +201,6 @@ Requires: %name = %EVR
 %_iconsdir/hicolor/*/apps/%{app_id}*
 %_datadir/applications/%{app_id}*
 %_datadir/polkit-1/rules.d/%app_id.rules
-%_libdir/%name/plugins/steps/libtests.so
-%_libdir/%name/plugins/steps/tests.plugin
-%_libdir/%name/plugins/installers/libtest-installer.so
-%_libdir/%name/plugins/installers/test-installer.plugin
 %_userunitdir/gnome-session.target.wants/%name-existing-user.service
 %_userunitdir/%name-existing-user.service
 %_libexecdir/%app_id
@@ -270,3 +275,9 @@ Requires: %name = %EVR
 %files plugin-welcome
 %_libdir/%name/plugins/steps/welcome.plugin
 %_libdir/%name/plugins/steps/libwelcome.so
+
+%files plugin-tests
+%_libdir/%name/plugins/steps/libtests.so
+%_libdir/%name/plugins/steps/tests.plugin
+%_libdir/%name/plugins/installers/libtest-installer.so
+%_libdir/%name/plugins/installers/test-installer.plugin
