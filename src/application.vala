@@ -407,7 +407,10 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     void reload_window () {
-        (active_window as ReadySet.Window)?.reload_window ();
+        var window = active_window as ReadySet.Window;
+        if (window != null) {
+            window.reload_window.begin ();
+        }
     }
 
     public override void activate () {

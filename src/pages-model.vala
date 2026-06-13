@@ -97,10 +97,6 @@ public sealed class ReadySet.PageInfo : Object {
         );
     }
 
-    internal inline static bool equal_id (PageInfo a, PageInfo b) {
-        return a.id == b.id;
-    }
-
     void update_accessible () {
         if (plugin != null) {
             accessible = plugin.enabled && page.accessible;

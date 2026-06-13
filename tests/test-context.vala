@@ -516,7 +516,11 @@ void test_load_from_keyfile () {
     kf.set_double ("TestGroup", KEY_DOUBLE, 1.5);
     kf.set_string_list ("TestGroup", KEY_STRV, { "p", "q" });
 
-    ctx.load_from_keyfile (kf, "TestGroup");
+    try {
+        ctx.load_from_keyfile (kf, "TestGroup");
+    } catch (Error e) {
+        Test.fail_printf ("Unexpected error: %s", e.message);
+    }
 
     if (ctx.get_string (KEY_STRING) != "from-keyfile") {
         Test.fail_printf ("Expected 'from-keyfile', got '%s'", ctx.get_string (KEY_STRING));
@@ -547,7 +551,12 @@ void test_load_from_keyfile_missing_group () {
     var kf = new KeyFile ();
     kf.set_string ("OtherGroup", KEY_STRING, "value");
 
-    ctx.load_from_keyfile (kf, "TestGroup");
+    try {
+        ctx.load_from_keyfile (kf, "TestGroup");
+    } catch (Error e) {
+        Test.fail_printf ("Unexpected error: %s", e.message);
+    }
+
     if (ctx.get_string (KEY_STRING) != DEFAULT_STRING) {
         Test.fail_printf ("Expected '%s', got '%s'", DEFAULT_STRING, ctx.get_string (KEY_STRING));
     }
@@ -558,7 +567,12 @@ void test_load_from_keyfile_unknown_key () {
     var kf = new KeyFile ();
     kf.set_string ("TestGroup", KEY_STRING, "valid-value");
 
-    ctx.load_from_keyfile (kf, "TestGroup");
+    try {
+        ctx.load_from_keyfile (kf, "TestGroup");
+    } catch (Error e) {
+        Test.fail_printf ("Unexpected error: %s", e.message);
+    }
+
     if (ctx.get_string (KEY_STRING) != "valid-value") {
         Test.fail_printf ("Expected 'valid-value', got '%s'", ctx.get_string (KEY_STRING));
     }
