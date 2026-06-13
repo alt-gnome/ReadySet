@@ -77,12 +77,7 @@ public abstract class ReadySet.InstallerAddin : ExtensionBase {
         return null;
     }
 
-    /**
-     * Check if page with given id exists.
-     *
-     * @returns `true` if page can be built, `false` otherwise.
-     */
-    public bool has_page (string id) {
+    internal bool has_page (string id) {
         return id in all_pages;
     }
 }
