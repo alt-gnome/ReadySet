@@ -44,3 +44,5 @@ install_emptydir(datadir / meson.project_name() / 'post-hooks' / 'user')
 # Works in installer or initial-setup modes
 install_emptydir(datadir / meson.project_name() / 'pre-hooks' / 'system')
 install_emptydir(datadir / meson.project_name() / 'post-hooks' / 'system')
+install_emptydir(datadir / meson.project_name() / 'installer-pre-hooks' / 'system')
+install_emptydir(datadir / meson.project_name() / 'installer-post-hooks' / 'system')

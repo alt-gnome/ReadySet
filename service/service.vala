@@ -24,13 +24,25 @@ public sealed class ReadySet.Service : Object {
     public void exec_pre_hooks (string[] env, BusName sender) throws Error {
         polkit_check (sender, "org.altlinux.ReadySet.ExecPreHooks");
 
-        exec_user_pre_hooks (env);
+        real_exec_pre_hooks (env);
     }
 
     public void exec_post_hooks (string[] env, BusName sender) throws Error {
         polkit_check (sender, "org.altlinux.ReadySet.ExecPostHooks");
 
-        exec_user_post_hooks (env);
+        real_exec_post_hooks (env);
+    }
+
+    public void exec_installer_pre_hooks (string[] env, BusName sender) throws Error {
+        polkit_check (sender, "org.altlinux.ReadySet.ExecInstallerPreHooks");
+
+        real_exec_installer_pre_hooks (env);
+    }
+
+    public void exec_installer_post_hooks (string[] env, BusName sender) throws Error {
+        polkit_check (sender, "org.altlinux.ReadySet.ExecInstallerPostHooks");
+
+        real_exec_installer_post_hooks (env);
     }
 
     public void copy_to_user (string src, string dest, string username, BusName sender) throws Error {

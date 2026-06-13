@@ -18,29 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class TestInstaller.Addin : ReadySet.InstallerAddin {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Installer/TestInstaller/ui/disks-page.ui")]
+public sealed class TestInstaller.DisksPage : ReadySet.BasePage {
 
-    protected override string[] all_pages {
-        owned get {
-            return { "disks" };
-        }
-    }
 
-    public async override void install (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
-        message ("Test Installer GOOD");
-    }
-
-    public override ReadySet.BasePage? build_page (string id) {
-        switch (id) {
-            case "disks":
-                return new DisksPage ();
-        }
-
-        return null;
-    }
-}
-
-public void peas_register_types (TypeModule module) {
-    var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySet.InstallerAddin), typeof (TestInstaller.Addin));
 }

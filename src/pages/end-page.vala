@@ -73,6 +73,10 @@ public sealed class ReadySet.EndPage : Adw.Bin {
         for (int i = 0; i < app.model.get_n_items (); i++) {
             var page_info = (PageInfo) app.model.get_item (i);
 
+            if (page_info.plugin == null) {
+                continue;
+            }
+
             if (!(page_info.plugin in steps_addins_arr) &&
                 page_info.plugin.enabled && page_info.plugin_info.module_name != "welcome") {
                 steps_addins_arr.add (page_info.plugin);
@@ -140,9 +144,11 @@ public sealed class ReadySet.EndPage : Adw.Bin {
                         }
 
                         if (context.mode == Mode.INITIAL_SETUP) {
-                            yield exec_user_post_hooks (env.to_array ());
+                            yield real_exec_post_hooks (env.to_array ());
+                            yield get_ready_set_proxy ().exec_post_hooks (env.to_array ());
+                        } else if (context.mode == Mode.INSTALLER) {
+                            yield get_ready_set_proxy ().exec_installer_post_hooks (env.to_array ());
                         }
-                        yield get_ready_set_proxy ().exec_post_hooks (env.to_array ());
                     }
                 } catch (IOError e) {
                     warning ("IOError on executing post hooks: %s", e.message);

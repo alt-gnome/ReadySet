@@ -151,6 +151,7 @@ Summary: %name user plugin with passwdqc support
 Group: Other
 
 Requires: %name-plugin-user-common = %EVR
+Conflicts: %name-plugin-user-pwquality
 
 %description plugin-user-passwdqc
 %summary.

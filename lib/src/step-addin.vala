@@ -88,36 +88,12 @@
  */
 public abstract class ReadySet.StepAddin : ExtensionBase {
 
-    protected virtual string? resource_base_path {
-        get {
-            return null;
-        }
-    }
-
     /**
      * Whether `step` enabled or not.
      *
      * @see ReadySet.StepAddin
      */
     public virtual bool enabled { get; set; default = true; }
-
-    internal void load_css_for_display (Gdk.Display display) {
-        var provider = new Gtk.CssProvider ();
-        if (resource_base_path != null) {
-            try {
-                var bytes = resources_lookup_data (
-                    Path.build_filename (resource_base_path, "style.css"),
-                    ResourceLookupFlags.NONE
-                );
-
-                provider = new Gtk.CssProvider ();
-                provider.load_from_bytes (bytes);
-                Gtk.StyleContext.add_provider_for_display (display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-            } catch (Error e) {
-                debug ("style.css doesn't provides by resources");
-            }
-        }
-    }
 
     /**
      * Whether plugin support running without special permissuin for
@@ -134,17 +110,4 @@ public abstract class ReadySet.StepAddin : ExtensionBase {
      * Build pages for application.
      */
     public async abstract BasePage[] build_pages ();
-
-    /**
-     * Get context variables for registration. Calls by application.
-     * Better to this for getting created {@link HashTable}.
-     * {{{
-     *  base.get_context_vars ()
-     * }}}
-     *
-     */
-    public virtual HashTable<string, ContextVarInfo> get_context_vars () {
-        var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
-        return vars;
-    }
 }

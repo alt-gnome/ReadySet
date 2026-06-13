@@ -100,6 +100,8 @@ internal class ReadySet.ValueObject : Object {
         }
     }
 
+    public string data_key;
+
     public Value? default_value { get; construct; }
 
     unowned ContextGetterFunc? getter_func = null;
@@ -445,7 +447,7 @@ public class ReadySet.Context : Object {
         }
         debug ("Registering key %s with type %s", key, info.value_type.to_string ());
         data[key] = new ValueObject (info);
-        data[key].set_data<string> ("data-key", key);
+        data[key].data_key = key;
         if (info.getter_func != null) {
             data[key].set_getter (info.getter_func);
         }
@@ -456,7 +458,7 @@ public class ReadySet.Context : Object {
     }
 
     void real_value_changed (Object caller, ParamSpec param) {
-        data_changed (((ValueObject) caller).get_data<string> ("data-key"));
+        data_changed (((ValueObject) caller).data_key);
     }
 
     internal void load_from_keyfile (KeyFile keyfile, string group_name) throws Error {
