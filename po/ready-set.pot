@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-31 20:41+0000\n"
+"POT-Creation-Date: 2026-06-13 23:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,7 +94,7 @@ msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
 #. It's not json string, just return message
-#: lib/src/lib-utils.vala:169
+#: lib/src/lib-utils.vala:164
 msgid "Something went wrong"
 msgstr ""
 
@@ -144,7 +144,7 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: plugins/keyboard/plugin.vala:112
+#: plugins/keyboard/plugin.vala:114
 msgid "Error when setting keyboard layout"
 msgstr ""
 
@@ -183,6 +183,10 @@ msgstr ""
 
 #: plugins/license-agreement/data/ui/page.blp:34
 msgid "I have read the license and accept it"
+msgstr ""
+
+#: plugins/test-installer/data/ui/disks-page.blp:5
+msgid "Disks"
 msgstr ""
 
 #: plugins/tests/data/ui/page.blp:23 plugins/tests/data/ui/page.blp:32
@@ -384,29 +388,29 @@ msgstr ""
 msgid "Name cannot be empty"
 msgstr ""
 
-#: plugins/user/utils.vala:255
+#: plugins/user/utils.vala:180
 msgid "That username isn't available. Please try another"
 msgstr ""
 
-#: plugins/user/utils.vala:257
+#: plugins/user/utils.vala:182
 msgid "The username is too long"
 msgstr ""
 
-#: plugins/user/utils.vala:259
+#: plugins/user/utils.vala:184
 msgid "The username must start with a lower case letter from a-z"
 msgstr ""
 
-#: plugins/user/utils.vala:261
+#: plugins/user/utils.vala:186
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
 msgstr ""
 
-#: plugins/user/utils.vala:264
+#: plugins/user/utils.vala:189
 msgid "Username cannot be empty"
 msgstr ""
 
-#: plugins/user/utils.vala:368
+#: plugins/user/utils.vala:293
 msgid "The password must consist of at least one character"
 msgstr ""
 
@@ -440,12 +444,12 @@ msgstr ""
 msgid "Ready Set"
 msgstr ""
 
-#. Translators: NAME <EMAIL.COM> /n NAME <EMAIL.COM>
+#. Translators: NAME <EMAIL.COM>
 #: src/about.vala:38
 msgid "translator-credits"
 msgstr ""
 
-#: src/application.vala:382
+#: src/application.vala:287
 msgid "No steps specified"
 msgstr ""
 
@@ -505,20 +509,20 @@ msgstr ""
 msgid "App config file"
 msgstr ""
 
-#: src/pages/end-page.vala:84
+#: src/pages/end-page.vala:88
 msgid "Installing system…"
 msgstr ""
 
-#: src/pages/end-page.vala:105
+#: src/pages/end-page.vala:109
 #, c-format
 msgid "Applying %s…"
 msgstr ""
 
-#: src/pages/end-page.vala:182 src/pages/end-page.vala:188
+#: src/pages/end-page.vala:194 src/pages/end-page.vala:200
 #, c-format
 msgid "Error message: %s"
 msgstr ""
 
-#: src/pages/end-page.vala:187
+#: src/pages/end-page.vala:199
 msgid "Error while execute post hooks"
 msgstr ""
