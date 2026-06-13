@@ -378,7 +378,12 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     bool check_nothing_to_do (string[] enabled_plugins) {
-        bool ntd = false;
+        var settings = new Settings ("org.altlinux.ReadySet");
+        if (!settings.get_boolean ("existing-user-mode-enabled")) {
+            return true;
+        }
+
+        var ntd = false;
 
         if (enabled_plugins.length == 1) {
             if (enabled_plugins[0] == "welcome") {
