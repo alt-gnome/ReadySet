@@ -156,10 +156,13 @@ public sealed class ReadySet.PluginManager : Object {
 
                 context.register_vars (addin.get_context_vars ());
 
-                var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
-                var var_name = "step-%s-enabled".printf (steps[i]);
-                vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN, true);
-                context.register_vars (vars);
+                //  There is no need in disabling welcome plugin
+                if (steps[i] != "welcome") {
+                    var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
+                    var var_name = "step-%s-enabled".printf (steps[i]);
+                    vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN, true);
+                    context.register_vars (vars);
+                }
 
                 passed_steps += steps[i];
             }
