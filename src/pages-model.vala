@@ -87,7 +87,7 @@ public sealed class ReadySet.PageInfo : Object {
 
         page.notify["accessible"].connect (update_accessible);
         if (plugin != null) {
-            plugin.notify["accessible"].connect (update_accessible);
+            plugin.notify["enabled"].connect (update_accessible);
         }
         update_accessible ();
 
