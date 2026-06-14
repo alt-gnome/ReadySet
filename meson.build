@@ -29,6 +29,7 @@ polkit_dep = dependency('polkit-gobject-1')
 posix_dep = meson.get_compiler('vala').find_library('posix')
 xkb_dep = dependency('xkbcommon')
 libserialize_dep = dependency('libserialize-7', version: '>= 7.5')
+gweather_dep = dependency('gweather4')
 
 libversion = meson.project_version().replace('.rc', '')
 soversion = libversion.split('.')[0]

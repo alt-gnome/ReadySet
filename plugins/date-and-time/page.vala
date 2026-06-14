@@ -20,36 +20,77 @@
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/DateAndTime/ui/page.ui")]
 public sealed class DateAndTime.Page : ReadySet.BasePage {
-    public string timezone_label { get; set; default = "Goida (Heaven +∞)"; }
+    string default_timezone_label = _("Choose time zone");
+    string default_date_and_time_label = _("Choose date and time");
+
+    public string timezone_label { get; set; }
+    public string date_and_time_label { get; set; }
+
+    public bool automatic_timezone { get; set; }
+    public bool automatic_date_and_time { get; set; }
+
     public Gtk.StringList timezone_model { get; set; default = new Gtk.StringList (null); }
 
-    public string date_label { get; set; default = "Fuck fuck FUCK"; }
-    public string time_label { get; set; default = "Fu:ck"; }
-
-    public bool automatic_timezone { get; set; default = false; }
-    public bool automatic_date_and_time { get; set; default = false; }
-
-    public Settings datetime_settings = new Settings ("org.gnome.desktop.datetime");
+    TimeZone selected_timezone { get; set; }
+    DateTime selected_datetime { get; set; }
 
     static construct {
         typeof (TimezoneList).ensure ();
+        typeof (TimezoneListItem).ensure ();
+        typeof (TimezoneListRow).ensure ();
+
         typeof (DateAndTimeSelector).ensure ();
     }
 
-    [GtkCallback]
-    void on_automatic_timezone_changed () {
-        datetime_settings.set_boolean ("automatic-timezone", automatic_timezone);
+    construct {
+        timezone_label = default_timezone_label;
+        date_and_time_label = default_date_and_time_label;
     }
 
     [GtkCallback]
     void on_timezone_row_clicked () {
         var dialog = new DateAndTime.TimezoneList ();
         dialog.present (this);
+
+        dialog.closed.connect (on_timezone_dialog_closed);
+    }
+
+    void on_timezone_dialog_closed (Adw.Dialog dialog) {
+        var timezone_dialog = (DateAndTime.TimezoneList) dialog;
+        var item = timezone_dialog.selected_item;
+
+        if (item == null) { 
+            timezone_label = default_timezone_label;
+            return;
+        }
+
+        var utc = DateAndTime.get_utc_offset_string (item.utc_offset);
+        timezone_label = @"<b>$(item.country)</b> / $(item.city) ($utc)";
+
+        selected_timezone = item.timezone;
     }
 
     [GtkCallback]
     void on_date_and_time_row_clicked () {
         var dialog = new DateAndTime.DateAndTimeSelector ();
         dialog.present (this);
+
+        dialog.closed.connect (on_date_and_time_dialog_closed);
+    }
+
+    void on_date_and_time_dialog_closed (Adw.Dialog dialog) {
+        var date_and_time_dialog = (DateAndTime.DateAndTimeSelector) dialog;
+
+        var hour = date_and_time_dialog.hour;
+        var minute = date_and_time_dialog.minute;
+
+        var day = date_and_time_dialog.day;
+        var month = (int) date_and_time_dialog.month;
+        var year = date_and_time_dialog.year;
+
+        var datetime = new DateTime.local (year, month, day, hour, minute, 0);
+        date_and_time_label = datetime.format ("%H:%M %d.%m.%Y"); 
+
+        selected_datetime = datetime;
     }
 }

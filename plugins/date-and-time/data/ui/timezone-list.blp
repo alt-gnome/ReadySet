@@ -1,36 +1,50 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $DateAndTimeTimezoneList: Adw.PreferencesDialog {
-  Adw.PreferencesPage {
-    SearchEntry search_entry {}
+template $DateAndTimeTimezoneList: Adw.Dialog {
+  title: _("Time zone");
+  selected-item: bind single_selection.selected-item;
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {}
+
+    [top]
+    Adw.Clamp {
+      margin-start: 9;
+      margin-end: 9;
+      SearchEntry search_entry {}
+    }
 
     ScrolledWindow {
       propagate-natural-height: true;
+      propagate-natural-width: true;
 
-      ListView {
-        styles [
-          "navigation-sidebar",
-        ]
+      Adw.ClampScrollable {
+        ListView {
+          styles [
+            "navigation-sidebar",
+          ]
 
-        factory: BuilderListItemFactory {
-          template ListItem {
-            child: Adw.ActionRow {
-              title: bind (template.item as <Gtk.StringObject>).string;
-            };
-          }
-        };
+          factory: BuilderListItemFactory {
+            template ListItem {
+              child: $DateAndTimeTimezoneListRow {
+                item: bind (template.item as <$DateAndTimeTimezoneListItem>);
+              };
+            }
+          };
 
-        model: SingleSelection {
-          model: FilterListModel {
-            model: bind template.model;
+          model: SingleSelection single_selection {
+            model: FilterListModel {
+              model: bind template.model;
 
-            filter: StringFilter {
-              search: bind search_entry.text;
-              expression: expr (item as <Gtk.StringObject>).string;
+              filter: StringFilter {
+                search: bind search_entry.text;
+                expression: expr (item as <$DateAndTimeTimezoneListItem>).metainfo;
+              };
             };
           };
-        };
+        }
       }
     }
   }

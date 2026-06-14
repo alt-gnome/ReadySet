@@ -44,9 +44,19 @@ public class DateAndTime.Addin : ReadySet.StepAddin {
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
-        vars["date-and-time-file-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
-        vars["date-and-time-language-fallback"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["date-and-time-timezone"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.OBJECT);
+        vars["date-and-time-datetime"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.OBJECT);
         return vars;
+    }
+
+    public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
+        try {
+            Settings datetime_settings = new Settings ("org.gnome.desktop.datetime");
+
+            Addin.get_instance ();
+        } catch (Error e) {
+            throw ReadySet.ApplyError.build_error (_("Error when setting language"), e.message);
+        }
     }
 }
 
