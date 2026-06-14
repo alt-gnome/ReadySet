@@ -1,4 +1,3 @@
-
 'gir(Adw)=1'
 'gir(Gdm)=1.0'
 'gir(Gtk)=4.0'
@@ -21,11 +20,13 @@
 /usr/bin/blueprint-compiler
 /usr/bin/g-ir-compiler
 /usr/bin/gcc
+/usr/bin/glib-compile-schemas
 /usr/bin/gtkdoc-scan
 /usr/bin/meson
 /usr/bin/valac
 /usr/bin/valadoc
 /usr/bin/vapigen
+appstream
 fonts-ttf-adwaita
 gcc
 gettext-devel
