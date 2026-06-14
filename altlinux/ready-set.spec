@@ -271,12 +271,14 @@ Requires: %name = %EVR
 
 %changelog
 * Tue Jun 09 2026 Vladimir Romanov <rirusha@altlinux.org> 0.7.6-alt1
+- New version: 0.7.6.
 - Added comments to vapi file.
 - Fixed small bug at username page.
 - Full release note here:
   https://altlinux.space/alt-gnome/ReadySet/releases/tag/v0.7.6
 
 * Tue Jun 09 2026 Vladimir Romanov <rirusha@altlinux.org> 0.7.4-alt1
+- New version: 0.7.4.
 - Removed short options from CLI interface.
 - Fixed infinity loop on window reloading.
 - Full release note here:
