@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-14 09:46+0000\n"
+"POT-Creation-Date: 2026-06-14 17:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,15 +50,15 @@ msgstr ""
 msgid "Nothing to show"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:565
+#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:594
 msgid "Go to previous page"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:584
+#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:613
 msgid "Next"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:596
+#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:625
 msgid "Extend/Retract keyboard"
 msgstr ""
 
@@ -66,8 +66,12 @@ msgstr ""
 msgid "Open application menu"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:521
+#: data/ui/steps-main-page.blp:520
 msgid "Go up"
+msgstr ""
+
+#: data/ui/steps-main-page.blp:540 data/ui/steps-main-page.blp:546
+msgid "Go up to the beginning"
 msgstr ""
 
 #: data/ui/window-content.blp:43
@@ -98,16 +102,16 @@ msgstr ""
 msgid "Something went wrong"
 msgstr ""
 
-#: plugins/keyboard/data/ui/input-chooser.blp:15
-msgid "Search keyboards and input methods"
-msgstr ""
-
-#: plugins/keyboard/data/ui/input-chooser.blp:51
+#: plugins/keyboard/data/ui/input-chooser.blp:39
 msgid "You can specify additional layout switch combination"
 msgstr ""
 
-#: plugins/keyboard/data/ui/input-chooser.blp:66
+#: plugins/keyboard/data/ui/input-chooser.blp:54
 msgid "No input sources selected"
+msgstr ""
+
+#: plugins/keyboard/data/ui/input-chooser.blp:67
+msgid "Search keyboards and input methods"
 msgstr ""
 
 #: plugins/keyboard/data/ui/input-chooser.blp:100
