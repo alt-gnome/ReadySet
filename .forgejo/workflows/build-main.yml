@@ -238,7 +238,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Checl build possible
+        id: check
+        run: |
+          if skopeo inspect ${{ matrix.image }} > /dev/null 2>&1; then
+            echo "exists=yes" >> $GITHUB_OUTPUT
+          else
+            echo "exists=no" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build sisyphus default image
+        if: ${{ steps.check.outputs.exists === 'yes' }}
         run: |
           podman build \
             --tag $LOCAL_BUILD_NAME \
@@ -250,6 +260,7 @@ jobs:
             .
 
       - name: Push images
+        if: ${{ steps.check.outputs.exists === 'yes' }}
         uses: alt-atomic/actions/push-and-sign@main
         with:
           registry: ${{ env.REGISTRY }}
