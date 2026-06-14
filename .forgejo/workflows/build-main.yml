@@ -53,13 +53,16 @@ jobs:
       - name: Install deps
         run: |
           apt-get update
-          xargs apt-get install -y < ./build-aux/altlinux/build-deps
+          apt-get install -y apm
 
       - name: Setup
-        run: meson setup _build -Duser_with_set_root=true -Dwith_lib_documentation=true -Dnightly=true  -Dpassword_check_backend=both
+        run: make setup
 
       - name: Build
-        run: meson compile -C _build
+        run: make compile
+
+      - name: Test
+        run: make test
 
       - name: Setup git
         if: github.event_name != 'pull_request' && github.ref_name == 'main'
