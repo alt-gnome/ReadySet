@@ -24,11 +24,20 @@ gio_dep = dependency('gio-unix-2.0')
 gnome_desktop_dep = dependency('gnome-desktop-4')
 ibus_dep = dependency('ibus-1.0')
 libadwaita_dep = dependency('libadwaita-1', version: '>= 1.7')
+libcase_dep = dependency(
+  'libcase-0',
+  version: '>= 0.2',
+  fallback : ['libcase', 'lib_dep']
+)
 libpeas_dep = dependency('libpeas-2')
+libserialize_dep = dependency(
+  'libserialize-7',
+  version: '>= 7.5',
+  fallback : ['libapi-base', 'serialize_lib_dep']
+)
 polkit_dep = dependency('polkit-gobject-1')
 posix_dep = meson.get_compiler('vala').find_library('posix')
 xkb_dep = dependency('xkbcommon')
-libserialize_dep = dependency('libserialize-7', version: '>= 7.5')
 
 libversion = meson.project_version().replace('.rc', '')
 soversion = libversion.split('.')[0]

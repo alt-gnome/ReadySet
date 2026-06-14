@@ -18,18 +18,25 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public sealed class Keyboard.LayoutSwitchRow : Adw.ComboRow {
+public sealed class Keyboard.LayoutSwitchRow : Case.ComboRow {
 
     public LayoutSwitchRow () {
         Object ();
     }
 
     construct {
+        sheet_title = _("Additinal layout switch");
+
         notify["selected-item"].connect (on_item_selected);
         var sfactory = new Gtk.SignalListItemFactory ();
         factory = sfactory;
 
         sfactory.bind.connect (on_bind);
+
+        var sheet_sfactory = new Gtk.SignalListItemFactory ();
+        sheet_factory = sheet_sfactory;
+
+        sheet_sfactory.bind.connect (on_sheet_bind);
 
         model = new Adw.EnumListModel (typeof (AdditionalLayoutSwitch));
 
@@ -45,6 +52,27 @@ public sealed class Keyboard.LayoutSwitchRow : Adw.ComboRow {
 
             if (s.to_string () in current_options) {
                 set_selected (i);
+            }
+        }
+    }
+
+    void on_sheet_bind (Gtk.SignalListItemFactory factory, Object object) {
+        var list_item = (Gtk.ListItem) object;
+        var item = (Adw.EnumListItem) list_item.item;
+
+        var box = new Gtk.Box (HORIZONTAL, 6);
+        list_item.child = box;
+
+        var ls = ((AdditionalLayoutSwitch) item.value);
+
+        if (ls == NONE) {
+            box.append (new Gtk.Label (_("None")));
+
+        } else {
+            foreach (var b in ls.to_buttons ()) {
+                box.append (new Gtk.Label (b) {
+                    css_classes = { "keycap" }
+                });
             }
         }
     }

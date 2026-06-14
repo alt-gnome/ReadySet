@@ -2,6 +2,7 @@ plugin_keyboard_deps = [
   gnome_desktop_dep,
   gnome_desktop_dep,
   ibus_dep,
+  libcase_dep,
   librs_dep,
   libserialize_dep,
   polkit_dep,
