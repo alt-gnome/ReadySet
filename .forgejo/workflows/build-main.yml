@@ -248,7 +248,7 @@ jobs:
           fi
 
       - name: Build sisyphus default image
-        if: steps.check.outputs.exists === 'yes'
+        if: steps.check.outputs.exists == 'yes'
         run: |
           podman build \
             --tag $LOCAL_BUILD_NAME \
@@ -260,7 +260,7 @@ jobs:
             .
 
       - name: Push images
-        if: steps.check.outputs.exists === 'yes'
+        if: steps.check.outputs.exists == 'yes'
         uses: alt-atomic/actions/push-and-sign@main
         with:
           registry: ${{ env.REGISTRY }}
