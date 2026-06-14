@@ -35,7 +35,7 @@ soversion = libversion.split('.')[0]
 pascal_name = 'ReadySet'
 app_id = 'org.altlinux.' + pascal_name
 
-if get_option('is_devel')
+if get_option('nightly')
   app_id_dyn = app_id + '.Devel'
 else
   app_id_dyn = app_id
@@ -69,7 +69,7 @@ global_conf.set_quoted('APP_ID', app_id)
 global_conf.set_quoted('APP_ID_DYN', app_id_dyn)
 global_conf.set_quoted('G_LOG_DOMAIN', app_id)
 global_conf.set_quoted('SYSCONFDIR', sysconfdir)
-global_conf.set10('IS_DEVEL', get_option('is_devel'))
+global_conf.set10('NIGHTLY', get_option('nightly'))
 global_conf.set_quoted('VERSION', meson.project_version())
 global_conf.set_quoted('GETTEXT_PACKAGE', meson.project_name())
 global_conf.set_quoted('LIBDIR', libdir)

@@ -20,7 +20,7 @@
 
 int main (string[] args) {
     Log.set_writer_func ((log_level, fields) => {
-        if (Config.IS_DEVEL) {
+        if (Config.NIGHTLY) {
             Log.writer_journald (log_level, fields);
         }
         return Log.writer_default (log_level, fields);

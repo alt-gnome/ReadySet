@@ -214,9 +214,9 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         pages_indicator.model = model;
 
         can_close = Application.get_default ().can_close;
-        context_button.visible = Config.IS_DEVEL;
-        sandbox_label_left.visible = ReadySet.Application.get_default ().context.sandbox && Config.IS_DEVEL;
-        sandbox_label_right.visible = ReadySet.Application.get_default ().context.sandbox && !Config.IS_DEVEL;
+        context_button.visible = Config.NIGHTLY;
+        sandbox_label_left.visible = ReadySet.Application.get_default ().context.sandbox && Config.NIGHTLY;
+        sandbox_label_right.visible = ReadySet.Application.get_default ().context.sandbox && !Config.NIGHTLY;
 
         notify["show-steps-list"].connect (update_icons_visible);
         notify["simple"].connect (update_icons_visible);
@@ -399,7 +399,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
     void update_standalone () {
         standalone_sandbox_label.visible = ReadySet.Application.get_default ().context.sandbox &&
-            Config.IS_DEVEL && standalone;
+            Config.NIGHTLY && standalone;
         standalone_steps_list_button.visible = !simple && standalone;
         standalone_horizontal_bottom.visible = layout_mode == HORIZONTAL && standalone;
     }

@@ -56,7 +56,7 @@ rs_app_vala_args = [
   '--pkg', 'linux',
 ]
 
-if get_option('is_devel')
+if get_option('nightly')
   rs_app_vala_args += [
     '--define=DEVEL',
   ]

@@ -187,7 +187,7 @@ Requires: %name = %EVR
 %setup
 
 %build
-%meson -Dpassword_check_backend=both -Dis_devel=true -Duser_with_set_root=true
+%meson -Dpassword_check_backend=both -Dnightly=true -Duser_with_set_root=true
 %meson_build
 
 %install

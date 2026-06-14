@@ -34,7 +34,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
     public bool can_close {
         get {
-            return Config.IS_DEVEL || options_handler.can_close;
+            return Config.NIGHTLY || options_handler.can_close;
         }
     }
 
