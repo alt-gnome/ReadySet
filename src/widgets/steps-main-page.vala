@@ -65,6 +65,8 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     unowned Adw.Breakpoint vertical_breakpoint;
     [GtkChild]
     unowned Adw.Breakpoint horizontal_breakpoint;
+    [GtkChild]
+    unowned Gtk.Revealer to_up_label_revealer;
 
     [GtkChild]
     unowned Adw.Bin top_bin;
@@ -114,7 +116,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                     go_prev_button.height_request =
                     go_prev_button.width_request =
                     to_up_button.height_request =
-                    to_up_button.width_request =
                     32;
                 button_center_box.margin_bottom = 6;
                 go_next_button.remove_css_class ("pill");
@@ -125,7 +126,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                     go_prev_button.height_request =
                     go_prev_button.width_request =
                     to_up_button.height_request =
-                    to_up_button.width_request =
                     48;
                 button_center_box.margin_bottom = 12;
                 go_next_button.add_css_class ("pill");
@@ -345,6 +345,8 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     void update_go_up_button () {
         last_current_page.page.remove_css_class ("page-to-up-compact");
         last_current_page.page.remove_css_class ("page-to-up-regular");
+        to_up_button.remove_css_class ("to-up-button-regular");
+        to_up_button.remove_css_class ("to-up-button-compact");
 
         if (!last_current_page.page.need_go_up_button) {
             to_up_revealer.visible = false;
@@ -357,8 +359,10 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
             to_up_revealer.reveal_child = true;
             if (is_compact) {
                 last_current_page.page.add_css_class ("page-to-up-compact");
+                to_up_button.add_css_class ("to-up-button-compact");
             } else {
                 last_current_page.page.add_css_class ("page-to-up-regular");
+                to_up_button.add_css_class ("to-up-button-regular");
             }
         } else {
             to_up_revealer.reveal_child = false;
@@ -409,7 +413,9 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     void update_scroll () {
         if (current_scrolled_window != null) {
             if (current_scrolled_window.vadjustment != null) {
-                can_up = !(current_scrolled_window.vadjustment.value <= 360.0);
+                var v = current_scrolled_window.vadjustment;
+                can_up = !(v.value <= 360.0);
+                to_up_label_revealer.reveal_child = v.value >= v.upper - v.page_size;
             }
         }
     }

@@ -514,15 +514,43 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
           Button to_up_button {
             styles [
               "background",
-              "circular",
+              "to-up-button",
             ]
 
-            icon-name: "top-large-symbolic";
             tooltip-text: _("Go up");
-            width-request: 48;
             height-request: 48;
             valign: center;
             clicked => $up_clicked();
+
+            Box {
+              orientation: horizontal;
+              halign: center;
+              valign: center;
+
+              Revealer to_up_label_revealer {
+                transition-type: slide_left;
+                transition-duration: 200;
+                reveal-child: false;
+                halign: center;
+                valign: center;
+                margin-start: 4;
+
+                Label {
+                  margin-end: 12;
+                  label: _("Go up to the beginning");
+                }
+              }
+
+              Image {
+                accessibility {
+                  label: _("Go up to the beginning");
+                }
+                margin-end: 4;
+                halign: center;
+                valign: center;
+                icon-name: "top-large-symbolic";
+              }
+            }
           }
         }
 
