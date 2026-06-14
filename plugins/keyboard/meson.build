@@ -3,6 +3,7 @@ plugin_keyboard_deps = [
   gnome_desktop_dep,
   ibus_dep,
   librs_dep,
+  libserialize_dep,
   polkit_dep,
   xkb_dep,
 ]
@@ -18,6 +19,7 @@ plugin_keyboard_sources = files(
   'page.vala',
   'plugin.vala',
   'preview-dialog.vala',
+  'stevia-layout-data.vala',
   'utils.vala',
 )
 

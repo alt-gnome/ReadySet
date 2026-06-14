@@ -34,6 +34,8 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
     [GtkChild]
     unowned Gtk.ListBox switch_box;
 
+    Serialize.Array<SteviaLayoutData>? stevia_layouts = null;
+
     const string INPUT_SOURCE_TYPE_XKB = "xkb";
     const string INPUT_SOURCE_TYPE_IBUS = "ibus";
 
@@ -82,10 +84,20 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         input_list.set_sort_func (sort_inputs);
         input_list.set_filter_func (input_visible);
 
-        get_locale_infos.begin ();
-#if HAVE_IBUS
-        get_ibus_locale_infos.begin ();
-#endif
+        try {
+            string content;
+            FileUtils.get_contents ("/usr/share/phosh-osk-stevia/layouts.json", out content);
+
+            stevia_layouts = Serialize.JsonWorker.simple_array_from_json<SteviaLayoutData> (
+                content,
+                { "layouts" },
+                new Serialize.Settings () {
+                    names_case = Serialize.Case.KEBAB
+                }
+            );
+        } catch (Error e) {}
+
+        init.begin ();
 
         filter_entry.changed.connect (invalidate_filter);
 
@@ -93,6 +105,15 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         update_current ();
 
         filter_entry.can_focus = true;
+    }
+
+    async void init () {
+        if (!(yield get_stevia_infos ())) {
+            yield get_locale_infos ();
+#if HAVE_IBUS
+            yield get_ibus_locale_infos ();
+#endif
+        }
     }
 
     void on_context_data_changed (string key) {
@@ -191,6 +212,14 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             if (ibus_engines != null) {
                 if (ibus_engines.has_key (input_info.id)) {
                     return ibus_engines[input_info.id].get_longname ();
+                }
+            }
+
+            if (stevia_layouts != null) {
+                foreach (var layout in stevia_layouts) {
+                    if (layout.layout_id == input_info.id) {
+                        return layout.name;
+                    }
                 }
             }
 
@@ -308,6 +337,28 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         return search_query.match_string (input_row.title, true);
     }
 
+    async bool get_stevia_infos () {
+        if (stevia_layouts == null) {
+            return false;
+        }
+
+        foreach (var mid in MAIN_SOURCES) {
+            foreach (var layout in stevia_layouts) {
+                if (layout.layout_id == mid && layout.type_ == INPUT_SOURCE_TYPE_XKB) {
+                    yield add_row_to_list (INPUT_SOURCE_TYPE_XKB, mid, false);
+                    break;
+                }
+            }
+            
+        }
+
+        foreach (var layout in stevia_layouts) {
+            yield add_row_to_list (layout.type_, layout.layout_id, true);
+        }
+
+        return true;
+    }
+
     async void get_locale_infos () {
         string type = null;
         string id = null;
@@ -323,7 +374,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             });
             set_current_inputs (inputs);
 
-            yield add_row_to_list (type, id, false);
+            yield add_row_to_list (type, id, true);
         }
 
         if (!Gnome.Languages.parse_locale (get_current_language (), out lang, out country, null, null)) {

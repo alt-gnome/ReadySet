@@ -5,18 +5,6 @@ template $KeyboardInputChooser: Box {
   orientation: vertical;
   spacing: 12;
 
-  SearchEntry filter_entry {
-    styles [
-      "card",
-    ]
-
-    can-focus: false;
-    height-request: 48;
-    placeholder-text: _("Search keyboards and input methods");
-    hexpand: true;
-    visible: bind template.show-more;
-  }
-
   Stack current_input_list_stack {
     vhomogeneous: false;
     hhomogeneous: false;
@@ -67,6 +55,18 @@ template $KeyboardInputChooser: Box {
         height-request: 48;
       };
     }
+  }
+
+  SearchEntry filter_entry {
+    styles [
+      "card",
+    ]
+
+    can-focus: false;
+    height-request: 48;
+    placeholder-text: _("Search keyboards and input methods");
+    hexpand: true;
+    visible: bind template.show-more;
   }
 
   Stack input_list_stack {
