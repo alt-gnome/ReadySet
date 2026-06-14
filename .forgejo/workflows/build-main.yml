@@ -238,7 +238,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Checl build possible
+      - name: Check build possible
         id: check
         run: |
           if skopeo inspect ${{ matrix.image }} > /dev/null 2>&1; then
