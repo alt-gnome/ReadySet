@@ -349,7 +349,6 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
                     break;
                 }
             }
-            
         }
 
         foreach (var layout in stevia_layouts) {
