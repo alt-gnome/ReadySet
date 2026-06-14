@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-13 23:59+0000\n"
+"POT-Creation-Date: 2026-06-14 09:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -183,10 +183,6 @@ msgstr ""
 
 #: plugins/license-agreement/data/ui/page.blp:34
 msgid "I have read the license and accept it"
-msgstr ""
-
-#: plugins/test-installer/data/ui/disks-page.blp:5
-msgid "Disks"
 msgstr ""
 
 #: plugins/tests/data/ui/page.blp:23 plugins/tests/data/ui/page.blp:32
