@@ -130,6 +130,8 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                 button_center_box.margin_bottom = 12;
                 go_next_button.add_css_class ("pill");
             }
+
+            update_go_up_button ();
         }
     }
 
@@ -341,6 +343,9 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     }
 
     void update_go_up_button () {
+        last_current_page.page.remove_css_class ("page-to-up-compact");
+        last_current_page.page.remove_css_class ("page-to-up-regular");
+
         if (!last_current_page.page.need_go_up_button) {
             to_up_revealer.visible = false;
             to_up_revealer.reveal_child = false;
@@ -350,6 +355,11 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         if (can_up) {
             to_up_revealer.visible = true;
             to_up_revealer.reveal_child = true;
+            if (is_compact) {
+                last_current_page.page.add_css_class ("page-to-up-compact");
+            } else {
+                last_current_page.page.add_css_class ("page-to-up-regular");
+            }
         } else {
             to_up_revealer.reveal_child = false;
         }
