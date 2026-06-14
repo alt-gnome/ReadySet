@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-14 09:46+0000\n"
+"POT-Creation-Date: 2026-06-14 17:50+0000\n"
 "PO-Revision-Date: 2026-06-01 21:26+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -53,15 +53,15 @@ msgstr "Завершите настройку"
 msgid "Nothing to show"
 msgstr "Нечего показывать"
 
-#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:565
+#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:594
 msgid "Go to previous page"
 msgstr "К предыдущей странице"
 
-#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:584
+#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:613
 msgid "Next"
 msgstr "Дальше"
 
-#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:596
+#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:625
 msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
 
@@ -69,9 +69,13 @@ msgstr "Показать/Скрыть клавиатуру"
 msgid "Open application menu"
 msgstr "Открыть меню приложения"
 
-#: data/ui/steps-main-page.blp:521
+#: data/ui/steps-main-page.blp:520
 msgid "Go up"
 msgstr "Наверх"
+
+#: data/ui/steps-main-page.blp:540 data/ui/steps-main-page.blp:546
+msgid "Go up to the beginning"
+msgstr ""
 
 #: data/ui/window-content.blp:43
 msgid "All steps"
@@ -101,17 +105,17 @@ msgstr "На этой странице указано, что в Вашем ди
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
-#: plugins/keyboard/data/ui/input-chooser.blp:15
-msgid "Search keyboards and input methods"
-msgstr "Поиск раскладок и методов ввода"
-
-#: plugins/keyboard/data/ui/input-chooser.blp:51
+#: plugins/keyboard/data/ui/input-chooser.blp:39
 msgid "You can specify additional layout switch combination"
 msgstr "Вы можете указать дополнительный способ переключения раскладки"
 
-#: plugins/keyboard/data/ui/input-chooser.blp:66
+#: plugins/keyboard/data/ui/input-chooser.blp:54
 msgid "No input sources selected"
 msgstr "Не выбраны источники ввода"
+
+#: plugins/keyboard/data/ui/input-chooser.blp:67
+msgid "Search keyboards and input methods"
+msgstr "Поиск раскладок и методов ввода"
 
 #: plugins/keyboard/data/ui/input-chooser.blp:100
 #: plugins/language/data/ui/box.blp:57
