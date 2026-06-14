@@ -8,6 +8,12 @@
             <description>The steps that were performed during the initial setup stage. If the field is empty, the initial setup was not performed.</description>
 		</key>
 
+		<key name="existing-user-mode-enabled" type="b">
+			<default>true</default>
+			<summary>Enabled existing user mode ot not</summary>
+            <description>Perform actions on user without fill initial setup complition.</description>
+		</key>
+
 	</schema>
 
 </schemalist>

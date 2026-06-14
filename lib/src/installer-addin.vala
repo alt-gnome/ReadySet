@@ -55,9 +55,28 @@
  */
 public abstract class ReadySet.InstallerAddin : ExtensionBase {
 
+    protected virtual string[] all_pages {
+        owned get {
+            return {};
+        }
+    }
+
     /**
      * Install logic. Calls on finish page in the application.
      * You can control progress indicator via `progress_data`.
      */
     public async abstract void install (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError;
+
+    /**
+     * Build page for application for given id.
+     * Returns {@link ReadySet.BasePage} for given id. It can be
+     * accessed in steps list as `installer-<step-id>`.
+     */
+    public virtual BasePage? build_page (string id) {
+        return null;
+    }
+
+    internal bool has_page (string id) {
+        return id in all_pages;
+    }
 }

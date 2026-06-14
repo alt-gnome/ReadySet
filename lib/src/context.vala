@@ -79,7 +79,7 @@ internal class ReadySet.ValueObject : Object {
     Value _value;
     public Value real_value {
         owned get {
-            var new_val = Value (value_type.to_gtype ());
+            var new_val = Value (_value.type ());
             if (getter_func != null) {
                 getter_func (ref _value).copy (ref new_val);
             } else {
@@ -91,10 +91,16 @@ internal class ReadySet.ValueObject : Object {
             if (setter_func != null) {
                 setter_func (ref _value, value);
             } else {
-                value.copy (ref _value);
+                if (value_type == OBJECT) {
+                    _value.set_object (value.get_object ());
+                } else {
+                    value.copy (ref _value);
+                }
             }
         }
     }
+
+    public string data_key;
 
     public Value? default_value { get; construct; }
 
@@ -103,14 +109,16 @@ internal class ReadySet.ValueObject : Object {
 
     public ContextType value_type { get; construct; }
 
+    public Type object_type { get; construct; }
+
     public ValueObject (ContextVarInfo info) {
         Object (
             value_type: info.value_type,
-            default_value: info.default_value
+            default_value: info.default_value,
+            object_type: info.nested_object_type
         );
     }
 
-#if FOR_APPLICATION
     public void set_getter (ContextGetterFunc func) {
         getter_func = func;
     }
@@ -118,14 +126,20 @@ internal class ReadySet.ValueObject : Object {
     public void set_setter (ContextSetterFunc func) {
         setter_func = func;
     }
-#endif
 
     construct {
         if (value_type == STRING && default_value == null) {
             default_value = "";
         }
 
-        _value = Value (value_type.to_gtype ());
+        Type gtype;
+        if (value_type == OBJECT) {
+            gtype = object_type;
+        } else {
+            gtype = value_type.to_gtype ();
+        }
+
+        _value = Value (gtype);
         reset ();
     }
 
@@ -167,16 +181,47 @@ public class ReadySet.ContextVarInfo : Object {
      */
     public unowned ContextSetterFunc? setter_func = null;
 
+    public Type nested_object_type { get; construct; }
+
+    /**
+     * Constructor for any {@link ReadySet.ContextType} type except
+     * {@link ReadySet.ContextType.OBJECT}.
+     *
+     * Use {@link ReadySet.ContextVarInfo.object}
+     * constructor for {@link ReadySet.ContextType.OBJECT} type.
+     */
     public ContextVarInfo (ContextType value_type, Value? default_value = null) {
+        if (value_type == OBJECT) {
+            error ("Use `object' constructor instead of this");
+        }
+
         Object (
             value_type: value_type,
-            default_value: default_value
+            default_value: default_value,
+            nested_object_type: Type.NONE
+        );
+    }
+
+    /**
+     * Constructor for {@link ReadySet.ContextType.OBJECT} type.
+     *
+     * Use {@link ReadySet.ContextVarInfo} constructor for any other type.
+     */
+    public ContextVarInfo.object (Type nested_object_type, Value? default_value = null) {
+        Object (
+            value_type: ContextType.OBJECT,
+            default_value: default_value,
+            nested_object_type: nested_object_type
         );
     }
 
     construct {
         if (default_value != null) {
-            assert (value_type == ContextType.from_gtype (default_value.type ()));
+            if (value_type == ContextType.OBJECT) {
+                assert (nested_object_type == default_value.get_object ().get_type ());
+            } else {
+                assert (value_type == ContextType.from_gtype (default_value.type ()));
+            }
         }
     }
 }
@@ -328,7 +373,6 @@ public class ReadySet.Context : Object {
         return true;
     }
 
-#if FOR_APPLICATION
     internal HashTable<string, string> get_raw_string () {
         var raw_data = new HashTable<string, string> (str_hash, str_equal);
 
@@ -351,7 +395,7 @@ public class ReadySet.Context : Object {
                     str = get_boolean (key).to_string ();
                     break;
                 case ContextType.OBJECT:
-                    str = "";
+                    str = get_object (key).string_format;
                     break;
                 default:
                     assert_not_reached ();
@@ -361,9 +405,7 @@ public class ReadySet.Context : Object {
 
         return raw_data;
     }
-#endif
 
-#if FOR_APPLICATION
     internal void set_raw (string key, string value) {
         if (!check_key (key)) {
             return;
@@ -372,22 +414,15 @@ public class ReadySet.Context : Object {
         var temp_kf = new KeyFile ();
         temp_kf.set_list_separator (',');
 
-        const string INTERNAL_KEY = "raw-key";
         const string INTERNAL_GROUP = "raw-group";
 
-        temp_kf.set_value (INTERNAL_GROUP, INTERNAL_KEY, value);
+        temp_kf.set_value (INTERNAL_GROUP, key, value);
         try {
-            set_value (key, kf_value_to_value (
-                temp_kf,
-                INTERNAL_GROUP,
-                INTERNAL_KEY,
-                data[key].value_type.to_gtype ()
-            ));
+            load_from_keyfile (temp_kf, INTERNAL_GROUP);
         } catch (Error e) {
             warning ("Error setting row value for key %s: %s", key, e.message);
         }
     }
-#endif
 
     //  internal HashTable<string, Value?> get_raw_context () {
     //      var raw_data = new HashTable<string, Value?> (str_hash, str_equal);
@@ -402,20 +437,17 @@ public class ReadySet.Context : Object {
     //      return raw_data;
     //  }
 
-#if FOR_APPLICATION
     internal void register_vars (HashTable<string, ContextVarInfo> vars) {
         vars.foreach (foreach_register_vars);
     }
-#endif
 
-#if FOR_APPLICATION
     void foreach_register_vars (string key, ContextVarInfo info) {
         if (data.has_key (key)) {
             warning ("Key %s already exists in context, it will be overwriting", key);
         }
         debug ("Registering key %s with type %s", key, info.value_type.to_string ());
         data[key] = new ValueObject (info);
-        data[key].set_data<string> ("data-key", key);
+        data[key].data_key = key;
         if (info.getter_func != null) {
             data[key].set_getter (info.getter_func);
         }
@@ -426,11 +458,9 @@ public class ReadySet.Context : Object {
     }
 
     void real_value_changed (Object caller, ParamSpec param) {
-        data_changed (((ValueObject) caller).get_data<string> ("data-key"));
+        data_changed (((ValueObject) caller).data_key);
     }
-#endif
 
-#if FOR_APPLICATION
     internal void load_from_keyfile (KeyFile keyfile, string group_name) throws Error {
         if (!keyfile.has_group (group_name)) {
             debug ("Keyfile doesn't have group '%s'", group_name);
@@ -443,15 +473,26 @@ public class ReadySet.Context : Object {
                 continue;
             }
 
-            set_value (key, kf_value_to_value (
-                keyfile,
-                group_name,
-                key,
-                data[key].value_type.to_gtype ()
-            ));
+            Value val;
+
+            if (data[key].value_type == OBJECT) {
+                val = Object.new (
+                    data[key].object_type,
+                    "string-format", keyfile.get_string (group_name, key) ?? ""
+                );
+
+            } else {
+                val = kf_value_to_value (
+                    keyfile,
+                    group_name,
+                    key,
+                    data[key].value_type.to_gtype ()
+                );
+            }
+
+            set_value (key, val);
         }
     }
-#endif
 
     bool check_key (string key, ContextType? value_type = null) {
         if (!has_key (key)) {
@@ -491,7 +532,14 @@ public class ReadySet.Context : Object {
     }
 
     public void set_value (string key, owned Value value) {
-        if (check_key (key, ContextType.from_gtype (value.type ()))) {
+        bool res;
+        if (data[key].value_type == OBJECT) {
+            res = data[key].object_type == value.get_object ().get_type ();
+        } else {
+            res = check_key (key, ContextType.from_gtype (value.type ()));
+        }
+
+        if (res) {
             data[key].real_value = value;
         }
     }
@@ -508,9 +556,12 @@ public class ReadySet.Context : Object {
         set_value (key, value);
     }
 
-    public void set_object_string (string key, owned ContextObject value) {
-        if (check_key (key, OBJECT)) {
-            data[key].real_value = value;
+    public void set_object_string (string key, owned string value) {
+        if (check_key (key)) {
+            set_object (key, (ContextObject) Object.new (
+                data[key].object_type,
+                "string-format", value ?? ""
+            ));
         }
     }
 

@@ -26,4 +26,22 @@
        <allow_active>auth_admin</allow_active>
      </defaults>
    </action>
+   <action id="@SERVICE_NAME@.ExecInstallerPreHooks">
+     <description>Execute ReadySet system installer pre hooks</description>
+     <message>Authentication is required</message>
+     <defaults>
+       <allow_any>no</allow_any>
+       <allow_inactive>no</allow_inactive>
+       <allow_active>auth_admin</allow_active>
+     </defaults>
+   </action>
+   <action id="@SERVICE_NAME@.ExecInstallerPostHooks">
+     <description>Execute ReadySet system installer post hooks</description>
+     <message>Authentication is required</message>
+     <defaults>
+       <allow_any>no</allow_any>
+       <allow_inactive>no</allow_inactive>
+       <allow_active>auth_admin</allow_active>
+     </defaults>
+   </action>
 </policyconfig>

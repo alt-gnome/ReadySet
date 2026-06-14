@@ -58,7 +58,9 @@ public class Keyboard.Addin : ReadySet.StepAddin {
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
-        vars["keyboard-input-sources"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.OBJECT, get_default ());
+        vars["keyboard-input-sources"] = new ReadySet.ContextVarInfo.object (
+            typeof (InputSources), get_default ()
+        );
         return vars;
     }
 

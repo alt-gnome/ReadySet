@@ -23,6 +23,7 @@ rs_app_vala_sources = files(
   'main.vala',
   'options-handler.vala',
   'pages-model.vala',
+  'plugin-manager.vala',
   'utils.vala',
   'window-content.vala',
   'window.vala',
@@ -53,8 +54,6 @@ rs_app_vala_args = [
   '--gresourcesdir=lib/data/',
   '--vapidir', meson.project_source_root() / 'vapi',
   '--pkg', 'linux',
-  # Needs for resolve 'never used' warning spam from building library statically
-  '--define=FOR_APPLICATION',
 ]
 
 if get_option('is_devel')

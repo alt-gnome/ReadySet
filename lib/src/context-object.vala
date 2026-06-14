@@ -23,6 +23,16 @@
  * can be registered.
  */
 public abstract class ReadySet.ContextObject : Object {
+
+    /**
+     * Object in string format.
+     *
+     * You must override getter/setter methods. On getter you must return
+     * string representation of object. On setter you must parse string
+     * representation of object.
+     */
+    public abstract string string_format { owned get; set; }
+
     /**
      * Copy func for {@link ContextObject}.
      */

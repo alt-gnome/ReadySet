@@ -1,7 +1,7 @@
 project(
   'ready-set',
   'vala',
-  version: '0.7.6',
+  version: '0.8',
   meson_version: '>= 1.9',
   license: 'GPL-3.0-or-later',
 )
@@ -10,8 +10,6 @@ fs = import('fs')
 i18n = import('i18n')
 gnome = import('gnome')
 pkgconfig = import('pkgconfig')
-
-glib_min_version = '2.76'
 
 add_project_arguments(
   '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),

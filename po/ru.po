@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
-"Report-Msgid-Bugs-To: rirusha@altlinux.org\n"
-"POT-Creation-Date: 2026-05-31 20:41+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-14 09:46+0000\n"
 "PO-Revision-Date: 2026-06-01 21:26+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -16,8 +16,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.17.1\n"
 
 #: data/ui/end-page.blp:36
@@ -97,7 +97,7 @@ msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
 #. It's not json string, just return message
-#: lib/src/lib-utils.vala:169
+#: lib/src/lib-utils.vala:164
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
@@ -148,7 +148,7 @@ msgstr ""
 msgid "None"
 msgstr "Ничего"
 
-#: plugins/keyboard/plugin.vala:112
+#: plugins/keyboard/plugin.vala:114
 msgid "Error when setting keyboard layout"
 msgstr "Ошибка при настройке раскладки клавиатуры"
 
@@ -413,19 +413,19 @@ msgstr ""
 msgid "Name cannot be empty"
 msgstr "Имя не может быть пустым"
 
-#: plugins/user/utils.vala:255
+#: plugins/user/utils.vala:180
 msgid "That username isn't available. Please try another"
 msgstr "Это имя пользователя недоступно. Пожалуйста, попробуйте другое"
 
-#: plugins/user/utils.vala:257
+#: plugins/user/utils.vala:182
 msgid "The username is too long"
 msgstr "Имя пользователя слишком длинное"
 
-#: plugins/user/utils.vala:259
+#: plugins/user/utils.vala:184
 msgid "The username must start with a lower case letter from a-z"
 msgstr "Имя пользователя должно начинаться со строчной буквы от «a» до «z»"
 
-#: plugins/user/utils.vala:261
+#: plugins/user/utils.vala:186
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
@@ -433,11 +433,11 @@ msgstr ""
 "Имя пользователя может содержать только строчные буквы от «a» до «z», цифры "
 "и следущие символы: «-», «_»"
 
-#: plugins/user/utils.vala:264
+#: plugins/user/utils.vala:189
 msgid "Username cannot be empty"
 msgstr "Имя пользователя не может быть пустым"
 
-#: plugins/user/utils.vala:368
+#: plugins/user/utils.vala:293
 msgid "The password must consist of at least one character"
 msgstr "Пароль должен состоять минимум из одного символа"
 
@@ -473,12 +473,12 @@ msgstr "Мы поможем вам все подготовить за мгнов
 msgid "Ready Set"
 msgstr "На Старт Внимание"
 
-#. Translators: NAME <EMAIL.COM> /n NAME <EMAIL.COM>
+#. Translators: NAME <EMAIL.COM>
 #: src/about.vala:38
 msgid "translator-credits"
 msgstr "Vladimir Romanov <rirusha@altlinux.org>"
 
-#: src/application.vala:382
+#: src/application.vala:287
 msgid "No steps specified"
 msgstr "Не указан список шагов"
 
@@ -540,21 +540,21 @@ msgstr "Показать информацию о версии и выйти"
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
-#: src/pages/end-page.vala:84
+#: src/pages/end-page.vala:88
 msgid "Installing system…"
 msgstr "Установка системы…"
 
-#: src/pages/end-page.vala:105
+#: src/pages/end-page.vala:109
 #, c-format
 msgid "Applying %s…"
 msgstr "Применение %s…"
 
-#: src/pages/end-page.vala:182 src/pages/end-page.vala:188
+#: src/pages/end-page.vala:194 src/pages/end-page.vala:200
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
-#: src/pages/end-page.vala:187
+#: src/pages/end-page.vala:199
 msgid "Error while execute post hooks"
 msgstr "Ошибка при выполнении пост скриптов"
 

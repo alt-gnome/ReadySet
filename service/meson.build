@@ -26,7 +26,7 @@ rs_internal_c_args = [
 ]
 
 rs_internal_vala_args = [
-
+  '--define=FOR_SERVICE',
 ]
 
 if get_option('is_devel')

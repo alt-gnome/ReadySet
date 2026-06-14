@@ -11,7 +11,6 @@ custom_target(
   command: [ valadoc ] + pkgs +
   [
     librs_sources,
-    '--target-glib=' + glib_min_version,
     '--package-name=' + librs_versioned_name,
     '--package-version=' + libversion,
     '--verbose',

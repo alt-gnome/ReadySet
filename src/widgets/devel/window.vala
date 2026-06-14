@@ -166,10 +166,15 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
                     break;
 
                 case OBJECT:
-                    var erow = new Adw.ActionRow () {
+                    var erow = new Adw.EntryRow () {
                         title = key,
-                        subtitle = context.get_object (key).get_type ().name (),
+                        text = ((ContextObject) context.get_object (key)).string_format,
+                        show_apply_button = true,
                     };
+                    erow.apply.connect (row_apply_object);
+                    erow.activate.connect ((list_box_row) => {
+                        row_apply_object ((Adw.EntryRow) list_box_row);
+                    });
                     row = erow;
                     break;
 
@@ -211,5 +216,9 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
 
     void row_apply_boolean (Adw.SwitchRow row) {
         context.set_boolean (row.title, row.active);
+    }
+
+    void row_apply_object (Adw.EntryRow row) {
+        context.set_object_string (row.title, row.text);
     }
 }

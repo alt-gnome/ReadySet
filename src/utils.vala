@@ -58,11 +58,11 @@ namespace ReadySet {
         return yield process.wait_check_async ();
     }
 
-    public async void exec_user_pre_hooks (string[] env = {}) throws Error {
+    public async void real_exec_pre_hooks (string[] env = {}) throws Error {
         yield exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "pre-hooks", "user"), env);
     }
 
-    public async void exec_user_post_hooks (string[] env) throws Error {
+    public async void real_exec_post_hooks (string[] env) throws Error {
         yield exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "post-hooks", "user"), env);
     }
 

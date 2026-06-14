@@ -314,11 +314,13 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         string lang = null;
         string country = null;
 
-        Addin.get_instance ().context.reset ("keyboard-input-sources");
         var inputs = get_current_inputs ();
+        inputs.clear_automatically_added ();
 
         if (Gnome.Languages.get_input_source_from_locale (get_current_language (), out type, out id)) {
-            inputs.add (new InputInfo (type, id));
+            inputs.add (new InputInfo (type, id) {
+                added_automatically = true
+            });
             set_current_inputs (inputs);
 
             yield add_row_to_list (type, id, false);

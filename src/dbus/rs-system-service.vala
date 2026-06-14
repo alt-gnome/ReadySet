@@ -31,6 +31,14 @@ namespace ReadySet {
             string[] env = {}
         ) throws Error;
 
+        public abstract async void exec_installer_pre_hooks (
+            string[] env = {}
+        ) throws Error;
+
+        public abstract async void exec_installer_post_hooks (
+            string[] env = {}
+        ) throws Error;
+
         public abstract async void copy_to_user (
             string src,
             string dest,

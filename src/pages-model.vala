@@ -87,7 +87,7 @@ public sealed class ReadySet.PageInfo : Object {
 
         page.notify["accessible"].connect (update_accessible);
         if (plugin != null) {
-            plugin.notify["accessible"].connect (update_accessible);
+            plugin.notify["enabled"].connect (update_accessible);
         }
         update_accessible ();
 
@@ -95,10 +95,6 @@ public sealed class ReadySet.PageInfo : Object {
             plugin != null ? plugin.get_type ().name () : "None",
             page.get_type ().name ()
         );
-    }
-
-    internal inline static bool equal_id (PageInfo a, PageInfo b) {
-        return a.id == b.id;
     }
 
     void update_accessible () {

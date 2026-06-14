@@ -3,6 +3,7 @@ plugin_test_installer_deps = [
 ]
 
 plugin_test_installer_sources = files(
+  'disks-page.vala',
   'plugin.vala',
 )
 
@@ -15,22 +16,11 @@ plugin_test_installer_c_args = [
   '-DG_LOG_DOMAIN="TestInstaller"',
 ]
 
-configure_file(
-  input: 'plugin.in',
-  output: plugin_test_installer_name + '.plugin',
-
-  configuration: {
-    'NAME': plugin_test_installer_pretty_name,
-    'MODULE': plugin_test_installer_name,
-    'VERSION': meson.project_version(),
-  },
-  install: true,
-  install_dir: installers_plugins_dir
-)
+subdir('data')
 
 shared_module(
   plugin_test_installer_name,
-  plugin_test_installer_sources,
+  plugin_test_installer_sources + plugin_license_agreement_resources,
   dependencies: plugin_test_installer_deps,
   c_args: plugin_test_installer_c_args,
   install: true,
