@@ -11,8 +11,6 @@ i18n = import('i18n')
 gnome = import('gnome')
 pkgconfig = import('pkgconfig')
 
-glib_min_version = '2.76'
-
 add_project_arguments(
   '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
   '-w',
