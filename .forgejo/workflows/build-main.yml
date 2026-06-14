@@ -56,7 +56,7 @@ jobs:
           apt-get install -y apm
 
       - name: Setup
-        run: make setup
+        run: make setup-ci
 
       - name: Build
         run: make compile

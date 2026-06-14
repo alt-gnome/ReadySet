@@ -6,11 +6,16 @@ else
 	SUDO := sudo
 endif
 
-.PHONY: setup install compile test lint lint-fix
+.PHONY: setup setup-ci install compile test lint lint-fix install-deps
 
-setup:
+install-deps:
 	$(SUDO) xargs apm s install -y < ./build-aux/altlinux/build-deps || true
+
+setup: install-deps
 	meson setup --wipe _build -Dnightly=true --prefix=/usr
+
+setup-ci: install-deps
+	meson setup --wipe _build -Dnightly=true --prefix=/usr -Dwith_lib_documentation=true
 
 compile:
 	meson compile -C _build
