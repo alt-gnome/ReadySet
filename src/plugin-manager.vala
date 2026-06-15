@@ -39,16 +39,23 @@ public sealed class ReadySet.PluginManager : Object {
     public void init (string[] steps, string? installer_name) {
         this.installer_name = installer_name;
 
-        init_steps_plugins (steps);
+        init_steps_plugins ();
+        print_steps_info ();
+        check_steps (steps);
 
         if (installer_name != null) {
-            init_installers_plugins (steps);
+            init_installers_plugins ();
+            print_installers_info ();
+            check_installers ();
         }
     }
 
     internal void blank_init () {
-        init_steps_plugins ({});
-        init_installers_plugins ({});
+        init_steps_plugins ();
+        init_installers_plugins ();
+
+        debug ("Steps: %s", string.joinv (", ", get_available_steps ()));
+        debug ("installers: %s", string.joinv (", ", get_available_installers ()));
     }
 
     public InstallerAddin get_installer_plugin ()
@@ -66,7 +73,7 @@ public sealed class ReadySet.PluginManager : Object {
     }
 
     internal string[] get_available_steps () {
-        string[] steps = steps_plugins.get_keys_as_array ();
+        string[] steps = steps_plugins.get_keys_as_array ().copy ();
 
         foreach (var installer in installers_plugins.get_values ()) {
             foreach (var step in installer.all_pages) {
@@ -78,7 +85,7 @@ public sealed class ReadySet.PluginManager : Object {
     }
 
     internal string[] get_available_installers () {
-        return installers_plugins.get_keys_as_array ();
+        return installers_plugins.get_keys_as_array ().copy ();
     }
 
     public bool has_step (string id) {
@@ -136,7 +143,7 @@ public sealed class ReadySet.PluginManager : Object {
         return installers_engine;
     }
 
-    void init_steps_plugins (string[] steps) {
+    void init_steps_plugins () {
         var engine = get_steps_engine ();
         var addins = new Peas.ExtensionSet.with_properties (engine, typeof (StepAddin), {}, {});
 
@@ -147,11 +154,9 @@ public sealed class ReadySet.PluginManager : Object {
         steps_plugins.remove_all ();
 
         addins.foreach (steps_addins_foreach_func);
+    }
 
-        if (steps.length == 0) {
-            return;
-        }
-
+    void print_steps_info () {
         if (steps_plugins.length == 0) {
             error ("\nNo plugins found\n");
         } else {
@@ -160,7 +165,9 @@ public sealed class ReadySet.PluginManager : Object {
                 print ("  %s\n", plugin);
             }
         }
+    }
 
+    void check_steps (string[] steps) {
         string[] passed_steps = {};
 
         for (int i = 0; i < steps.length; i++) {
@@ -186,7 +193,7 @@ public sealed class ReadySet.PluginManager : Object {
         steps_plugins[info.module_name] = (StepAddin) extension;
     }
 
-    void init_installers_plugins (string[] steps) {
+    void init_installers_plugins () {
         var engine = get_installers_engine ();
         var addins = new Peas.ExtensionSet.with_properties (engine, typeof (InstallerAddin), {}, {});
 
@@ -197,24 +204,24 @@ public sealed class ReadySet.PluginManager : Object {
         installers_plugins.remove_all ();
 
         addins.foreach (installer_addins_foreach_func);
+    }
 
-        if (steps.length == 0) {
-            return;
-        }
+    void installer_addins_foreach_func (Peas.ExtensionSet _set, Peas.PluginInfo info, Object extension) {
+        installers_plugins[info.module_name] = (InstallerAddin) extension;
+    }
 
+    void print_installers_info () {
         if (installers_plugins.length != 0) {
             print ("\nFound installers plugins:\n");
             foreach (var plugin in installers_plugins.get_keys ()) {
                 print ("  %s\n", plugin);
             }
         }
+    }
 
+    void check_installers () {
         if (!installers_plugins.contains (installer_name)) {
             error ("Unknown installer plugin");
         }
-    }
-
-    void installer_addins_foreach_func (Peas.ExtensionSet _set, Peas.PluginInfo info, Object extension) {
-        installers_plugins[info.module_name] = (InstallerAddin) extension;
     }
 }

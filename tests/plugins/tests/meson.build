@@ -28,3 +28,14 @@ shared_module(
   c_args: plugin_test_c_args,
   install: get_option('install_tests'),
 )
+
+configure_file(
+  input: 'data/plugin.in',
+  output: plugin_test_name + '.plugin',
+  configuration: {
+    'NAME': plugin_test_pretty_name,
+    'MODULE': plugin_test_name,
+    'VERSION': meson.project_version(),
+  },
+  install: get_option('install_tests'),
+)

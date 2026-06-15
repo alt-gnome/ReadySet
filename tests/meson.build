@@ -1,5 +1,43 @@
 subdir('plugins/tests')
 subdir('plugins/test-installer')
+
+test_plugin_manager_conf = configuration_data()
+test_plugin_manager_conf.set_quoted('STEPS_PLUGINS_DIR', meson.current_build_dir() / 'plugins' / 'tests')
+test_plugin_manager_conf.set_quoted('INSTALLERS_PLUGINS_DIR', meson.current_build_dir() / 'plugins' / 'test-installer')
+
+configure_file(output: 'test-config.h', configuration: test_plugin_manager_conf)
+test_plugin_manager_config_h_dir = include_directories('.')
+
+test('plugin-manager',
+  executable('test-plugin-manager',
+    sources: [
+      files(
+        'test-plugin-manager.vala',
+        'test-config.vapi',
+      ) + plugin_manager_sources,
+      librs_sources_with_resources,
+    ],
+    include_directories: [
+      test_plugin_manager_config_h_dir,
+      '..' / 'lib' / 'src',
+    ],
+    c_args: [
+      '-DG_LOG_DOMAIN="TestPluginManager"',
+    ],
+    vala_args: [
+      '--vapidir', meson.project_source_root() / 'vapi',
+      '--pkg', 'linux',
+    ],
+    dependencies: [
+      gee_dep,
+      gio_dep,
+      libadwaita_dep,
+      libpeas_dep,
+      libserialize_dep,
+    ],
+  )
+)
+
 test('service-copy-to-user',
   executable('service-copy-to-user',
     sources: [

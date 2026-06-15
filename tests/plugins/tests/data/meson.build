@@ -29,14 +29,3 @@ if (get_option('install_tests'))
     install_dir: datadir / meson.project_name()
   )
 endif
-
-configure_file(
-  input: 'plugin.in',
-  output: plugin_test_name + '.plugin',
-  configuration: {
-    'NAME': plugin_test_pretty_name,
-    'MODULE': plugin_test_name,
-    'VERSION': meson.project_version(),
-  },
-  install: get_option('install_tests'),
-)

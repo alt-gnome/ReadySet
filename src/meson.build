@@ -1,5 +1,11 @@
+src_sources_dir = meson.current_source_dir()
+
 rs_app_vapi_sources = files(
   'config.vapi',
+)
+
+plugin_manager_sources = files(
+  'plugin-manager.vala',
 )
 
 rs_app_vala_sources = files(
