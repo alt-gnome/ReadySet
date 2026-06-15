@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-14 17:50+0000\n"
+"POT-Creation-Date: 2026-06-15 12:01+0000\n"
 "PO-Revision-Date: 2026-06-01 21:26+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -192,14 +192,6 @@ msgstr "Лицензионное соглашение"
 #: plugins/license-agreement/data/ui/page.blp:34
 msgid "I have read the license and accept it"
 msgstr "Я ознакомился с лицензией и принимаю ее"
-
-#: plugins/tests/data/ui/page.blp:23 plugins/tests/data/ui/page.blp:32
-msgid "Test"
-msgstr "Тест"
-
-#: plugins/tests/data/ui/page.blp:27
-msgid "Test page"
-msgstr "Тестовая страница"
 
 #: plugins/user/data/ui/avatar-chooser.blp:5
 msgid "Select Avatar"
@@ -482,7 +474,7 @@ msgstr "На Старт Внимание"
 msgid "translator-credits"
 msgstr "Vladimir Romanov <rirusha@altlinux.org>"
 
-#: src/application.vala:287
+#: src/application.vala:302
 msgid "No steps specified"
 msgstr "Не указан список шагов"
 
@@ -561,6 +553,15 @@ msgstr "Сообщение об ошибке: %s"
 #: src/pages/end-page.vala:199
 msgid "Error while execute post hooks"
 msgstr "Ошибка при выполнении пост скриптов"
+
+#: tests/plugins/tests/data/ui/page.blp:23
+#: tests/plugins/tests/data/ui/page.blp:32
+msgid "Test"
+msgstr "Тест"
+
+#: tests/plugins/tests/data/ui/page.blp:27
+msgid "Test page"
+msgstr "Тестовая страница"
 
 #~ msgid "Steps which will not apply. E.g: `steps=language,keyboard`"
 #~ msgstr ""
