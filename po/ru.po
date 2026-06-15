@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-15 12:01+0000\n"
+"POT-Creation-Date: 2026-06-15 17:37+0000\n"
 "PO-Revision-Date: 2026-06-01 21:26+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -25,17 +25,8 @@ msgid "Setting up the system…"
 msgstr "Настройка вашей системы…"
 
 #: data/ui/end-page.blp:53
-msgid "Ready Set…"
-msgstr "На Старт Внимание…"
-
-#: data/ui/end-page.blp:54
-msgid "The system is ready for use."
-msgstr "Система готова к использованию."
-
-#. TRANSLATORS: Last word in "Ready Set ..." sentence
-#: data/ui/end-page.blp:64
-msgid "Go!"
-msgstr "Марш!"
+msgid "All done!"
+msgstr ""
 
 #: data/ui/existing-user-end-page.blp:26
 msgid "Setup complete!"
@@ -536,21 +527,43 @@ msgstr "Показать информацию о версии и выйти"
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
-#: src/pages/end-page.vala:88
+#. Translators: last word in sentence 'Start Using _'
+#: src/pages/end-page.vala:53
+msgctxt "start-using"
+msgid "System"
+msgstr ""
+
+#. First word in sentence '_ is ready to be used.'
+#: src/pages/end-page.vala:55
+msgctxt "ready-to-use"
+msgid "System"
+msgstr ""
+
+#: src/pages/end-page.vala:58
+#, c-format
+msgid "_Start Using %s"
+msgstr ""
+
+#: src/pages/end-page.vala:59
+#, fuzzy, c-format
+msgid "%s is ready to be used."
+msgstr "Всё готово к использованию."
+
+#: src/pages/end-page.vala:107
 msgid "Installing system…"
 msgstr "Установка системы…"
 
-#: src/pages/end-page.vala:109
+#: src/pages/end-page.vala:128
 #, c-format
 msgid "Applying %s…"
 msgstr "Применение %s…"
 
-#: src/pages/end-page.vala:194 src/pages/end-page.vala:200
+#: src/pages/end-page.vala:213 src/pages/end-page.vala:219
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
-#: src/pages/end-page.vala:199
+#: src/pages/end-page.vala:218
 msgid "Error while execute post hooks"
 msgstr "Ошибка при выполнении пост скриптов"
 
@@ -562,6 +575,15 @@ msgstr "Тест"
 #: tests/plugins/tests/data/ui/page.blp:27
 msgid "Test page"
 msgstr "Тестовая страница"
+
+#~ msgid "Ready Set…"
+#~ msgstr "На Старт Внимание…"
+
+#~ msgid "The system is ready for use."
+#~ msgstr "Система готова к использованию."
+
+#~ msgid "Go!"
+#~ msgstr "Марш!"
 
 #~ msgid "Steps which will not apply. E.g: `steps=language,keyboard`"
 #~ msgstr ""
