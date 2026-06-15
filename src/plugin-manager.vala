@@ -115,7 +115,7 @@ public sealed class ReadySet.PluginManager : Object {
 
             steps_engine.add_search_path (
                 Config.STEPS_PLUGINS_DIR,
-                Config.STEPS_PLUGINS_DIR
+                null
             );
         }
 
@@ -129,7 +129,7 @@ public sealed class ReadySet.PluginManager : Object {
 
             installers_engine.add_search_path (
                 Config.INSTALLERS_PLUGINS_DIR,
-                Config.INSTALLERS_PLUGINS_DIR
+                null
             );
         }
 
