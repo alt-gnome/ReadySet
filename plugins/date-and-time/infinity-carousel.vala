@@ -116,7 +116,10 @@ public class DateAndTime.InfinityCarousel : Gtk.Box {
     }
 
     [GtkCallback]
-    public void on_items_pressed () {
+    public void on_items_pressed (int n_press, double x, double y) {
+        if (y < 0 || y > carousel.get_height () || x < 0 || x > carousel.get_width ()) {
+            return;
+        }
         item_pressed ();
     }
 }
