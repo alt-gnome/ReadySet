@@ -19,7 +19,6 @@ plugins/language/row.vala
 plugins/language/select-title.vala
 plugins/license-agreement/data/ui/page.blp
 plugins/license-agreement/page.vala
-plugins/tests/data/ui/page.blp
 plugins/user/avatar-chooser.vala
 plugins/user/data/ui/avatar-chooser.blp
 plugins/user/data/ui/page-password.blp
@@ -43,3 +42,4 @@ src/widgets/positioned-stack.vala
 src/widgets/steps-main-page.vala
 src/widgets/steps-sidebar.vala
 src/window-content.vala
+tests/plugins/tests/data/ui/page.blp
