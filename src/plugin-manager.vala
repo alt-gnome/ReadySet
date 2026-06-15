@@ -165,18 +165,6 @@ public sealed class ReadySet.PluginManager : Object {
 
         for (int i = 0; i < steps.length; i++) {
             if (steps_plugins.contains (steps[i])) {
-                var deps = steps_plugins[steps[i]].dependencies;
-
-                foreach (var dep in deps) {
-                    if (!(dep in passed_steps)) {
-                        critical (
-                            "Plugin '%s' has an unsatisfied dependency on '%s'",
-                            steps[i],
-                            dep
-                        );
-                    }
-                }
-
                 var addin = steps_plugins[steps[i]];
 
                 context.register_vars (addin.get_context_vars ());
@@ -196,7 +184,6 @@ public sealed class ReadySet.PluginManager : Object {
 
     void steps_addins_foreach_func (Peas.ExtensionSet _set, Peas.PluginInfo info, Object extension) {
         steps_plugins[info.module_name] = (StepAddin) extension;
-        steps_plugins[info.module_name].dependencies = info.dependencies;
     }
 
     void init_installers_plugins (string[] steps) {
@@ -225,21 +212,9 @@ public sealed class ReadySet.PluginManager : Object {
         if (!installers_plugins.contains (installer_name)) {
             error ("Unknown installer plugin");
         }
-
-        var deps = installers_plugins[installer_name].dependencies;
-
-        foreach (var dep in deps) {
-            if (!(dep in steps)) {
-                critical (
-                    "Installer plugin '%s' has an unsatisfied dependency on '%s'", installer_name,
-                    dep
-                );
-            }
-        }
     }
 
     void installer_addins_foreach_func (Peas.ExtensionSet _set, Peas.PluginInfo info, Object extension) {
         installers_plugins[info.module_name] = (InstallerAddin) extension;
-        installers_plugins[info.module_name].dependencies = info.dependencies;
     }
 }

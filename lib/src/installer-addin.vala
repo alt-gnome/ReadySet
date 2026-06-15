@@ -35,22 +35,6 @@
  * {@link ReadySet.ExtensionBase.init_once}. It's an program error try to call to 
  * context before it set.
  *
- * == Dependencies ==
- *
- * You can describe plugins dependencies in .plugin file. The application will
- * check that all dependencies are queued up to the current plugin.
- * Otherwise error will be thrown and application will be aborted. 
- *
- * Example:
- * {{{
- *  [Plugin]
- *  Name=Cool Plugin
- *  Depends=language,keyboard
- *  Module=cool-plugin
- *  Version=0.1.0
- *  Authors=David Hacker
- * }}}
- *
  * @see ReadySet.StepAddin
  */
 public abstract class ReadySet.InstallerAddin : ExtensionBase {
