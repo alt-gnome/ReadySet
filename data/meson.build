@@ -101,5 +101,15 @@ foreach unit, wants: unit_files
   endforeach
 endforeach
 
+configure_file(
+  input: 'completion' / 'bash.in',
+  output: meson.project_name(),
+  install: true,
+  install_dir: datadir / 'bash-completion' / 'completions',
+  configuration: {
+    'LIBEXECDIR': libexecdir
+  },
+)
+
 install_emptydir(sysconfdir / meson.project_name())
 install_emptydir(localstatedir/ 'lib' / meson.project_name())

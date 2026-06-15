@@ -84,6 +84,21 @@ public sealed class ReadySet.Application: Adw.Application {
         add_action_entries (ACTION_ENTRIES, this);
         set_accels_for_action ("app.quit", { "<primary>q" });
         set_accels_for_action ("win.about", { "<primary>o" });
+
+        set_option_context_parameter_string ("[COMMAND]");
+        set_option_context_summary (
+            "Commands:\n"
+            + "  generate-bash-completion    Output bash completion script"
+        );
+    }
+
+    protected override bool local_command_line ([CCode (array_length = false)] ref unowned string[] arguments, out int exit_status) {
+        if (arguments.length > 1 && arguments[1] == "generate-bash-completion") {
+            Completions.print_completion_script ();
+            exit_status = 0;
+            return true;
+        }
+        return base.local_command_line (ref arguments, out exit_status);
     }
 
     protected override int handle_local_options (VariantDict options) {

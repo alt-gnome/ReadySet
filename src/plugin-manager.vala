@@ -46,6 +46,11 @@ public sealed class ReadySet.PluginManager : Object {
         }
     }
 
+    internal void blank_init () {
+        init_steps_plugins ({});
+        init_installers_plugins ({});
+    }
+
     public InstallerAddin get_installer_plugin ()
     requires (installer_name != null)
     requires (installers_plugins.contains (installer_name)) {
@@ -58,6 +63,22 @@ public sealed class ReadySet.PluginManager : Object {
         }
 
         return null;
+    }
+
+    internal string[] get_available_steps () {
+        string[] steps = steps_plugins.get_keys_as_array ();
+
+        foreach (var installer in installers_plugins.get_values ()) {
+            foreach (var step in installer.all_pages) {
+                steps += "installer-" + step;
+            }
+        }
+
+        return steps;
+    }
+
+    internal string[] get_available_installers () {
+        return installers_plugins.get_keys_as_array ();
     }
 
     public bool has_step (string id) {
@@ -127,6 +148,10 @@ public sealed class ReadySet.PluginManager : Object {
 
         addins.foreach (steps_addins_foreach_func);
 
+        if (steps.length == 0) {
+            return;
+        }
+
         if (steps_plugins.length == 0) {
             error ("\nNo plugins found\n");
         } else {
@@ -185,6 +210,10 @@ public sealed class ReadySet.PluginManager : Object {
         installers_plugins.remove_all ();
 
         addins.foreach (installer_addins_foreach_func);
+
+        if (steps.length == 0) {
+            return;
+        }
 
         if (installers_plugins.length != 0) {
             print ("\nFound installers plugins:\n");
