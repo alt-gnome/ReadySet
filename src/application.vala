@@ -92,7 +92,7 @@ public sealed class ReadySet.Application: Adw.Application {
         );
     }
 
-    protected override bool local_command_line ([CCode (array_length = false)] ref unowned string[] arguments, out int exit_status) {
+    protected override bool local_command_line (ref unowned string[] arguments, out int exit_status) {
         if (arguments.length > 1 && arguments[1] == "generate-bash-completion") {
             Completions.print_completion_script ();
             exit_status = 0;
