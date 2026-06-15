@@ -35,10 +35,29 @@ public sealed class ReadySet.EndPage : Adw.Bin {
     unowned Adw.StatusPage apply_status_page;
     [GtkChild]
     unowned Gtk.ProgressBar progress_bar;
+    [GtkChild]
+    unowned Adw.StatusPage status_page;
+    [GtkChild]
+    unowned Gtk.Button finish_button;
 
     ProgressData progress_data = new ProgressData ();
 
     bool password_sent = false;
+
+    construct {
+        var name = Environment.get_os_info (OsInfoKey.NAME);
+        var name2 = name.dup ();
+
+        if (name == null) {
+            //  Translators: last word in sentence 'Start Using _'
+            name = C_("start-using", "System");
+            //  First word in sentence '_ is ready to be used.'
+            name2 = C_("ready-to-use", "System");
+        }
+
+        finish_button.label = _("_Start Using %s").printf (name);
+        status_page.description = _("%s is ready to be used.").printf (name);
+    }
 
     public async void start_action () {
         var app = Application.get_default ();
