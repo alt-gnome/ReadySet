@@ -23,6 +23,5 @@ shared_module(
   plugin_test_installer_sources + plugin_license_agreement_resources,
   dependencies: plugin_test_installer_deps,
   c_args: plugin_test_installer_c_args,
-  install: true,
-  install_dir: installers_plugins_dir
+  install: get_option('install_tests'),
 )

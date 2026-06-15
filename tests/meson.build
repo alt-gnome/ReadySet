@@ -1,3 +1,5 @@
+subdir('plugins/tests')
+subdir('plugins/test-installer')
 test('service-copy-to-user',
   executable('service-copy-to-user',
     sources: [

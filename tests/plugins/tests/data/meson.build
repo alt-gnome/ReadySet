@@ -18,25 +18,25 @@ plugin_test_resources = gnome.compile_resources(
   )
 )
 
+if (get_option('install_tests'))
+  install_subdir(
+    'post-hooks',
+    install_dir: datadir / meson.project_name()
+  )
+
+  install_subdir(
+    'pre-hooks',
+    install_dir: datadir / meson.project_name()
+  )
+endif
+
 configure_file(
   input: 'plugin.in',
   output: plugin_test_name + '.plugin',
-
   configuration: {
     'NAME': plugin_test_pretty_name,
     'MODULE': plugin_test_name,
     'VERSION': meson.project_version(),
   },
-  install: true,
-  install_dir: steps_plugins_dir
-)
-
-install_subdir(
-  'post-hooks',
-  install_dir: datadir / meson.project_name()
-)
-
-install_subdir(
-  'pre-hooks',
-  install_dir: datadir / meson.project_name()
+  install: get_option('install_tests'),
 )

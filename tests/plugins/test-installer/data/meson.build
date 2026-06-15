@@ -19,12 +19,10 @@ plugin_license_agreement_resources = gnome.compile_resources(
 configure_file(
   input: 'plugin.in',
   output: plugin_test_installer_name + '.plugin',
-
   configuration: {
     'NAME': plugin_test_installer_pretty_name,
     'MODULE': plugin_test_installer_name,
     'VERSION': meson.project_version(),
   },
-  install: true,
-  install_dir: installers_plugins_dir
+  install: get_option('install_tests'),
 )
