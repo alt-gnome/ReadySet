@@ -139,7 +139,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
             var name = get_row_name (info);
 
             if (name != null) {
-                current_input_list.append (new InputRow (info, name, false, true) {
+                current_input_list.append (new InputRow (info, name, false, current_inputs.size > 1) {
                     is_selected = true
                 });
             }
