@@ -49,7 +49,6 @@ rs_app_vala_args = [
 ]
 
 librs_dependencies = [
-  gee_dep,
   gio_dep,
   libadwaita_dep,
   libpeas_dep,
