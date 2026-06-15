@@ -55,7 +55,11 @@
  */
 public abstract class ReadySet.InstallerAddin : ExtensionBase {
 
-    protected virtual string[] all_pages {
+    /**
+     * All available pages that can be built via
+     * {@link ReadySet.InstallerAddin.build_page}.
+     */
+    public virtual string[] all_pages {
         owned get {
             return {};
         }
