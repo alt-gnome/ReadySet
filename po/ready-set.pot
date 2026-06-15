@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-14 17:50+0000\n"
+"POT-Creation-Date: 2026-06-15 12:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -187,14 +187,6 @@ msgstr ""
 
 #: plugins/license-agreement/data/ui/page.blp:34
 msgid "I have read the license and accept it"
-msgstr ""
-
-#: plugins/tests/data/ui/page.blp:23 plugins/tests/data/ui/page.blp:32
-msgid "Test"
-msgstr ""
-
-#: plugins/tests/data/ui/page.blp:27
-msgid "Test page"
 msgstr ""
 
 #: plugins/user/data/ui/avatar-chooser.blp:5
@@ -449,7 +441,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/application.vala:287
+#: src/application.vala:302
 msgid "No steps specified"
 msgstr ""
 
@@ -525,4 +517,13 @@ msgstr ""
 
 #: src/pages/end-page.vala:199
 msgid "Error while execute post hooks"
+msgstr ""
+
+#: tests/plugins/tests/data/ui/page.blp:23
+#: tests/plugins/tests/data/ui/page.blp:32
+msgid "Test"
+msgstr ""
+
+#: tests/plugins/tests/data/ui/page.blp:27
+msgid "Test page"
 msgstr ""
