@@ -28,6 +28,8 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
 
     public bool is_am_pm { get; set; }
 
+    public signal void apply ();
+
     public Gtk.StringList months {
         get; set;
         default = new Gtk.StringList ({
@@ -103,7 +105,7 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
     }
 
     [GtkCallback]
-    public void on_apply_button_clicked () {
+    public void on_time_apply_button_clicked () {
         refill_models ();
         stack.set_visible_child_name ("selector");
     }
@@ -243,5 +245,16 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
     [GtkCallback]
     public void on_minute_changed (int distance) {
         minute = clamp_minute (minute - distance);
+    }
+
+    [GtkCallback]
+    public void on_close_button_clicked () {
+        close ();
+    }
+
+    [GtkCallback]
+    public void on_apply_button_clicked () {
+        close ();
+        apply ();
     }
 }

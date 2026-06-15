@@ -13,15 +13,10 @@ namespace DateAndTime {
     }
 
     string get_utc_offset_string (int32 offset) {
-        var hours = offset / 60.0d / 60.0d;
-        var digit_hours = (int) (hours);
+        var hours = (int) Math.round ((double) offset / 60.0d / 60.0d);
 
-        if (digit_hours - hours > 0.5 || digit_hours - hours > -0.5) {
-            digit_hours++;
-        }
-
-        var positive = digit_hours >= 0;
-        var abs = digit_hours * (positive ? 1 : -1);
+        var positive = hours >= 0;
+        var abs = hours * (positive ? 1 : -1);
 
         if (abs == 0) {
             return "UTC";
@@ -29,4 +24,63 @@ namespace DateAndTime {
 
         return "UTC%c%02d:00".printf (positive ? '+' : '-', abs);
     }
+
+    async DateAndTime.Timedate1 get_timedate_proxy () throws Error {
+        var con = yield Bus.get (BusType.SYSTEM);
+
+        if (con == null) {
+            error ("Failed to connect to bus");
+        }
+
+        return con.get_proxy_sync<DateAndTime.Timedate1> (
+            "org.freedesktop.timedate1",
+            "/org/freedesktop/timedate1",
+            DBusProxyFlags.NONE
+        );
+    }
+}
+
+[DBus (name = "org.freedesktop.timedate1")]
+public interface DateAndTime.Timedate1 : Object {
+    public abstract string timezone { owned get; }
+    [DBus (name = "LocalRTC")]
+    public abstract bool local_rtc { owned get; }
+    [DBus (name = "CanNTP")]
+    public abstract bool can_ntp { owned get; }
+    [DBus (name = "NTP")]
+    public abstract bool ntp { owned get; }
+    [DBus (name = "NTPSynchronized")]
+    public abstract bool ntp_synchronized { owned get; }
+    [DBus (name = "TimeUSec")]
+    public abstract uint64 time_usec { owned get; }
+    [DBus (name = "RTCTimeUSec")]
+    public abstract uint64 rtc_time_usec { owned get; }
+
+    public abstract async void set_time (
+        int64 usec_utc,
+        bool relative = false,
+        bool interactive = true
+    ) throws Error;
+
+    public abstract async void set_timezone (
+        string timezone,
+        bool interactive = true
+    ) throws Error;
+
+    [DBus (name = "SetLocalRTC")]
+    public abstract async void set_local_rtc (
+        bool local_rtc,
+        bool fix_system,
+        bool interactive = true
+    ) throws Error;
+
+    [DBus (name = "SetNTP")]
+    public abstract async void set_ntp (
+       bool use_ntp,
+       bool interactive = true
+    ) throws Error;
+
+    public abstract async void list_timezones (
+      out string[] timezones
+    ) throws Error;
 }

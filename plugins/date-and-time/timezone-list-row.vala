@@ -1,5 +1,12 @@
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/DateAndTime/ui/timezone-list-row.ui")]
-public class DateAndTime.TimezoneListRow : Adw.ActionRow {
+public class DateAndTime.TimezoneListRow : Gtk.Box {
+    [GtkChild]
+    public Gtk.ListBox listbox;
+
+    public string title { get; set; }
+    public string subtitle { get; set; }
+    public string suffix_label { get; set; }
+
     TimezoneListItem _item;
     public TimezoneListItem item {
         get { return _item; }
@@ -14,8 +21,6 @@ public class DateAndTime.TimezoneListRow : Adw.ActionRow {
             suffix_label = get_utc_offset_string (value.utc_offset);
         }
     }
-
-    public string suffix_label { get; set; }
 }
 
 public class DateAndTime.TimezoneListItem : Object {

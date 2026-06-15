@@ -1,13 +1,28 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $DateAndTimeTimezoneListRow: Adw.ActionRow {
-  styles [
-    "property",
-  ]
+template $DateAndTimeTimezoneListRow: Gtk.Box {
+  ListBox listbox {
+    styles [
+      "no-background",
+    ]
 
-  [suffix]
-  Label {
-    label: bind template.suffix_label;
+    can-focus: false;
+    can-target: false;
+    hexpand: true;
+
+    Adw.ActionRow {
+      styles [
+        "property",
+      ]
+
+      title: bind template.title;
+      subtitle: bind template.subtitle;
+
+      [suffix]
+      Label {
+        label: bind template.suffix_label;
+      }
+    }
   }
 }

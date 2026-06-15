@@ -18,6 +18,7 @@ plugin_date_and_time_name = 'date-and-time'
 
 plugin_date_and_time_c_args = [
   '-DG_LOG_DOMAIN="DateAndTime"',
+  '-lm',
 ]
 
 subdir('data')

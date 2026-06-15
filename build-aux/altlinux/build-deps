@@ -17,6 +17,8 @@
 'pkgconfig(pwquality)'
 'pkgconfig(systemd)'
 'pkgconfig(xkbcommon)'
+'pkgconfig(gweather4)'
+'vapi(gweather4)'
 /usr/bin/blueprint-compiler
 /usr/bin/g-ir-compiler
 /usr/bin/gcc
