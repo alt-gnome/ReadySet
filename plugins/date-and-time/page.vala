@@ -102,7 +102,7 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         var timezone_dialog = (DateAndTime.TimezoneList) dialog;
         var item = timezone_dialog.selected_item;
 
-        if (item == null) { 
+        if (item == null) {
             timezone_label = default_timezone_label;
             return;
         }
@@ -132,7 +132,7 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         var year = date_and_time_dialog.year;
 
         var datetime = new DateTime.local (year, month, day, hour, minute, 0);
-        date_and_time_label = datetime.format ("%d.%m.%Y, %H:%M"); 
+        date_and_time_label = datetime.format ("%d.%m.%Y, %H:%M");
 
         selected_datetime = datetime;
     }

@@ -120,4 +120,3 @@ public class DateAndTime.InfinityCarousel : Gtk.Box {
         item_pressed ();
     }
 }
-

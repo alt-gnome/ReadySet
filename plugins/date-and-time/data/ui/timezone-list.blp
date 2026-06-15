@@ -4,7 +4,6 @@ using Adw 1;
 template $DateAndTimeTimezoneList: Adw.Dialog {
   title: _("Time zone");
   selected-item: bind single_selection.selected-item;
-
   notify::selected-item => $on_selected_item_changed();
 
   Adw.ToolbarView {
@@ -15,6 +14,7 @@ template $DateAndTimeTimezoneList: Adw.Dialog {
     Adw.Clamp {
       margin-start: 9;
       margin-end: 9;
+
       SearchEntry search_entry {}
     }
 
@@ -45,12 +45,11 @@ template $DateAndTimeTimezoneList: Adw.Dialog {
 
                 model: FilterListModel filter_list_model {
                   notify::n-items => $on_filter_items_count_changed();
-
                   model: bind template.model;
 
                   filter: StringFilter {
                     search: bind search_entry.text;
-                    expression: expr (item as <$DateAndTimeTimezoneListItem>).metainfo;
+                    expression: expr(item as <$DateAndTimeTimezoneListItem>).metainfo;
                   };
                 };
               };
