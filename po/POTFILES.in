@@ -42,4 +42,4 @@ src/widgets/positioned-stack.vala
 src/widgets/steps-main-page.vala
 src/widgets/steps-sidebar.vala
 src/window-content.vala
-tests/plugins/tests/data/ui/page.blp
+tests/plugins/test-common/data/ui/page.blp
