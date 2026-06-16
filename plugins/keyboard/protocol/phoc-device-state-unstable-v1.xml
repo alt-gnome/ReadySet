@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<protocol name="phoc_device_state_unstable_v1">
+  <copyright>
+    Copyright © 2022 Guido Günther
+
+    Permission to use, copy, modify, distribute, and sell this
+    software and its documentation for any purpose is hereby granted
+    without fee, provided that the above copyright notice appear in
+    all copies and that both that copyright notice and this permission
+    notice appear in supporting documentation, and that the name of
+    the copyright holders not be used in advertising or publicity
+    pertaining to distribution of the software without specific,
+    written prior permission.  The copyright holders make no
+    representations about the suitability of this software for any
+    purpose.  It is provided "as is" without express or implied
+    warranty.
+
+    THE COPYRIGHT HOLDERS DISCLAIM ALL WARRANTIES WITH REGARD TO THIS
+    SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+    FITNESS, IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
+    AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
+    ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+    THIS SOFTWARE.
+  </copyright>
+
+  <interface name="zphoc_device_state_v1" version="2">
+    <description summary="Device state information">
+      This interface provides information about the device state,
+      such as whether a hardware keyboard is attached.
+    </description>
+
+    <enum name="capability" bitfield="true">
+      <description summary="Device capabilities">
+        Bitmask of capabilities present on the device.
+      </description>
+      <entry name="tablet_mode_switch" value="1" summary="The device has a tablet mode switch"/>
+      <entry name="lid_switch" value="2" summary="The device has a lid switch"/>
+      <entry name="keyboard" value="4" summary="The device has a hardware keyboard attached" since="2"/>
+    </enum>
+
+    <event name="capabilities">
+      <description summary="Device capabilities changed">
+        Sent when the device capabilities change. The capabilities
+        argument is a bitmask of the capability enum values.
+      </description>
+      <arg name="capabilities" type="uint" enum="capability" summary="bitmask of capabilities"/>
+    </event>
+  </interface>
+</protocol>

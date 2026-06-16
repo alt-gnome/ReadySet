@@ -48,7 +48,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
     Gee.HashMap<InputInfo, InputRow> input_rows;
     Gnome.XkbInfo xkb_info;
 
-    bool has_hw_keybaord = try_to_detect_hw_keyboatd ();
+    HwTracker hw_tracker = HwTracker.get_instance ();
 
 #if HAVE_IBUS
     IBus.Bus ibus;
@@ -105,6 +105,12 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         update_current ();
 
         filter_entry.can_focus = true;
+
+        hw_tracker.notify["has-hw-keyboard"].connect (on_hw_keyboard_changed);
+    }
+
+    void on_hw_keyboard_changed () {
+        update_current ();
     }
 
     async void init () {
@@ -132,7 +138,7 @@ public sealed class Keyboard.InputChooser : Gtk.Box {
         } else {
             current_input_list_stack.visible_child_name = "sources";
 
-            switch_box.visible = current_inputs.size > 1 && has_hw_keybaord;
+            switch_box.visible = current_inputs.size > 1 && hw_tracker.has_hw_keyboard;
         }
 
         foreach (var info in current_inputs.to_array ()) {

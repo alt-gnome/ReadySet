@@ -218,20 +218,4 @@ namespace Keyboard {
 
         return found_latin;
     }
-
-    // This function is trying its best
-    bool try_to_detect_hw_keyboatd () {
-        string cmd = "cat /proc/bus/input/devices | grep -i keyboard";
-
-        try {
-            var sp = new Subprocess.newv (
-                {"sh", "-c", cmd},
-                GLib.SubprocessFlags.STDOUT_SILENCE | GLib.SubprocessFlags.STDERR_SILENCE
-            );
-            return sp.wait_check ();
-        } catch (Error e) {
-            warning ("Failed to exec '%s': %s", cmd, e.message);
-            return false;
-        }
-    }
 }
