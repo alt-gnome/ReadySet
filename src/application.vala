@@ -224,9 +224,11 @@ public sealed class ReadySet.Application: Adw.Application {
                         inited_plugins.add (steps[i]);
                     }
 
-                    if (addin.plugin_info.module_name in performed_steps ||
-                        (!addin.existing_user && context.mode == EXISTING_USER)) {
-                        addin.enabled = false;
+                    if (context.mode == EXISTING_USER) {
+                        if (addin.plugin_info.module_name in performed_steps ||
+                            !addin.existing_user) {
+                            addin.enabled = false;
+                        }
                     }
 
                     if (addin.enabled) {
