@@ -17,7 +17,13 @@ add_project_arguments(
   language: 'c',
 )
 
+add_project_arguments(
+  '--vapidir', meson.project_source_root() / 'vapi',
+  language: 'vala',
+)
+
 accountsservice_desktop_dep = dependency('accountsservice')
+pms_dep = dependency('pms-1.0', required: get_option('pms'))
 gdm_dep = dependency('gdm', required: get_option('gdm'))
 gee_dep = dependency('gee-0.8')
 gio_dep = dependency('gio-unix-2.0')

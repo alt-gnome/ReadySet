@@ -63,7 +63,6 @@ rs_app_vala_args = [
   '--gresourcesdir=data/',
   '--gresources', librs_resource_files,
   '--gresourcesdir=lib/data/',
-  '--vapidir', meson.project_source_root() / 'vapi',
   '--pkg', 'linux',
 ]
 

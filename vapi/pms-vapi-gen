@@ -1,0 +1,8 @@
+#!/usr/bin/bash -ex
+
+VAPI_DIR="$1"
+DATADIR="$2"
+
+VAPI_FILE="$VAPI_DIR/pms.vapi"
+
+vapigen --pkg gtk4 --library pms-1.0 -d $VAPI_DIR $DATADIR/gir-1.0/Pms-1.0.gir

@@ -11,6 +11,10 @@ if ibus_dep.found()
   plugin_keyboard_deps += ibus_dep
 endif
 
+if pms_dep.found()
+  plugin_keyboard_deps += pms_dep
+endif
+
 plugin_keyboard_sources = files(
   'enums.vala',
   'ibus-utils.vala',
@@ -24,6 +28,7 @@ plugin_keyboard_sources = files(
   'preview-dialog.vala',
   'stevia-layout-data.vala',
   'utils.vala',
+  'test-page.vala',
 )
 
 plugin_keyboard_pretty_name = 'Keyboard'
@@ -33,6 +38,7 @@ subdir('data')
 
 plugin_keyboard_c_args = [
   '-DGNOME_DESKTOP_USE_UNSTABLE_API',
+  '-DLIBPMS_USE_UNSTABLE_API',
   '-DG_LOG_DOMAIN="Keyboard"',
 ]
 
@@ -41,7 +47,11 @@ plugin_keyboard_vala_args = [
 ]
 
 if ibus_dep.found()
-  plugin_keyboard_vala_args += ['-D', 'HAVE_IBUS']
+  plugin_keyboard_vala_args += ['--define=HAVE_IBUS']
+endif
+
+if pms_dep.found()
+  plugin_keyboard_vala_args += ['--define=PMS']
 endif
 
 shared_module(

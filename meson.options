@@ -38,6 +38,12 @@ option(
   type: 'feature',
   value: 'auto'
 )
+option(
+  'pms',
+  type: 'feature',
+  value: 'auto',
+  description: 'Use libmps as input sources provider',
+)
 
 # User
 option(
