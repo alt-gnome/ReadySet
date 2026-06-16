@@ -38,12 +38,15 @@ rs_app_vala_sources = files(
 )
 
 rs_app_dependencies = [
-  gdm_dep,
   gee_dep,
   libadwaita_dep,
   libpeas_dep,
   posix_dep,
 ] + librs_dependencies
+
+if gdm_dep.found()
+  rs_app_dependencies += gdm_dep
+endif
 
 rs_app_sources = [
   rs_app_vala_sources,
@@ -67,6 +70,12 @@ rs_app_vala_args = [
 if get_option('nightly')
   rs_app_vala_args += [
     '--define=DEVEL',
+  ]
+endif
+
+if gdm_dep.found()
+  rs_app_vala_args += [
+    '--define=WITH_GDM',
   ]
 endif
 

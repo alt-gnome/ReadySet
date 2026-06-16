@@ -25,6 +25,12 @@ option(
   value: '/run/gdm',
   description: 'GDM\'s runtime directory. The dynamic gnome-initial-setup user\'s home dir is exported here',
 )
+option(
+  'gdm',
+  type: 'feature',
+  value: 'auto',
+  description: 'Use integration with GDM (Login to user via Gdm.Client after initial-setup done',
+)
 
 # Keyboard
 option(

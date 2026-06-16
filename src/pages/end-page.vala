@@ -23,9 +23,11 @@ public sealed class ReadySet.EndPage : Adw.Bin {
 
     const string SERVICE_NAME = "gdm-password";
 
+#if WITH_GDM
     Gdm.Client client;
     Gdm.Greeter greeter;
     Gdm.UserVerifier user_verifier;
+#endif
 
     [GtkChild]
     unowned Gtk.Stack stack;
@@ -63,6 +65,7 @@ public sealed class ReadySet.EndPage : Adw.Bin {
         var app = Application.get_default ();
         var context = app.context;
 
+#if WITH_GDM
         if (context.mode == Mode.INITIAL_SETUP && !context.sandbox) {
             try {
                 client = new Gdm.Client ();
@@ -78,6 +81,7 @@ public sealed class ReadySet.EndPage : Adw.Bin {
         } else {
             debug ("No GDM connection: installer mode or sandbox mode");
         }
+#endif
 
         stack.visible_child_name = "applying";
 
@@ -239,8 +243,10 @@ public sealed class ReadySet.EndPage : Adw.Bin {
 
         if (context.mode != Mode.INITIAL_SETUP) {
             debug ("Doing nothing in %s mode", context.mode.to_string ());
+#if WITH_GDM
         } else if (client == null) {
             debug ("No GDM connection");
+#endif
         } else if (context.sandbox) {
             debug ("Doing nothing in sandbox");
         } else {
@@ -251,6 +257,7 @@ public sealed class ReadySet.EndPage : Adw.Bin {
         app.quit ();
     }
 
+#if WITH_GDM
     void request_info_query (Gdm.UserVerifier user_verifier, string question, bool is_secret) {
         /* TODO: pop up modal dialog */
         debug (
@@ -335,4 +342,5 @@ public sealed class ReadySet.EndPage : Adw.Bin {
             warning ("Could not begin verification: %s", e.message);
         }
     }
+#endif
 }

@@ -18,7 +18,7 @@ add_project_arguments(
 )
 
 accountsservice_desktop_dep = dependency('accountsservice')
-gdm_dep = dependency('gdm')
+gdm_dep = dependency('gdm', required: get_option('gdm'))
 gee_dep = dependency('gee-0.8')
 gio_dep = dependency('gio-unix-2.0')
 gnome_desktop_dep = dependency('gnome-desktop-4')
