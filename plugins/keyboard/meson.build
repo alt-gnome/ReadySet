@@ -1,12 +1,15 @@
 plugin_keyboard_deps = [
   gnome_desktop_dep,
   gnome_desktop_dep,
-  ibus_dep,
   librs_dep,
   libserialize_dep,
   polkit_dep,
   xkb_dep,
 ]
+
+if ibus_dep.found()
+  plugin_keyboard_deps += ibus_dep
+endif
 
 plugin_keyboard_sources = files(
   'enums.vala',
@@ -37,7 +40,7 @@ plugin_keyboard_vala_args = [
   '--vapidir', meson.current_source_dir() / 'vapi',
 ]
 
-if get_option('have_ibus')
+if ibus_dep.found()
   plugin_keyboard_vala_args += ['-D', 'HAVE_IBUS']
 endif
 

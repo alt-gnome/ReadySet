@@ -18,7 +18,7 @@ plugin_test_resources = gnome.compile_resources(
   )
 )
 
-if (get_option('install_tests'))
+if (get_option('install_tests').enabled())
   install_subdir(
     'post-hooks',
     install_dir: datadir / meson.project_name()

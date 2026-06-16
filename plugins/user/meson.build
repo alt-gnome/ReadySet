@@ -33,7 +33,7 @@ foreach pwcheck_backend : password_check_backend
     pwcheck_backend + '-utils.vala',
   )
 
-  if get_option('user_with_set_root')
+  if get_option('user_with_set_root').enabled()
     plugin_user_vala_sources += 'page-root-password.vala'
   endif
 
@@ -67,11 +67,11 @@ foreach pwcheck_backend : password_check_backend
     '--vapidir', meson.current_source_dir() / 'vapi',
   ]
 
-  if get_option('user_with_set_root')
-  plugin_user_vala_args += [
-    '--define=WITH_ROOT_SET',
-  ]
-endif
+  if get_option('user_with_set_root').enabled()
+    plugin_user_vala_args += [
+      '--define=WITH_ROOT_SET',
+    ]
+  endif
 
   configure_file(output: 'config.h', configuration: global_conf)
 
