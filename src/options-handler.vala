@@ -270,7 +270,16 @@ public sealed class ReadySet.OptionsHandler : Object {
                 val.set_boxed (a);
                 return val;
             } else if (opt.get_type ().dup_string () == VariantType.STRING.dup_string ()) {
-                return opt.get_string ().strip ().split (SEP.to_string ());
+                var a = opt.get_string ().strip ().split (SEP.to_string ());
+                string[] filtered_a = {};
+                foreach (var s in a) {
+                    if (s != null) {
+                        if (s.strip () != "") {
+                            filtered_a += s;
+                        }
+                    }
+                }
+                return filtered_a;
             }
         }
 
