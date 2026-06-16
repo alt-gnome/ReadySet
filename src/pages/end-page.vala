@@ -89,15 +89,15 @@ public sealed class ReadySet.EndPage : Adw.Bin {
 
         Gee.ArrayList<StepAddin> steps_addins_arr = new Gee.ArrayList<StepAddin> ();
 
-        for (int i = 0; i < app.model.get_n_items (); i++) {
-            var page_info = (PageInfo) app.model.get_item (i);
+        for (int i = 0; i < app.model.get_n_items_unfiltered (); i++) {
+            var page_info = (PageInfo) app.model.get_item_unfiltered (i);
 
-            if (page_info.plugin == null) {
+            //  can_be_applyed also null checl
+            if (!page_info.can_be_applyed ()) {
                 continue;
             }
 
-            if (!(page_info.plugin in steps_addins_arr) &&
-                page_info.plugin.enabled && page_info.plugin_info.module_name != "welcome") {
+            if (!(page_info.plugin in steps_addins_arr) && page_info.plugin_info.module_name != "welcome") {
                 steps_addins_arr.add (page_info.plugin);
             }
         }

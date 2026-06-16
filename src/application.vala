@@ -233,11 +233,20 @@ public sealed class ReadySet.Application: Adw.Application {
                         enabled_plugins += addin.plugin_info.module_name;
                     }
 
-                    foreach (var page in (yield addin.build_pages ())) {
+                    var addin_pages = yield addin.build_pages ();
+                    if (addin_pages.length == 0) {
                         pages.add (new PageInfo (
-                            page,
+                            null,
                             addin
                         ));
+
+                    } else {
+                        foreach (var page in (yield addin.build_pages ())) {
+                            pages.add (new PageInfo (
+                                page,
+                                addin
+                            ));
+                        }
                     }
                     print ("  %s\n", steps[i]);
                 } else {

@@ -1,8 +1,9 @@
-subdir('plugins/tests')
+subdir('plugins/test-common')
 subdir('plugins/test-installer')
+subdir('plugins/test-pageless')
 
 test_plugin_manager_conf = configuration_data()
-test_plugin_manager_conf.set_quoted('STEPS_PLUGINS_DIR', meson.current_build_dir() / 'plugins' / 'tests')
+test_plugin_manager_conf.set_quoted('STEPS_PLUGINS_DIR', meson.current_build_dir() / 'plugins' / 'test-common')
 test_plugin_manager_conf.set_quoted('INSTALLERS_PLUGINS_DIR', meson.current_build_dir() / 'plugins' / 'test-installer')
 
 configure_file(output: 'test-config.h', configuration: test_plugin_manager_conf)

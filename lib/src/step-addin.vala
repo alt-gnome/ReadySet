@@ -94,5 +94,7 @@ public abstract class ReadySet.StepAddin : ExtensionBase {
     /**
      * Build pages for application.
      */
-    public async abstract BasePage[] build_pages ();
+    public async virtual BasePage[] build_pages () {
+        return {};
+    }
 }

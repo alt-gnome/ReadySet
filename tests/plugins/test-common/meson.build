@@ -27,6 +27,7 @@ shared_module(
   dependencies: plugin_test_deps,
   c_args: plugin_test_c_args,
   install: get_option('install_tests'),
+  install_dir: steps_plugins_dir,
 )
 
 configure_file(
@@ -38,4 +39,5 @@ configure_file(
     'VERSION': meson.project_version(),
   },
   install: get_option('install_tests'),
+  install_dir: steps_plugins_dir,
 )
