@@ -48,17 +48,16 @@ public sealed class ReadySet.EndPage : Adw.Bin {
 
     construct {
         var name = Environment.get_os_info (OsInfoKey.NAME);
-        var name2 = name.dup ();
 
-        if (name == null) {
-            //  Translators: last word in sentence 'Start Using _'
-            name = C_("start-using", "System");
-            //  First word in sentence '_ is ready to be used.'
-            name2 = C_("ready-to-use", "System");
+        if (name != null) {
+            //  Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
+            finish_button.label = _("_Start Using %s").printf (name);
+            //  Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
+            status_page.description = _("%s is ready to be used.").printf (name);
+        } else {
+            finish_button.label = _("_Start Using the System");
+            status_page.description = _("System is ready to be used.");
         }
-
-        finish_button.label = _("_Start Using %s").printf (name);
-        status_page.description = _("%s is ready to be used.").printf (name);
     }
 
     public async void start_action () {
