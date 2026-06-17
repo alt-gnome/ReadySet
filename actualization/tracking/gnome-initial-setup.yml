@@ -2,6 +2,7 @@ repo: https://gitlab.gnome.org/GNOME/gnome-initial-setup.git
 deps:
 - meson
 - gcc
+- gettext-devel
 - pkgconfig(libadwaita-1)
 - pkgconfig(ibus-1.0)
 - pkgconfig(malcontent-0)
@@ -12,6 +13,9 @@ deps:
 - pkgconfig(polkit-gobject-1)
 - pkgconfig(accountsservice)
 - pkgconfig(gnome-desktop-4)
+- pkgconfig(geocode-glib-2.0)
+- pkgconfig(gweather4)
+- pkgconfig(systemd)
 - pkgconfig(gsettings-desktop-schemas)
 - pkgconfig(fontconfig)
 - pkgconfig(gdm)
