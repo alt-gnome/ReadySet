@@ -206,6 +206,7 @@ Requires: %name = %EVR
 %_unitdir/%name.service
 %_sysusersdir/%name.conf
 %_tmpfilesdir/%name.conf
+%_datadir/bash-completion/completions/%name
 
 %files gdm
 %_libexecdir/%gis_name
