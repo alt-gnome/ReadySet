@@ -178,7 +178,7 @@ Requires: %name = %EVR
 %setup
 
 %build
-%meson -Dpassword_check_backend=both --auto_features=enabled -Dnightly=true
+%meson -Dpassword_check_backend=both --auto-features=enabled -Dnightly=true
 %meson_build
 
 %install
