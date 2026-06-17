@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: rirusha@altlinux.org\n"
 "POT-Creation-Date: 2026-06-17 14:28+0000\n"
-"PO-Revision-Date: 2026-06-01 21:26+0000\n"
+"PO-Revision-Date: 2026-06-18 14:42+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
 "ready-set/ru/>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.17.1\n"
 
 #: data/ui/end-page.blp:36
@@ -26,7 +26,7 @@ msgstr "Настройка вашей системы…"
 
 #: data/ui/end-page.blp:53
 msgid "All done!"
-msgstr ""
+msgstr "Всё готово!"
 
 #: data/ui/existing-user-end-page.blp:26
 msgid "Setup complete!"
@@ -66,7 +66,7 @@ msgstr "Наверх"
 
 #: data/ui/steps-main-page.blp:540 data/ui/steps-main-page.blp:546
 msgid "Go up to the beginning"
-msgstr ""
+msgstr "Вернуться к началу"
 
 #: data/ui/window-content.blp:43
 msgid "All steps"
@@ -531,23 +531,21 @@ msgstr "Путь к файлу конфигурации приложения"
 #: src/pages/end-page.vala:54
 #, c-format
 msgid "_Start Using %s"
-msgstr ""
+msgstr "_Начать работу с %s"
 
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
 #: src/pages/end-page.vala:56
-#, fuzzy, c-format
+#, c-format
 msgid "%s is ready to be used."
-msgstr "Всё готово к использованию."
+msgstr "Дистрибутив %s готов к использованию."
 
 #: src/pages/end-page.vala:58
-#, fuzzy
 msgid "_Start Using the System"
-msgstr "Настройка вашей системы…"
+msgstr "_Начать работу с системой"
 
 #: src/pages/end-page.vala:59
-#, fuzzy
 msgid "System is ready to be used."
-msgstr "Всё готово к использованию."
+msgstr "Система готова к использованию."
 
 #: src/pages/end-page.vala:110
 msgid "Installing system…"
