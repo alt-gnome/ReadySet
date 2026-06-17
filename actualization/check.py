@@ -48,35 +48,27 @@ def main():
     outputs = config.get('outputs', [])
     exclude = config.get('exclude', [])
     
-    # Install dependencies
     if deps:
         cmd = "apt-get install -y " + " ".join(shlex.quote(dep) for dep in deps)
-        subprocess.run(cmd, shell=True, check=True)
+        subprocess.run(cmd, shell=True, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
-    # Use a fixed temp directory to ensure consistent absolute paths for hashing
-    # (since get_tree_hash includes the absolute path in the hash calculation)
     temp_dir = '/tmp/check_repo'
     if os.path.exists(temp_dir):
         shutil.rmtree(temp_dir)
     os.makedirs(temp_dir)
     
     try:
-        subprocess.run(['git', 'clone', repo_url, temp_dir], check=True)
+        subprocess.run(['git', 'clone', repo_url, temp_dir], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
-        # Change to repo directory so relative paths in 'exclude' and 'outputs' work correctly
         os.chdir(temp_dir)
         
-        # Run commands
         if run_cmd:
-            subprocess.run(['bash', '-c', 'set -e\n' + run_cmd], check=True)
+            subprocess.run(['bash', '-c', 'set -e\n' + run_cmd], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             
-        # Prepare outputs
         abs_outputs = [os.path.abspath(out) for out in outputs]
         
-        # Expand exclude directories into file paths, because get_tree_hash checks exact file matches
         expanded_exclude = []
         for exc in exclude:
-            # Resolve relative to each output directory as well as repo root
             paths_to_check = [exc]
             for out in outputs:
                 paths_to_check.append(os.path.join(out, exc))
@@ -90,7 +82,6 @@ def main():
                 elif os.path.isfile(p_abs):
                     expanded_exclude.append(p_abs)
                 
-        # Calculate hash
         tree_hash = get_tree_hash(abs_outputs, expanded_exclude)
         print(tree_hash)
         
