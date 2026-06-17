@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-15 17:37+0000\n"
+"POT-Creation-Date: 2026-06-17 14:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -432,7 +432,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/application.vala:302
+#: src/application.vala:313
 msgid "No steps specified"
 msgstr ""
 
@@ -492,51 +492,49 @@ msgstr ""
 msgid "App config file"
 msgstr ""
 
-#. Translators: last word in sentence 'Start Using _'
-#: src/pages/end-page.vala:53
-msgctxt "start-using"
-msgid "System"
-msgstr ""
-
-#. First word in sentence '_ is ready to be used.'
-#: src/pages/end-page.vala:55
-msgctxt "ready-to-use"
-msgid "System"
-msgstr ""
-
-#: src/pages/end-page.vala:58
+#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
+#: src/pages/end-page.vala:54
 #, c-format
 msgid "_Start Using %s"
 msgstr ""
 
-#: src/pages/end-page.vala:59
+#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
+#: src/pages/end-page.vala:56
 #, c-format
 msgid "%s is ready to be used."
 msgstr ""
 
-#: src/pages/end-page.vala:107
+#: src/pages/end-page.vala:58
+msgid "_Start Using the System"
+msgstr ""
+
+#: src/pages/end-page.vala:59
+msgid "System is ready to be used."
+msgstr ""
+
+#: src/pages/end-page.vala:110
 msgid "Installing system…"
 msgstr ""
 
-#: src/pages/end-page.vala:128
+#: src/pages/end-page.vala:131
 #, c-format
 msgid "Applying %s…"
 msgstr ""
 
-#: src/pages/end-page.vala:213 src/pages/end-page.vala:219
+#: src/pages/end-page.vala:216 src/pages/end-page.vala:222
 #, c-format
 msgid "Error message: %s"
 msgstr ""
 
-#: src/pages/end-page.vala:218
+#: src/pages/end-page.vala:221
 msgid "Error while execute post hooks"
 msgstr ""
 
-#: tests/plugins/tests/data/ui/page.blp:23
-#: tests/plugins/tests/data/ui/page.blp:32
+#: tests/plugins/test-common/data/ui/page.blp:23
+#: tests/plugins/test-common/data/ui/page.blp:32
 msgid "Test"
 msgstr ""
 
-#: tests/plugins/tests/data/ui/page.blp:27
+#: tests/plugins/test-common/data/ui/page.blp:27
 msgid "Test page"
 msgstr ""
