@@ -67,8 +67,8 @@ jobs:
       - name: Setup git
         if: github.event_name != 'pull_request' && github.ref_name == 'main'
         run: |
-          git config --global user.name "CI Bot"
-          git config --global user.email "ci@altlinux.space"
+          git config --global user.name "ReadySet Helper Bot"
+          git config --global user.email "ready-set-helper-bot@noreply.altlinux.space"
           git config --global --add safe.directory '*'
 
       - name: Update pot file for Weblate
