@@ -52,7 +52,7 @@ jobs:
       run: |
         git config user.name "ReadySet Helper Bot"
         git config user.email "ready-set-helper-bot@noreply.altlinux.space"
-        git config url."https://placeholder:${{ secrets.TOKEN }}@altlinux.space/".insteadOf "https://altlinux.space/"
+        git config url."https://placeholder:${{ secrets.ACT_TOKEN }}@altlinux.space/".insteadOf "https://altlinux.space/"
 
     - name: Create or update PR
       if: steps.check.outputs.status != 'ok'
@@ -65,7 +65,7 @@ jobs:
         PACKAGE: ${{ matrix.name }}
         STATUS: ${{ steps.check.outputs.status }}
       with:
-        github-token: ${{ secrets.TOKEN }}
+        github-token: ${{ secrets.ACT_TOKEN }}
         script: |
           const fs = require('fs');
 
