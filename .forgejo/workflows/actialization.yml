@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         name:
-        # - gnome-initial-setup
+        - gnome-initial-setup
         - stevia
 
     steps:
