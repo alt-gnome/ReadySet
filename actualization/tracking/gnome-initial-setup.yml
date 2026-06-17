@@ -1,5 +1,7 @@
 repo: https://gitlab.gnome.org/GNOME/gnome-initial-setup.git
 deps:
+- meson
+- gcc
 - pkgconfig(libadwaita-1)
 - pkgconfig(ibus-1.0)
 - pkgconfig(malcontent-0)
