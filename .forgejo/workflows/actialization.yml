@@ -33,7 +33,7 @@ jobs:
       run: |
         set -e
         TRACKING_FILE="actualization/tracking/${{ matrix.name }}"
-        HASH=$(./actualization/check.py "$TRACKING_FILE")
+        HASH=$(./actualization/check.py "$TRACKING_FILE".yml)
         echo "hash=$HASH" >> $GITHUB_OUTPUT
         
         if [ ! -f "$TRACKING_FILE" ]; then
