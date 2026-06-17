@@ -68,7 +68,7 @@ def main():
         
         # Run commands
         if run_cmd:
-            subprocess.run(['bash', '-c', run_cmd], check=True)
+            subprocess.run(['bash', '-c', 'set -e\n' + run_cmd], check=True)
             
         # Prepare outputs
         abs_outputs = [os.path.abspath(out) for out in outputs]
