@@ -107,6 +107,6 @@ Meson build system used in this project. All available build option for this pro
 - David Sultaniiazov <x1z53@altlinux.org>
 
 - Icon author, Viktoria Zubacheva <gingercat@alt-gnome.ru>
-- Design autoh, Nina Petrova <1704.nina.petrova@gmail.com>
+- Design author, Nina Petrova <1704.nina.petrova@gmail.com>
 
 - [GNOME Initial Setup](https://gitlab.gnome.org/GNOME/gnome-initial-setup), where did a lot of logic come from
