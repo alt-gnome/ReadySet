@@ -32,19 +32,21 @@ jobs:
       id: check
       run: |
         set -e
-        TRACKING_FILE="actualization/tracking/${{ matrix.name }}"
-        HASH=$(./actualization/check.py "$TRACKING_FILE".yml)
-        echo "hash=$HASH" >> $GITHUB_OUTPUT
+        TRACKING_DIR="actualization/tracking/${{ matrix.name }}"
         
-        if [ ! -f "$TRACKING_FILE" ]; then
-          echo "status=missing" >> $GITHUB_OUTPUT
-        else
-          EXISTING_HASH=$(cat "$TRACKING_FILE")
-          if [ "$EXISTING_HASH" != "$HASH" ]; then
-            echo "status=changed" >> $GITHUB_OUTPUT
-          else
+        if [ -d "$TRACKING_DIR" ]; then
+          ./actualization/check.py "$TRACKING_DIR".yml "$TRACKING_DIR.new"
+          if diff -r -q "$TRACKING_DIR" "$TRACKING_DIR.new" > /dev/null 2>&1; then
             echo "status=ok" >> $GITHUB_OUTPUT
+            rm -rf "$TRACKING_DIR.new"
+          else
+            echo "status=changed" >> $GITHUB_OUTPUT
+            rm -rf "$TRACKING_DIR"
+            mv "$TRACKING_DIR.new" "$TRACKING_DIR"
           fi
+        else
+          ./actualization/check.py "$TRACKING_DIR".yml "$TRACKING_DIR"
+          echo "status=missing" >> $GITHUB_OUTPUT
         fi
 
     - name: Git config
@@ -125,7 +127,7 @@ jobs:
             await exec.exec('git', ['reset', '--hard', pull.base.ref]);
           } else {
             core.info('Existing PR not found. Creating new branch...');
-            branch = `auto-update/${pkg}-${Date.now()}`;
+            branch = `actualization-update/${pkg}`;
             await exec.exec('git', ['switch', '-c', branch]);
           }
           

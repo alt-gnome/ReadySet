@@ -3,44 +3,52 @@
 import os
 import sys
 import yaml
-import hashlib
 import subprocess
 import shutil
 import shlex
 
-def get_tree_hash(roots, exclude_files):
+def copy_outputs_to_tracking(outputs, exclude_files, tracking_dir):
     exclude_files = {os.path.abspath(f) for f in exclude_files}
-    h = hashlib.sha256()
-    all_files = []
+
+    print(outputs, exclude_files, tracking_dir)
     
-    for root in roots:
-        root = os.path.abspath(root)
-        if os.path.isfile(root):
-            all_files.append(root)
-        elif os.path.isdir(root):
-            for dirpath, _, filenames in os.walk(root):
-                for f in filenames:
-                    all_files.append(os.path.abspath(os.path.join(dirpath, f)))
-                    
-    for path in sorted(set(all_files)):
-        if path in exclude_files:
+    if os.path.exists(tracking_dir):
+        shutil.rmtree(tracking_dir)
+    os.makedirs(tracking_dir)
+    
+    base_dir = os.getcwd()
+    
+    for output in outputs:
+        output_abs = os.path.abspath(output)
+        if not os.path.exists(output_abs):
             continue
-        try:
-            with open(path, 'r', encoding='utf-8') as file:
-                h.update(path.encode('utf-8'))
-                h.update(file.read().encode('utf-8'))
-        except (UnicodeDecodeError, OSError):
-            pass
             
-    return h.hexdigest()
+        if os.path.isfile(output_abs):
+            rel_path = os.path.relpath(output_abs, base_dir)
+            dest = os.path.join(tracking_dir, rel_path)
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
+            if os.path.abspath(dest) not in exclude_files:
+                shutil.copy2(output_abs, dest)
+        elif os.path.isdir(output_abs):
+            for dirpath, _, filenames in os.walk(output_abs):
+                for f in filenames:
+                    src = os.path.abspath(os.path.join(dirpath, f))
+                    if src in exclude_files:
+                        continue
+                    rel_path = os.path.relpath(src, base_dir)
+                    dest = os.path.join(tracking_dir, rel_path)
+                    os.makedirs(os.path.dirname(dest), exist_ok=True)
+                    shutil.copy2(src, dest)
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: check.py <config.yaml>")
+    if len(sys.argv) < 3:
+        print("Usage: check.py <config.yaml> <tracking_dir>")
         sys.exit(1)
         
     with open(sys.argv[1], 'r') as f:
         config = yaml.safe_load(f)
+    
+    tracking_dir = os.path.abspath(sys.argv[2])
         
     repo_url = config.get('repo')
     deps = config.get('deps', [])
@@ -52,7 +60,7 @@ def main():
         cmd = "apt-get install -y " + " ".join(shlex.quote(dep) for dep in deps)
         subprocess.run(cmd, shell=True, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
-    temp_dir = '/tmp/check_repo'
+    temp_dir = './check_repo'
     if os.path.exists(temp_dir):
         shutil.rmtree(temp_dir)
     os.makedirs(temp_dir)
@@ -82,12 +90,11 @@ def main():
                 elif os.path.isfile(p_abs):
                     expanded_exclude.append(p_abs)
                 
-        tree_hash = get_tree_hash(abs_outputs, expanded_exclude)
-        print(tree_hash)
+        copy_outputs_to_tracking(abs_outputs, expanded_exclude, tracking_dir)
         
     finally:
         os.chdir('/')
-        shutil.rmtree(temp_dir, ignore_errors=True)
+        # shutil.rmtree(temp_dir, ignore_errors=True)
 
 if __name__ == '__main__':
     main()
