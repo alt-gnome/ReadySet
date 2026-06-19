@@ -112,9 +112,16 @@ jobs:
             const pull = (await forgejo.repos.repoGetPullRequest(owner, repo, existingPR.number)).data;
             branch = pull.head.ref;
             
+            await exec.exec('cp', ['-r', `actualization/tracking/${pkg}`, '/tmp/tracking-backup']);
+            
+            await exec.exec('git', ['clean', '-fd']);
+            
             await exec.exec('git', ['fetch', 'origin', `${branch}:${branch}`]);
             await exec.exec('git', ['checkout', branch]);
             await exec.exec('git', ['reset', '--hard', pull.base.ref]);
+            
+            await exec.exec('rm', ['-rf', `actualization/tracking/${pkg}`]);
+            await exec.exec('cp', ['-r', '/tmp/tracking-backup', `actualization/tracking/${pkg}`]);
           } else {
             core.info('Existing PR not found. Creating new branch...');
             branch = `actualization-update/${pkg}`;
