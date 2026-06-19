@@ -72,18 +72,8 @@ jobs:
           const fs = require('fs');
 
           const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
-          const hash = process.env.HASH;
           const pkg = process.env.PACKAGE;
           const status = process.env.STATUS;
-          const trackingFile = `actualization/tracking/${pkg}`;
-
-          async function execWithOutput(commandLine, args) {
-            let output = ''
-            await exec.exec(commandLine, args, {
-              listeners: { stdout: (data) => { output += data.toString() } }
-            })
-            return output.trim();
-          }
 
           async function searchPullRequests(query) {
             const result = await forgejo.repos.issueListIssues(owner, repo, {
@@ -111,11 +101,11 @@ jobs:
           }
 
           const title = status === 'missing' 
-            ? `[TRACKING] Add tracking file for ${pkg}`
-            : `[TRACKING] Update tracking file for ${pkg}`;
+            ? `[TRACKING] Add tracking files for ${pkg}`
+            : `[TRACKING] Update tracking files for ${pkg}`;
 
           const existingPR = await getPullByTitle(title);
-          
+
           let branch;
           if (existingPR) {
             core.info('PR already exists! Updating branch...');
@@ -130,8 +120,7 @@ jobs:
             branch = `actualization-update/${pkg}`;
             await exec.exec('git', ['switch', '-c', branch]);
           }
-          
-          fs.writeFileSync(trackingFile, hash + '\n');
+
           await commitAndPush(title, branch);
 
           if (!existingPR) {
