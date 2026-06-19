@@ -96,6 +96,13 @@ jobs:
 
           async function commitAndPush(message, branchToPush) {
             await exec.exec('git', ['add', '.']);
+            
+            try {
+              await exec.exec('git', ['diff', '--cached', '--quiet']);
+              core.info('No changes to commit, PR is already up to date.');
+              return;
+            } catch (e) {}
+            
             await exec.exec('git', ['commit', '-m', message]);
             await exec.exec('git', ['push', 'origin', branchToPush, '--force']);
           }
@@ -113,13 +120,10 @@ jobs:
             branch = pull.head.ref;
             
             await exec.exec('cp', ['-r', `actualization/tracking/${pkg}`, '/tmp/tracking-backup']);
-            
             await exec.exec('git', ['clean', '-fd']);
-            
             await exec.exec('git', ['fetch', 'origin', `${branch}:${branch}`]);
             await exec.exec('git', ['checkout', branch]);
             await exec.exec('git', ['reset', '--hard', pull.base.ref]);
-            
             await exec.exec('rm', ['-rf', `actualization/tracking/${pkg}`]);
             await exec.exec('cp', ['-r', '/tmp/tracking-backup', `actualization/tracking/${pkg}`]);
           } else {

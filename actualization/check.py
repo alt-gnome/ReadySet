@@ -7,6 +7,13 @@ import subprocess
 import shutil
 import shlex
 
+def is_binary(path):
+    try:
+        with open(path, 'rb') as f:
+            return b'\x00' in f.read(8192)
+    except Exception:
+        return False
+
 def copy_outputs_to_tracking(outputs, exclude_files, tracking_dir):
     exclude_files = {os.path.abspath(f) for f in exclude_files}
 
@@ -22,6 +29,8 @@ def copy_outputs_to_tracking(outputs, exclude_files, tracking_dir):
             continue
             
         if os.path.isfile(output_abs):
+            if is_binary(output_abs):
+                continue
             rel_path = os.path.relpath(output_abs, base_dir)
             dest = os.path.join(tracking_dir, rel_path)
             os.makedirs(os.path.dirname(dest), exist_ok=True)
@@ -32,6 +41,8 @@ def copy_outputs_to_tracking(outputs, exclude_files, tracking_dir):
                 for f in filenames:
                     src = os.path.abspath(os.path.join(dirpath, f))
                     if src in exclude_files:
+                        continue
+                    if is_binary(src):
                         continue
                     rel_path = os.path.relpath(src, base_dir)
                     dest = os.path.join(tracking_dir, rel_path)
@@ -51,7 +62,7 @@ def main():
     repo_url = config.get('repo')
     deps = config.get('deps', [])
     run_cmd = config.get('run', '')
-    outputs = config.get('outputs', [])
+    outputs = config.get('outputs', ['./'])
     exclude = config.get('exclude', [])
     
     if deps:

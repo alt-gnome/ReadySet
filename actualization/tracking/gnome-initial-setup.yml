@@ -28,7 +28,9 @@ deps:
 run: |
   meson setup _build --prefix=/usr
   DESTDIR=out meson install -C _build
-outputs:
-- _build/out
+  find . -mindepth 1 -maxdepth 1 ! -name '_build' -exec rm -rf {} +
+  cp -a _build/out/. .
+  rm -rf _build
 exclude:
 - usr/share/locale
+- usr/share/applications/gnome-initial-setup.desktop
