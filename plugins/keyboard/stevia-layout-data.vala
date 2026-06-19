@@ -26,4 +26,8 @@ public sealed class Keyboard.SteviaLayoutData : Serialize.DataObject {
     public string layout_id { get; set; }
 
     public string name { get; set; }
+
+    public string language { get; set; }
+
+    public string flavor { get; set; }
 }
