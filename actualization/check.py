@@ -10,8 +10,6 @@ import shlex
 def copy_outputs_to_tracking(outputs, exclude_files, tracking_dir):
     exclude_files = {os.path.abspath(f) for f in exclude_files}
 
-    print(outputs, exclude_files, tracking_dir)
-    
     if os.path.exists(tracking_dir):
         shutil.rmtree(tracking_dir)
     os.makedirs(tracking_dir)
@@ -60,7 +58,7 @@ def main():
         cmd = "apt-get install -y " + " ".join(shlex.quote(dep) for dep in deps)
         subprocess.run(cmd, shell=True, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
-    temp_dir = './check_repo'
+    temp_dir = '/tmp/check_repo'
     if os.path.exists(temp_dir):
         shutil.rmtree(temp_dir)
     os.makedirs(temp_dir)
@@ -94,7 +92,7 @@ def main():
         
     finally:
         os.chdir('/')
-        # shutil.rmtree(temp_dir, ignore_errors=True)
+        shutil.rmtree(temp_dir, ignore_errors=True)
 
 if __name__ == '__main__':
     main()
