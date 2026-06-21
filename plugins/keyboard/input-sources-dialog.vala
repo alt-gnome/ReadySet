@@ -41,7 +41,7 @@ public sealed class Keyboard.InputSourcesDialog : Adw.Dialog {
         }
     }
 
-    Gtk.NoSelection model = new Gtk.NoSelection (Addin.get_instance ().is_manager.sources_model);
+    Gtk.NoSelection model;
 
     Gtk.Filter current_filter;
     Gtk.Filter search_filter;
