@@ -21,6 +21,8 @@
 public class Keyboard.Addin : ReadySet.StepAddin {
 
     static Addin instance;
+    
+    public InputSourcesManager is_manager { get; private set; }
 
     protected override string? resource_base_path {
         get {
@@ -31,11 +33,14 @@ public class Keyboard.Addin : ReadySet.StepAddin {
     public override bool existing_user { get { return true; } }
 
     static construct {
-        typeof (InputChooser).ensure ();
+        typeof (CurrentInputSources).ensure ();
+        typeof (InputRow).ensure ();
     }
 
     construct {
         instance = this;
+
+        is_manager = new InputSourcesManager ();
     }
 
     public async override ReadySet.BasePage[] build_pages () {
@@ -61,6 +66,7 @@ public class Keyboard.Addin : ReadySet.StepAddin {
         vars["keyboard-input-sources"] = new ReadySet.ContextVarInfo.object (
             typeof (InputSources), get_default ()
         );
+        vars["keyboard-preview-bin"] = new ReadySet.ContextVarInfo (STRING, "tecla");
         return vars;
     }
 

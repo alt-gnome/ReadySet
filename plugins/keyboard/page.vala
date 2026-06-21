@@ -23,27 +23,40 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
 
     [GtkChild]
     unowned Adw.Banner select_at_least_one_banner;
+    [GtkChild]
+    unowned Gtk.ListBox switch_box;
+
+    bool has_hw_keybaord = try_to_detect_hw_keyboatd ();
 
     construct {
         Addin.get_instance ().context.data_changed.connect (on_context_data_changed);
         update_is_ready ();
+
+        Addin.get_instance ().is_manager.init.begin ();
     }
 
     async void on_context_data_changed (string key) {
         if (key == "keyboard-input-sources") {
             update_is_ready ();
+            update_has_hw ();
         }
     }
 
     void update_is_ready () {
         bool has_latin_is = false;
         foreach (var i in get_current_inputs ().to_array ()) {
-            if (i.is_latin) {
+            if (i.is_latin ()) {
                 has_latin_is = true;
                 break;
             }
         }
         is_ready = has_latin_is;
         select_at_least_one_banner.revealed = !has_latin_is;
+    }
+
+    void update_has_hw () {
+        var current_inputs = get_current_inputs ();
+
+        switch_box.visible = current_inputs.size > 1 && has_hw_keybaord;
     }
 }

@@ -6,8 +6,10 @@
   </gresource>
   <gresource prefix="/org/altlinux/ReadySet/Plugin/Keyboard/">
     <file>style.css</file>
-    <file preprocess="xml-stripblanks">ui/input-chooser.ui</file>
+    <file preprocess="xml-stripblanks">ui/current-input-row.ui</file>
+    <file preprocess="xml-stripblanks">ui/current-input-sources.ui</file>
     <file preprocess="xml-stripblanks">ui/input-row.ui</file>
+    <file preprocess="xml-stripblanks">ui/input-sources-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/page.ui</file>
     <file preprocess="xml-stripblanks">ui/preview-dialog.ui</file>
   </gresource>

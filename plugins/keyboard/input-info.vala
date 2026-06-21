@@ -30,9 +30,9 @@ public class Keyboard.InputInfo : Object {
 
     public string format { get; construct; }
 
-    public bool is_latin { get; construct; }
-
     public bool added_automatically { get; set; }
+
+    public bool is_extra { get; set; }
 
     public InputInfo (string type, string id_) {
         Object (
@@ -60,10 +60,13 @@ public class Keyboard.InputInfo : Object {
         if (parts.length == 2) {
             variant = parts[1];
         }
+    }
 
+    public bool is_latin () {
         if (type_ == "xkb") {
-            is_latin = xkb_has_latin (layout, variant);
+            return xkb_has_latin (layout, variant);
         }
+        return false;
     }
 
     public uint _hash () {

@@ -12,11 +12,14 @@ if ibus_dep.found()
 endif
 
 plugin_keyboard_sources = files(
+  'current-input-row.vala',
+  'current-input-sources.vala',
   'enums.vala',
   'ibus-utils.vala',
-  'input-chooser.vala',
   'input-info.vala',
   'input-row.vala',
+  'input-sources-dialog.vala',
+  'input-sources-manager.vala',
   'input-sources.vala',
   'layout-switch-button.vala',
   'page.vala',
