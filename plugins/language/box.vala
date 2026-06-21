@@ -24,48 +24,20 @@ public sealed class Language.Box : Adw.Bin {
     [GtkChild]
     unowned Gtk.ListBox languages_listbox;
     [GtkChild]
-    unowned Gtk.SearchEntry search_entry;
-    [GtkChild]
     unowned Gtk.Stack languages_stack;
+
+    LocaleDialog dialog = new LocaleDialog ();
 
     public LocaleData current_locale { get; set; default = new LocaleData (Addin.get_instance ().current_locale); }
 
-    static bool saved_show_more = false;
-    static string saved_search_query = "";
-
-    bool _show_more = false;
-    public bool show_more {
-        get {
-            return _show_more;
-        }
-        set {
-            _show_more = value;
-
-            if (_show_more) {
-                show_all_languages ();
-            }
-
-            saved_show_more = _show_more;
-        }
-    }
-
     static construct {
+        typeof (CurrentRow).ensure ();
         typeof (Row).ensure ();
+        typeof (ViewRow).ensure ();
     }
 
     construct {
         set_supported_languages ();
-
-        search_entry.changed.connect (on_search_entry_changed);
-
-        search_entry.text = saved_search_query;
-        show_more = saved_show_more;
-
-        search_entry.can_focus = true;
-    }
-
-    void on_search_entry_changed (Gtk.Editable obj) {
-        saved_search_query = obj.text;
     }
 
     void set_supported_languages () {
@@ -79,35 +51,10 @@ public sealed class Language.Box : Adw.Bin {
         });
     }
 
-    public void show_all_languages () {
-        set_languages (Gnome.Languages.get_all_locales (), true);
-    }
+    void set_languages (string[] language_locales) {
+        var model = build_model_from (language_locales);
 
-    void set_languages (string[] language_locales, bool with_sorting = false) {
-        var model = new ListStore (typeof (LocaleData));
-
-        LocaleData locale_data;
-        foreach (var locale in language_locales) {
-            locale_data = new LocaleData (locale);
-            if (
-                locale_data.country_loc != "" &&
-                locale_data.country_cur != "" &&
-                locale_data.country_loc != null &&
-                locale_data.country_cur != null
-            ) {
-                model.append (locale_data);
-            }
-        }
-
-        Gtk.FilterListModel filter_model;
-        if (with_sorting) {
-            var sort_model = new Gtk.SortListModel (model, get_sorter ());
-            filter_model = new Gtk.FilterListModel (sort_model, get_filter ());
-        } else {
-            filter_model = new Gtk.FilterListModel (model, get_filter ());
-        }
-
-        var filter_current_model = new Gtk.FilterListModel (filter_model, get_current_filter ());
+        var filter_current_model = new Gtk.FilterListModel (model, get_current_filter ());
 
         filter_current_model.notify["n-items"].connect (model_n_items_changed);
         model_n_items_changed (filter_current_model, filter_current_model.get_class ().find_property ("n-items"));
@@ -127,60 +74,6 @@ public sealed class Language.Box : Adw.Bin {
         }
     }
 
-    Gtk.Sorter get_sorter () {
-        var multisorter = new Gtk.MultiSorter ();
-
-        var current_sorter = new Gtk.StringSorter (new Gtk.PropertyExpression (
-            typeof (LocaleData),
-            null,
-            "country-loc"
-        ));
-
-        var local_sorter = new Gtk.StringSorter (new Gtk.PropertyExpression (
-            typeof (LocaleData),
-            null,
-            "country-cur"
-        ));
-
-        multisorter.append (current_sorter);
-        multisorter.append (local_sorter);
-
-        return multisorter;
-    }
-
-    Gtk.Filter get_filter () {
-        var multifilter = new Gtk.AnyFilter ();
-
-        var current_filter = new Gtk.StringFilter (new Gtk.PropertyExpression (
-            typeof (LocaleData),
-            null,
-            "country-cur"
-        ));
-        search_entry.bind_property (
-            "text",
-            current_filter,
-            "search",
-            GLib.BindingFlags.SYNC_CREATE
-        );
-
-        var local_filter = new Gtk.StringFilter (new Gtk.PropertyExpression (
-            typeof (LocaleData),
-            null,
-            "country-loc"
-        ));
-        search_entry.bind_property (
-            "text",
-            local_filter,
-            "search",
-            GLib.BindingFlags.SYNC_CREATE
-        );
-
-        multifilter.append (current_filter);
-        multifilter.append (local_filter);
-
-        return multifilter;
-    }
-
     Gtk.Filter get_current_filter () {
         return new Gtk.CustomFilter (filter_func);
     }
@@ -191,6 +84,12 @@ public sealed class Language.Box : Adw.Bin {
 
     [GtkCallback]
     void show_more_clicked () {
-        show_more = true;
+        dialog.present (this);
+    }
+
+    [GtkCallback]
+    void on_listbox_row_activated (Gtk.ListBoxRow row) {
+        var locale_row = (Row) row;
+        Addin.get_instance ().current_locale = locale_row.locale_data.locale;
     }
 }

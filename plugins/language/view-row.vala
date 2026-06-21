@@ -18,7 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public sealed class Language.Row : Adw.ActionRow {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Language/ui/view-row.ui")]
+public sealed class Language.ViewRow : Gtk.Box {
 
     LocaleData _locale_data;
     public LocaleData locale_data {
@@ -27,13 +28,14 @@ public sealed class Language.Row : Adw.ActionRow {
         }
         construct set {
             _locale_data = value;
-            title = _locale_data.country_loc;
-            subtitle = _locale_data.country_cur;
-            activatable = true;
+            if (_locale_data != null) {
+                title = _locale_data.country_loc;
+                subtitle = _locale_data.country_cur;
+            }
         }
     }
 
-    public Row (LocaleData locale_data) {
-        Object (locale_data: locale_data);
-    }
+    public string title { get; set; }
+
+    public string subtitle { get; set; }
 }

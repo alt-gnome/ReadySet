@@ -80,4 +80,23 @@ namespace Language {
             DBusProxyFlags.NONE
         );
     }
+
+    ListStore build_model_from (string[] language_locales) {
+        var store = new ListStore (typeof (LocaleData));
+
+        LocaleData locale_data;
+        foreach (var locale in language_locales) {
+            locale_data = new LocaleData (locale);
+            if (
+                locale_data.country_loc != "" &&
+                locale_data.country_cur != "" &&
+                locale_data.country_loc != null &&
+                locale_data.country_cur != null
+            ) {
+                store.append (locale_data);
+            }
+        }
+
+        return store;
+    }
 }

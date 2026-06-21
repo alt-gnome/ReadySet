@@ -7,13 +7,16 @@ plugin_language_deps = [
 
 plugin_language_sources = files(
   'box.vala',
+  'current-row.vala',
   'info.vala',
   'locale-data.vala',
+  'locale-dialog.vala',
   'page.vala',
   'plugin.vala',
   'row.vala',
   'select-title.vala',
   'utils.vala',
+  'view-row.vala',
 )
 
 plugin_language_pretty_name = 'Language'

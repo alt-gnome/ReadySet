@@ -18,22 +18,11 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public sealed class Language.Row : Adw.ActionRow {
+public sealed class Language.CurrentRow : Adw.ActionRow {
 
-    LocaleData _locale_data;
-    public LocaleData locale_data {
-        get {
-            return _locale_data;
-        }
-        construct set {
-            _locale_data = value;
-            title = _locale_data.country_loc;
-            subtitle = _locale_data.country_cur;
-            activatable = true;
-        }
-    }
-
-    public Row (LocaleData locale_data) {
-        Object (locale_data: locale_data);
+    construct {
+        add_css_class ("property");
+        title = _("Current language");
+        subtitle = new LocaleData (Addin.get_instance ().current_locale).country_cur;
     }
 }

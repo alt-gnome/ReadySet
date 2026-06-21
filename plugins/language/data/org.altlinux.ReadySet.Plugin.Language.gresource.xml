@@ -6,7 +6,8 @@
   <gresource prefix="/org/altlinux/ReadySet/Plugin/Language/">
     <file>style.css</file>
     <file preprocess="xml-stripblanks">ui/box.ui</file>
+    <file preprocess="xml-stripblanks">ui/locale-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/page.ui</file>
-    <file preprocess="xml-stripblanks">ui/row.ui</file>
+    <file preprocess="xml-stripblanks">ui/view-row.ui</file>
   </gresource>
 </gresources>
