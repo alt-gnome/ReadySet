@@ -1,7 +1,10 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $KeyboardCurrentInputSources: Adw.Bin {
+template $KeyboardCurrentInputSources: Box {
+  orientation: vertical;
+  spacing: 12;
+
   Stack current_input_list_stack {
     vhomogeneous: false;
     hhomogeneous: false;
@@ -28,22 +31,6 @@ template $KeyboardCurrentInputSources: Adw.Bin {
             row-activated => $row_activated();
           }
         }
-
-        Adw.PreferencesGroup {
-          ListBox {
-            styles [
-              "boxed-list",
-            ]
-
-            selection-mode: none;
-
-            Adw.ButtonRow {
-              title: _("Add input-source");
-              start-icon-name: "list-add-symbolic";
-              activated => $on_buttonrow_activated();
-            }
-          }
-        }
       };
     }
 
@@ -59,6 +46,22 @@ template $KeyboardCurrentInputSources: Adw.Bin {
         label: _("No input sources selected");
         height-request: 48;
       };
+    }
+  }
+
+  Adw.PreferencesGroup {
+    ListBox {
+      styles [
+        "boxed-list",
+      ]
+
+      selection-mode: none;
+
+      Adw.ButtonRow {
+        title: _("Add input-source");
+        start-icon-name: "list-add-symbolic";
+        activated => $on_buttonrow_activated();
+      }
     }
   }
 }

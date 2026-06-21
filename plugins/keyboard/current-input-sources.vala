@@ -19,7 +19,7 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Keyboard/ui/current-input-sources.ui")]
-public sealed class Keyboard.CurrentInputSources : Adw.Bin {
+public sealed class Keyboard.CurrentInputSources : Gtk.Box {
 
     [GtkChild]
     unowned Gtk.Stack current_input_list_stack;
