@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-17 14:28+0000\n"
+"POT-Creation-Date: 2026-06-21 18:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,34 +93,30 @@ msgstr ""
 msgid "Something went wrong"
 msgstr ""
 
-#: plugins/keyboard/data/ui/input-chooser.blp:39
-msgid "You can specify additional layout switch combination"
+#: plugins/keyboard/data/ui/current-input-row.blp:28
+#: plugins/keyboard/data/ui/input-row.blp:23
+msgid "Preview"
 msgstr ""
 
-#: plugins/keyboard/data/ui/input-chooser.blp:54
+#: plugins/keyboard/data/ui/current-input-sources.blp:20
+msgid "Current input sources"
+msgstr ""
+
+#: plugins/keyboard/data/ui/current-input-sources.blp:46
 msgid "No input sources selected"
 msgstr ""
 
-#: plugins/keyboard/data/ui/input-chooser.blp:67
-msgid "Search keyboards and input methods"
+#: plugins/keyboard/data/ui/current-input-sources.blp:61
+msgid "Add input-source"
 msgstr ""
 
-#: plugins/keyboard/data/ui/input-chooser.blp:100
-#: plugins/language/data/ui/box.blp:57
-msgid "Nothing found"
+#: plugins/keyboard/data/ui/input-sources-dialog.blp:28
+msgid "Add input source"
 msgstr ""
 
-#: plugins/keyboard/data/ui/input-chooser.blp:115
+#: plugins/keyboard/data/ui/input-sources-dialog.blp:85
 #: plugins/language/data/ui/box.blp:72
 msgid "Show more"
-msgstr ""
-
-#: plugins/keyboard/data/ui/input-row.blp:24
-msgid "This layout selected"
-msgstr ""
-
-#: plugins/keyboard/data/ui/input-row.blp:40
-msgid "Preview"
 msgstr ""
 
 #: plugins/keyboard/data/ui/page.blp:24 plugins/keyboard/data/ui/page.blp:29
@@ -135,11 +131,23 @@ msgstr ""
 msgid "You must select at least one layout containing Latin characters"
 msgstr ""
 
+#: plugins/keyboard/data/ui/page.blp:60
+msgid "You can specify additional layout switch combination"
+msgstr ""
+
+#: plugins/keyboard/data/ui/preview-dialog.blp:13
+msgid "Show tecla preview"
+msgstr ""
+
+#: plugins/keyboard/data/ui/preview-dialog.blp:32
+msgid "Try writing"
+msgstr ""
+
 #: plugins/keyboard/enums.vala:72 plugins/keyboard/layout-switch-button.vala:62
 msgid "None"
 msgstr ""
 
-#: plugins/keyboard/plugin.vala:114
+#: plugins/keyboard/plugin.vala:120
 msgid "Error when setting keyboard layout"
 msgstr ""
 
@@ -147,11 +155,15 @@ msgstr ""
 msgid "Search language"
 msgstr ""
 
+#: plugins/language/data/ui/box.blp:57
+msgid "Nothing found"
+msgstr ""
+
 #: plugins/language/data/ui/page.blp:24
 msgid "Language"
 msgstr ""
 
-#: plugins/language/plugin.vala:121
+#: plugins/language/plugin.vala:122
 msgid "Error when setting language"
 msgstr ""
 
@@ -430,10 +442,6 @@ msgstr ""
 #. Translators: NAME <EMAIL.COM>
 #: src/about.vala:38
 msgid "translator-credits"
-msgstr ""
-
-#: src/application.vala:313
-msgid "No steps specified"
 msgstr ""
 
 #: src/options-handler.vala:39
