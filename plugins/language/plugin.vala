@@ -105,7 +105,8 @@ public class Language.Addin : ReadySet.StepAddin {
     public async override void init_once () {
         if (!context.sandbox && context.mode == INITIAL_SETUP) {
             try {
-                enabled = (yield new Polkit.Permission ("org.freedesktop.locale1.set-locale", null, null)).allowed;
+                enabled = (yield new Polkit.Permission ("org.freedesktop.locale1.set-locale", null, null)).allowed &&
+                    context.get_boolean ("step-language-enabled");
             } catch (Error e) {
                 error (e.message);
             }
