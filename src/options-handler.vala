@@ -137,7 +137,7 @@ public sealed class ReadySet.OptionsHandler : Object {
 
     public bool version { get; set; }
 
-    public string[] steps { get; set; }
+    public string[] steps { get; set; default = {}; }
 
     public bool resizable { get; set; default = false; }
 

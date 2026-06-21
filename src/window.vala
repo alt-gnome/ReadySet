@@ -94,7 +94,7 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         }
 
         reloading = true;
-        yield Application.get_default ().init_pages ();
+        yield Application.get_default ().build_steps ();
         set_window_content ();
     }
 

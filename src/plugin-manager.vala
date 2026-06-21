@@ -23,8 +23,11 @@ public sealed class ReadySet.PluginManager : Object {
     const string INSTALLER_STEP_PREFIX = "installer-";
 
     string? installer_name;
+    bool steps_inited_once = false;
 
     public Context context { get; construct; }
+
+    public string[] steps { get; private set; }
 
     Peas.Engine steps_engine;
     Peas.Engine installers_engine;
@@ -168,23 +171,48 @@ public sealed class ReadySet.PluginManager : Object {
     }
 
     void check_steps (string[] steps) {
-        string[] passed_steps = {};
+        if (steps.length == 0) {
+            error ("No steps specified");
+        }
+
+        var rs_settings = new Settings ("org.altlinux.ReadySet");
+        string[] performed_steps = rs_settings.get_strv ("performed-steps");
+
+        string[] st = {};
+
+        //  We add welcome step in existing user mode if welcome step is not provided
+        if (context.mode == EXISTING_USER && steps[0] != "welcome" && has_step ("welcome")) {
+            st = { "welcome" };
+            foreach (var s in steps) {
+                st += s;
+            }
+        } else {
+            st = steps.copy ();
+        }
+
+        this.steps = st;
 
         for (int i = 0; i < steps.length; i++) {
             if (steps_plugins.contains (steps[i])) {
                 var addin = steps_plugins[steps[i]];
 
+
                 context.register_vars (addin.get_context_vars ());
 
-                //  There is no need in disabling welcome plugin
-                if (steps[i] != "welcome") {
-                    var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
-                    var var_name = "step-%s-enabled".printf (steps[i]);
-                    vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN, true);
-                    context.register_vars (vars);
-                }
+                var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
+                var var_name = "step-%s-enabled".printf (steps[i]);
+                vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN, !(context.mode == EXISTING_USER && addin.plugin_info.module_name in performed_steps));
+                context.register_vars (vars);
 
-                passed_steps += steps[i];
+                context.bind_context_to_property (
+                    var_name,
+                    addin,
+                    "enabled",
+                    SYNC_CREATE | BIDIRECTIONAL
+                );
+
+                addin.context = context;
+                addin.load_css_for_display (Gdk.Display.get_default ());
             }
         }
     }
@@ -223,5 +251,21 @@ public sealed class ReadySet.PluginManager : Object {
         if (!installers_plugins.contains (installer_name)) {
             error ("Unknown installer plugin");
         }
+
+        get_installer_plugin ().load_css_for_display (Gdk.Display.get_default ());
+    }
+
+    public async void init_steps_once () {
+        for (int i = 0; i < steps.length; i++) {
+            if (has_step (steps[i])) {
+                var addin = get_step_addin (steps[i]);
+
+                if (addin != null) {
+                    yield addin.init_once ();
+                }
+            }
+        }
+
+        steps_inited_once = true;
     }
 }
