@@ -121,9 +121,6 @@ public sealed class ReadySet.Application: Adw.Application {
 
         init_lib_css ();
 
-        options_handler.fill_context (context);
-        context.reload_window.connect (reload_window);
-
 #if DEVEL
         if (options_handler.force_mode == null) {
 #endif
