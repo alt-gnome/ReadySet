@@ -201,7 +201,10 @@ public sealed class ReadySet.PluginManager : Object {
 
                 var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
                 var var_name = "step-%s-enabled".printf (steps[i]);
-                vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN, !(context.mode == EXISTING_USER && addin.plugin_info.module_name in performed_steps));
+                vars[var_name] = new ContextVarInfo (
+                    ContextType.BOOLEAN,
+                    !(context.mode == EXISTING_USER && addin.plugin_info.module_name in performed_steps)
+                );
                 context.register_vars (vars);
 
                 context.bind_context_to_property (

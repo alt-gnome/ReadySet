@@ -21,7 +21,7 @@
 public class Keyboard.Addin : ReadySet.StepAddin {
 
     static Addin instance;
-    
+
     public InputSourcesManager is_manager { get; private set; }
 
     protected override string? resource_base_path {

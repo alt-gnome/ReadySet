@@ -101,7 +101,7 @@ namespace Keyboard {
 
             stevia_layouts_set = true;
         }
-        
+
         return stevia_layouts;
     }
 
