@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
-"Report-Msgid-Bugs-To: rirusha@altlinux.org\n"
-"POT-Creation-Date: 2026-06-17 14:28+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-21 18:58+0000\n"
 "PO-Revision-Date: 2026-06-18 14:42+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -16,8 +16,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.17.1\n"
 
 #: data/ui/end-page.blp:36
@@ -96,35 +96,33 @@ msgstr "На этой странице указано, что в Вашем ди
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
-#: plugins/keyboard/data/ui/input-chooser.blp:39
-msgid "You can specify additional layout switch combination"
-msgstr "Вы можете указать дополнительный способ переключения раскладки"
+#: plugins/keyboard/data/ui/current-input-row.blp:28
+#: plugins/keyboard/data/ui/input-row.blp:23
+msgid "Preview"
+msgstr "Превью"
 
-#: plugins/keyboard/data/ui/input-chooser.blp:54
+#: plugins/keyboard/data/ui/current-input-sources.blp:20
+#, fuzzy
+msgid "Current input sources"
+msgstr "Не выбраны источники ввода"
+
+#: plugins/keyboard/data/ui/current-input-sources.blp:46
 msgid "No input sources selected"
 msgstr "Не выбраны источники ввода"
 
-#: plugins/keyboard/data/ui/input-chooser.blp:67
-msgid "Search keyboards and input methods"
-msgstr "Поиск раскладок и методов ввода"
+#: plugins/keyboard/data/ui/current-input-sources.blp:61
+msgid "Add input-source"
+msgstr ""
 
-#: plugins/keyboard/data/ui/input-chooser.blp:100
-#: plugins/language/data/ui/box.blp:57
-msgid "Nothing found"
-msgstr "Ничего не найдено"
+#: plugins/keyboard/data/ui/input-sources-dialog.blp:28
+#, fuzzy
+msgid "Add input source"
+msgstr "Не выбраны источники ввода"
 
-#: plugins/keyboard/data/ui/input-chooser.blp:115
+#: plugins/keyboard/data/ui/input-sources-dialog.blp:85
 #: plugins/language/data/ui/box.blp:72
 msgid "Show more"
 msgstr "Показать больше"
-
-#: plugins/keyboard/data/ui/input-row.blp:24
-msgid "This layout selected"
-msgstr "Эта раскладка выбрана"
-
-#: plugins/keyboard/data/ui/input-row.blp:40
-msgid "Preview"
-msgstr "Превью"
 
 #: plugins/keyboard/data/ui/page.blp:24 plugins/keyboard/data/ui/page.blp:29
 msgid "Typing"
@@ -139,11 +137,23 @@ msgid "You must select at least one layout containing Latin characters"
 msgstr ""
 "Должна быть выбрана хотя бы одна раскладка, содержащая латинские символы"
 
+#: plugins/keyboard/data/ui/page.blp:60
+msgid "You can specify additional layout switch combination"
+msgstr "Вы можете указать дополнительный способ переключения раскладки"
+
+#: plugins/keyboard/data/ui/preview-dialog.blp:13
+msgid "Show tecla preview"
+msgstr ""
+
+#: plugins/keyboard/data/ui/preview-dialog.blp:32
+msgid "Try writing"
+msgstr ""
+
 #: plugins/keyboard/enums.vala:72 plugins/keyboard/layout-switch-button.vala:62
 msgid "None"
 msgstr "Ничего"
 
-#: plugins/keyboard/plugin.vala:114
+#: plugins/keyboard/plugin.vala:120
 msgid "Error when setting keyboard layout"
 msgstr "Ошибка при настройке раскладки клавиатуры"
 
@@ -151,11 +161,15 @@ msgstr "Ошибка при настройке раскладки клавиат
 msgid "Search language"
 msgstr "Поиск языка"
 
+#: plugins/language/data/ui/box.blp:57
+msgid "Nothing found"
+msgstr "Ничего не найдено"
+
 #: plugins/language/data/ui/page.blp:24
 msgid "Language"
 msgstr "Язык"
 
-#: plugins/language/plugin.vala:121
+#: plugins/language/plugin.vala:122
 msgid "Error when setting language"
 msgstr "Ошибка при настройке языка"
 
@@ -465,10 +479,6 @@ msgstr "На Старт Внимание"
 msgid "translator-credits"
 msgstr "Vladimir Romanov <rirusha@altlinux.org>"
 
-#: src/application.vala:313
-msgid "No steps specified"
-msgstr "Не указан список шагов"
-
 #: src/options-handler.vala:39
 msgid "Context vars"
 msgstr "Переменные контекста"
@@ -573,6 +583,15 @@ msgstr "Тест"
 #: tests/plugins/test-common/data/ui/page.blp:27
 msgid "Test page"
 msgstr "Тестовая страница"
+
+#~ msgid "Search keyboards and input methods"
+#~ msgstr "Поиск раскладок и методов ввода"
+
+#~ msgid "This layout selected"
+#~ msgstr "Эта раскладка выбрана"
+
+#~ msgid "No steps specified"
+#~ msgstr "Не указан список шагов"
 
 #~ msgid "Ready Set…"
 #~ msgstr "На Старт Внимание…"
