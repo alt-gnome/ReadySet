@@ -26,26 +26,26 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
     public string timezone_label { get; set; }
     public string date_and_time_label { get; set; }
 
-    bool _automatic_timezone = Addin.get_instance ().context.get_boolean ("date-and-time-automatic-timezone");
-    public bool automatic_timezone {
+    bool _manual_timezone = Addin.get_instance ().context.get_boolean ("date-and-time-automatic-timezone");
+    public bool manual_timezone {
         get {
-            return _automatic_timezone;
+            return _manual_timezone;
         }
         set {
-            _automatic_timezone = value;
-            Addin.get_instance ().context.set_boolean ("date-and-time-automatic-timezone", _automatic_timezone);
+            _manual_timezone = value;
+            Addin.get_instance ().context.set_boolean ("date-and-time-automatic-timezone", !_manual_timezone);
             update_is_ready ();
         }
     }
 
-    bool _automatic_date_and_time = Addin.get_instance ().context.get_boolean ("date-and-time-automatic-datetime");
-    public bool automatic_date_and_time {
+    bool _manual_date_and_time = Addin.get_instance ().context.get_boolean ("date-and-time-automatic-datetime");
+    public bool manual_date_and_time {
         get {
-            return _automatic_date_and_time;
+            return _manual_date_and_time;
         }
         set {
-            _automatic_date_and_time = value;
-            Addin.get_instance ().context.set_boolean ("date-and-time-automatic-datetime", _automatic_date_and_time);
+            _manual_date_and_time = value;
+            Addin.get_instance ().context.set_boolean ("date-and-time-automatic-datetime", !_manual_date_and_time);
             update_is_ready ();
         }
     }
@@ -86,8 +86,8 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
     }
 
     void update_is_ready () {
-        is_ready = (automatic_date_and_time || selected_datetime != null)
-                && (automatic_timezone || selected_timezone != null);
+        is_ready = (manual_date_and_time || selected_datetime != null)
+                && (manual_timezone || selected_timezone != null);
     }
 
     [GtkCallback]
