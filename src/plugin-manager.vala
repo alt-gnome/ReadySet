@@ -256,6 +256,10 @@ public sealed class ReadySet.PluginManager : Object {
     }
 
     public async void init_steps_once () {
+        if (steps_inited_once) {
+            return;
+        }
+
         for (int i = 0; i < steps.length; i++) {
             if (has_step (steps[i])) {
                 var addin = get_step_addin (steps[i]);
