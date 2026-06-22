@@ -43,4 +43,11 @@ public sealed class User.ContextRow : Gtk.Box {
     }
 
     public bool reveal_context { get; set; default = false; }
+
+    public string description { get; set; }
+
+    [GtkCallback]
+    bool string_is_not_empty (string? str) {
+        return str != null && str != "";
+    }
 }
