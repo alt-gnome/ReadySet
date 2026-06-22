@@ -96,10 +96,10 @@ namespace ReadySet.Completions {
 
             switch (entry.long_name) {
                 case "force-mode":
-                    print ("            COMPREPLY=( $(compgen -W \"initial-setup existing-user installer\" -- \"${cur}\") )\n");
+                    print ("            COMPREPLY=( $(compgen -W \"initial-setup existing-user installer\" -- \"${cur}\") )\n");  // vala-lint=line-length
                     break;
                 case "force-layout":
-                    print ("            COMPREPLY=( $(compgen -W \"big small vertical horizontal\" -- \"${cur}\") )\n");
+                    print ("            COMPREPLY=( $(compgen -W \"big small vertical horizontal\" -- \"${cur}\") )\n");  // vala-lint=line-length
                     break;
                 case "steps":
                     print ("            compopt -o nospace 2>/dev/null\n");
