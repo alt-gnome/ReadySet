@@ -39,12 +39,11 @@ public sealed class ReadySet.PluginManager : Object {
         Object (context: context);
     }
 
-    public void init (string[] steps, string? installer_name) {
+    public void init (string? installer_name) {
         this.installer_name = installer_name;
 
         init_steps_plugins ();
         print_steps_info ();
-        check_steps (steps);
 
         if (installer_name != null) {
             init_installers_plugins ();
@@ -170,8 +169,8 @@ public sealed class ReadySet.PluginManager : Object {
         }
     }
 
-    void check_steps (string[] steps) {
-        if (steps.length == 0) {
+    public void check_steps (string[] in_steps) {
+        if (in_steps.length == 0) {
             error ("No steps specified");
         }
 
@@ -181,13 +180,13 @@ public sealed class ReadySet.PluginManager : Object {
         string[] st = {};
 
         //  We add welcome step in existing user mode if welcome step is not provided
-        if (context.mode == EXISTING_USER && steps[0] != "welcome" && has_step ("welcome")) {
+        if (context.mode == EXISTING_USER && in_steps[0] != "welcome" && has_step ("welcome")) {
             st = { "welcome" };
-            foreach (var s in steps) {
+            foreach (var s in in_steps) {
                 st += s;
             }
         } else {
-            st = steps.copy ();
+            st = in_steps.copy ();
         }
 
         this.steps = st;
@@ -196,14 +195,14 @@ public sealed class ReadySet.PluginManager : Object {
             if (steps_plugins.contains (steps[i])) {
                 var addin = steps_plugins[steps[i]];
 
-
                 context.register_vars (addin.get_context_vars ());
 
                 var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
                 var var_name = "step-%s-enabled".printf (steps[i]);
                 vars[var_name] = new ContextVarInfo (
                     ContextType.BOOLEAN,
-                    !(context.mode == EXISTING_USER && addin.plugin_info.module_name in performed_steps)
+                    !(context.mode == EXISTING_USER &&
+                            (addin.plugin_info.module_name in performed_steps || !addin.existing_user))
                 );
                 context.register_vars (vars);
 

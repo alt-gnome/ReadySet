@@ -118,7 +118,7 @@ public sealed class ReadySet.Application: Adw.Application {
         options_handler.fill_context (context);
         context.reload_window.connect (reload_window);
 
-        plugin_manager.init (options_handler.steps, options_handler.installer);
+        plugin_manager.init (options_handler.installer);
 
         init_lib_css ();
 
@@ -137,6 +137,8 @@ public sealed class ReadySet.Application: Adw.Application {
             context.mode = Mode.from_string (options_handler.force_mode);
         }
 #endif
+
+        plugin_manager.check_steps (options_handler.steps);
 
         if (!options_handler.sandbox) {
             exec_pre_hooks.begin ();
