@@ -52,6 +52,9 @@ public interface Keyboard.Locale1 : Object {
 
 namespace Keyboard {
 
+    const string INPUT_SOURCE_TYPE_XKB = "xkb";
+    const string INPUT_SOURCE_TYPE_IBUS = "ibus";
+
     Gnome.XkbInfo xkb_info;
     Gnome.XkbInfo get_xkb_info () {
         if (xkb_info == null) {
@@ -77,6 +80,29 @@ namespace Keyboard {
         }
 
         return input_sources_settings;
+    }
+
+    bool stevia_layouts_set = false;
+    Serialize.Array<SteviaLayoutData>? stevia_layouts = null;
+    Serialize.Array<SteviaLayoutData>? get_stevia_layouts () {
+        if (!stevia_layouts_set) {
+            try {
+                string content;
+                FileUtils.get_contents ("/usr/share/phosh-osk-stevia/layouts.json", out content);
+
+                stevia_layouts = Serialize.JsonWorker.simple_array_from_json<SteviaLayoutData> (
+                    content,
+                    { "layouts" },
+                    new Serialize.Settings () {
+                        names_case = Serialize.Case.KEBAB
+                    }
+                );
+            } catch (Error e) {}
+
+            stevia_layouts_set = true;
+        }
+
+        return stevia_layouts;
     }
 
     public string get_current_language () {

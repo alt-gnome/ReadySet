@@ -1,0 +1,1 @@
+Some components of this software are based on unstable components of others. In order not to cause problems after the release, there is tracking of changes in the upstream of other projects and sending a PR notification about the changes.

@@ -12,3 +12,25 @@
 .context {
     background-color: var(--view-bg-color);
 }
+
+.page-to-up-regular {
+    padding: 0 0 66px 0;
+}
+
+.page-to-up-compact {
+    padding: 0 0 50px 0;
+}
+
+.to-up-button-regular {
+    /* min-width: 34px;
+    min-height: 34px; */
+    padding: 12px;
+    border-radius: 9999px;
+}
+
+.to-up-button-compact {
+    /* min-width: 34px;
+    min-height: 34px; */
+    padding: 6px;
+    border-radius: 9999px;
+}

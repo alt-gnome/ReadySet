@@ -1,0 +1,67 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyboardCurrentInputSources: Box {
+  orientation: vertical;
+  spacing: 12;
+
+  Stack current_input_list_stack {
+    vhomogeneous: false;
+    hhomogeneous: false;
+
+    StackPage {
+      name: "sources";
+
+      child: Box {
+        orientation: vertical;
+        spacing: 12;
+
+        Adw.PreferencesGroup {
+          title: _("Current input sources");
+
+          ListBox current_input_list {
+            styles [
+              "boxed-list",
+            ]
+
+            selection-mode: none;
+            vexpand: true;
+            halign: fill;
+            valign: start;
+            row-activated => $row_activated();
+          }
+        }
+      };
+    }
+
+    StackPage {
+      name: "nothing-selected";
+
+      child: Label {
+        styles [
+          "error",
+          "card",
+        ]
+
+        label: _("No input sources selected");
+        height-request: 48;
+      };
+    }
+  }
+
+  Adw.PreferencesGroup {
+    ListBox {
+      styles [
+        "boxed-list",
+      ]
+
+      selection-mode: none;
+
+      Adw.ButtonRow {
+        title: _("Add input-source");
+        start-icon-name: "list-add-symbolic";
+        activated => $on_buttonrow_activated();
+      }
+    }
+  }
+}

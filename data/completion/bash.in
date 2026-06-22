@@ -1,0 +1,5 @@
+# bash completion for ready-set
+
+if command -v @LIBEXECDIR@/ready-set >/dev/null 2>&1; then
+    eval "$(@LIBEXECDIR@/ready-set generate-bash-completion 2>/dev/null)"
+fi

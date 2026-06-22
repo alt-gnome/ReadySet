@@ -43,6 +43,23 @@ template $KeyboardPage: $ReadySetBasePage {
     margin-bottom: 12;
     margin-top: 12;
 
-    $KeyboardInputChooser input_chooser {}
+    Box {
+      orientation: vertical;
+      spacing: 24;
+
+      $KeyboardCurrentInputSources {}
+
+      ListBox switch_box {
+        styles [
+          "boxed-list",
+        ]
+
+        selection-mode: none;
+
+        $KeyboardLayoutSwitchRow {
+          title: _("You can specify additional layout switch combination");
+        }
+      }
+    }
   };
 }

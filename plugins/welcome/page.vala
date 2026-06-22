@@ -35,7 +35,7 @@ public sealed class Welcome.Page : ReadySet.BasePage {
             }
         });
 
-        status_page.title = _("Welcome to %s!").printf (Environment.get_os_info ("PRETTY_NAME"));
+        status_page.title = _("Welcome to %s!").printf (Environment.get_os_info (OsInfoKey.PRETTY_NAME));
         if (Addin.get_instance ().context.mode == EXISTING_USER) {
             status_page.description = _("The system requires completion of the setup.") + " " + _("We will guide you through the necessary steps.");  // vala-lint=line-length
 

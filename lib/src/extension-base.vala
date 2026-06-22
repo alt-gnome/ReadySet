@@ -25,8 +25,6 @@
  */
 public abstract class ReadySet.ExtensionBase : Peas.ExtensionBase {
 
-    internal string[] dependencies { get; set; default = {}; }
-
     protected virtual string? resource_base_path {
         get {
             return null;

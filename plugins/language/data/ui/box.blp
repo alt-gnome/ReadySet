@@ -6,18 +6,6 @@ template $LanguageBox: Adw.Bin {
     orientation: vertical;
     spacing: 10;
 
-    SearchEntry search_entry {
-      styles [
-        "card",
-      ]
-
-      can-focus: false;
-      height-request: 48;
-      placeholder-text: _("Search language");
-      hexpand: true;
-      visible: bind template.show-more;
-    }
-
     ListBox {
       styles [
         "boxed-list",
@@ -25,9 +13,7 @@ template $LanguageBox: Adw.Bin {
 
       selection-mode: none;
 
-      $LanguageRow {
-        locale-data: bind template.current-locale;
-      }
+      $LanguageCurrentRow {}
     }
 
     Stack languages_stack {
@@ -43,6 +29,7 @@ template $LanguageBox: Adw.Bin {
           ]
 
           selection-mode: none;
+          row-activated => $on_listbox_row_activated();
         };
       }
 
@@ -54,7 +41,7 @@ template $LanguageBox: Adw.Bin {
             "card",
           ]
 
-          label: _("Nothing found");
+          label: _("Nothing to show");
           height-request: 48;
         };
       }
@@ -66,7 +53,6 @@ template $LanguageBox: Adw.Bin {
       ]
 
       selection-mode: none;
-      visible: bind template.show-more inverted;
 
       Adw.ButtonRow {
         title: _("Show more");

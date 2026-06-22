@@ -1,0 +1,92 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $KeyboardInputSourcesDialog: Adw.Dialog {
+  width-request: 360;
+  content-width: 420;
+  content-height: 600;
+
+  Adw.ToolbarView {
+    reveal-bottom-bars: bind template.show-more inverted;
+
+    [top]
+    Adw.HeaderBar {
+      [start]
+      ToggleButton search_button {
+        icon-name: "system-search-symbolic";
+        visible: bind template.show-more;
+      }
+
+      title-widget: Stack title_stack {
+        transition-type: crossfade;
+        transition-duration: 150;
+
+        StackPage {
+          name: "main";
+
+          child: Adw.WindowTitle {
+            title: _("Add input source");
+          };
+        }
+
+        StackPage {
+          name: "search";
+
+          child: Adw.Clamp {
+            SearchEntry search_entry {}
+          };
+        }
+      };
+    }
+
+    content: ScrolledWindow {
+      hscrollbar-policy: never;
+      propagate-natural-height: true;
+
+      Adw.ClampScrollable {
+        margin-start: 6;
+        margin-end: 6;
+
+        ListView view {
+          styles [
+            "navigation-sidebar",
+            "clamp-padding",
+          ]
+
+          activate => $on_listview_activate();
+          single-click-activate: true;
+
+          factory: BuilderListItemFactory {
+            template ListItem {
+              child: $KeyboardInputRow {
+                input_info: bind template.item;
+              };
+            }
+          };
+        }
+      }
+    };
+
+    [bottom]
+    Adw.Clamp {
+      margin-start: 12;
+      margin-end: 12;
+      margin-top: 12;
+      margin-bottom: 12;
+
+      ListBox {
+        styles [
+          "boxed-list",
+        ]
+
+        selection-mode: none;
+
+        Adw.ButtonRow {
+          title: _("Show more");
+          start-icon-name: "view-more-symbolic";
+          activated => $on_buttonrow_activated();
+        }
+      }
+    }
+  }
+}

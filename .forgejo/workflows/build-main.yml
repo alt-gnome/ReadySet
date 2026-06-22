@@ -53,19 +53,22 @@ jobs:
       - name: Install deps
         run: |
           apt-get update
-          xargs apt-get install -y < ./build-aux/altlinux/build-deps
+          apt-get install -y apm
 
       - name: Setup
-        run: meson setup _build -Duser_with_set_root=true -Dwith_lib_documentation=true -Dis_devel=true  -Dpassword_check_backend=both
+        run: make setup-ci
 
       - name: Build
-        run: meson compile -C _build
+        run: make compile
+
+      - name: Test
+        run: make test
 
       - name: Setup git
         if: github.event_name != 'pull_request' && github.ref_name == 'main'
         run: |
-          git config --global user.name "CI Bot"
-          git config --global user.email "ci@altlinux.space"
+          git config --global user.name "ReadySet Helper Bot"
+          git config --global user.email "ready-set-helper-bot@noreply.altlinux.space"
           git config --global --add safe.directory '*'
 
       - name: Update pot file for Weblate
@@ -241,7 +244,7 @@ jobs:
       - name: Check build possible
         id: check
         run: |
-          if skopeo inspect ${{ matrix.image }} > /dev/null 2>&1; then
+          if skopeo inspect docker://${{ matrix.image }} > /dev/null 2>&1; then
             echo "exists=yes" >> $GITHUB_OUTPUT
           else
             echo "exists=no" >> $GITHUB_OUTPUT

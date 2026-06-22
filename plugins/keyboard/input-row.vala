@@ -19,78 +19,28 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Keyboard/ui/input-row.ui")]
-public sealed class Keyboard.InputRow : Adw.ActionRow {
+public sealed class Keyboard.InputRow : Gtk.Box {
 
-    public InputInfo input_info { get; construct; }
-
-    public bool is_extra { get; construct set; }
-
-    public new bool is_selected { get; set; }
-
-    public bool draggable { get; construct; }
-
-    public InputRow (InputInfo input_info, string name, bool is_extra = false, bool draggable = false) {
-        Object (
-            input_info: input_info,
-            title: name,
-            is_extra: is_extra,
-            draggable: draggable
-        );
-    }
-
-    construct {
-        if (draggable) {
-            var drag_src = new Gtk.DragSource ();
-            var drop_trg = new Gtk.DropTarget (typeof (InputInfo), MOVE);
-
-            drag_src.actions = MOVE;
-
-            drag_src.prepare.connect (on_dragsource_prepare);
-            drag_src.drag_begin.connect (on_dragsource_drag_begin);
-            drag_src.drag_end.connect (on_dragsource_drag_end);
-
-            drop_trg.drop.connect (on_droptarget_drop);
-
-            add_controller (drag_src);
-            add_controller (drop_trg);
+    InputInfo _input_info;
+    public InputInfo input_info {
+        get {
+            return _input_info;
+        }
+        construct set {
+            _input_info = value;
+            if (_input_info != null) {
+                title = Addin.get_instance ().is_manager.get_humanity_name (_input_info);
+            }
         }
     }
 
-    Gdk.ContentProvider? on_dragsource_prepare (Gtk.DragSource dnd_src, double x, double y) {
-        dnd_src.set_icon (new Gtk.WidgetPaintable (this).get_current_image (), (int) x, (int) y);
-        return new Gdk.ContentProvider.for_value (input_info);
-    }
-
-    void on_dragsource_drag_begin (Gtk.DragSource dnd_src, Gdk.Drag drag) {
-        add_css_class ("view");
-    }
-
-    void on_dragsource_drag_end (Gtk.DragSource dnd_src, Gdk.Drag drag, bool delete_data) {
-        remove_css_class ("view");
-    }
-
-    bool on_droptarget_drop (Gtk.DropTarget drop_trg, Value value, double x, double y) {
-        var where = input_info;
-        var what = (InputInfo) value.get_object ();
-
-        var cu = get_current_inputs ();
-        cu.insert_before (what, where);
-
-        set_current_inputs (cu);
-        return true;
-    }
+    public string title { get; set; }
 
     [GtkCallback]
     void on_preview_clicked () {
-        var current_inputs = get_current_inputs ();
-        set_user_inputs ({input_info});
-
-        var dialog = new PreviewDialog ();
-
-        dialog.title = title;
+        var dialog = new PreviewDialog (input_info) {
+            title = title
+        };
         dialog.present (this);
-        dialog.closed.connect (() => {
-            set_user_inputs (current_inputs.to_array ());
-        });
     }
 }

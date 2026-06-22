@@ -1,6 +1,8 @@
 plugin_keyboard_blueprints = files(
-  'ui/input-chooser.blp',
+  'ui/current-input-row.blp',
+  'ui/current-input-sources.blp',
   'ui/input-row.blp',
+  'ui/input-sources-dialog.blp',
   'ui/page.blp',
   'ui/preview-dialog.blp',
 )

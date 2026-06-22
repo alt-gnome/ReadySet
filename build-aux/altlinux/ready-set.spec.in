@@ -174,20 +174,11 @@ Requires: %name = %EVR
 %description plugin-welcome
 %summary.
 
-%package plugin-tests
-Summary: %name tests plugins
-Group: Other
-
-Requires: %name = %EVR
-
-%description plugin-tests
-%summary.
-
 %prep
 %setup
 
 %build
-%meson -Dpassword_check_backend=both -Dis_devel=true -Duser_with_set_root=true
+%meson -Dpassword_check_backend=both --auto-features=enabled -Dnightly=true
 %meson_build
 
 %install
@@ -215,6 +206,7 @@ Requires: %name = %EVR
 %_unitdir/%name.service
 %_sysusersdir/%name.conf
 %_tmpfilesdir/%name.conf
+%_datadir/bash-completion/completions/%name
 
 %files gdm
 %_libexecdir/%gis_name
@@ -276,9 +268,3 @@ Requires: %name = %EVR
 %files plugin-welcome
 %_libdir/%name/plugins/steps/welcome.plugin
 %_libdir/%name/plugins/steps/libwelcome.so
-
-%files plugin-tests
-%_libdir/%name/plugins/steps/libtests.so
-%_libdir/%name/plugins/steps/tests.plugin
-%_libdir/%name/plugins/installers/libtest-installer.so
-%_libdir/%name/plugins/installers/test-installer.plugin

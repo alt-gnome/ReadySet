@@ -41,9 +41,6 @@ Context configuration options can be found in plugins README.
 #### `context`
 Cumulative option with `VAR=VALUE` format.
 
-#### `force-mode`
-Run application with this mode. Can be used only in `is_devel=true` build. Auto by default.
-
 #### `can-close`
 Make window closable anyway. `false` by default.
 
@@ -77,6 +74,9 @@ Initial height of a window. 800 by default.
 #### `force-layout`
 Set layout for window: `big`, `small`, `vertical`, `horizontal`. Auto by default.
 
+#### `force-mode`
+Set mode for application: `installer`, `initial-setup`, `existing-user`. Can be used only in `nightly=true` build. Auto by default.
+
 #### `version`
 Print version information and exit.
 
@@ -107,6 +107,6 @@ Meson build system used in this project. All available build option for this pro
 - David Sultaniiazov <x1z53@altlinux.org>
 
 - Icon author, Viktoria Zubacheva <gingercat@alt-gnome.ru>
-- Design autoh, Nina Petrova <1704.nina.petrova@gmail.com>
+- Design author, Nina Petrova <1704.nina.petrova@gmail.com>
 
 - [GNOME Initial Setup](https://gitlab.gnome.org/GNOME/gnome-initial-setup), where did a lot of logic come from

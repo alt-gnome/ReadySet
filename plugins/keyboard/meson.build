@@ -1,23 +1,31 @@
 plugin_keyboard_deps = [
   gnome_desktop_dep,
   gnome_desktop_dep,
-  ibus_dep,
   librs_dep,
+  libserialize_dep,
   polkit_dep,
   xkb_dep,
 ]
 
+if ibus_dep.found()
+  plugin_keyboard_deps += ibus_dep
+endif
+
 plugin_keyboard_sources = files(
+  'current-input-row.vala',
+  'current-input-sources.vala',
   'enums.vala',
   'ibus-utils.vala',
-  'input-chooser.vala',
   'input-info.vala',
   'input-row.vala',
+  'input-sources-dialog.vala',
+  'input-sources-manager.vala',
   'input-sources.vala',
   'layout-switch-button.vala',
   'page.vala',
   'plugin.vala',
   'preview-dialog.vala',
+  'stevia-layout-data.vala',
   'utils.vala',
 )
 
@@ -35,7 +43,7 @@ plugin_keyboard_vala_args = [
   '--vapidir', meson.current_source_dir() / 'vapi',
 ]
 
-if get_option('have_ibus')
+if ibus_dep.found()
   plugin_keyboard_vala_args += ['-D', 'HAVE_IBUS']
 endif
 

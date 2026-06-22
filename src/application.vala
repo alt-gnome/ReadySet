@@ -34,7 +34,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
     public bool can_close {
         get {
-            return Config.IS_DEVEL || options_handler.can_close;
+            return Config.NIGHTLY || options_handler.can_close;
         }
     }
 
@@ -55,8 +55,6 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     public PagesModel? model { get; private set; default = null; }
-
-    Gee.ArrayList<string> inited_plugins = new Gee.ArrayList<string> ();
 
     public Application () {
         Object (
@@ -84,6 +82,21 @@ public sealed class ReadySet.Application: Adw.Application {
         add_action_entries (ACTION_ENTRIES, this);
         set_accels_for_action ("app.quit", { "<primary>q" });
         set_accels_for_action ("win.about", { "<primary>o" });
+
+        set_option_context_parameter_string ("[COMMAND]");
+        set_option_context_summary (
+            "Commands:\n"
+            + "  generate-bash-completion    Output bash completion script"
+        );
+    }
+
+    protected override bool local_command_line (ref unowned string[] arguments, out int exit_status) {
+        if (arguments.length > 1 && arguments[1] == "generate-bash-completion") {
+            Completions.print_completion_script ();
+            exit_status = 0;
+            return true;
+        }
+        return base.local_command_line (ref arguments, out exit_status);
     }
 
     protected override int handle_local_options (VariantDict options) {
@@ -102,12 +115,12 @@ public sealed class ReadySet.Application: Adw.Application {
     protected override void startup () {
         base.startup ();
 
-        plugin_manager.init (get_all_steps (), options_handler.installer);
-
-        init_lib_css ();
-
         options_handler.fill_context (context);
         context.reload_window.connect (reload_window);
+
+        plugin_manager.init (options_handler.installer);
+
+        init_lib_css ();
 
 #if DEVEL
         if (options_handler.force_mode == null) {
@@ -124,6 +137,8 @@ public sealed class ReadySet.Application: Adw.Application {
             context.mode = Mode.from_string (options_handler.force_mode);
         }
 #endif
+
+        plugin_manager.check_steps (options_handler.steps);
 
         if (!options_handler.sandbox) {
             exec_pre_hooks.begin ();
@@ -146,35 +161,15 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
-    public async void init_pages () {
+    public async void build_steps () {
         var pages = new Gee.ArrayList<PageInfo> ();
-
-        foreach (var binding in context_bindings) {
-            binding.unbind ();
-        }
-        context_bindings.clear ();
 
         string[] enabled_plugins = {};
 
-        var rs_settings = new Settings ("org.altlinux.ReadySet");
-        string[] performed_steps = rs_settings.get_strv ("performed-steps");
-
         var initial_position = model == null ? 0 : model.get_selected ();
 
-        var all_steps = get_all_steps ();
-        string[] steps = all_steps.copy ();
-        if (all_steps.length > 0) {
-            if (context.mode == EXISTING_USER && all_steps[0] != "welcome" && plugin_manager.has_step ("welcome")) {
-                steps = { "welcome" };
-                foreach (var s in all_steps) {
-                    steps += s;
-                }
-            }
-        }
-
-        if (has_installer) {
-            installer_plugin.load_css_for_display (Gdk.Display.get_default ());
-        }
+        yield plugin_manager.init_steps_once ();
+        var steps = plugin_manager.steps;
 
         print ("Loaded steps:\n");
         for (int i = 0; i < steps.length; i++) {
@@ -190,39 +185,24 @@ public sealed class ReadySet.Application: Adw.Application {
                 var addin = plugin_manager.get_step_addin (steps[i]);
 
                 if (addin != null) {
-                    addin.context = context;
-                    addin.load_css_for_display (Gdk.Display.get_default ());
-
-                    var ckey = "step-%s-enabled".printf (steps[i]);
-                    if (context.has_key (ckey)) {
-                        var binding = context.bind_context_to_property (
-                            ckey,
-                            addin,
-                            "enabled",
-                            SYNC_CREATE | BIDIRECTIONAL
-                        );
-                        context_bindings.add (binding);
-                    }
-
-                    if (!(steps[i] in inited_plugins)) {
-                        yield addin.init_once ();
-                        inited_plugins.add (steps[i]);
-                    }
-
-                    if (addin.plugin_info.module_name in performed_steps ||
-                        (!addin.existing_user && context.mode == EXISTING_USER)) {
-                        addin.enabled = false;
-                    }
-
                     if (addin.enabled) {
                         enabled_plugins += addin.plugin_info.module_name;
                     }
 
-                    foreach (var page in (yield addin.build_pages ())) {
+                    var addin_pages = yield addin.build_pages ();
+                    if (addin_pages.length == 0) {
                         pages.add (new PageInfo (
-                            page,
+                            null,
                             addin
                         ));
+
+                    } else {
+                        foreach (var page in (yield addin.build_pages ())) {
+                            pages.add (new PageInfo (
+                                page,
+                                addin
+                            ));
+                        }
                     }
                     print ("  %s\n", steps[i]);
                 } else {
@@ -240,7 +220,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
             }
 
-            Idle.add (init_pages.callback);
+            Idle.add (build_steps.callback);
             yield;
         }
 
@@ -273,21 +253,6 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         return ntd;
-    }
-
-    string[] get_all_steps () {
-        var steps_data = new Array<string> ();
-
-        if (options_handler.steps != null) {
-            foreach (var step in options_handler.steps) {
-                steps_data.append_val (step);
-            }
-
-        } else {
-            error (_("No steps specified"));
-        }
-
-        return steps_data.data;
     }
 
     void reload_window () {

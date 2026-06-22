@@ -1,8 +1,16 @@
+src_sources_dir = meson.current_source_dir()
+
 rs_app_vapi_sources = files(
   'config.vapi',
 )
 
+plugin_manager_sources = files(
+  'plugin-manager.vala',
+)
+
 rs_app_vala_sources = files(
+  'completions/bash.vala',
+
   'dbus/osk.vala',
   'dbus/rs-system-service.vala',
 
@@ -30,12 +38,15 @@ rs_app_vala_sources = files(
 )
 
 rs_app_dependencies = [
-  gdm_dep,
   gee_dep,
   libadwaita_dep,
   libpeas_dep,
   posix_dep,
 ] + librs_dependencies
+
+if gdm_dep.found()
+  rs_app_dependencies += gdm_dep
+endif
 
 rs_app_sources = [
   rs_app_vala_sources,
@@ -56,9 +67,15 @@ rs_app_vala_args = [
   '--pkg', 'linux',
 ]
 
-if get_option('is_devel')
+if get_option('nightly')
   rs_app_vala_args += [
     '--define=DEVEL',
+  ]
+endif
+
+if gdm_dep.found()
+  rs_app_vala_args += [
+    '--define=WITH_GDM',
   ]
 endif
 

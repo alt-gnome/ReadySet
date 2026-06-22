@@ -23,8 +23,11 @@ public sealed class ReadySet.PluginManager : Object {
     const string INSTALLER_STEP_PREFIX = "installer-";
 
     string? installer_name;
+    bool steps_inited_once = false;
 
     public Context context { get; construct; }
+
+    public string[] steps { get; private set; }
 
     Peas.Engine steps_engine;
     Peas.Engine installers_engine;
@@ -36,14 +39,25 @@ public sealed class ReadySet.PluginManager : Object {
         Object (context: context);
     }
 
-    public void init (string[] steps, string? installer_name) {
+    public void init (string? installer_name) {
         this.installer_name = installer_name;
 
-        init_steps_plugins (steps);
+        init_steps_plugins ();
+        print_steps_info ();
 
         if (installer_name != null) {
-            init_installers_plugins (steps);
+            init_installers_plugins ();
+            print_installers_info ();
+            check_installers ();
         }
+    }
+
+    internal void blank_init () {
+        init_steps_plugins ();
+        init_installers_plugins ();
+
+        debug ("Steps: %s", string.joinv (", ", get_available_steps ()));
+        debug ("installers: %s", string.joinv (", ", get_available_installers ()));
     }
 
     public InstallerAddin get_installer_plugin ()
@@ -58,6 +72,22 @@ public sealed class ReadySet.PluginManager : Object {
         }
 
         return null;
+    }
+
+    internal string[] get_available_steps () {
+        string[] steps = steps_plugins.get_keys_as_array ().copy ();
+
+        foreach (var installer in installers_plugins.get_values ()) {
+            foreach (var step in installer.all_pages) {
+                steps += "installer-" + step;
+            }
+        }
+
+        return steps;
+    }
+
+    internal string[] get_available_installers () {
+        return installers_plugins.get_keys_as_array ().copy ();
     }
 
     public bool has_step (string id) {
@@ -94,7 +124,7 @@ public sealed class ReadySet.PluginManager : Object {
 
             steps_engine.add_search_path (
                 Config.STEPS_PLUGINS_DIR,
-                Config.STEPS_PLUGINS_DIR
+                null
             );
         }
 
@@ -108,14 +138,14 @@ public sealed class ReadySet.PluginManager : Object {
 
             installers_engine.add_search_path (
                 Config.INSTALLERS_PLUGINS_DIR,
-                Config.INSTALLERS_PLUGINS_DIR
+                null
             );
         }
 
         return installers_engine;
     }
 
-    void init_steps_plugins (string[] steps) {
+    void init_steps_plugins () {
         var engine = get_steps_engine ();
         var addins = new Peas.ExtensionSet.with_properties (engine, typeof (StepAddin), {}, {});
 
@@ -126,7 +156,9 @@ public sealed class ReadySet.PluginManager : Object {
         steps_plugins.remove_all ();
 
         addins.foreach (steps_addins_foreach_func);
+    }
 
+    void print_steps_info () {
         if (steps_plugins.length == 0) {
             error ("\nNo plugins found\n");
         } else {
@@ -135,46 +167,63 @@ public sealed class ReadySet.PluginManager : Object {
                 print ("  %s\n", plugin);
             }
         }
+    }
 
-        string[] passed_steps = {};
+    public void check_steps (string[] in_steps) {
+        if (in_steps.length == 0) {
+            error ("No steps specified");
+        }
+
+        var rs_settings = new Settings ("org.altlinux.ReadySet");
+        string[] performed_steps = rs_settings.get_strv ("performed-steps");
+
+        string[] st = {};
+
+        //  We add welcome step in existing user mode if welcome step is not provided
+        if (context.mode == EXISTING_USER && in_steps[0] != "welcome" && has_step ("welcome")) {
+            st = { "welcome" };
+            foreach (var s in in_steps) {
+                st += s;
+            }
+        } else {
+            st = in_steps.copy ();
+        }
+
+        this.steps = st;
 
         for (int i = 0; i < steps.length; i++) {
             if (steps_plugins.contains (steps[i])) {
-                var deps = steps_plugins[steps[i]].dependencies;
-
-                foreach (var dep in deps) {
-                    if (!(dep in passed_steps)) {
-                        critical (
-                            "Plugin '%s' has an unsatisfied dependency on '%s'",
-                            steps[i],
-                            dep
-                        );
-                    }
-                }
-
                 var addin = steps_plugins[steps[i]];
 
                 context.register_vars (addin.get_context_vars ());
 
-                //  There is no need in disabling welcome plugin
-                if (steps[i] != "welcome") {
-                    var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
-                    var var_name = "step-%s-enabled".printf (steps[i]);
-                    vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN, true);
-                    context.register_vars (vars);
-                }
+                var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
+                var var_name = "step-%s-enabled".printf (steps[i]);
+                vars[var_name] = new ContextVarInfo (
+                    ContextType.BOOLEAN,
+                    !(context.mode == EXISTING_USER &&
+                            (addin.plugin_info.module_name in performed_steps || !addin.existing_user))
+                );
+                context.register_vars (vars);
 
-                passed_steps += steps[i];
+                context.bind_context_to_property (
+                    var_name,
+                    addin,
+                    "enabled",
+                    SYNC_CREATE | BIDIRECTIONAL
+                );
+
+                addin.context = context;
+                addin.load_css_for_display (Gdk.Display.get_default ());
             }
         }
     }
 
     void steps_addins_foreach_func (Peas.ExtensionSet _set, Peas.PluginInfo info, Object extension) {
         steps_plugins[info.module_name] = (StepAddin) extension;
-        steps_plugins[info.module_name].dependencies = info.dependencies;
     }
 
-    void init_installers_plugins (string[] steps) {
+    void init_installers_plugins () {
         var engine = get_installers_engine ();
         var addins = new Peas.ExtensionSet.with_properties (engine, typeof (InstallerAddin), {}, {});
 
@@ -185,32 +234,44 @@ public sealed class ReadySet.PluginManager : Object {
         installers_plugins.remove_all ();
 
         addins.foreach (installer_addins_foreach_func);
+    }
 
+    void installer_addins_foreach_func (Peas.ExtensionSet _set, Peas.PluginInfo info, Object extension) {
+        installers_plugins[info.module_name] = (InstallerAddin) extension;
+    }
+
+    void print_installers_info () {
         if (installers_plugins.length != 0) {
             print ("\nFound installers plugins:\n");
             foreach (var plugin in installers_plugins.get_keys ()) {
                 print ("  %s\n", plugin);
             }
         }
+    }
 
+    void check_installers () {
         if (!installers_plugins.contains (installer_name)) {
             error ("Unknown installer plugin");
         }
 
-        var deps = installers_plugins[installer_name].dependencies;
-
-        foreach (var dep in deps) {
-            if (!(dep in steps)) {
-                critical (
-                    "Installer plugin '%s' has an unsatisfied dependency on '%s'", installer_name,
-                    dep
-                );
-            }
-        }
+        get_installer_plugin ().load_css_for_display (Gdk.Display.get_default ());
     }
 
-    void installer_addins_foreach_func (Peas.ExtensionSet _set, Peas.PluginInfo info, Object extension) {
-        installers_plugins[info.module_name] = (InstallerAddin) extension;
-        installers_plugins[info.module_name].dependencies = info.dependencies;
+    public async void init_steps_once () {
+        if (steps_inited_once) {
+            return;
+        }
+
+        for (int i = 0; i < steps.length; i++) {
+            if (has_step (steps[i])) {
+                var addin = get_step_addin (steps[i]);
+
+                if (addin != null) {
+                    yield addin.init_once ();
+                }
+            }
+        }
+
+        steps_inited_once = true;
     }
 }

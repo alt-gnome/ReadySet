@@ -22,7 +22,7 @@ public sealed class ReadySet.PageInfo : Object {
 
     public string id { get; construct; }
 
-    public BasePage page { get; construct; }
+    public BasePage? page { get; construct; }
 
     public Peas.PluginInfo? plugin_info {
         get {
@@ -32,7 +32,7 @@ public sealed class ReadySet.PageInfo : Object {
 
     public StepAddin? plugin { get; construct; }
 
-    public bool accessible { get; private set; }
+    public bool should_layout { get; private set; }
 
     public bool is_ready { get; set; }
 
@@ -67,7 +67,8 @@ public sealed class ReadySet.PageInfo : Object {
         }
     }
 
-    public PageInfo (BasePage page, StepAddin? plugin) {
+    public PageInfo (BasePage? page, StepAddin? plugin)
+    requires (page != null || plugin != null) {
         Object (
             page: page,
             plugin: plugin
@@ -81,39 +82,44 @@ public sealed class ReadySet.PageInfo : Object {
             "title-icon-name"
         };
 
-        foreach (var prop in props) {
-            page.bind_property (prop, this, prop, SYNC_CREATE);
+        if (page != null) {
+            foreach (var prop in props) {
+                page.bind_property (prop, this, prop, SYNC_CREATE);
+            }
+            page.notify["should-layout"].connect (update_should_layout);
         }
-
-        page.notify["accessible"].connect (update_accessible);
         if (plugin != null) {
-            plugin.notify["enabled"].connect (update_accessible);
+            plugin.notify["enabled"].connect (update_should_layout);
         }
-        update_accessible ();
+        update_should_layout ();
 
         id = "%s-%s".printf (
             plugin != null ? plugin.get_type ().name () : "None",
-            page.get_type ().name ()
+            page != null ? page.get_type ().name () : "None"
         );
     }
 
-    void update_accessible () {
-        if (plugin != null) {
-            accessible = plugin.enabled && page.accessible;
-        } else {
-            accessible = page.accessible;
-        }
+    void update_should_layout () {
+        var plugin_enabled = plugin != null ? plugin.enabled : true;
+        var page_accessible = page != null ? page.accessible : false;
+
+        should_layout = plugin_enabled && page_accessible;
+    }
+
+    internal bool can_be_applyed () {
+        return plugin != null ? plugin.enabled : false;
     }
 }
 
 public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel {
 
+    ListStore store = new ListStore (typeof (PageInfo));
     Gtk.SingleSelection real_model;
 
     Gtk.BoolFilter filter = new Gtk.BoolFilter (new Gtk.PropertyExpression (
         typeof (PageInfo),
         null,
-        "accessible"
+        "should-layout"
     ));
 
     public Gee.ArrayList<PageInfo> pages { get; construct; }
@@ -125,11 +131,10 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
     }
 
     construct {
-        var store = new ListStore (typeof (PageInfo));
         foreach (var page in pages) {
             store.append (page);
 
-            page.notify["accessible"].connect (page_accessible_changed);
+            page.notify["should-layout"].connect (page_should_layout_changed);
         }
         real_model = new Gtk.SingleSelection (new Gtk.FilterListModel (
             store, filter
@@ -141,7 +146,7 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
         unselect_all ();
     }
 
-    void page_accessible_changed () {
+    void page_should_layout_changed () {
         filter.changed (Gtk.FilterChange.DIFFERENT);
     }
 
@@ -163,6 +168,14 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
 
         select_item (new_selection_position, true);
         items_changed (position, removed, added);
+    }
+
+    public GLib.Object? get_item_unfiltered (uint position) {
+        return store.get_item (position);
+    }
+
+    public uint get_n_items_unfiltered () {
+        return store.get_n_items ();
     }
 
     public unowned PageInfo? get_selected_item () {

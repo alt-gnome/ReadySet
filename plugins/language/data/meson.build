@@ -1,7 +1,8 @@
 plugin_language_blueprints = files(
   'ui/box.blp',
+  'ui/locale-dialog.blp',
   'ui/page.blp',
-  'ui/row.blp',
+  'ui/view-row.blp',
 )
 
 plugin_language_resources = gnome.compile_resources(

@@ -29,7 +29,7 @@ rs_internal_vala_args = [
   '--define=FOR_SERVICE',
 ]
 
-if get_option('is_devel')
+if get_option('nightly')
   rs_internal_vala_args += [
     '--define=DEVEL',
   ]

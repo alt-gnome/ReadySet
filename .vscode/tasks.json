@@ -4,21 +4,17 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Lint check",
+            "label": "Lint all",
             "type": "shell",
-            "command": "tools/check-vala",
-            "problemMatcher": []
-        },
-        {
-            "label": "Lint .blp check",
-            "type": "shell",
-            "command": "tools/check-blp",
+            "command": "make",
+            "args": ["lint"],
             "problemMatcher": []
         },
         {
             "label": "Fix all .blp",
             "type": "shell",
-            "command": "tools/fix-blp",
+            "command": "make",
+            "args": ["lint-fix"],
             "problemMatcher": []
         }
     ]

@@ -42,7 +42,7 @@ public sealed class ReadySet.OptionsHandler : Object {
 #if DEVEL // vala-lint=block-opening-brace-space-before
         {
             "force-mode", '\0',
-            OptionFlags.HIDDEN, OptionArg.STRING,
+            0, OptionArg.STRING,
             null,
             N_("Force run with mode"),
             "FORCE-MODE"
@@ -137,7 +137,7 @@ public sealed class ReadySet.OptionsHandler : Object {
 
     public bool version { get; set; }
 
-    public string[] steps { get; set; }
+    public string[] steps { get; set; default = {}; }
 
     public bool resizable { get; set; default = false; }
 
@@ -270,7 +270,16 @@ public sealed class ReadySet.OptionsHandler : Object {
                 val.set_boxed (a);
                 return val;
             } else if (opt.get_type ().dup_string () == VariantType.STRING.dup_string ()) {
-                return opt.get_string ().strip ().split (SEP.to_string ());
+                var a = opt.get_string ().strip ().split (SEP.to_string ());
+                string[] filtered_a = {};
+                foreach (var s in a) {
+                    if (s != null) {
+                        if (s.strip () != "") {
+                            filtered_a += s;
+                        }
+                    }
+                }
+                return filtered_a;
             }
         }
 

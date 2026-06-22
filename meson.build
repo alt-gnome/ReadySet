@@ -1,7 +1,7 @@
 project(
   'ready-set',
   'vala',
-  version: '0.8',
+  version: '0.9',
   meson_version: '>= 1.9',
   license: 'GPL-3.0-or-later',
 )
@@ -18,11 +18,11 @@ add_project_arguments(
 )
 
 accountsservice_desktop_dep = dependency('accountsservice')
-gdm_dep = dependency('gdm')
+gdm_dep = dependency('gdm', required: get_option('gdm'))
 gee_dep = dependency('gee-0.8')
 gio_dep = dependency('gio-unix-2.0')
 gnome_desktop_dep = dependency('gnome-desktop-4')
-ibus_dep = dependency('ibus-1.0')
+ibus_dep = dependency('ibus-1.0', required: get_option('ibus'))
 libadwaita_dep = dependency('libadwaita-1', version: '>= 1.7')
 libpeas_dep = dependency('libpeas-2')
 polkit_dep = dependency('polkit-gobject-1')
@@ -35,7 +35,7 @@ soversion = libversion.split('.')[0]
 pascal_name = 'ReadySet'
 app_id = 'org.altlinux.' + pascal_name
 
-if get_option('is_devel')
+if get_option('nightly')
   app_id_dyn = app_id + '.Devel'
 else
   app_id_dyn = app_id
@@ -69,7 +69,7 @@ global_conf.set_quoted('APP_ID', app_id)
 global_conf.set_quoted('APP_ID_DYN', app_id_dyn)
 global_conf.set_quoted('G_LOG_DOMAIN', app_id)
 global_conf.set_quoted('SYSCONFDIR', sysconfdir)
-global_conf.set10('IS_DEVEL', get_option('is_devel'))
+global_conf.set10('NIGHTLY', get_option('nightly'))
 global_conf.set_quoted('VERSION', meson.project_version())
 global_conf.set_quoted('GETTEXT_PACKAGE', meson.project_name())
 global_conf.set_quoted('LIBDIR', libdir)

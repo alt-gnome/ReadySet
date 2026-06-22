@@ -1,0 +1,150 @@
+name: Main
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Check ${{ matrix.name }}
+
+    runs-on: als-tiny
+    container: registry.altlinux.org/sisyphus/node:latest
+
+    strategy:
+      matrix:
+        name:
+        - gnome-initial-setup
+        - stevia
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
+    - name: Install deps
+      run: |
+        apt-get update && apt-get install -y 'python3(yaml)'
+
+    - name: Run check
+      id: check
+      run: |
+        set -e
+        TRACKING_DIR="actualization/tracking/${{ matrix.name }}"
+        
+        if [ -d "$TRACKING_DIR" ]; then
+          ./actualization/check.py "$TRACKING_DIR".yml "$TRACKING_DIR.new"
+          if diff -r -q "$TRACKING_DIR" "$TRACKING_DIR.new" > /dev/null 2>&1; then
+            echo "status=ok" >> $GITHUB_OUTPUT
+            rm -rf "$TRACKING_DIR.new"
+          else
+            echo "status=changed" >> $GITHUB_OUTPUT
+            rm -rf "$TRACKING_DIR"
+            mv "$TRACKING_DIR.new" "$TRACKING_DIR"
+          fi
+        else
+          ./actualization/check.py "$TRACKING_DIR".yml "$TRACKING_DIR"
+          echo "status=missing" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Git config
+      if: steps.check.outputs.status != 'ok'
+      run: |
+        git config user.name "ReadySet Helper Bot"
+        git config user.email "ready-set-helper-bot@noreply.altlinux.space"
+        git config url."https://placeholder:${{ secrets.ACT_TOKEN }}@altlinux.space/".insteadOf "https://altlinux.space/"
+
+    - name: Create or update PR
+      if: steps.check.outputs.status != 'ok'
+      uses: actions/forgejo-script@v1
+      env:
+        GITHUB_TOKEN: override
+        GITEA_TOKEN: override
+        FORGEJO_TOKEN: override
+        HASH: ${{ steps.check.outputs.hash }}
+        PACKAGE: ${{ matrix.name }}
+        STATUS: ${{ steps.check.outputs.status }}
+      with:
+        github-token: ${{ secrets.ACT_TOKEN }}
+        script: |
+          const fs = require('fs');
+
+          const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
+          const pkg = process.env.PACKAGE;
+          const status = process.env.STATUS;
+
+          async function searchPullRequests(query) {
+            const result = await forgejo.repos.issueListIssues(owner, repo, {
+              type: 'pulls',
+              state: 'open',
+              q: query
+            })
+            return result.data;
+          }
+
+          async function getPullByTitle(title) {
+            const issues = await searchPullRequests(title);
+            for (const issue of issues) {
+              if (issue.title === title) {
+                return issue;
+              }
+            }
+            return null;
+          }
+
+          async function commitAndPush(message, branchToPush) {
+            await exec.exec('git', ['add', '.']);
+            
+            try {
+              await exec.exec('git', ['diff', '--cached', '--quiet']);
+              core.info('No changes to commit, PR is already up to date.');
+              return;
+            } catch (e) {}
+            
+            await exec.exec('git', ['commit', '-m', message]);
+            await exec.exec('git', ['push', 'origin', branchToPush, '--force']);
+          }
+
+          const title = status === 'missing' 
+            ? `[TRACKING] Add tracking files for ${pkg}`
+            : `[TRACKING] Update tracking files for ${pkg}`;
+
+          const existingPR = await getPullByTitle(title);
+
+          let branch;
+          if (existingPR) {
+            core.info('PR already exists! Updating branch...');
+            const pull = (await forgejo.repos.repoGetPullRequest(owner, repo, existingPR.number)).data;
+            branch = pull.head.ref;
+            
+            await exec.exec('cp', ['-r', `actualization/tracking/${pkg}`, '/tmp/tracking-backup']);
+            await exec.exec('git', ['clean', '-fd']);
+            await exec.exec('git', ['fetch', 'origin', `${branch}:${branch}`]);
+            await exec.exec('git', ['checkout', branch]);
+            await exec.exec('git', ['reset', '--hard', pull.base.ref]);
+            await exec.exec('rm', ['-rf', `actualization/tracking/${pkg}`]);
+            await exec.exec('cp', ['-r', '/tmp/tracking-backup', `actualization/tracking/${pkg}`]);
+          } else {
+            core.info('Existing PR not found. Creating new branch...');
+            branch = `actualization-update/${pkg}`;
+            await exec.exec('git', ['switch', '-c', branch]);
+          }
+
+          await commitAndPush(title, branch);
+
+          if (!existingPR) {
+            const pull = (await forgejo.repos.repoCreatePullRequest(
+              owner,
+              repo,
+              {
+                title,
+                head: branch,
+                base: 'main'
+              }
+            )).data;
+            core.info(`Created PR #${pull.number}`);
+          } else {
+            core.info(`Updated PR #${existingPR.number}`);
+          }

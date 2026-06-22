@@ -70,7 +70,7 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
 
         simple = Application.get_default ().options_handler.simple;
 
-        if (Config.IS_DEVEL) {
+        if (Config.NIGHTLY) {
             add_css_class ("devel");
         }
     }
@@ -94,7 +94,7 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         }
 
         reloading = true;
-        yield Application.get_default ().init_pages ();
+        yield Application.get_default ().build_steps ();
         set_window_content ();
     }
 

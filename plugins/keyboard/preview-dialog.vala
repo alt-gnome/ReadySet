@@ -19,4 +19,53 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Keyboard/ui/preview-dialog.ui")]
-public sealed class Keyboard.PreviewDialog : Adw.Dialog {}
+public sealed class Keyboard.PreviewDialog : Adw.Dialog {
+
+    [GtkChild]
+    unowned Gtk.Button tecla_button;
+
+    public InputInfo input_info {get; construct; }
+
+    InputSources current_inputs;
+
+    public PreviewDialog (InputInfo input_info) {
+        Object (input_info: input_info);
+    }
+
+    ~PreviewDialog () {
+        set_user_inputs (current_inputs.to_array ());
+    }
+
+    construct {
+        current_inputs = get_current_inputs ();
+        set_user_inputs ({input_info});
+        update_tecla_button_visible ();
+    }
+
+    void update_tecla_button_visible () {
+        tecla_button.visible = get_preview_path () != null &&
+            input_info.type_ == InputSourcesManager.INPUT_SOURCE_TYPE_XKB;
+    }
+
+    string? get_preview_path () {
+        return Environment.find_program_in_path (Addin.get_instance ().context.get_string ("keyboard-preview-bin"));
+    }
+
+    [GtkCallback]
+    async void on_preview_clicked () {
+        var preview_path = get_preview_path ();
+        assert (preview_path != null);
+
+        string arg = input_info.layout;
+        if (input_info.variant != null) {
+            arg += @"+$(input_info.variant)";
+        }
+
+        try {
+            var sp = new Subprocess.newv ({ preview_path, arg }, NONE);
+            yield sp.wait_check_async ();
+        } catch (Error e) {
+            warning (e.message);
+        }
+    }
+}

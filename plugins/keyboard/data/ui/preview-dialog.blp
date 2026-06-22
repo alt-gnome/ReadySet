@@ -3,10 +3,18 @@ using Adw 1;
 
 template $KeyboardPreviewDialog: Adw.Dialog {
   width-request: 360;
+  height-request: 124;
 
   Adw.ToolbarView {
     [top]
-    Adw.HeaderBar {}
+    Adw.HeaderBar {
+      [start]
+      Button tecla_button {
+        tooltip-text: _("Show tecla preview");
+        icon-name: "keyboard-symbolic";
+        clicked => $on_preview_clicked();
+      }
+    }
 
     content: Adw.Clamp {
       margin-start: 12;
@@ -20,7 +28,9 @@ template $KeyboardPreviewDialog: Adw.Dialog {
           "boxed-list",
         ]
 
-        Adw.EntryRow entry {}
+        Adw.EntryRow entry {
+          title: _("Try writing");
+        }
       }
     };
   }

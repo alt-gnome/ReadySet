@@ -65,6 +65,8 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     unowned Adw.Breakpoint vertical_breakpoint;
     [GtkChild]
     unowned Adw.Breakpoint horizontal_breakpoint;
+    [GtkChild]
+    unowned Gtk.Revealer to_up_label_revealer;
 
     [GtkChild]
     unowned Adw.Bin top_bin;
@@ -114,7 +116,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                     go_prev_button.height_request =
                     go_prev_button.width_request =
                     to_up_button.height_request =
-                    to_up_button.width_request =
                     32;
                 button_center_box.margin_bottom = 6;
                 go_next_button.remove_css_class ("pill");
@@ -125,11 +126,12 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                     go_prev_button.height_request =
                     go_prev_button.width_request =
                     to_up_button.height_request =
-                    to_up_button.width_request =
                     48;
                 button_center_box.margin_bottom = 12;
                 go_next_button.add_css_class ("pill");
             }
+
+            update_go_up_button ();
         }
     }
 
@@ -212,9 +214,9 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         pages_indicator.model = model;
 
         can_close = Application.get_default ().can_close;
-        context_button.visible = Config.IS_DEVEL;
-        sandbox_label_left.visible = ReadySet.Application.get_default ().context.sandbox && Config.IS_DEVEL;
-        sandbox_label_right.visible = ReadySet.Application.get_default ().context.sandbox && !Config.IS_DEVEL;
+        context_button.visible = Config.NIGHTLY;
+        sandbox_label_left.visible = ReadySet.Application.get_default ().context.sandbox && Config.NIGHTLY;
+        sandbox_label_right.visible = ReadySet.Application.get_default ().context.sandbox && !Config.NIGHTLY;
 
         notify["show-steps-list"].connect (update_icons_visible);
         notify["simple"].connect (update_icons_visible);
@@ -341,6 +343,11 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     }
 
     void update_go_up_button () {
+        last_current_page.page.remove_css_class ("page-to-up-compact");
+        last_current_page.page.remove_css_class ("page-to-up-regular");
+        to_up_button.remove_css_class ("to-up-button-regular");
+        to_up_button.remove_css_class ("to-up-button-compact");
+
         if (!last_current_page.page.need_go_up_button) {
             to_up_revealer.visible = false;
             to_up_revealer.reveal_child = false;
@@ -350,6 +357,13 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         if (can_up) {
             to_up_revealer.visible = true;
             to_up_revealer.reveal_child = true;
+            if (is_compact) {
+                last_current_page.page.add_css_class ("page-to-up-compact");
+                to_up_button.add_css_class ("to-up-button-compact");
+            } else {
+                last_current_page.page.add_css_class ("page-to-up-regular");
+                to_up_button.add_css_class ("to-up-button-regular");
+            }
         } else {
             to_up_revealer.reveal_child = false;
         }
@@ -385,7 +399,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
     void update_standalone () {
         standalone_sandbox_label.visible = ReadySet.Application.get_default ().context.sandbox &&
-            Config.IS_DEVEL && standalone;
+            Config.NIGHTLY && standalone;
         standalone_steps_list_button.visible = !simple && standalone;
         standalone_horizontal_bottom.visible = layout_mode == HORIZONTAL && standalone;
     }
@@ -399,7 +413,9 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     void update_scroll () {
         if (current_scrolled_window != null) {
             if (current_scrolled_window.vadjustment != null) {
-                can_up = !(current_scrolled_window.vadjustment.value <= 360.0);
+                var v = current_scrolled_window.vadjustment;
+                can_up = !(v.value <= 360.0);
+                to_up_label_revealer.reveal_child = v.value >= v.upper - v.page_size;
             }
         }
     }

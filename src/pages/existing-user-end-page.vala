@@ -25,25 +25,27 @@ public sealed class ReadySet.ExistingUserEndPage : Adw.Bin {
     void on_complete () {
         var app = Application.get_default ();
 
-        Gee.ArrayList<StepAddin> steps_addins_arr = new Gee.ArrayList<StepAddin> ();
+        if (!app.context.sandbox) {
+            Gee.ArrayList<StepAddin> steps_addins_arr = new Gee.ArrayList<StepAddin> ();
 
-        for (int i = 0; i < app.model.get_n_items (); i++) {
-            var page_info = (PageInfo) app.model.get_item (i);
+            for (int i = 0; i < app.model.get_n_items (); i++) {
+                var page_info = (PageInfo) app.model.get_item (i);
 
-            if (!(page_info.plugin in steps_addins_arr) &&
-                page_info.plugin.enabled && page_info.plugin_info.module_name != "welcome") {
-                steps_addins_arr.add (page_info.plugin);
+                if (!(page_info.plugin in steps_addins_arr) &&
+                    page_info.plugin.enabled && page_info.plugin_info.module_name != "welcome") {
+                    steps_addins_arr.add (page_info.plugin);
+                }
             }
+
+            var rs_settings = new Settings ("org.altlinux.ReadySet");
+            string[] passed_plugins = rs_settings.get_strv ("performed-steps");
+
+            foreach (var step_addin in steps_addins_arr) {
+                passed_plugins += step_addin.plugin_info.module_name;
+            }
+
+            rs_settings.set_strv ("performed-steps", passed_plugins);
         }
-
-        var rs_settings = new Settings ("org.altlinux.ReadySet");
-        string[] passed_plugins = rs_settings.get_strv ("performed-steps");
-
-        foreach (var step_addin in steps_addins_arr) {
-            passed_plugins += step_addin.plugin_info.module_name;
-        }
-
-        rs_settings.set_strv ("performed-steps", passed_plugins);
 
         app.quit ();
     }

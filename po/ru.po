@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-14 09:46+0000\n"
-"PO-Revision-Date: 2026-06-01 21:26+0000\n"
+"POT-Creation-Date: 2026-06-22 06:39+0000\n"
+"PO-Revision-Date: 2026-06-18 14:42+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
 "ready-set/ru/>\n"
@@ -25,17 +25,8 @@ msgid "Setting up the system…"
 msgstr "Настройка вашей системы…"
 
 #: data/ui/end-page.blp:53
-msgid "Ready Set…"
-msgstr "На Старт Внимание…"
-
-#: data/ui/end-page.blp:54
-msgid "The system is ready for use."
-msgstr "Система готова к использованию."
-
-#. TRANSLATORS: Last word in "Ready Set ..." sentence
-#: data/ui/end-page.blp:64
-msgid "Go!"
-msgstr "Марш!"
+msgid "All done!"
+msgstr "Всё готово!"
 
 #: data/ui/existing-user-end-page.blp:26
 msgid "Setup complete!"
@@ -49,19 +40,19 @@ msgstr "Всё готово к использованию."
 msgid "Complete the setup"
 msgstr "Завершите настройку"
 
-#: data/ui/nothing-to-show.blp:30
+#: data/ui/nothing-to-show.blp:30 plugins/language/data/ui/box.blp:44
 msgid "Nothing to show"
 msgstr "Нечего показывать"
 
-#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:565
+#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:594
 msgid "Go to previous page"
 msgstr "К предыдущей странице"
 
-#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:584
+#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:613
 msgid "Next"
 msgstr "Дальше"
 
-#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:596
+#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:625
 msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
 
@@ -69,9 +60,13 @@ msgstr "Показать/Скрыть клавиатуру"
 msgid "Open application menu"
 msgstr "Открыть меню приложения"
 
-#: data/ui/steps-main-page.blp:521
+#: data/ui/steps-main-page.blp:520
 msgid "Go up"
 msgstr "Наверх"
+
+#: data/ui/steps-main-page.blp:540 data/ui/steps-main-page.blp:546
+msgid "Go up to the beginning"
+msgstr "Вернуться к началу"
 
 #: data/ui/window-content.blp:43
 msgid "All steps"
@@ -101,35 +96,33 @@ msgstr "На этой странице указано, что в Вашем ди
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
-#: plugins/keyboard/data/ui/input-chooser.blp:15
-msgid "Search keyboards and input methods"
-msgstr "Поиск раскладок и методов ввода"
+#: plugins/keyboard/data/ui/current-input-row.blp:28
+#: plugins/keyboard/data/ui/input-row.blp:23
+msgid "Preview"
+msgstr "Превью"
 
-#: plugins/keyboard/data/ui/input-chooser.blp:51
-msgid "You can specify additional layout switch combination"
-msgstr "Вы можете указать дополнительный способ переключения раскладки"
+#: plugins/keyboard/data/ui/current-input-sources.blp:20
+#, fuzzy
+msgid "Current input sources"
+msgstr "Не выбраны источники ввода"
 
-#: plugins/keyboard/data/ui/input-chooser.blp:66
+#: plugins/keyboard/data/ui/current-input-sources.blp:46
 msgid "No input sources selected"
 msgstr "Не выбраны источники ввода"
 
-#: plugins/keyboard/data/ui/input-chooser.blp:100
-#: plugins/language/data/ui/box.blp:57
-msgid "Nothing found"
-msgstr "Ничего не найдено"
+#: plugins/keyboard/data/ui/current-input-sources.blp:61
+msgid "Add input-source"
+msgstr ""
 
-#: plugins/keyboard/data/ui/input-chooser.blp:115
-#: plugins/language/data/ui/box.blp:72
+#: plugins/keyboard/data/ui/input-sources-dialog.blp:28
+#, fuzzy
+msgid "Add input source"
+msgstr "Не выбраны источники ввода"
+
+#: plugins/keyboard/data/ui/input-sources-dialog.blp:85
+#: plugins/language/data/ui/box.blp:58
 msgid "Show more"
 msgstr "Показать больше"
-
-#: plugins/keyboard/data/ui/input-row.blp:24
-msgid "This layout selected"
-msgstr "Эта раскладка выбрана"
-
-#: plugins/keyboard/data/ui/input-row.blp:40
-msgid "Preview"
-msgstr "Превью"
 
 #: plugins/keyboard/data/ui/page.blp:24 plugins/keyboard/data/ui/page.blp:29
 msgid "Typing"
@@ -144,29 +137,37 @@ msgid "You must select at least one layout containing Latin characters"
 msgstr ""
 "Должна быть выбрана хотя бы одна раскладка, содержащая латинские символы"
 
+#: plugins/keyboard/data/ui/page.blp:60
+msgid "You can specify additional layout switch combination"
+msgstr "Вы можете указать дополнительный способ переключения раскладки"
+
+#: plugins/keyboard/data/ui/preview-dialog.blp:13
+msgid "Show tecla preview"
+msgstr ""
+
+#: plugins/keyboard/data/ui/preview-dialog.blp:32
+msgid "Try writing"
+msgstr ""
+
 #: plugins/keyboard/enums.vala:72 plugins/keyboard/layout-switch-button.vala:62
 msgid "None"
 msgstr "Ничего"
 
-#: plugins/keyboard/plugin.vala:114
+#: plugins/keyboard/plugin.vala:120
 msgid "Error when setting keyboard layout"
 msgstr "Ошибка при настройке раскладки клавиатуры"
 
-#: plugins/language/data/ui/box.blp:16
-msgid "Search language"
-msgstr "Поиск языка"
+#: plugins/language/current-row.vala:25
+msgid "Current language"
+msgstr "Текущий язык"
 
 #: plugins/language/data/ui/page.blp:24
 msgid "Language"
 msgstr "Язык"
 
-#: plugins/language/plugin.vala:121
+#: plugins/language/plugin.vala:122
 msgid "Error when setting language"
 msgstr "Ошибка при настройке языка"
-
-#: plugins/language/row.vala:36
-msgid "Current language"
-msgstr "Текущий язык"
 
 #: plugins/language/select-title.vala:65
 msgid "Hello!"
@@ -188,14 +189,6 @@ msgstr "Лицензионное соглашение"
 #: plugins/license-agreement/data/ui/page.blp:34
 msgid "I have read the license and accept it"
 msgstr "Я ознакомился с лицензией и принимаю ее"
-
-#: plugins/tests/data/ui/page.blp:23 plugins/tests/data/ui/page.blp:32
-msgid "Test"
-msgstr "Тест"
-
-#: plugins/tests/data/ui/page.blp:27
-msgid "Test page"
-msgstr "Тестовая страница"
 
 #: plugins/user/data/ui/avatar-chooser.blp:5
 msgid "Select Avatar"
@@ -478,10 +471,6 @@ msgstr "На Старт Внимание"
 msgid "translator-credits"
 msgstr "Vladimir Romanov <rirusha@altlinux.org>"
 
-#: src/application.vala:287
-msgid "No steps specified"
-msgstr "Не указан список шагов"
-
 #: src/options-handler.vala:39
 msgid "Context vars"
 msgstr "Переменные контекста"
@@ -540,23 +529,76 @@ msgstr "Показать информацию о версии и выйти"
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
-#: src/pages/end-page.vala:88
+#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
+#: src/pages/end-page.vala:54
+#, c-format
+msgid "_Start Using %s"
+msgstr "_Начать работу с %s"
+
+#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
+#: src/pages/end-page.vala:56
+#, c-format
+msgid "%s is ready to be used."
+msgstr "Дистрибутив %s готов к использованию."
+
+#: src/pages/end-page.vala:58
+msgid "_Start Using the System"
+msgstr "_Начать работу с системой"
+
+#: src/pages/end-page.vala:59
+msgid "System is ready to be used."
+msgstr "Система готова к использованию."
+
+#: src/pages/end-page.vala:110
 msgid "Installing system…"
 msgstr "Установка системы…"
 
-#: src/pages/end-page.vala:109
+#: src/pages/end-page.vala:131
 #, c-format
 msgid "Applying %s…"
 msgstr "Применение %s…"
 
-#: src/pages/end-page.vala:194 src/pages/end-page.vala:200
+#: src/pages/end-page.vala:216 src/pages/end-page.vala:222
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
-#: src/pages/end-page.vala:199
+#: src/pages/end-page.vala:221
 msgid "Error while execute post hooks"
 msgstr "Ошибка при выполнении пост скриптов"
+
+#: tests/plugins/test-common/data/ui/page.blp:23
+#: tests/plugins/test-common/data/ui/page.blp:32
+msgid "Test"
+msgstr "Тест"
+
+#: tests/plugins/test-common/data/ui/page.blp:27
+msgid "Test page"
+msgstr "Тестовая страница"
+
+#~ msgid "Search language"
+#~ msgstr "Поиск языка"
+
+#~ msgid "Nothing found"
+#~ msgstr "Ничего не найдено"
+
+#~ msgid "Search keyboards and input methods"
+#~ msgstr "Поиск раскладок и методов ввода"
+
+#~ msgid "This layout selected"
+#~ msgstr "Эта раскладка выбрана"
+
+#~ msgid "No steps specified"
+#~ msgstr "Не указан список шагов"
+
+#~ msgid "Ready Set…"
+#~ msgstr "На Старт Внимание…"
+
+#~ msgid "The system is ready for use."
+#~ msgstr "Система готова к использованию."
+
+#~ msgid "Go!"
+#~ msgstr "Марш!"
 
 #~ msgid "Steps which will not apply. E.g: `steps=language,keyboard`"
 #~ msgstr ""

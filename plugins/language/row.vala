@@ -18,7 +18,6 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Language/ui/row.ui")]
 public sealed class Language.Row : Adw.ActionRow {
 
     LocaleData _locale_data;
@@ -28,36 +27,13 @@ public sealed class Language.Row : Adw.ActionRow {
         }
         construct set {
             _locale_data = value;
-            if (value != null) {
-                var is_current_language = value.locale == Addin.get_instance ().current_locale;
-
-                if (is_current_language) {
-                    add_css_class ("property");
-                    title = _("Current language");
-                    activatable = false;
-                    subtitle = value.country_cur;
-                } else {
-                    remove_css_class ("property");
-                    title = value.country_loc;
-                    subtitle = value.country_cur;
-                }
-            } else {
-                title = "";
-                subtitle = "";
-            }
+            title = _locale_data.country_loc;
+            subtitle = _locale_data.country_cur;
+            activatable = true;
         }
     }
 
     public Row (LocaleData locale_data) {
         Object (locale_data: locale_data);
-    }
-
-    [GtkCallback]
-    void row_activated () {
-        if (locale_data.locale == Addin.get_instance ().current_locale) {
-            return;
-        }
-
-        Addin.get_instance ().current_locale = locale_data.locale;
     }
 }
