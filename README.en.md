@@ -42,7 +42,7 @@ Context configuration options can be found in plugins README.
 Cumulative option with `VAR=VALUE` format.
 
 #### `force-mode`
-Run application with this mode. Can be used only in `nightly=true` build. Auto by default.
+Run application with this mode. Can be used only in `nightly=true` build. Auto by default. Can be `installer`, `initial-setup`, `existing-user`.
 
 #### `can-close`
 Make window closable anyway. `false` by default.
