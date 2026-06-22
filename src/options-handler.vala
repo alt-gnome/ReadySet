@@ -42,7 +42,7 @@ public sealed class ReadySet.OptionsHandler : Object {
 #if DEVEL // vala-lint=block-opening-brace-space-before
         {
             "force-mode", '\0',
-            OptionFlags.HIDDEN, OptionArg.STRING,
+            0, OptionArg.STRING,
             null,
             N_("Force run with mode"),
             "FORCE-MODE"

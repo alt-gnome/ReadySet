@@ -95,6 +95,9 @@ namespace ReadySet.Completions {
             print ("        --%s)\n", entry.long_name);
 
             switch (entry.long_name) {
+                case "force-mode":
+                    print ("            COMPREPLY=( $(compgen -W \"initial-setup existing-user installer\" -- \"${cur}\") )\n");
+                    break;
                 case "force-layout":
                     print ("            COMPREPLY=( $(compgen -W \"big small vertical horizontal\" -- \"${cur}\") )\n");
                     break;
