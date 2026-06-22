@@ -1,5 +1,5 @@
 [Application]
-steps=language,keyboard,user-passwdqc
+steps=welcome,language,keyboard,user-passwdqc
 simple=true
 
 [Context]

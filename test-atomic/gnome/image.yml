@@ -9,6 +9,7 @@ modules:
     body:
       install:
         - ready-set-gdm
+        - ready-set-plugin-welcome
         - ready-set-plugin-language
         - ready-set-plugin-keyboard
         - ready-set-plugin-user-passwdqc
