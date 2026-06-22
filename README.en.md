@@ -41,9 +41,6 @@ Context configuration options can be found in plugins README.
 #### `context`
 Cumulative option with `VAR=VALUE` format.
 
-#### `force-mode`
-Run application with this mode. Can be used only in `nightly=true` build. Auto by default. Can be `installer`, `initial-setup`, `existing-user`.
-
 #### `can-close`
 Make window closable anyway. `false` by default.
 
@@ -76,6 +73,9 @@ Initial height of a window. 800 by default.
 
 #### `force-layout`
 Set layout for window: `big`, `small`, `vertical`, `horizontal`. Auto by default.
+
+#### `force-mode`
+Set mode for application: `installer`, `initial-setup`, `existing-user`. Can be used only in `nightly=true` build. Auto by default.
 
 #### `version`
 Print version information and exit.
