@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-21 18:58+0000\n"
+"POT-Creation-Date: 2026-06-22 06:39+0000\n"
 "PO-Revision-Date: 2026-06-18 14:42+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -40,7 +40,7 @@ msgstr "Всё готово к использованию."
 msgid "Complete the setup"
 msgstr "Завершите настройку"
 
-#: data/ui/nothing-to-show.blp:30
+#: data/ui/nothing-to-show.blp:30 plugins/language/data/ui/box.blp:44
 msgid "Nothing to show"
 msgstr "Нечего показывать"
 
@@ -120,7 +120,7 @@ msgid "Add input source"
 msgstr "Не выбраны источники ввода"
 
 #: plugins/keyboard/data/ui/input-sources-dialog.blp:85
-#: plugins/language/data/ui/box.blp:72
+#: plugins/language/data/ui/box.blp:58
 msgid "Show more"
 msgstr "Показать больше"
 
@@ -157,13 +157,9 @@ msgstr "Ничего"
 msgid "Error when setting keyboard layout"
 msgstr "Ошибка при настройке раскладки клавиатуры"
 
-#: plugins/language/data/ui/box.blp:16
-msgid "Search language"
-msgstr "Поиск языка"
-
-#: plugins/language/data/ui/box.blp:57
-msgid "Nothing found"
-msgstr "Ничего не найдено"
+#: plugins/language/current-row.vala:25
+msgid "Current language"
+msgstr "Текущий язык"
 
 #: plugins/language/data/ui/page.blp:24
 msgid "Language"
@@ -172,10 +168,6 @@ msgstr "Язык"
 #: plugins/language/plugin.vala:122
 msgid "Error when setting language"
 msgstr "Ошибка при настройке языка"
-
-#: plugins/language/row.vala:36
-msgid "Current language"
-msgstr "Текущий язык"
 
 #: plugins/language/select-title.vala:65
 msgid "Hello!"
@@ -583,6 +575,12 @@ msgstr "Тест"
 #: tests/plugins/test-common/data/ui/page.blp:27
 msgid "Test page"
 msgstr "Тестовая страница"
+
+#~ msgid "Search language"
+#~ msgstr "Поиск языка"
+
+#~ msgid "Nothing found"
+#~ msgstr "Ничего не найдено"
 
 #~ msgid "Search keyboards and input methods"
 #~ msgstr "Поиск раскладок и методов ввода"
