@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-21 18:58+0000\n"
+"POT-Creation-Date: 2026-06-22 06:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgstr ""
 msgid "Complete the setup"
 msgstr ""
 
-#: data/ui/nothing-to-show.blp:30
+#: data/ui/nothing-to-show.blp:30 plugins/language/data/ui/box.blp:44
 msgid "Nothing to show"
 msgstr ""
 
@@ -115,7 +115,7 @@ msgid "Add input source"
 msgstr ""
 
 #: plugins/keyboard/data/ui/input-sources-dialog.blp:85
-#: plugins/language/data/ui/box.blp:72
+#: plugins/language/data/ui/box.blp:58
 msgid "Show more"
 msgstr ""
 
@@ -151,12 +151,8 @@ msgstr ""
 msgid "Error when setting keyboard layout"
 msgstr ""
 
-#: plugins/language/data/ui/box.blp:16
-msgid "Search language"
-msgstr ""
-
-#: plugins/language/data/ui/box.blp:57
-msgid "Nothing found"
+#: plugins/language/current-row.vala:25
+msgid "Current language"
 msgstr ""
 
 #: plugins/language/data/ui/page.blp:24
@@ -165,10 +161,6 @@ msgstr ""
 
 #: plugins/language/plugin.vala:122
 msgid "Error when setting language"
-msgstr ""
-
-#: plugins/language/row.vala:36
-msgid "Current language"
 msgstr ""
 
 #: plugins/language/select-title.vala:65
