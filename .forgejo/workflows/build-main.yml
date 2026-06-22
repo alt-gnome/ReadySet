@@ -244,7 +244,7 @@ jobs:
       - name: Check build possible
         id: check
         run: |
-          if skopeo inspect ${{ matrix.image }} > /dev/null 2>&1; then
+          if skopeo inspect docker://${{ matrix.image }} > /dev/null 2>&1; then
             echo "exists=yes" >> $GITHUB_OUTPUT
           else
             echo "exists=no" >> $GITHUB_OUTPUT
