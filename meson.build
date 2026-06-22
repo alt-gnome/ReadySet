@@ -1,7 +1,7 @@
 project(
   'ready-set',
   'vala',
-  version: '0.8',
+  version: '0.9.rc',
   meson_version: '>= 1.9',
   license: 'GPL-3.0-or-later',
 )
