@@ -197,7 +197,7 @@ public sealed class ReadySet.Application: Adw.Application {
                         ));
 
                     } else {
-                        foreach (var page in (yield addin.build_pages ())) {
+                        foreach (var page in addin_pages) {
                             pages.add (new PageInfo (
                                 page,
                                 addin
