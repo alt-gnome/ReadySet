@@ -125,7 +125,7 @@ jobs:
     name: RPM build for ${{ matrix.branch }}.amd64 and uploading
     runs-on: als-huge
     container:
-      image: altlinux.space/rirusha/hasher-unpriv:latest
+      image: altlinux.space/actions/runner/hasherc:sisyphus
 
     strategy:
       matrix:
@@ -152,15 +152,17 @@ jobs:
           ./build-aux/altlinux/prepare ${{ needs.get-release.outputs.release }}
           git add .
 
-      - name: Build RPMs
-        run: |
-          gear-hsh --commit --no-sisyphus-check=gpg,packager
+      - uses: actions/build-rpm-action@main
+        name: Build RPMs
+        with:
+          branch: ${{ matrix.branch }}
+          arch: amd64
 
       - uses: actions/upload-rpm-action@main
         name: Upload RPMs
         if: github.event_name != 'pull_request'
         with:
-          directory: ~/hasher/repo/*/RPMS.hasher
+          directory: ~/.cache/hasherc/ready-set/out/RPMS
           token: ${{ secrets.TOKEN }}
           group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
 
