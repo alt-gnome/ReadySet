@@ -1,0 +1,37 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DateAndTimeTimeSelector: Adw.PreferencesDialog {
+  title: _("Time");
+
+  Adw.PreferencesPage {
+    Adw.PreferencesGroup {
+      $DateAndTimeCarouselSelector selector {
+        separator: ":";
+      }
+    }
+
+    Adw.PreferencesGroup {
+      Box {
+        spacing: 12;
+        halign: center;
+
+        Gtk.Button {
+          label: _("Cancel");
+
+          clicked => $on_close_button_clicked();
+        }
+
+        Gtk.Button {
+          styles [
+            "suggested-action",
+          ]
+
+          label: _("Submit");
+
+          clicked => $on_apply_button_clicked();
+        }
+      }
+    }
+  }
+}

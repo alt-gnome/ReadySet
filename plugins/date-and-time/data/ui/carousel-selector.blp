@@ -26,12 +26,12 @@ template $DateAndTimeCarouselSelector: Adw.Bin {
           css-name: "entry";
 
           Gtk.Text text {
-            max-length: 5;
             xalign: 0.5;
             input-purpose: digits;
             input-hints: no_emoji;
             overwrite-mode: true;
             propagate-text-width: true;
+            max-width-chars: 100;
             delete-from-cursor => $on_delete_from_cursor();
             cut-clipboard => $on_cut_clipboard();
             backspace => $on_backspace();
