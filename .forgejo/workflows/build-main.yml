@@ -125,7 +125,7 @@ jobs:
     name: RPM build for ${{ matrix.branch }}.amd64 and uploading
     runs-on: als-huge
     container:
-      image: altlinux.space/egori/hasher-unpriv:latest
+      image: altlinux.space/rirusha/hasher-unpriv:latest
 
     strategy:
       matrix:
