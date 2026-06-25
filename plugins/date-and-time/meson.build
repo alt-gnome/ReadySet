@@ -11,6 +11,7 @@ plugin_date_and_time_sources = files(
   'timezone-list.vala',
   'timezone-list-row.vala',
   'infinity-carousel.vala',
+  'carousel-selector.vala',
 )
 
 plugin_date_and_time_pretty_name = 'Date & Time'

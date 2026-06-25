@@ -4,6 +4,7 @@ plugin_date_and_time_blueprints = files(
   'ui/timezone-list.blp',
   'ui/timezone-list-row.blp',
   'ui/infinity-carousel.blp',
+  'ui/carousel-selector.blp',
 )
 
 plugin_date_and_time_resources = gnome.compile_resources(

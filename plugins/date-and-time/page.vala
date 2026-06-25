@@ -77,6 +77,7 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         typeof (TimezoneListRow).ensure ();
 
         typeof (DateAndTimeSelector).ensure ();
+        typeof (CarouselSelector).ensure ();
     }
 
     construct {
