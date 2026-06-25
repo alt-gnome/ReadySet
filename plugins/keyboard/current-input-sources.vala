@@ -26,8 +26,6 @@ public sealed class Keyboard.CurrentInputSources : Gtk.Box {
     [GtkChild]
     unowned Gtk.ListBox current_input_list;
 
-    InputSourcesDialog dialog = new InputSourcesDialog ();
-
     static construct {
         typeof (LayoutSwitchRow).ensure ();
     }
@@ -75,6 +73,6 @@ public sealed class Keyboard.CurrentInputSources : Gtk.Box {
 
     [GtkCallback]
     void on_buttonrow_activated () {
-        dialog.present (this);
+        new InputSourcesDialog ().present (this);
     }
 }
