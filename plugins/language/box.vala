@@ -26,8 +26,6 @@ public sealed class Language.Box : Adw.Bin {
     [GtkChild]
     unowned Gtk.Stack languages_stack;
 
-    LocaleDialog dialog = new LocaleDialog ();
-
     public LocaleData current_locale { get; set; default = new LocaleData (Addin.get_instance ().current_locale); }
 
     static construct {
@@ -84,7 +82,7 @@ public sealed class Language.Box : Adw.Bin {
 
     [GtkCallback]
     void show_more_clicked () {
-        dialog.present (this);
+        new LocaleDialog ().present (this);
     }
 
     [GtkCallback]
