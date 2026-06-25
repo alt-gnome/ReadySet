@@ -213,7 +213,7 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
         var new_value = int.parse (new_text);
 
         var a = 0;
-        foreach (var item in adjustments) {  
+        foreach (var item in adjustments) {
             a += item.upper.to_string ().length;
 
             if (position < a) {
@@ -224,7 +224,7 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
             a++;
         }
 
-        var left = Math.pow (10, a+1);
+        var left = Math.pow (10, a + 1);
         var right = Math.pow (10, a);
 
         var value = (int) (old_value / left) * left // 1234 -> 1200
@@ -249,11 +249,11 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
         if (position < 0 || position >= current_text.length) {
             return false;
         }
-        
+
         var index = 0;
 
         foreach (var adjustment in adjustments) {
-            index += adjustment.upper.to_string().length;
+            index += adjustment.upper.to_string ().length;
 
             if (index == position) {
                 return true;
@@ -269,12 +269,12 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
         if (position < 0 || position >= current_text.length) {
             return -1;
         }
-        
+
         var segment_index = 0;
         var previous = 0;
 
         foreach (var adjustment in adjustments) {
-            var next = previous + adjustment.upper.to_string().length;
+            var next = previous + adjustment.upper.to_string ().length;
 
             if (previous <= position < next) {
                 return segment_index;
@@ -287,4 +287,3 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
         return -1;
     }
 }
-
