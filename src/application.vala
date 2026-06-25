@@ -138,6 +138,8 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 #endif
 
+        print("\nApplication mode: %s\n", context.mode.to_string ());
+
         plugin_manager.check_steps (options_handler.steps);
 
         if (!options_handler.sandbox) {
