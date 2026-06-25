@@ -115,12 +115,7 @@ public sealed class ReadySet.Application: Adw.Application {
     protected override void startup () {
         base.startup ();
 
-        options_handler.fill_context (context);
-        context.reload_window.connect (reload_window);
-
         plugin_manager.init (options_handler.installer);
-
-        init_lib_css ();
 
 #if DEVEL
         if (options_handler.force_mode == null) {
@@ -141,10 +136,14 @@ public sealed class ReadySet.Application: Adw.Application {
         print("\nApplication mode: %s\n", context.mode.to_string ());
 
         plugin_manager.check_steps (options_handler.steps);
+        options_handler.fill_context (context);
+        context.reload_window.connect (reload_window);
 
         if (!options_handler.sandbox) {
             exec_pre_hooks.begin ();
         }
+
+        init_lib_css ();
     }
 
     async void exec_pre_hooks () {
