@@ -166,51 +166,51 @@ jobs:
           token: ${{ secrets.TOKEN }}
           group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
 
-  rpm-build-arm64:
-    if: github.event_name != 'pull_request' && github.ref_name == 'main'
-    name: RPM build for ${{ matrix.branch }}.arm64 and uploading
-    runs-on: self-hosted-arm64-huge
-    container:
-      image: altlinux.space/actions/runner/hasherc:sisyphus
+  # rpm-build-arm64:
+  #   if: github.event_name != 'pull_request' && github.ref_name == 'main'
+  #   name: RPM build for ${{ matrix.branch }}.arm64 and uploading
+  #   runs-on: self-hosted-arm64-huge
+  #   container:
+  #     image: altlinux.space/actions/runner/hasherc:sisyphus
 
-    strategy:
-      matrix:
-        branch:
-          - sisyphus
-          # - p11
-    needs:
-      - lint-vala
-      - lint-blueprint
-      - get-release
-      - build-doc-translation
+  #   strategy:
+  #     matrix:
+  #       branch:
+  #         - sisyphus
+  #         # - p11
+  #   needs:
+  #     - lint-vala
+  #     - lint-blueprint
+  #     - get-release
+  #     - build-doc-translation
 
-    steps:
-      - name: Install utils
-        run: |
-          apt-get update
-          apt-get install -y meson jq /usr/bin/add_changelog
+  #   steps:
+  #     - name: Install utils
+  #       run: |
+  #         apt-get update
+  #         apt-get install -y meson jq /usr/bin/add_changelog
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      - name: Prepare RPM build
-        run: |
-          ./build-aux/altlinux/prepare ${{ needs.get-release.outputs.release }}
-          git add .
+  #     - name: Prepare RPM build
+  #       run: |
+  #         ./build-aux/altlinux/prepare ${{ needs.get-release.outputs.release }}
+  #         git add .
 
-      - uses: actions/build-rpm-action@main
-        name: Build RPMs
-        with:
-          branch: ${{ matrix.branch }}
-          arch: arm64
+  #     - uses: actions/build-rpm-action@main
+  #       name: Build RPMs
+  #       with:
+  #         branch: ${{ matrix.branch }}
+  #         arch: arm64
 
-      - uses: actions/upload-rpm-action@main
-        name: Upload RPMs
-        if: github.event_name != 'pull_request'
-        with:
-          directory: ~/.cache/hasherc/ready-set/out/RPMS
-          token: ${{ secrets.TOKEN }}
-          group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
+  #     - uses: actions/upload-rpm-action@main
+  #       name: Upload RPMs
+  #       if: github.event_name != 'pull_request'
+  #       with:
+  #         directory: ~/.cache/hasherc/ready-set/out/RPMS
+  #         token: ${{ secrets.TOKEN }}
+  #         group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
 
   build-test-image:
     name: Build ${{ matrix.denviron }} image
