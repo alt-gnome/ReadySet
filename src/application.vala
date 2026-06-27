@@ -137,7 +137,9 @@ public sealed class ReadySet.Application: Adw.Application {
         print ("\nApplication mode: %s\n", context.mode.to_string ());
 
         plugin_manager.check_steps (options_handler.steps);
-        plugin_manager.check_installers ();
+        if (has_installer) {
+            plugin_manager.check_installers ();
+        }
         options_handler.fill_context (context);
         context.reload_window.connect (reload_window);
 
