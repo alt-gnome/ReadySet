@@ -48,7 +48,6 @@ public sealed class ReadySet.PluginManager : Object {
         if (installer_name != null) {
             init_installers_plugins ();
             print_installers_info ();
-            check_installers ();
         }
     }
 
@@ -256,10 +255,12 @@ public sealed class ReadySet.PluginManager : Object {
         }
     }
 
-    void check_installers () {
+    public void check_installers () {
         if (!installers_plugins.contains (installer_name)) {
             error ("Unknown installer plugin");
         }
+
+        context.register_vars ("installer", installers_plugins[installer_name].get_context_vars  ());
 
         get_installer_plugin ().load_css_for_display (Gdk.Display.get_default ());
     }
