@@ -74,7 +74,8 @@ public sealed class ReadySet.Application: Adw.Application {
         typeof (StepsMainPage).ensure ();
         typeof (StepsSidebar).ensure ();
 
-        typeof (EndPage).ensure ();
+        typeof (InitialSetupEndPage).ensure ();
+        typeof (InstallerEndPage).ensure ();
     }
 
     construct {

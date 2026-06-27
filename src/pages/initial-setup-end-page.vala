@@ -18,8 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/end-page.ui")]
-public sealed class ReadySet.EndPage : Adw.Bin {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/ui/initial-setup-end-page.ui")]
+public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
 
     const string SERVICE_NAME = "gdm-password";
 
@@ -65,7 +65,7 @@ public sealed class ReadySet.EndPage : Adw.Bin {
         var context = app.context;
 
 #if WITH_GDM
-        if (context.mode == Mode.INITIAL_SETUP && !context.sandbox) {
+        if (!context.sandbox) {
             try {
                 client = new Gdm.Client ();
                 greeter = yield client.get_greeter (null);
@@ -78,7 +78,7 @@ public sealed class ReadySet.EndPage : Adw.Bin {
                 user_verifier = null;
             }
         } else {
-            debug ("No GDM connection: installer mode or sandbox mode");
+            debug ("No GDM connection: or sandbox mode");
         }
 #endif
 
@@ -106,92 +106,59 @@ public sealed class ReadySet.EndPage : Adw.Bin {
         }
 
         if (context.sandbox) {
-            if (context.mode == Mode.INSTALLER) {
-                progress_data.message = _("Installing system…");
+            progress_data.value = 0.0;
 
-                Timeout.add_seconds (1, () => {
-                    progress_data.value += 0.2;
+            var progress_step = 1.0 / steps_addins_arr.size;
 
-                    if (progress_data.value >= 1.0) {
-                        Idle.add (start_action.callback);
-                        return false;
-                    }
+            foreach (var step_addin in steps_addins_arr) {
 
-                    return true;
+                progress_data.message = _("Applying %s…").printf (step_addin.plugin_info.module_name);
+
+                Timeout.add_seconds_once (1, () => {
+                    Idle.add (start_action.callback);
                 });
                 yield;
 
-            } else if (context.mode == Mode.INITIAL_SETUP) {
-                progress_data.value = 0.0;
-
-                var progress_step = 1.0 / steps_addins_arr.size;
-
-                foreach (var step_addin in steps_addins_arr) {
-
-                    progress_data.message = _("Applying %s…").printf (step_addin.plugin_info.module_name);
-
-                    Timeout.add_seconds_once (1, () => {
-                        Idle.add (start_action.callback);
-                    });
-                    yield;
-
-                    progress_data.value += progress_step;
-                }
+                progress_data.value += progress_step;
             }
 
             stack.visible_child_name = "ready";
 
         } else {
             try {
-                if (context.mode == Mode.INSTALLER) {
-                    yield app.installer_plugin.install (progress_data);
+                foreach (var step_addin in steps_addins_arr) {
+                    progress_data.value = 0.0;
 
-                } else if (context.mode == Mode.INITIAL_SETUP) {
-                    foreach (var step_addin in steps_addins_arr) {
-                        progress_data.value = 0.0;
+                    yield step_addin.apply (progress_data);
 
-                        yield step_addin.apply (progress_data);
-
-                        progress_data.value = 1.0;
-                    }
+                    progress_data.value = 1.0;
                 }
 
                 try {
-                    if (context.mode == Mode.INITIAL_SETUP || context.mode == Mode.INSTALLER) {
-                        var raw_context = context.get_raw_string ();
-                        var env = new Gee.ArrayList<string> ();
+                    var raw_context = context.get_raw_string ();
+                    var env = new Gee.ArrayList<string> ();
 
-                        foreach (var key in raw_context.get_keys ()) {
-                            env.add ("%s=%s".printf (context_key_to_env_key (key), raw_context[key]));
-                        }
+                    foreach (var key in raw_context.get_keys ()) {
+                        env.add ("%s=%s".printf (context_key_to_env_key (key), raw_context[key]));
+                    }
 
-                        string hooks_type = "post";
-                        string hooks_target;
+                    string hooks_type = "post";
+                    string hooks_target = "initial-setup";
 
-                        if (context.mode == Mode.INITIAL_SETUP) {
-                            hooks_target = "initial-setup";
+                    var pre_hooks_dir = get_system_hooks_dir (hooks_type, hooks_target);
 
-                            var pre_hooks_dir = get_system_hooks_dir (hooks_type, hooks_target);
+                    foreach (var name in ReadySet.get_all_hooks_from_dir (pre_hooks_dir)) {
+                        ReadySet.real_exec_hook_from_dir (pre_hooks_dir, name, env.to_array ());
+                    }
 
-                            foreach (var name in ReadySet.get_all_hooks_from_dir (pre_hooks_dir)) {
-                                ReadySet.real_exec_hook_from_dir (pre_hooks_dir, name, env.to_array ());
-                            }
-
-                        } else if (context.mode == Mode.INSTALLER) {
-                            hooks_target = "installer";
-                        } else {
-                            assert_not_reached ();
-                        }
-
-                        foreach (var name in yield get_ready_set_proxy ().get_all_hooks (hooks_type, hooks_target)) {
-                            yield get_ready_set_proxy ().exec_hook (hooks_type, hooks_target, name, env.to_array ());
-                        }
+                    foreach (var name in yield get_ready_set_proxy ().get_all_hooks (hooks_type, hooks_target)) {
+                        yield get_ready_set_proxy ().exec_hook (hooks_type, hooks_target, name, env.to_array ());
                     }
                 } catch (Error e) {
                     warning ("Error on executing post hooks: %s", e.message);
                 }
 
-                if (context.mode == Mode.INITIAL_SETUP && context.has_key ("user-username")) {
+                if (context.has_key ("user-username")) {
                     string[] passed_plugins = {};
 
                     foreach (var step_addin in steps_addins_arr) {
@@ -232,11 +199,6 @@ public sealed class ReadySet.EndPage : Adw.Bin {
 
                 stack.visible_child_name = "error";
 
-            } catch (Error e) {
-                error_status_page.title = _("Error while execute post hooks");
-                error_status_page.description = _("Error message: %s").printf (e.message);
-
-                stack.visible_child_name = "error";
             }
         }
     }
@@ -255,14 +217,12 @@ public sealed class ReadySet.EndPage : Adw.Bin {
         var app = Application.get_default ();
         var context = app.context;
 
-        if (context.mode != Mode.INITIAL_SETUP) {
-            debug ("Doing nothing in %s mode", context.mode.to_string ());
+        if (context.sandbox) {
+            debug ("Doing nothing in sandbox");
 #if WITH_GDM
         } else if (client == null) {
             debug ("No GDM connection");
 #endif
-        } else if (context.sandbox) {
-            debug ("Doing nothing in sandbox");
         } else {
             log_user_in ();
             return;
