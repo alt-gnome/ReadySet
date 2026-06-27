@@ -107,8 +107,8 @@ namespace Keyboard {
 
     public string get_current_language () {
         var context = Addin.get_instance ().context;
-        if (context.has_key ("language-locale")) {
-            return context.get_string ("language-locale");
+        if (context.has_key ("language.locale")) {
+            return context.get_string ("language.locale");
         }
 
         return "C";
@@ -117,7 +117,7 @@ namespace Keyboard {
     public InputSources get_current_inputs () {
         var context = Addin.get_instance ().context;
 
-        var inputs = context.get_object ("keyboard-input-sources");
+        var inputs = context.get_object ("keyboard.input-sources");
 
         if (inputs == null) {
             inputs = new InputSources ();
@@ -133,7 +133,7 @@ namespace Keyboard {
             set_user_inputs (inputs.to_array ());
         }
 
-        context.set_object ("keyboard-input-sources", inputs);
+        context.set_object ("keyboard.input-sources", inputs);
     }
 
     Keyboard.Locale1 get_locale_proxy () throws Error {

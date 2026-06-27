@@ -48,7 +48,7 @@ public sealed class Keyboard.PreviewDialog : Adw.Dialog {
     }
 
     string? get_preview_path () {
-        return Environment.find_program_in_path (Addin.get_instance ().context.get_string ("keyboard-preview-bin"));
+        return Environment.find_program_in_path (Addin.get_instance ().context.get_string ("keyboard.preview-bin"));
     }
 
     [GtkCallback]

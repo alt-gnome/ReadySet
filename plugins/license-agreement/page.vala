@@ -27,9 +27,9 @@ public sealed class LicenseAgreement.Page : ReadySet.BasePage {
 
     construct {
         Addin.get_instance ().context.bind_context_to_property (
-            "license-agreement-file-path",
+            "license-agreement.file-path",
             this,
-            "license-agreement-file-path",
+            "license-agreement.file-path",
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
         read_license_file ();

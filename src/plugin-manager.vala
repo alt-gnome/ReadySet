@@ -20,7 +20,7 @@
 
 public sealed class ReadySet.PluginManager : Object {
 
-    const string INSTALLER_STEP_PREFIX = "installer-";
+    const string INSTALLER_STEP_PREFIX = "installer.";
 
     string? installer_name;
     bool steps_inited_once = false;
@@ -79,7 +79,7 @@ public sealed class ReadySet.PluginManager : Object {
 
         foreach (var installer in installers_plugins.get_values ()) {
             foreach (var step in installer.all_pages) {
-                steps += "installer-" + step;
+                steps += INSTALLER_STEP_PREFIX + step;
             }
         }
 
@@ -195,16 +195,23 @@ public sealed class ReadySet.PluginManager : Object {
             if (steps_plugins.contains (steps[i])) {
                 var addin = steps_plugins[steps[i]];
 
-                context.register_vars (addin.get_context_vars ());
+                string module_name;
+                if (addin.module_name != null) {
+                    module_name = addin.module_name;
+                } else {
+                    module_name = steps[i];
+                }
+
+                context.register_vars (module_name, addin.get_context_vars ());
 
                 var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
-                var var_name = "step-%s-enabled".printf (steps[i]);
+                var var_name = "%s.enabled".printf (steps[i]);
                 vars[var_name] = new ContextVarInfo (
                     ContextType.BOOLEAN,
                     !(context.mode == EXISTING_USER &&
                             (addin.plugin_info.module_name in performed_steps || !addin.existing_user))
                 );
-                context.register_vars (vars);
+                context.register_vars ("steps", vars);
 
                 context.bind_context_to_property (
                     var_name,

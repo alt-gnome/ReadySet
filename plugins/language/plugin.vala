@@ -24,10 +24,10 @@ public class Language.Addin : ReadySet.StepAddin {
 
     public string current_locale {
         owned get {
-            return context.get_string ("language-locale");
+            return context.get_string ("language.locale");
         }
         set {
-            context.set_string ("language-locale", value);
+            context.set_string ("language.locale", value);
         }
     }
 
@@ -84,10 +84,10 @@ public class Language.Addin : ReadySet.StepAddin {
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
-        vars["language-locale"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["locale"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
 
-        vars["language-locale"].getter_func = get_current_locale_func;
-        vars["language-locale"].setter_func = set_current_locale_func;
+        vars["locale"].getter_func = get_current_locale_func;
+        vars["locale"].setter_func = set_current_locale_func;
 
         return vars;
     }
@@ -106,7 +106,7 @@ public class Language.Addin : ReadySet.StepAddin {
         if (!context.sandbox && context.mode == INITIAL_SETUP) {
             try {
                 enabled = (yield new Polkit.Permission ("org.freedesktop.locale1.set-locale", null, null)).allowed &&
-                    context.get_boolean ("step-language-enabled");
+                    context.get_boolean ("steps.language.enabled");
             } catch (Error e) {
                 error (e.message);
             }

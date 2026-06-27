@@ -158,7 +158,7 @@ public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
                     warning ("Error on executing post hooks: %s", e.message);
                 }
 
-                if (context.has_key ("user-username")) {
+                if (context.has_key ("user.username")) {
                     string[] passed_plugins = {};
 
                     foreach (var step_addin in steps_addins_arr) {
@@ -180,7 +180,7 @@ public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
                                     file
                                 ),
                                 file,
-                                context.get_string ("user-username")
+                                context.get_string ("user.username")
                             );
                         } catch (Error e) {
                             //  This fail is not so critical to stop initial-setup
@@ -257,9 +257,9 @@ public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
         var context = Application.get_default ().context;
 
         debug ("PAM module secret info query %s", question);
-        if (context.has_key ("user-password") && !password_sent) {
+        if (context.has_key ("user.password") && !password_sent) {
             debug ("sending password\n");
-            user_verifier.call_answer_query.begin (service_name, context.get_string ("user-password"), null);
+            user_verifier.call_answer_query.begin (service_name, context.get_string ("user.password"), null);
             password_sent = true;
         } else {
             request_info_query (user_verifier, question, true);
@@ -308,7 +308,7 @@ public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
             debug ("Begin verification for user");
             user_verifier.call_begin_verification_for_user_sync (
                 SERVICE_NAME,
-                context.get_string ("user-username"),
+                context.get_string ("user.username"),
                 null
             );
             debug ("Verification for user succeed");

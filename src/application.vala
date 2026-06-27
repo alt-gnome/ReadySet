@@ -281,8 +281,8 @@ public sealed class ReadySet.Application: Adw.Application {
         base.activate ();
 
         if (active_window == null) {
-            if (context.has_key ("language-locale")) {
-                var locale = context.get_string ("language-locale");
+            if (context.has_key ("language.locale")) {
+                var locale = context.get_string ("language.locale");
                 if (locale != null) {
                     Intl.setlocale (ALL, locale);
                 }

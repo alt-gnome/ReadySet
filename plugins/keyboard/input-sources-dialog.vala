@@ -88,7 +88,7 @@ public sealed class Keyboard.InputSourcesDialog : Adw.Dialog {
     }
 
     void on_context_data_changed (string key) {
-        if (key == "keyboard-input-sources") {
+        if (key == "keyboard.input-sources") {
             update ();
         }
     }

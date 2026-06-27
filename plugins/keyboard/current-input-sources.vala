@@ -36,7 +36,7 @@ public sealed class Keyboard.CurrentInputSources : Gtk.Box {
     }
 
     void on_context_data_changed (string key) {
-        if (key == "keyboard-input-sources") {
+        if (key == "keyboard.input-sources") {
             update_current ();
         }
     }

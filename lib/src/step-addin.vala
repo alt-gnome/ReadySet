@@ -53,7 +53,7 @@
  * different desktop environment).
  *
  * The enabling of your plugin can be changed by other plugins. For each
- * plugin, a context variable `step-<step-id>-enabled` is created (the step id
+ * plugin, a context variable `steps.<step-id>.enabled` is created (the step id
  * is determined by the `Module` field in the plugin file), which bind with
  * the {@link ReadySet.StepAddin.enabled} property.
  *
@@ -72,6 +72,8 @@
  * @see ReadySet.InstallerAddin
  */
 public abstract class ReadySet.StepAddin : ExtensionBase {
+
+    public virtual string? module_name { get { return null; } }
 
     /**
      * Whether `step` enabled or not.

@@ -36,7 +36,7 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
     }
 
     async void on_context_data_changed (string key) {
-        if (key == "keyboard-input-sources") {
+        if (key == "keyboard.input-sources") {
             update_is_ready ();
             update_has_hw ();
         }

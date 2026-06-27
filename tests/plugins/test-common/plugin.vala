@@ -50,8 +50,8 @@ public class Test.Addin : ReadySet.StepAddin {
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
-        vars["test-accessible"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
-        vars["test-throw-error"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        vars["accessible"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        vars["throw-error"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
         return vars;
     }
 }

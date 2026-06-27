@@ -3,5 +3,5 @@ steps=welcome,language,keyboard,user-passwdqc
 simple=true
 
 [Context]
-user-with-root=true
-user-no-password-security=true
+user.with-root=true
+user.no-password-security=true

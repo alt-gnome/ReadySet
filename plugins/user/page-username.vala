@@ -82,23 +82,23 @@ public class User.PageUsername : ReadySet.BasePage {
         layout_mode_changed ();
 
         Addin.get_instance ().context.bind_context_to_property (
-            "user-username",
+            "user.username",
             username_entry,
             "text",
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
 
         Addin.get_instance ().context.bind_context_to_property (
-            "user-fullname",
+            "user.fullname",
             fullname_entry,
             "text",
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
 
         Addin.get_instance ().context.bind_context_to_property (
-            "user-avatar-file",
+            "user.avatar-file",
             this,
-            "user-avatar-file",
+            "user.avatar-file",
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
     }

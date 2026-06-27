@@ -40,7 +40,7 @@ public class User.PagePassword : ReadySet.BasePage {
 
     construct {
         Addin.get_instance ().context.bind_context_to_property (
-            "user-password",
+            "user.password",
             password_entry,
             "text",
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
@@ -48,19 +48,19 @@ public class User.PagePassword : ReadySet.BasePage {
 
         var context = Addin.get_instance ().context;
         context.data_changed.connect (on_context_data_changed);
-        on_context_data_changed (context, "user-fullname");
-        on_context_data_changed (context, "user-avatar-file");
+        on_context_data_changed (context, "user.fullname");
+        on_context_data_changed (context, "user.avatar-file");
 
         update_is_ready ();
     }
 
     void on_context_data_changed (ReadySet.Context context, string key) {
         switch (key) {
-            case "user-fullname":
+            case "user.fullname":
                 info_status_page.title = _("Set a Password for %s").printf (context.get_string (key));
                 avatar.text = context.get_string (key);
                 break;
-            case "user-avatar-file":
+            case "user.avatar-file":
                 var path = context.get_string (key);
                 if (path == null) {
                     avatar.custom_image = null;
@@ -83,7 +83,7 @@ public class User.PagePassword : ReadySet.BasePage {
         var strength = get_password_strength (
             password_entry.text,
             null,
-            Addin.get_instance ().context.get_string ("user-username")
+            Addin.get_instance ().context.get_string ("user.username")
         );
 
         password_strength.strength_level = strength.level;
