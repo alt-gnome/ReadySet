@@ -20,6 +20,80 @@
 
 namespace ReadySet {
 
+    const string[] GOOD_TYPES = { "pre", "post" };
+
+    const string[] GOOD_TARGETS = { "initial-setip", "installer" };
+
+    void check_type_target (string type_, string target) throws Error {
+        if (!(type_ in GOOD_TYPES)) {
+            throw new DBusError.INVALID_ARGS (
+                "Wrong type: %s. Available types: %s",
+                type_,
+                string.joinv (", ", GOOD_TYPES)
+            );
+        }
+        if (!(target in GOOD_TARGETS)) {
+            throw new DBusError.INVALID_ARGS (
+                "Wrong target: %s. Available targets: %s",
+                target,
+                string.joinv (", ", GOOD_TARGETS)
+            );
+        }
+    }
+
+    File get_system_hooks_dir (string type_, string target) {
+        return File.new_build_filename (
+            Config.DATADIR,
+            Config.NAME,
+            "%s-%s-hooks".printf (target, type_),
+            "system"
+        );
+    }
+
+    File get_user_hooks_dir (string type_, string target) {
+        return File.new_build_filename (
+            Config.DATADIR,
+            Config.NAME,
+            "%s-%s-hooks".printf (target, type_),
+            "user"
+        );
+    }
+
+    string[] real_get_all_hooks (string type_, string target) throws Error {
+        return get_all_hooks_from_dir (get_system_hooks_dir (type_, target));
+    }
+
+    string[] get_all_hooks_from_dir (File dir) throws Error {
+        var enumerator = dir.enumerate_children (
+            "%s,%s,%s".printf (
+                FileAttribute.STANDARD_NAME,
+                FileAttribute.STANDARD_TYPE,
+                FileAttribute.ACCESS_CAN_EXECUTE
+            ),
+            NONE
+        );
+
+        if (enumerator == null) {
+            return {};
+        }
+
+        string[] output = {};
+
+        FileInfo? info;
+        while ((info = enumerator.next_file ()) != null) {
+            if (!info.get_attribute_boolean (FileAttribute.ACCESS_CAN_EXECUTE)) {
+                continue;
+            }
+            if (info.get_file_type () != FileType.REGULAR) {
+                continue;
+            }
+
+            output += info.get_name ();
+        }
+
+        return output;
+    }
+
     public bool env_exec (string program, owned string[] env) throws Error {
         var launcher = new SubprocessLauncher (NONE);
 
@@ -37,80 +111,21 @@ namespace ReadySet {
         return process.wait_check ();
     }
 
-    public void real_exec_pre_hooks (string[] env) throws Error {
-        exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "pre-hooks", "system"), env);
+    public bool real_exec_hook (string type_, string target, string name, string[] env = {}) throws Error {
+        var hooks_dir = get_system_hooks_dir (type_, target);
+
+        return real_exec_hook_from_dir (hooks_dir, name, env);
     }
 
-    public void real_exec_post_hooks (string[] env) throws Error {
-        exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "post-hooks", "system"), env);
-    }
+    bool real_exec_hook_from_dir (File dir, string name, string[] env = {}) throws Error {
+        var script = Path.build_filename (dir.get_path (), name);
 
-    public void real_exec_installer_pre_hooks (string[] env) throws Error {
-        exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "installer-pre-hooks", "system"), env);
-    }
+        var rs_env = new string[env.length];
 
-    public void real_exec_installer_post_hooks (string[] env) throws Error {
-        exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "installer-post-hooks", "system"), env);
-    }
-
-    internal void exec_hooks (File hooks_dir, string[] env) throws Error {
-        var enumerator = hooks_dir.enumerate_children (
-            "%s,%s,%s".printf (
-                FileAttribute.STANDARD_NAME,
-                FileAttribute.STANDARD_TYPE,
-                FileAttribute.ACCESS_CAN_EXECUTE
-            ),
-            NONE
-        );
-
-        if (enumerator == null) {
-            return;
+        for (var i = 0; i < env.length; i++) {
+            rs_env[i] = "READY_SET_" + env[i];
         }
 
-        FileInfo? info;
-        while ((info = enumerator.next_file ()) != null) {
-            if (!info.get_attribute_boolean (FileAttribute.ACCESS_CAN_EXECUTE)) {
-                continue;
-            }
-            var type_ = info.get_file_type ();
-            if (type_ != FileType.REGULAR) {
-                continue;
-            }
-
-            var script = Path.build_filename (hooks_dir.get_path (), info.get_name ());
-
-            var rs_env = new string[env.length];
-
-            for (var i = 0; i < env.length; i++) {
-                rs_env[i] = "READY_SET_" + env[i];
-            }
-
-            if (!env_exec (script, rs_env)) {
-                warning ("Failed to exec hook '%s'", script);
-            }
-        }
-    }
-
-    void polkit_check (BusName sender, string action_id) throws DBusError {
-        Polkit.AuthorizationResult result;
-
-        try {
-            var authority = Polkit.Authority.get_sync (null);
-            var subject = new Polkit.SystemBusName (sender);
-            result = authority.check_authorization_sync (
-                subject,
-                action_id,
-                null,
-                Polkit.CheckAuthorizationFlags.ALLOW_USER_INTERACTION,
-                null
-            );
-
-        } catch (Error e) {
-            throw new DBusError.ACCESS_DENIED ("Failed to check authorization: " + e.message);
-        }
-
-        if (!result.get_is_authorized ()) {
-            throw new DBusError.ACCESS_DENIED ("Not authorized");
-        }
+        return env_exec (script, rs_env);
     }
 }

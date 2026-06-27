@@ -37,6 +37,8 @@ rs_app_vala_sources = files(
   'window.vala',
 )
 
+rs_app_vala_sources += hooks_sources
+
 rs_app_dependencies = [
   gee_dep,
   libadwaita_dep,

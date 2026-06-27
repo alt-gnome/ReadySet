@@ -1,42 +1,15 @@
 <policyconfig>
-   <action id="@SERVICE_NAME@.CopyToUser">
-     <description>Copy file or dir to user homedir</description>
+   <action id="@SERVICE_NAME@.GetAllHooks">
+     <description>Get all hooks for specified type and target</description>
      <message>Authentication is required</message>
      <defaults>
-       <allow_any>no</allow_any>
-       <allow_inactive>no</allow_inactive>
-       <allow_active>auth_admin</allow_active>
+       <allow_any>yes</allow_any>
+       <allow_inactive>yes</allow_inactive>
+       <allow_active>yes</allow_active>
      </defaults>
    </action>
-   <action id="@SERVICE_NAME@.ExecPreHooks">
-     <description>Execute ReadySet system pre hooks</description>
-     <message>Authentication is required</message>
-     <defaults>
-       <allow_any>no</allow_any>
-       <allow_inactive>no</allow_inactive>
-       <allow_active>auth_admin</allow_active>
-     </defaults>
-   </action>
-   <action id="@SERVICE_NAME@.ExecPostHooks">
-     <description>Execute ReadySet system post hooks</description>
-     <message>Authentication is required</message>
-     <defaults>
-       <allow_any>no</allow_any>
-       <allow_inactive>no</allow_inactive>
-       <allow_active>auth_admin</allow_active>
-     </defaults>
-   </action>
-   <action id="@SERVICE_NAME@.ExecInstallerPreHooks">
-     <description>Execute ReadySet system installer pre hooks</description>
-     <message>Authentication is required</message>
-     <defaults>
-       <allow_any>no</allow_any>
-       <allow_inactive>no</allow_inactive>
-       <allow_active>auth_admin</allow_active>
-     </defaults>
-   </action>
-   <action id="@SERVICE_NAME@.ExecInstallerPostHooks">
-     <description>Execute ReadySet system installer post hooks</description>
+   <action id="@SERVICE_NAME@.ExecHook">
+     <description>Execute ReadySet system hook with provided type, target and name</description>
      <message>Authentication is required</message>
      <defaults>
        <allow_any>no</allow_any>

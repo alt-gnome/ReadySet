@@ -23,19 +23,15 @@ namespace ReadySet {
     [DBus (name = "org.altlinux.ReadySet")]
     public interface Service : Object {
 
-        public abstract async void exec_pre_hooks (
-            string[] env = {}
+        public abstract async string[] get_all_hooks (
+            string type_,
+            string target
         ) throws Error;
 
-        public abstract async void exec_post_hooks (
-            string[] env = {}
-        ) throws Error;
-
-        public abstract async void exec_installer_pre_hooks (
-            string[] env = {}
-        ) throws Error;
-
-        public abstract async void exec_installer_post_hooks (
+        public abstract async bool exec_hook (
+            string type_,
+            string target,
+            string name,
             string[] env = {}
         ) throws Error;
 
@@ -61,8 +57,6 @@ namespace ReadySet {
                 "/org/altlinux/ReadySet",
                 DBusProxyFlags.NONE
             );
-
-            ((DBusProxy) ready_set_proxy).set_default_timeout (int.MAX);
         }
 
         return ready_set_proxy;

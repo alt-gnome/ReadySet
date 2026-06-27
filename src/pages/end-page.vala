@@ -165,15 +165,30 @@ public sealed class ReadySet.EndPage : Adw.Bin {
                             env.add ("%s=%s".printf (context_key_to_env_key (key), raw_context[key]));
                         }
 
+                        string hooks_type = "post";
+                        string hooks_target;
+
                         if (context.mode == Mode.INITIAL_SETUP) {
-                            yield real_exec_post_hooks (env.to_array ());
-                            yield get_ready_set_proxy ().exec_post_hooks (env.to_array ());
+                            hooks_target = "initial-setup";
+
+                            var pre_hooks_dir = get_system_hooks_dir (hooks_type, hooks_target);
+
+                            foreach (var name in ReadySet.get_all_hooks_from_dir (pre_hooks_dir)) {
+                                ReadySet.real_exec_hook_from_dir (pre_hooks_dir, name, env.to_array ());
+                            }
+
                         } else if (context.mode == Mode.INSTALLER) {
-                            yield get_ready_set_proxy ().exec_installer_post_hooks (env.to_array ());
+                            hooks_target = "installer";
+                        } else {
+                            assert_not_reached ();
+                        }
+
+                        foreach (var name in yield get_ready_set_proxy ().get_all_hooks (hooks_type, hooks_target)) {
+                            yield get_ready_set_proxy ().exec_hook (hooks_type, hooks_target, name, env.to_array ());
                         }
                     }
-                } catch (IOError e) {
-                    warning ("IOError on executing post hooks: %s", e.message);
+                } catch (Error e) {
+                    warning ("Error on executing post hooks: %s", e.message);
                 }
 
                 if (context.mode == Mode.INITIAL_SETUP && context.has_key ("user-username")) {
