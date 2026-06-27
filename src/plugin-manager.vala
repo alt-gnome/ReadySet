@@ -213,7 +213,7 @@ public sealed class ReadySet.PluginManager : Object {
                 context.register_vars ("steps", vars);
 
                 context.bind_context_to_property (
-                    var_name,
+                    "steps." + var_name,
                     addin,
                     "enabled",
                     SYNC_CREATE | BIDIRECTIONAL
