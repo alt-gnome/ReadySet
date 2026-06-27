@@ -260,7 +260,7 @@ public sealed class ReadySet.PluginManager : Object {
             error ("Unknown installer plugin");
         }
 
-        context.register_vars ("installer", installers_plugins[installer_name].get_context_vars  ());
+        context.register_vars ("installer", installers_plugins[installer_name].get_context_vars ());
 
         get_installer_plugin ().load_css_for_display (Gdk.Display.get_default ());
     }
