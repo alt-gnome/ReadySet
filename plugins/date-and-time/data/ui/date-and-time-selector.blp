@@ -64,6 +64,9 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
                 cut-clipboard => $on_cut_clipboard();
                 backspace => $on_backspace();
                 move-cursor => $on_move_cursor();
+                paste-clipboard => $on_paste_clipboard();
+                insert-text => $on_insert_text();
+                notify::cursor-position => $on_cursor_position_changed();
 
                 Gtk.EventControllerKey event_controller_key {
                   key-pressed => $on_key_pressed();

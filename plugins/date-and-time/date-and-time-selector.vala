@@ -20,13 +20,15 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
 
     public DateTime date = new DateTime.now_local ();
 
+    public bool is_am_pm { get; set; }
+
     Gtk.StringList hour_model = new Gtk.StringList (null);
     Gtk.StringList minute_model = new Gtk.StringList (null);
 
     const int SEPARATOR_INDEX = 2;
-    public const int TEXT_MAX_LENGTH = 5;
+    const int END_INDEX = 4;
 
-    public bool is_am_pm { get; set; }
+    string current_text;
 
     public signal void apply ();
 
@@ -68,6 +70,8 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
         text_attributes.insert (new Pango.AttrFontFeatures ("tnum"));
 
         time_text.set_attributes (text_attributes);
+
+        current_text = time_text.get_text ();
     }
 
     public void refill_models () {
@@ -126,6 +130,11 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
     }
 
     [GtkCallback]
+    public void on_paste_clipboard (Gtk.Text widget) {
+        Signal.stop_emission_by_name (widget, "paste-clipboard");
+    }
+
+    [GtkCallback]
     public void on_move_cursor (Gtk.MovementStep step, int count, bool extend) {
         var current_pos = time_text.get_position ();
 
@@ -133,9 +142,9 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
             if (current_pos + count == SEPARATOR_INDEX) {
                 count > 0 ? count++ : count--;
             } else if (current_pos + count < 0) {
-                current_pos = TEXT_MAX_LENGTH - 1;
+                current_pos = END_INDEX;
                 count = 0;
-            } else if (current_pos + count == TEXT_MAX_LENGTH) {
+            } else if (current_pos + count - 1 == END_INDEX) {
                 current_pos = 0;
                 count = 0;
             }
@@ -256,5 +265,60 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
     public void on_apply_button_clicked () {
         close ();
         apply ();
+    }
+
+    [GtkCallback]
+    public void on_insert_text (string text, int length, ref int position) {
+        if (length != 1) {
+            return;
+        }
+
+        var old_text = time_text.get_text ();
+
+        if ("0" < text > "9") {
+            time_text.set_text (current_text);
+            Signal.stop_emission_by_name (time_text, "insert-text");
+            return;
+        }
+
+        switch (position) {
+            case 0:
+                hour = int.parse (text) * 10 + (hour - hour/10*10);
+                hour = hour.clamp (0, 23);
+                break;
+            case 1:
+                hour = hour/10*10 + int.parse (text);
+                hour = hour.clamp (0, 23);
+                break;
+            case 3:
+                minute = int.parse (text) * 10 + (minute - minute/10*10);
+                minute = minute.clamp (0, 59);
+                break;
+            case 4:
+                minute = minute/10*10 + int.parse (text);
+                minute = minute.clamp (0, 59);
+                break;
+        }
+
+        update_time ();
+
+        current_text = time_text.get_text ();
+
+        position++;
+
+        if (position == SEPARATOR_INDEX) {
+            position++;
+        } else if (position > END_INDEX) {
+            position--;
+        }
+
+        Signal.stop_emission_by_name (time_text, "insert-text");
+    }
+
+    [GtkCallback]
+    public void on_cursor_position_changed () {
+        if (time_text.get_position () > END_INDEX) {
+            time_text.set_position (END_INDEX);
+        }
     }
 }
