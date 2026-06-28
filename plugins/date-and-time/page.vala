@@ -56,26 +56,26 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         }
     }
 
-    bool _manual_timezone = Addin.get_instance ().context.get_boolean ("date-and-time-automatic-timezone");
+    bool _manual_timezone = Addin.get_instance ().context.get_boolean ("date-and-time.automatic-timezone");
     public bool manual_timezone {
         get {
             return _manual_timezone;
         }
         set {
             _manual_timezone = value;
-            Addin.get_instance ().context.set_boolean ("date-and-time-automatic-timezone", !_manual_timezone);
+            Addin.get_instance ().context.set_boolean ("date-and-time.automatic-timezone", !_manual_timezone);
             update_is_ready ();
         }
     }
 
-    bool _manual_date_and_time = Addin.get_instance ().context.get_boolean ("date-and-time-automatic-datetime");
+    bool _manual_date_and_time = Addin.get_instance ().context.get_boolean ("date-and-time.automatic-datetime");
     public bool manual_date_and_time {
         get {
             return _manual_date_and_time;
         }
         set {
             _manual_date_and_time = value;
-            Addin.get_instance ().context.set_boolean ("date-and-time-automatic-datetime", !_manual_date_and_time);
+            Addin.get_instance ().context.set_boolean ("date-and-time.automatic-datetime", !_manual_date_and_time);
             update_is_ready ();
         }
     }
@@ -87,7 +87,7 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         get { return _selected_timezone; }
         set {
             _selected_timezone = value;
-            Addin.get_instance ().context.set_string ("date-and-time-timezone", _selected_timezone.get_identifier ());
+            Addin.get_instance ().context.set_string ("date-and-time.timezone", _selected_timezone.get_identifier ());
             update_is_ready ();
         }
     }
@@ -96,7 +96,7 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         get { return _selected_datetime; }
         set {
             _selected_datetime = value;
-            Addin.get_instance ().context.set_int ("date-and-time-datetime", _selected_datetime.to_unix ());
+            Addin.get_instance ().context.set_int ("date-and-time.datetime", _selected_datetime.to_unix ());
             update_is_ready ();
         }
     }

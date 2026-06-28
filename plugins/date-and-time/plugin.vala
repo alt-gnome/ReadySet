@@ -50,25 +50,25 @@ public class DateAndTime.Addin : ReadySet.StepAddin {
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
-        vars["date-and-time-automatic-timezone"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN, true);
-        vars["date-and-time-automatic-datetime"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN, true);
-        vars["date-and-time-timezone"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
-        vars["date-and-time-datetime"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.INT);
+        vars["automatic-timezone"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN, true);
+        vars["automatic-datetime"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN, true);
+        vars["timezone"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["datetime"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.INT);
         return vars;
     }
 
     public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
         var proxy = yield get_timedate_proxy ();
 
-        var automatic_timezone = context.get_boolean ("date-and-time-automatic-timezone");
-        var automatic_datetime = context.get_boolean ("date-and-time-automatic-datetime");
+        var automatic_timezone = context.get_boolean ("date-and-time.automatic-timezone");
+        var automatic_datetime = context.get_boolean ("date-and-time.automatic-datetime");
 
         Settings datetime_settings = new Settings ("org.gnome.desktop.datetime");
         datetime_settings.set_boolean ("automatic-timezone", automatic_timezone);
 
         if (!automatic_timezone) {
             try {
-                var timezone = context.get_string ("date-and-time-timezone");
+                var timezone = context.get_string ("date-and-time.timezone");
                 yield proxy.set_timezone (timezone);
             } catch (Error e) {
                 throw ReadySet.ApplyError.build_error (_("Error when setting timezone"), e.message);
@@ -79,7 +79,7 @@ public class DateAndTime.Addin : ReadySet.StepAddin {
 
         if (!automatic_datetime) {
             try {
-                var datetime = context.get_int ("date-and-time-datetime");
+                var datetime = context.get_int ("date-and-time.datetime");
                 yield proxy.set_time (datetime * 1000000);
             } catch (Error e) {
                 throw ReadySet.ApplyError.build_error (_("Error when setting time"), e.message);
