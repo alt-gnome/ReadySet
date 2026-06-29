@@ -133,12 +133,11 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         var item = timezone_dialog.selected_item;
 
         if (item == null) {
-            timezone_label = default_timezone_label;
             return;
         }
 
-        var utc = DateAndTime.get_utc_offset_string (item.utc_offset);
-        timezone_label = @"<b>$(item.country)</b> / $(item.city) ($utc)";
+        var timezone_abbreviation = (new DateTime.now (item.timezone)).get_timezone_abbreviation ();
+        timezone_label = @"<b>$(item.country)</b> / $(item.city) ($timezone_abbreviation)";
 
         selected_timezone = item.timezone;
     }

@@ -7,6 +7,8 @@ public class DateAndTime.TimezoneListRow : Gtk.Box {
     public string subtitle { get; set; }
     public string suffix_label { get; set; }
 
+    public string timezone_abbreviation { get; set; }
+
     TimezoneListItem _item;
     public TimezoneListItem item {
         get { return _item; }
@@ -17,46 +19,40 @@ public class DateAndTime.TimezoneListRow : Gtk.Box {
             }
 
             title = value.region;
-            subtitle = @"<b>$(value.country)</b> / $(value.city)";
-            suffix_label = get_utc_offset_string (value.utc_offset);
+            subtitle = @"$(value.city) <b>$(value.country)</b>";
+            suffix_label = get_utc_offset_string (value.identifier);
         }
     }
 }
 
 public class DateAndTime.TimezoneListItem : Object {
-    public TimeZone timezone { get; set; }
+    public string country_codes { get; private set; }
+    public string country { get; private set; }
 
-    string _region;
-    public string region {
-        get { return _region; }
-        set {
-            _region = value;
-            update_metainfo ();
-        }
-    }
-    string _country;
-    public string country {
-        get { return _country; }
-        set {
-            _country = value;
-            update_metainfo ();
-        }
-    }
-    string _city;
-    public string city {
-        get { return _city; }
-        set {
-            _city = value;
-            update_metainfo ();
-        }
-    }
-    public int32 utc_offset { get; set; }
+    public string identifier { get; private set; }
+
+    public string region { get; private set; }
+    public string city { get; private set; }
+
+    public TimeZone timezone { get; private set; }
+    public int32 utc_offset { get; private set; }
 
     public string metainfo { get; private set; default = ""; }
 
-    void update_metainfo () {
-        if (region != null && country != null && city != null) {
-            metainfo = @"$region $country $city";
-        }
+    // entry: "<country_code>[,country_code]* <region>/<city>"
+    public TimezoneListItem (string entry) {
+        country_codes = entry.split (" ", 2)[0];
+        country = Gnome.Languages.get_country_from_code (country_codes.split (",")[0], null);
+
+        identifier = entry.split (" ", 2)[1];
+
+        region = dgettext ("ready-set-date-and-time-timezones", identifier).replace ("_", " ");
+
+        var parts = region.split ("/");
+        city = parts[parts.length - 1];
+
+        timezone = new TimeZone.identifier (identifier);
+
+        metainfo = @"$(country_codes.replace (",", " ")) $identifier $region $country";
     }
 }

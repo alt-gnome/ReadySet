@@ -20,17 +20,21 @@ namespace DateAndTime {
         return clamp_value (minute, 0, 60);
     }
 
-    string get_utc_offset_string (int32 offset) {
-        var hours = (int) Math.round ((double) offset / 60.0d / 60.0d);
+    string get_utc_offset_string (string identifier) {
+        var current_timezone = Environment.get_variable ("TZ");
+        Environment.set_variable ("TZ", identifier, true);
 
-        var positive = hours >= 0;
-        var abs = hours * (positive ? 1 : -1);
+        var offset = (new DateTime.now_local ()).get_utc_offset () / 1000 / 1000;
+        var timezone = new TimeZone.offset ((int32) offset);
 
-        if (abs == 0) {
-            return "UTC";
-        }
+        if (current_timezone != null && current_timezone != "")
+            Environment.set_variable ("TZ", current_timezone, true);
+        else
+            Environment.unset_variable ("TZ");
 
-        return "UTC%c%02d:00".printf (positive ? '+' : '-', abs);
+        var parts = timezone.get_identifier ().split (":");
+
+        return "UTC" + parts[0] + ":" + parts[1];
     }
 
     async DateAndTime.Timedate1 get_timedate_proxy () throws Error {
