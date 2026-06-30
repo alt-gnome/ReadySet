@@ -15,6 +15,7 @@ endif
 .PHONY: setup setup-ci install compile test lint lint-fix install-deps
 
 install-deps:
+	$(SUDO) xargs $(PM) update || true
 	$(SUDO) xargs $(PM) install -y < ./build-aux/altlinux/build-deps || true
 
 setup: install-deps
