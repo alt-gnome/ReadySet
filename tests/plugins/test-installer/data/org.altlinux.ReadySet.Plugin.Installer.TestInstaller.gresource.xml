@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gresources>
-  <gresource prefix="/org/altlinux/ReadySet/Plugin/Installer/TestInstaller/">
-    <file preprocess="xml-stripblanks">ui/disks-page.ui</file>
-  </gresource>
-</gresources>

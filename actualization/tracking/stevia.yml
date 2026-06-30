@@ -1,5 +1,0 @@
-repo: https://gitlab.gnome.org/World/Phosh/stevia.git
-run: |
-  ./tools/write-layout-info.py --layouts=src/layouts --out=layouts.json
-outputs:
-- layouts.json
