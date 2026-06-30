@@ -50,11 +50,6 @@ jobs:
         with:
           token: ${{ github.event_name == 'pull_request' && github.token || secrets.REPO_TOKEN }}
 
-      - name: Install deps
-        run: |
-          apt-get update
-          apt-get install -y apm
-
       - name: Setup
         run: make setup-ci
 
