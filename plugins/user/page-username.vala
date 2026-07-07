@@ -98,7 +98,7 @@ public class User.PageUsername : ReadySet.BasePage {
         Addin.get_instance ().context.bind_context_to_property (
             "user.avatar-file",
             this,
-            "user.avatar-file",
+            "user-avatar-file",
             BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
         );
     }
