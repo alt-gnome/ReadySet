@@ -100,9 +100,6 @@ namespace User {
         if (uname == "") {
             return "";
         }
-        if (uname.length > MAXNAMELEN) {
-            uname = uname[0:MAXNAMELEN];
-        }
 
         var corrected_builder = new StringBuilder ();
 
@@ -129,7 +126,12 @@ namespace User {
             }
         }
 
-        return corrected_builder.free_and_steal ();
+        var res = corrected_builder.free_and_steal ();
+
+        if (res.length >= MAXNAMELEN) {
+            return res[0:MAXNAMELEN];
+        }
+        return res;
     }
 
     bool username_is_correct (string username, bool parental_controls_enabled, out string error) {
