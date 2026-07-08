@@ -31,7 +31,7 @@ compile:
 install: compile
 	meson install -C _build
 
-uninstall: compile
+uninstall:
 	$(SUDO) ninja uninstall -C _build
 
 test:
