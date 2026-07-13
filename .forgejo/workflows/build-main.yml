@@ -120,7 +120,7 @@ jobs:
     name: RPM build for ${{ matrix.branch }}.${{ matrix.arch }} and uploading
     runs-on: ${{ matrix.runner }}
     container:
-      image: altlinux.space/alt-security/sisyphus/hasher:latest
+      image: altlinux.space/alt-security/${{ matrix.branch }}/hasher:latest
 
     strategy:
       matrix:
@@ -157,7 +157,8 @@ jobs:
           ./build-aux/altlinux/prepare ${{ needs.get-release.outputs.release }}
           git add .
 
-      - run: |
+      - name: Build
+        run: |
           gear-hsh --commit --no-sisyphus-check=gpg,packager
 
       - uses: actions/upload-rpm-action@main
