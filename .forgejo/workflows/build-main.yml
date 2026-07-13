@@ -129,7 +129,7 @@ jobs:
           # - p11
         arch:
           - amd64
-          # - arm64
+          - arm64
         include:
           - arch: amd64
             runner: als-huge
