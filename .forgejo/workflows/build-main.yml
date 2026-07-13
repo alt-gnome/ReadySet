@@ -153,9 +153,9 @@ jobs:
 
       - name: Prepare RPM build
         run: |
+          echo '%packager	Hasher Unshare Builder <hasher-unshare@noreply.altlinux.space>' >> ~/.rpmmacros
           ./build-aux/altlinux/prepare ${{ needs.get-release.outputs.release }}
           git add .
-          echo '%packager	Hasher Unshare Builder <hasher-unshare@noreply.altlinux.space>' >> ~/.rpmmacros
 
       - run: |
           gear-hsh --commit --no-sisyphus-check=gpg,packager
