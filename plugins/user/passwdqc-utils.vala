@@ -29,7 +29,11 @@ namespace User.Password {
             if (passwdqc_conf_path == "") {
                 passwdqc_conf_path = "/etc/passwdqc.conf";
             }
-            _passwdqc_params.params_load (null, passwdqc_conf_path);
+            weak string? reason;
+            _passwdqc_params.params_load (out reason, passwdqc_conf_path);
+            if (reason != null) {
+                error (reason);
+            }
         }
 
         return _passwdqc_params;
