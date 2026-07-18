@@ -39,16 +39,15 @@ namespace User.Password {
         return _passwdqc_params;
     }
 
-    public string generate () {
+    public string? generate () {
         var prms = get_pwqc ();
         var res = prms.qc.random ();
 
         if (res == null) {
-            warning (_("Failed to generate password"));
-            return "";
-        } else {
-            return res;
+            warning ("Failed to generate password");   
         }
+
+        return res;
     }
 
     public Strength strength (

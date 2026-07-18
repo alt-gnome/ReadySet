@@ -35,6 +35,8 @@ public class User.PagePassword : ReadySet.BasePage {
     unowned Adw.Avatar avatar;
     [GtkChild]
     unowned ReadySet.StatusPage info_status_page;
+    [GtkChild]
+    unowned Gtk.Button password_generate_button;
 
     public string user_avatar_file { get; set; }
 
@@ -50,6 +52,9 @@ public class User.PagePassword : ReadySet.BasePage {
         context.data_changed.connect (on_context_data_changed);
         on_context_data_changed (context, "user.fullname");
         on_context_data_changed (context, "user.avatar-file");
+
+        //  If we got null on `generate`, beckend probable disable this option
+        password_generate_button.visible = Password.generate () != null;
 
         update_is_ready ();
     }
@@ -107,8 +112,8 @@ public class User.PagePassword : ReadySet.BasePage {
 
     [GtkCallback]
     void generate_user_password () {
-        var password = Password.generate ();
+        string? password = Password.generate ();
 
-        password_entry.text = password;
+        password_entry.text = password ?? "";
     }
 }

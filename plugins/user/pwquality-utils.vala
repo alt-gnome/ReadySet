@@ -40,12 +40,12 @@ namespace User.Password {
         return _pwq_settings;
     }
 
-    public string generate () {
-        string res;
+    public string? generate () {
+        string? res;
         var error = get_pwq ().generate (0, out res);
 
         if (error != PasswordQuality.Error.SUCCESS) {
-            GLib.error (error.to_string ());
+            warning (error.to_string ());
         }
 
         return res;
