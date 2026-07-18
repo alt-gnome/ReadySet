@@ -31,7 +31,6 @@ plugins/user/data/ui/page-username.blp
 plugins/user/page-password.vala
 plugins/user/page-root-password.vala
 plugins/user/page-username.vala
-plugins/user/passwdqc-utils.vala
 plugins/user/plugin.vala
 plugins/user/pwquality-utils.vala
 plugins/user/utils.vala
