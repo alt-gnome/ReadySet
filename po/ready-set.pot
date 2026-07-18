@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-27 11:47+0000\n"
+"POT-Creation-Date: 2026-07-18 01:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -272,16 +272,12 @@ msgstr ""
 msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 
-#: plugins/user/page-password.vala:60
+#: plugins/user/page-password.vala:65
 #, c-format
 msgid "Set a Password for %s"
 msgstr ""
 
-#: plugins/user/passwdqc-utils.vala:43
-msgid "Failed to generate password"
-msgstr ""
-
-#: plugins/user/plugin.vala:74
+#: plugins/user/plugin.vala:76
 msgid "Error when creating a user"
 msgstr ""
 
@@ -375,29 +371,29 @@ msgstr ""
 msgid "Name cannot be empty"
 msgstr ""
 
-#: plugins/user/utils.vala:180
+#: plugins/user/utils.vala:182
 msgid "That username isn't available. Please try another"
 msgstr ""
 
-#: plugins/user/utils.vala:182
+#: plugins/user/utils.vala:184
 msgid "The username is too long"
 msgstr ""
 
-#: plugins/user/utils.vala:184
+#: plugins/user/utils.vala:186
 msgid "The username must start with a lower case letter from a-z"
 msgstr ""
 
-#: plugins/user/utils.vala:186
+#: plugins/user/utils.vala:188
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
 msgstr ""
 
-#: plugins/user/utils.vala:189
+#: plugins/user/utils.vala:191
 msgid "Username cannot be empty"
 msgstr ""
 
-#: plugins/user/utils.vala:293
+#: plugins/user/utils.vala:295
 msgid "The password must consist of at least one character"
 msgstr ""
 
