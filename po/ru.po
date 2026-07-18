@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-27 11:47+0000\n"
+"POT-Creation-Date: 2026-07-18 01:15+0000\n"
 "PO-Revision-Date: 2026-06-18 14:42+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -280,16 +280,12 @@ msgstr ""
 "Имя пользователя будет использовано для имени Вашей домашней директории и не "
 "может быть изменено."
 
-#: plugins/user/page-password.vala:60
+#: plugins/user/page-password.vala:65
 #, c-format
 msgid "Set a Password for %s"
 msgstr "Установите пароль для %s"
 
-#: plugins/user/passwdqc-utils.vala:43
-msgid "Failed to generate password"
-msgstr "Не удалось сгенерироавть пароль"
-
-#: plugins/user/plugin.vala:74
+#: plugins/user/plugin.vala:76
 msgid "Error when creating a user"
 msgstr "Ошибка при создании пользователя"
 
@@ -406,19 +402,19 @@ msgstr ""
 msgid "Name cannot be empty"
 msgstr "Имя не может быть пустым"
 
-#: plugins/user/utils.vala:180
+#: plugins/user/utils.vala:182
 msgid "That username isn't available. Please try another"
 msgstr "Это имя пользователя недоступно. Пожалуйста, попробуйте другое"
 
-#: plugins/user/utils.vala:182
+#: plugins/user/utils.vala:184
 msgid "The username is too long"
 msgstr "Имя пользователя слишком длинное"
 
-#: plugins/user/utils.vala:184
+#: plugins/user/utils.vala:186
 msgid "The username must start with a lower case letter from a-z"
 msgstr "Имя пользователя должно начинаться со строчной буквы от «a» до «z»"
 
-#: plugins/user/utils.vala:186
+#: plugins/user/utils.vala:188
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
@@ -426,11 +422,11 @@ msgstr ""
 "Имя пользователя может содержать только строчные буквы от «a» до «z», цифры "
 "и следущие символы: «-», «_»"
 
-#: plugins/user/utils.vala:189
+#: plugins/user/utils.vala:191
 msgid "Username cannot be empty"
 msgstr "Имя пользователя не может быть пустым"
 
-#: plugins/user/utils.vala:293
+#: plugins/user/utils.vala:295
 msgid "The password must consist of at least one character"
 msgstr "Пароль должен состоять минимум из одного символа"
 
@@ -576,6 +572,9 @@ msgstr "Тест"
 #: tests/plugins/test-common/data/ui/page.blp:27
 msgid "Test page"
 msgstr "Тестовая страница"
+
+#~ msgid "Failed to generate password"
+#~ msgstr "Не удалось сгенерироавть пароль"
 
 #~ msgid "Error while execute post hooks"
 #~ msgstr "Ошибка при выполнении пост скриптов"
