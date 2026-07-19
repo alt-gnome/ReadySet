@@ -437,24 +437,24 @@ public class ReadySet.Context : Object {
     //      return raw_data;
     //  }
 
-    internal void register_vars (HashTable<string, ContextVarInfo> vars) {
-        vars.foreach (foreach_register_vars);
-    }
+    internal void register_vars (string module_name, HashTable<string, ContextVarInfo> vars) {
+        vars.foreach ((key, info) => {
+            var module_key = "%s.%s".printf (module_name, key);
 
-    void foreach_register_vars (string key, ContextVarInfo info) {
-        if (data.has_key (key)) {
-            warning ("Key %s already exists in context, it will be overwriting", key);
-        }
-        debug ("Registering key %s with type %s", key, info.value_type.to_string ());
-        data[key] = new ValueObject (info);
-        data[key].data_key = key;
-        if (info.getter_func != null) {
-            data[key].set_getter (info.getter_func);
-        }
-        if (info.setter_func != null) {
-            data[key].set_setter (info.setter_func);
-        }
-        data[key].notify["real-value"].connect (real_value_changed);
+            if (data.has_key (module_key)) {
+                warning ("Key %s already exists in context, it will be overwriting", module_key);
+            }
+            debug ("Registering key %s with type %s", module_key, info.value_type.to_string ());
+            data[module_key] = new ValueObject (info);
+            data[module_key].data_key = module_key;
+            if (info.getter_func != null) {
+                data[module_key].set_getter (info.getter_func);
+            }
+            if (info.setter_func != null) {
+                data[module_key].set_setter (info.setter_func);
+            }
+            data[module_key].notify["real-value"].connect (real_value_changed);
+        });
     }
 
     void real_value_changed (Object caller, ParamSpec param) {

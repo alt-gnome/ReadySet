@@ -46,8 +46,8 @@ public class LicenseAgreement.Addin : ReadySet.StepAddin {
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
-        vars["license-agreement-file-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
-        vars["license-agreement-language-fallback"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING, "C");
+        vars["file-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["language-fallback"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING, "C");
         return vars;
     }
 }

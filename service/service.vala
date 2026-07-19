@@ -21,28 +21,23 @@
 [DBus (name = "org.altlinux.ReadySet")]
 public sealed class ReadySet.Service : Object {
 
-    public void exec_pre_hooks (string[] env, BusName sender) throws Error {
-        polkit_check (sender, "org.altlinux.ReadySet.ExecPreHooks");
+    public string[] get_all_hooks (string type_, string target, BusName sender) throws Error {
+        check_type_target (type_, target);
+        polkit_check (sender, "org.altlinux.ReadySet.GetAllHooks");
 
-        real_exec_pre_hooks (env);
+        return real_get_all_hooks (type_, target);
     }
 
-    public void exec_post_hooks (string[] env, BusName sender) throws Error {
-        polkit_check (sender, "org.altlinux.ReadySet.ExecPostHooks");
+    /**
+     * type_ - "pre" or "post"
+     * target - "initial-setup" or "installer"
+     * name - hook name
+     */
+    public bool exec_hook (string type_, string target, string name, string[] env, BusName sender) throws Error {
+        check_type_target (type_, target);
+        polkit_check (sender, "org.altlinux.ReadySet.ExecHook");
 
-        real_exec_post_hooks (env);
-    }
-
-    public void exec_installer_pre_hooks (string[] env, BusName sender) throws Error {
-        polkit_check (sender, "org.altlinux.ReadySet.ExecInstallerPreHooks");
-
-        real_exec_installer_pre_hooks (env);
-    }
-
-    public void exec_installer_post_hooks (string[] env, BusName sender) throws Error {
-        polkit_check (sender, "org.altlinux.ReadySet.ExecInstallerPostHooks");
-
-        real_exec_installer_post_hooks (env);
+        return real_exec_hook (type_, target, name, env);
     }
 
     public void copy_to_user (string src, string dest, string username, BusName sender) throws Error {

@@ -50,11 +50,6 @@ jobs:
         with:
           token: ${{ github.event_name == 'pull_request' && github.token || secrets.REPO_TOKEN }}
 
-      - name: Install deps
-        run: |
-          apt-get update
-          apt-get install -y apm
-
       - name: Setup
         run: make setup-ci
 
@@ -120,18 +115,27 @@ jobs:
         run: |
           echo "release=$(date +%s)" >> $FORGEJO_OUTPUT
 
-  rpm-build-amd64:
+  rpm-build:
     if: github.event_name != 'pull_request' && github.ref_name == 'main'
-    name: RPM build for ${{ matrix.branch }}.amd64 and uploading
-    runs-on: als-huge
+    name: RPM build for ${{ matrix.branch }}.${{ matrix.arch }} and uploading
+    runs-on: ${{ matrix.runner }}
     container:
-      image: altlinux.space/actions/runner/hasherc:sisyphus
+      image: altlinux.space/alt-security/${{ matrix.branch }}/hasher:latest
 
     strategy:
       matrix:
         branch:
           - sisyphus
           # - p11
+        arch:
+          - amd64
+          - arm64
+        include:
+          - arch: amd64
+            runner: als-huge
+          - arch: arm64
+            runner: self-hosted-arm64-huge
+
     needs:
       - lint-vala
       - lint-blueprint
@@ -149,66 +153,19 @@ jobs:
 
       - name: Prepare RPM build
         run: |
+          echo '%packager	Hasher Unshare Builder <hasher-unshare@altlinux.org>' >> ~/.rpmmacros
           ./build-aux/altlinux/prepare ${{ needs.get-release.outputs.release }}
           git add .
 
-      - uses: actions/build-rpm-action@main
-        name: Build RPMs
-        with:
-          branch: ${{ matrix.branch }}
-          arch: amd64
+      - name: Build
+        run: |
+          gear-hsh --commit --no-sisyphus-check=gpg,packager
 
       - uses: actions/upload-rpm-action@main
         name: Upload RPMs
         if: github.event_name != 'pull_request'
         with:
-          directory: ~/.cache/hasherc/ready-set/out/RPMS
-          token: ${{ secrets.TOKEN }}
-          group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
-
-  rpm-build-arm64:
-    if: github.event_name != 'pull_request' && github.ref_name == 'main'
-    name: RPM build for ${{ matrix.branch }}.arm64 and uploading
-    runs-on: self-hosted-arm64-huge
-    container:
-      image: altlinux.space/actions/runner/hasherc:sisyphus
-
-    strategy:
-      matrix:
-        branch:
-          - sisyphus
-          # - p11
-    needs:
-      - lint-vala
-      - lint-blueprint
-      - get-release
-      - build-doc-translation
-
-    steps:
-      - name: Install utils
-        run: |
-          apt-get update
-          apt-get install -y meson jq /usr/bin/add_changelog
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Prepare RPM build
-        run: |
-          ./build-aux/altlinux/prepare ${{ needs.get-release.outputs.release }}
-          git add .
-
-      - uses: actions/build-rpm-action@main
-        name: Build RPMs
-        with:
-          branch: ${{ matrix.branch }}
-          arch: arm64
-
-      - uses: actions/upload-rpm-action@main
-        name: Upload RPMs
-        if: github.event_name != 'pull_request'
-        with:
-          directory: ~/.cache/hasherc/ready-set/out/RPMS
+          directory: ~/hasher/repo
           token: ${{ secrets.TOKEN }}
           group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
 
@@ -230,7 +187,7 @@ jobs:
             image: altlinux.space/alt-atomic/onyx/nightly:latest
 
     needs:
-      - rpm-build-amd64
+      - rpm-build
     if: github.event_name != 'pull_request'
     env:
       LOCAL_BUILD_NAME: localhost/image

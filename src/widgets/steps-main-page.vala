@@ -497,13 +497,20 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                 show_title = false
             });
 
-            if (Application.get_default ().context.mode == EXISTING_USER) {
-                view.content = new ExistingUserEndPage ();
-
-            } else {
-                var end_page = new EndPage ();
-                view.content = end_page;
-                end_page.start_action.begin ();
+            switch (Application.get_default ().context.mode) {
+                case EXISTING_USER:
+                    view.content = new ExistingUserEndPage ();
+                    break;
+                case INITIAL_SETUP:
+                    var end_page = new InitialSetupEndPage ();
+                    view.content = end_page;
+                    end_page.start_action.begin ();
+                    break;
+                case INSTALLER:
+                    var end_page = new InstallerEndPage ();
+                    view.content = end_page;
+                    end_page.start_action.begin ();
+                    break;
             }
 
             main_stack.add_child (view);

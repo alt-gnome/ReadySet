@@ -100,9 +100,6 @@ namespace User {
         if (uname == "") {
             return "";
         }
-        if (uname.length > MAXNAMELEN) {
-            uname = uname[0:MAXNAMELEN];
-        }
 
         var corrected_builder = new StringBuilder ();
 
@@ -129,7 +126,12 @@ namespace User {
             }
         }
 
-        return corrected_builder.free_and_steal ();
+        var res = corrected_builder.free_and_steal ();
+
+        if (res.length >= MAXNAMELEN) {
+            return res[0:MAXNAMELEN];
+        }
+        return res;
     }
 
     bool username_is_correct (string username, bool parental_controls_enabled, out string error) {
@@ -214,7 +216,7 @@ namespace User {
         var context = Addin.get_instance ().context;
         var facesdir = new Gee.ArrayList<string> ();
 
-        var dirs = context.get_strv ("user-avatar-directories");
+        var dirs = context.get_strv ("user.avatar-directories");
         if (dirs == null) {
             return {};
         }
@@ -274,7 +276,7 @@ namespace User {
     }
 
     bool password_is_ready (string password) {
-        bool no_password_security = Addin.get_instance ().context.get_boolean ("user-no-password-security");
+        bool no_password_security = Addin.get_instance ().context.get_boolean ("user.no-password-security");
         if (no_password_security) {
             return password.length != 0;
         } else {
@@ -287,7 +289,7 @@ namespace User {
         string? old_password = null,
         string? username = null
     ) {
-        bool no_password_security = Addin.get_instance ().context.get_boolean ("user-no-password-security");
+        bool no_password_security = Addin.get_instance ().context.get_boolean ("user.no-password-security");
         if (no_password_security) {
             return {
                 hint: _("The password must consist of at least one character"),

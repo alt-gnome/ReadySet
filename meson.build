@@ -1,7 +1,7 @@
 project(
   'ready-set',
   'vala',
-  version: '0.9.2',
+  version: '0.10.2',
   meson_version: '>= 1.9',
   license: 'GPL-3.0-or-later',
 )
@@ -28,7 +28,7 @@ libpeas_dep = dependency('libpeas-2')
 polkit_dep = dependency('polkit-gobject-1')
 posix_dep = meson.get_compiler('vala').find_library('posix')
 xkb_dep = dependency('xkbcommon')
-libserialize_dep = dependency('libserialize-7', version: '>= 7.5')
+libserialize_dep = dependency('libserialize-7', version: '>= 7.9')
 
 libversion = meson.project_version().replace('.rc', '')
 soversion = libversion.split('.')[0]
@@ -60,8 +60,18 @@ libexecdir = prefix / get_option('libexecdir')
 rulesdir = datadir / 'polkit-1' / 'rules.d'
 localstatedir = prefix / get_option('localstatedir')
 
-steps_plugins_dir = libdir / meson.project_name() / 'plugins' / 'steps'
-installers_plugins_dir = libdir / meson.project_name() / 'plugins' / 'installers'
+pkgdata_dir = datadir / meson.project_name()
+pkglib_dir = libdir / meson.project_name()
+
+user_pre_hooks_dir = pkgdata_dir / 'initial-setup-pre-hooks' / 'user'
+user_post_hooks_dir = pkgdata_dir / 'initial-setup-post-hooks' / 'user'
+system_pre_hooks_dir = pkgdata_dir / 'initial-setup-pre-hooks' / 'system'
+system_post_hooks_dir = pkgdata_dir / 'initial-setup-post-hooks' / 'system'
+installer_pre_hooks = pkgdata_dir / 'installer-pre-hooks' / 'system'
+installer_post_hooks = pkgdata_dir / 'installer-post-hooks' / 'system'
+
+steps_plugins_dir = pkglib_dir / 'plugins' / 'steps'
+installers_plugins_dir = pkglib_dir / 'plugins' / 'installers'
 
 global_conf = configuration_data()
 global_conf.set_quoted('NAME', meson.project_name())
@@ -89,6 +99,10 @@ subdir('lib')
 subdir('src')
 subdir('plugins')
 subdir('tests')
+
+if get_option('password_check_backend') == 'both'
+  warning('\'both\' password check backend option is created only for packaging, the presence of both user-* plugins in the system may lead to errors.')
+endif
 
 gnome.post_install(
   glib_compile_schemas: true,

@@ -74,7 +74,8 @@ public sealed class ReadySet.Application: Adw.Application {
         typeof (StepsMainPage).ensure ();
         typeof (StepsSidebar).ensure ();
 
-        typeof (EndPage).ensure ();
+        typeof (InitialSetupEndPage).ensure ();
+        typeof (InstallerEndPage).ensure ();
     }
 
     construct {
@@ -133,7 +134,12 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 #endif
 
+        print ("\nApplication mode: %s\n", context.mode.to_string ());
+
         plugin_manager.check_steps (options_handler.steps);
+        if (has_installer) {
+            plugin_manager.check_installers ();
+        }
         options_handler.fill_context (context);
         context.reload_window.connect (reload_window);
 
@@ -146,17 +152,30 @@ public sealed class ReadySet.Application: Adw.Application {
 
     async void exec_pre_hooks () {
         try {
+            string hooks_type = "pre";
+            string hooks_target;
+
             if (context.mode == Mode.INITIAL_SETUP) {
-                yield real_exec_pre_hooks ();
-                yield get_ready_set_proxy ().exec_pre_hooks ();
+                hooks_target = "initial-setup";
+
+                var pre_hooks_dir = get_system_hooks_dir (hooks_type, hooks_target);
+
+                foreach (var name in ReadySet.get_all_hooks_from_dir (pre_hooks_dir)) {
+                    ReadySet.real_exec_hook_from_dir (pre_hooks_dir, name);
+                }
+
             } else if (context.mode == Mode.INSTALLER) {
-                yield get_ready_set_proxy ().exec_installer_pre_hooks ();
+                hooks_target = "installer";
+            } else {
+                return;
             }
 
-        } catch (IOError e) {
-            warning ("IOError on executing pre hooks: %s", e.message);
+            foreach (var name in yield get_ready_set_proxy ().get_all_hooks (hooks_type, hooks_target)) {
+                yield get_ready_set_proxy ().exec_hook (hooks_type, hooks_target, name);
+            }
+
         } catch (Error e) {
-            error ("Failed to executing pre hooks: %s", e.message);
+            warning ("Error on executing pre hooks: %s", e.message);
         }
     }
 
@@ -265,8 +284,8 @@ public sealed class ReadySet.Application: Adw.Application {
         base.activate ();
 
         if (active_window == null) {
-            if (context.has_key ("language-locale")) {
-                var locale = context.get_string ("language-locale");
+            if (context.has_key ("language.locale")) {
+                var locale = context.get_string ("language.locale");
                 if (locale != null) {
                     Intl.setlocale (ALL, locale);
                 }

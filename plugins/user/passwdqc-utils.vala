@@ -25,26 +25,29 @@ namespace User.Password {
     unowned PasswdQC.Params get_pwqc () {
         if (_passwdqc_params == null) {
             _passwdqc_params = PasswdQC.Params ();
-            var passwdqc_conf_path = Addin.get_instance ().context.get_string ("user-passwd-conf-path");
+            var passwdqc_conf_path = Addin.get_instance ().context.get_string ("user.passwd-conf-path");
             if (passwdqc_conf_path == "") {
                 passwdqc_conf_path = "/etc/passwdqc.conf";
             }
-            _passwdqc_params.params_load (null, passwdqc_conf_path);
+            weak string? reason;
+            _passwdqc_params.params_load (out reason, passwdqc_conf_path);
+            if (reason != null) {
+                error (reason);
+            }
         }
 
         return _passwdqc_params;
     }
 
-    public string generate () {
+    public string? generate () {
         var prms = get_pwqc ();
         var res = prms.qc.random ();
 
         if (res == null) {
-            warning (_("Failed to generate password"));
-            return "";
-        } else {
-            return res;
+            warning ("Failed to generate password");
         }
+
+        return res;
     }
 
     public Strength strength (

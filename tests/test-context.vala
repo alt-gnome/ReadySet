@@ -43,12 +43,19 @@ private class TestBindableObject : Object {
     public int bound_int { get; set; default = 0; }
 }
 
-const string KEY_STRING = "test-string";
-const string KEY_BOOLEAN = "test-boolean";
-const string KEY_INT = "test-int";
-const string KEY_DOUBLE = "test-double";
-const string KEY_STRV = "test-strv";
-const string KEY_OBJECT = "test-object";
+const string RKEY_STRING = "string";
+const string RKEY_BOOLEAN = "boolean";
+const string RKEY_INT = "int";
+const string RKEY_DOUBLE = "double";
+const string RKEY_STRV = "strv";
+const string RKEY_OBJECT = "object";
+
+const string KEY_STRING = "test.string";
+const string KEY_BOOLEAN = "test.boolean";
+const string KEY_INT = "test.int";
+const string KEY_DOUBLE = "test.double";
+const string KEY_STRV = "test.strv";
+const string KEY_OBJECT = "test.object";
 
 const string DEFAULT_STRING = "default";
 const bool DEFAULT_BOOLEAN = false;
@@ -62,16 +69,16 @@ ReadySet.Context create_test_context () {
     var ctx = new ReadySet.Context (true);
 
     var vars = new HashTable<string, ReadySet.ContextVarInfo> (str_hash, str_equal);
-    vars.insert (KEY_STRING, new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING, DEFAULT_STRING));
-    vars.insert (KEY_BOOLEAN, new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN, DEFAULT_BOOLEAN));
-    vars.insert (KEY_INT, new ReadySet.ContextVarInfo (ReadySet.ContextType.INT, DEFAULT_INT));
-    vars.insert (KEY_DOUBLE, new ReadySet.ContextVarInfo (ReadySet.ContextType.DOUBLE, DEFAULT_DOUBLE));
-    vars.insert (KEY_STRV, new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV, new string[] { "a", "b" }));
+    vars.insert (RKEY_STRING, new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING, DEFAULT_STRING));
+    vars.insert (RKEY_BOOLEAN, new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN, DEFAULT_BOOLEAN));
+    vars.insert (RKEY_INT, new ReadySet.ContextVarInfo (ReadySet.ContextType.INT, DEFAULT_INT));
+    vars.insert (RKEY_DOUBLE, new ReadySet.ContextVarInfo (ReadySet.ContextType.DOUBLE, DEFAULT_DOUBLE));
+    vars.insert (RKEY_STRV, new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV, new string[] { "a", "b" }));
 
     var default_obj = new TestContextObject (DEFAULT_OBJECT_DATA);
-    vars.insert (KEY_OBJECT, new ReadySet.ContextVarInfo.object (typeof (TestContextObject), default_obj));
+    vars.insert (RKEY_OBJECT, new ReadySet.ContextVarInfo.object (typeof (TestContextObject), default_obj));
 
-    ctx.register_vars (vars);
+    ctx.register_vars ("test", vars);
     return ctx;
 }
 

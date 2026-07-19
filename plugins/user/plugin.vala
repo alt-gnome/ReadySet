@@ -22,6 +22,8 @@ public class User.Addin : ReadySet.StepAddin {
 
     static Addin instance;
 
+    public override string? module_name { get { return "user"; } }
+
     protected override string? resource_base_path {
         get {
             return "/org/altlinux/ReadySet/Plugin/User/";
@@ -45,27 +47,27 @@ public class User.Addin : ReadySet.StepAddin {
     public async override void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
         try {
             var user = yield Act.UserManager.get_default ().create_user_async (
-                context.get_string ("user-username"),
-                context.get_string ("user-fullname"),
+                context.get_string ("user.username"),
+                context.get_string ("user.fullname"),
                 Act.UserAccountType.ADMINISTRATOR,
                 null
             );
 
-            user.set_password (context.get_string ("user-password"), "");
-            if (context.has_key ("language-locale")) {
-                user.set_language (context.get_string ("language-locale"));
+            user.set_password (context.get_string ("user.password"), "");
+            if (context.has_key ("language.locale")) {
+                user.set_language (context.get_string ("language.locale"));
             }
-            if (context.get_string ("user-avatar-file") != "") {
-                user.set_icon_file (context.get_string ("user-avatar-file"));
+            if (context.get_string ("user.avatar-file") != "") {
+                user.set_icon_file (context.get_string ("user.avatar-file"));
             }
 
 #if WITH_ROOT_SET
-            if (context.get_boolean ("user-with-root")) {
-                if (context.get_string ("user-root-password") != "") {
-                    yield set_root_password (context.get_string ("user-root-password"));
-                    context.set_string ("user-root-password", "");
+            if (context.get_boolean ("user.with-root")) {
+                if (context.get_string ("user.root-password") != "") {
+                    yield set_root_password (context.get_string ("user.root-password"));
+                    context.set_string ("user.root-password", "");
                 } else {
-                    yield set_root_password (context.get_string ("user-password"));
+                    yield set_root_password (context.get_string ("user.password"));
                 }
             }
 #endif
@@ -79,20 +81,20 @@ public class User.Addin : ReadySet.StepAddin {
         var vars = base.get_context_vars ();
 
         //  Settings
-        vars["user-avatar-file"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["avatar-file"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
 #if WITH_ROOT_SET
-        vars["user-with-root"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        vars["with-root"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
 #endif
-        vars["user-no-password-security"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
-        vars["user-passwd-conf-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
-        vars["user-avatar-directories"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV);
+        vars["no-password-security"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        vars["passwd-conf-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["avatar-directories"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV);
 
         //  Storage
-        vars["user-username"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
-        vars["user-fullname"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
-        vars["user-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["username"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["fullname"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
 #if WITH_ROOT_SET
-        vars["user-root-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["root-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
 #endif
         return vars;
     }

@@ -12,6 +12,22 @@ template $UserContextRow: Box {
     selection-mode: none;
   }
 
+  Label description_label {
+    styles [
+      "caption",
+      "dimmed",
+    ]
+
+    margin-start: 3;
+    margin-end: 3;
+    lines: 2;
+    wrap: true;
+    wrap-mode: word_char;
+    xalign: 0;
+    visible: bind $string_is_not_empty(description_label.label) as <bool>;
+    label: bind template.description;
+  }
+
   Revealer {
     transition-type: slide_down;
     reveal-child: bind template.reveal-context;

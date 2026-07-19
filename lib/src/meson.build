@@ -120,6 +120,18 @@ pkgconfig.generate(
   requires: librs_dependencies,
   subdirs: [ librs_versioned_name ],
   description: 'ReadySet library',
+  variables: [
+    'pkgdata_dir=' + pkgdata_dir.replace(prefix, '${prefix}'),
+    'pkglib_dir=' + pkglib_dir.replace(libdir, '${libdir}'),
+    'user_pre_hooks_dir=' + user_pre_hooks_dir.replace(pkgdata_dir, '${pkgdata_dir}'),
+    'user_post_hooks_dir=' + user_post_hooks_dir.replace(pkgdata_dir, '${pkgdata_dir}'),
+    'system_pre_hooks_dir=' + system_pre_hooks_dir.replace(pkgdata_dir, '${pkgdata_dir}'),
+    'system_post_hooks_dir=' + system_post_hooks_dir.replace(pkgdata_dir, '${pkgdata_dir}'),
+    'installer_pre_hooks=' + installer_pre_hooks.replace(pkgdata_dir, '${pkgdata_dir}'),
+    'installer_post_hooks=' + installer_post_hooks.replace(pkgdata_dir, '${pkgdata_dir}'),
+    'steps_plugins_dir=' + steps_plugins_dir.replace(pkglib_dir, '${pkglib_dir}'),
+    'installers_plugins_dir=' + installers_plugins_dir.replace(pkglib_dir, '${pkglib_dir}'),
+  ],
   version: libversion,
   url: 'https://altlinux.space/alt-gnome/ReadySet',
 )

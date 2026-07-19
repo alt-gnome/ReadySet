@@ -86,7 +86,7 @@ public sealed class ReadySet.PageInfo : Object {
             foreach (var prop in props) {
                 page.bind_property (prop, this, prop, SYNC_CREATE);
             }
-            page.notify["should-layout"].connect (update_should_layout);
+            page.notify["accessible"].connect (update_should_layout);
         }
         if (plugin != null) {
             plugin.notify["enabled"].connect (update_should_layout);

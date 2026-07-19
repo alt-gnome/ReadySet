@@ -2,12 +2,16 @@ rs_internal_vapi_sources = files(
   'config.vapi',
 )
 
+hooks_sources = files(
+  'hooks.vala',
+)
+
 rs_internal_vala_sources = files(
   'copy-to-user.vala',
-  'hooks.vala',
   'main.vala',
+  'polkit.vala',
   'service.vala',
-)
+) + hooks_sources
 
 rs_internal_dependencies = [
   gee_dep,

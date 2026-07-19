@@ -6,10 +6,17 @@ else
 	SUDO := sudo
 endif
 
+PM := $(shell if command -v apm >/dev/null 2>&1; then echo 'apm s'; elif command -v apt-get >/dev/null 2>&1; then echo apt-get; fi)
+
+ifeq ($(PM),)
+$(error Package manager not found)
+endif
+
 .PHONY: setup setup-ci install compile test lint lint-fix install-deps
 
 install-deps:
-	$(SUDO) xargs apm s install -y < ./build-aux/altlinux/build-deps || true
+	$(SUDO) $(PM) update || true
+	$(SUDO) xargs $(PM) install -y < ./build-aux/altlinux/build-deps || true
 
 setup: install-deps
 	rm -rf _build
@@ -23,6 +30,9 @@ compile:
 
 install: compile
 	meson install -C _build
+
+uninstall:
+	$(SUDO) ninja uninstall -C _build
 
 test:
 	meson test -C _build

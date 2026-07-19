@@ -106,7 +106,7 @@ namespace LicenseAgreement {
         string language = "C";
 
         var context = Addin.get_instance ().context;
-        var fallback = context.get_string ("license-agreement-language-fallback");
+        var fallback = context.get_string ("license-agreement.language-fallback");
         if (fallback != "") {
             return fallback;
         }
@@ -116,8 +116,8 @@ namespace LicenseAgreement {
 
     public string get_current_language () {
         var context = Addin.get_instance ().context;
-        if (context.has_key ("language-locale")) {
-            return context.get_string ("language-locale");
+        if (context.has_key ("language.locale")) {
+            return context.get_string ("language.locale");
         }
 
         return get_fallback_language ();

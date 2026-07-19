@@ -32,8 +32,8 @@ void test_blank_init () {
     if (!("tests" in steps)) {
         Test.fail_printf ("Expected 'tests' in steps");
     }
-    if (!("installer-disks" in steps)) {
-        Test.fail_printf ("Expected 'installer-disks' in steps");
+    if (!("installer.disks" in steps)) {
+        Test.fail_printf ("Expected 'installer.disks' in steps");
     }
 
     if (installers.length != 1) {

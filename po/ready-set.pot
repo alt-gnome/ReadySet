@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-22 06:39+0000\n"
+"POT-Creation-Date: 2026-07-18 01:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,14 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: data/ui/end-page.blp:36
-msgid "Setting up the system…"
-msgstr ""
-
-#: data/ui/end-page.blp:53
-msgid "All done!"
-msgstr ""
 
 #: data/ui/existing-user-end-page.blp:26
 msgid "Setup complete!"
@@ -35,6 +27,14 @@ msgstr ""
 
 #: data/ui/existing-user-end-page.blp:36
 msgid "Complete the setup"
+msgstr ""
+
+#: data/ui/initial-setup-end-page.blp:36 data/ui/installer-end-page.blp:36
+msgid "Setting up the system…"
+msgstr ""
+
+#: data/ui/initial-setup-end-page.blp:53 data/ui/installer-end-page.blp:53
+msgid "All done!"
 msgstr ""
 
 #: data/ui/nothing-to-show.blp:30 plugins/language/data/ui/box.blp:44
@@ -239,7 +239,7 @@ msgid "Generate root password"
 msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:24
-#: plugins/user/data/ui/page-username.blp:135
+#: plugins/user/data/ui/page-username.blp:134
 msgid "Username"
 msgstr ""
 
@@ -268,20 +268,16 @@ msgstr ""
 msgid "Full Name"
 msgstr ""
 
-#: plugins/user/data/ui/page-username.blp:125
+#: plugins/user/data/ui/page-username.blp:131
 msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 
-#: plugins/user/page-password.vala:60
+#: plugins/user/page-password.vala:65
 #, c-format
 msgid "Set a Password for %s"
 msgstr ""
 
-#: plugins/user/passwdqc-utils.vala:43
-msgid "Failed to generate password"
-msgstr ""
-
-#: plugins/user/plugin.vala:74
+#: plugins/user/plugin.vala:76
 msgid "Error when creating a user"
 msgstr ""
 
@@ -375,29 +371,29 @@ msgstr ""
 msgid "Name cannot be empty"
 msgstr ""
 
-#: plugins/user/utils.vala:180
+#: plugins/user/utils.vala:182
 msgid "That username isn't available. Please try another"
 msgstr ""
 
-#: plugins/user/utils.vala:182
+#: plugins/user/utils.vala:184
 msgid "The username is too long"
 msgstr ""
 
-#: plugins/user/utils.vala:184
+#: plugins/user/utils.vala:186
 msgid "The username must start with a lower case letter from a-z"
 msgstr ""
 
-#: plugins/user/utils.vala:186
+#: plugins/user/utils.vala:188
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
 msgstr ""
 
-#: plugins/user/utils.vala:189
+#: plugins/user/utils.vala:191
 msgid "Username cannot be empty"
 msgstr ""
 
-#: plugins/user/utils.vala:293
+#: plugins/user/utils.vala:295
 msgid "The password must consist of at least one character"
 msgstr ""
 
@@ -493,41 +489,42 @@ msgid "App config file"
 msgstr ""
 
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/pages/end-page.vala:54
+#: src/pages/initial-setup-end-page.vala:54
+#: src/pages/installer-end-page.vala:44
 #, c-format
 msgid "_Start Using %s"
 msgstr ""
 
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/pages/end-page.vala:56
+#: src/pages/initial-setup-end-page.vala:56
+#: src/pages/installer-end-page.vala:46
 #, c-format
 msgid "%s is ready to be used."
 msgstr ""
 
-#: src/pages/end-page.vala:58
+#: src/pages/initial-setup-end-page.vala:58
+#: src/pages/installer-end-page.vala:48
 msgid "_Start Using the System"
 msgstr ""
 
-#: src/pages/end-page.vala:59
+#: src/pages/initial-setup-end-page.vala:59
+#: src/pages/installer-end-page.vala:49
 msgid "System is ready to be used."
 msgstr ""
 
-#: src/pages/end-page.vala:110
-msgid "Installing system…"
-msgstr ""
-
-#: src/pages/end-page.vala:131
+#: src/pages/initial-setup-end-page.vala:115
 #, c-format
 msgid "Applying %s…"
 msgstr ""
 
-#: src/pages/end-page.vala:216 src/pages/end-page.vala:222
+#: src/pages/initial-setup-end-page.vala:198
+#: src/pages/installer-end-page.vala:125
 #, c-format
 msgid "Error message: %s"
 msgstr ""
 
-#: src/pages/end-page.vala:221
-msgid "Error while execute post hooks"
+#: src/pages/installer-end-page.vala:81
+msgid "Installing system…"
 msgstr ""
 
 #: tests/plugins/test-common/data/ui/page.blp:23

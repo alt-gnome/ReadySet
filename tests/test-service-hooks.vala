@@ -44,9 +44,12 @@ void test_exec_hooks_empty_dir () {
         DirUtils.create_with_parents (hooks_dir, 0755);
 
         string[] env = { "TEST=value" };
-        ReadySet.exec_hooks (File.new_for_path (hooks_dir), env);
+        var res = ReadySet.get_all_hooks_from_dir (File.new_for_path (hooks_dir)).length;
+        if (res != 0) {
+            Test.fail_printf ("Expected 0, got %i", res);
+        }
     } catch (Error e) {
-        Test.fail_printf ("Expected exec_hooks to succeed with empty dir, got error: %s", e.message);
+        Test.fail_printf ("Expected get_all_hooks_from_dir to succeed with empty dir, got error: %s", e.message);
     }
 }
 
@@ -54,14 +57,14 @@ void test_exec_hooks_nonexistent_dir () {
     try {
         var hooks_dir = Path.build_filename (temp_root, "nonexistent");
         string[] env = { "TEST=value" };
-        ReadySet.exec_hooks (File.new_for_path (hooks_dir), env);
-        Test.fail_printf ("Expected exec_hooks to throw error for nonexistent dir");
+        ReadySet.get_all_hooks_from_dir (File.new_for_path (hooks_dir));
+        Test.fail_printf ("Expected get_all_hooks_from_dir to throw error for nonexistent dir");
     } catch (Error e) {
         // Expected - directory doesn't exist
     }
 }
 
-void test_exec_hooks_single_script () {
+void test_exec_hook_script () {
     try {
         var hooks_dir = Path.build_filename (temp_root, "single_hook");
         DirUtils.create_with_parents (hooks_dir, 0755);
@@ -71,7 +74,7 @@ void test_exec_hooks_single_script () {
         create_executable_script (script_path, "#!/bin/sh\ntouch " + marker_file);
 
         string[] env = { "TEST=value" };
-        ReadySet.exec_hooks (File.new_for_path (hooks_dir), env);
+        ReadySet.real_exec_hook_from_dir (File.new_for_path (hooks_dir), "01-test.sh", env);
 
         var marker = File.new_for_path (marker_file);
         if (!marker.query_exists ()) {
@@ -104,8 +107,12 @@ void test_exec_hooks_multiple_scripts () {
             "#!/bin/sh\ntouch " + marker3
         );
 
+        var f = File.new_for_path (hooks_dir);
+
         string[] env = { "TEST=value" };
-        ReadySet.exec_hooks (File.new_for_path (hooks_dir), env);
+        foreach (var name in ReadySet.get_all_hooks_from_dir (f)) {
+            ReadySet.real_exec_hook_from_dir (f, name, env);
+        }
 
         if (!File.new_for_path (marker1).query_exists ()) {
             Test.fail_printf ("Expected first hook to be executed");
@@ -138,8 +145,12 @@ void test_exec_hooks_skips_non_executable () {
             "#!/bin/sh\ntouch " + marker_non_exec
         );
 
+        var f = File.new_for_path (hooks_dir);
+
         string[] env = { "TEST=value" };
-        ReadySet.exec_hooks (File.new_for_path (hooks_dir), env);
+        foreach (var name in ReadySet.get_all_hooks_from_dir (f)) {
+            ReadySet.real_exec_hook_from_dir (f, name, env);
+        }
 
         if (!File.new_for_path (marker_exec).query_exists ()) {
             Test.fail_printf ("Expected executable hook to be executed");
@@ -166,8 +177,12 @@ void test_exec_hooks_skips_directories () {
             "#!/bin/sh\ntouch " + marker_file
         );
 
+        var f = File.new_for_path (hooks_dir);
+
         string[] env = { "TEST=value" };
-        ReadySet.exec_hooks (File.new_for_path (hooks_dir), env);
+        foreach (var name in ReadySet.get_all_hooks_from_dir (f)) {
+            ReadySet.real_exec_hook_from_dir (f, name, env);
+        }
 
         if (!File.new_for_path (marker_file).query_exists ()) {
             Test.fail_printf ("Expected real script to be executed, directory should be skipped");
@@ -187,8 +202,12 @@ void test_exec_hooks_with_env_vars () {
         var script_content = "#!/bin/sh\necho \"$READY_SET_VAR1 $READY_SET_VAR2\" > " + output_file;
         create_executable_script (script_path, script_content);
 
+        var f = File.new_for_path (hooks_dir);
+
         string[] env = { "VAR1=hello", "VAR2=world" };
-        ReadySet.exec_hooks (File.new_for_path (hooks_dir), env);
+        foreach (var name in ReadySet.get_all_hooks_from_dir (f)) {
+            ReadySet.real_exec_hook_from_dir (f, name, env);
+        }
 
         string content;
         FileUtils.get_contents (output_file, out content);
@@ -208,7 +227,7 @@ public static int main (string[] args) {
 
     Test.add_func ("/hooks/empty-dir", test_exec_hooks_empty_dir);
     Test.add_func ("/hooks/nonexistent-dir", test_exec_hooks_nonexistent_dir);
-    Test.add_func ("/hooks/single-script", test_exec_hooks_single_script);
+    Test.add_func ("/hooks/single-script", test_exec_hook_script);
     Test.add_func ("/hooks/multiple-scripts", test_exec_hooks_multiple_scripts);
     Test.add_func ("/hooks/skips-non-executable", test_exec_hooks_skips_non_executable);
     Test.add_func ("/hooks/skips-directories", test_exec_hooks_skips_directories);

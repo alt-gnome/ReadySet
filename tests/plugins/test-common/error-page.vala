@@ -26,7 +26,7 @@ public sealed class Test.ErrorPage : ReadySet.BasePage {
     }
 
     public async void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
-        if (Addin.get_instance ().context.get_boolean ("test-throw-error")) {
+        if (Addin.get_instance ().context.get_boolean ("test.throw-error")) {
             throw ReadySet.ApplyError.build_error ("Test error", "Test error has been thrown");
         }
     }

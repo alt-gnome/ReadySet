@@ -37,72 +37,7 @@ namespace ReadySet {
         return "CONTEXT_" + builder.free_and_steal ();
     }
 
-    public const string STEP_ID_LABEL = "step-id";
-
     public delegate Gtk.Widget CreateFunc (PageInfo page);
-
-    public async bool env_exec (string program, owned string[] env) throws Error {
-        var launcher = new SubprocessLauncher (NONE);
-
-        foreach (var e in env) {
-            var parts = e.split ("=", 2);
-            if (parts.length != 2) {
-                warning ("Invalid environment variable: %s", e);
-                return false;
-            }
-            launcher.setenv (parts[0], parts[1], true);
-        }
-
-        var process = launcher.spawn (program);
-
-        return yield process.wait_check_async ();
-    }
-
-    public async void real_exec_pre_hooks (string[] env = {}) throws Error {
-        yield exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "pre-hooks", "user"), env);
-    }
-
-    public async void real_exec_post_hooks (string[] env) throws Error {
-        yield exec_hooks (File.new_build_filename (Config.DATADIR, Config.NAME, "post-hooks", "user"), env);
-    }
-
-    async void exec_hooks (File hooks_dir, string[] env) throws Error {
-        var enumerator = hooks_dir.enumerate_children (
-            "%s,%s,%s".printf (
-                FileAttribute.STANDARD_NAME,
-                FileAttribute.STANDARD_TYPE,
-                FileAttribute.ACCESS_CAN_EXECUTE
-            ),
-            NONE
-        );
-
-        if (enumerator == null) {
-            return;
-        }
-
-        FileInfo? info;
-        while ((info = enumerator.next_file ()) != null) {
-            if (!info.get_attribute_boolean (FileAttribute.ACCESS_CAN_EXECUTE)) {
-                continue;
-            }
-            var type_ = info.get_file_type ();
-            if (type_ != FileType.REGULAR) {
-                continue;
-            }
-
-            var script = Path.build_filename (hooks_dir.get_path (), info.get_name ());
-
-            var rs_env = new string[env.length];
-
-            for (var i = 0; i < env.length; i++) {
-                rs_env[i] = "READY_SET_" + env[i];
-            }
-
-            if (!(yield env_exec (script, rs_env))) {
-                warning ("Failed to exec hook '%s'", script);
-            }
-        }
-    }
 
     public bool in_group (string group_name) {
         unowned Posix.Passwd? passwd = Posix.getpwuid (Posix.getuid ());

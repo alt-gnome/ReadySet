@@ -6,5 +6,5 @@ Set input sources.
 
 | Variable                 | Description                        | Default value |
 | -------------------------|------------------------------------|---------------|
-| `keyboard-input-sources` | input sources                      |               |
-| `keyboard-preview-bin`   | binary name for xkb layout preview | tecla         |
+| `keyboard.input-sources` | input sources                      |               |
+| `keyboard.preview-bin`   | binary name for xkb layout preview | tecla         |

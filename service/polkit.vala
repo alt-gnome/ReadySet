@@ -18,31 +18,28 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Test/ui/allow-page.ui")]
-public sealed class Test.AllowPage : ReadySet.BasePage {
+namespace ReadySet {
 
-    bool _accessible = true;
-    public override bool accessible {
-        get {
-            return _accessible;
+    void polkit_check (BusName sender, string action_id) throws DBusError {
+        Polkit.AuthorizationResult result;
+
+        try {
+            var authority = Polkit.Authority.get_sync (null);
+            var subject = new Polkit.SystemBusName (sender);
+            result = authority.check_authorization_sync (
+                subject,
+                action_id,
+                null,
+                Polkit.CheckAuthorizationFlags.ALLOW_USER_INTERACTION,
+                null
+            );
+
+        } catch (Error e) {
+            throw new DBusError.ACCESS_DENIED ("Failed to check authorization: " + e.message);
         }
-        protected set {
-            _accessible = value;
+
+        if (!result.get_is_authorized ()) {
+            throw new DBusError.ACCESS_DENIED ("Not authorized");
         }
-    }
-
-    construct {
-        Addin.get_instance ().context.data_changed.connect (context_data_changed);
-        update_acessible ();
-    }
-
-    void context_data_changed (string key) {
-        if (key == "tests.accessible") {
-            update_acessible ();
-        }
-    }
-
-    inline void update_acessible () {
-        accessible = Addin.get_instance ().context.get_boolean ("tests.accessible");
     }
 }

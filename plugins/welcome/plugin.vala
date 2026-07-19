@@ -45,8 +45,8 @@ public class Welcome.Addin : ReadySet.StepAddin {
     public async override void init_once () {
         //  Welcome page exists for situations where language page
         //  Doesn't needed or just useless.
-        if (context.has_key ("step-language-enabled")) {
-            context.set_boolean ("step-language-enabled", false);
+        if (context.has_key ("steps.language.enabled")) {
+            context.set_boolean ("steps.language.enabled", false);
         }
     }
 }
