@@ -22,7 +22,7 @@ namespace ReadySet {
 
     const string[] GOOD_TYPES = { "pre", "post" };
 
-    const string[] GOOD_TARGETS = { "initial-setip", "installer" };
+    const string[] GOOD_TARGETS = { "initial-setup", "installer" };
 
     void check_type_target (string type_, string target) throws Error {
         if (!(type_ in GOOD_TYPES)) {
