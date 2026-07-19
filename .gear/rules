@@ -1,3 +1,4 @@
 spec: altlinux/ready-set.spec
+copy: altlinux/ready-set.macros
 tar: v@version@:.
 diff: v@version@:. . exclude=.gear exclude=altlinux
