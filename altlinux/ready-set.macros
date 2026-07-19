@@ -1,0 +1,12 @@
+%__ready_set_datadir %_datadir/ready-set
+%__ready_set_libdir %_libdir/ready-set
+
+%ready_set_user_pre_hooks_dir %__ready_set_datadir/initial-setup-pre-hooks/user/
+%ready_set_user_post_hooks_dir %__ready_set_datadir/initial-setup-post-hooks/user/
+%ready_set_system_pre_hooks_dir %__ready_set_datadir/initial-setup-pre-hooks/system/
+%ready_set_system_post_hooks_dir %__ready_set_datadir/initial-setup-post-hooks/system/
+%ready_set_installer_pre_hooks %__ready_set_datadir/installer-pre-hooks/system/
+%ready_set_installer_post_hooks %__ready_set_datadir/installer-post-hooks/system/
+
+%ready_set_steps_plugins_dir %__ready_set_libdir/plugins/steps
+%ready_set_installers_plugins_dir %__ready_set_libdir/plugins/installers
