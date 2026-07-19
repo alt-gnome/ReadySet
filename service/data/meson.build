@@ -37,7 +37,7 @@ configure_file(
   install_dir: sysconfdir / 'dbus-1' / 'system.d'
 )
 
-# User hooks works only for service user under which executed initial-setip mode
+# User hooks works only for service user under which executed initial-setup mode
 # Needs for phrog, for removing ready-set from first-run gsetting
 install_emptydir(user_pre_hooks_dir)
 install_emptydir(user_post_hooks_dir)
