@@ -39,10 +39,10 @@ configure_file(
 
 # User hooks works only for service user under which executed initial-setip mode
 # Needs for phrog, for removing ready-set from first-run gsetting
-install_emptydir(datadir / meson.project_name() / 'pre-hooks' / 'user')
-install_emptydir(datadir / meson.project_name() / 'post-hooks' / 'user')
+install_emptydir(user_pre_hooks_dir)
+install_emptydir(user_post_hooks_dir)
 # Works in installer or initial-setup modes
-install_emptydir(datadir / meson.project_name() / 'pre-hooks' / 'system')
-install_emptydir(datadir / meson.project_name() / 'post-hooks' / 'system')
-install_emptydir(datadir / meson.project_name() / 'installer-pre-hooks' / 'system')
-install_emptydir(datadir / meson.project_name() / 'installer-post-hooks' / 'system')
+install_emptydir(system_pre_hooks_dir)
+install_emptydir(system_post_hooks_dir)
+install_emptydir(installer_pre_hooks)
+install_emptydir(installer_post_hooks)

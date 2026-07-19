@@ -60,8 +60,18 @@ libexecdir = prefix / get_option('libexecdir')
 rulesdir = datadir / 'polkit-1' / 'rules.d'
 localstatedir = prefix / get_option('localstatedir')
 
-steps_plugins_dir = libdir / meson.project_name() / 'plugins' / 'steps'
-installers_plugins_dir = libdir / meson.project_name() / 'plugins' / 'installers'
+pkgdata_dir = datadir / meson.project_name()
+pkglib_dir = libdir / meson.project_name()
+
+user_pre_hooks_dir = pkgdata_dir / 'pre-hooks' / 'user'
+user_post_hooks_dir = pkgdata_dir / 'post-hooks' / 'user'
+system_pre_hooks_dir = pkgdata_dir / 'pre-hooks' / 'system'
+system_post_hooks_dir = pkgdata_dir / 'post-hooks' / 'system'
+installer_pre_hooks = pkgdata_dir / 'installer-pre-hooks' / 'system'
+installer_post_hooks = pkgdata_dir / 'installer-post-hooks' / 'system'
+
+steps_plugins_dir = pkglib_dir / 'plugins' / 'steps'
+installers_plugins_dir = pkglib_dir / 'plugins' / 'installers'
 
 global_conf = configuration_data()
 global_conf.set_quoted('NAME', meson.project_name())
