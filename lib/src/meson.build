@@ -121,8 +121,7 @@ pkgconfig.generate(
   subdirs: [ librs_versioned_name ],
   description: 'ReadySet library',
   variables: [
-    'datadir=' + datadir.replace(prefix, '${prefix}'),
-    'pkgdata_dir=' + pkgdata_dir.replace(datadir, '${datadir}'),
+    'pkgdata_dir=' + pkgdata_dir.replace(prefix, '${prefix}'),
     'pkglib_dir=' + pkglib_dir.replace(libdir, '${libdir}'),
     'user_pre_hooks_dir=' + user_pre_hooks_dir.replace(pkgdata_dir, '${pkgdata_dir}'),
     'user_post_hooks_dir=' + user_post_hooks_dir.replace(pkgdata_dir, '${pkgdata_dir}'),
