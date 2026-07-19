@@ -37,12 +37,12 @@ public sealed class Test.AllowPage : ReadySet.BasePage {
     }
 
     void context_data_changed (string key) {
-        if (key == "test.accessible") {
+        if (key == "tests.accessible") {
             update_acessible ();
         }
     }
 
     inline void update_acessible () {
-        accessible = Addin.get_instance ().context.get_boolean ("test.accessible");
+        accessible = Addin.get_instance ().context.get_boolean ("tests.accessible");
     }
 }
