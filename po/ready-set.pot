@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-18 01:15+0000\n"
+"POT-Creation-Date: 2026-07-20 20:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -89,7 +89,7 @@ msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
 #. It's not json string, just return message
-#: lib/src/lib-utils.vala:164
+#: lib/src/lib-utils-internal.vala:47
 msgid "Something went wrong"
 msgstr ""
 
@@ -107,9 +107,6 @@ msgid "No input sources selected"
 msgstr ""
 
 #: plugins/keyboard/data/ui/current-input-sources.blp:61
-msgid "Add input-source"
-msgstr ""
-
 #: plugins/keyboard/data/ui/input-sources-dialog.blp:28
 msgid "Add input source"
 msgstr ""
