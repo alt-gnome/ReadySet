@@ -31,3 +31,4 @@ fonts-ttf-adwaita
 gcc
 gettext-devel
 graphviz
+gcovr

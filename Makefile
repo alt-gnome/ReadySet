@@ -12,7 +12,7 @@ ifeq ($(PM),)
 $(error Package manager not found)
 endif
 
-.PHONY: setup setup-ci install compile test lint lint-fix install-deps
+.PHONY: setup setup-ci install compile test lint lint-fix install-deps coverage
 
 install-deps:
 	$(SUDO) $(PM) update || true
@@ -20,10 +20,10 @@ install-deps:
 
 setup: install-deps
 	rm -rf _build
-	meson setup _build --prefix=/usr --auto-features=enabled -Dnightly=true 
+	meson setup _build --prefix=/usr --auto-features=enabled -Dnightly=true
 
 setup-ci: install-deps
-	meson setup --wipe _build --prefix=/usr --auto-features=enabled -Dnightly=true -Dwith_lib_documentation=true
+	meson setup --wipe _build --prefix=/usr --auto-features=enabled -Dnightly=true -Dwith_lib_documentation=true -Db_coverage=true
 
 compile:
 	meson compile -C _build
@@ -34,8 +34,13 @@ install: compile
 uninstall:
 	$(SUDO) ninja uninstall -C _build
 
-test:
+test: compile
 	meson test -C _build
+
+coverage: test
+	mkdir -p _build/meson-logs/coveragereport
+	gcovr _build -x -o _build/meson-logs/coverage.xml
+	gcovr _build --html --html-details -o _build/meson-logs/coveragereport/index.html
 
 lint:
 	io.elementary.vala-lint -d .
