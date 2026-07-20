@@ -5,7 +5,7 @@ data/ui/nothing-to-show.blp
 data/ui/steps-main-page.blp
 data/ui/window-content.blp
 lib/src/base/base-page.vala
-lib/src/lib-utils.vala
+lib/src/lib-utils-internal.vala
 plugins/keyboard/data/ui/current-input-row.blp
 plugins/keyboard/data/ui/current-input-sources.blp
 plugins/keyboard/data/ui/input-row.blp
