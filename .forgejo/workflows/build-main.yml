@@ -4,10 +4,8 @@ on:
   pull_request:
   workflow_dispatch:
   push:
-    branches-ignore:
-    - 'altlinux'
-    tags-ignore:
-      - '*'
+    branches:
+    - 'main'
 
 jobs:
   lint-vala:
@@ -60,14 +58,14 @@ jobs:
         run: make test
 
       - name: Setup git
-        if: github.event_name != 'pull_request' && github.ref_name == 'main'
+        if: github.event_name != 'pull_request'
         run: |
           git config --global user.name "ReadySet Helper Bot"
           git config --global user.email "ready-set-helper-bot@noreply.altlinux.space"
           git config --global --add safe.directory '*'
 
       - name: Update pot file for Weblate
-        if: github.event_name != 'pull_request' && github.ref_name == 'main'
+        if: github.event_name != 'pull_request'
         run: |
           has_real_changes() {
             git diff --cached -U0 | grep -E '^[+-]' \
@@ -98,7 +96,7 @@ jobs:
           git push
 
       - name: Deploy pages
-        if: github.event_name != 'pull_request' && github.ref_name == 'main'
+        if: github.event_name != 'pull_request'
         uses: actions/deploy-pages@v1
         with:
           directory: ./_build/lib/doc/ready-set-vala
@@ -106,6 +104,7 @@ jobs:
   get-release:
     name: Get release for RPM package
     runs-on: als-tiny
+    if: github.event_name != 'pull_request'
 
     outputs:
       release: ${{ steps.get_release.outputs.release }}
@@ -116,7 +115,7 @@ jobs:
           echo "release=$(date +%s)" >> $FORGEJO_OUTPUT
 
   rpm-build:
-    if: github.event_name != 'pull_request' && github.ref_name == 'main'
+    if: github.event_name != 'pull_request'
     name: RPM build for ${{ matrix.branch }}.${{ matrix.arch }} and uploading
     runs-on: ${{ matrix.runner }}
     container:
