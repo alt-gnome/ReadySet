@@ -526,7 +526,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
         if (force_layout != null) {
             Adw.Breakpoint? force_breakpoint = null;
-            switch (LayoutMode.from_string (force_layout)) {
+            switch (layout_mode_from_string (force_layout)) {
                 case BIG:
                     force_breakpoint = big_breakpoint;
                     break;

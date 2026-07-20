@@ -37,7 +37,7 @@
  *
  * @see ReadySet.StepAddin
  */
-public abstract class ReadySet.InstallerAddin : ExtensionBase {
+public partial abstract class ReadySet.InstallerAddin : ExtensionBase {
 
     /**
      * All available pages that can be built via
@@ -62,9 +62,5 @@ public abstract class ReadySet.InstallerAddin : ExtensionBase {
      */
     public virtual BasePage? build_page (string id) {
         return null;
-    }
-
-    internal bool has_page (string id) {
-        return id in all_pages;
     }
 }

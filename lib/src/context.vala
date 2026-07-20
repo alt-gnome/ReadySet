@@ -231,7 +231,7 @@ public class ReadySet.ContextVarInfo : Object {
  *
  * Store application state and varoius variables between plugins.
  */
-public class ReadySet.Context : Object {
+public partial class ReadySet.Context : Object {
 
     /**
      * Whether application run in sandbox mode or not. Plugon should hold it
@@ -371,127 +371,6 @@ public class ReadySet.Context : Object {
         new_val.set_boolean (!from_value.get_boolean ());
         to_value.set_boxed (&new_val);
         return true;
-    }
-
-    internal HashTable<string, string> get_raw_string () {
-        var raw_data = new HashTable<string, string> (str_hash, str_equal);
-
-        foreach (var key in get_keys ()) {
-            string str;
-            switch (data[key].value_type) {
-                case ContextType.STRING:
-                    str = get_string (key);
-                    break;
-                case ContextType.STRV:
-                    str = string.joinv (",", get_strv (key));
-                    break;
-                case ContextType.INT:
-                    str = get_int (key).to_string ();
-                    break;
-                case ContextType.DOUBLE:
-                    str = get_double (key).to_string ();
-                    break;
-                case ContextType.BOOLEAN:
-                    str = get_boolean (key).to_string ();
-                    break;
-                case ContextType.OBJECT:
-                    str = get_object (key).string_format;
-                    break;
-                default:
-                    assert_not_reached ();
-            }
-            raw_data[key] = str;
-        }
-
-        return raw_data;
-    }
-
-    internal void set_raw (string key, string value) {
-        if (!check_key (key)) {
-            return;
-        }
-
-        var temp_kf = new KeyFile ();
-        temp_kf.set_list_separator (',');
-
-        const string INTERNAL_GROUP = "raw-group";
-
-        temp_kf.set_value (INTERNAL_GROUP, key, value);
-        try {
-            load_from_keyfile (temp_kf, INTERNAL_GROUP);
-        } catch (Error e) {
-            warning ("Error setting row value for key %s: %s", key, e.message);
-        }
-    }
-
-    //  internal HashTable<string, Value?> get_raw_context () {
-    //      var raw_data = new HashTable<string, Value?> (str_hash, str_equal);
-
-    //      foreach (var e in data) {
-    //          var val = Value (e.value.value_type.to_gtype ());
-    //          var rv = e.value.real_value;
-    //          rv.copy (ref val);
-    //          raw_data[e.key] = val;
-    //      }
-
-    //      return raw_data;
-    //  }
-
-    internal void register_vars (string module_name, HashTable<string, ContextVarInfo> vars) {
-        vars.foreach ((key, info) => {
-            var module_key = "%s.%s".printf (module_name, key);
-
-            if (data.has_key (module_key)) {
-                warning ("Key %s already exists in context, it will be overwriting", module_key);
-            }
-            debug ("Registering key %s with type %s", module_key, info.value_type.to_string ());
-            data[module_key] = new ValueObject (info);
-            data[module_key].data_key = module_key;
-            if (info.getter_func != null) {
-                data[module_key].set_getter (info.getter_func);
-            }
-            if (info.setter_func != null) {
-                data[module_key].set_setter (info.setter_func);
-            }
-            data[module_key].notify["real-value"].connect (real_value_changed);
-        });
-    }
-
-    void real_value_changed (Object caller, ParamSpec param) {
-        data_changed (((ValueObject) caller).data_key);
-    }
-
-    internal void load_from_keyfile (KeyFile keyfile, string group_name) throws Error {
-        if (!keyfile.has_group (group_name)) {
-            debug ("Keyfile doesn't have group '%s'", group_name);
-            return;
-        }
-
-        foreach (var key in keyfile.get_keys (group_name)) {
-            if (!data.has_key (key)) {
-                warning ("Key %s not found in context, it will be ignored", key);
-                continue;
-            }
-
-            Value val;
-
-            if (data[key].value_type == OBJECT) {
-                val = Object.new (
-                    data[key].object_type,
-                    "string-format", keyfile.get_string (group_name, key) ?? ""
-                );
-
-            } else {
-                val = kf_value_to_value (
-                    keyfile,
-                    group_name,
-                    key,
-                    data[key].value_type.to_gtype ()
-                );
-            }
-
-            set_value (key, val);
-        }
     }
 
     bool check_key (string key, ContextType? value_type = null) {

@@ -20,30 +20,11 @@
 
 namespace ReadySet {
 
-    internal void init_lib_css () {
-        var provider = new Gtk.CssProvider ();
-        provider.load_from_resource ("/org/altlinux/ReadySet/Lib/style.css");
-        Gtk.StyleContext.add_provider_for_display (
-            Gdk.Display.get_default (),
-            provider,
-            Gtk.STYLE_PROVIDER_PRIORITY_THEME
-        );
-    }
-
     public enum LayoutMode {
         VERTICAL,
         HORIZONTAL,
         BIG,
         SMALL;
-
-        internal static LayoutMode from_string (string str) {
-            unowned EnumClass enum_class = (EnumClass) typeof (LayoutMode).class_peek ();
-            var enum_value = enum_class.get_value_by_nick (str);
-            if (enum_value == null) {
-                error ("Unsupported enum value: %s", str);
-            }
-            return (LayoutMode) enum_value.value;
-        }
     }
 
     public enum Mode {
@@ -156,14 +137,6 @@ namespace ReadySet {
             return new ApplyError.BASE (new ApplyErrorData (message, description).to_json ());
         }
 
-        internal static ApplyErrorData to_data (ApplyError error) {
-            try {
-                return Serialize.JsonWorker.simple_from_json<ApplyErrorData> (error.message);
-            } catch (Serialize.Error e) {
-                //  It's not json string, just return message
-                return new ApplyErrorData (_("Something went wrong"), error.message);
-            }
-        }
     }
 
     /**
@@ -201,19 +174,4 @@ namespace ReadySet {
         yield process.wait_check_async (cancellable);
     }
 
-    internal Value kf_value_to_value (KeyFile keyfile, string group_name, string key, Type value_type) throws Error {
-        if (value_type == Type.BOOLEAN) {
-            return keyfile.get_boolean (group_name, key);
-        } else if (value_type == Type.STRING) {
-            return keyfile.get_string (group_name, key);
-        } else if (value_type == typeof (string[])) {
-            return keyfile.get_string_list (group_name, key);
-        } else if (value_type == Type.INT || value_type == Type.INT64) {
-            return keyfile.get_int64 (group_name, key);
-        } else if (value_type == Type.DOUBLE) {
-            return keyfile.get_double (group_name, key);
-        } else {
-            error ("Unknown keyfile desired type %s for key %s", value_type.name (), key);
-        }
-    }
 }

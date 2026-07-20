@@ -16,7 +16,7 @@ test('plugin-manager',
         'test-plugin-manager.vala',
         'test-config.vapi',
       ) + plugin_manager_sources,
-      librs_sources_with_resources,
+      librs_sources_with_app_tests,
     ],
     include_directories: [
       test_plugin_manager_config_h_dir,

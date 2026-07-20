@@ -23,29 +23,11 @@
  * {@link ReadySet.InstallerAddin} and 
  * {@link ReadySet.StepAddin}.
  */
-public abstract class ReadySet.ExtensionBase : Peas.ExtensionBase {
+public partial abstract class ReadySet.ExtensionBase : Peas.ExtensionBase {
 
-    protected virtual string? resource_base_path {
+    public virtual string? resource_base_path {
         get {
             return null;
-        }
-    }
-
-    internal void load_css_for_display (Gdk.Display display) {
-        var provider = new Gtk.CssProvider ();
-        if (resource_base_path != null) {
-            try {
-                var bytes = resources_lookup_data (
-                    Path.build_filename (resource_base_path, "style.css"),
-                    ResourceLookupFlags.NONE
-                );
-
-                provider = new Gtk.CssProvider ();
-                provider.load_from_bytes (bytes);
-                Gtk.StyleContext.add_provider_for_display (display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-            } catch (Error e) {
-                debug ("style.css doesn't provides by resources");
-            }
         }
     }
 

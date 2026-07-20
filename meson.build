@@ -19,6 +19,7 @@ add_project_arguments(
 
 add_project_arguments(
   '--fatal-warnings',
+  '--enable-experimental',
   language: 'vala',
 )
 

@@ -119,7 +119,7 @@ public sealed class ReadySet.InstallerEndPage : Adw.Bin {
                 stack.visible_child_name = "ready";
 
             } catch (ApplyError e) {
-                var apply_error_data = ApplyError.to_data (e);
+                var apply_error_data = apply_error_to_data (e);
 
                 error_status_page.title = apply_error_data.message;
                 error_status_page.description = _("Error message: %s").printf (apply_error_data.description);
