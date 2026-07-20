@@ -17,6 +17,11 @@ add_project_arguments(
   language: 'c',
 )
 
+add_project_arguments(
+  '--fatal-warnings',
+  language: 'vala',
+)
+
 accountsservice_desktop_dep = dependency('accountsservice')
 gdm_dep = dependency('gdm', required: get_option('gdm'))
 gee_dep = dependency('gee-0.8')
