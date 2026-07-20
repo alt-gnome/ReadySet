@@ -30,8 +30,6 @@ public sealed class ReadySet.Application: Adw.Application {
     internal PluginManager plugin_manager { get; private set; }
     internal Context context { get; private set; }
 
-    Gee.ArrayList<Binding> context_bindings = new Gee.ArrayList<Binding> ();
-
     public bool can_close {
         get {
             return Config.NIGHTLY || options_handler.can_close;
