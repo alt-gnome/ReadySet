@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-18 01:15+0000\n"
+"POT-Creation-Date: 2026-07-20 20:54+0000\n"
 "PO-Revision-Date: 2026-06-18 14:42+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -92,7 +92,7 @@ msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
 #. It's not json string, just return message
-#: lib/src/lib-utils.vala:164
+#: lib/src/lib-utils-internal.vala:47
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
@@ -111,9 +111,6 @@ msgid "No input sources selected"
 msgstr "Не выбраны источники ввода"
 
 #: plugins/keyboard/data/ui/current-input-sources.blp:61
-msgid "Add input-source"
-msgstr ""
-
 #: plugins/keyboard/data/ui/input-sources-dialog.blp:28
 #, fuzzy
 msgid "Add input source"
