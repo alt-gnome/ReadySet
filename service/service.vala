@@ -25,7 +25,7 @@ public sealed class ReadySet.Service : Object {
         check_type_target (type_, target);
         polkit_check (sender, "org.altlinux.ReadySet.GetAllHooks");
 
-        return real_get_all_hooks (type_, target);
+        return get_all_hooks_from_dir (get_system_hooks_dir (type_, target));
     }
 
     /**

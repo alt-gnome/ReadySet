@@ -156,7 +156,7 @@ public sealed class ReadySet.Application: Adw.Application {
             if (context.mode == Mode.INITIAL_SETUP) {
                 hooks_target = "initial-setup";
 
-                var pre_hooks_dir = get_system_hooks_dir (hooks_type, hooks_target);
+                var pre_hooks_dir = get_user_hooks_dir (hooks_type, hooks_target);
 
                 foreach (var name in ReadySet.get_all_hooks_from_dir (pre_hooks_dir)) {
                     ReadySet.real_exec_hook_from_dir (pre_hooks_dir, name);
