@@ -9,7 +9,7 @@ endif
 
 foreach pwcheck_backend : password_check_backend
   plugin_user_deps = [
-    accountsservice_desktop_dep,
+    accountsservice_dep,
     gnome_desktop_dep,
     librs_dep,
     posix_dep,
