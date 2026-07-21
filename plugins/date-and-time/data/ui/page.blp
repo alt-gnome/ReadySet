@@ -4,7 +4,6 @@ using Adw 1;
 template $DateAndTimePage: $ReadySetBasePage {
   title-header: _("Date & Time");
   title-icon-name: "preferences-system-time-symbolic";
-
   notify::time-selected => $update_is_ready();
   notify::date-selected => $update_is_ready();
 
