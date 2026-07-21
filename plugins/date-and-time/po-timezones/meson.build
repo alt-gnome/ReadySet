@@ -1,1 +1,1 @@
-i18n.gettext(control_center_gettext + '-timezones', preset: 'glib')
+i18n.gettext('ready-set-date-and-time-timezones', preset: 'glib')
