@@ -1,0 +1,66 @@
+calendar {
+  background-color: var(--card-bg-color);
+  border-radius: 12px;
+  border-color: transparent;
+  padding: 12px;
+}
+
+calendar header {
+  border: 0;
+  margin-bottom: 6px;
+}
+
+calendar header > * {
+  background-color: var(--card-bg-color);
+}
+
+calendar header :nth-child(1),
+calendar header :nth-child(4) {
+  border-bottom-left-radius: 12px;
+  border-top-left-radius: 12px;
+}
+
+calendar header :nth-child(3),
+calendar header :nth-child(6) {
+  border-bottom-right-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+calendar header :nth-child(3) {
+  margin-right: 3px;
+}
+
+calendar header :nth-child(4) {
+  margin-left: 3px;
+}
+
+calendar grid label:focus {
+  border-radius: 9px;
+}
+
+.shadow-up {
+  box-shadow: 0px -20px 15px 15px var(--window-bg-color);
+  background-color: var(--window-bg-color);
+}
+
+.shadow-down {
+  box-shadow: 0px 20px 15px 15px var(--window-bg-color);
+  background-color: var(--window-bg-color);
+}
+
+@keyframes blink-animation {
+  0%,
+  100% {
+    background-color: transparent;
+    color: white;
+  }
+
+  50% {
+    background-color: white;
+    color: black;
+  }
+}
+
+.highlight:focus {
+  animation: blink-animation 1s infinite;
+}
