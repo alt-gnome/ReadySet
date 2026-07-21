@@ -217,7 +217,7 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
             a += item.upper.to_string ().length;
 
             if (position < a) {
-                a -= position;
+                a -= position + 1;
                 break;
             }
 
@@ -227,9 +227,10 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
         var left = Math.pow (10, a+1);
         var right = Math.pow (10, a);
 
-        var value = old_value / left * left // 1234 -> 1200
+        var value = (int) (old_value / left) * left // 1234 -> 1200
                     + new_value * right     //   5  -> 0050
                     + old_value % right;    // 1234 -> 0004
+        adjustment.value = value;
 
         update_text ();
 
