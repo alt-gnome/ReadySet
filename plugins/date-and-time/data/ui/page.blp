@@ -26,20 +26,21 @@ template $DateAndTimePage: $ReadySetBasePage {
         Adw.PreferencesGroup {
           title: _("Set time zone");
 
-          Adw.SwitchRow automatic_timezone_switch {
-            title: _("Automatic time zone");
-            active: bind template.automatic-timezone bidirectional;
-          }
+          Adw.ExpanderRow manual_timezone_switch {
+            title: _("Manual setting of time zone");
+            enable-expansion: bind template.manual-timezone bidirectional;
+            expanded: bind manual_timezone_switch.enable-expansion;
+            show-enable-switch: true;
 
-          Adw.ActionRow {
-            activated => $on_timezone_row_clicked();
-            activatable: true;
-            sensitive: bind automatic_timezone_switch.active inverted;
-            title: bind template.timezone_label;
+            Adw.ActionRow {
+              activated => $on_timezone_row_clicked();
+              activatable: true;
+              title: bind template.timezone_label;
 
-            [suffix]
-            Image {
-              icon-name: "go-next-symbolic";
+              [suffix]
+              Image {
+                icon-name: "go-next-symbolic";
+              }
             }
           }
         }
@@ -52,20 +53,21 @@ template $DateAndTimePage: $ReadySetBasePage {
         Adw.PreferencesGroup {
           title: _("Set date and time");
 
-          Adw.SwitchRow automatic_date_and_time_switch {
-            title: _("Automatic date and time");
-            active: bind template.automatic-date-and-time bidirectional;
-          }
+          Adw.ExpanderRow manual_date_and_time_switch {
+            title: _("Manual setting of date and time");
+            enable-expansion: bind template.manual-date-and-time bidirectional;
+            expanded: bind manual_date_and_time_switch.enable-expansion;
+            show-enable-switch: true;
 
-          Adw.ActionRow {
-            activated => $on_date_and_time_row_clicked();
-            activatable: true;
-            sensitive: bind automatic_date_and_time_switch.active inverted;
-            title: bind template.date_and_time_label;
+            Adw.ActionRow {
+              activated => $on_date_and_time_row_clicked();
+              activatable: true;
+              title: bind template.date_and_time_label;
 
-            [suffix]
-            Image {
-              icon-name: "go-next-symbolic";
+              [suffix]
+              Image {
+                icon-name: "go-next-symbolic";
+              }
             }
           }
         }
