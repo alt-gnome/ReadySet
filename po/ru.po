@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: rirusha@altlinux.org\n"
 "POT-Creation-Date: 2026-07-20 20:54+0000\n"
-"PO-Revision-Date: 2026-06-18 14:42+0000\n"
-"Last-Translator: rirusha <rirusha@altlinux.org>\n"
+"PO-Revision-Date: 2026-07-20 21:27+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
 "ready-set/ru/>\n"
 "Language: ru\n"
@@ -102,9 +102,8 @@ msgid "Preview"
 msgstr "Превью"
 
 #: plugins/keyboard/data/ui/current-input-sources.blp:20
-#, fuzzy
 msgid "Current input sources"
-msgstr "Не выбраны источники ввода"
+msgstr "Текущие раскладки"
 
 #: plugins/keyboard/data/ui/current-input-sources.blp:46
 msgid "No input sources selected"
@@ -112,9 +111,8 @@ msgstr "Не выбраны источники ввода"
 
 #: plugins/keyboard/data/ui/current-input-sources.blp:61
 #: plugins/keyboard/data/ui/input-sources-dialog.blp:28
-#, fuzzy
 msgid "Add input source"
-msgstr "Не выбраны источники ввода"
+msgstr "Добавить раскладку"
 
 #: plugins/keyboard/data/ui/input-sources-dialog.blp:85
 #: plugins/language/data/ui/box.blp:58
@@ -140,11 +138,11 @@ msgstr "Вы можете указать дополнительный спосо
 
 #: plugins/keyboard/data/ui/preview-dialog.blp:13
 msgid "Show tecla preview"
-msgstr ""
+msgstr "Показать раскладку через tecla"
 
 #: plugins/keyboard/data/ui/preview-dialog.blp:32
 msgid "Try writing"
-msgstr ""
+msgstr "Попробуйте написать"
 
 #: plugins/keyboard/enums.vala:72 plugins/keyboard/layout-switch-button.vala:62
 msgid "None"
