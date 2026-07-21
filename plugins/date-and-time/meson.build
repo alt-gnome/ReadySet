@@ -1,6 +1,7 @@
 plugin_date_and_time_deps = [
   librs_dep,
   gnome_desktop_dep,
+  libcase_dep,
 ]
 
 plugin_date_and_time_sources = files(

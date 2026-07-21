@@ -36,6 +36,7 @@ posix_dep = meson.get_compiler('vala').find_library('posix')
 xkb_dep = dependency('xkbcommon')
 libserialize_dep = dependency('libserialize-7', version: '>= 7.9')
 gweather_dep = dependency('gweather4')
+libcase_dep = dependency('libcase-0', fallback: ['libcase', 'lib_dep'])
 
 libversion = meson.project_version().replace('.rc', '')
 soversion = libversion.split('.')[0]
