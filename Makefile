@@ -7,6 +7,7 @@ else
 endif
 
 PM := $(shell if command -v apm >/dev/null 2>&1; then echo 'apm s'; elif command -v apt-get >/dev/null 2>&1; then echo apt-get; fi)
+DEPS_FILE := ./build-aux/altlinux/build-deps
 
 ifeq ($(PM),)
 $(error Package manager not found)
@@ -15,8 +16,19 @@ endif
 .PHONY: setup setup-ci install compile test lint lint-fix install-deps coverage
 
 install-deps:
-	$(SUDO) $(PM) update || true
-	$(SUDO) xargs $(PM) install -y < ./build-aux/altlinux/build-deps || true
+	@MISSING=0; \
+	for pkg in $$(cat $(DEPS_FILE) 2>/dev/null); do \
+		[ -z "$$pkg" ] && continue; \
+		if ! rpm -q "$$pkg" >/dev/null 2>&1 && ! dpkg -s "$$pkg" 2>/dev/null | grep -q "Status: install ok installed"; then \
+			MISSING=1; break; \
+		fi; \
+	done; \
+	if [ $$MISSING -eq 1 ]; then \
+		$(SUDO) $(PM) update || true; \
+		$(SUDO) xargs $(PM) install -y < $(DEPS_FILE) || true; \
+	else \
+		echo "All dependencies are already installed."; \
+	fi
 
 setup: install-deps
 	rm -rf _build
