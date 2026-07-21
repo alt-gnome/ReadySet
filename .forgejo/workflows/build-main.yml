@@ -160,7 +160,7 @@ jobs:
         run: |
           gear-hsh --commit --no-sisyphus-check=gpg,packager
 
-      - uses: actions/upload-rpm-action@main
+      - uses: actions/upload-rpm-action@7ed97151a2a1f53a5b97f8a9f20778f771bbae59
         name: Upload RPMs
         if: github.event_name != 'pull_request'
         with:
