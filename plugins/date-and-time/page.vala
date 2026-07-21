@@ -26,13 +26,50 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
     public string timezone_label { get; set; }
     public string date_and_time_label { get; set; }
 
-    public bool automatic_timezone { get; set; }
-    public bool automatic_date_and_time { get; set; }
+    bool _automatic_timezone = Addin.get_instance ().context.get_boolean ("date-and-time-automatic-timezone");
+    public bool automatic_timezone {
+        get {
+            return _automatic_timezone;
+        }
+        set {
+            _automatic_timezone = value;
+            Addin.get_instance ().context.set_boolean ("date-and-time-automatic-timezone", _automatic_timezone);
+            update_is_ready ();
+        }
+    }
+
+    bool _automatic_date_and_time = Addin.get_instance ().context.get_boolean ("date-and-time-automatic-datetime");
+    public bool automatic_date_and_time {
+        get {
+            return _automatic_date_and_time;
+        }
+        set {
+            _automatic_date_and_time = value;
+            Addin.get_instance ().context.set_boolean ("date-and-time-automatic-datetime", _automatic_date_and_time);
+            update_is_ready ();
+        }
+    }
 
     public Gtk.StringList timezone_model { get; set; default = new Gtk.StringList (null); }
 
-    TimeZone selected_timezone { get; set; }
-    DateTime selected_datetime { get; set; }
+    TimeZone _selected_timezone;
+    TimeZone selected_timezone {
+        get { return _selected_timezone; }
+        set {
+            _selected_timezone = value;
+            Addin.get_instance ().context.set_string ("date-and-time-timezone", _selected_timezone.get_identifier ());
+            update_is_ready ();
+        }
+    }
+    DateTime _selected_datetime;
+    DateTime selected_datetime {
+        get { return _selected_datetime; }
+        set {
+            _selected_datetime = value;
+            Addin.get_instance ().context.set_int ("date-and-time-datetime", _selected_datetime.to_unix ());
+            update_is_ready ();
+        }
+    }
 
     static construct {
         typeof (TimezoneList).ensure ();
@@ -45,6 +82,12 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
     construct {
         timezone_label = default_timezone_label;
         date_and_time_label = default_date_and_time_label;
+        update_is_ready ();
+    }
+
+    void update_is_ready () {
+        is_ready = (automatic_date_and_time || selected_datetime != null)
+                && (automatic_timezone || selected_timezone != null);
     }
 
     [GtkCallback]
@@ -75,7 +118,7 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         var dialog = new DateAndTime.DateAndTimeSelector ();
         dialog.present (this);
 
-        dialog.closed.connect (on_date_and_time_dialog_closed);
+        dialog.apply.connect (on_date_and_time_dialog_closed);
     }
 
     void on_date_and_time_dialog_closed (Adw.Dialog dialog) {
@@ -89,7 +132,7 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         var year = date_and_time_dialog.year;
 
         var datetime = new DateTime.local (year, month, day, hour, minute, 0);
-        date_and_time_label = datetime.format ("%H:%M %d.%m.%Y"); 
+        date_and_time_label = datetime.format ("%d.%m.%Y, %H:%M"); 
 
         selected_datetime = datetime;
     }

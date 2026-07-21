@@ -82,7 +82,7 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
               valign: center;
               label: "Apply";
 
-              clicked => $on_apply_button_clicked();
+              clicked => $on_time_apply_button_clicked();
             }
           };
         }
@@ -116,6 +116,34 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
           upper: 10000;
           step-increment: 1;
         };
+      }
+    }
+
+    Adw.PreferencesGroup {
+      Gtk.Box {
+        spacing: 9;
+        halign: center;
+
+        Gtk.Button {
+          styles [
+            "pill",
+          ]
+
+          label: _("Close");
+
+          clicked => $on_close_button_clicked();
+        }
+
+        Gtk.Button {
+          styles [
+            "suggested-action",
+            "pill",
+          ]
+
+          label: _("Apply");
+
+          clicked => $on_apply_button_clicked();
+        }
       }
     }
   }

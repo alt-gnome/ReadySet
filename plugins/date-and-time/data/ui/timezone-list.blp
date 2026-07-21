@@ -5,6 +5,8 @@ template $DateAndTimeTimezoneList: Adw.Dialog {
   title: _("Time zone");
   selected-item: bind single_selection.selected-item;
 
+  notify::selected-item => $on_selected_item_changed();
+
   Adw.ToolbarView {
     [top]
     Adw.HeaderBar {}
@@ -16,35 +18,54 @@ template $DateAndTimeTimezoneList: Adw.Dialog {
       SearchEntry search_entry {}
     }
 
-    ScrolledWindow {
-      propagate-natural-height: true;
-      propagate-natural-width: true;
+    Gtk.Stack stack {
+      Gtk.StackPage {
+        name: "results";
 
-      Adw.ClampScrollable {
-        ListView {
-          styles [
-            "navigation-sidebar",
-          ]
+        child: ScrolledWindow {
+          propagate-natural-height: true;
+          propagate-natural-width: true;
 
-          factory: BuilderListItemFactory {
-            template ListItem {
-              child: $DateAndTimeTimezoneListRow {
-                item: bind (template.item as <$DateAndTimeTimezoneListItem>);
+          Adw.ClampScrollable {
+            ListView list_view {
+              styles [
+                "navigation-sidebar",
+              ]
+
+              factory: BuilderListItemFactory {
+                template ListItem {
+                  child: $DateAndTimeTimezoneListRow {
+                    item: bind (template.item as <$DateAndTimeTimezoneListItem>);
+                  };
+                }
+              };
+
+              model: SingleSelection single_selection {
+                autoselect: false;
+
+                model: FilterListModel filter_list_model {
+                  notify::n-items => $on_filter_items_count_changed();
+
+                  model: bind template.model;
+
+                  filter: StringFilter {
+                    search: bind search_entry.text;
+                    expression: expr (item as <$DateAndTimeTimezoneListItem>).metainfo;
+                  };
+                };
               };
             }
-          };
+          }
+        };
+      }
 
-          model: SingleSelection single_selection {
-            model: FilterListModel {
-              model: bind template.model;
+      Gtk.StackPage {
+        name: "empty";
 
-              filter: StringFilter {
-                search: bind search_entry.text;
-                expression: expr (item as <$DateAndTimeTimezoneListItem>).metainfo;
-              };
-            };
-          };
-        }
+        child: Adw.StatusPage {
+          icon-name: "system-search-symbolic";
+          title: _("Nothing found");
+        };
       }
     }
   }

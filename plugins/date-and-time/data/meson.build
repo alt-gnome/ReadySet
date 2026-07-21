@@ -32,3 +32,8 @@ configure_file(
   install: true,
   install_dir: steps_plugins_dir
 )
+
+install_data(
+  files('org.altlinux.ReadySet.Plugin.DateAndTime.rules'),
+  install_dir: rulesdir,
+)

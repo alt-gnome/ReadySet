@@ -28,32 +28,18 @@ template $DateAndTimePage: $ReadySetBasePage {
 
           Adw.SwitchRow automatic_timezone_switch {
             title: _("Automatic time zone");
-            active: bind template.automatic_timezone;
+            active: bind template.automatic-timezone bidirectional;
           }
 
-          Adw.ButtonRow {
+          Adw.ActionRow {
             activated => $on_timezone_row_clicked();
+            activatable: true;
             sensitive: bind automatic_timezone_switch.active inverted;
-
-            Box {
-              Label {
-                label: bind template.timezone_label;
-                xalign: 0;
-                ellipsize: end;
-                use-markup: true;
-              }
-
-              Separator {
-                styles [
-                  "spacer",
-                ]
-
-                hexpand: true;
-              }
+            title: bind template.timezone_label;
               
-              Image {
-                icon-name: "go-next-symbolic";
-              }
+            [suffix]
+            Image {
+              icon-name: "go-next-symbolic";
             }
           }
         }
@@ -68,31 +54,18 @@ template $DateAndTimePage: $ReadySetBasePage {
 
           Adw.SwitchRow automatic_date_and_time_switch {
             title: _("Automatic date and time");
-            active: bind template.automatic_date_and_time;
+            active: bind template.automatic-date-and-time bidirectional;
           }
 
-          Adw.ButtonRow {
+          Adw.ActionRow {
             activated => $on_date_and_time_row_clicked();
+            activatable: true;
             sensitive: bind automatic_date_and_time_switch.active inverted;
+            title: bind template.date_and_time_label;
 
-            Box {
-              Label {
-                label: bind template.date_and_time_label;
-                xalign: 0;
-                ellipsize: end;
-              }
-
-              Separator {
-                styles [
-                  "spacer",
-                ]
-
-                hexpand: true;
-              }
-              
-              Image {
-                icon-name: "go-next-symbolic";
-              }
+            [suffix]
+            Image {
+              icon-name: "go-next-symbolic";
             }
           }
         }

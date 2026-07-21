@@ -1,5 +1,12 @@
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/DateAndTime/ui/timezone-list.ui")]
 public class DateAndTime.TimezoneList : Adw.Dialog {
+    [GtkChild]
+    unowned Gtk.Stack stack;
+    [GtkChild]
+    unowned Gtk.ListView list_view;
+    [GtkChild]
+    unowned Gtk.FilterListModel filter_list_model;
+
     public ListStore model { get; set; default = new ListStore (typeof (TimezoneListItem)); }
 
     Gee.ArrayList<TimezoneListItem> timezones = new Gee.ArrayList<TimezoneListItem> ();
@@ -47,7 +54,8 @@ public class DateAndTime.TimezoneList : Adw.Dialog {
                     region = region.split ("/")[0],
                     country = country,
                     city = city,
-                    utc_offset = clamp_value (utc_offset, -hours, hours),
+                    //utc_offset = clamp_value (utc_offset, -hours, hours),
+                    utc_offset = utc_offset,
                 };
 
                 if (!(item.metainfo in timezone_metainfos)) {
@@ -61,5 +69,19 @@ public class DateAndTime.TimezoneList : Adw.Dialog {
         while ((location = loc.next_child (location)) != null) {
             collect_timezones (location);
         }
+    }
+
+    [GtkCallback]
+    public void on_selected_item_changed () {
+        if (selected_item != null) {
+            close ();
+        }
+    }
+
+    [GtkCallback]
+    public void on_filter_items_count_changed () {
+        stack.visible_child_name = filter_list_model.get_n_items () != 0
+            ? "results"
+            : "empty";
     }
 }
