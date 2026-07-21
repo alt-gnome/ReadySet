@@ -1,16 +1,19 @@
 plugin_date_and_time_deps = [
   librs_dep,
+  gweather_dep
 ]
 
 plugin_date_and_time_sources = files(
   'page.vala',
   'plugin.vala',
+  'utils.vala',
   'date-and-time-selector.vala',
   'timezone-list.vala',
+  'timezone-list-row.vala',
   'infinity-carousel.vala',
 )
 
-plugin_date_and_time_pretty_name = 'Date and Time'
+plugin_date_and_time_pretty_name = 'Date & Time'
 plugin_date_and_time_name = 'date-and-time'
 
 plugin_date_and_time_c_args = [

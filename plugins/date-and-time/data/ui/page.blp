@@ -2,13 +2,11 @@ using Gtk 4.0;
 using Adw 1;
 
 template $DateAndTimePage: $ReadySetBasePage {
-  title-header: _("Date and Time");
+  title-header: _("Date & Time");
   title-icon-name: "preferences-system-time-symbolic";
 
-  notify::automatic_timezone => $on_automatic_timezone_changed();
-
   info: $ReadySetStatusPage {
-    title: _("Date and Time");
+    title: _("Date & Time");
     description: _("Select your time zone");
     icon-name: "preferences-system-time-symbolic";
   };
@@ -42,6 +40,7 @@ template $DateAndTimePage: $ReadySetBasePage {
                 label: bind template.timezone_label;
                 xalign: 0;
                 ellipsize: end;
+                use-markup: true;
               }
 
               Separator {
@@ -78,7 +77,7 @@ template $DateAndTimePage: $ReadySetBasePage {
 
             Box {
               Label {
-                label: bind template.date_label;
+                label: bind template.date_and_time_label;
                 xalign: 0;
                 ellipsize: end;
               }

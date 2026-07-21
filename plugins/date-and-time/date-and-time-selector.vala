@@ -8,8 +8,6 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
     unowned Gtk.Stack stack;
     [GtkChild]
     unowned Gtk.Text time_text;
-    [GtkChild]
-    unowned Gtk.EventControllerKey event_controller_key;
 
     public int hour { get; set; }
     public int minute { get; set; }
@@ -168,19 +166,6 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
 
     int clamp_minute (int minute) {
         return clamp_value (minute, 0, 60);
-    }
-
-    int clamp_value (int value, int min, int max) {
-        var delta = max - min;
-
-        while (value < min) {
-            value += delta;
-        }
-        while (value >= max) {
-            value -= delta;
-        }
-
-        return value;
     }
 
     void update_day_limit () {

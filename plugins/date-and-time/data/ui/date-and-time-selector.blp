@@ -5,9 +5,9 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
   notify::month => $on_month_changed();
   notify::year => $on_year_changed();
 
-  Adw.PreferencesPage {
-    title: _("Date & Time");
+  title: _("Date & Time");
 
+  Adw.PreferencesPage {
     Adw.PreferencesGroup {
       Gtk.Stack stack {
         Gtk.StackPage {
@@ -112,8 +112,8 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
 
         adjustment: Adjustment {
           value: bind template.year bidirectional;
-          lower: 0;
-          upper: 3000;
+          lower: 1;
+          upper: 10000;
           step-increment: 1;
         };
       }

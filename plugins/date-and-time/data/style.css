@@ -64,3 +64,8 @@ calendar grid label:focus {
 .highlight:focus {
   animation: blink-animation 2s infinite;
 }
+
+.no-listbox-background > box > box > list > row {
+  background-color: transparent;
+  box-shadow: 0 0;
+}

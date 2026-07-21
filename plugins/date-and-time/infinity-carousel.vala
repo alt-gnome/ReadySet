@@ -2,10 +2,6 @@
 public class DateAndTime.InfinityCarousel : Gtk.Box {
     [GtkChild]
     unowned Adw.Carousel carousel;
-    [GtkChild]
-    unowned Gtk.Button previous_button;
-    [GtkChild]
-    unowned Gtk.Button next_button;
 
     public int elements_count { get; set; }
 
