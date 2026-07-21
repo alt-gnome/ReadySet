@@ -95,11 +95,15 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
     DateTime? selected_datetime {
         get { return _selected_datetime; }
         set {
+            message ("datetime update");
             _selected_datetime = value;
             Addin.get_instance ().context.set_int ("date-and-time.datetime", _selected_datetime.to_unix ());
             update_is_ready ();
         }
     }
+
+    protected bool date_selected { get; set; default = false; }
+    protected bool time_selected { get; set; default = false; }
 
     static construct {
         typeof (TimezoneList).ensure ();
@@ -115,9 +119,10 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         update_is_ready ();
     }
 
+    [GtkCallback]
     void update_is_ready () {
-        is_ready = (manual_date_and_time || selected_datetime != null)
-                && (manual_timezone || selected_timezone != null);
+        is_ready = (!manual_date_and_time || date_selected && time_selected)
+                && (!manual_timezone || selected_timezone != null);
     }
 
     [GtkCallback]
@@ -152,6 +157,8 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
     void on_date_dialog_closed (Adw.Dialog dialog) {
         var date_dialog = (DateAndTime.DateSelector) dialog;
 
+        date_selected = true;
+
         selected_datetime = new DateTime.local (
             date_dialog.year,
             (int) date_dialog.month,
@@ -173,6 +180,8 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
 
     void on_time_dialog_apply (Adw.Dialog dialog) {
         var time_dialog = (DateAndTime.TimeSelector) dialog;
+
+        time_selected = true;
 
         var datetime = new DateTime.local (
             selected_datetime.get_year (),
