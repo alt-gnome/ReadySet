@@ -20,11 +20,41 @@
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/DateAndTime/ui/page.ui")]
 public sealed class DateAndTime.Page : ReadySet.BasePage {
-    string default_timezone_label = _("Choose time zone");
-    string default_date_and_time_label = _("Choose date and time");
+    [GtkChild]
+    unowned Adw.ActionRow date_row;
+    [GtkChild]
+    unowned Adw.ActionRow time_row;
 
+    string default_timezone_label = _("Choose time zone");
     public string timezone_label { get; set; }
-    public string date_and_time_label { get; set; }
+
+    string _date_label = "";
+    public string date_label {
+        get { return _date_label; }
+        set {
+            _date_label = value;
+
+            if (value != "") {
+                date_row.add_css_class ("property");
+            } else {
+                date_row.remove_css_class ("property");
+            }
+        }
+    }
+
+    string _time_label = "";
+    public string time_label {
+        get { return _time_label; }
+        set {
+            _time_label = value;
+
+            if (value != "") {
+                time_row.add_css_class ("property");
+            } else {
+                time_row.remove_css_class ("property");
+            }
+        }
+    }
 
     bool _manual_timezone = Addin.get_instance ().context.get_boolean ("date-and-time-automatic-timezone");
     public bool manual_timezone {
@@ -52,8 +82,8 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
 
     public Gtk.StringList timezone_model { get; set; default = new Gtk.StringList (null); }
 
-    TimeZone _selected_timezone;
-    TimeZone selected_timezone {
+    TimeZone? _selected_timezone;
+    TimeZone? selected_timezone {
         get { return _selected_timezone; }
         set {
             _selected_timezone = value;
@@ -61,8 +91,8 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
             update_is_ready ();
         }
     }
-    DateTime _selected_datetime;
-    DateTime selected_datetime {
+    DateTime? _selected_datetime = new DateTime.local (1, 1, 1, 0, 0, 0);
+    DateTime? selected_datetime {
         get { return _selected_datetime; }
         set {
             _selected_datetime = value;
@@ -76,13 +106,12 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         typeof (TimezoneListItem).ensure ();
         typeof (TimezoneListRow).ensure ();
 
-        typeof (DateAndTimeSelector).ensure ();
         typeof (CarouselSelector).ensure ();
     }
 
     construct {
         timezone_label = default_timezone_label;
-        date_and_time_label = default_date_and_time_label;
+
         update_is_ready ();
     }
 
@@ -115,26 +144,46 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
     }
 
     [GtkCallback]
-    void on_date_and_time_row_clicked () {
-        var dialog = new DateAndTime.DateAndTimeSelector ();
+    void on_date_row_clicked () {
+        var dialog = new DateAndTime.DateSelector ();
         dialog.present (this);
-
-        dialog.apply.connect (on_date_and_time_dialog_closed);
+        dialog.apply.connect (on_date_dialog_closed);
     }
 
-    void on_date_and_time_dialog_closed (Adw.Dialog dialog) {
-        var date_and_time_dialog = (DateAndTime.DateAndTimeSelector) dialog;
+    void on_date_dialog_closed (Adw.Dialog dialog) {
+        var date_dialog = (DateAndTime.DateSelector) dialog;
 
-        var hour = date_and_time_dialog.hour;
-        var minute = date_and_time_dialog.minute;
+        selected_datetime = new DateTime.local (
+            date_dialog.year,
+            (int) date_dialog.month,
+            date_dialog.day,
+            selected_datetime.get_hour (),
+            selected_datetime.get_minute (),
+            0
+        );
 
-        var day = date_and_time_dialog.day;
-        var month = (int) date_and_time_dialog.month;
-        var year = date_and_time_dialog.year;
+        date_label = selected_datetime.format ("%d.%m.%Y");
+    }
 
-        var datetime = new DateTime.local (year, month, day, hour, minute, 0);
-        date_and_time_label = datetime.format ("%d.%m.%Y, %H:%M");
+    [GtkCallback]
+    void on_time_row_clicked () {
+        var dialog = new DateAndTime.TimeSelector ();
+        dialog.present (this);
+        dialog.apply.connect (on_time_dialog_apply);
+    }
 
-        selected_datetime = datetime;
+    void on_time_dialog_apply (Adw.Dialog dialog) {
+        var time_dialog = (DateAndTime.TimeSelector) dialog;
+
+        var datetime = new DateTime.local (
+            selected_datetime.get_year (),
+            selected_datetime.get_month (),
+            selected_datetime.get_day_of_month (),
+            time_dialog.hour,
+            time_dialog.minute,
+            0
+        );
+
+        time_label = datetime.format ("%H:%M");
     }
 }

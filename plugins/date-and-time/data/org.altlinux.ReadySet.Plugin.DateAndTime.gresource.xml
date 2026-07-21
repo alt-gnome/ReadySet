@@ -2,7 +2,8 @@
 <gresources>
   <gresource prefix="/org/altlinux/ReadySet/Plugin/DateAndTime/">
     <file preprocess="xml-stripblanks">ui/page.ui</file>
-    <file preprocess="xml-stripblanks">ui/date-and-time-selector.ui</file>
+    <file preprocess="xml-stripblanks">ui/date-selector.ui</file>
+    <file preprocess="xml-stripblanks">ui/time-selector.ui</file>
     <file preprocess="xml-stripblanks">ui/timezone-list.ui</file>
     <file preprocess="xml-stripblanks">ui/timezone-list-row.ui</file>
     <file preprocess="xml-stripblanks">ui/infinity-carousel.ui</file>

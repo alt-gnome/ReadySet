@@ -1,6 +1,7 @@
 plugin_date_and_time_blueprints = files(
   'ui/page.blp',
-  'ui/date-and-time-selector.blp',
+  'ui/date-selector.blp',
+  'ui/time-selector.blp',
   'ui/timezone-list.blp',
   'ui/timezone-list-row.blp',
   'ui/infinity-carousel.blp',

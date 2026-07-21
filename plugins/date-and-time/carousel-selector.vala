@@ -7,7 +7,8 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
     [GtkChild]
     unowned Gtk.Box carousels_box;
 
-    public string separator { get; construct set; }
+    public string separator { get; construct set; default = ""; }
+    public bool carousel_separator { get; construct set; default = true; }
 
     public Serialize.Array<Gtk.Adjustment> adjustments =
         new Serialize.Array<Gtk.Adjustment> ();
@@ -42,22 +43,21 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
               height_request = 200,
             };
 
-            string center = "";
             var model = new Gtk.StringList (null);
             var adjustment = adjustments[i];
-            for (var j = (int) adjustment.lower; j < (int) adjustment.upper; ++j) {
+            for (
+                var j = (int) adjustment.value;
+                j <= (int) (adjustment.upper + adjustment.value - adjustment.lower);
+                ++j
+            ) {
                 var value = clamp_value (
-                    (int) adjustment.value + j,
+                    j,
                     (int) adjustment.lower,
-                    (int) adjustment.upper
+                    (int) adjustment.upper + 1
                 );
 
                 var item = "%0*d".printf (adjustment.upper.to_string ().length, value);
                 model.append (item);
-
-                if (adjustment.value == j) {
-                    center = item;
-                }
             }
 
             carousel.bind_model (model, build_carousel_item);
@@ -73,7 +73,7 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
                 break;
             }
 
-            if (separator != null && separator != "") {
+            if (carousel_separator && separator != "") {
                 var separator = new Gtk.Label (separator);
                 separator.add_css_class ("title-1");
                 carousels_box.append (separator);
@@ -97,7 +97,7 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
         adjustment.value = clamp_value (
             (int) adjustment.value - distance,
             (int) adjustment.lower,
-            (int) adjustment.upper
+            (int) adjustment.upper + 1
         );
     }
 
@@ -185,7 +185,7 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
         adjustment.value = clamp_value (
             (int) adjustment.value + (increment ? 1 : -1),
             (int) adjustment.lower,
-            (int) adjustment.upper
+            (int) adjustment.upper + 1
         );
 
         update_text ();
