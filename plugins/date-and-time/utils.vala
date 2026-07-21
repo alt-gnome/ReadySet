@@ -12,6 +12,14 @@ namespace DateAndTime {
         return value;
     }
 
+    int clamp_hour (int hour, bool is_am_pm = false) {
+        return clamp_value (hour, 0, is_am_pm ? 12 : 24);
+    }
+
+    int clamp_minute (int minute) {
+        return clamp_value (minute, 0, 60);
+    }
+
     string get_utc_offset_string (int32 offset) {
         var hours = (int) Math.round ((double) offset / 60.0d / 60.0d);
 

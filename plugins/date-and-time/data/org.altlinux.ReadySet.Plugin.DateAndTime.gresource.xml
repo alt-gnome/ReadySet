@@ -6,6 +6,7 @@
     <file preprocess="xml-stripblanks">ui/timezone-list.ui</file>
     <file preprocess="xml-stripblanks">ui/timezone-list-row.ui</file>
     <file preprocess="xml-stripblanks">ui/infinity-carousel.ui</file>
+    <file preprocess="xml-stripblanks">ui/carousel-selector.ui</file>
     <file>style.css</file>
   </gresource>
 </gresources>

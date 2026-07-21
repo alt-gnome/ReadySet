@@ -1,0 +1,61 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DateAndTimeCarouselSelector: Adw.Bin {
+  Gtk.Stack stack {
+    Gtk.StackPage {
+      name: "selector";
+
+      child: Box carousels_box {
+        halign: center;
+        hexpand: true;
+        spacing: 24;
+      };
+    }
+
+    Gtk.StackPage {
+      name: "entry";
+
+      child: Box {
+        halign: center;
+        valign: center;
+        orientation: vertical;
+        spacing: 24;
+
+        Box {
+          css-name: "entry";
+
+          Gtk.Text text {
+            max-length: 5;
+            xalign: 0.5;
+            input-purpose: digits;
+            input-hints: no_emoji;
+            overwrite-mode: true;
+            propagate-text-width: true;
+            delete-from-cursor => $on_delete_from_cursor();
+            cut-clipboard => $on_cut_clipboard();
+            backspace => $on_backspace();
+            move-cursor => $on_move_cursor();
+            paste-clipboard => $on_paste_clipboard();
+            insert-text => $on_insert_text();
+
+            Gtk.EventControllerKey {
+              key-pressed => $on_key_pressed();
+            }
+          }
+        }
+
+        Button {
+          styles [
+            "suggested-action",
+          ]
+
+          halign: center;
+          valign: center;
+          label: "Apply";
+          clicked => $on_text_apply_button_clicked();
+        }
+      };
+    }
+  }
+}
