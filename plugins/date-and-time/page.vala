@@ -88,7 +88,10 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         set {
             _selected_timezone = value;
             if (_selected_timezone != null) {
-                Addin.get_instance ().context.set_string ("date-and-time.timezone", _selected_timezone.get_identifier ());
+                Addin.get_instance ().context.set_string (
+                    "date-and-time.timezone",
+                    _selected_timezone.get_identifier ()
+                );
             }
             update_is_ready ();
         }
