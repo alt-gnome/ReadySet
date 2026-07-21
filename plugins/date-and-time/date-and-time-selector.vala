@@ -61,11 +61,11 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
         this.month = month - 1;
         this.day = day;
 
-        var text_attributes = new Pango.AttrList (); 
+        var text_attributes = new Pango.AttrList ();
 
-        text_attributes.insert(new Pango.AttrSize (Pango.SCALE * 32));
-        text_attributes.insert(Pango.attr_weight_new (Pango.Weight.LIGHT));
-        text_attributes.insert(new Pango.AttrFontFeatures ("tnum"));
+        text_attributes.insert (new Pango.AttrSize (Pango.SCALE * 32));
+        text_attributes.insert (Pango.attr_weight_new (Pango.Weight.LIGHT));
+        text_attributes.insert (new Pango.AttrFontFeatures ("tnum"));
 
         time_text.set_attributes (text_attributes);
     }
@@ -181,7 +181,7 @@ public class DateAndTime.DateAndTimeSelector : Adw.PreferencesDialog {
     int get_month_day_count () {
         if (month == 1) {
             var count = 28;
-            
+
             if (year % 4 == 0) {
                 ++count;
             }

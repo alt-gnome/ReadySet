@@ -21,12 +21,12 @@
 public class DateAndTime.Addin : ReadySet.StepAddin {
 
     static Addin instance;
-    
+
     public override bool existing_user {
         get {
             return true;
         }
-    } 
+    }
 
     protected override string? resource_base_path {
         get {

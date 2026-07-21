@@ -60,4 +60,3 @@ public class DateAndTime.TimezoneListItem : Object {
         }
     }
 }
-

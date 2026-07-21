@@ -4,7 +4,6 @@ using Adw 1;
 template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
   notify::month => $on_month_changed();
   notify::year => $on_year_changed();
-
   title: _("Date & Time");
 
   Adw.PreferencesPage {
@@ -12,13 +11,13 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
       Gtk.Stack stack {
         Gtk.StackPage {
           name: "selector";
-          
+
           child: Box {
             halign: center;
             hexpand: true;
             spacing: 24;
 
-            $DateAndTimeInfinityCarousel hour_carousel { 
+            $DateAndTimeInfinityCarousel hour_carousel {
               orientation: vertical;
               height-request: 200;
               item-pressed => $on_gesture_click_pressed();
@@ -29,7 +28,7 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
               styles [
                 "title-1",
               ]
-              
+
               label: ":";
             }
 
@@ -53,7 +52,7 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
 
             Box {
               css-name: "entry";
-              
+
               Gtk.Text time_text {
                 max-length: 5;
                 xalign: 0.5;
@@ -61,7 +60,6 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
                 input-hints: no_emoji;
                 overwrite-mode: true;
                 propagate-text-width: true;
-
                 delete-from-cursor => $on_delete_from_cursor();
                 cut-clipboard => $on_cut_clipboard();
                 backspace => $on_backspace();
@@ -81,7 +79,6 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
               halign: center;
               valign: center;
               label: "Apply";
-
               clicked => $on_time_apply_button_clicked();
             }
           };
@@ -130,7 +127,6 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
           ]
 
           label: _("Close");
-
           clicked => $on_close_button_clicked();
         }
 
@@ -141,7 +137,6 @@ template $DateAndTimeDateAndTimeSelector: Adw.PreferencesDialog {
           ]
 
           label: _("Apply");
-
           clicked => $on_apply_button_clicked();
         }
       }
