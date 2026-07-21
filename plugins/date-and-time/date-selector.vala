@@ -57,7 +57,7 @@ public class DateAndTime.DateSelector : Adw.PreferencesDialog {
                 ++day_limit;
             }
         }
-        
+
         if (day > day_limit) {
             day = day_limit;
         }
