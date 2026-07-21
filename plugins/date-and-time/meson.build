@@ -1,6 +1,6 @@
 plugin_date_and_time_deps = [
   librs_dep,
-  gweather_dep
+  gnome_desktop_dep,
 ]
 
 plugin_date_and_time_sources = files(
@@ -20,10 +20,12 @@ plugin_date_and_time_name = 'date-and-time'
 
 plugin_date_and_time_c_args = [
   '-DG_LOG_DOMAIN="DateAndTime"',
+  '-DGNOME_DESKTOP_USE_UNSTABLE_API',
   '-lm',
 ]
 
 subdir('data')
+subdir('po-timezones')
 
 shared_module(
   plugin_date_and_time_name,

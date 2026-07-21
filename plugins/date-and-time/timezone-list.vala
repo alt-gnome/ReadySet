@@ -15,9 +15,32 @@ public class DateAndTime.TimezoneList : Adw.Dialog {
     public TimezoneListItem selected_item { get; set; }
 
     public TimezoneList () {
-        var world = GWeather.Location.get_world ();
+        var file = File.new_for_path ("/usr/share/zoneinfo/zone1970.tab");
+        if (!file.query_exists ()) {
+            error ("No timezones list");
+        }
 
-        collect_timezones (world);
+        uint8[] data;
+        file.load_contents (null, out data, null);
+        var content = (string) data;
+
+        var comment_regex = new Regex ("#.*\n");
+        content = comment_regex.replace (content, -1, 0, "", RegexMatchFlags.DEFAULT);
+
+        var entry_regex = new Regex ("([^\t]*)\t[^\t]*\t([^\t\n]*)[^\n]*\n");
+        content = entry_regex.replace (content, -1, 0, "\\1 \\2\n", RegexMatchFlags.DEFAULT);
+
+        var entries = content.split ("\n");
+        foreach (var entry in entries) {
+            if (entry == null || entry == "") {
+                continue;
+            }
+
+            var item = new TimezoneListItem (entry);
+
+            timezones.add (item);
+            timezone_metainfos.add (item.metainfo);
+        }
 
         var sorted = new Gee.ArrayList<TimezoneListItem> ();
         foreach (var item in timezones) {
@@ -35,39 +58,6 @@ public class DateAndTime.TimezoneList : Adw.Dialog {
 
         foreach (var item in sorted) {
             model.append (item);
-        }
-    }
-
-    void collect_timezones (GWeather.Location loc) {
-        weak TimeZone? timezone = loc.get_timezone ();
-        if (timezone != null) {
-            var region = timezone.get_identifier ();
-            var country = loc.get_country_name ();
-            var city = loc.get_city_name ();
-            var utc_offset = timezone.get_offset (0);
-
-            if (region != null && city != null && country != null) {
-                var hours = 12 * 60 * 60;
-
-                var item = new TimezoneListItem () {
-                    timezone = timezone,
-                    region = region.split ("/")[0],
-                    country = country,
-                    city = city,
-                    //utc_offset = clamp_value (utc_offset, -hours, hours),
-                    utc_offset = utc_offset,
-                };
-
-                if (!(item.metainfo in timezone_metainfos)) {
-                    timezones.add (item);
-                    timezone_metainfos.add (item.metainfo);
-                }
-            }
-        }
-
-        GWeather.Location location = null;
-        while ((location = loc.next_child (location)) != null) {
-            collect_timezones (location);
         }
     }
 
