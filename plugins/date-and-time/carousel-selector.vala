@@ -204,8 +204,6 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
             return;
         }
 
-        var old_text = text.get_text ();
-
         if ("0" < new_text > "9") {
             text.set_text (current_text);
             Signal.stop_emission_by_name (text, "insert-text");

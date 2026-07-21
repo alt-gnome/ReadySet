@@ -23,8 +23,6 @@ public class DateAndTime.TimezoneList : Adw.Dialog {
     [GtkChild]
     unowned Gtk.Stack stack;
     [GtkChild]
-    unowned Gtk.ListView list_view;
-    [GtkChild]
     unowned Gtk.FilterListModel filter_list_model;
 
     public ListStore model { get; set; default = new ListStore (typeof (TimezoneListItem)); }
@@ -40,44 +38,48 @@ public class DateAndTime.TimezoneList : Adw.Dialog {
             error ("No timezones list");
         }
 
-        uint8[] data;
-        file.load_contents (null, out data, null);
-        var content = (string) data;
+        try {
+            uint8[] data;
+            file.load_contents (null, out data, null);
+            var content = (string) data;
 
-        var comment_regex = new Regex ("#.*\n");
-        content = comment_regex.replace (content, -1, 0, "", RegexMatchFlags.DEFAULT);
+            var comment_regex = new Regex ("#.*\n");
+            content = comment_regex.replace (content, -1, 0, "", RegexMatchFlags.DEFAULT);
 
-        var entry_regex = new Regex ("([^\t]*)\t[^\t]*\t([^\t\n]*)[^\n]*\n");
-        content = entry_regex.replace (content, -1, 0, "\\1 \\2\n", RegexMatchFlags.DEFAULT);
+            var entry_regex = new Regex ("([^\t]*)\t[^\t]*\t([^\t\n]*)[^\n]*\n");
+            content = entry_regex.replace (content, -1, 0, "\\1 \\2\n", RegexMatchFlags.DEFAULT);
 
-        var entries = content.split ("\n");
-        foreach (var entry in entries) {
-            if (entry == null || entry == "") {
-                continue;
+            var entries = content.split ("\n");
+            foreach (var entry in entries) {
+                if (entry == null || entry == "") {
+                    continue;
+                }
+
+                var item = new TimezoneListItem (entry);
+
+                timezones.add (item);
+                timezone_metainfos.add (item.metainfo);
             }
 
-            var item = new TimezoneListItem (entry);
+            var sorted = new Gee.ArrayList<TimezoneListItem> ();
+            foreach (var item in timezones) {
+                sorted.add (item);
+            }
 
-            timezones.add (item);
-            timezone_metainfos.add (item.metainfo);
-        }
+            sorted.sort ((_a, _b) => {
+                var a = _a.utc_offset;
+                var b = _b.utc_offset;
 
-        var sorted = new Gee.ArrayList<TimezoneListItem> ();
-        foreach (var item in timezones) {
-            sorted.add (item);
-        }
+                if (a > b) return Gtk.Ordering.LARGER;
+                if (a < b) return Gtk.Ordering.SMALLER;
+                return Gtk.Ordering.EQUAL;
+            });
 
-        sorted.sort ((_a, _b) => {
-            var a = _a.utc_offset;
-            var b = _b.utc_offset;
-
-            if (a > b) return Gtk.Ordering.LARGER;
-            if (a < b) return Gtk.Ordering.SMALLER;
-            return Gtk.Ordering.EQUAL;
-        });
-
-        foreach (var item in sorted) {
-            model.append (item);
+            foreach (var item in sorted) {
+                model.append (item);
+            }
+        } catch (Error e) {
+            warning ("Failed to load timezones: %s", e.message);
         }
     }
 

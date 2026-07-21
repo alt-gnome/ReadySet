@@ -87,7 +87,9 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         get { return _selected_timezone; }
         set {
             _selected_timezone = value;
-            Addin.get_instance ().context.set_string ("date-and-time.timezone", _selected_timezone.get_identifier ());
+            if (_selected_timezone != null) {
+                Addin.get_instance ().context.set_string ("date-and-time.timezone", _selected_timezone.get_identifier ());
+            }
             update_is_ready ();
         }
     }
@@ -95,7 +97,6 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
     DateTime? selected_datetime {
         get { return _selected_datetime; }
         set {
-            message ("datetime update");
             _selected_datetime = value;
             Addin.get_instance ().context.set_int ("date-and-time.datetime", _selected_datetime.to_unix ());
             update_is_ready ();
@@ -132,12 +133,15 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         var dialog = new DateAndTime.TimezoneList ();
         dialog.present (this);
 
-        dialog.closed.connect (on_timezone_dialog_closed);
+        ulong handler_id = 0;
+        handler_id = dialog.closed.connect ((d) => {
+            SignalHandler.disconnect (dialog, handler_id);
+            on_timezone_dialog_closed ((DateAndTime.TimezoneList) d);
+        });
     }
 
-    void on_timezone_dialog_closed (Adw.Dialog dialog) {
-        var timezone_dialog = (DateAndTime.TimezoneList) dialog;
-        var item = timezone_dialog.selected_item;
+    void on_timezone_dialog_closed (DateAndTime.TimezoneList dialog) {
+        var item = dialog.selected_item;
 
         if (item == null) {
             return;
@@ -153,18 +157,21 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
     void on_date_row_clicked () {
         var dialog = new DateAndTime.DateSelector ();
         dialog.present (this);
-        dialog.apply.connect (on_date_dialog_closed);
+
+        ulong handler_id = 0;
+        handler_id = dialog.apply.connect ((d) => {
+            SignalHandler.disconnect (dialog, handler_id);
+            on_date_dialog_closed ((DateAndTime.DateSelector) d);
+        });
     }
 
-    void on_date_dialog_closed (Adw.Dialog dialog) {
-        var date_dialog = (DateAndTime.DateSelector) dialog;
-
+    void on_date_dialog_closed (DateAndTime.DateSelector dialog) {
         date_selected = true;
 
         selected_datetime = new DateTime.local (
-            date_dialog.year,
-            (int) date_dialog.month,
-            date_dialog.day,
+            dialog.year,
+            (int) dialog.month,
+            dialog.day,
             selected_datetime.get_hour (),
             selected_datetime.get_minute (),
             0
@@ -177,23 +184,26 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
     void on_time_row_clicked () {
         var dialog = new DateAndTime.TimeSelector ();
         dialog.present (this);
-        dialog.apply.connect (on_time_dialog_apply);
+
+        ulong handler_id = 0;
+        handler_id = dialog.apply.connect ((d) => {
+            SignalHandler.disconnect (dialog, handler_id);
+            on_time_dialog_apply ((DateAndTime.TimeSelector) d);
+        });
     }
 
-    void on_time_dialog_apply (Adw.Dialog dialog) {
-        var time_dialog = (DateAndTime.TimeSelector) dialog;
-
+    void on_time_dialog_apply (DateAndTime.TimeSelector dialog) {
         time_selected = true;
 
-        var datetime = new DateTime.local (
+        selected_datetime = new DateTime.local (
             selected_datetime.get_year (),
             selected_datetime.get_month (),
             selected_datetime.get_day_of_month (),
-            time_dialog.hour,
-            time_dialog.minute,
+            dialog.hour,
+            dialog.minute,
             0
         );
 
-        time_label = datetime.format ("%H:%M");
+        time_label = selected_datetime.format ("%H:%M");
     }
 }

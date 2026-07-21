@@ -58,7 +58,12 @@ public class DateAndTime.Addin : ReadySet.StepAddin {
     }
 
     public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
-        var proxy = yield get_timedate_proxy ();
+        DateAndTime.Timedate1 proxy;
+        try {
+            proxy = yield get_timedate_proxy ();
+        } catch (Error e) {
+            throw ReadySet.ApplyError.build_error (_("Failed to connect to timedate service"), e.message);
+        }
 
         var automatic_timezone = context.get_boolean ("date-and-time.automatic-timezone");
         var automatic_datetime = context.get_boolean ("date-and-time.automatic-datetime");
@@ -75,7 +80,11 @@ public class DateAndTime.Addin : ReadySet.StepAddin {
             }
         }
 
-        yield proxy.set_ntp (automatic_datetime);
+        try {
+            yield proxy.set_ntp (automatic_datetime);
+        } catch (Error e) {
+            throw ReadySet.ApplyError.build_error (_("Error when setting NTP"), e.message);
+        }
 
         if (!automatic_datetime) {
             try {

@@ -32,29 +32,20 @@ namespace DateAndTime {
         return value;
     }
 
-    int clamp_hour (int hour, bool is_am_pm = false) {
-        return clamp_value (hour, 0, is_am_pm ? 12 : 24);
-    }
-
-    int clamp_minute (int minute) {
-        return clamp_value (minute, 0, 60);
-    }
-
     string get_utc_offset_string (string identifier) {
-        var current_timezone = Environment.get_variable ("TZ");
-        Environment.set_variable ("TZ", identifier, true);
+        try {
+            var tz = new TimeZone.identifier (identifier);
+            var dt = new DateTime.now (tz);
+            var offset_minutes = (int32) (dt.get_utc_offset () / TimeSpan.MINUTE);
 
-        var offset = (new DateTime.now_local ()).get_utc_offset () / 1000 / 1000;
-        var timezone = new TimeZone.offset ((int32) offset);
+            var hours = offset_minutes / 60;
+            var minutes = offset_minutes.abs () % 60;
+            var sign = hours >= 0 ? "+" : "";
 
-        if (current_timezone != null && current_timezone != "")
-            Environment.set_variable ("TZ", current_timezone, true);
-        else
-            Environment.unset_variable ("TZ");
-
-        var parts = timezone.get_identifier ().split (":");
-
-        return "UTC" + parts[0] + ":" + parts[1];
+            return @"UTC$(sign)$(hours):%02d".printf (minutes);
+        } catch (Error e) {
+            return "UTC";
+        }
     }
 
     async DateAndTime.Timedate1 get_timedate_proxy () throws Error {

@@ -21,7 +21,7 @@
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/DateAndTime/ui/timezone-list-row.ui")]
 public class DateAndTime.TimezoneListRow : Gtk.Box {
     [GtkChild]
-    public Gtk.ListBox listbox;
+    public unowned Gtk.ListBox listbox;
 
     public string title { get; set; }
     public string subtitle { get; set; }
@@ -61,17 +61,30 @@ public class DateAndTime.TimezoneListItem : Object {
 
     // entry: "<country_code>[,country_code]* <region>/<city>"
     public TimezoneListItem (string entry) {
-        country_codes = entry.split (" ", 2)[0];
+        var parts = entry.split (" ", 2);
+        if (parts.length < 2) {
+            error ("Invalid timezone entry: %s", entry);
+        }
+
+        country_codes = parts[0];
         country = Gnome.Languages.get_country_from_code (country_codes.split (",")[0], null);
 
-        identifier = entry.split (" ", 2)[1];
+        identifier = parts[1];
 
         region = dgettext ("ready-set-date-and-time-timezones", identifier).replace ("_", " ");
 
-        var parts = region.split ("/");
-        city = parts[parts.length - 1];
+        var region_parts = region.split ("/");
+        city = region_parts[region_parts.length - 1];
 
-        timezone = new TimeZone.identifier (identifier);
+        try {
+            timezone = new TimeZone.identifier (identifier);
+
+            var dt = new DateTime.now (timezone);
+            utc_offset = (int32) (dt.get_utc_offset () / TimeSpan.MINUTE);
+        } catch (Error e) {
+            timezone = new TimeZone.utc ();
+            utc_offset = 0;
+        }
 
         metainfo = @"$(country_codes.replace (",", " ")) $identifier $region $country";
     }

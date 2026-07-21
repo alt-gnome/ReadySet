@@ -63,20 +63,10 @@ public class DateAndTime.DateSelector : Adw.PreferencesDialog {
 
     [GtkCallback]
     void update_day () {
-        day_limit = month % 2 != 0 ? 31 : 30;
-        if (month == 2) {
-            day_limit = 28;
-
-            if (year % 4 == 0) {
-                ++day_limit;
-            }
-            if (year % 100 == 0) {
-                --day_limit;
-            }
-            if (year % 400 == 0) {
-                ++day_limit;
-            }
-        }
+        var first_of_month = new DateTime.local (year, (int) month, 1, 0, 0, 0);
+        var next_month = first_of_month.add_months (1);
+        var last_day = next_month.add_days (-1);
+        day_limit = last_day.get_day_of_month ();
 
         if (day > day_limit) {
             day = day_limit;
