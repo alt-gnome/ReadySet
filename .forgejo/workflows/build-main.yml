@@ -152,7 +152,6 @@ jobs:
 
       - name: Prepare RPM build
         run: |
-          echo '%packager	Hasher Unshare Builder <hasher-unshare@altlinux.org>' >> ~/.rpmmacros
           ./build-aux/altlinux/prepare ${{ needs.get-release.outputs.release }}
           git add .
 
