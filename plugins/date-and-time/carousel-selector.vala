@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2026 David Sultaniiazov <x1z53@alt-gnome.ru>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -56,69 +56,53 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
             carousels_box.remove (child);
         }
 
-        var i = 0;
-        while (i < adjustments.size) {
+        for (var i = 0; i < adjustments.size; ++i) {
+            var adjustment = adjustments[i];
+
             var carousel = new DateAndTime.InfinityCarousel () {
-              orientation = Gtk.Orientation.VERTICAL,
-              height_request = 200,
+                height_request = 200,
+                infinite = true,
+                spacing = 6,
             };
 
             var model = new Gtk.StringList (null);
-            var adjustment = adjustments[i];
-            for (
-                var j = (int) adjustment.value;
-                j <= (int) (adjustment.upper + adjustment.value - adjustment.lower);
-                ++j
-            ) {
-                var value = clamp_value (
-                    j,
-                    (int) adjustment.lower,
-                    (int) adjustment.upper + 1
-                );
-
-                var item = "%0*d".printf (adjustment.upper.to_string ().length, value);
+            for (var v = (int) adjustment.lower; v <= (int) adjustment.upper; ++v) {
+                var item = "%0*d".printf (adjustment.upper.to_string ().length, v);
                 model.append (item);
             }
 
-            carousel.bind_model (model, build_carousel_item);
-            carousel.item_pressed.connect (on_gesture_click_pressed);
-            carousel.page_changed.connect (on_value_changed);
+            var selection = new Gtk.SingleSelection (model) {
+                selected = (uint) (adjustment.value - adjustment.lower)
+            };
+
+            carousel.model = selection;
+
+            carousel.create.connect ((item) => {
+                var string_object = (Gtk.StringObject) item;
+                var label = new Gtk.Label (string_object.string);
+                label.add_css_class ("title-1");
+                return label;
+            });
+
+            carousel.page_changed.connect ((index) => {
+                adjustment.value = (double) (index + (int) adjustment.lower);
+            });
+
+            carousel.item_pressed.connect (() => {
+                on_gesture_click_pressed ();
+            });
 
             carousels_box.append (carousel);
             carousels.add (carousel);
 
-            ++i;
-
-            if (i >= adjustments.size) {
-                break;
+            if (i + 1 < adjustments.size && carousel_separator && separator != "") {
+                var sep = new Gtk.Label (separator);
+                sep.add_css_class ("title-1");
+                carousels_box.append (sep);
             }
-
-            if (carousel_separator && separator != "") {
-                var separator = new Gtk.Label (separator);
-                separator.add_css_class ("title-1");
-                carousels_box.append (separator);
-            }
-
         }
 
         update_text ();
-    }
-
-    public Gtk.Widget build_carousel_item (Object object) {
-        var item = (Gtk.StringObject) object;
-        var widget = new Gtk.Label (item.string);
-        widget.add_css_class ("title-1");
-        return widget;
-    }
-
-    public void on_value_changed (DateAndTime.InfinityCarousel carousel, int distance) {
-        var index = carousels.index_of (carousel);
-        var adjustment = adjustments[index];
-        adjustment.value = clamp_value (
-            (int) adjustment.value - distance,
-            (int) adjustment.lower,
-            (int) adjustment.upper + 1
-        );
     }
 
     void update_text () {
@@ -247,9 +231,9 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
         var left = Math.pow (10, a + 1);
         var right = Math.pow (10, a);
 
-        var value = (int) (old_value / left) * left // 1234 -> 1200
-                    + new_value * right     //   5  -> 0050
-                    + old_value % right;    // 1234 -> 0004
+        var value = (int) (old_value / left) * left
+                    + new_value * right
+                    + old_value % right;
         adjustment.value = value;
 
         update_text ();

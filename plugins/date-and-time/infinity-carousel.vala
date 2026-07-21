@@ -1,138 +1,69 @@
 /*
  * Copyright (C) 2026 David Sultaniiazov <x1z53@alt-gnome.ru>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/DateAndTime/ui/infinity-carousel.ui")]
 public class DateAndTime.InfinityCarousel : Gtk.Box {
     [GtkChild]
-    unowned Adw.Carousel carousel;
+    unowned Case.InfinityCarousel carousel;
 
-    public int elements_count { get; set; }
+    public new uint spacing {
+        get { return carousel.spacing; }
+        set { carousel.spacing = value; }
+    }
 
-    public ListModel? model { get; set; }
-    weak Gtk.ListBoxCreateWidgetFunc? create_widget_func;
+    public bool infinite {
+        get { return carousel.infinite; }
+        set { carousel.infinite = value; }
+    }
 
-    int items_center;
+    public bool full_page {
+        get { return carousel.full_page; }
+        set { carousel.full_page = value; }
+    }
 
+    public Gtk.SingleSelection? model {
+        get { return carousel.model; }
+        set { carousel.model = value; }
+    }
+
+    public signal Gtk.Widget create (Object item);
+    public signal void page_changed (uint index);
     public signal void item_pressed ();
 
-    public signal void page_changed (int distance);
+    construct {
+        carousel.create.connect ((item) => {
+            return create (item);
+        });
+        carousel.page_changed.connect ((index) => {
+            page_changed (index);
+        });
+    }
 
     [GtkCallback]
     public void on_previous_button_clicked () {
-        uint n_pages = carousel.get_n_pages ();
-        if (n_pages == 0) return;
-
-        uint current_page = (uint) (carousel.position + 0.5);
-
-        if (current_page >= n_pages) {
-            current_page = n_pages - 1;
-        }
-
-        uint target_page;
-        if (current_page == 0) {
-            target_page = 0;
-        } else {
-            target_page = current_page - 1;
-        }
-
-        carousel.scroll_to (carousel.get_nth_page (target_page), true);
+        carousel.scroll_to_prev ();
     }
 
     [GtkCallback]
     public void on_next_button_clicked () {
-        uint n_pages = carousel.get_n_pages ();
-        if (n_pages == 0) return;
-
-        uint current_page = (uint) (carousel.position + 0.5);
-
-        uint target_page = current_page + ((int) (current_page + 1 != n_pages));
-        carousel.scroll_to (carousel.get_nth_page (target_page), true);
-    }
-
-    void fill () {
-        int items_count = (int) model.get_n_items ();
-        items_center = items_count;
-
-        for (int _ = 0; _ < 2; ++_) {
-            for (int i = 0; i < items_center; ++i) {
-                var item = model.get_item (i);
-                var card = create_widget_func (item);
-                carousel.append (card);
-            }
-        }
-
-        carousel.scroll_to (carousel.get_nth_page (items_center), false);
-    }
-
-    void on_page_changed (uint index) {
-        var distance = items_center - (int) index;
-
-        if (distance > 0) {
-            for (int counter = distance; counter != 0; --counter) {
-                var item = carousel.get_nth_page (carousel.get_n_pages () - 1);
-                carousel.remove (item);
-                carousel.prepend (item);
-            }
-        }
-
-        if (distance < 0) {
-            for (int counter = -distance; counter != 0; --counter) {
-                var item = carousel.get_nth_page (0);
-                carousel.remove (item);
-                carousel.append (item);
-            }
-        }
-
-        page_changed (distance);
-    }
-
-    public void bind_model (ListModel? model, owned Gtk.ListBoxCreateWidgetFunc? create_widget_func) {
-        if (this.model != null) {
-            this.model = null;
-        }
-
-        clear ();
-        this.model = model;
-        this.create_widget_func = create_widget_func;
-
-        if (model != null) {
-            fill ();
-        }
-    }
-
-    public void remove (Gtk.Widget widget) {
-        carousel.remove (widget);
-    }
-
-    public void clear () {
-        carousel.page_changed.disconnect (on_page_changed);
-
-        if (carousel.get_n_pages () != 0)
-            carousel.scroll_to (carousel.get_nth_page (0), false);
-
-        while (carousel.get_n_pages () != 0) {
-            var child = carousel.get_nth_page (0);
-            carousel.remove (child);
-        }
-
-        carousel.page_changed.connect (on_page_changed);
+        carousel.scroll_to_next ();
     }
 
     [GtkCallback]
@@ -141,5 +72,17 @@ public class DateAndTime.InfinityCarousel : Gtk.Box {
             return;
         }
         item_pressed ();
+    }
+
+    public void scroll_to (uint index, bool animate = true) {
+        carousel.scroll_to (index, animate);
+    }
+
+    public Gtk.Widget? get_nth_page (uint index) {
+        return carousel.get_nth_page (index);
+    }
+
+    public uint get_n_pages () {
+        return carousel.get_n_pages ();
     }
 }

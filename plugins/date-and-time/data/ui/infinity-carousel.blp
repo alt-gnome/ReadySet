@@ -1,8 +1,8 @@
 using Gtk 4.0;
 using Adw 1;
+using Case 0;
 
 template $DateAndTimeInfinityCarousel: Gtk.Box {
-  elements-count: bind carousel.n-pages;
   orientation: vertical;
 
   Adw.ToolbarView {
@@ -26,10 +26,9 @@ template $DateAndTimeInfinityCarousel: Gtk.Box {
       }
     }
 
-    Adw.Carousel carousel {
+    Case.InfinityCarousel carousel {
       vexpand: true;
       spacing: 6;
-      allow-long-swipes: true;
       orientation: vertical;
 
       Gtk.GestureClick gesture_click {

@@ -111,6 +111,8 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         typeof (TimezoneListRow).ensure ();
 
         typeof (CarouselSelector).ensure ();
+
+        typeof (Case.InfinityCarousel).ensure ();
     }
 
     construct {
