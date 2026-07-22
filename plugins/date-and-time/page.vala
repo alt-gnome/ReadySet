@@ -21,12 +21,25 @@
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/DateAndTime/ui/page.ui")]
 public sealed class DateAndTime.Page : ReadySet.BasePage {
     [GtkChild]
+    unowned Adw.ActionRow timezone_row;
+    [GtkChild]
     unowned Adw.ActionRow date_row;
     [GtkChild]
     unowned Adw.ActionRow time_row;
 
-    string default_timezone_label = _("Choose time zone");
-    public string timezone_label { get; set; }
+    string _timezone_label = "";
+    public string timezone_label {
+        get { return _timezone_label; }
+        set {
+            _timezone_label = value;
+
+            if (value != "") {
+                timezone_row.add_css_class ("property");
+            } else {
+                timezone_row.remove_css_class ("property");
+            }
+        }
+    }
 
     string _date_label = "";
     public string date_label {
@@ -96,7 +109,7 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
             update_is_ready ();
         }
     }
-    DateTime? _selected_datetime = new DateTime.local (1, 1, 1, 0, 0, 0);
+    DateTime? _selected_datetime;
     DateTime? selected_datetime {
         get { return _selected_datetime; }
         set {
@@ -120,7 +133,17 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
     }
 
     construct {
-        timezone_label = default_timezone_label;
+        var now_tz = new TimeZone.local ();
+        var now_dt_tz = new DateTime.now (now_tz);
+        timezone_label = @"$(now_tz.get_identifier ()) ($(now_dt_tz.get_timezone_abbreviation ()))";
+        selected_timezone = now_tz;
+
+        var now = new DateTime.now_local ();
+        selected_datetime = now;
+        date_label = now.format ("%d.%m.%Y");
+        time_label = now.format ("%H:%M");
+        date_selected = true;
+        time_selected = true;
 
         update_is_ready ();
     }
