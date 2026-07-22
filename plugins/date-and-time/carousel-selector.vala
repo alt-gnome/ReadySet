@@ -75,14 +75,14 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
                 selected = (uint) (adjustment.value - adjustment.lower)
             };
 
-            carousel.model = selection;
-
             carousel.create.connect ((item) => {
                 var string_object = (Gtk.StringObject) item;
                 var label = new Gtk.Label (string_object.string);
                 label.add_css_class ("title-1");
                 return label;
             });
+
+            carousel.model = selection;
 
             carousel.page_changed.connect ((index) => {
                 adjustment.value = (double) (index + (int) adjustment.lower);
