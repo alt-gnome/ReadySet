@@ -12,6 +12,9 @@ template $DateAndTimeInfinityCarousel: Gtk.Box {
         "shadow-down",
       ]
 
+      // Fix CSS tiny gap between shadow and window
+      margin-bottom: 1;
+
       Button previous_button {
         styles [
           "circular",
@@ -41,6 +44,9 @@ template $DateAndTimeInfinityCarousel: Gtk.Box {
       styles [
         "shadow-up",
       ]
+
+      // Fix CSS tiny gap between shadow and window
+      margin-top: 1;
 
       Button next_button {
         styles [
