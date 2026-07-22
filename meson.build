@@ -106,10 +106,6 @@ subdir('src')
 subdir('plugins')
 subdir('tests')
 
-if get_option('password_check_backend') == 'both'
-  warning('\'both\' password check backend option is created only for packaging, the presence of both user-* plugins in the system may lead to errors.')
-endif
-
 gnome.post_install(
   glib_compile_schemas: true,
   gtk_update_icon_cache: true,
