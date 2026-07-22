@@ -42,6 +42,8 @@ compile:
 
 install: compile
 	meson install -C _build
+	$(SUDO) systemctl daemon-reload || true
+	$(SUDO) systemctl reload polkit || true
 
 uninstall:
 	$(SUDO) ninja uninstall -C _build
