@@ -14,9 +14,9 @@ rs_app_vala_sources = files(
   'dbus/osk.vala',
   'dbus/rs-system-service.vala',
 
-  'pages/existing-user-end-page.vala',
-  'pages/initial-setup-end-page.vala',
-  'pages/installer-end-page.vala',
+  'end-pages/existing-user.vala',
+  'end-pages/initial-setup.vala',
+  'end-pages/installer.vala',
 
   'widgets/devel/window.vala',
 
