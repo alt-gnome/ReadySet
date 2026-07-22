@@ -32,7 +32,7 @@ install-deps:
 
 setup: install-deps
 	rm -rf _build
-	meson setup _build --prefix=/usr --auto-features=enabled -Dnightly=true
+	meson setup _build --prefix=/usr --auto-features=enabled -Dinstall_tests=enabled -Dnightly=true
 
 setup-ci: install-deps
 	meson setup --wipe _build --prefix=/usr --auto-features=enabled -Dnightly=true -Dwith_lib_documentation=true -Db_coverage=true
@@ -42,8 +42,8 @@ compile:
 
 install: compile
 	meson install -C _build
-	$(SUDO) systemctl daemon-reload || true
-	$(SUDO) systemctl reload polkit || true
+	@ $(SUDO) systemctl daemon-reload 2>/dev/null || true
+	@ $(SUDO) systemctl reload polkit 2>/dev/null || true
 
 uninstall:
 	$(SUDO) ninja uninstall -C _build
