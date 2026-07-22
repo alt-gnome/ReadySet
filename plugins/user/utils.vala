@@ -93,8 +93,6 @@ namespace User {
     }
 
     string correct_username (string username) {
-        const int MAXNAMELEN = 32;
-
         string uname = username;
 
         if (uname == "") {
@@ -128,8 +126,8 @@ namespace User {
 
         var res = corrected_builder.free_and_steal ();
 
-        if (res.length >= MAXNAMELEN) {
-            return res[0:MAXNAMELEN];
+        if (res.length >= Posix.Limits.LOGIN_NAME_MAX) {
+            return res[0:Posix.Limits.LOGIN_NAME_MAX];
         }
         return res;
     }
@@ -143,8 +141,6 @@ namespace User {
 
         error = "";
 
-        const int MAXNAMELEN = 32;
-
         if (username == null || username == "") {
             empty = true;
             in_use = false;
@@ -152,7 +148,7 @@ namespace User {
         } else {
             empty = false;
             in_use = is_username_used (username);
-            too_long = username.length > MAXNAMELEN;
+            too_long = username.length > Posix.Limits.LOGIN_NAME_MAX;
         }
 
         valid = true;
