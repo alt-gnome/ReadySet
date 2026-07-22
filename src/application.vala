@@ -216,13 +216,19 @@ public sealed class ReadySet.Application: Adw.Application {
                 }
                 print ("  %s - %s\n", addin.plugin_info.module_name, addin.plugin_info.name);
             } else if (steps[i].has_prefix (PluginManager.INSTALLER_STEP_PREFIX)) {
-                var installer_page = installer_plugin.build_page (plugin_manager.get_real_page_id (steps[i]));
+                var installer_step = installer_plugin.steps[PluginManager.get_real_page_id (steps[i])];
+                var installer_page = installer_step.build_page ();
                 if (installer_page != null) {
                     pages.add (new PageInfo (
                         installer_page,
                         null
                     ));
-                    print ("  %s (from `%s`)\n", steps[i], installer_plugin.plugin_info.module_name);
+                    print (
+                        "  %s%s (from `%s`)\n",
+                        PluginManager.get_real_page_id (steps[i]),
+                        installer_step.name != null ? " - %s".printf (installer_step.name) : "",
+                        installer_plugin.plugin_info.module_name
+                    );
                 } else {
                     print ("  %s (skipped: failed to build installer page)\n", steps[i]);
                 }

@@ -72,15 +72,17 @@ public sealed class ReadySet.PluginManager : Object {
     }
 
     internal string[] get_available_steps () {
-        string[] steps = steps_plugins.get_keys_as_array ().copy ();
+        var steps = new Gee.ArrayList<string> ();
+        steps.add_all_array (steps_plugins.get_keys_as_array ());
 
         foreach (var installer in installers_plugins.get_values ()) {
-            foreach (var step in installer.all_pages) {
-                steps += INSTALLER_STEP_PREFIX + step;
+            var installer_steps = ReadySetC.safe_copy (installer.steps.get_keys_as_array ());
+            foreach (var step in installer_steps) {
+                steps.add (INSTALLER_STEP_PREFIX + step);
             }
         }
 
-        return steps;
+        return steps.to_array ();
     }
 
     internal string[] get_available_installers () {
@@ -94,7 +96,7 @@ public sealed class ReadySet.PluginManager : Object {
 
         if (installer_name != null) {
             if (id.has_prefix (INSTALLER_STEP_PREFIX)) {
-                if (get_installer_plugin ().has_page (id[INSTALLER_STEP_PREFIX.length:id.length])) {
+                if (get_installer_plugin ().steps.contains (id[INSTALLER_STEP_PREFIX.length:id.length])) {
                     return true;
                 }
             }
@@ -103,15 +105,15 @@ public sealed class ReadySet.PluginManager : Object {
         return false;
     }
 
-    public string get_real_page_id (string page_id) {
+    public static string get_real_page_id (string page_id) {
         return page_id[INSTALLER_STEP_PREFIX.length:page_id.length];
     }
 
     public BasePage build_installer_page (string page_id)
     requires (installer_name != null)
     requires (page_id.has_prefix (INSTALLER_STEP_PREFIX))
-    requires (get_installer_plugin ().has_page (get_real_page_id (page_id))) {
-        return get_installer_plugin ().build_page (get_real_page_id (page_id));
+    requires (get_installer_plugin ().steps.contains (get_real_page_id (page_id))) {
+        return get_installer_plugin ().steps[get_real_page_id (page_id)].build_page ();
     }
 
     Peas.Engine get_steps_engine () {
@@ -155,7 +157,7 @@ public sealed class ReadySet.PluginManager : Object {
 
         for (int i = 0; i < engine.get_n_items (); i++) {
             var info = (Peas.PluginInfo) engine.get_item (i);
-            if (info.module_name in steps_to_load) {
+            if (steps_to_load == null || info.module_name in steps_to_load) {
                 engine.load_plugin (info);
                 not_found_steps.remove (info.module_name);
             }
@@ -251,6 +253,7 @@ public sealed class ReadySet.PluginManager : Object {
         var engine = get_installers_engine ();
         var addins = new Peas.ExtensionSet.with_properties (engine, typeof (InstallerAddin), {}, {});
 
+        installers_plugins.remove_all ();
         for (int i = 0; i < engine.get_n_items (); i++) {
             var info = (Peas.PluginInfo) engine.get_item (i);
             if (installer_name == null || info.module_name == installer_name) {
@@ -259,7 +262,9 @@ public sealed class ReadySet.PluginManager : Object {
             }
         }
 
-        not_found_steps.remove_all_array (installers_plugins[installer_name].all_pages);
+        if (installer_name != null) {
+            not_found_steps.remove_all_array (installers_plugins[installer_name].steps.get_keys_as_array ());
+        }
 
         if (not_found_steps.size > 0) {
             var qarr = new Gee.ArrayList<string> ();
@@ -267,14 +272,6 @@ public sealed class ReadySet.PluginManager : Object {
             qarr.add_all_iterator (iter);
             error ("This installer steps not found: %s", string.joinv (", ", qarr.to_array ()));
         }
-
-        installers_plugins.remove_all ();
-
-        addins.foreach (installer_addins_foreach_func);
-    }
-
-    void installer_addins_foreach_func (Peas.ExtensionSet _set, Peas.PluginInfo info, Object extension) {
-        installers_plugins[info.module_name] = (InstallerAddin) extension;
     }
 
     public void check_installers () {

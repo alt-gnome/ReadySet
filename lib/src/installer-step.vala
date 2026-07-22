@@ -18,9 +18,20 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public partial abstract class ReadySet.InstallerAddin {
+public abstract class ReadySet.InstallerStep : Object {
 
-    internal bool has_page (string id) {
-        return id in all_pages;
+    /**
+     * Pretty name of step. Will be shown at cli.
+     */
+    public virtual string? name {
+        get {
+            return null;
+        }
     }
+
+    /**
+     * Build page. It will be added to window if this step
+     * specified in `steps` application option.
+     */
+    public abstract BasePage build_page ();
 }

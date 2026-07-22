@@ -4,6 +4,7 @@ plugin_test_installer_deps = [
 
 plugin_test_installer_sources = files(
   'disks-page.vala',
+  'disks-step.vala',
   'plugin.vala',
 )
 

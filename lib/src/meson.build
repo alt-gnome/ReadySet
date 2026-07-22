@@ -24,13 +24,13 @@ librs_vala_sources = files(
   'context-internal.vala',
   'extension-base.vala',
   'installer-addin.vala',
+  'installer-step.vala',
   'lib-utils.vala',
   'step-addin.vala',
 )
 
 librs_vala_app_plugin_sources = files(
   'extension-base-internal.vala',
-  'installer-addin-internal.vala',
 )
 
 librs_vala_app_only_sources = files(

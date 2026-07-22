@@ -18,22 +18,14 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class TestInstaller.Addin : ReadySet.InstallerAddin {
-
-    public override HashTable<string, ReadySet.InstallerStep> steps {
-        owned get {
-            var s = base.steps;
-            s["disks"] = new DisksStep ();
-            return s;
+public sealed class TestInstaller.DisksStep : ReadySet.InstallerStep {
+    public override string? name {
+        get {
+            return "Show nothing. And this is cool";
         }
     }
 
-    public async override void install (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
-        message ("Test Installer GOOD");
+    public override ReadySet.BasePage build_page () {
+        return new DisksPage ();
     }
-}
-
-public void peas_register_types (TypeModule module) {
-    var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySet.InstallerAddin), typeof (TestInstaller.Addin));
 }
