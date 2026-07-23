@@ -268,3 +268,7 @@ Requires: %name = %EVR
 %files plugin-welcome
 %_libdir/%name/plugins/steps/welcome.plugin
 %_libdir/%name/plugins/steps/libwelcome.so
+
+%changelog
+* Thu Jul 23 2026 Vladimir Romanov <rirusha@altlinux.org> @VERSION@-alt@RELEASE@
+- 
