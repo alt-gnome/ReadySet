@@ -188,22 +188,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check build possible
-        id: check
-        run: |
-          if skopeo inspect docker://${{ matrix.image }} > /dev/null 2>&1; then
-            echo "exists=yes" >> $GITHUB_OUTPUT
-          else
-            echo "exists=no" >> $GITHUB_OUTPUT
-          fi
-
       - id: get_commit
         name: Get current commit
         run: |
           echo "commit=$(git rev-parse HEAD)" >> $FORGEJO_OUTPUT
 
       - name: Build&Push image
-        if: steps.check.outputs.exists == 'yes'
         uses: alt-atomic/actions/build-and-push@c882944ee9b49d04f3f2030aa47c435515a66657
         with:
           image-name: alt-gnome/ready-set-test-atomic
