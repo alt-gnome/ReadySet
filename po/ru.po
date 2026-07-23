@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
-"Report-Msgid-Bugs-To: rirusha@altlinux.org\n"
-"POT-Creation-Date: 2026-07-20 20:54+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-23 13:33+0000\n"
 "PO-Revision-Date: 2026-07-20 21:27+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -397,19 +397,19 @@ msgstr ""
 msgid "Name cannot be empty"
 msgstr "Имя не может быть пустым"
 
-#: plugins/user/utils.vala:182
+#: plugins/user/utils.vala:178
 msgid "That username isn't available. Please try another"
 msgstr "Это имя пользователя недоступно. Пожалуйста, попробуйте другое"
 
-#: plugins/user/utils.vala:184
+#: plugins/user/utils.vala:180
 msgid "The username is too long"
 msgstr "Имя пользователя слишком длинное"
 
-#: plugins/user/utils.vala:186
+#: plugins/user/utils.vala:182
 msgid "The username must start with a lower case letter from a-z"
 msgstr "Имя пользователя должно начинаться со строчной буквы от «a» до «z»"
 
-#: plugins/user/utils.vala:188
+#: plugins/user/utils.vala:184
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
@@ -417,11 +417,11 @@ msgstr ""
 "Имя пользователя может содержать только строчные буквы от «a» до «z», цифры "
 "и следущие символы: «-», «_»"
 
-#: plugins/user/utils.vala:191
+#: plugins/user/utils.vala:187
 msgid "Username cannot be empty"
 msgstr "Имя пользователя не может быть пустым"
 
-#: plugins/user/utils.vala:295
+#: plugins/user/utils.vala:291
 msgid "The password must consist of at least one character"
 msgstr "Пароль должен состоять минимум из одного символа"
 
@@ -461,6 +461,40 @@ msgstr "На Старт Внимание"
 #: src/about.vala:38
 msgid "translator-credits"
 msgstr "Vladimir Romanov <rirusha@altlinux.org>"
+
+#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
+#: src/end-pages/initial-setup.vala:54 src/end-pages/installer.vala:44
+#, c-format
+msgid "_Start Using %s"
+msgstr "_Начать работу с %s"
+
+#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
+#: src/end-pages/initial-setup.vala:56 src/end-pages/installer.vala:46
+#, c-format
+msgid "%s is ready to be used."
+msgstr "Дистрибутив %s готов к использованию."
+
+#: src/end-pages/initial-setup.vala:58 src/end-pages/installer.vala:48
+msgid "_Start Using the System"
+msgstr "_Начать работу с системой"
+
+#: src/end-pages/initial-setup.vala:59 src/end-pages/installer.vala:49
+msgid "System is ready to be used."
+msgstr "Система готова к использованию."
+
+#: src/end-pages/initial-setup.vala:115
+#, c-format
+msgid "Applying %s…"
+msgstr "Применение %s…"
+
+#: src/end-pages/initial-setup.vala:198 src/end-pages/installer.vala:125
+#, c-format
+msgid "Error message: %s"
+msgstr "Сообщение об ошибке: %s"
+
+#: src/end-pages/installer.vala:81
+msgid "Installing system…"
+msgstr "Установка системы…"
 
 #: src/options-handler.vala:39
 msgid "Context vars"
@@ -519,45 +553,6 @@ msgstr "Показать информацию о версии и выйти"
 #: src/options-handler.vala:132
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
-
-#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/pages/initial-setup-end-page.vala:54
-#: src/pages/installer-end-page.vala:44
-#, c-format
-msgid "_Start Using %s"
-msgstr "_Начать работу с %s"
-
-#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/pages/initial-setup-end-page.vala:56
-#: src/pages/installer-end-page.vala:46
-#, c-format
-msgid "%s is ready to be used."
-msgstr "Дистрибутив %s готов к использованию."
-
-#: src/pages/initial-setup-end-page.vala:58
-#: src/pages/installer-end-page.vala:48
-msgid "_Start Using the System"
-msgstr "_Начать работу с системой"
-
-#: src/pages/initial-setup-end-page.vala:59
-#: src/pages/installer-end-page.vala:49
-msgid "System is ready to be used."
-msgstr "Система готова к использованию."
-
-#: src/pages/initial-setup-end-page.vala:115
-#, c-format
-msgid "Applying %s…"
-msgstr "Применение %s…"
-
-#: src/pages/initial-setup-end-page.vala:198
-#: src/pages/installer-end-page.vala:125
-#, c-format
-msgid "Error message: %s"
-msgstr "Сообщение об ошибке: %s"
-
-#: src/pages/installer-end-page.vala:81
-msgid "Installing system…"
-msgstr "Установка системы…"
 
 #: tests/plugins/test-common/data/ui/page.blp:23
 #: tests/plugins/test-common/data/ui/page.blp:32
