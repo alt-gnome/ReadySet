@@ -134,7 +134,11 @@ public sealed class ReadySet.Application: Adw.Application {
 
         print ("\nApplication mode: %s\n\n", context.mode.to_string ());
         if (has_installer) {
-            print ("Installer:\n  %s - %s\n\n", installer_plugin.plugin_info.module_name, installer_plugin.plugin_info.name);
+            print (
+                "Installer:\n  %s - %s\n\n",
+                installer_plugin.plugin_info.module_name,
+                installer_plugin.plugin_info.name
+            );
         }
 
         plugin_manager.check_steps (options_handler.steps);
