@@ -165,7 +165,7 @@ jobs:
         with:
           directory: ~/hasher/repo
           token: ${{ secrets.TOKEN }}
-          group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
+          group: ready-set-nightly/${{ matrix.branch }}
 
   build-test-image:
     name: Build ${{ matrix.denviron }} image
@@ -206,7 +206,7 @@ jobs:
         if: steps.check.outputs.exists == 'yes'
         uses: alt-atomic/actions/build-and-push@c882944ee9b49d04f3f2030aa47c435515a66657
         with:
-          image-name: alt-gnome/ready-set-test-atomic/${{ github.ref_name }}
+          image-name: alt-gnome/ready-set-test-atomic
           image-tag: ${{ matrix.denviron }}
           containerfile-path: ./test-atomic/${{ matrix.denviron }}/Containerfile
 
@@ -215,8 +215,6 @@ jobs:
           pretty-name: ReadySet Atomic test image
           version: ${{ steps.get_commit.outputs.commit }}
 
-          build-args: |
-            PKG_GROUP=${{ github.ref_name }}
           extra-labels: |
             org.altlinux.installer.has-initial-setup=true
 
