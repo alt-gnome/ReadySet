@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-20 20:54+0000\n"
+"POT-Creation-Date: 2026-07-23 13:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -368,29 +368,29 @@ msgstr ""
 msgid "Name cannot be empty"
 msgstr ""
 
-#: plugins/user/utils.vala:182
+#: plugins/user/utils.vala:178
 msgid "That username isn't available. Please try another"
 msgstr ""
 
-#: plugins/user/utils.vala:184
+#: plugins/user/utils.vala:180
 msgid "The username is too long"
 msgstr ""
 
-#: plugins/user/utils.vala:186
+#: plugins/user/utils.vala:182
 msgid "The username must start with a lower case letter from a-z"
 msgstr ""
 
-#: plugins/user/utils.vala:188
+#: plugins/user/utils.vala:184
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
 msgstr ""
 
-#: plugins/user/utils.vala:191
+#: plugins/user/utils.vala:187
 msgid "Username cannot be empty"
 msgstr ""
 
-#: plugins/user/utils.vala:295
+#: plugins/user/utils.vala:291
 msgid "The password must consist of at least one character"
 msgstr ""
 
@@ -427,6 +427,40 @@ msgstr ""
 #. Translators: NAME <EMAIL.COM>
 #: src/about.vala:38
 msgid "translator-credits"
+msgstr ""
+
+#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
+#: src/end-pages/initial-setup.vala:54 src/end-pages/installer.vala:44
+#, c-format
+msgid "_Start Using %s"
+msgstr ""
+
+#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
+#: src/end-pages/initial-setup.vala:56 src/end-pages/installer.vala:46
+#, c-format
+msgid "%s is ready to be used."
+msgstr ""
+
+#: src/end-pages/initial-setup.vala:58 src/end-pages/installer.vala:48
+msgid "_Start Using the System"
+msgstr ""
+
+#: src/end-pages/initial-setup.vala:59 src/end-pages/installer.vala:49
+msgid "System is ready to be used."
+msgstr ""
+
+#: src/end-pages/initial-setup.vala:115
+#, c-format
+msgid "Applying %s…"
+msgstr ""
+
+#: src/end-pages/initial-setup.vala:198 src/end-pages/installer.vala:125
+#, c-format
+msgid "Error message: %s"
+msgstr ""
+
+#: src/end-pages/installer.vala:81
+msgid "Installing system…"
 msgstr ""
 
 #: src/options-handler.vala:39
@@ -483,45 +517,6 @@ msgstr ""
 
 #: src/options-handler.vala:132
 msgid "App config file"
-msgstr ""
-
-#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/pages/initial-setup-end-page.vala:54
-#: src/pages/installer-end-page.vala:44
-#, c-format
-msgid "_Start Using %s"
-msgstr ""
-
-#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/pages/initial-setup-end-page.vala:56
-#: src/pages/installer-end-page.vala:46
-#, c-format
-msgid "%s is ready to be used."
-msgstr ""
-
-#: src/pages/initial-setup-end-page.vala:58
-#: src/pages/installer-end-page.vala:48
-msgid "_Start Using the System"
-msgstr ""
-
-#: src/pages/initial-setup-end-page.vala:59
-#: src/pages/installer-end-page.vala:49
-msgid "System is ready to be used."
-msgstr ""
-
-#: src/pages/initial-setup-end-page.vala:115
-#, c-format
-msgid "Applying %s…"
-msgstr ""
-
-#: src/pages/initial-setup-end-page.vala:198
-#: src/pages/installer-end-page.vala:125
-#, c-format
-msgid "Error message: %s"
-msgstr ""
-
-#: src/pages/installer-end-page.vala:81
-msgid "Installing system…"
 msgstr ""
 
 #: tests/plugins/test-common/data/ui/page.blp:23
