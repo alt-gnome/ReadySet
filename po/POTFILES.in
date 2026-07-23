@@ -37,10 +37,10 @@ plugins/user/utils.vala
 plugins/welcome/data/ui/page.blp
 plugins/welcome/page.vala
 src/about.vala
+src/end-pages/initial-setup.vala
+src/end-pages/installer.vala
 src/options-handler.vala
 src/pages-model.vala
-src/pages/initial-setup-end-page.vala
-src/pages/installer-end-page.vala
 src/plugin-manager.vala
 src/widgets/positioned-stack.vala
 src/widgets/steps-main-page.vala
