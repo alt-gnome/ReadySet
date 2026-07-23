@@ -271,4 +271,4 @@ Requires: %name = %EVR
 
 %changelog
 * Thu Jul 23 2026 Vladimir Romanov <rirusha@altlinux.org> @VERSION@-alt@RELEASE@
-- 
+- Regular build.
