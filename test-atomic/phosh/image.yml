@@ -40,7 +40,9 @@ modules:
       destination: /
       replace: true
 
-  - name: Update dconf
+  - name: Update dconf and sysusers
     type: shell
     body:
-      command: dconf update
+      command: |
+        dconf update
+        systemd-sysusers

@@ -1,8 +1,5 @@
-ARG IMAGE
+FROM altlinux.space/alt-atomic/minimal/phosh/nightly:latest
 
-FROM $IMAGE
-
-ARG IMAGE
 ARG PKG_GROUP
 
 ENV PKG_GROUP=$PKG_GROUP
@@ -10,7 +7,3 @@ ENV PKG_GROUP=$PKG_GROUP
 RUN --mount=type=bind,source=./test-atomic/phrog/image.yml,target=/etc/apm/image.yml \
     --mount=type=bind,source=./test-atomic/phrog/resources,target=/etc/apm/resources \
     apm system image build
-
-WORKDIR /
-
-CMD ["/sbin/init"]

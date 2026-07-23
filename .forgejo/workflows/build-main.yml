@@ -173,16 +173,8 @@ jobs:
     strategy:
       matrix:
         denviron:
-          - phrog
           - gnome
-          - gnome-gis
-        include:
-          - denviron: phrog
-            image: altlinux.space/alt-atomic/minimal/phosh/nightly:latest
-          - denviron: gnome
-            image: altlinux.space/alt-atomic/onyx/nightly:latest
-          - denviron: gnome-gis
-            image: altlinux.space/alt-atomic/onyx/nightly:latest
+          - phosh
 
     needs:
       - rpm-build
@@ -205,25 +197,27 @@ jobs:
             echo "exists=no" >> $GITHUB_OUTPUT
           fi
 
-      - name: Build sisyphus default image
-        if: steps.check.outputs.exists == 'yes'
+      - id: get_commit
+        name: Get current commit
         run: |
-          podman build \
-            --tag $LOCAL_BUILD_NAME \
-            --platform linux/amd64 \
-            --build-arg IMAGE=${{ matrix.image }} \
-            --build-arg PKG_GROUP=${{ github.ref_name }} \
-            --file ./test-atomic/${{ matrix.denviron }}/Containerfile \
-            --label org.altlinux.installer.has-initial-setup=true \
-            .
+          echo "commit=$(git rev-parse HEAD)" >> $FORGEJO_OUTPUT
 
-      - name: Push images
+      - name: Build&Push image
         if: steps.check.outputs.exists == 'yes'
-        uses: alt-atomic/actions/push-and-sign@main
+        uses: alt-atomic/actions/build-and-push@c882944ee9b49d04f3f2030aa47c435515a66657
         with:
-          registry: ${{ env.REGISTRY }}
-          registry-username: "<token>"
-          registry-password: ${{ secrets.TOKEN }}
           image-name: alt-gnome/ready-set-test-atomic/${{ github.ref_name }}
           image-tag: ${{ matrix.denviron }}
-          local-build-name: ${{ env.LOCAL_BUILD_NAME }}
+          containerfile-path: ./test-atomic/${{ matrix.denviron }}/Containerfile
+
+          registry-password: ${{ secrets.TOKEN }}
+
+          pretty-name: ReadySet Atomic test image
+          version: ${{ steps.get_commit.outputs.commit }}
+
+          build-args: |
+            PKG_GROUP=${{ github.ref_name }}
+          extra-labels: |
+            org.altlinux.installer.has-initial-setup=true
+
+          rechunk-enabled: false
