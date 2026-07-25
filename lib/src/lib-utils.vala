@@ -76,7 +76,7 @@ namespace ReadySet {
          */
         public string description { get; set; }
 
-        public ApplyErrorData (string message, string descriprtion) {
+        public ApplyErrorData (string message, string description) {
             this.message = message;
             this.description = description;
         }
