@@ -1,6 +1,7 @@
 [Application]
 steps=language,keyboard,user-passwdqc
 simple=true
+resizable=true
 
 [Context]
 user.with-root=true
