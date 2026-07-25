@@ -1,5 +1,5 @@
 [Application]
-steps=language,keyboard,user-passwdqc
+steps=language,keyboard,user-passwdqc,atomic-finalize
 simple=true
 resizable=true
 
