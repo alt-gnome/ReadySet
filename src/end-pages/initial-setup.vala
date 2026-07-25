@@ -90,28 +90,21 @@ public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
         progress_data.notify["value"].connect (update_progress_visibility);
         update_progress_visibility ();
 
-        Gee.ArrayList<StepAddin> steps_addins_arr = new Gee.ArrayList<StepAddin> ();
-
-        for (int i = 0; i < app.model.get_n_items_unfiltered (); i++) {
-            var page_info = (PageInfo) app.model.get_item_unfiltered (i);
-
-            //  can_be_applyed also null checl
-            if (!page_info.can_be_applyed ()) {
-                continue;
-            }
-
-            if (!(page_info.plugin in steps_addins_arr) && page_info.plugin_info.module_name != "welcome") {
-                steps_addins_arr.add (page_info.plugin);
-            }
-        }
-
         if (context.sandbox) {
-            progress_data.value = 0.0;
+            Gee.ArrayList<StepAddin> steps_addins_arr = new Gee.ArrayList<StepAddin> ();
 
+            for (int i = 0; i < app.model.get_n_items_unfiltered (); i++) {
+                var page_info = (PageInfo) app.model.get_item_unfiltered (i);
+                if (!page_info.can_be_applyed ()) continue;
+                if (!(page_info.plugin in steps_addins_arr) && page_info.plugin_info.module_name != "welcome") {
+                    steps_addins_arr.add (page_info.plugin);
+                }
+            }
+
+            progress_data.value = 0.0;
             var progress_step = 1.0 / steps_addins_arr.size;
 
             foreach (var step_addin in steps_addins_arr) {
-
                 progress_data.message = _("Applying %s…").printf (step_addin.plugin_info.module_name);
 
                 Timeout.add_seconds_once (1, () => {
@@ -123,82 +116,22 @@ public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
             }
 
             stack.visible_child_name = "ready";
-
         } else {
+            var finalizer = new Finalizer (
+                context,
+                app.plugin_manager,
+                null,
+                progress_data
+            );
+
             try {
-                foreach (var step_addin in steps_addins_arr) {
-                    progress_data.value = 0.0;
-
-                    yield step_addin.apply (progress_data);
-
-                    progress_data.value = 1.0;
-                }
-
-                try {
-                    var raw_context = context.get_raw_string ();
-                    var env = new Gee.ArrayList<string> ();
-
-                    foreach (var key in raw_context.get_keys ()) {
-                        env.add ("%s=%s".printf (context_key_to_env_key (key), raw_context[key]));
-                    }
-
-                    string hooks_type = "post";
-                    string hooks_target = "initial-setup";
-
-                    var pre_hooks_dir = get_system_hooks_dir (hooks_type, hooks_target);
-
-                    foreach (var name in ReadySet.get_all_hooks_from_dir (pre_hooks_dir)) {
-                        ReadySet.real_exec_hook_from_dir (pre_hooks_dir, name, env.to_array ());
-                    }
-
-                    foreach (var name in yield get_ready_set_proxy ().get_all_hooks (hooks_type, hooks_target)) {
-                        yield get_ready_set_proxy ().exec_hook (hooks_type, hooks_target, name, env.to_array ());
-                    }
-                } catch (Error e) {
-                    warning ("Error on executing post hooks: %s", e.message);
-                }
-
-                if (context.has_key ("user.username")) {
-                    string[] passed_plugins = {};
-
-                    foreach (var step_addin in steps_addins_arr) {
-                        passed_plugins += step_addin.plugin_info.module_name;
-                    }
-
-                    var rs_settings = new Settings ("org.altlinux.ReadySet");
-                    rs_settings.set_strv ("performed-steps", passed_plugins);
-
-                    const string[] FILES_TO_COPY = {
-                        ".config/dconf/user"
-                    };
-
-                    foreach (var file in FILES_TO_COPY) {
-                        try {
-                            yield get_ready_set_proxy ().copy_to_user (
-                                Path.build_filename (
-                                    Environment.get_home_dir (),
-                                    file
-                                ),
-                                file,
-                                context.get_string ("user.username")
-                            );
-                        } catch (Error e) {
-                            //  This fail is not so critical to stop initial-setup
-                            warning ("Fail to copy to user: %s", e.message);
-                        }
-                    }
-                }
-
+                yield finalizer.run ();
                 stack.visible_child_name = "ready";
-
             } catch (ApplyError e) {
-                var apply_error_data = apply_error_to_data (e);
-
-                error_status_page.title = apply_error_data.message;
-                error_status_page.description = _("Error message: %s").printf (apply_error_data.description);
-
+                var error_data = apply_error_to_data (e);
+                error_status_page.title = error_data.message;
+                error_status_page.description = _("Error message: %s").printf (error_data.description);
                 stack.visible_child_name = "error";
-
             }
         }
     }

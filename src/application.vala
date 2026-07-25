@@ -132,6 +132,10 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 #endif
 
+        if (options_handler.apply_only && context.mode == EXISTING_USER) {
+            error ("`finalize` can not be used in existing-user mode");
+        }
+
         print ("\nApplication mode: %s\n\n", context.mode.to_string ());
         if (has_installer) {
             print (
@@ -146,13 +150,18 @@ public sealed class ReadySet.Application: Adw.Application {
             plugin_manager.check_installers ();
         }
         options_handler.fill_context (context);
-        context.reload_window.connect (reload_window);
+
+        if (!options_handler.apply_only) {
+            context.reload_window.connect (reload_window);
+        }
 
         if (!options_handler.sandbox) {
             exec_pre_hooks.begin ();
         }
 
-        init_lib_css ();
+        if (!options_handler.apply_only) {
+            init_lib_css ();
+        }
     }
 
     async void exec_pre_hooks () {
@@ -282,8 +291,38 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
+    void finalize_cb (Object? obj, AsyncResult res) {
+        var finalizer = (Finalizer) obj;
+        try {
+            finalizer.run.end (res);
+            print ("Done!\n");
+
+        } catch (ApplyError e) {
+            var error_data = apply_error_to_data (e);
+            print ("Failed: %s. %s\n", error_data.message, error_data.description);
+            Process.exit (-1);
+        }
+
+        release ();
+    }
+
     public override void activate () {
         base.activate ();
+
+        if (options_handler.apply_only) {
+            var progress_data = new ProgressData ();
+            var finalizer = new Finalizer (
+                context,
+                plugin_manager,
+                installer_plugin,
+                progress_data
+            );
+
+            hold ();
+            finalizer.run.begin (finalize_cb);
+
+            return;
+        }
 
         if (active_window == null) {
             if (context.has_key ("language.locale")) {

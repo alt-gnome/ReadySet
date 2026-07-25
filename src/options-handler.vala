@@ -126,6 +126,13 @@ public sealed class ReadySet.OptionsHandler : Object {
             null
         },
         {
+            "apply-only", '\0',
+            0, OptionArg.NONE,
+            null,
+            N_("Run apply from config without running GUI"),
+            null
+        },
+        {
             OPT_CONF_FILE, '\0',
             0, OptionArg.FILENAME,
             null,
@@ -154,6 +161,8 @@ public sealed class ReadySet.OptionsHandler : Object {
     public bool fullscreen { get; set; }
 
     public bool simple { get; set; }
+
+    public bool apply_only { get; set; }
 
     public bool can_close { get; set; }
 

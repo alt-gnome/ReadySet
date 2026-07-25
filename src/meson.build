@@ -29,6 +29,7 @@ rs_app_vala_sources = files(
 
   'about.vala',
   'application.vala',
+  'finalize.vala',
   'main.vala',
   'options-handler.vala',
   'pages-model.vala',

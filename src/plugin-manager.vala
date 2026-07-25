@@ -231,7 +231,10 @@ public sealed class ReadySet.PluginManager : Object {
                 );
 
                 addin.context = context;
-                addin.load_css_for_display (Gdk.Display.get_default ());
+                var display = Gdk.Display.get_default ();
+                if (display != null) {
+                    addin.load_css_for_display (display);
+                }
             }
         }
     }
@@ -281,7 +284,10 @@ public sealed class ReadySet.PluginManager : Object {
 
         context.register_vars ("installer", installers_plugins[installer_name].get_context_vars ());
 
-        get_installer_plugin ().load_css_for_display (Gdk.Display.get_default ());
+        var display = Gdk.Display.get_default ();
+        if (display != null) {
+            get_installer_plugin ().load_css_for_display (display);
+        }
     }
 
     public async void init_steps_once () {
