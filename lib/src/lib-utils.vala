@@ -84,7 +84,7 @@ namespace ReadySet {
 
     /**
      * Class for handling progress data for continius operation in 
-     * {@link InstallAddin.install} and {@link StepAddin.apply}.
+     * {@link InstallerAddin.install} and {@link StepAddin.apply}.
      */
     public sealed class ProgressData : Object {
 
@@ -100,10 +100,9 @@ namespace ReadySet {
     }
 
     /**
-     * Can hold either json string or something else, so you should use
-     * {@link ApplyError.to_data} to get real data as {@link ApplyErrorData}.
+     * Can hold either json string or something else.
      *
-     * Also you can build both with
+     * You can build both with
      * {{{
      *   throw new ApplyError.BASE ("Message");
      * }}}

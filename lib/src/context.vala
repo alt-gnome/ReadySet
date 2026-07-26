@@ -158,7 +158,7 @@ internal class ReadySet.ValueObject : Object {
 
 /**
  * Information about context value. Needs for registration and used in
- * {@link ReadySet.StepAddin.get_context_vars}.
+ * {@link ReadySet.ExtensionBase.get_context_vars}.
  *
  * @see ReadySet.Context
  */
@@ -187,7 +187,7 @@ public class ReadySet.ContextVarInfo : Object {
      * Constructor for any {@link ReadySet.ContextType} type except
      * {@link ReadySet.ContextType.OBJECT}.
      *
-     * Use {@link ReadySet.ContextVarInfo.object}
+     * Use {@link ReadySet.ContextVarInfo} object
      * constructor for {@link ReadySet.ContextType.OBJECT} type.
      */
     public ContextVarInfo (ContextType value_type, Value? default_value = null) {

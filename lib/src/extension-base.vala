@@ -56,7 +56,7 @@ public partial abstract class ReadySet.ExtensionBase : Peas.ExtensionBase {
 
     /**
      * Get context variables for registration. Calls by application.
-     * Better to this for getting created {@link HashTable}.
+     * Better to this for getting created {@link GLib.HashTable}.
      * {{{
      *  base.get_context_vars ()
      * }}}

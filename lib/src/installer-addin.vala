@@ -41,7 +41,7 @@ public partial abstract class ReadySet.InstallerAddin : ExtensionBase {
 
     /**
      * All available pages that can be built via
-     * {@link ReadySet.InstallerAddin.build_page}.
+     * {@link ReadySet.InstallerStep.build_page}.
      */
     public virtual HashTable<string, InstallerStep> steps {
         owned get {

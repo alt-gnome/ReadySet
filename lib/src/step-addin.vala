@@ -31,7 +31,7 @@
  *
  * == Using gresource ==
  * 
- * If you using gresource, you should override {@link ReadySet.StepAddin.resource_base_path}
+ * If you using gresource, you should override {@link ReadySet.ExtensionBase.resource_base_path}
  * and return your base path as get method. `style.css` will be loaded
  * from resource if file with this name exists.
  *
