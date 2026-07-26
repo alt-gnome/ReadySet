@@ -206,8 +206,8 @@ public sealed class ReadySet.PluginManager : Object {
                 var addin = steps_plugins[steps[i]];
 
                 string module_name;
-                if (addin.module_name != null) {
-                    module_name = addin.module_name;
+                if (addin.registration_module_name != null) {
+                    module_name = addin.registration_module_name;
                 } else {
                     module_name = steps[i];
                 }
