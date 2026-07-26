@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-26 00:02+0000\n"
+"POT-Creation-Date: 2026-07-26 00:12+0000\n"
 "PO-Revision-Date: 2026-07-20 21:27+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -427,7 +427,7 @@ msgid "Weak password"
 msgstr "Повторите пароль"
 
 #: plugins/user/utils.vala:286
-msgid "The entered password is not secure. Do you really want to use it??"
+msgid "The entered password is not secure. Do you really want to use it?"
 msgstr ""
 
 #: plugins/user/utils.vala:288
