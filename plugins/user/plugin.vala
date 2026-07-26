@@ -85,7 +85,7 @@ public class User.Addin : ReadySet.StepAddin {
 #if WITH_ROOT_SET
         vars["with-root"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
 #endif
-        vars["no-password-security"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        vars["enforce-password-quality"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
         vars["passwd-conf-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["avatar-directories"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV);
 

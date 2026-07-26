@@ -5,4 +5,3 @@ resizable=true
 
 [Context]
 user.with-root=true
-user.no-password-security=true

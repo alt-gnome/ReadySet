@@ -488,6 +488,10 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
     [GtkCallback]
     void continue_clicked () {
+        if (!model.get_selected_item ().page.try_continue ()) {
+            return;
+        }
+
         var position = model.get_selected ();
         var n_items = model.get_n_items ();
 

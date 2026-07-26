@@ -25,6 +25,7 @@ foreach pwcheck_backend : password_check_backend
     'context-row.vala',
     'i18n.vala',
     'margin-label.vala',
+    'page-password-common.vala',
     'page-password.vala',
     'page-username.vala',
     'password-strength.vala',
