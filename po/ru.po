@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-23 13:33+0000\n"
+"POT-Creation-Date: 2026-07-26 00:02+0000\n"
 "PO-Revision-Date: 2026-07-20 21:27+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -52,7 +52,7 @@ msgstr "К предыдущей странице"
 msgid "Next"
 msgstr "Дальше"
 
-#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:625
+#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:626
 msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
 
@@ -275,7 +275,7 @@ msgstr ""
 "Имя пользователя будет использовано для имени Вашей домашней директории и не "
 "может быть изменено."
 
-#: plugins/user/page-password.vala:65
+#: plugins/user/page-password.vala:69
 #, c-format
 msgid "Set a Password for %s"
 msgstr "Установите пароль для %s"
@@ -421,9 +421,22 @@ msgstr ""
 msgid "Username cannot be empty"
 msgstr "Имя пользователя не может быть пустым"
 
-#: plugins/user/utils.vala:291
-msgid "The password must consist of at least one character"
-msgstr "Пароль должен состоять минимум из одного символа"
+#: plugins/user/utils.vala:285
+#, fuzzy
+msgid "Weak password"
+msgstr "Повторите пароль"
+
+#: plugins/user/utils.vala:286
+msgid "The entered password is not secure. Do you really want to use it??"
+msgstr ""
+
+#: plugins/user/utils.vala:288
+msgid "_No"
+msgstr ""
+
+#: plugins/user/utils.vala:289
+msgid "_Yes"
+msgstr ""
 
 #: plugins/welcome/data/ui/page.blp:5
 msgid "Welcome"
@@ -482,17 +495,17 @@ msgstr "_Начать работу с системой"
 msgid "System is ready to be used."
 msgstr "Система готова к использованию."
 
-#: src/end-pages/initial-setup.vala:115
+#: src/end-pages/initial-setup.vala:108 src/finalize.vala:71
 #, c-format
 msgid "Applying %s…"
 msgstr "Применение %s…"
 
-#: src/end-pages/initial-setup.vala:198 src/end-pages/installer.vala:125
+#: src/end-pages/initial-setup.vala:133 src/end-pages/installer.vala:96
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
-#: src/end-pages/installer.vala:81
+#: src/end-pages/installer.vala:66 src/finalize.vala:127
 msgid "Installing system…"
 msgstr "Установка системы…"
 
@@ -551,6 +564,10 @@ msgid "Print version information and exit"
 msgstr "Показать информацию о версии и выйти"
 
 #: src/options-handler.vala:132
+msgid "Run apply from config without running GUI"
+msgstr ""
+
+#: src/options-handler.vala:139
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
@@ -562,6 +579,9 @@ msgstr "Тест"
 #: tests/plugins/test-common/data/ui/page.blp:27
 msgid "Test page"
 msgstr "Тестовая страница"
+
+#~ msgid "The password must consist of at least one character"
+#~ msgstr "Пароль должен состоять минимум из одного символа"
 
 #~ msgid "Failed to generate password"
 #~ msgstr "Не удалось сгенерироавть пароль"
