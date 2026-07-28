@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-26 00:12+0000\n"
+"POT-Creation-Date: 2026-07-28 15:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -500,7 +500,7 @@ msgid "Sandbox run without doing anything in system"
 msgstr ""
 
 #: src/options-handler.vala:83
-msgid "Don't show indicators and keep window simple"
+msgid "Show indicators and sidebar with steps"
 msgstr ""
 
 #: src/options-handler.vala:90
