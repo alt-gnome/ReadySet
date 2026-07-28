@@ -68,7 +68,7 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
             map.connect (window_initially_shown);
         }
 
-        simple = Application.get_default ().options_handler.simple;
+        simple = !Application.get_default ().options_handler.detailed;
 
         if (Config.NIGHTLY) {
             add_css_class ("devel");
