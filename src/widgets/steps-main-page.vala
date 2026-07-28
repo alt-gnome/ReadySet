@@ -304,7 +304,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
             hscrollbar_policy = NEVER
         };
 
-        var box = new Gtk.Box (VERTICAL, 12) {
+        var box = new Gtk.Box (VERTICAL, 36) {
             valign = CENTER
         };
         scrolled_window.child = box;
