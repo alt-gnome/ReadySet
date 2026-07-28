@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-26 00:12+0000\n"
+"POT-Creation-Date: 2026-07-28 15:00+0000\n"
 "PO-Revision-Date: 2026-07-20 21:27+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -534,7 +534,8 @@ msgid "Sandbox run without doing anything in system"
 msgstr "Запуск в \"песочнице\" без изменения системы"
 
 #: src/options-handler.vala:83
-msgid "Don't show indicators and keep window simple"
+#, fuzzy
+msgid "Show indicators and sidebar with steps"
 msgstr "Не показывать индикаторы и сделать окно проще"
 
 #: src/options-handler.vala:90
