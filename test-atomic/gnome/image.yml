@@ -4,6 +4,7 @@ modules:
     body:
       custom:
         - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/sisyphus.repo _arch_ classic
+        - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/sisyphus.repo noarch classic
 
   - type: packages
     body:
