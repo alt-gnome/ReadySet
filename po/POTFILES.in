@@ -6,6 +6,15 @@ data/ui/steps-main-page.blp
 data/ui/window-content.blp
 lib/src/base/base-page.vala
 lib/src/lib-utils-internal.vala
+plugins/date-and-time/data/ui/carousel-selector.blp
+plugins/date-and-time/data/ui/date-selector.blp
+plugins/date-and-time/data/ui/page.blp
+plugins/date-and-time/data/ui/time-selector.blp
+plugins/date-and-time/data/ui/timezone-list.blp
+plugins/date-and-time/date-selector.vala
+plugins/date-and-time/page.vala
+plugins/date-and-time/plugin.vala
+plugins/date-and-time/time-selector.vala
 plugins/keyboard/data/ui/current-input-row.blp
 plugins/keyboard/data/ui/current-input-sources.blp
 plugins/keyboard/data/ui/input-row.blp
