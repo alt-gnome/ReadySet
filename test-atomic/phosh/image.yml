@@ -9,9 +9,10 @@ modules:
   - type: packages
     body:
       install:
-        - ready-set-plugin-phrog
+        - ready-set-phrog
         - ready-set-plugin-language
         - ready-set-plugin-keyboard
+        - ready-set-plugin-date-and-time
         - ready-set-plugin-user-passwdqc
         - ready-set-plugin-atomic-finalize
       upgrade: true
