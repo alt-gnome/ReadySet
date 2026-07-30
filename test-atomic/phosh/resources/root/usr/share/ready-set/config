@@ -1,6 +1,5 @@
 [Application]
 steps=language,keyboard,user-passwdqc,atomic-finalize
-simple=true
 resizable=true
 
 [Context]
