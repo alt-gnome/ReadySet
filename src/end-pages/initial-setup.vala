@@ -155,10 +155,10 @@ public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
 #if WITH_GDM
         } else if (client == null) {
             debug ("No GDM connection");
-#endif
         } else {
             log_user_in ();
             return;
+#endif
         }
 
         app.quit ();
