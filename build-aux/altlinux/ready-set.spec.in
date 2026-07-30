@@ -37,23 +37,28 @@ BuildRequires: vala-tools
 BuildRequires: gobject-introspection-devel
 BuildRequires: blueprint-compiler
 BuildRequires: gir(Adw) = 1
+BuildRequires: gir(Gdm) = 1.0
 BuildRequires: gir(Gtk) = 4.0
 BuildRequires: gir(Peas) = 2
-BuildRequires: gir(Gdm) = 1.0
 BuildRequires: gir(Serialize) = 7
+BuildRequires: gir(Tuner) = 1
+BuildRequires: typelib(Case) = 0
 BuildRequires: pkgconfig(accountsservice)
+BuildRequires: pkgconfig(flatpak)
 BuildRequires: pkgconfig(gdm)
 BuildRequires: pkgconfig(gee-0.8)
 BuildRequires: pkgconfig(gio-unix-2.0)
 BuildRequires: pkgconfig(gnome-desktop-4)
 BuildRequires: pkgconfig(ibus-1.0)
 BuildRequires: pkgconfig(libadwaita-1) >= 1.7
+BuildRequires: pkgconfig(libcase-0)
 BuildRequires: pkgconfig(libpeas-2)
 BuildRequires: pkgconfig(libserialize-7) >= 7.5
 BuildRequires: pkgconfig(passwdqc)
 BuildRequires: pkgconfig(polkit-gobject-1)
 BuildRequires: pkgconfig(pwquality)
 BuildRequires: pkgconfig(systemd)
+BuildRequires: pkgconfig(tuner-1)
 BuildRequires: pkgconfig(xkbcommon)
 
 %description
@@ -174,6 +179,38 @@ Requires: %name = %EVR
 %description plugin-welcome
 %summary.
 
+%package plugin-date-and-time
+Summary: %name date-and-time plugin
+Group: Other
+
+Requires: %name = %EVR
+
+%description plugin-date-and-time
+%summary.
+
+%package plugin-software
+Summary: %name software plugin
+Group: Other
+
+Requires: %name = %EVR
+
+%description plugin-software
+%summary.
+
+%package plugin-software-source-pot-generator
+Summary: Pot generator for source config files of %name software plugin
+Group: Development/Tools
+
+%description plugin-software-source-pot-generator
+%summary.
+
+%package tuner-plugin-ready-set-software
+Summary: Tuner plugin with %name software plugin functionality
+Group: Other
+
+%description tuner-plugin-ready-set-software
+%summary.
+
 %prep
 %setup
 
@@ -184,6 +221,7 @@ Requires: %name = %EVR
 %install
 %meson_install
 %find_lang %name
+%find_lang %name-software
 
 %check
 %meson_test
@@ -268,6 +306,24 @@ Requires: %name = %EVR
 %files plugin-welcome
 %_libdir/%name/plugins/steps/welcome.plugin
 %_libdir/%name/plugins/steps/libwelcome.so
+
+%files plugin-date-and-time
+%_libdir/%name/plugins/steps/date-and-time.plugin
+%_libdir/%name/plugins/steps/libdate-and-time.so
+%_datadir/polkit-1/rules.d/%app_id.Plugin.DateAndTime.rules
+
+%files plugin-software
+%_libdir/%name/plugins/steps/software.plugin
+%_libdir/%name/plugins/steps/libsoftware.so
+%_datadir/polkit-1/rules.d/%app_id.Plugin.Software.rules
+
+%files plugin-software-source-pot-generator
+%_bindir/source-pot-generator
+
+%files tuner-plugin-%name-software -f %name-software.lang
+%_libdir/tuner/plugins/lib%name-software.so
+%_libdir/tuner/plugins/%name-software.plugin
+%_datadir/metainfo/org.altlinux.ReadySetSoftware.TunerPlugin.metainfo.xml
 
 %changelog
 * Thu Jul 23 2026 Vladimir Romanov <rirusha@altlinux.org> @VERSION@-alt@RELEASE@

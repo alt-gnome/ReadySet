@@ -21,8 +21,6 @@ libgio
 libgio-devel
 libgnome-desktop3-devel
 libgtk4-gir-devel
-libgweather4.0-devel
-libgweather4.0-vala
 libibus-devel
 libpasswdqc-devel
 libpeas2-devel
