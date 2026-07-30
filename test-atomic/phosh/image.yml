@@ -5,6 +5,8 @@ modules:
       custom:
         - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/sisyphus.repo _arch_ classic
         - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/sisyphus.repo noarch classic
+        - rpm https://altlinux.space/api/packages/rirusha/alt/group/libcase-nightly.repo _arch_ classic
+        - rpm https://altlinux.space/api/packages/rirusha/alt/group/libcase-nightly.repo noarch classic
 
   - type: packages
     body:
@@ -29,3 +31,9 @@ modules:
     body:
       command: |
         systemd-sysusers
+
+  - name: Cleanup
+    type: include
+    body:
+      targets:
+        - /usr/share/apm/includes/common/cleanup.yml
