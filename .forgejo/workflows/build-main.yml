@@ -7,6 +7,9 @@ on:
     branches:
       - "main"
 
+env:
+  LIBCASE_REPO: https://altlinux.space/api/packages/rirusha/alt/group/libcase-nightly.repo
+
 jobs:
   lint-vala:
     name: Check vala files
@@ -50,8 +53,8 @@ jobs:
 
       - name: Add nightly repos
         run: |
-          echo "rpm https://altlinux.space/api/packages/rirusha/alt/group/libcase-nightly.repo x86_64 classic" >> /etc/apt/sources.list
-          echo "rpm https://altlinux.space/api/packages/rirusha/alt/group/libcase-nightly.repo noarch classic" >> /etc/apt/sources.list
+          echo "rpm $LIBCASE_REPO x86_64 classic" >> /etc/apt/sources.list
+          echo "rpm $LIBCASE_REPO noarch classic" >> /etc/apt/sources.list
 
       - name: Setup
         run: make setup-ci
@@ -132,12 +135,12 @@ jobs:
           - sisyphus
           # - p11
         arch:
-          - amd64
-          - arm64
+          - x86_64
+          - aarch64
         include:
-          - arch: amd64
+          - arch: x86_64
             runner: als-huge
-          - arch: arm64
+          - arch: aarch64
             runner: self-hosted-arm64-huge
 
     needs:
@@ -162,8 +165,8 @@ jobs:
 
       - name: Add nightly repos
         run: |
-          echo "rpm https://altlinux.space/api/packages/rirusha/alt/group/libcase-nightly.repo ${{ matrix.arch }} classic" >> /etc/apt/sources.list
-          echo "rpm https://altlinux.space/api/packages/rirusha/alt/group/libcase-nightly.repo noarch classic" >> /etc/apt/sources.list
+          echo "rpm $LIBCASE_REPO ${{ matrix.arch }} classic" >> /etc/apt/sources.list
+          echo "rpm $LIBCASE_REPO noarch classic" >> /etc/apt/sources.list
 
       - name: Build
         run: |
