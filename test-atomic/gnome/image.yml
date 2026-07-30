@@ -7,4 +7,17 @@ modules:
 
   - type: packages
     body:
-      upgrade: true
+      install:
+        - ready-set-plugin-date-and-time
+        - ready-set-plugin-gdm
+        - ready-set-plugin-language
+        - ready-set-plugin-keyboard
+        - ready-set-plugin-user-passwdqc
+        - ready-set-plugin-atomic-finalize
+
+  - name: Copy configuration
+    type: copy
+    body:
+      source: root
+      destination: /
+      replace: true
