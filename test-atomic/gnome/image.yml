@@ -17,6 +17,7 @@ modules:
         - ready-set-plugin-date-and-time
         - ready-set-plugin-user-passwdqc
         - ready-set-plugin-atomic-finalize
+      upgrade: true
 
   - name: Copy configuration
     type: copy
