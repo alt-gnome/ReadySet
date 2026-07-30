@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-28 15:00+0000\n"
+"POT-Creation-Date: 2026-07-30 00:37+0000\n"
 "PO-Revision-Date: 2026-07-20 21:27+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -95,6 +95,87 @@ msgstr "На этой странице указано, что в Вашем ди
 #: lib/src/lib-utils-internal.vala:47
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
+
+#: plugins/date-and-time/data/ui/carousel-selector.blp:55
+msgid "Apply"
+msgstr ""
+
+#: plugins/date-and-time/data/ui/date-selector.blp:5
+#: plugins/date-and-time/data/ui/page.blp:68
+msgid "Date"
+msgstr ""
+
+#: plugins/date-and-time/data/ui/date-selector.blp:23
+#: plugins/date-and-time/data/ui/time-selector.blp:20
+msgid "Cancel"
+msgstr ""
+
+#: plugins/date-and-time/data/ui/date-selector.blp:32
+#: plugins/date-and-time/data/ui/time-selector.blp:29
+msgid "Submit"
+msgstr ""
+
+#: plugins/date-and-time/data/ui/page.blp:5
+#: plugins/date-and-time/data/ui/page.blp:11
+msgid "Date & Time"
+msgstr ""
+
+#: plugins/date-and-time/data/ui/page.blp:12
+msgid "Select your time zone"
+msgstr ""
+
+#: plugins/date-and-time/data/ui/page.blp:29
+msgid "Set time zone"
+msgstr ""
+
+#: plugins/date-and-time/data/ui/page.blp:32
+msgid "Manual setting of time zone"
+msgstr ""
+
+#: plugins/date-and-time/data/ui/page.blp:40
+#: plugins/date-and-time/data/ui/timezone-list.blp:5
+msgid "Time zone"
+msgstr ""
+
+#: plugins/date-and-time/data/ui/page.blp:57
+msgid "Set date and time"
+msgstr ""
+
+#: plugins/date-and-time/data/ui/page.blp:60
+msgid "Manual setting of date and time"
+msgstr ""
+
+#: plugins/date-and-time/data/ui/page.blp:80
+#: plugins/date-and-time/data/ui/time-selector.blp:5
+msgid "Time"
+msgstr ""
+
+#: plugins/date-and-time/data/ui/timezone-list.blp:66
+msgid "Nothing found"
+msgstr "Ничего не найдено"
+
+#: plugins/date-and-time/page.vala:141
+msgid "Failed to connect to timedate service: "
+msgstr ""
+
+#: plugins/date-and-time/plugin.vala:65
+msgid "Failed to connect to timedate service"
+msgstr ""
+
+#: plugins/date-and-time/plugin.vala:79
+#, fuzzy
+msgid "Error when setting timezone"
+msgstr "Ошибка при настройке языка"
+
+#: plugins/date-and-time/plugin.vala:86
+#, fuzzy
+msgid "Error when setting NTP"
+msgstr "Ошибка при настройке языка"
+
+#: plugins/date-and-time/plugin.vala:94
+#, fuzzy
+msgid "Error when setting time"
+msgstr "Ошибка при настройке языка"
 
 #: plugins/keyboard/data/ui/current-input-row.blp:28
 #: plugins/keyboard/data/ui/input-row.blp:23
@@ -240,7 +321,7 @@ msgid "Generate root password"
 msgstr "Сгенерировать пароль администратора"
 
 #: plugins/user/data/ui/page-username.blp:24
-#: plugins/user/data/ui/page-username.blp:134
+#: plugins/user/data/ui/page-username.blp:138
 msgid "Username"
 msgstr "Имя пользователя"
 
@@ -265,11 +346,11 @@ msgstr "Удалить Аватар"
 msgid "Set information about You"
 msgstr "Введите информацию о Вас"
 
-#: plugins/user/data/ui/page-username.blp:119
+#: plugins/user/data/ui/page-username.blp:123
 msgid "Full Name"
 msgstr "Полное имя"
 
-#: plugins/user/data/ui/page-username.blp:131
+#: plugins/user/data/ui/page-username.blp:135
 msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 "Имя пользователя будет использовано для имени Вашей домашней директории и не "
@@ -592,9 +673,6 @@ msgstr "Тестовая страница"
 
 #~ msgid "Search language"
 #~ msgstr "Поиск языка"
-
-#~ msgid "Nothing found"
-#~ msgstr "Ничего не найдено"
 
 #~ msgid "Search keyboards and input methods"
 #~ msgstr "Поиск раскладок и методов ввода"
