@@ -1,0 +1,93 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DateAndTimePage: $ReadySetBasePage {
+  title-header: _("Date & Time");
+  title-icon-name: "preferences-system-time-symbolic";
+  notify::time-selected => $update_is_ready();
+  notify::date-selected => $update_is_ready();
+
+  info: $ReadySetStatusPage {
+    title: _("Date & Time");
+    description: _("Select your time zone");
+    icon-name: "preferences-system-time-symbolic";
+  };
+
+  content: Adw.Clamp {
+    margin-start: 12;
+    margin-end: 12;
+
+    Box {
+      orientation: vertical;
+      spacing: 12;
+
+      Box {
+        orientation: vertical;
+        spacing: 9;
+
+        Adw.PreferencesGroup {
+          title: _("Set time zone");
+
+          Adw.ExpanderRow manual_timezone_switch {
+            title: _("Manual setting of time zone");
+            enable-expansion: bind template.manual-timezone bidirectional;
+            expanded: bind manual_timezone_switch.enable-expansion;
+            show-enable-switch: true;
+
+            Adw.ActionRow timezone_row {
+              activated => $on_timezone_row_clicked();
+              activatable: true;
+              title: _("Time zone");
+              subtitle: bind template.timezone_label;
+
+              [suffix]
+              Image {
+                icon-name: "go-next-symbolic";
+              }
+            }
+          }
+        }
+      }
+
+      Box {
+        orientation: vertical;
+        spacing: 9;
+
+        Adw.PreferencesGroup {
+          title: _("Set date and time");
+
+          Adw.ExpanderRow manual_date_and_time_switch {
+            title: _("Manual setting of date and time");
+            enable-expansion: bind template.manual-date-and-time bidirectional;
+            expanded: bind manual_date_and_time_switch.enable-expansion;
+            show-enable-switch: true;
+
+            Adw.ActionRow date_row {
+              activated => $on_date_row_clicked();
+              activatable: true;
+              title: _("Date");
+              subtitle: bind template.date_label;
+
+              [suffix]
+              Image {
+                icon-name: "go-next-symbolic";
+              }
+            }
+
+            Adw.ActionRow time_row {
+              activated => $on_time_row_clicked();
+              activatable: true;
+              title: _("Time");
+              subtitle: bind template.time_label;
+
+              [suffix]
+              Image {
+                icon-name: "go-next-symbolic";
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+}

@@ -1,0 +1,65 @@
+using Gtk 4.0;
+using Adw 1;
+using Case 0;
+
+template $DateAndTimeInfinityCarousel: Gtk.Box {
+  orientation: vertical;
+
+  Adw.ToolbarView {
+    [top]
+    Box {
+      styles [
+        "shadow-down",
+      ]
+
+      // Fix CSS tiny gap between shadow and window
+      margin-bottom: 1;
+
+      Button previous_button {
+        styles [
+          "circular",
+          "flat",
+        ]
+
+        clicked => $on_previous_button_clicked();
+        icon-name: "go-up-symbolic";
+        hexpand: true;
+        halign: center;
+        valign: center;
+      }
+    }
+
+    Case.InfinityCarousel carousel {
+      vexpand: true;
+      spacing: 6;
+      orientation: vertical;
+
+      Gtk.GestureClick gesture_click {
+        released => $on_items_pressed();
+      }
+    }
+
+    [bottom]
+    Box {
+      styles [
+        "shadow-up",
+      ]
+
+      // Fix CSS tiny gap between shadow and window
+      margin-top: 1;
+
+      Button next_button {
+        styles [
+          "circular",
+          "flat",
+        ]
+
+        clicked => $on_next_button_clicked();
+        icon-name: "go-down-symbolic";
+        hexpand: true;
+        halign: center;
+        valign: center;
+      }
+    }
+  }
+}

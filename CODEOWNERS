@@ -7,3 +7,4 @@
 
 # License agreement plugin
 plugins/license-agreement/.* @x1z53
+plugins/date-and-time/.* @x1z53
