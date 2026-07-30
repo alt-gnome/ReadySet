@@ -1,9 +1,9 @@
 # Language plugin
 
-Set language. Also provides getter/setter methods for `language.locale` context var.
+Set the system language.
 
-## Storage Context variables
+## Stored context variables
 
-| Variable          |
-| ----------------- |
-| `language.locale` |
+| Variable | Description |
+| -------- | ----------- |
+| `language.locale` | Selected locale |

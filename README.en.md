@@ -17,9 +17,11 @@
 
 The application is built from step plugins. Currently available step plugins are:
 
+- [date-and-time](plugins/date-and-time/README.en.md)
 - [keyboard](plugins/keyboard/README.en.md)
 - [language](plugins/language/README.en.md)
 - [license-agreement](plugins/license-agreement/README.en.md)
+- [software](plugins/software/README.en.md)
 - [user](plugins/user/README.en.md) — built as `user-passwdqc` (default) and/or `user-pwquality`, depending on the `password_check_backend` build option
 - [welcome](plugins/welcome/README.en.md)
 
