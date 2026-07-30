@@ -68,6 +68,7 @@ BuildRequires: pkgconfig(xkbcommon)
 Summary: Files needed for work as initial-setup in gdm
 Group: Graphical desktop/Other
 
+BuildArch: noarch
 Requires: %name = %EVR
 Requires: gdm
 Conflicts: %gis_name
@@ -79,6 +80,7 @@ Conflicts: %gis_name
 Summary: Files needed for work as initial-setup in phrog
 Group: Graphical desktop/Other
 
+BuildArch: noarch
 Requires: %name = %EVR
 Requires: phrog
 
