@@ -257,6 +257,7 @@ Group: Other
 %_sysusersdir/%name.conf
 %_tmpfilesdir/%name.conf
 %_datadir/bash-completion/completions/%name
+%doc README.*.md
 
 %files gdm
 %_libexecdir/%gis_name
@@ -295,20 +296,24 @@ Group: Other
 %_datadir/polkit-1/rules.d/%app_id.Plugin.Keyboard.rules
 %_libdir/%name/plugins/steps/keyboard.plugin
 %_libdir/%name/plugins/steps/libkeyboard.so
+%doc plugins/keyboard/README.*.md
 
 %files plugin-language
 %_datadir/polkit-1/rules.d/%app_id.Plugin.Language.rules
 %_libdir/%name/plugins/steps/language.plugin
 %_libdir/%name/plugins/steps/liblanguage.so
+%doc plugins/language/README.*.md
 
 %files plugin-license-agreement
 %_libdir/%name/plugins/steps/license-agreement.plugin
 %_libdir/%name/plugins/steps/liblicense-agreement.so
+%doc plugins/license-agreement/README.*.md
 
 %files plugin-user-common
 %_datadir/polkit-1/rules.d/%app_id.Plugin.User.rules
 %_datadir/polkit-1/rules.d/%app_id.Plugin.User.SetRootPassword.rules
 %_libexecdir/%name-set-root-password
+%doc plugins/user/README.*.md
 
 %files plugin-user-passwdqc
 %_libdir/%name/plugins/steps/user-passwdqc.plugin
@@ -321,16 +326,19 @@ Group: Other
 %files plugin-welcome
 %_libdir/%name/plugins/steps/welcome.plugin
 %_libdir/%name/plugins/steps/libwelcome.so
+%doc plugins/welcome/README.*.md
 
 %files plugin-date-and-time
 %_libdir/%name/plugins/steps/date-and-time.plugin
 %_libdir/%name/plugins/steps/libdate-and-time.so
 %_datadir/polkit-1/rules.d/%app_id.Plugin.DateAndTime.rules
+%doc plugins/date-and-time/README.*.md
 
 %files plugin-software
 %_libdir/%name/plugins/steps/software.plugin
 %_libdir/%name/plugins/steps/libsoftware.so
 %_datadir/polkit-1/rules.d/%app_id.Plugin.Software.rules
+%doc plugins/software/README.*.md
 
 %files plugin-software-source-pot-generator
 %_bindir/source-pot-generator
