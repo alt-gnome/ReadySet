@@ -79,20 +79,20 @@ jobs:
               | grep -q '.'
           }
 
-          ./po/update_potfiles
+          make pot
 
           git add .
           git commit -m "i18n: Update POTFILES" || true
 
-          meson compile -C _build ready-set-pot
+          make update-pot
           git add .
 
           if has_real_changes; then
             git commit -m "i18n: Update .pot file" || true
 
-            meson compile -C _build ready-set-update-po
+            make update-po
 
-            git add po/*.po
+            git add *.po
             git commit -m "i18n: Update .po files" || true
           else
             git reset --hard

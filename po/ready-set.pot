@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-30 00:37+0000\n"
+"POT-Creation-Date: 2026-07-30 01:50+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -257,6 +257,77 @@ msgstr ""
 
 #: plugins/license-agreement/data/ui/page.blp:34
 msgid "I have read the license and accept it"
+msgstr ""
+
+#: plugins/software/data/ui/page.blp:5 plugins/software/data/ui/page.blp:11
+msgid "Third-Party Repositories"
+msgstr ""
+
+#: plugins/software/page.vala:24
+msgid ""
+"Third-party repositories provide access to additional software from selected "
+"external sources, including popular apps and drivers that are important for "
+"some devices. Some proprietary software may be included."
+msgstr ""
+
+#. vala-lint=line-length
+#: plugins/software/page.vala:26
+msgid "Manage third-party repositories."
+msgstr ""
+
+#: plugins/software/page.vala:83
+msgid "Software sources"
+msgstr ""
+
+#: plugins/software/page.vala:85
+msgid "Other software sources"
+msgstr ""
+
+#: plugins/software/page.vala:158
+msgid "Disable Third-Party repositories"
+msgstr ""
+
+#: plugins/software/page.vala:161
+msgid "Enable Third-Party repositories"
+msgstr ""
+
+#: plugins/software/plugin.vala:68
+msgid "Failed to add a software source"
+msgstr ""
+
+#: plugins/software/source-row.vala:88
+msgid "Non-Free Repository"
+msgstr ""
+
+#: plugins/software/source-row.vala:88
+msgid ""
+"This repository contains software with a non-free license. Pay attention to "
+"the software license restrictions before usage."
+msgstr ""
+
+#. vala-lint=line-length
+#: plugins/software/source-row.vala:90
+msgid "Ok"
+msgstr ""
+
+#: plugins/software/source.vala:135
+#, c-format
+msgid "Failed to add or enable '%s' flatpak remote with name %s: %s"
+msgstr ""
+
+#: plugins/software/source.vala:160
+#, c-format
+msgid "Failed to add '%s' stplr repository with name %s: %s"
+msgstr ""
+
+#: plugins/software/source.vala:216
+#, c-format
+msgid "Failed to add apt repository with repos: %s: %s"
+msgstr ""
+
+#: plugins/software/source.vala:244
+#, c-format
+msgid "Failed to exec: %s: %s"
 msgstr ""
 
 #: plugins/user/data/ui/avatar-chooser.blp:5

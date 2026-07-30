@@ -53,6 +53,14 @@ option(
   description: 'Enable option with setting root by user at initial-setup mode. It can be not secure, so it disabled by default'
 )
 
+# Software
+option(
+  'with_software_tuner_plugin',
+  type: 'feature',
+  value: 'auto',
+  description: 'Build tuner plugin with software plugin functionality'
+)
+
 # Tests
 option(
   'install_tests',

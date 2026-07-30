@@ -1,10 +1,11 @@
 plugins = [
+  'date-and-time',
   'keyboard',
   'language',
+  'license-agreement',
+  'software',
   'user',
   'welcome',
-  'license-agreement',
-  'date-and-time',
 ]
 
 foreach plugin : plugins

@@ -1,0 +1,43 @@
+#!/usr/bin/python3
+
+import yaml
+import sys
+from datetime import datetime, timezone
+
+def generate_pot(yaml_path: str, pot_path: str) -> None:
+    with open(yaml_path, 'r', encoding='utf-8') as f:
+        data = yaml.safe_load(f)
+
+    with open(pot_path, 'w', encoding='utf-8') as f:
+        f.write('msgid ""\n')
+        f.write('msgstr ""\n')
+        f.write('"Project-Id-Version: PACKAGE VERSION\\n"\n')
+        f.write(f'"POT-Creation-Date: {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M%z")}\\n"\n')
+        f.write('"Content-Type: text/plain; charset=UTF-8\\n"\n\n')
+
+        for section, items in data.items():
+            if not isinstance(items, list):
+                continue
+
+            for item in items:
+                if not isinstance(item, dict) or 'gettext-domain' not in item:
+                    continue
+
+                item_id = item.get('id')
+                name = item.get('name')
+                desc = item.get('description')
+
+                if name is not None:
+                    f.write(f'#: {yaml_path}:{section}.{item_id}.name\n')
+                    f.write(f'msgid "{name}"\nmsgstr ""\n\n')
+
+                if desc is not None:
+                    f.write(f'#: {yaml_path}:{section}.{item_id}.description\n')
+                    f.write(f'msgid "{desc}"\nmsgstr ""\n\n')
+
+if __name__ == '__main__':
+    if len(sys.argv) == 3:
+        generate_pot(sys.argv[1], sys.argv[2])
+    else:
+        print("Usage: source-pot-generator <input.yaml> <output.pot>")
+        sys.exit(1)

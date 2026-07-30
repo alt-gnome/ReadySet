@@ -62,3 +62,14 @@ lint:
 
 lint-fix:
 	find ./ -name "*.blp" -print0 | xargs -0 blueprint-compiler format -f -s 2
+
+pot:
+	./po/update_potfiles
+
+update-pot:
+	meson compile ready-set-pot -C _build
+	meson compile ready-set-software-pot -C _build
+
+update-po:
+	meson compile ready-set-update-po -C _build
+	meson compile ready-set-software-update-po -C _build

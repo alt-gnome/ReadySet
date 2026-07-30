@@ -24,18 +24,24 @@ add_project_arguments(
 )
 
 accountsservice_dep = dependency('accountsservice')
+flatpak_dep = dependency('flatpak')
 gdm_dep = dependency('gdm', required: get_option('gdm'))
 gee_dep = dependency('gee-0.8')
 gio_dep = dependency('gio-unix-2.0')
 gnome_desktop_dep = dependency('gnome-desktop-4')
 ibus_dep = dependency('ibus-1.0', required: get_option('ibus'))
 libadwaita_dep = dependency('libadwaita-1', version: '>= 1.7')
+libcase_dep = dependency('libcase-0', fallback: ['libcase', 'lib_dep'])
 libpeas_dep = dependency('libpeas-2')
+libserialize_dep = dependency('libserialize-7', version: '>= 7.9')
+libserialize_dep = dependency('libserialize-7', version: '>= 7.9')
 polkit_dep = dependency('polkit-gobject-1')
 posix_dep = meson.get_compiler('vala').find_library('posix')
 xkb_dep = dependency('xkbcommon')
-libserialize_dep = dependency('libserialize-7', version: '>= 7.9')
-libcase_dep = dependency('libcase-0', fallback: ['libcase', 'lib_dep'])
+
+if get_option('with_software_tuner_plugin').enabled()
+  tuner_dep = dependency('tuner-1')
+endif
 
 libversion = meson.project_version().replace('.rc', '')
 soversion = libversion.split('.')[0]
@@ -59,6 +65,7 @@ supported_languages_arr += ['en']
 gis = 'gnome-initial-setup'
 
 prefix = get_option('prefix')
+bindir = prefix / get_option('bindir')
 datadir = prefix / get_option('datadir')
 localedir = prefix / get_option('localedir')
 libdir = prefix / get_option('libdir')

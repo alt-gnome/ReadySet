@@ -1,0 +1,73 @@
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-30 01:50+0300\n"
+"Language: ru\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#: plugins/software/tuner/src/page.vala:24
+msgid "Third-party Repositories"
+msgstr ""
+
+#: plugins/software/tuner/src/page.vala:56
+msgid "Software sources"
+msgstr ""
+
+#: plugins/software/tuner/src/page.vala:58
+msgid "Other software sources"
+msgstr ""
+
+#: plugins/software/tuner/src/source-binding.vala:132
+msgid "Non-Free Repository"
+msgstr ""
+
+#: plugins/software/tuner/src/source-binding.vala:132
+msgid ""
+"This repository contains software with a non-free license. Pay attention to "
+"the software license restrictions before usage."
+msgstr ""
+
+#. vala-lint=line-length
+#: plugins/software/tuner/src/source-binding.vala:134
+msgid "Cancel"
+msgstr ""
+
+#: plugins/software/tuner/src/source-binding.vala:135
+msgid "Ok"
+msgstr ""
+
+#: plugins/software/tuner/src/source-tuner.vala:53
+#, c-format
+msgid "Failed to disable '%s' flatpak remote with name %s: %s"
+msgstr ""
+
+#: plugins/software/tuner/src/source-tuner.vala:80
+#, c-format
+msgid "Failed to check '%s' flatpak remote with name %s: %s"
+msgstr ""
+
+#: plugins/software/tuner/src/source-tuner.vala:101
+#, c-format
+msgid "Failed to remove '%s' stplr repository with name %s: %s"
+msgstr ""
+
+#: plugins/software/tuner/src/source-tuner.vala:132
+#, c-format
+msgid "Failed to check '%s' stplr repository with name %s: %s"
+msgstr ""
+
+#: plugins/software/tuner/src/source-tuner.vala:167
+#, c-format
+msgid "Failed to remove apt repository with repos: %s: %s"
+msgstr ""
+
+#: plugins/software/tuner/src/source-tuner.vala:219
+#, c-format
+msgid "Failed to check apt repository with repos: %s: %s"
+msgstr ""
+
+#: plugins/software/tuner/src/source-tuner.vala:237
+#: plugins/software/tuner/src/source-tuner.vala:254
+#, c-format
+msgid "Failed to exec: %s: %s"
+msgstr ""

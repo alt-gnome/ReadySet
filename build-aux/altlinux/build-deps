@@ -15,6 +15,7 @@ libadwaita-devel
 libadwaita-gir-devel
 libcase-devel
 libcase-gir-devel
+libflatpak-devel
 libgee0.8-devel
 libgio
 libgio-devel
@@ -31,6 +32,8 @@ libpwquality-devel
 libserialize-devel
 libserialize-gir-devel
 libsystemd-devel
+libtuner-devel
+libtuner-gir-devel
 libxkbcommon-devel
 meson
 vala
