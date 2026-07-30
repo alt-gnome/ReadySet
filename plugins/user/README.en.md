@@ -2,6 +2,8 @@
 
 Create a user account and optionally set the root password.
 
+If AccountsService creates a `systemd-homed` user, the user password is set via `org.freedesktop.home1.Manager.ChangePasswordHome` instead of AccountsService.
+
 The plugin is built in two variants with different password quality backends: `user-pwquality` and `user-passwdqc`. The exact variant is controlled by the `password_check_backend` build option.
 
 ## Settings

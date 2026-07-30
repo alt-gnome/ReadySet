@@ -208,6 +208,35 @@ namespace User {
     }
 #endif
 
+    string build_homed_password_record (string password) {
+        var passwords = new Serialize.Array<string> ();
+        passwords.add (password);
+
+        var record = new Serialize.Dict<Serialize.Array<string>> ();
+        record.set ("password", passwords);
+
+        return Serialize.JsonWorker.serialize (record);
+    }
+
+    async void set_homed_password (string username, string password) throws Error {
+        var bus = yield Bus.get (BusType.SYSTEM);
+
+        string new_secret = build_homed_password_record (password);
+        string old_secret = build_homed_password_record ("");
+
+        yield bus.call (
+            "org.freedesktop.home1",
+            "/org/freedesktop/home1",
+            "org.freedesktop.home1.Manager",
+            "ChangePasswordHome",
+            new Variant ("(sss)", username, new_secret, old_secret),
+            null,
+            DBusCallFlags.NONE,
+            2 * 60 * 1000,
+            null
+        );
+    }
+
     public string[] get_context_facesdirs () {
         var context = Addin.get_instance ().context;
         var facesdir = new Gee.ArrayList<string> ();
