@@ -136,12 +136,12 @@ jobs:
           # - p11
         arch:
           - x86_64
-          - aarch64
+          # - aarch64
         include:
           - arch: x86_64
             runner: als-huge
-          - arch: aarch64
-            runner: self-hosted-arm64-huge
+          # - arch: aarch64
+          #   runner: self-hosted-arm64-huge
 
     needs:
       - lint-vala
