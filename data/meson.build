@@ -94,6 +94,7 @@ if gdm_dep.found()
 endif
 
 if get_option('phrog').enabled()
+  subdir('phrog')
 endif
 
 foreach unit, wants: unit_files

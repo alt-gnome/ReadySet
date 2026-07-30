@@ -77,6 +77,12 @@ if get_option('nightly')
   ]
 endif
 
+if get_option('phrog').enabled()
+  rs_app_vala_args += [
+    '--define=WITH_PHROG',
+  ]
+endif
+
 if gdm_dep.found()
   rs_app_vala_args += [
     '--define=WITH_GDM',

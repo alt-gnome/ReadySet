@@ -32,6 +32,14 @@ option(
   description: 'Use integration with GDM (Login to user via Gdm.Client after initial-setup done',
 )
 
+# Phrog
+option(
+  'phrog',
+  type: 'feature',
+  value: 'auto',
+  description: 'Add setup env for phrog (set first-run gsetting and unset in the end',
+)
+
 # Keyboard
 option(
   'ibus',

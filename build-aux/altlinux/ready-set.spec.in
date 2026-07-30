@@ -75,6 +75,16 @@ Conflicts: %gis_name
 %description gdm
 %summary.
 
+%package phrog
+Summary: Files needed for work as initial-setup in phrog
+Group: Graphical desktop/Other
+
+Requires: %name = %EVR
+Requires: phrog
+
+%description phrog
+%summary.
+
 %package -n %libname%api_version
 Summary: %name library
 Group: System/Libraries
@@ -258,6 +268,9 @@ Group: Other
 %_userunitdir/gnome-session@%gis_name.target.d
 %_sysusersdir/%gis_name.conf
 %_tmpfilesdir/%gis_name.conf
+
+%files phrog
+%_sysconfdir/glib-2.0/schemas/50_%app_id.PhrogFirstRun.gschema.override
 
 %files -n %libname%api_version
 %_libdir/%libname-%api_version.so.%api_version

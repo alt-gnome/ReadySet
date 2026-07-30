@@ -152,12 +152,21 @@ public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
 
         if (context.sandbox) {
             debug ("Doing nothing in sandbox");
-#if WITH_GDM
-        } else if (client == null) {
-            debug ("No GDM connection");
         } else {
-            log_user_in ();
-            return;
+#if WITH_GDM
+            if (client == null) {
+                debug ("No GDM connection");
+            } else {
+                log_user_in ();
+                return;
+            }
+#endif
+#if WITH_PHROG
+            var phrog_schema = SettingsSchemaSource.get_default ().lookup ("mobi.phosh.phrog", false);
+            if (phrog_schema != null) {
+                var phrog_settings = new Settings (phrog_schema.get_id ());
+                phrog_settings.set_string ("first-run", "");
+            }
 #endif
         }
 
