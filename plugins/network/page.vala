@@ -26,8 +26,11 @@ public sealed class Network.Page : ReadySet.BasePage {
     unowned Adw.PreferencesGroup simcard_group;
     [GtkChild]
     unowned Adw.PreferencesGroup ethernet_group;
+
     [GtkChild]
     unowned Adw.PreferencesGroup wifi_group;
+    [GtkChild]
+    unowned Gtk.ListBox wifi_adapters;
 
     string _hostname = Environment.get_host_name ();
     public string hostname {
@@ -56,6 +59,14 @@ public sealed class Network.Page : ReadySet.BasePage {
 
         simcard_group.visible = addin.modems.n_items > 0;
         ethernet_group.visible = addin.ethers.n_items > 0;
-        wifi_group.visible = addin.wlans.n_items > 0;
+
+        if (wifi_group.visible = addin.wlans.n_items > 0) {
+            wifi_adapters.bind_model (addin.wlans,
+                (wlan) => { return new WiFiAdapterRow ((NM.DeviceWifi) wlan); }
+            );
+
+            var wlan0 = (WiFiAdapterRow) wifi_adapters.get_row_at_index (0);
+            wlan0.expanded = wlan0.enable_expansion;
+        }
     }
 }

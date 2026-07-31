@@ -51,3 +51,65 @@ namespace Network {
         return true;
     }
 }
+
+public sealed class Network.AccessPointSorter : Gtk.Sorter {
+
+    unowned NM.DeviceWifi device;
+
+    public AccessPointSorter (NM.DeviceWifi wlan) {
+        device = wlan;
+    }
+
+    public override Gtk.Ordering compare (Object? obj1, Object? obj2) {
+        if (obj1 == null) {
+            return obj2 == null ? Gtk.Ordering.EQUAL : Gtk.Ordering.LARGER;
+        }
+        if (obj2 == null) {
+            return Gtk.Ordering.SMALLER;
+        }
+
+        var ap1 = (NM.AccessPoint) obj1;
+        var ap2 = (NM.AccessPoint) obj2;
+        if (ap1 == device.active_access_point) {
+            return Gtk.Ordering.SMALLER;
+        }
+        if (ap2 == device.active_access_point) {
+            return Gtk.Ordering.LARGER;
+        }
+        return Gtk.Ordering.from_cmpfunc (ap2.strength - ap1.strength);
+    }
+
+    public override Gtk.SorterOrder get_order () {
+        return Gtk.SorterOrder.TOTAL;
+    }
+}
+
+public sealed class Network.AccessPointFilter : Gtk.Filter {
+
+    Gee.HashSet<Bytes> ssids = new Gee.HashSet<Bytes> (hash, same_ssid);
+
+    static uint hash (Bytes ssid) {
+        return ssid.hash ();
+    }
+
+    static bool same_ssid (Bytes ssid1, Bytes ssid2) {
+        return NM.Utils.same_ssid (ssid1.get_data (), ssid2.get_data (), true);
+    }
+
+    public override bool match (Object? obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        var ap = (NM.AccessPoint) obj;
+        if (ap.ssid == null || ap.ssid.length <= 0) {
+            return false;
+        }
+
+        return ssids.add (ap.ssid);
+    }
+
+    public void reset () {
+        ssids.clear ();
+    }
+}

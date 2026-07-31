@@ -7,5 +7,7 @@
   <gresource prefix="/org/altlinux/ReadySet/Plugin/Network/">
     <file>style.css</file>
     <file preprocess="xml-stripblanks">ui/page.ui</file>
+    <file preprocess="xml-stripblanks">ui/wifi-adapter-row.ui</file>
+    <file preprocess="xml-stripblanks">ui/access-point-row.ui</file>
   </gresource>
 </gresources>

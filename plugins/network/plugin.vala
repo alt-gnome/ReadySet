@@ -29,16 +29,25 @@ public class Network.Addin : ReadySet.StepAddin {
         }
     }
 
+    public NM.Client client { get; construct; }
+
     public ListStore modems { get; construct; }
     public ListStore ethers { get; construct; }
     public ListStore wlans { get; construct; }
 
     static construct {
-
+        typeof (WiFiAdapterRow).ensure ();
+        typeof (AccessPointRow).ensure ();
     }
 
     construct {
         instance = this;
+
+        try {
+            client = new NM.Client ();
+        } catch (Error e) {
+            critical (e.message);
+        }
 
         modems = new ListStore (typeof (NM.DeviceModem));
         ethers = new ListStore (typeof (NM.DeviceEthernet));
@@ -64,28 +73,22 @@ public class Network.Addin : ReadySet.StepAddin {
             return;
         }
 
-        try {
-            var client = new NM.Client ();
-
-            foreach (var device in client.devices) {
-                if (device.state != UNMANAGED && device.state != UNAVAILABLE) {
-                    switch (device.device_type) {
-                    case MODEM:
-                        modems.append (device);
-                        break;
-                    case ETHERNET:
-                        ethers.append (device);
-                        break;
-                    case WIFI:
-                        wlans.append (device);
-                        break;
-                    default:
-                        break;
-                    }
+        foreach (var device in client.devices) {
+            if (device.state != UNMANAGED && device.state != UNAVAILABLE) {
+                switch (device.device_type) {
+                case MODEM:
+                    modems.append (device);
+                    break;
+                case ETHERNET:
+                    ethers.append (device);
+                    break;
+                case WIFI:
+                    wlans.append (device);
+                    break;
+                default:
+                    break;
                 }
             }
-        } catch (Error e) {
-            error (e.message);
         }
     }
 

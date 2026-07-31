@@ -8,6 +8,7 @@ plugin_network_sources = files(
   'page.vala',
   'plugin.vala',
   'utils.vala',
+  'wifi.vala',
 )
 
 plugin_network_pretty_name = 'Network'

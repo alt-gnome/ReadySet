@@ -80,6 +80,15 @@ template $NetworkPage: $ReadySetBasePage {
 
       Adw.PreferencesGroup wifi_group {
         title: _("Wi-Fi");
+
+        ListBox wifi_adapters {
+          styles [
+            "boxed-list",
+          ]
+
+          valign: start;
+          selection-mode: none;
+        }
       }
     }
   };

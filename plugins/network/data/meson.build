@@ -1,5 +1,7 @@
 plugin_network_blueprints = files(
   'ui/page.blp',
+  'ui/wifi-adapter-row.blp',
+  'ui/access-point-row.blp',
 )
 
 plugin_network_resources = gnome.compile_resources(
