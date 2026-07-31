@@ -38,6 +38,7 @@ public class Network.Addin : ReadySet.StepAddin {
     static construct {
         typeof (ModeledStack).ensure ();
         typeof (DropDownStackSwitcher).ensure ();
+        typeof (ComboRowStackSwitcher).ensure ();
 
         typeof (EthernetRow).ensure ();
 
@@ -48,6 +49,8 @@ public class Network.Addin : ReadySet.StepAddin {
 
     construct {
         instance = this;
+
+        Case.init ();
 
         try {
             client = new NM.Client ();

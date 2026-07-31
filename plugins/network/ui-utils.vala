@@ -150,3 +150,34 @@ public sealed class Network.DropDownStackSwitcher : Adw.Bin {
         }
     }
 }
+
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Network/ui/combo-stackswitcher.ui")]
+public sealed class Network.ComboRowStackSwitcher : Case.ComboRow {
+
+    new ListModel? model { private get; }
+
+    unowned Gtk.Stack? _stack = null;
+    public Gtk.Stack stack {
+        get {
+            return _stack;
+        }
+        set {
+            _stack = value;
+            base.model = _stack?.pages;
+        }
+    }
+
+    construct {
+        expression = new Gtk.PropertyExpression (
+            typeof (Gtk.StackPage), null, "title"
+        );
+    }
+
+    [GtkCallback]
+    void change_selection () {
+        var page = (Gtk.StackPage) selected_item;
+        if (page != null) {
+            stack.visible_child = page.child;
+        }
+    }
+}

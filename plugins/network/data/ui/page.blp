@@ -91,23 +91,19 @@ template $NetworkPage: $ReadySetBasePage {
         title: _("Wi-Fi");
 
         Revealer {
-          reveal-child: bind wlan_switch.sensitive;
+          reveal-child: bind wlan_switch.activatable;
           transition-type: slide_down;
 
-          Box {
-            spacing: 6;
+          ListBox {
+            styles [
+              "boxed-list",
+            ]
+
             margin-bottom: 12;
+            selection-mode: none;
 
-            Label {
-              styles [
-                "dim-label",
-              ]
-
-              label: _("Wi-Fi adapter");
-              halign: start;
-            }
-
-            $NetworkDropDownStackSwitcher wlan_switch {
+            $NetworkComboRowStackSwitcher wlan_switch {
+              title: _("Wi-Fi adapter");
               stack: bind wifi_adapters.stack;
             }
           }

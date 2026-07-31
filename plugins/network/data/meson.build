@@ -2,6 +2,7 @@ plugin_network_blueprints = files(
   'ui/page.blp',
   'ui/modeled-stack.blp',
   'ui/dd-stackswitcher.blp',
+  'ui/combo-stackswitcher.blp',
   'ui/ethernet-row.blp',
   'ui/wifi-adapter-box.blp',
   'ui/access-point-row.blp',

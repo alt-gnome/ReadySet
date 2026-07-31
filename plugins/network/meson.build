@@ -2,6 +2,7 @@ plugin_network_deps = [
   librs_dep,
   network_manager_dep,
   network_manager_gtk4_dep,
+  libcase_dep,
 ]
 
 plugin_network_sources = files(
