@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-30 01:50+0300\n"
+"POT-Creation-Date: 2026-07-31 14:54+0000\n"
 "PO-Revision-Date: 2026-07-20 21:27+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
@@ -97,6 +97,7 @@ msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
 #: plugins/date-and-time/data/ui/carousel-selector.blp:55
+#: plugins/network/data/ui/ap-security-editor.blp:26
 msgid "Apply"
 msgstr ""
 
@@ -107,6 +108,7 @@ msgstr ""
 
 #: plugins/date-and-time/data/ui/date-selector.blp:23
 #: plugins/date-and-time/data/ui/time-selector.blp:20
+#: plugins/network/data/ui/ap-security-editor.blp:25
 msgid "Cancel"
 msgstr ""
 
@@ -266,6 +268,121 @@ msgstr "Лицензионное соглашение"
 msgid "I have read the license and accept it"
 msgstr "Я ознакомился с лицензией и принимаю ее"
 
+#: plugins/network/data/ui/ap-security-editor.blp:42
+#: plugins/user/data/ui/page-password.blp:24
+msgid "Security"
+msgstr "Безопасность"
+
+#: plugins/network/data/ui/page.blp:25 plugins/network/data/ui/page.blp:30
+msgid "Network"
+msgstr ""
+
+#: plugins/network/data/ui/page.blp:31
+msgid "Set up your network connections"
+msgstr ""
+
+#: plugins/network/data/ui/page.blp:48
+#, fuzzy
+msgid "Host Name"
+msgstr "Полное имя"
+
+#: plugins/network/data/ui/page.blp:75
+msgid "SIM Cards and Mobile Network"
+msgstr ""
+
+#: plugins/network/data/ui/page.blp:79
+msgid "Ethernet"
+msgstr ""
+
+#: plugins/network/data/ui/page.blp:92
+msgid "Wi-Fi"
+msgstr ""
+
+#: plugins/network/data/ui/page.blp:107
+msgid "Wi-Fi adapter"
+msgstr ""
+
+#: plugins/network/plugin.vala:166
+msgid "Failed to apply network settings"
+msgstr ""
+
+#: plugins/network/utils.vala:32
+msgid "Leading hyphen is not allowed"
+msgstr ""
+
+#: plugins/network/utils.vala:41
+msgid "Only Latin letters, digits and hyphens are allowed"
+msgstr ""
+
+#: plugins/network/utils.vala:47
+#, fuzzy
+msgid "Host name is too short"
+msgstr "Имя пользователя слишком длинное"
+
+#: plugins/network/utils.vala:52
+msgid "Trailing hyphen is not allowed"
+msgstr ""
+
+#: plugins/network/wifi.vala:55
+msgid "Can't connect: undetermined security type"
+msgstr ""
+
+#: plugins/network/wifi.vala:99
+msgid "Connection setup failed"
+msgstr ""
+
+#: plugins/network/wifi.vala:110
+msgid "Connection failed"
+msgstr ""
+
+#: plugins/network/wifi.vala:144
+msgid "Connecting…"
+msgstr ""
+
+#: plugins/network/wifi.vala:149
+msgid "Connected"
+msgstr ""
+
+#: plugins/network/wifi.vala:151
+msgid "Connected without internet"
+msgstr ""
+
+#: plugins/network/wifi.vala:155
+msgid "Disconnecting…"
+msgstr ""
+
+#: plugins/network/wifi.vala:223
+msgid "WPA/WPA2/WPA3 Enterprise"
+msgstr ""
+
+#: plugins/network/wifi.vala:228
+msgid "WPA3 Personal"
+msgstr ""
+
+#: plugins/network/wifi.vala:233
+msgid "WPA/WPA2 Personal"
+msgstr ""
+
+#: plugins/network/wifi.vala:238
+msgid "WEP 40/104-bit Key (Hex/ASCII)"
+msgstr ""
+
+#: plugins/network/wifi.vala:242
+msgid "WEP 128-bit Passphrase"
+msgstr ""
+
+#: plugins/network/wifi.vala:247
+msgid "Dynamic WEP (802.1x)"
+msgstr ""
+
+#: plugins/network/wifi.vala:252
+msgid "LEAP"
+msgstr ""
+
+#: plugins/network/wifi.vala:257
+msgid "Enhanced Open"
+msgstr ""
+
 #: plugins/software/data/ui/page.blp:5 plugins/software/data/ui/page.blp:11
 msgid "Third-Party Repositories"
 msgstr ""
@@ -340,10 +457,6 @@ msgstr "Не удалось сгенерироавть пароль"
 #: plugins/user/data/ui/avatar-chooser.blp:5
 msgid "Select Avatar"
 msgstr "Выбрать Аватар"
-
-#: plugins/user/data/ui/page-password.blp:24
-msgid "Security"
-msgstr "Безопасность"
 
 #: plugins/user/data/ui/page-password.blp:37
 msgid "Be careful not to lose your password."
@@ -432,7 +545,7 @@ msgstr ""
 msgid "Set a Password for %s"
 msgstr "Установите пароль для %s"
 
-#: plugins/user/plugin.vala:76
+#: plugins/user/plugin.vala:81
 msgid "Error when creating a user"
 msgstr "Ошибка при создании пользователя"
 
@@ -573,20 +686,20 @@ msgstr ""
 msgid "Username cannot be empty"
 msgstr "Имя пользователя не может быть пустым"
 
-#: plugins/user/utils.vala:285
+#: plugins/user/utils.vala:314
 #, fuzzy
 msgid "Weak password"
 msgstr "Повторите пароль"
 
-#: plugins/user/utils.vala:286
+#: plugins/user/utils.vala:315
 msgid "The entered password is not secure. Do you really want to use it?"
 msgstr ""
 
-#: plugins/user/utils.vala:288
+#: plugins/user/utils.vala:317
 msgid "_No"
 msgstr ""
 
-#: plugins/user/utils.vala:289
+#: plugins/user/utils.vala:318
 msgid "_Yes"
 msgstr ""
 
@@ -647,7 +760,7 @@ msgstr "_Начать работу с системой"
 msgid "System is ready to be used."
 msgstr "Система готова к использованию."
 
-#: src/end-pages/initial-setup.vala:108 src/finalize.vala:71
+#: src/end-pages/initial-setup.vala:108
 #, c-format
 msgid "Applying %s…"
 msgstr "Применение %s…"
@@ -801,10 +914,6 @@ msgstr "Тестовая страница"
 
 #~ msgid "Come up with a memorable password"
 #~ msgstr "Придумайте запоминающийся пароль"
-
-#, fuzzy
-#~ msgid "Name"
-#~ msgstr "Полное имя"
 
 #~ msgid "Back"
 #~ msgstr "Назад"

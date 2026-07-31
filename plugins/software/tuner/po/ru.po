@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-30 01:50+0300\n"
+"POT-Creation-Date: 2026-07-31 14:50+0000\n"
 "Language: ru\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
