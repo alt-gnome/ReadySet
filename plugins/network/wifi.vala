@@ -21,6 +21,9 @@
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Network/ui/access-point-row.ui")]
 public sealed class Network.AccessPointRow : Adw.ActionRow {
 
+    [GtkChild]
+    unowned Gtk.Image icon;
+
     unowned NM.DeviceWifi device;
     unowned Bytes ssid;
 
@@ -29,6 +32,16 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         ssid = ap.ssid;
 
         title = NM.Utils.ssid_to_utf8 (ssid?.get_data ());
+
+        if (ap.strength >= 60) {
+            icon.icon_name = "radiowaves-1-symbolic";
+        } else if (ap.strength >= 40) {
+            icon.icon_name = "radiowaves-2-symbolic";
+        } else if (ap.strength >= 20) {
+            icon.icon_name = "radiowaves-3-symbolic";
+        } else {
+            icon.icon_name = "radiowaves-4-symbolic";
+        }
     }
 }
 
