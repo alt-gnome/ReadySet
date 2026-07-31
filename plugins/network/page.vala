@@ -65,11 +65,15 @@ public sealed class Network.Page : ReadySet.BasePage {
             SYNC_CREATE
         );
 
+#if 0
         addin.modems.bind_property ("n-items",
             simcard_group, "visible",
             SYNC_CREATE,
             set_visibility
         );
+#else
+        simcard_group.visible = false;
+#endif
 
         ethernet_adapters.bind_model (addin.ethers,
             (eth) => { return new EthernetRow ((NM.DeviceEthernet) eth); }
