@@ -64,6 +64,7 @@ public class Network.Addin : ReadySet.StepAddin {
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
 
+        vars["hostname"] = new ReadySet.ContextVarInfo (STRING);
         return vars;
     }
 
@@ -146,7 +147,19 @@ public class Network.Addin : ReadySet.StepAddin {
     }
 
     public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
+        try {
+            yield client.save_hostname_async (
+                context.get_string ("network.hostname"), null
+            );
 
+            foreach (var conn in client.connections) {
+                yield conn.save_async (null);
+            }
+        } catch (Error e) {
+            throw ReadySet.ApplyError.build_error (
+                _("Failed to apply network settings"), e.message
+            );
+        }
     }
 }
 

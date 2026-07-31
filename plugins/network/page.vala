@@ -60,6 +60,11 @@ public sealed class Network.Page : ReadySet.BasePage {
     construct {
         var addin = Addin.get_instance ();
 
+        addin.context.bind_property_to_context (this, "hostname",
+            "network.hostname",
+            SYNC_CREATE
+        );
+
         addin.modems.bind_property ("n-items",
             simcard_group, "visible",
             SYNC_CREATE,
