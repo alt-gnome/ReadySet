@@ -19,11 +19,27 @@
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Network/ui/ethernet-row.ui")]
 public sealed class Network.EthernetRow : Adw.ActionRow {
 
+    [GtkChild]
+    unowned Gtk.Image icon;
+
     unowned NM.DeviceEthernet device;
 
     public EthernetRow (NM.DeviceEthernet eth) {
         device = eth;
 
         title = device.get_description ();
+
+        device.notify["ip4-connectivity"].connect (update_icon);
+        device.notify["ip6-connectivity"].connect (update_icon);
+        update_icon ();
+    }
+
+    void update_icon () {
+        if (device.ip4_connectivity == FULL
+                && device.ip6_connectivity == FULL) {
+            icon.icon_name = "lan-symbolic";
+        } else {
+            icon.icon_name = "offline-lan-symbolic";
+        }
     }
 }
