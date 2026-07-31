@@ -8,6 +8,7 @@ plugin_network_sources = files(
   'page.vala',
   'plugin.vala',
   'utils.vala',
+  'ui-utils.vala',
   'ethernet.vala',
   'wifi.vala',
 )

@@ -214,29 +214,28 @@ public sealed class Network.AccessPointPasswordDialog : Adw.AlertDialog {
     }
 }
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Network/ui/wifi-adapter-row.ui")]
-public sealed class Network.WiFiAdapterRow : Adw.ExpanderRow {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Network/ui/wifi-adapter-box.ui")]
+public sealed class Network.WiFiAdapterBox : Adw.Bin {
+
+    [GtkChild]
+    unowned Gtk.ListBox box;
 
     unowned NM.DeviceWifi device;
     TimeoutCaller ap_scanner = new TimeoutCaller ();
 
     ListStore all_aps = new ListStore (typeof (NM.AccessPoint));
-    Gtk.SortListModel sorted_aps;
-    Gtk.FilterListModel unique_aps;
     AccessPointFilter unique_filter = new AccessPointFilter ();
 
-    ListStore rows = new ListStore (typeof (AccessPointRow));
-
-    public WiFiAdapterRow (NM.DeviceWifi wlan) {
+    public WiFiAdapterBox (NM.DeviceWifi wlan) {
         device = wlan;
 
-        title = device.get_description ();
-
-        sorted_aps = new Gtk.SortListModel (all_aps,
-            new AccessPointSorter (device)
+        box.bind_model (
+            new Gtk.FilterListModel (
+                new Gtk.SortListModel (all_aps, new AccessPointSorter (device)),
+                unique_filter
+            ),
+            (ap) => { return new AccessPointRow (device, (NM.AccessPoint) ap); }
         );
-        unique_aps = new Gtk.FilterListModel (sorted_aps, unique_filter);
-        unique_aps.items_changed.connect (update_rows);
 
         realize.connect (() => {
             device.access_point_added.connect (append_ap);
@@ -271,51 +270,25 @@ public sealed class Network.WiFiAdapterRow : Adw.ExpanderRow {
             (obj, res) => {
                 try {
                     ans = device.request_scan_async.end (res);
-                    enable_expansion = true;
-                    subtitle = null;
-                    remove_css_class ("error");
                 } catch (Error e) {
                     ans = false;
-                    expanded = false;
-                    enable_expansion = false;
-                    subtitle = _("Failed to scan access points");
-                    add_css_class ("error");
                 }
             }
         );
 
+        unique_filter.reset ();
         if (ans) {
-            unique_filter.reset ();
             all_aps.splice (0, all_aps.n_items, device.access_points.data);
 
             device.access_point_added.connect (append_ap);
             device.access_point_removed.connect (remove_ap);
+        } else {
+            all_aps.remove_all ();
         }
         return ans;
     }
 
     void refresh_and_schedule () {
         ap_scanner.start (Priority.DEFAULT_IDLE, 15, refresh_ap_list);
-    }
-
-    void update_rows (uint pos, uint removed, uint added) {
-        var new_rows = new AccessPointRow[added];
-        uint idx;
-
-        for (idx = 0; idx < added; ++idx) {
-            new_rows[idx] = new AccessPointRow (device,
-                (NM.AccessPoint) unique_aps.get_item (pos + idx)
-            );
-        }
-
-        for (idx = pos; idx < rows.n_items; ++idx) {
-            remove ((AccessPointRow) rows.get_item (idx));
-        }
-
-        rows.splice (pos, removed, new_rows);
-
-        for (idx = pos; idx < rows.n_items; ++idx) {
-            add_row ((AccessPointRow) rows.get_item (idx));
-        }
     }
 }

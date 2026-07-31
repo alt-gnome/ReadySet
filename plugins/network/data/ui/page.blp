@@ -90,13 +90,32 @@ template $NetworkPage: $ReadySetBasePage {
       Adw.PreferencesGroup wifi_group {
         title: _("Wi-Fi");
 
-        ListBox wifi_adapters {
-          styles [
-            "boxed-list",
-          ]
+        Revealer {
+          reveal-child: bind wlan_switch.sensitive;
+          transition-type: slide_down;
 
-          valign: start;
-          selection-mode: none;
+          Box {
+            spacing: 6;
+            margin-bottom: 12;
+
+            Label {
+              styles [
+                "dim-label",
+              ]
+
+              label: _("Wi-Fi adapter");
+              halign: start;
+            }
+
+            $NetworkDropDownStackSwitcher wlan_switch {
+              stack: bind wifi_adapters.stack;
+            }
+          }
+        }
+
+        $NetworkModeledStack wifi_adapters {
+          hhomogeneous: true;
+          vhomogeneous: false;
         }
       }
     }

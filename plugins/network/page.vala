@@ -33,7 +33,7 @@ public sealed class Network.Page : ReadySet.BasePage {
     [GtkChild]
     unowned Adw.PreferencesGroup wifi_group;
     [GtkChild]
-    unowned Gtk.ListBox wifi_adapters;
+    unowned ModeledStack wifi_adapters;
 
     string _hostname = Environment.get_host_name ();
     public string hostname {
@@ -81,29 +81,19 @@ public sealed class Network.Page : ReadySet.BasePage {
         );
 
         wifi_adapters.bind_model (addin.wlans,
-            (wlan) => { return new WiFiAdapterRow ((NM.DeviceWifi) wlan); }
+            (wlan) => { return new WiFiAdapterBox ((NM.DeviceWifi) wlan); },
+            null,
+            (wlan) => { return ((NM.DeviceWifi) wlan).get_description (); }
         );
         addin.wlans.bind_property ("n-items",
             wifi_group, "visible",
             SYNC_CREATE,
-            set_visibility_wifi
+            set_visibility
         );
     }
 
     bool set_visibility (Binding bind, Value n_items, ref Value visible) {
         visible.set_boolean (n_items.get_uint () > 0);
-        return true;
-    }
-
-    bool set_visibility_wifi (Binding bind, Value n_items, ref Value visible) {
-        uint n = n_items.get_uint ();
-        visible.set_boolean (n > 0);
-
-        if (n == 1) {
-            var wlan0 = (WiFiAdapterRow) wifi_adapters.get_row_at_index (0);
-            wlan0.expanded = wlan0.enable_expansion;
-        }
-
         return true;
     }
 }

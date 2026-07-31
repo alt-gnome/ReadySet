@@ -14,8 +14,10 @@
   <gresource prefix="/org/altlinux/ReadySet/Plugin/Network/">
     <file>style.css</file>
     <file preprocess="xml-stripblanks">ui/page.ui</file>
+    <file preprocess="xml-stripblanks">ui/modeled-stack.ui</file>
+    <file preprocess="xml-stripblanks">ui/dd-stackswitcher.ui</file>
     <file preprocess="xml-stripblanks">ui/ethernet-row.ui</file>
-    <file preprocess="xml-stripblanks">ui/wifi-adapter-row.ui</file>
+    <file preprocess="xml-stripblanks">ui/wifi-adapter-box.ui</file>
     <file preprocess="xml-stripblanks">ui/access-point-row.ui</file>
     <file preprocess="xml-stripblanks">ui/access-point-password-dialog.ui</file>
   </gresource>

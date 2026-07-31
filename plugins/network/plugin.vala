@@ -36,9 +36,12 @@ public class Network.Addin : ReadySet.StepAddin {
     public ListStore wlans { get; construct; }
 
     static construct {
+        typeof (ModeledStack).ensure ();
+        typeof (DropDownStackSwitcher).ensure ();
+
         typeof (EthernetRow).ensure ();
 
-        typeof (WiFiAdapterRow).ensure ();
+        typeof (WiFiAdapterBox).ensure ();
         typeof (AccessPointRow).ensure ();
         typeof (AccessPointPasswordDialog).ensure ();
     }
