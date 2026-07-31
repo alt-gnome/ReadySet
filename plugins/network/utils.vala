@@ -50,6 +50,41 @@ namespace Network {
         error = null;
         return true;
     }
+
+    NM.Utils.SecurityType get_available_ap_security (
+            NM.DeviceWifi device,
+            NM.AccessPoint ap
+    ) {
+        NM.Utils.SecurityType[] types = {
+            WPA3_SUITE_B_192,   // aka WPA3-Enterprise
+            SAE,                // aka WPA3-Personal
+            WPA2_ENTERPRISE,
+            WPA2_PSK,
+            WPA_ENTERPRISE,
+            WPA_PSK,
+            STATIC_WEP,
+            DYNAMIC_WEP,
+            LEAP,
+            OWE,
+            NONE,
+        };
+
+        foreach (var type in types) {
+            if (NM.Utils.security_valid (
+                    type,
+                    device.wireless_capabilities,
+                    true,
+                    ap.mode == ADHOC,
+                    ap.flags,
+                    ap.wpa_flags,
+                    ap.rsn_flags
+            )) {
+                return type;
+            }
+        }
+
+        return INVALID;
+    }
 }
 
 public sealed class Network.AccessPointSorter : Gtk.Sorter {

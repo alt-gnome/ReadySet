@@ -27,6 +27,9 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
     unowned NM.DeviceWifi device;
     unowned Bytes ssid;
 
+    NM.Utils.SecurityType security;
+    public bool needs_secrets { get; private set; default = false; }
+
     public AccessPointRow (NM.DeviceWifi wlan, NM.AccessPoint ap) {
         device = wlan;
         ssid = ap.ssid;
@@ -42,6 +45,11 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         } else {
             icon.icon_name = "radiowaves-4-symbolic";
         }
+
+        security = get_available_ap_security (device, ap);
+        needs_secrets = security != INVALID
+            && security != NONE
+            && security != OWE;
     }
 }
 

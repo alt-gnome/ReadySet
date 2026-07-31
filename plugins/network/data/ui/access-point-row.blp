@@ -24,5 +24,18 @@ template $NetworkAccessPointRow: Adw.ActionRow {
   activatable: true;
 
   [prefix]
-  Image icon {}
+  Overlay {
+    child: Image icon {};
+
+    [overlay]
+    Image {
+      icon-name: "padlock2-symbolic";
+      visible: bind template.needs-secrets;
+      halign: center;
+      valign: center;
+      pixel-size: 8;
+      margin-start: 12;
+      margin-top: 12;
+    }
+  }
 }
