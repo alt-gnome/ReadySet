@@ -5,7 +5,7 @@ plugin_network_blueprints = files(
   'ui/ethernet-row.blp',
   'ui/wifi-adapter-box.blp',
   'ui/access-point-row.blp',
-  'ui/access-point-password-dialog.blp',
+  'ui/ap-security-editor.blp',
 )
 
 plugin_network_resources = gnome.compile_resources(

@@ -43,7 +43,7 @@ public class Network.Addin : ReadySet.StepAddin {
 
         typeof (WiFiAdapterBox).ensure ();
         typeof (AccessPointRow).ensure ();
-        typeof (AccessPointPasswordDialog).ensure ();
+        typeof (ApSecurityEditor).ensure ();
     }
 
     construct {

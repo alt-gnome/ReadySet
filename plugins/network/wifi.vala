@@ -70,8 +70,9 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
 
         if (addin.context.sandbox) {
             if (needs_secrets) {
-                var dialog = new AccessPointPasswordDialog (
-                    device, ssid, security[0]
+                var dialog = new ApSecurityEditor (
+                    new_wireless_connection (ssid, NONE),
+                    security
                 );
                 dialog.present (root);
             }
@@ -160,59 +161,131 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
     }
 }
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Network/ui/access-point-password-dialog.ui")]
-public sealed class Network.AccessPointPasswordDialog : Adw.AlertDialog {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Network/ui/ap-security-editor.ui")]
+public sealed class Network.ApSecurityEditor : Adw.AlertDialog {
 
-    unowned NM.DeviceWifi device;
-    unowned Bytes ssid;
-    NM.Utils.SecurityType security;
-
-    string _username = "";
-    public string username {
-        get {
-            return _username;
-        }
-        set {
-            _username = value;
-            set_response_enabled ("apply",
-                validate_wifi_secrets (security, _password, _username)
-            );
-        }
-    }
-    public bool needs_username { get; private set; default = false; }
-
-    string _password = "";
-    public string password {
-        get {
-            return _password;
-        }
-        set {
-            _password = value;
-            set_response_enabled ("apply",
-                validate_wifi_secrets (security, _password, _username)
-            );
-        }
+    [Flags]
+    enum AvailableWs {
+        WS_WPA_EAP,
+        WS_SAE,
+        WS_WPA_PSK,
+        WS_WEP_KEY,
+        WS_DYNAMIC_WEP,
+        WS_LEAP,
+        WS_OWE;
     }
 
-    public AccessPointPasswordDialog (
-            NM.DeviceWifi wlan,
-            Bytes ssid,
-            NM.Utils.SecurityType sec
-    ) {
-        device = wlan;
-        this.ssid = ssid;
-        security = sec;
+    [GtkChild]
+    unowned Gtk.Stack stack;
 
-        heading = NM.Utils.ssid_to_utf8 (ssid?.get_data ());
+    unowned NM.Connection connection;
 
-        needs_username = sec == WPA3_SUITE_B_192
-                || sec == WPA2_ENTERPRISE || sec == WPA_ENTERPRISE
-                || sec == DYNAMIC_WEP || sec == LEAP;
+    public ApSecurityEditor (NM.Connection conn, NM.Utils.SecurityType[] sec) {
+        connection = conn;
+        heading = connection.get_id ();
+
+        AvailableWs mask = 0;
+        foreach (var type in sec) {
+            switch (type) {
+            // TODO: Suite B needs its own Ws; waiting for libnma impl.
+            case WPA3_SUITE_B_192:
+            case WPA2_ENTERPRISE:
+            case WPA_ENTERPRISE:
+                mask |= WS_WPA_EAP;
+                break;
+            case SAE:
+                mask |= WS_SAE;
+                break;
+            case WPA2_PSK:
+            case WPA_PSK:
+                mask |= WS_WPA_PSK;
+                break;
+            case STATIC_WEP:
+                mask |= WS_WEP_KEY;
+                break;
+            case DYNAMIC_WEP:
+                mask |= WS_DYNAMIC_WEP;
+                break;
+            case LEAP:
+                mask |= WS_LEAP;
+                break;
+            case OWE:
+                mask |= WS_OWE;
+                break;
+            default:
+                break;
+            }
+        }
+
+        if (WS_WPA_EAP in mask) {
+            var page = new NMA.WsWpaEap (connection, true, false, null);
+            page.ws_changed.connect (validate);
+            stack.add_titled (page, null, _("WPA/WPA2/WPA3 Enterprise"));
+        }
+        if (WS_SAE in mask) {
+            var page = new NMA.WsSae (connection, false);
+            page.ws_changed.connect (validate);
+            stack.add_titled (page, null, _("WPA3 Personal"));
+        }
+        if (WS_WPA_PSK in mask) {
+            var page = new NMA.WsWpaPsk (connection, false);
+            page.ws_changed.connect (validate);
+            stack.add_titled (page, null, _("WPA/WPA2 Personal"));
+        }
+        if (WS_WEP_KEY in mask) {
+            var page1 = new NMA.WsWepKey (connection, KEY, false, false);
+            page1.ws_changed.connect (validate);
+            stack.add_titled (page1, null, _("WEP 40/104-bit Key (Hex/ASCII)"));
+
+            var page2 = new NMA.WsWepKey (connection, PASSPHRASE, false, false);
+            page2.ws_changed.connect (validate);
+            stack.add_titled (page2, null, _("WEP 128-bit Passphrase"));
+        }
+        if (WS_DYNAMIC_WEP in mask) {
+            var page = new NMA.WsDynamicWep (connection, true, false);
+            page.ws_changed.connect (validate);
+            stack.add_titled (page, null, _("Dynamic WEP (802.1x)"));
+        }
+        if (WS_LEAP in mask) {
+            var page = new NMA.WsLeap (connection, false);
+            page.ws_changed.connect (validate);
+            stack.add_titled (page, null, _("LEAP"));
+        }
+        if (WS_OWE in mask) {
+            var page = new NMA.WsOwe (connection);
+            page.ws_changed.connect (validate);
+            stack.add_titled (page, null, _("Enhanced Open"));
+        }
+
+        stack.notify["visible-child"].connect_after (validate_current);
+        validate_current ();
     }
 
     [GtkCallback]
-    void username_entered () {
-        focus (TAB_FORWARD);
+    void on_response (string resp) {
+        switch (resp) {
+        case "apply":
+            ((NMA.Ws) stack.visible_child).fill_connection (connection);
+            break;
+        default:
+            break;
+        }
+    }
+
+    void validate (NMA.Ws page) {
+        bool valid;
+
+        try {
+            valid = page.validate ();
+        } catch (Error e) {
+            valid = false;
+        }
+
+        set_response_enabled ("apply", valid);
+    }
+
+    void validate_current () {
+        validate ((NMA.Ws) stack.visible_child);
     }
 }
 

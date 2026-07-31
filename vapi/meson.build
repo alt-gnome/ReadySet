@@ -24,3 +24,9 @@ run_command([
   meson.project_source_root() / 'vapi',
   '/usr/share' / 'vala-' + vala_version / 'vapi',
 ], check: true)
+
+run_command([
+  meson.project_source_root() / 'vapi' / 'libnma-gtk4-vapi-fix',
+  meson.project_source_root() / 'vapi',
+  '/usr/share/vala/vapi',
+], check: true)

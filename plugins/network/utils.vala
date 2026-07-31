@@ -57,33 +57,6 @@ namespace Network {
         return true;
     }
 
-    bool validate_wifi_secrets (
-            NM.Utils.SecurityType sec,
-            string? password = null,
-            string? username = null
-    ) {
-        switch (sec) {
-        case NONE:
-        case OWE:
-            return true;
-        case STATIC_WEP:
-            return password != null && NM.Utils.wep_key_valid (password, KEY);
-        case WPA_PSK:
-        case WPA2_PSK:
-        case SAE:
-            return password != null && NM.Utils.wpa_psk_valid (password);
-        case LEAP:
-        case DYNAMIC_WEP:
-        case WPA_ENTERPRISE:
-        case WPA2_ENTERPRISE:
-        case WPA3_SUITE_B_192:
-            return username != null && username.length > 0
-                && password != null && password.length > 0;
-        default:
-            return false;
-        }
-    }
-
     bool same_ssid (Bytes? ssid1, Bytes? ssid2) {
         return ssid1 != null
             && ssid2 != null

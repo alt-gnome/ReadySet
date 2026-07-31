@@ -20,29 +20,36 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $NetworkAccessPointPasswordDialog: Adw.AlertDialog {
+template $NetworkApSecurityEditor: Adw.AlertDialog {
   responses [
     cancel: _("Cancel"),
-    apply: _("Apply") suggested disabled,
+    apply: _("Apply") suggested,
   ]
 
   default-response: "apply";
   close-response: "cancel";
   can-close: true;
+  response => $on_response();
 
-  Adw.PreferencesGroup {
-    Adw.EntryRow {
-      title: _("Username");
-      visible: bind template.needs_username;
-      text: bind template.username bidirectional;
-      entry-activated => $username_entered();
+  Box {
+    orientation: vertical;
+    spacing: 6;
+
+    Grid {
+      column-spacing: 6;
+
+      Label {
+        label: _("Security");
+      }
+
+      $NetworkDropDownStackSwitcher {
+        stack: stack;
+      }
     }
 
-    Adw.PasswordEntryRow {
-      title: _("Password");
-      text: bind template.password bidirectional;
-      max-length: 64;
-      activates-default: true;
+    Stack stack {
+      hhomogeneous: true;
+      vhomogeneous: false;
     }
   }
 }
