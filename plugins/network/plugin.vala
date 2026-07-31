@@ -22,13 +22,13 @@ public class Network.Addin : ReadySet.StepAddin {
 
     static Addin instance;
 
-    bool _accessible;
-    public override bool accessible {
+    bool _enabled;
+    public override bool enabled {
         get {
-            return _accessible;
+            return _enabled;
         }
         protected set {
-            _accessible = value;
+            _enabled = value;
         }
     }
 
@@ -75,7 +75,7 @@ public class Network.Addin : ReadySet.StepAddin {
                     }
                 }
 
-                accessible = has_connectable_device;
+                enabled = has_connectable_device;
 
             } catch (Error e) {
                 error (e.message);
