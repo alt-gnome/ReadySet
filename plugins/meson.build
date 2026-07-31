@@ -4,6 +4,7 @@ plugins = [
   'language',
   'license-agreement',
   'software',
+  'network',
   'user',
   'welcome',
 ]

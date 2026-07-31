@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/altlinux/ReadySet/icons/scalable/actions/">
+    <file alias="network-symbolic.svg">assets/icons/network-symbolic.svg</file>
+    <file alias="connected-squares-dots-symbolic.svg">assets/icons/connected-squares-dots-symbolic.svg</file>
+  </gresource>
+  <gresource prefix="/org/altlinux/ReadySet/Plugin/Network/">
+    <file>style.css</file>
+    <file preprocess="xml-stripblanks">ui/page.ui</file>
+  </gresource>
+</gresources>
