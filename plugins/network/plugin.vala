@@ -38,9 +38,15 @@ public class Network.Addin : ReadySet.StepAddin {
     }
 
     construct {
+        instance = this;
+
         modems = new ListStore (typeof (NM.DeviceModem));
         ethers = new ListStore (typeof (NM.DeviceEthernet));
         wlans = new ListStore (typeof (NM.DeviceWifi));
+    }
+
+    internal static Addin get_instance () {
+        return instance;
     }
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
