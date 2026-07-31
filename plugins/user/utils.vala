@@ -197,11 +197,22 @@ namespace User {
 #if WITH_ROOT_SET
     async bool set_root_password (string password) {
         try {
-            yield ReadySet.pkexec ({
-                Path.build_filename (Config.LIBEXECDIR, "ready-set-set-root-password"),
-                password
-            });
-            return true;
+            var proxy = new GLib.DBusProxy.for_bus_sync (
+                GLib.DBusProxyFlags.NONE,
+                null,
+                "org.altlinux.ReadySet",
+                "/org/altlinux/ReadySet/UserRoot",
+                "org.altlinux.ReadySet.UserRoot",
+                null
+            );
+
+            var result = proxy.call_sync (
+                "SetRootPassword",
+                new GLib.Variant ("(s)", password),
+                GLib.DBusCallFlags.NONE,
+                -1,
+                null
+            );
         } catch (Error e) {
             return false;
         }

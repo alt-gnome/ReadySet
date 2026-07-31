@@ -22,9 +22,10 @@
 public sealed class UserRoot.Service : Object {
 
     public void set_root_password (string password, BusName sender) throws Error {
-        //  echo "root:$1" | /usr/sbin/chpasswd
-        var sp = new Subprocess.newv ({ "echo", "password set" }, NONE);
-        sp.wait ();
+        ReadySetService.polkit_check_plugin (sender);
+
+        var sp = new Subprocess.newv ({ "/usr/sbin/chpasswd" }, STDIN_PIPE);
+        sp.communicate_utf8 ("root:%s".printf (password), null, null, null);
     }
 }
 

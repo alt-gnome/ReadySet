@@ -13,6 +13,7 @@ librss_typelib_name = librss_versioned_gir_name + '.typelib'
 
 librss_sources = files(
   'addin.vala',
+  'utils.vala',
 )
 
 librss_c_args = [
@@ -22,6 +23,7 @@ librss_c_args = [
 librss_dependencies = [
   gio_dep,
   libpeas_dep,
+  polkit_dep,
 ]
 
 librss_deps_pkgs = []

@@ -18,9 +18,13 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-namespace ReadySet {
+namespace ReadySetService {
 
-    void polkit_check (BusName sender, string action_id) throws DBusError {
+    public void polkit_check_plugin (BusName sender) throws DBusError {
+        polkit_check (sender, "org.altlinux.ReadySet.Plugins");
+    }
+
+    public void polkit_check (BusName sender, string action_id) throws DBusError {
         Polkit.AuthorizationResult result;
 
         try {
