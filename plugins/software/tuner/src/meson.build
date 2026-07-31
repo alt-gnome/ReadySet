@@ -21,8 +21,7 @@ tuner_plugin_c_args = [
 ]
 
 tuner_plugin_vala_args = [
-  '--vapidir', meson.project_source_root() / 'vapi',
-  '--vapi-comments',
+
 ]
 
 configure_file(output: 'config.h', configuration: conf_data)

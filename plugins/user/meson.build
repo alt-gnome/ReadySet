@@ -7,6 +7,10 @@ else
   password_check_backend = [password_check_backend]
 endif
 
+if (get_option('user_with_set_root').enabled())
+  subdir('service')
+endif
+
 foreach pwcheck_backend : password_check_backend
   plugin_user_deps = [
     accountsservice_dep,

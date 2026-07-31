@@ -18,28 +18,22 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-namespace ReadySet {
+public abstract class ReadySetService.Addin : Peas.ExtensionBase {
 
-    void polkit_check (BusName sender, string action_id) throws DBusError {
-        Polkit.AuthorizationResult result;
-
-        try {
-            var authority = Polkit.Authority.get_sync (null);
-            var subject = new Polkit.SystemBusName (sender);
-            result = authority.check_authorization_sync (
-                subject,
-                action_id,
-                null,
-                Polkit.CheckAuthorizationFlags.ALLOW_USER_INTERACTION,
-                null
-            );
-
-        } catch (Error e) {
-            throw new DBusError.ACCESS_DENIED ("Failed to check authorization: " + e.message);
-        }
-
-        if (!result.get_is_authorized ()) {
-            throw new DBusError.ACCESS_DENIED ("Not authorized");
-        }
+    construct {
+        var object_path = get_object_path ();
+        assert (object_path.has_prefix ("/"));
+        debug ("Path `/org/altlinux/ReadySet%s` will be used", object_path);
     }
+
+    /**
+     * Object path. Prefix `/org/altlinux/ReadySet` will be added.
+     * Must be started from `/`.
+     */
+    public abstract string get_object_path ();
+
+    /**
+     * Must be a valid DBus class.
+     */
+    public abstract void register_service (DBusConnection conn, string path) throws GLib.IOError;
 }

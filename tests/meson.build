@@ -26,7 +26,6 @@ test('plugin-manager',
       '-DG_LOG_DOMAIN="TestPluginManager"',
     ],
     vala_args: [
-      '--vapidir', meson.project_source_root() / 'vapi',
       '--pkg', 'linux',
     ],
     dependencies: [
@@ -61,7 +60,6 @@ test_context_c_args = [
 ]
 
 test_context_vala_args = [
-  '--vapidir', meson.project_source_root() / 'vapi',
   '--vapidir', meson.project_source_root() / 'lib' / 'src',
 ]
 

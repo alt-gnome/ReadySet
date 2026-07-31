@@ -25,4 +25,5 @@ namespace Config {
     public const string DATADIR;
     public const string SYSCONFDIR;
     public const string LIBEXECDIR;
+    public const string SERVICE_PLUGINS_DIR;
 }

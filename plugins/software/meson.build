@@ -28,7 +28,7 @@ plugin_software_c_args = [
 ]
 
 plugin_software_vala_args = [
-  '--vapidir', meson.project_source_root() / 'vapi',
+
 ]
 
 conf_data = configuration_data()
