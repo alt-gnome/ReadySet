@@ -26,6 +26,10 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
 
     unowned NM.DeviceWifi device;
     unowned Bytes ssid;
+    NM.ActiveConnection? listener = null;
+
+    public string? status { get; private set; default = null; }
+    public bool is_active { get; private set; default = false; }
 
     NM.Utils.SecurityType security;
     public bool needs_secrets { get; private set; default = false; }
@@ -50,6 +54,12 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         needs_secrets = security != INVALID
             && security != NONE
             && security != OWE;
+
+        if (ap == device.active_access_point) {
+            is_active = true;
+            device.notify["active-connection"].connect (listen_to_active);
+            listen_to_active ();
+        }
     }
 
     [GtkCallback]
@@ -57,6 +67,48 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         if (needs_secrets) {
             var dialog = new AccessPointPasswordDialog (device, ssid, security);
             dialog.present (root);
+        }
+    }
+
+    void listen_to_active () {
+        if (listener != null) {
+            listener.state_changed.disconnect (update_status);
+            device.notify["ip4-connectivity"].disconnect (update_status);
+            device.notify["ip6-connectivity"].disconnect (update_status);
+        }
+        listener = device.active_connection;
+        if (listener != null) {
+            listener.state_changed.connect (update_status);
+            device.notify["ip4-connectivity"].connect (update_status);
+            device.notify["ip6-connectivity"].connect (update_status);
+        }
+        update_status ();
+    }
+
+    void update_status () {
+        if (listener == null) {
+            status = null;
+            return;
+        }
+
+        switch (listener.state) {
+        case ACTIVATING:
+            status = _("Connecting…");
+            break;
+        case ACTIVATED:
+            if (device.ip4_connectivity == FULL
+                    && device.ip6_connectivity == FULL) {
+                status = _("Connected");
+            } else {
+                status = _("Connected without internet");
+            }
+            break;
+        case DEACTIVATING:
+            status = _("Disconnecting…");
+            break;
+        default:
+            status = null;
+            break;
         }
     }
 }
@@ -144,13 +196,14 @@ public sealed class Network.WiFiAdapterRow : Adw.ExpanderRow {
         realize.connect (() => {
             device.access_point_added.connect (append_ap);
             device.access_point_removed.connect (remove_ap);
-            ap_scanner.start (Priority.DEFAULT_IDLE, 15, refresh_ap_list);
+            refresh_and_schedule ();
         });
         unrealize.connect (() => {
             ap_scanner.stop ();
             device.access_point_added.disconnect (append_ap);
             device.access_point_removed.disconnect (remove_ap);
         });
+        device.notify["active-access-point"].connect (refresh_and_schedule);
     }
 
     void append_ap (NM.DeviceWifi device, Object ap) {
@@ -194,6 +247,10 @@ public sealed class Network.WiFiAdapterRow : Adw.ExpanderRow {
             device.access_point_removed.connect (remove_ap);
         }
         return ans;
+    }
+
+    void refresh_and_schedule () {
+        ap_scanner.start (Priority.DEFAULT_IDLE, 15, refresh_ap_list);
     }
 
     void update_rows (uint pos, uint removed, uint added) {

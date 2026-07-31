@@ -21,7 +21,7 @@ using Gtk 4.0;
 using Adw 1;
 
 template $NetworkAccessPointRow: Adw.ActionRow {
-  activatable: true;
+  activatable: bind template.is_active inverted;
   activated => $on_activated();
 
   [prefix]
@@ -38,5 +38,14 @@ template $NetworkAccessPointRow: Adw.ActionRow {
       margin-start: 12;
       margin-top: 12;
     }
+  }
+
+  [suffix]
+  Label {
+    styles [
+      "subtitle",
+    ]
+
+    label: bind template.status;
   }
 }
