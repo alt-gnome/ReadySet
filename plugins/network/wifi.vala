@@ -29,9 +29,8 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
     NM.ActiveConnection? listener = null;
 
     public string? status { get; private set; default = null; }
-    public bool is_active { get; private set; default = false; }
 
-    NM.Utils.SecurityType security;
+    NM.Utils.SecurityType[] security;
     public bool needs_secrets { get; private set; default = false; }
 
     public AccessPointRow (NM.DeviceWifi wlan, NM.AccessPoint ap) {
@@ -51,12 +50,15 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         }
 
         security = get_available_ap_security (device, ap);
-        needs_secrets = security != INVALID
-            && security != NONE
-            && security != OWE;
+        if (security.length == 0) {
+            activatable = false;
+            subtitle = _("Can't connect: undetermined security type");
+        } else {
+            needs_secrets = security[0] != OWE && security[0] != NONE;
+        }
 
         if (ap == device.active_access_point) {
-            is_active = true;
+            activatable = false;
             device.notify["active-connection"].connect (listen_to_active);
             listen_to_active ();
         }
@@ -69,7 +71,7 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         if (addin.context.sandbox) {
             if (needs_secrets) {
                 var dialog = new AccessPointPasswordDialog (
-                    device, ssid, security
+                    device, ssid, security[0]
                 );
                 dialog.present (root);
             }
@@ -88,7 +90,7 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         if (conn == null) {
             try {
                 conn = yield addin.client.add_connection_async (
-                    new_wireless_connection (ssid, security),
+                    new_wireless_connection (ssid, security[0]),
                     false,
                     null
                 );

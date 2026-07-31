@@ -90,7 +90,7 @@ namespace Network {
             && NM.Utils.same_ssid (ssid1.get_data (), ssid2.get_data (), true);
     }
 
-    NM.Utils.SecurityType get_available_ap_security (
+    NM.Utils.SecurityType[] get_available_ap_security (
             NM.DeviceWifi device,
             NM.AccessPoint ap
     ) {
@@ -107,6 +107,7 @@ namespace Network {
             OWE,
             NONE,
         };
+        NM.Utils.SecurityType[] res = {};
 
         foreach (var type in types) {
             if (NM.Utils.security_valid (
@@ -118,11 +119,11 @@ namespace Network {
                     ap.wpa_flags,
                     ap.rsn_flags
             )) {
-                return type;
+                res += type;
             }
         }
 
-        return INVALID;
+        return res;
     }
 
     NM.Connection new_wireless_connection (
