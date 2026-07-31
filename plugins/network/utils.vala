@@ -21,6 +21,12 @@
 
 namespace Network {
 
+    bool same_devices (Object obj1, Object obj2) {
+        var dev1 = (NM.Device) obj1;
+        var dev2 = (NM.Device) obj2;
+        return dev1.interface == dev2.interface;
+    }
+
     bool validate_hostname (string hostname, out string? error) {
         if (hostname.has_prefix ("-")) {
             error = _("Leading hyphen is not allowed");
@@ -146,5 +152,25 @@ public sealed class Network.AccessPointFilter : Gtk.Filter {
 
     public void reset () {
         ssids.clear ();
+    }
+}
+
+public sealed class Network.TimeoutCaller {
+
+    TimeoutSource? source = null;
+
+    public void start (int priority, uint interval, owned SourceFunc func) {
+        stop ();
+        if (func ()) {
+            source = new TimeoutSource.seconds (interval);
+            source.set_priority (priority);
+            source.set_callback ((owned) func);
+            source.attach ();
+        }
+    }
+
+    public void stop () {
+        source?.destroy ();
+        source = null;
     }
 }

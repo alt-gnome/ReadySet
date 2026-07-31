@@ -57,6 +57,7 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
 public sealed class Network.WiFiAdapterRow : Adw.ExpanderRow {
 
     unowned NM.DeviceWifi device;
+    TimeoutCaller ap_scanner = new TimeoutCaller ();
 
     ListStore all_aps = new ListStore (typeof (NM.AccessPoint));
     Gtk.SortListModel sorted_aps;
@@ -76,8 +77,16 @@ public sealed class Network.WiFiAdapterRow : Adw.ExpanderRow {
         unique_aps = new Gtk.FilterListModel (sorted_aps, unique_filter);
         unique_aps.items_changed.connect (update_rows);
 
-        refresh_ap_list ();
-        Timeout.add_seconds_full (0, 15, refresh_ap_list);
+        realize.connect (() => {
+            device.access_point_added.connect (append_ap);
+            device.access_point_removed.connect (remove_ap);
+            ap_scanner.start (Priority.DEFAULT_IDLE, 15, refresh_ap_list);
+        });
+        unrealize.connect (() => {
+            ap_scanner.stop ();
+            device.access_point_added.disconnect (append_ap);
+            device.access_point_removed.disconnect (remove_ap);
+        });
     }
 
     void append_ap (NM.DeviceWifi device, Object ap) {

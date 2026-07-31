@@ -75,22 +75,72 @@ public class Network.Addin : ReadySet.StepAddin {
             return;
         }
 
+        client.device_added.connect (add_device);
+        client.device_removed.connect (remove_device);
+
         foreach (var device in client.devices) {
-            if (device.state != UNMANAGED && device.state != UNAVAILABLE) {
-                switch (device.device_type) {
-                case MODEM:
-                    modems.append (device);
-                    break;
-                case ETHERNET:
-                    ethers.append (device);
-                    break;
-                case WIFI:
-                    wlans.append (device);
-                    break;
-                default:
-                    break;
-                }
+            add_device (device);
+        }
+    }
+
+    static void update_category (ListStore category, NM.Device device) {
+        uint pos;
+        bool ok = device.state != UNMANAGED && device.state != UNAVAILABLE;
+        if (category.find_with_equal_func (device, same_devices, out pos)) {
+            if (!ok) {
+                category.remove (pos);
             }
+        } else {
+            if (ok) {
+                category.append (device);
+            }
+        }
+    }
+
+    void update_device (
+            NM.Device device,
+            uint new_state = device.state,
+            uint old_state = device.state,
+            uint reason = device.state_reason
+    ) {
+        switch (device.device_type) {
+        case MODEM:
+            update_category (modems, device);
+            break;
+        case ETHERNET:
+            update_category (ethers, device);
+            break;
+        case WIFI:
+            update_category (wlans, device);
+            break;
+        default:
+            break;
+        }
+    }
+
+    void add_device (NM.Device device) {
+        switch (device.device_type) {
+        case MODEM:
+        case ETHERNET:
+        case WIFI:
+            device.state_changed.connect (update_device);
+            update_device (device);
+            break;
+        default:
+            break;
+        }
+    }
+
+    void remove_device (NM.Device device) {
+        switch (device.device_type) {
+        case MODEM:
+        case ETHERNET:
+        case WIFI:
+            update_device (device);
+            device.state_changed.disconnect (update_device);
+            break;
+        default:
+            break;
         }
     }
 
