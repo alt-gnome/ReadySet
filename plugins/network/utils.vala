@@ -84,6 +84,12 @@ namespace Network {
         }
     }
 
+    bool same_ssid (Bytes? ssid1, Bytes? ssid2) {
+        return ssid1 != null
+            && ssid2 != null
+            && NM.Utils.same_ssid (ssid1.get_data (), ssid2.get_data (), true);
+    }
+
     NM.Utils.SecurityType get_available_ap_security (
             NM.DeviceWifi device,
             NM.AccessPoint ap
@@ -158,10 +164,6 @@ public sealed class Network.AccessPointFilter : Gtk.Filter {
 
     static uint hash (Bytes ssid) {
         return ssid.hash ();
-    }
-
-    static bool same_ssid (Bytes ssid1, Bytes ssid2) {
-        return NM.Utils.same_ssid (ssid1.get_data (), ssid2.get_data (), true);
     }
 
     public override bool match (Object? obj) {

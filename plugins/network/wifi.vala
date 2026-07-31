@@ -64,6 +64,22 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
 
     [GtkCallback]
     void on_activated () {
+        NM.Client nmc = Addin.get_instance ().client;
+        foreach (var conn in nmc.connections) {
+            if (same_ssid (ssid, conn.get_setting_wireless ()?.ssid)) {
+                nmc.activate_connection_async.begin (conn, device, null, null,
+                    (obj, res) => {
+                        try {
+                            nmc.activate_connection_async.end (res);
+                        } catch (Error e) {
+                            warning (e.message);
+                        }
+                    }
+                );
+                return;
+            }
+        }
+
         if (needs_secrets) {
             var dialog = new AccessPointPasswordDialog (device, ssid, security);
             dialog.present (root);
