@@ -75,7 +75,7 @@ int main (string[] args) {
         BusNameOwnerFlags.NONE,
         on_bus_aquired,
         (con, name) => {
-            print ("Name '%s' acquired. Stopping\n", name);
+            print ("Name '%s' acquired\n", name);
         },
         (con, name) => {
             print ("Could not acquire name '%s'. Stopping\n", name);
