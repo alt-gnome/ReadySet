@@ -23,12 +23,13 @@ using Adw 1;
 
 template $NetworkPage: $ReadySetBasePage {
   title-header: _("Network");
-  title-icon-name: "connected-squares-dots-symbolic";
+  title-icon-name: "globe-symbolic";
   is-ready: true;
 
   info: $ReadySetStatusPage {
     title: _("Network");
-    icon-name: "connected-squares-dots-symbolic";
+    description: _("Set up your network connections");
+    icon-name: "globe-symbolic";
   };
 
   content: Adw.Clamp {
@@ -92,7 +93,7 @@ template $NetworkPage: $ReadySetBasePage {
 
         Revealer {
           reveal-child: bind wlan_switch.activatable;
-          transition-type: slide_down;
+          transition-type: fade_slide_down;
 
           ListBox {
             styles [
@@ -112,6 +113,7 @@ template $NetworkPage: $ReadySetBasePage {
         $NetworkModeledStack wifi_adapters {
           hhomogeneous: true;
           vhomogeneous: false;
+          transition-type: slide_left_right;
         }
       }
     }
