@@ -29,8 +29,18 @@ public class Network.Addin : ReadySet.StepAddin {
         }
     }
 
+    public ListStore modems { get; construct; }
+    public ListStore ethers { get; construct; }
+    public ListStore wlans { get; construct; }
+
     static construct {
 
+    }
+
+    construct {
+        modems = new ListStore (typeof (NM.DeviceModem));
+        ethers = new ListStore (typeof (NM.DeviceEthernet));
+        wlans = new ListStore (typeof (NM.DeviceWifi));
     }
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
@@ -44,30 +54,32 @@ public class Network.Addin : ReadySet.StepAddin {
     }
 
     public async override void init_once () {
-        if (!context.sandbox) {
-            try {
-                var client = new NM.Client (null);
-                var devices = client.get_devices ();
-                bool has_connectable_device = false;
+        if (context.sandbox) {
+            return;
+        }
 
-                foreach (var device in devices) {
-                    var device_type = device.get_device_type ();
+        try {
+            var client = new NM.Client ();
 
-                    if (device_type == NM.DeviceType.ETHERNET ||
-                        device_type == NM.DeviceType.WIFI ||
-                        device_type == NM.DeviceType.MODEM) {
-
-                        var state = device.get_state ();
-
-                        if (state != NM.DeviceState.UNMANAGED &&
-                            state != NM.DeviceState.UNAVAILABLE) {
-                            has_connectable_device = true;
-                        }
+            foreach (var device in client.devices) {
+                if (device.state != UNMANAGED && device.state != UNAVAILABLE) {
+                    switch (device.device_type) {
+                    case MODEM:
+                        modems.append (device);
+                        break;
+                    case ETHERNET:
+                        ethers.append (device);
+                        break;
+                    case WIFI:
+                        wlans.append (device);
+                        break;
+                    default:
+                        break;
                     }
                 }
-            } catch (Error e) {
-                error (e.message);
             }
+        } catch (Error e) {
+            error (e.message);
         }
     }
 
