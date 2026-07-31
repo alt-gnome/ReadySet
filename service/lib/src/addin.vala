@@ -35,5 +35,5 @@ public abstract class ReadySetService.Addin : Peas.ExtensionBase {
     /**
      * Must be a valid DBus class.
      */
-    public abstract Plugin get_service ();
+    public abstract void register_service (DBusConnection conn, string path) throws GLib.IOError;
 }

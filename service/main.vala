@@ -19,9 +19,10 @@
  */
 
 Peas.Engine engine;
+Peas.ExtensionSet addins;
 MainLoop ml;
 
-Peas.Engine get_installers_engine () {
+Peas.Engine get_engine () {
     if (engine == null) {
         engine = new Peas.Engine ();
         engine.enable_loader ("python");
@@ -40,22 +41,20 @@ void on_bus_aquired (DBusConnection conn, string name) {
         var service = new ReadySet.Service ();
         conn.register_object ("/org/altlinux/ReadySet", service);
 
-        var addins = new Peas.ExtensionSet.with_properties (
-            get_installers_engine (),
+        var engine = get_engine ();
+        addins = new Peas.ExtensionSet.with_properties (
+            engine,
             typeof (ReadySetService.Addin),
             {}, {}
         );
 
-        addins.foreach ((_set, info, extension) => {
-            var plugin = (ReadySetService.Addin) extension;
-            var s = plugin.get_service ();
-
-            try {
-                conn.register_object ("/org/altlinux/ReadySet" + plugin.get_object_path (), s);
-            } catch (Error e) {
-                register_fatal (e);
-            }
-        });
+        for (int i = 0; i < engine.get_n_items (); i++) {
+            var info = (Peas.PluginInfo) engine.get_item (i);
+            engine.load_plugin (info);
+            message ("%s loaded", info.module_name);
+            var plugin = (ReadySetService.Addin) addins.get_extension (info);
+            plugin.register_service (conn, "/org/altlinux/ReadySet" + plugin.get_object_path ());
+        }
 
     } catch (IOError e) {
         register_fatal (e);

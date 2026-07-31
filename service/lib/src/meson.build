@@ -13,7 +13,6 @@ librss_typelib_name = librss_versioned_gir_name + '.typelib'
 
 librss_sources = files(
   'addin.vala',
-  'plugin.vala',
 )
 
 librss_c_args = [
