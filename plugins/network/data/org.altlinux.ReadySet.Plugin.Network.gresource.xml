@@ -16,5 +16,6 @@
     <file preprocess="xml-stripblanks">ui/ethernet-row.ui</file>
     <file preprocess="xml-stripblanks">ui/wifi-adapter-row.ui</file>
     <file preprocess="xml-stripblanks">ui/access-point-row.ui</file>
+    <file preprocess="xml-stripblanks">ui/access-point-password-dialog.ui</file>
   </gresource>
 </gresources>

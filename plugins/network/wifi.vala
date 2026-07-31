@@ -51,6 +51,70 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             && security != NONE
             && security != OWE;
     }
+
+    [GtkCallback]
+    void on_activated () {
+        if (needs_secrets) {
+            var dialog = new AccessPointPasswordDialog (device, ssid, security);
+            dialog.present (root);
+        }
+    }
+}
+
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Network/ui/access-point-password-dialog.ui")]
+public sealed class Network.AccessPointPasswordDialog : Adw.AlertDialog {
+
+    unowned NM.DeviceWifi device;
+    unowned Bytes ssid;
+    NM.Utils.SecurityType security;
+
+    string _username = "";
+    public string username {
+        get {
+            return _username;
+        }
+        set {
+            _username = value;
+            set_response_enabled ("apply",
+                validate_wifi_secrets (security, _password, _username)
+            );
+        }
+    }
+    public bool needs_username { get; private set; default = false; }
+
+    string _password = "";
+    public string password {
+        get {
+            return _password;
+        }
+        set {
+            _password = value;
+            set_response_enabled ("apply",
+                validate_wifi_secrets (security, _password, _username)
+            );
+        }
+    }
+
+    public AccessPointPasswordDialog (
+            NM.DeviceWifi wlan,
+            Bytes ssid,
+            NM.Utils.SecurityType sec
+    ) {
+        device = wlan;
+        this.ssid = ssid;
+        security = sec;
+
+        heading = NM.Utils.ssid_to_utf8 (ssid?.get_data ());
+
+        needs_username = sec == WPA3_SUITE_B_192
+                || sec == WPA2_ENTERPRISE || sec == WPA_ENTERPRISE
+                || sec == DYNAMIC_WEP || sec == LEAP;
+    }
+
+    [GtkCallback]
+    void username_entered () {
+        focus (TAB_FORWARD);
+    }
 }
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Network/ui/wifi-adapter-row.ui")]
