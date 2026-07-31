@@ -68,7 +68,7 @@ public sealed class ReadySet.Finalizer : Object {
             }
 
             progress_data.value = 0.0;
-            progress_data.message = _("Applying %s…").printf (addin.plugin_info.module_name);
+            progress_data.message = "";
 
             yield addin.apply (progress_data);
             progress_data.value = 1.0;
