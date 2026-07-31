@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/altlinux/ReadySet/icons/scalable/actions/">
+    <file alias="globe-symbolic.svg">assets/icons/globe-symbolic.svg</file>
+    <file alias="connected-squares-dots-symbolic.svg">assets/icons/connected-squares-dots-symbolic.svg</file>
+    <file alias="lan-symbolic.svg">assets/icons/lan-symbolic.svg</file>
+    <file alias="offline-lan-symbolic.svg">assets/icons/offline-lan-symbolic.svg</file>
+    <file alias="radiowaves-1-symbolic.svg">assets/icons/radiowaves-1-symbolic.svg</file>
+    <file alias="radiowaves-2-symbolic.svg">assets/icons/radiowaves-2-symbolic.svg</file>
+    <file alias="radiowaves-3-symbolic.svg">assets/icons/radiowaves-3-symbolic.svg</file>
+    <file alias="radiowaves-4-symbolic.svg">assets/icons/radiowaves-4-symbolic.svg</file>
+    <file alias="padlock2-symbolic.svg">assets/icons/padlock2-symbolic.svg</file>
+  </gresource>
+  <gresource prefix="/org/altlinux/ReadySet/Plugin/Network/">
+    <file>style.css</file>
+    <file preprocess="xml-stripblanks">ui/page.ui</file>
+    <file preprocess="xml-stripblanks">ui/modeled-stack.ui</file>
+    <file preprocess="xml-stripblanks">ui/dd-stackswitcher.ui</file>
+    <file preprocess="xml-stripblanks">ui/combo-stackswitcher.ui</file>
+    <file preprocess="xml-stripblanks">ui/ethernet-row.ui</file>
+    <file preprocess="xml-stripblanks">ui/wifi-adapter-box.ui</file>
+    <file preprocess="xml-stripblanks">ui/access-point-row.ui</file>
+    <file preprocess="xml-stripblanks">ui/ap-security-editor.ui</file>
+  </gresource>
+</gresources>

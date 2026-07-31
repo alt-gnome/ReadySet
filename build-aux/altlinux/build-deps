@@ -22,6 +22,8 @@ libgio-devel
 libgnome-desktop3-devel
 libgtk4-gir-devel
 libibus-devel
+libnm-devel
+libnma-gtk4-devel
 libpasswdqc-devel
 libpeas2-devel
 libpeas2-gir-devel

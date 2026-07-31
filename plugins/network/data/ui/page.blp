@@ -1,0 +1,121 @@
+/*
+ * Copyright (C) 2026 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2026 Valery Zabrovsky <brow@altlinux.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see
+ * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+using Gtk 4.0;
+using Adw 1;
+
+template $NetworkPage: $ReadySetBasePage {
+  title-header: _("Network");
+  title-icon-name: "globe-symbolic";
+  is-ready: true;
+
+  info: $ReadySetStatusPage {
+    title: _("Network");
+    description: _("Set up your network connections");
+    icon-name: "globe-symbolic";
+  };
+
+  content: Adw.Clamp {
+    maximum-size: 500;
+    margin-start: 12;
+    margin-end: 12;
+    margin-bottom: 12;
+    margin-top: 12;
+
+    Box {
+      orientation: vertical;
+      spacing: 12;
+
+      Adw.PreferencesGroup {
+        Adw.EntryRow hostname_entry {
+          title: _("Host Name");
+          text: bind template.hostname bidirectional;
+          max-length: 63;
+        }
+
+        Revealer {
+          reveal-child: bind template.is_ready inverted;
+          transition-type: slide_down;
+
+          child: Label {
+            styles [
+              "error",
+            ]
+
+            label: bind template.hostname_error;
+            hexpand: true;
+            halign: start;
+            margin-bottom: 6;
+            margin-end: 12;
+            margin-start: 14;
+            margin-top: 6;
+            wrap: true;
+          };
+        }
+      }
+
+      Adw.PreferencesGroup simcard_group {
+        title: _("SIM Cards and Mobile Network");
+      }
+
+      Adw.PreferencesGroup ethernet_group {
+        title: _("Ethernet");
+
+        ListBox ethernet_adapters {
+          styles [
+            "boxed-list",
+          ]
+
+          valign: start;
+          selection-mode: none;
+        }
+      }
+
+      Adw.PreferencesGroup wifi_group {
+        title: _("Wi-Fi");
+
+        Revealer {
+          reveal-child: bind wlan_switch.activatable;
+          transition-type: fade_slide_down;
+
+          ListBox {
+            styles [
+              "boxed-list",
+            ]
+
+            margin-bottom: 12;
+            selection-mode: none;
+
+            $NetworkComboRowStackSwitcher wlan_switch {
+              title: _("Wi-Fi adapter");
+              stack: bind wifi_adapters.stack;
+            }
+          }
+        }
+
+        $NetworkModeledStack wifi_adapters {
+          hhomogeneous: true;
+          vhomogeneous: false;
+          transition-type: slide_left_right;
+        }
+      }
+    }
+  };
+}
