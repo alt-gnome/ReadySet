@@ -20,5 +20,5 @@ custom_target(
   build_by_default: true,
   input : librss_sources,
   output: valadoc_vala_dir,
-  depends: librs,
+  depends: librss,
 )
