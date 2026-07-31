@@ -73,10 +73,6 @@ public class Network.Addin : ReadySet.StepAddin {
     }
 
     public async override void init_once () {
-        if (context.sandbox) {
-            return;
-        }
-
         client.device_added.connect (add_device);
         client.device_removed.connect (remove_device);
 
@@ -147,6 +143,10 @@ public class Network.Addin : ReadySet.StepAddin {
     }
 
     public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
+        if (context.sandbox) {
+            return;
+        }
+
         try {
             yield client.save_hostname_async (
                 context.get_string ("network.hostname"), null
