@@ -195,10 +195,11 @@ namespace User {
     }
 
 #if WITH_ROOT_SET
-    async bool set_root_password (string password) {
+    async void set_root_password (string password) {
         try {
-            var proxy = new GLib.DBusProxy.for_bus_sync (
-                GLib.DBusProxyFlags.NONE,
+            var proxy = new DBusProxy.for_bus_sync (
+                SYSTEM,
+                NONE,
                 null,
                 "org.altlinux.ReadySet",
                 "/org/altlinux/ReadySet/UserRoot",
@@ -206,16 +207,14 @@ namespace User {
                 null
             );
 
-            var result = proxy.call_sync (
+            proxy.call_sync (
                 "SetRootPassword",
-                new GLib.Variant ("(s)", password),
-                GLib.DBusCallFlags.NONE,
+                new Variant ("(s)", password),
+                DBusCallFlags.NONE,
                 -1,
                 null
             );
-        } catch (Error e) {
-            return false;
-        }
+        } catch (Error e) {}
     }
 #endif
 
