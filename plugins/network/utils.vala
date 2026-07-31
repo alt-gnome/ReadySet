@@ -124,6 +124,92 @@ namespace Network {
 
         return INVALID;
     }
+
+    NM.Connection new_wireless_connection (
+            Bytes ssid,
+            NM.Utils.SecurityType sec
+    ) {
+        NM.Connection conn = NM.SimpleConnection.new ();
+
+        conn.add_setting (new NM.SettingConnection () {
+            uuid = NM.Utils.uuid_generate (),
+            id = NM.Utils.ssid_to_utf8 (ssid.get_data ()),
+            type = "802-11-wireless",
+            autoconnect = true,
+        });
+        conn.add_setting (new NM.SettingWireless () {
+            ssid = ssid,
+        });
+        conn.add_setting (new NM.SettingIP4Config () {
+            method = "auto",
+        });
+        conn.add_setting (new NM.SettingIP6Config () {
+            method = "auto",
+        });
+
+        switch (sec) {
+        case WPA3_SUITE_B_192:
+            conn.add_setting (new NM.SettingWirelessSecurity () {
+                key_mgmt = "wpa-eap-suite-b-192",
+                pmf = NM.SettingWirelessSecurityPmf.REQUIRED,
+            });
+            break;
+        case SAE:
+            conn.add_setting (new NM.SettingWirelessSecurity () {
+                key_mgmt = "sae",
+                pmf = NM.SettingWirelessSecurityPmf.REQUIRED,
+            });
+            break;
+        case WPA2_ENTERPRISE:
+            conn.add_setting (new NM.SettingWirelessSecurity () {
+                key_mgmt = "wpa-eap",
+                pmf = NM.SettingWirelessSecurityPmf.OPTIONAL,
+            });
+            break;
+        case WPA2_PSK:
+            conn.add_setting (new NM.SettingWirelessSecurity () {
+                key_mgmt = "wpa-psk",
+                pmf = NM.SettingWirelessSecurityPmf.OPTIONAL,
+            });
+            break;
+        case WPA_ENTERPRISE:
+            conn.add_setting (new NM.SettingWirelessSecurity () {
+                key_mgmt = "wpa-eap",
+            });
+            break;
+        case WPA_PSK:
+            conn.add_setting (new NM.SettingWirelessSecurity () {
+                key_mgmt = "wpa-psk",
+            });
+            break;
+        case STATIC_WEP:
+            conn.add_setting (new NM.SettingWirelessSecurity () {
+                key_mgmt = "none",
+            });
+            break;
+        case DYNAMIC_WEP:
+            conn.add_setting (new NM.SettingWirelessSecurity () {
+                key_mgmt = "ieee8021x",
+            });
+            break;
+        case LEAP:
+            conn.add_setting (new NM.SettingWirelessSecurity () {
+                key_mgmt = "ieee8021x",
+                auth_alg = "leap",
+            });
+            break;
+        case OWE:
+            conn.add_setting (new NM.SettingWirelessSecurity () {
+                key_mgmt = "owe",
+                pmf = NM.SettingWirelessSecurityPmf.REQUIRED,
+            });
+            break;
+        default:
+            break;
+        }
+
+        return conn;
+    }
 }
 
 public sealed class Network.AccessPointSorter : Gtk.Sorter {

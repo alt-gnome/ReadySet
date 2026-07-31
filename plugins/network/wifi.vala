@@ -63,26 +63,42 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
     }
 
     [GtkCallback]
-    void on_activated () {
+    async void on_activated () {
         NM.Client nmc = Addin.get_instance ().client;
-        foreach (var conn in nmc.connections) {
-            if (same_ssid (ssid, conn.get_setting_wireless ()?.ssid)) {
-                nmc.activate_connection_async.begin (conn, device, null, null,
-                    (obj, res) => {
-                        try {
-                            nmc.activate_connection_async.end (res);
-                        } catch (Error e) {
-                            warning (e.message);
-                        }
-                    }
+        NM.RemoteConnection? conn = null;
+
+        foreach (var known in nmc.connections) {
+            if (same_ssid (ssid, known.get_setting_wireless ()?.ssid)) {
+                conn = known;
+                break;
+            }
+        }
+
+        if (conn == null) {
+            try {
+                conn = yield nmc.add_connection_async (
+                    new_wireless_connection (ssid, security),
+                    false,
+                    null
                 );
+            } catch (Error e) {
+                status = _("Connection setup failed");
+                warning (e.message);
                 return;
             }
         }
 
-        if (needs_secrets) {
-            var dialog = new AccessPointPasswordDialog (device, ssid, security);
-            dialog.present (root);
+        try {
+            yield nmc.activate_connection_async (conn, device, null, null);
+        } catch (Error e) {
+            status = _("Connection failed");
+            warning (e.message);
+
+            try {
+                yield conn.delete_async (null);
+            } catch (Error e) {
+                error (e.message);
+            }
         }
     }
 
