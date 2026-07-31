@@ -24,8 +24,11 @@ public sealed class Network.Page : ReadySet.BasePage {
     unowned Adw.EntryRow hostname_entry;
     [GtkChild]
     unowned Adw.PreferencesGroup simcard_group;
+
     [GtkChild]
     unowned Adw.PreferencesGroup ethernet_group;
+    [GtkChild]
+    unowned Gtk.ListBox ethernet_adapters;
 
     [GtkChild]
     unowned Adw.PreferencesGroup wifi_group;
@@ -58,7 +61,12 @@ public sealed class Network.Page : ReadySet.BasePage {
         var addin = Addin.get_instance ();
 
         simcard_group.visible = addin.modems.n_items > 0;
-        ethernet_group.visible = addin.ethers.n_items > 0;
+
+        if (ethernet_group.visible = addin.ethers.n_items > 0) {
+            ethernet_adapters.bind_model (addin.ethers,
+                (eth) => { return new EthernetRow ((NM.DeviceEthernet) eth); }
+            );
+        }
 
         if (wifi_group.visible = addin.wlans.n_items > 0) {
             wifi_adapters.bind_model (addin.wlans,

@@ -1,5 +1,6 @@
 plugin_network_blueprints = files(
   'ui/page.blp',
+  'ui/ethernet-row.blp',
   'ui/wifi-adapter-row.blp',
   'ui/access-point-row.blp',
 )
