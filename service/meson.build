@@ -1,3 +1,5 @@
+subdir('lib')
+
 rs_internal_vapi_sources = files(
   'config.vapi',
 )
@@ -15,7 +17,7 @@ rs_internal_vala_sources = files(
 
 rs_internal_dependencies = [
   gee_dep,
-  gio_dep,
+  librss_dep,
   polkit_dep,
   posix_dep,
 ]

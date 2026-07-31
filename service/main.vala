@@ -18,18 +18,54 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+Peas.Engine engine;
+MainLoop ml;
+
+Peas.Engine get_installers_engine () {
+    if (engine == null) {
+        engine = new Peas.Engine ();
+        engine.enable_loader ("python");
+
+        engine.add_search_path (
+            Config.SERVICE_PLUGINS_DIR,
+            null
+        );
+    }
+
+    return engine;
+}
+
 void on_bus_aquired (DBusConnection conn, string name) {
     try {
         var service = new ReadySet.Service ();
         conn.register_object ("/org/altlinux/ReadySet", service);
 
+        var addins = new Peas.ExtensionSet.with_properties (
+            get_installers_engine (),
+            typeof (ReadySetService.Addin),
+            {}, {}
+        );
+
+        addins.foreach ((_set, info, extension) => {
+            var plugin = (ReadySetService.Addin) extension;
+            var s = plugin.get_service ();
+
+            try {
+                conn.register_object ("/org/altlinux/ReadySet" + plugin.get_object_path (), s);
+            } catch (Error e) {
+                register_fatal (e);
+            }
+        });
+
     } catch (IOError e) {
-        ml.quit ();
-        error ("Could not register service: %s\n", e.message);
+        register_fatal (e);
     }
 }
 
-MainLoop ml;
+void register_fatal (Error e) {
+    ml.quit ();
+    error ("Could not register service: %s\n", e.message);
+}
 
 int main (string[] args) {
     ml = new MainLoop ();

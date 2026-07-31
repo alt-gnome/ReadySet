@@ -20,6 +20,8 @@ add_project_arguments(
 add_project_arguments(
   '--fatal-warnings',
   '--enable-experimental',
+  '--vapidir', meson.project_source_root() / 'vapi',
+  '--vapi-comments',
   language: 'vala',
 )
 
@@ -87,6 +89,7 @@ installer_post_hooks = pkgdata_dir / 'installer-post-hooks' / 'system'
 
 steps_plugins_dir = pkglib_dir / 'plugins' / 'steps'
 installers_plugins_dir = pkglib_dir / 'plugins' / 'installers'
+service_plugins_dir = pkglib_dir / 'plugins' / 'service'
 
 global_conf = configuration_data()
 global_conf.set_quoted('NAME', meson.project_name())
@@ -105,6 +108,7 @@ global_conf.set_quoted('SUPPORTED_LANGUAGES', '|'.join(supported_languages_arr))
 global_conf.set_quoted('GDMEXPORTDIR', join_paths(prefix, get_option('gdm_rundir'), gis))
 global_conf.set_quoted('STEPS_PLUGINS_DIR', steps_plugins_dir)
 global_conf.set_quoted('INSTALLERS_PLUGINS_DIR', installers_plugins_dir)
+global_conf.set_quoted('SERVICE_PLUGINS_DIR', service_plugins_dir)
 
 subdir('vapi')
 subdir('data')

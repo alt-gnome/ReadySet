@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2026 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[CCode (cprefix = "", lower_case_cprefix = "", cheader_filename = "config.h")]
-namespace Config {
-    public const string NAME;
-    public const string LIBDIR;
-    public const string DATADIR;
-    public const string SYSCONFDIR;
-    public const string LIBEXECDIR;
-    public const string SERVICE_PLUGINS_DIR;
+[DBus (name = "org.altlinux.ReadySet.Plugin")]
+public abstract class ReadySetService.Plugin : Object {
+
 }
