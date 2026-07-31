@@ -1,4 +1,5 @@
 /* Copyright (C) 2024-2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2026 Valery Zabrovsky <brow@altlinux.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,4 +19,29 @@
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Network/ui/page.ui")]
 public sealed class Network.Page : ReadySet.BasePage {
+
+    [GtkChild]
+    unowned Adw.EntryRow hostname_entry;
+
+    string _hostname = Environment.get_host_name ();
+    public string hostname {
+        get {
+            return _hostname;
+        }
+        set {
+            string? error;
+
+            _hostname = value;
+            is_ready = validate_hostname (_hostname, out error);
+            hostname_error = error;
+
+            if (is_ready) {
+                hostname_entry.remove_css_class ("error");
+            } else {
+                hostname_entry.add_css_class ("error");
+            }
+        }
+    }
+
+    public string? hostname_error { get; private set; default = null; }
 }

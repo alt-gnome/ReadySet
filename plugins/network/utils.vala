@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2026 Valery Zabrovsky <brow@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,4 +21,33 @@
 
 namespace Network {
 
+    bool validate_hostname (string hostname, out string? error) {
+        if (hostname.has_prefix ("-")) {
+            error = _("Leading hyphen is not allowed");
+            return false;
+        }
+
+        unichar cur;
+        int idx = 0;
+
+        while (hostname.get_next_char (ref idx, out cur)) {
+            if ((cur >= 0x80 || !cur.isalnum ()) && cur != '-') {
+                error = _("Only Latin letters, digits and hyphens are allowed");
+                return false;
+            }
+        }
+
+        if (idx < 4) {
+            error = _("Host name is too short");
+            return false;
+        }
+
+        if (hostname[idx - 1] == '-') {
+            error = _("Trailing hyphen is not allowed");
+            return false;
+        }
+
+        error = null;
+        return true;
+    }
 }

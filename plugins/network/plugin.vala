@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2025-2026 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2026 Valery Zabrovsky <brow@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +22,6 @@
 public class Network.Addin : ReadySet.StepAddin {
 
     static Addin instance;
-
-    bool _enabled;
-    public override bool enabled {
-        get {
-            return _enabled;
-        }
-        protected set {
-            _enabled = value;
-        }
-    }
 
     protected override string? resource_base_path {
         get {
@@ -74,9 +65,6 @@ public class Network.Addin : ReadySet.StepAddin {
                         }
                     }
                 }
-
-                enabled = has_connectable_device;
-
             } catch (Error e) {
                 error (e.message);
             }

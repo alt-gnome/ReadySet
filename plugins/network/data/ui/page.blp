@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2026 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2026 Valery Zabrovsky <brow@altlinux.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +19,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 using Gtk 4.0;
+using Adw 1;
 
 template $NetworkPage: $ReadySetBasePage {
   title-header: _("Network");
@@ -27,5 +29,46 @@ template $NetworkPage: $ReadySetBasePage {
   info: $ReadySetStatusPage {
     title: _("Network");
     icon-name: "connected-squares-dots-symbolic";
+  };
+
+  content: Adw.Clamp {
+    maximum-size: 500;
+    margin-start: 12;
+    margin-end: 12;
+    margin-bottom: 12;
+    margin-top: 12;
+
+    Box {
+      orientation: vertical;
+      spacing: 12;
+
+      Adw.PreferencesGroup {
+        Adw.EntryRow hostname_entry {
+          title: _("Host Name");
+          text: bind template.hostname bidirectional;
+          max-length: 63;
+        }
+
+        Revealer {
+          reveal-child: bind template.is_ready inverted;
+          transition-type: slide_down;
+
+          child: Label {
+            styles [
+              "error",
+            ]
+
+            label: bind template.hostname_error;
+            hexpand: true;
+            halign: start;
+            margin-bottom: 6;
+            margin-end: 12;
+            margin-start: 14;
+            margin-top: 6;
+            wrap: true;
+          };
+        }
+      }
+    }
   };
 }
