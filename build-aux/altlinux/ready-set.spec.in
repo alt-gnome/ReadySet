@@ -365,6 +365,7 @@ Requires: %name-plugin-software = %EVR
 %_datadir/polkit-1/rules.d/%app_id.Plugin.Network.rules
 %_libdir/%name/plugins/steps/network.plugin
 %_libdir/%name/plugins/steps/libnetwork.so
+%doc plugins/network/README.*.md
 
 %files plugin-keyboard
 %_datadir/polkit-1/rules.d/%app_id.Plugin.Keyboard.rules
