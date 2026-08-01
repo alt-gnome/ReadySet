@@ -19,7 +19,7 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/User/ui/page-root-password.ui")]
-public class User.PageRootPassword : ReadySet.BasePage {
+public sealed class User.PageRootPassword : PagePasswordCommon {
 
     [GtkChild]
     unowned Gtk.Switch equal_switch_row;
@@ -48,15 +48,30 @@ public class User.PageRootPassword : ReadySet.BasePage {
         update_is_ready ();
     }
 
-    void update_is_ready () {
-        is_ready = equal_switch_row.active || (!equal_switch_row.active &&
+    protected override string get_password () {
+        return root_password_entry.text;
+    }
+
+    protected override void update_is_ready () {
+        is_ready = !dialog_shown &&
+                   equal_switch_row.active || (!equal_switch_row.active &&
                    (password_is_ready (root_password_entry.text) &&
                    root_password_entry.text == root_password_repeat_entry.text));
     }
 
+    public override bool try_continue () {
+        if (equal_switch_row.active) {
+            return true;
+        }
+
+        return base.try_continue ();
+    }
+
     [GtkCallback]
     void root_password_changed () {
-        var strength = get_password_strength (
+        force_true = false;
+
+        var strength = Password.strength (
             root_password_entry.text,
             null,
             "root"

@@ -1,10 +1,15 @@
 # Keyboard plugin
 
-Set input sources.
+Configure keyboard input sources.
 
-## Storage Context variables
+## Settings
 
-| Variable                 | Description                        | Default value |
-| -------------------------|------------------------------------|---------------|
-| `keyboard.input-sources` | input sources                      |               |
-| `keyboard.preview-bin`   | binary name for xkb layout preview | tecla         |
+| Variable | Description | Default value |
+| -------- | ----------- | ------------- |
+| `keyboard.preview-bin` | Binary name for the xkb layout preview | `tecla` |
+
+## Stored context variables
+
+| Variable | Description |
+| -------- | ----------- |
+| `keyboard.input-sources` | Selected keyboard input sources |

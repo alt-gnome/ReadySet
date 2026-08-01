@@ -4,10 +4,11 @@ on:
   pull_request:
   workflow_dispatch:
   push:
-    branches-ignore:
-    - 'altlinux'
-    tags-ignore:
-      - '*'
+    branches:
+      - "main"
+
+env:
+  LIBCASE_REPO: https://altlinux.space/api/packages/rirusha/alt/group/libcase-nightly.repo
 
 jobs:
   lint-vala:
@@ -50,6 +51,11 @@ jobs:
         with:
           token: ${{ github.event_name == 'pull_request' && github.token || secrets.REPO_TOKEN }}
 
+      - name: Add nightly repos
+        run: |
+          echo "rpm $LIBCASE_REPO x86_64 classic" >> /etc/apt/sources.list
+          echo "rpm $LIBCASE_REPO noarch classic" >> /etc/apt/sources.list
+
       - name: Setup
         run: make setup-ci
 
@@ -60,14 +66,14 @@ jobs:
         run: make test
 
       - name: Setup git
-        if: github.event_name != 'pull_request' && github.ref_name == 'main'
+        if: github.event_name != 'pull_request'
         run: |
           git config --global user.name "ReadySet Helper Bot"
           git config --global user.email "ready-set-helper-bot@noreply.altlinux.space"
           git config --global --add safe.directory '*'
 
       - name: Update pot file for Weblate
-        if: github.event_name != 'pull_request' && github.ref_name == 'main'
+        if: github.event_name != 'pull_request'
         run: |
           has_real_changes() {
             git diff --cached -U0 | grep -E '^[+-]' \
@@ -76,20 +82,20 @@ jobs:
               | grep -q '.'
           }
 
-          ./po/update_potfiles
+          make pot
 
           git add .
           git commit -m "i18n: Update POTFILES" || true
 
-          meson compile -C _build ready-set-pot
+          make update-pot
           git add .
 
           if has_real_changes; then
             git commit -m "i18n: Update .pot file" || true
 
-            meson compile -C _build ready-set-update-po
+            make update-po
 
-            git add po/*.po
+            git add *.po
             git commit -m "i18n: Update .po files" || true
           else
             git reset --hard
@@ -98,7 +104,7 @@ jobs:
           git push
 
       - name: Deploy pages
-        if: github.event_name != 'pull_request' && github.ref_name == 'main'
+        if: github.event_name != 'pull_request'
         uses: actions/deploy-pages@v1
         with:
           directory: ./_build/lib/doc/ready-set-vala
@@ -106,6 +112,7 @@ jobs:
   get-release:
     name: Get release for RPM package
     runs-on: als-tiny
+    if: github.event_name != 'pull_request'
 
     outputs:
       release: ${{ steps.get_release.outputs.release }}
@@ -116,7 +123,7 @@ jobs:
           echo "release=$(date +%s)" >> $FORGEJO_OUTPUT
 
   rpm-build:
-    if: github.event_name != 'pull_request' && github.ref_name == 'main'
+    if: github.event_name != 'pull_request'
     name: RPM build for ${{ matrix.branch }}.${{ matrix.arch }} and uploading
     runs-on: ${{ matrix.runner }}
     container:
@@ -128,13 +135,13 @@ jobs:
           - sisyphus
           # - p11
         arch:
-          - amd64
-          - arm64
+          - x86_64
+          # - aarch64
         include:
-          - arch: amd64
+          - arch: x86_64
             runner: als-huge
-          - arch: arm64
-            runner: self-hosted-arm64-huge
+          # - arch: aarch64
+          #   runner: self-hosted-arm64-huge
 
     needs:
       - lint-vala
@@ -153,21 +160,25 @@ jobs:
 
       - name: Prepare RPM build
         run: |
-          echo '%packager	Hasher Unshare Builder <hasher-unshare@altlinux.org>' >> ~/.rpmmacros
           ./build-aux/altlinux/prepare ${{ needs.get-release.outputs.release }}
           git add .
+
+      - name: Add nightly repos
+        run: |
+          echo "rpm $LIBCASE_REPO ${{ matrix.arch }} classic" >> /etc/apt/sources.list
+          echo "rpm $LIBCASE_REPO noarch classic" >> /etc/apt/sources.list
 
       - name: Build
         run: |
           gear-hsh --commit --no-sisyphus-check=gpg,packager
 
-      - uses: actions/upload-rpm-action@main
+      - uses: actions/upload-rpm-action@7ed97151a2a1f53a5b97f8a9f20778f771bbae59
         name: Upload RPMs
         if: github.event_name != 'pull_request'
         with:
           directory: ~/hasher/repo
           token: ${{ secrets.TOKEN }}
-          group: ready-set-nightly/${{ github.ref_name }}/${{ matrix.branch }}
+          group: ready-set-nightly/${{ matrix.branch }}
 
   build-test-image:
     name: Build ${{ matrix.denviron }} image
@@ -175,16 +186,8 @@ jobs:
     strategy:
       matrix:
         denviron:
-          - phrog
           - gnome
-          - gnome-gis
-        include:
-          - denviron: phrog
-            image: altlinux.space/alt-atomic/minimal/phosh/nightly:latest
-          - denviron: gnome
-            image: altlinux.space/alt-atomic/onyx/nightly:latest
-          - denviron: gnome-gis
-            image: altlinux.space/alt-atomic/onyx/nightly:latest
+          - phosh
 
     needs:
       - rpm-build
@@ -198,34 +201,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check build possible
-        id: check
+      - id: get_commit
+        name: Get current commit
         run: |
-          if skopeo inspect docker://${{ matrix.image }} > /dev/null 2>&1; then
-            echo "exists=yes" >> $GITHUB_OUTPUT
-          else
-            echo "exists=no" >> $GITHUB_OUTPUT
-          fi
+          echo "commit=$(git rev-parse HEAD)" >> $FORGEJO_OUTPUT
 
-      - name: Build sisyphus default image
-        if: steps.check.outputs.exists == 'yes'
-        run: |
-          podman build \
-            --tag $LOCAL_BUILD_NAME \
-            --platform linux/amd64 \
-            --build-arg IMAGE=${{ matrix.image }} \
-            --build-arg PKG_GROUP=${{ github.ref_name }} \
-            --file ./test-atomic/${{ matrix.denviron }}/Containerfile \
-            --label org.altlinux.installer.has-initial-setup=true \
-            .
-
-      - name: Push images
-        if: steps.check.outputs.exists == 'yes'
-        uses: alt-atomic/actions/push-and-sign@main
+      - name: Build&Push image
+        uses: alt-atomic/actions/build-and-push@c882944ee9b49d04f3f2030aa47c435515a66657
         with:
-          registry: ${{ env.REGISTRY }}
-          registry-username: "<token>"
-          registry-password: ${{ secrets.TOKEN }}
-          image-name: alt-gnome/ready-set-test-atomic/${{ github.ref_name }}
+          image-name: alt-gnome/ready-set-test-atomic
           image-tag: ${{ matrix.denviron }}
-          local-build-name: ${{ env.LOCAL_BUILD_NAME }}
+          containerfile-path: ./test-atomic/${{ matrix.denviron }}/Containerfile
+
+          registry-password: ${{ secrets.TOKEN }}
+
+          pretty-name: ReadySet Atomic test image
+          version: ${{ steps.get_commit.outputs.commit }}
+
+          extra-labels: |
+            org.altlinux.installer.has-initial-setup=true
+
+          rechunk-enabled: false

@@ -37,15 +37,15 @@
  *
  * @see ReadySet.StepAddin
  */
-public abstract class ReadySet.InstallerAddin : ExtensionBase {
+public partial abstract class ReadySet.InstallerAddin : ExtensionBase {
 
     /**
      * All available pages that can be built via
-     * {@link ReadySet.InstallerAddin.build_page}.
+     * {@link ReadySet.InstallerStep.build_page}.
      */
-    public virtual string[] all_pages {
+    public virtual HashTable<string, InstallerStep> steps {
         owned get {
-            return {};
+            return new HashTable<string, InstallerStep> (str_hash, str_equal);
         }
     }
 
@@ -54,17 +54,4 @@ public abstract class ReadySet.InstallerAddin : ExtensionBase {
      * You can control progress indicator via `progress_data`.
      */
     public async abstract void install (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError;
-
-    /**
-     * Build page for application for given id.
-     * Returns {@link ReadySet.BasePage} for given id. It can be
-     * accessed in steps list as `installer-<step-id>`.
-     */
-    public virtual BasePage? build_page (string id) {
-        return null;
-    }
-
-    internal bool has_page (string id) {
-        return id in all_pages;
-    }
 }

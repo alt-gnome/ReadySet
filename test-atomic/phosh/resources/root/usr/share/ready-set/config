@@ -1,0 +1,6 @@
+[Application]
+steps=language,keyboard,data-and-time,user-passwdqc,atomic-finalize
+resizable=true
+
+[Context]
+user.with-root=true

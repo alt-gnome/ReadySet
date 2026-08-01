@@ -93,8 +93,6 @@ namespace User {
     }
 
     string correct_username (string username) {
-        const int MAXNAMELEN = 32;
-
         string uname = username;
 
         if (uname == "") {
@@ -128,8 +126,8 @@ namespace User {
 
         var res = corrected_builder.free_and_steal ();
 
-        if (res.length >= MAXNAMELEN) {
-            return res[0:MAXNAMELEN];
+        if (res.length >= Posix.Limits.LOGIN_NAME_MAX) {
+            return res[0:Posix.Limits.LOGIN_NAME_MAX];
         }
         return res;
     }
@@ -143,8 +141,6 @@ namespace User {
 
         error = "";
 
-        const int MAXNAMELEN = 32;
-
         if (username == null || username == "") {
             empty = true;
             in_use = false;
@@ -152,7 +148,7 @@ namespace User {
         } else {
             empty = false;
             in_use = is_username_used (username);
-            too_long = username.length > MAXNAMELEN;
+            too_long = username.length > Posix.Limits.LOGIN_NAME_MAX;
         }
 
         valid = true;
@@ -199,18 +195,57 @@ namespace User {
     }
 
 #if WITH_ROOT_SET
-    async bool set_root_password (string password) {
+    async void set_root_password (string password) {
         try {
-            yield ReadySet.pkexec ({
-                Path.build_filename (Config.LIBEXECDIR, "ready-set-set-root-password"),
-                password
-            });
-            return true;
-        } catch (Error e) {
-            return false;
-        }
+            var proxy = new DBusProxy.for_bus_sync (
+                SYSTEM,
+                NONE,
+                null,
+                "org.altlinux.ReadySet",
+                "/org/altlinux/ReadySet/UserRoot",
+                "org.altlinux.ReadySet.UserRoot",
+                null
+            );
+
+            proxy.call_sync (
+                "SetRootPassword",
+                new Variant ("(s)", password),
+                DBusCallFlags.NONE,
+                -1,
+                null
+            );
+        } catch (Error e) {}
     }
 #endif
+
+    string build_homed_password_record (string password) {
+        var passwords = new Serialize.Array<string> ();
+        passwords.add (password);
+
+        var record = new Serialize.Dict<Serialize.Array<string>> ();
+        record.set ("password", passwords);
+
+        return Serialize.JsonWorker.serialize (record);
+    }
+
+    async void set_homed_password (string username, string password) throws Error {
+        var bus = yield Bus.get (BusType.SYSTEM);
+
+        string new_secret = build_homed_password_record (password);
+        string old_secret = build_homed_password_record ("");
+
+        yield bus.call (
+            "org.freedesktop.home1",
+            "/org/freedesktop/home1",
+            "org.freedesktop.home1.Manager",
+            "ChangePasswordHome",
+            new Variant ("(sss)", username, new_secret, old_secret),
+            null,
+            DBusCallFlags.NONE,
+            2 * 60 * 1000,
+            null
+        );
+    }
 
     public string[] get_context_facesdirs () {
         var context = Addin.get_instance ().context;
@@ -276,33 +311,24 @@ namespace User {
     }
 
     bool password_is_ready (string password) {
-        bool no_password_security = Addin.get_instance ().context.get_boolean ("user.no-password-security");
-        if (no_password_security) {
-            return password.length != 0;
+        bool enforce = Addin.get_instance ().context.get_boolean ("user.enforce-password-quality");
+        if (!enforce) {
+            return password.length > 0;
         } else {
             return password_is_correct (password);
         }
     }
 
-    Strength get_password_strength (
-        string password,
-        string? old_password = null,
-        string? username = null
-    ) {
-        bool no_password_security = Addin.get_instance ().context.get_boolean ("user.no-password-security");
-        if (no_password_security) {
-            return {
-                hint: _("The password must consist of at least one character"),
-                strength_level: password.length == 0 ? StrengthLevel.BAD : StrengthLevel.GOOD,
-                value: 0.0,
-                support_value: false
-            };
-        } else {
-            return Password.strength (
-                password,
-                old_password,
-                username
-            );
-        }
+    Adw.AlertDialog create_bad_passwd_dialog () {
+        var dialog = new Adw.AlertDialog (
+            _("Weak password"),
+            _("The entered password is not secure. Do you really want to use it?")
+        );
+        dialog.add_response ("no", _("_No"));
+        dialog.add_response ("ok", _("_Yes"));
+        dialog.set_response_appearance ("no", Adw.ResponseAppearance.SUGGESTED);
+        dialog.set_default_response ("no");
+
+        return dialog;
     }
 }

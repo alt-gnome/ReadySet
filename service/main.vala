@@ -18,18 +18,53 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+Peas.Engine engine;
+Peas.ExtensionSet addins;
+MainLoop ml;
+
+Peas.Engine get_engine () {
+    if (engine == null) {
+        engine = new Peas.Engine ();
+        engine.enable_loader ("python");
+
+        engine.add_search_path (
+            Config.SERVICE_PLUGINS_DIR,
+            null
+        );
+    }
+
+    return engine;
+}
+
 void on_bus_aquired (DBusConnection conn, string name) {
     try {
         var service = new ReadySet.Service ();
         conn.register_object ("/org/altlinux/ReadySet", service);
 
+        var engine = get_engine ();
+        addins = new Peas.ExtensionSet.with_properties (
+            engine,
+            typeof (ReadySetService.Addin),
+            {}, {}
+        );
+
+        for (int i = 0; i < engine.get_n_items (); i++) {
+            var info = (Peas.PluginInfo) engine.get_item (i);
+            engine.load_plugin (info);
+            message ("%s loaded", info.module_name);
+            var plugin = (ReadySetService.Addin) addins.get_extension (info);
+            plugin.register_service (conn, "/org/altlinux/ReadySet" + plugin.get_object_path ());
+        }
+
     } catch (IOError e) {
-        ml.quit ();
-        error ("Could not register service: %s\n", e.message);
+        register_fatal (e);
     }
 }
 
-MainLoop ml;
+void register_fatal (Error e) {
+    ml.quit ();
+    error ("Could not register service: %s\n", e.message);
+}
 
 int main (string[] args) {
     ml = new MainLoop ();
@@ -39,7 +74,7 @@ int main (string[] args) {
         BusNameOwnerFlags.NONE,
         on_bus_aquired,
         (con, name) => {
-            print ("Name '%s' acquired. Stopping\n", name);
+            print ("Name '%s' acquired\n", name);
         },
         (con, name) => {
             print ("Could not acquire name '%s'. Stopping\n", name);

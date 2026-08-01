@@ -1,0 +1,70 @@
+groups:
+  - id: flathub
+    name: Flathub
+    description: Most popular flatpak application repository
+    gettext-domain: ready-set
+    required: true
+    priority: 1
+  - id: test
+    name: Test
+    description: test
+    gettext-domain: test
+  - id: good-soft
+    name: Good
+    description: good
+    gettext-domain: good
+    required: true
+
+sources:
+  - id: flathub
+    type: flatpak
+    group: flathub
+    name: Flathub
+    description: Most popular flatpak application repository
+    gettext-domain: ready-set
+    body:
+      url: https://flathub.org/repo/flathub.flatpakrepo
+      remote-name: flathub
+  - id: flathub-proxy
+    type: flatpak
+    group: flathub
+    name: Flathub (ALT Gnome proxy)
+    description: Most popular flatpak application repository. ALT Gnome proxy made for Russia region
+    gettext-domain: ready-set
+    body:
+      url: https://flathub.alt-gnome.ru/repo/flathub.flatpakrepo
+      remote-name: flathub-proxy
+  - id: aides
+    type: stplr
+    name: Aides
+    description: Aides is an unofficial proprietary package repository for ALT Linux, powered by Stapler
+    gettext-domain: ready-set
+    non-free: true
+    body:
+      url: https://altlinux.space/aides-community/aides.git
+      remote-name: aides
+  - id: ready-set-nightly
+    type: alt-repo
+    group: test
+    name: ReadySet Nightly 1 
+    description: Apt repository with nightly ReadySet builds
+    gettext-domain: ready-set-software-source-ready-set
+    body:
+      repos:
+      - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/sisyphus.repo _arch_ classic
+      - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/sisyphus.repo noarch classic
+  - id: ready-set-nightly-3
+    type: custom
+    name: ReadySet Nightly 3
+    group: good-soft
+    description: Apt repository with nightly ReadySet builds
+    gettext-domain: ready-set-software-source-ready-set
+    body:
+      cmd-apply: |
+        exit 0
+      # Needs only for Tuner plugin
+      cmd-undo: |
+        exit 0
+      # Needs only for Tuner plugin
+      cmd-check: |
+        exit 0

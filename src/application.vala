@@ -30,8 +30,6 @@ public sealed class ReadySet.Application: Adw.Application {
     internal PluginManager plugin_manager { get; private set; }
     internal Context context { get; private set; }
 
-    Gee.ArrayList<Binding> context_bindings = new Gee.ArrayList<Binding> ();
-
     public bool can_close {
         get {
             return Config.NIGHTLY || options_handler.can_close;
@@ -116,7 +114,7 @@ public sealed class ReadySet.Application: Adw.Application {
     protected override void startup () {
         base.startup ();
 
-        plugin_manager.init (options_handler.installer);
+        plugin_manager.init (options_handler.installer, options_handler.steps);
 
 #if DEVEL
         if (options_handler.force_mode == null) {
@@ -134,20 +132,36 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 #endif
 
-        print ("\nApplication mode: %s\n", context.mode.to_string ());
+        if (options_handler.apply_only && context.mode == EXISTING_USER) {
+            error ("`finalize` can not be used in existing-user mode");
+        }
+
+        print ("\nApplication mode: %s\n\n", context.mode.to_string ());
+        if (has_installer) {
+            print (
+                "Installer:\n  %s - %s\n\n",
+                installer_plugin.plugin_info.module_name,
+                installer_plugin.plugin_info.name
+            );
+        }
 
         plugin_manager.check_steps (options_handler.steps);
         if (has_installer) {
             plugin_manager.check_installers ();
         }
         options_handler.fill_context (context);
-        context.reload_window.connect (reload_window);
+
+        if (!options_handler.apply_only) {
+            context.reload_window.connect (reload_window);
+        }
 
         if (!options_handler.sandbox) {
             exec_pre_hooks.begin ();
         }
 
-        init_lib_css ();
+        if (!options_handler.apply_only) {
+            init_lib_css ();
+        }
     }
 
     async void exec_pre_hooks () {
@@ -158,7 +172,7 @@ public sealed class ReadySet.Application: Adw.Application {
             if (context.mode == Mode.INITIAL_SETUP) {
                 hooks_target = "initial-setup";
 
-                var pre_hooks_dir = get_system_hooks_dir (hooks_type, hooks_target);
+                var pre_hooks_dir = get_user_hooks_dir (hooks_type, hooks_target);
 
                 foreach (var name in ReadySet.get_all_hooks_from_dir (pre_hooks_dir)) {
                     ReadySet.real_exec_hook_from_dir (pre_hooks_dir, name);
@@ -191,51 +205,48 @@ public sealed class ReadySet.Application: Adw.Application {
 
         print ("Loaded steps:\n");
         for (int i = 0; i < steps.length; i++) {
-            if (!plugin_manager.has_step (steps[i])) {
-                pages.add (new PageInfo (
-                    new BasePage.unknown () {
-                        is_ready = true
-                    },
-                    null
-                ));
-                print ("  broken step (%s)\n", steps[i]);
-            } else {
-                var addin = plugin_manager.get_step_addin (steps[i]);
+            var addin = plugin_manager.get_step_addin (steps[i]);
 
-                if (addin != null) {
-                    if (addin.enabled) {
-                        enabled_plugins += addin.plugin_info.module_name;
-                    }
-
-                    var addin_pages = yield addin.build_pages ();
-                    if (addin_pages.length == 0) {
-                        pages.add (new PageInfo (
-                            null,
-                            addin
-                        ));
-
-                    } else {
-                        foreach (var page in addin_pages) {
-                            pages.add (new PageInfo (
-                                page,
-                                addin
-                            ));
-                        }
-                    }
-                    print ("  %s\n", steps[i]);
-                } else {
-                    var installer_page = installer_plugin.build_page (plugin_manager.get_real_page_id (steps[i]));
-                    if (installer_page != null) {
-                        pages.add (new PageInfo (
-                            installer_page,
-                            null
-                        ));
-                        print ("  %s\n", steps[i]);
-                    } else {
-                        print ("  %s (Skipped: failed to build page)\n", steps[i]);
-                    }
+            if (addin != null) {
+                if (addin.enabled) {
+                    enabled_plugins += addin.plugin_info.module_name;
                 }
 
+                var addin_pages = yield addin.build_pages ();
+                if (addin_pages.length == 0) {
+                    pages.add (new PageInfo (
+                        null,
+                        addin
+                    ));
+
+                } else {
+                    foreach (var page in addin_pages) {
+                        pages.add (new PageInfo (
+                            page,
+                            addin
+                        ));
+                    }
+                }
+                print ("  %s - %s\n", addin.plugin_info.module_name, addin.plugin_info.name);
+            } else if (steps[i].has_prefix (PluginManager.INSTALLER_STEP_PREFIX)) {
+                var installer_step = installer_plugin.steps[PluginManager.get_real_page_id (steps[i])];
+                var installer_page = installer_step.build_page ();
+                if (installer_page != null) {
+                    pages.add (new PageInfo (
+                        installer_page,
+                        null
+                    ));
+                    print (
+                        "  %s%s (from `%s`)\n",
+                        PluginManager.get_real_page_id (steps[i]),
+                        installer_step.name != null ? " - %s".printf (installer_step.name) : "",
+                        installer_plugin.plugin_info.module_name
+                    );
+                } else {
+                    print ("  %s (skipped: failed to build installer page)\n", steps[i]);
+                }
+            } else {
+                error ("Unknown step `%s`", steps[i]);
             }
 
             Idle.add (build_steps.callback);
@@ -280,8 +291,38 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
+    void finalize_cb (Object? obj, AsyncResult res) {
+        var finalizer = (Finalizer) obj;
+        try {
+            finalizer.run.end (res);
+            print ("Done!\n");
+
+        } catch (ApplyError e) {
+            var error_data = apply_error_to_data (e);
+            print ("Failed: %s. %s\n", error_data.message, error_data.description);
+            Process.exit (-1);
+        }
+
+        release ();
+    }
+
     public override void activate () {
         base.activate ();
+
+        if (options_handler.apply_only) {
+            var progress_data = new ProgressData ();
+            var finalizer = new Finalizer (
+                context,
+                plugin_manager,
+                installer_plugin,
+                progress_data
+            );
+
+            hold ();
+            finalizer.run.begin (finalize_cb);
+
+            return;
+        }
 
         if (active_window == null) {
             if (context.has_key ("language.locale")) {

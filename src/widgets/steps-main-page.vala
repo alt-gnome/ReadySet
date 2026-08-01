@@ -304,7 +304,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
             hscrollbar_policy = NEVER
         };
 
-        var box = new Gtk.Box (VERTICAL, 12) {
+        var box = new Gtk.Box (VERTICAL, 36) {
             valign = CENTER
         };
         scrolled_window.child = box;
@@ -380,7 +380,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         last_current_page = model.get_selected_item ();
 
         if (last_current_page == null) {
-            warning ("Model has no enabled pages");
+            critical ("Model has no enabled pages");
             return;
         }
 
@@ -424,7 +424,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         var selected_item = model.get_selected_item ();
 
         if (selected_item == null) {
-            warning ("Model has no enabled pages");
+            critical ("Model has no selected page");
             return;
         }
 
@@ -488,6 +488,10 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
     [GtkCallback]
     void continue_clicked () {
+        if (!model.get_selected_item ().page.try_continue ()) {
+            return;
+        }
+
         var position = model.get_selected ();
         var n_items = model.get_n_items ();
 
@@ -526,7 +530,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
         if (force_layout != null) {
             Adw.Breakpoint? force_breakpoint = null;
-            switch (LayoutMode.from_string (force_layout)) {
+            switch (layout_mode_from_string (force_layout)) {
                 case BIG:
                     force_breakpoint = big_breakpoint;
                     break;

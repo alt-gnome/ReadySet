@@ -32,6 +32,14 @@ option(
   description: 'Use integration with GDM (Login to user via Gdm.Client after initial-setup done',
 )
 
+# Phrog
+option(
+  'phrog',
+  type: 'feature',
+  value: 'auto',
+  description: 'Add setup env for phrog (set first-run gsetting and unset in the end',
+)
+
 # Keyboard
 option(
   'ibus',
@@ -51,6 +59,14 @@ option(
   type: 'feature',
   value: 'auto',
   description: 'Enable option with setting root by user at initial-setup mode. It can be not secure, so it disabled by default'
+)
+
+# Software
+option(
+  'with_software_tuner_plugin',
+  type: 'feature',
+  value: 'auto',
+  description: 'Build tuner plugin with software plugin functionality'
 )
 
 # Tests

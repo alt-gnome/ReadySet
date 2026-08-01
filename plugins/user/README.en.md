@@ -1,24 +1,26 @@
 # User plugin
 
-Bunch of pages for creating user or collection user information.
+Create a user account and optionally set the root password.
 
-Present in two variants with two different backends: `pwaquality` and `passwdqc`. Plugins named accordingly `user-pwquality` and `user-passwdqc`.
+If AccountsService creates a `systemd-homed` user, the user password is set via `org.freedesktop.home1.Manager.ChangePasswordHome` instead of AccountsService.
 
-## Settings Context variables
+The plugin is built in two variants with different password quality backends: `user-pwquality` and `user-passwdqc`. The exact variant is controlled by the `password_check_backend` build option.
 
-| Variable                              | Description                                                                                               | Default value |
-| ------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------- |
-| `user.avatar-file`                    | Path to user avatar file                                                                                  | -             |
-| `user.with-root`                      | Set password for root or not. Needs build option `user_with_set_root`                                     | -             |
-| `user.no-password-security`           | Disable password security check via password lib                                                          | -             |
-| `user.passwd-conf-path`               | Config for password lib                                                                                   | -             |
-| `user.avatar-directories`             | Directory where avatar file located. `org.gnome.desktop.interface` `avatar-directories` will also be used | -             |
+## Settings
 
-## Storage Context variables
+| Variable | Description | Default value |
+| -------- | ----------- | ------------- |
+| `user.with-root` | Enable the root password page (requires the `user_with_set_root` build option) | — |
+| `user.enforce-password-quality` | Prevent proceeding if the password is weak | — |
+| `user.passwd-conf-path` | Path to the password quality library configuration | — |
+| `user.avatar-directories` | Directories to search for avatar files. The `org.gnome.desktop.interface` `avatar-directories` setting is also used | — |
 
-| Variable             |
-| -------------------- |
-| `user.username`      |
-| `user.fullname`      |
-| `user.password`      |
-| `user.root-password` |
+## Stored context variables
+
+| Variable | Description |
+| -------- | ----------- |
+| `user.avatar-file` | Path to the selected avatar file |
+| `user.username` | User login name |
+| `user.fullname` | User full name |
+| `user.password` | User password |
+| `user.root-password` | Root password |

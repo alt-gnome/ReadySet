@@ -45,6 +45,9 @@ public class Test.Addin : ReadySet.StepAddin {
     }
 
     public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
+        if (context.get_boolean ("tests.throw-error")) {
+            throw ReadySet.ApplyError.build_error ("Test error", "Test error has been thrown");
+        }
         message ("Tests DONE");
     }
 

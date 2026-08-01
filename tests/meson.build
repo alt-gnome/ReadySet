@@ -16,7 +16,7 @@ test('plugin-manager',
         'test-plugin-manager.vala',
         'test-config.vapi',
       ) + plugin_manager_sources,
-      librs_sources_with_resources,
+      librs_sources_with_app_tests,
     ],
     include_directories: [
       test_plugin_manager_config_h_dir,
@@ -26,7 +26,6 @@ test('plugin-manager',
       '-DG_LOG_DOMAIN="TestPluginManager"',
     ],
     vala_args: [
-      '--vapidir', meson.project_source_root() / 'vapi',
       '--pkg', 'linux',
     ],
     dependencies: [
@@ -61,7 +60,6 @@ test_context_c_args = [
 ]
 
 test_context_vala_args = [
-  '--vapidir', meson.project_source_root() / 'vapi',
   '--vapidir', meson.project_source_root() / 'lib' / 'src',
 ]
 

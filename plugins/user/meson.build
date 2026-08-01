@@ -7,11 +7,16 @@ else
   password_check_backend = [password_check_backend]
 endif
 
+if (get_option('user_with_set_root').enabled())
+  subdir('service')
+endif
+
 foreach pwcheck_backend : password_check_backend
   plugin_user_deps = [
-    accountsservice_desktop_dep,
+    accountsservice_dep,
     gnome_desktop_dep,
     librs_dep,
+    libserialize_dep,
     posix_dep,
     dependency(pwcheck_backend)
   ]
@@ -25,6 +30,7 @@ foreach pwcheck_backend : password_check_backend
     'context-row.vala',
     'i18n.vala',
     'margin-label.vala',
+    'page-password-common.vala',
     'page-password.vala',
     'page-username.vala',
     'password-strength.vala',

@@ -31,7 +31,7 @@
  *
  * == Using gresource ==
  * 
- * If you using gresource, you should override {@link ReadySet.StepAddin.resource_base_path}
+ * If you using gresource, you should override {@link ReadySet.ExtensionBase.resource_base_path}
  * and return your base path as get method. `style.css` will be loaded
  * from resource if file with this name exists.
  *
@@ -73,7 +73,12 @@
  */
 public abstract class ReadySet.StepAddin : ExtensionBase {
 
-    public virtual string? module_name { get { return null; } }
+    /**
+     * Module name which will be used on context vars registration
+     * Useful when plugins have similar context vars but different names
+     * e.g. user-passwdqc/user-pwquality.
+     */
+    public virtual string? registration_module_name { get { return null; } }
 
     /**
      * Whether `step` enabled or not.

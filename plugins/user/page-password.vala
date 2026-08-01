@@ -19,7 +19,7 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/User/ui/page-password.ui")]
-public class User.PagePassword : ReadySet.BasePage {
+public sealed class User.PagePassword : PagePasswordCommon {
 
     [GtkChild]
     unowned ContextRow password_context_row;
@@ -59,6 +59,10 @@ public class User.PagePassword : ReadySet.BasePage {
         update_is_ready ();
     }
 
+    protected override string get_password () {
+        return password_entry.text;
+    }
+
     void on_context_data_changed (ReadySet.Context context, string key) {
         switch (key) {
             case "user.fullname":
@@ -78,14 +82,17 @@ public class User.PagePassword : ReadySet.BasePage {
         }
     }
 
-    void update_is_ready () {
-        is_ready = password_is_ready (password_entry.text) &&
+    protected override void update_is_ready () {
+        is_ready = !dialog_shown &&
+                   password_is_ready (password_entry.text) &&
                    password_entry.text == password_repeat_entry.text;
     }
 
     [GtkCallback]
     void password_changed () {
-        var strength = get_password_strength (
+        force_true = false;
+
+        var strength = Password.strength (
             password_entry.text,
             null,
             Addin.get_instance ().context.get_string ("user.username")

@@ -20,23 +20,16 @@
 
 public class TestInstaller.Addin : ReadySet.InstallerAddin {
 
-    protected override string[] all_pages {
+    public override HashTable<string, ReadySet.InstallerStep> steps {
         owned get {
-            return { "disks" };
+            var s = base.steps;
+            s["disks"] = new DisksStep ();
+            return s;
         }
     }
 
     public async override void install (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
         message ("Test Installer GOOD");
-    }
-
-    public override ReadySet.BasePage? build_page (string id) {
-        switch (id) {
-            case "disks":
-                return new DisksPage ();
-        }
-
-        return null;
     }
 }
 

@@ -23,9 +23,9 @@ public sealed class ReadySet.Service : Object {
 
     public string[] get_all_hooks (string type_, string target, BusName sender) throws Error {
         check_type_target (type_, target);
-        polkit_check (sender, "org.altlinux.ReadySet.GetAllHooks");
+        ReadySetService.polkit_check (sender, "org.altlinux.ReadySet.GetAllHooks");
 
-        return real_get_all_hooks (type_, target);
+        return get_all_hooks_from_dir (get_system_hooks_dir (type_, target));
     }
 
     /**
@@ -35,13 +35,13 @@ public sealed class ReadySet.Service : Object {
      */
     public bool exec_hook (string type_, string target, string name, string[] env, BusName sender) throws Error {
         check_type_target (type_, target);
-        polkit_check (sender, "org.altlinux.ReadySet.ExecHook");
+        ReadySetService.polkit_check (sender, "org.altlinux.ReadySet.ExecHook");
 
         return real_exec_hook (type_, target, name, env);
     }
 
     public void copy_to_user (string src, string dest, string username, BusName sender) throws Error {
-        polkit_check (sender, "org.altlinux.ReadySet.CopyToUser");
+        ReadySetService.polkit_check (sender, "org.altlinux.ReadySet.CopyToUser");
 
         ReadySet.copy_to_user (src, dest, username);
     }

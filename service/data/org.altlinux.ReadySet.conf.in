@@ -6,7 +6,7 @@
   </policy>
 
   <policy context="default">
-    <allow send_destination="@SERVICE_NAME@" send_interface="@SERVICE_NAME@"/>
+    <allow send_destination="@SERVICE_NAME@" send_interface="*"/>
     <allow send_destination="@SERVICE_NAME@" send_interface="org.freedesktop.DBus.Introspectable"/>
   </policy>
 </busconfig>

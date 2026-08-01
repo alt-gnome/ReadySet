@@ -43,7 +43,6 @@ void test_exec_hooks_empty_dir () {
         var hooks_dir = Path.build_filename (temp_root, "empty_hooks");
         DirUtils.create_with_parents (hooks_dir, 0755);
 
-        string[] env = { "TEST=value" };
         var res = ReadySet.get_all_hooks_from_dir (File.new_for_path (hooks_dir)).length;
         if (res != 0) {
             Test.fail_printf ("Expected 0, got %i", res);
@@ -56,7 +55,6 @@ void test_exec_hooks_empty_dir () {
 void test_exec_hooks_nonexistent_dir () {
     try {
         var hooks_dir = Path.build_filename (temp_root, "nonexistent");
-        string[] env = { "TEST=value" };
         ReadySet.get_all_hooks_from_dir (File.new_for_path (hooks_dir));
         Test.fail_printf ("Expected get_all_hooks_from_dir to throw error for nonexistent dir");
     } catch (Error e) {

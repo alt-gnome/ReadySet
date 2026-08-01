@@ -15,12 +15,10 @@ rsstatuspage > box > .icon:disabled { opacity: var(--disabled-opacity); }
 
 rsstatuspage > box > .icon:not(:last-child) { margin-bottom: 24px; }
 
-rsstatuspage.compact > scrolledwindow > viewport > box, sidebar.empty:not(.page) rsstatuspage > scrolledwindow > viewport > box { margin: 24px 12px; border-spacing: 24px; }
+.compact .icon { -gtk-icon-size: 96px; }
 
-rsstatuspage.compact > box > .icon, sidebar.empty:not(.page) rsstatuspage > box > .icon { -gtk-icon-size: 96px; }
-
-rsstatuspage.compact > box > .icon:not(:last-child), sidebar.empty:not(.page) rsstatuspage > box > .icon:not(:last-child) { margin-bottom: 12px; }
+.compact .icon:not(:last-child) { margin-bottom: 12px; }
 
 rsstatuspage > box > .title { font-weight: 800; font-size: 181%; }
 
-rsstatuspage.compact > box > .title, sidebar.empty:not(.page) rsstatuspage > box > .title { font-weight: 800; font-size: 136%; }
+.compact .title { font-weight: 800; font-size: 136%; }

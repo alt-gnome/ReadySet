@@ -14,9 +14,9 @@ rs_app_vala_sources = files(
   'dbus/osk.vala',
   'dbus/rs-system-service.vala',
 
-  'pages/existing-user-end-page.vala',
-  'pages/initial-setup-end-page.vala',
-  'pages/installer-end-page.vala',
+  'end-pages/existing-user.vala',
+  'end-pages/initial-setup.vala',
+  'end-pages/installer.vala',
 
   'widgets/devel/window.vala',
 
@@ -29,6 +29,7 @@ rs_app_vala_sources = files(
 
   'about.vala',
   'application.vala',
+  'finalize.vala',
   'main.vala',
   'options-handler.vala',
   'pages-model.vala',
@@ -55,7 +56,7 @@ rs_app_sources = [
   rs_app_vala_sources,
   rs_app_vapi_sources,
   rs_app_resources,
-] + librs_sources
+] + librs_sources + librs_vala_app_plugin_sources + librs_vala_app_only_sources
 
 rs_app_c_args = [
   '-DG_LOG_DOMAIN="ReadySet"',
@@ -66,13 +67,18 @@ rs_app_vala_args = [
   '--gresourcesdir=data/',
   '--gresources', librs_resource_files,
   '--gresourcesdir=lib/data/',
-  '--vapidir', meson.project_source_root() / 'vapi',
   '--pkg', 'linux',
 ]
 
 if get_option('nightly')
   rs_app_vala_args += [
     '--define=DEVEL',
+  ]
+endif
+
+if get_option('phrog').enabled()
+  rs_app_vala_args += [
+    '--define=WITH_PHROG',
   ]
 endif
 

@@ -3,16 +3,20 @@ modules:
     type: repos
     body:
       custom:
-        - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/${{ Env.PKG_GROUP }}/sisyphus.repo _arch_ classic
+        - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/sisyphus.repo _arch_ classic
+        - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/sisyphus.repo noarch classic
+        - rpm https://altlinux.space/api/packages/rirusha/alt/group/libcase-nightly.repo _arch_ classic
+        - rpm https://altlinux.space/api/packages/rirusha/alt/group/libcase-nightly.repo noarch classic
 
   - type: packages
     body:
       install:
         - ready-set-gdm
-        - ready-set-plugin-welcome
         - ready-set-plugin-language
         - ready-set-plugin-keyboard
+        - ready-set-plugin-date-and-time
         - ready-set-plugin-user-passwdqc
+        - ready-set-plugin-atomic-finalize
       upgrade: true
 
   - name: Copy configuration
@@ -22,13 +26,8 @@ modules:
       destination: /
       replace: true
 
-  - type: shell
+  - name: Cleanup
+    type: include
     body:
-      command: |
-        touch /var/ready-set-log
-        chmod 777 /var/ready-set-log
-
-  - name: Update dconf
-    type: shell
-    body:
-      command: dconf update
+      targets:
+        - /usr/share/apm/includes/common/cleanup.yml

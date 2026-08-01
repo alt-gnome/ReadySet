@@ -80,12 +80,22 @@ if compile_schemas.found()
 endif
 
 subdir('icons')
-subdir('gnome-initial-setup')
 
 unit_files = {
-  gis / gis + '.service' : [],
   meson.project_name() + '-existing-user.service' : [ 'gnome-session.target.wants/' ],
 }
+
+if gdm_dep.found()
+  subdir('gnome-initial-setup')
+
+  unit_files += {
+    gis / gis + '.service' : [],
+  }
+endif
+
+if get_option('phrog').enabled()
+  subdir('phrog')
+endif
 
 foreach unit, wants: unit_files
   configure_file(

@@ -22,7 +22,7 @@ public class User.Addin : ReadySet.StepAddin {
 
     static Addin instance;
 
-    public override string? module_name { get { return "user"; } }
+    public override string? registration_module_name { get { return "user"; } }
 
     protected override string? resource_base_path {
         get {
@@ -53,7 +53,12 @@ public class User.Addin : ReadySet.StepAddin {
                 null
             );
 
-            user.set_password (context.get_string ("user.password"), "");
+            if (user.uses_homed ()) {
+                yield set_homed_password (context.get_string ("user.username"), context.get_string ("user.password"));
+            } else {
+                user.set_password (context.get_string ("user.password"), "");
+            }
+
             if (context.has_key ("language.locale")) {
                 user.set_language (context.get_string ("language.locale"));
             }
@@ -85,7 +90,7 @@ public class User.Addin : ReadySet.StepAddin {
 #if WITH_ROOT_SET
         vars["with-root"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
 #endif
-        vars["no-password-security"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
+        vars["enforce-password-quality"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
         vars["passwd-conf-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["avatar-directories"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV);
 

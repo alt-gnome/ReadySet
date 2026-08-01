@@ -1,0 +1,16 @@
+#!/usr/bin/bash -ex
+
+# gtk4.vapi kinda broken and has deprecated entire StyleContext.
+# But style_context_add_provider_for_display is not deprecated in C code.
+# So we fix system vapi file. And copy deps file.
+
+VAPI_DIR="$1"
+VAPI_SYS_DIR="$2"
+
+VAPI_FILE="$VAPI_DIR/gtk4.vapi"
+VAPI_SYS_FILE="$VAPI_SYS_DIR/gtk4.vapi"
+DEPS_FILE="$VAPI_DIR/gtk4.deps"
+DEPS_SYS_FILE="$VAPI_SYS_DIR/gtk4.deps"
+
+sed '/\[Version.*deprecated_since = "4.10".*\]/{N;/\n.*public class StyleContext : GLib\.Object {/!P;D}' "$VAPI_SYS_FILE" > "$VAPI_FILE"
+cp -f "$DEPS_SYS_FILE" "$DEPS_FILE" 

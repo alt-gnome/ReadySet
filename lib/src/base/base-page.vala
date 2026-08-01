@@ -116,4 +116,13 @@ public class ReadySet.BasePage : Adw.BreakpointBin {
     construct {
         valign = CENTER;
     }
+
+    /**
+     * Triggered when continue button clicked.
+     *
+     * return   true if the continuation should work, false otherwise.
+     */
+    public virtual bool try_continue () {
+        return true;
+    }
 }

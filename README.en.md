@@ -8,80 +8,101 @@
   <h1>
     Ready, Set, Go!
   </h1>
-  
+
   <div align="center"><h4>A utility for configuring the system at the first startup</h4></div>
 
 </div>
 
-## All possible steps for now:
+## Available steps
 
-App using steps. Curently available steps:
+The application is built from step plugins. Currently available step plugins are:
 
+- [date-and-time](plugins/date-and-time/README.en.md)
 - [keyboard](plugins/keyboard/README.en.md)
 - [language](plugins/language/README.en.md)
 - [license-agreement](plugins/license-agreement/README.en.md)
-- [user](plugins/user/README.en.md)
+- [software](plugins/software/README.en.md)
+- [user](plugins/user/README.en.md) — built as `user-passwdqc` (default) and/or `user-pwquality`, depending on the `password_check_backend` build option
 - [welcome](plugins/welcome/README.en.md)
+
+Installer plugins are loaded separately via the `--installer` option. Their steps are referenced with the `installer.` prefix (e.g. `installer.example-step`).
+
+## Application modes
+
+Ready Set automatically detects the mode it runs in:
+
+- `installer` — when an installer plugin is specified with `--installer`.
+- `initial-setup` — when running as the `ready-set` or `gnome-initial-setup` user.
+- `existing-user` — when running under a regular user account.
+
+The mode can be forced with `--force-mode` in `nightly=true` builds.
 
 ## Configuration
 
-The Ready Set is fully configurable. You can transfer the desired behavior either through options on the command line or through a configuration file (command line options overwrite fields in the configuration file).
+Ready Set is fully configurable. Desired behavior can be passed either through command-line options or through a configuration file (command-line options override values from the configuration file).
 
-Priority of configuration files (When a file is found, the following are not reading, so fields from other files cannot be combined):
-1) The file specified via the `--conf-file` option
-2) /etc/ready-set/config
-4) /usr/share/ready-set/config
+Configuration file priority (only the first found file is used; fields from other files are not merged):
 
-Example for configuration can be found file [here](example/example.conf).
+1. The file specified via the `--conf-file` option
+2. `/etc/ready-set/config`
+3. `/usr/share/ready-set/config`
 
-Context configuration options can be found in plugins README.
+An example configuration file can be found [here](example/example.conf).
+
+Context configuration options for individual plugins can be found in their README files.
 
 ### Options
 
 #### `context`
-Cumulative option with `VAR=VALUE` format.
+Cumulative option in `VAR=VALUE` format. Can be passed multiple times.
 
 #### `can-close`
-Make window closable anyway. `false` by default.
-
-#### `can-close`
-Make window closable anyway.
+Make the window closable even in non-nightly builds. In `nightly=true` builds the window is always closable. `false` by default.
 
 #### `fullscreen`
-Run window in fullscreen.
+Run the window in fullscreen.
 
 #### `installer`
-Specify installer plugin.
+Specify the installer plugin module name.
 
 #### `sandbox`
-Run without doing anything in system.
+Run without applying changes to the system.
 
-#### `simple`
-Don't show indicators and keep window simple.
+#### `detailed`
+Show step indicators and a sidebar with steps. The simple view is used by default.
 
 #### `steps`
-Steps. E.g: `language,keyboard`.
+Comma-separated list of step plugin module names. E.g: `language,keyboard,user-passwdqc`.
 
 #### `resizable`
-Window can be resized or not. `false` by default.
+Allow window resizing. `false` by default.
 
 #### `width`
-Initial width of a window. 1000 by default.
+Initial window width. `1000` by default.
 
 #### `height`
-Initial height of a window. 800 by default.
+Initial window height. `800` by default.
 
 #### `force-layout`
-Set layout for window: `big`, `small`, `vertical`, `horizontal`. Auto by default.
+Force the window layout: `big`, `small`, `vertical`, `horizontal`. Auto by default.
 
 #### `force-mode`
-Set mode for application: `installer`, `initial-setup`, `existing-user`. Can be used only in `nightly=true` build. Auto by default.
+Force the application mode: `installer`, `initial-setup`, `existing-user`. Can be used only in `nightly=true` builds. Auto by default.
+
+#### `apply-only`
+Apply the configuration and exit without launching the GUI. Cannot be used in `existing-user` mode.
 
 #### `version`
 Print version information and exit.
 
 #### `conf-file`
-App config file.
+Path to the application configuration file.
+
+## Commands
+
+In addition to the standard launch, Ready Set supports:
+
+- `generate-bash-completion` — output a bash completion script.
 
 ## Translating
 
@@ -93,20 +114,21 @@ You can help with translations via [ALT Gnome Translate](https://translate.alt-g
 
 ## Testing
 
-For test purpose you should use `--sandbox` option.
+For testing purposes you should use the `--sandbox` option.
 
 ## Building from sources
 
-#### Building
+This project uses the Meson build system. All available build options can be found [here](meson.options).
 
-Meson build system used in this project. All available build option for this project you can find [here](meson.options)
+```sh
+meson setup _build
+meson compile -C _build
+```
 
-#### Mentions
+## Credits
 
-- Roman Alifanov <ximper@etersoft.ru>
-- David Sultaniiazov <x1z53@altlinux.org>
+- Vladimir Romanov <rirusha@altlinux.org> — developer
+- Viktoria Zubacheva <gingercat@alt-gnome.ru> — icon/design
+- Nina Petrova <1704.nina.petrova@gmail.com> — design
 
-- Icon author, Viktoria Zubacheva <gingercat@alt-gnome.ru>
-- Design author, Nina Petrova <1704.nina.petrova@gmail.com>
-
-- [GNOME Initial Setup](https://gitlab.gnome.org/GNOME/gnome-initial-setup), where did a lot of logic come from
+- [GNOME Initial Setup](https://gitlab.gnome.org/GNOME/gnome-initial-setup), the source of a lot of the logic

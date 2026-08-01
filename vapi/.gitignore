@@ -1,1 +1,5 @@
 gdm.vapi
+gtk4.vapi
+gtk4.deps
+libnma-gtk4.vapi
+libnma-gtk4.deps

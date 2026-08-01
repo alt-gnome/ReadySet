@@ -24,7 +24,7 @@ namespace ReadySet {
 
     const string[] GOOD_TARGETS = { "initial-setup", "installer" };
 
-    void check_type_target (string type_, string target) throws Error {
+    public void check_type_target (string type_, string target) throws Error {
         if (!(type_ in GOOD_TYPES)) {
             throw new DBusError.INVALID_ARGS (
                 "Wrong type: %s. Available types: %s",
@@ -50,7 +50,7 @@ namespace ReadySet {
         );
     }
 
-    File get_user_hooks_dir (string type_, string target) {
+    public File get_user_hooks_dir (string type_, string target) {
         return File.new_build_filename (
             Config.DATADIR,
             Config.NAME,
@@ -59,11 +59,7 @@ namespace ReadySet {
         );
     }
 
-    string[] real_get_all_hooks (string type_, string target) throws Error {
-        return get_all_hooks_from_dir (get_system_hooks_dir (type_, target));
-    }
-
-    string[] get_all_hooks_from_dir (File dir) throws Error {
+    public string[] get_all_hooks_from_dir (File dir) throws Error {
         var enumerator = dir.enumerate_children (
             "%s,%s,%s".printf (
                 FileAttribute.STANDARD_NAME,

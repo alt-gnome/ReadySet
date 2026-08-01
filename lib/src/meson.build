@@ -21,10 +21,20 @@ librs_vala_sources = files(
 
   'context-object.vala',
   'context.vala',
+  'context-internal.vala',
   'extension-base.vala',
   'installer-addin.vala',
+  'installer-step.vala',
   'lib-utils.vala',
   'step-addin.vala',
+)
+
+librs_vala_app_plugin_sources = files(
+  'extension-base-internal.vala',
+)
+
+librs_vala_app_only_sources = files(
+  'lib-utils-internal.vala',
 )
 
 librs_c_sources = files(
@@ -38,14 +48,15 @@ librs_sources = [
 ]
 
 librs_sources_with_resources = librs_sources + [librs_resources]
+librs_sources_with_app = librs_sources_with_resources + librs_vala_app_plugin_sources + librs_vala_app_only_sources
+librs_sources_with_app_tests = librs_sources_with_resources + librs_vala_app_plugin_sources
 
 librs_c_args = [
   '-DG_LOG_DOMAIN="libready-set"',
 ]
 
 rs_app_vala_args = [
-  '--vapidir', meson.project_source_root() / 'vapi',
-  '--vapi-comments',
+
 ]
 
 librs_dependencies = [

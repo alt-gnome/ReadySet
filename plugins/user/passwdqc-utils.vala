@@ -44,7 +44,7 @@ namespace User.Password {
         var res = prms.qc.random ();
 
         if (res == null) {
-            warning ("Failed to generate password");
+            debug ("Failed to generate password, generation will be disabled");
         }
 
         return res;
