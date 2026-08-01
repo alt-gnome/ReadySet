@@ -119,6 +119,23 @@ subdir('src')
 subdir('plugins')
 subdir('tests')
 
+install_emptydir(sysconfdir / meson.project_name())
+install_emptydir(localstatedir/ 'lib' / meson.project_name())
+
+# User hooks works only for service user under which executed initial-setup mode
+# Needs for phrog, for removing ready-set from first-run gsetting
+install_emptydir(user_pre_hooks_dir)
+install_emptydir(user_post_hooks_dir)
+
+install_emptydir(system_pre_hooks_dir)
+install_emptydir(system_post_hooks_dir)
+install_emptydir(installer_pre_hooks)
+install_emptydir(installer_post_hooks)
+
+install_emptydir(steps_plugins_dir)
+install_emptydir(installers_plugins_dir)
+install_emptydir(service_plugins_dir)
+
 gnome.post_install(
   glib_compile_schemas: true,
   gtk_update_icon_cache: true,
