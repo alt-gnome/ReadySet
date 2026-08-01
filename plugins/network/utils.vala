@@ -27,6 +27,14 @@ namespace Network {
         return dev1.interface == dev2.interface;
     }
 
+    bool validate_network () {
+        if (Addin.get_instance ().context.get_boolean ("network.required")) {
+            return NetworkMonitor.get_default ().network_available;
+        }
+
+        return true;
+    }
+
     bool validate_hostname (string hostname, out string? error) {
         if (hostname.has_prefix ("-")) {
             error = _("Leading hyphen is not allowed");

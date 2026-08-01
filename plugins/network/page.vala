@@ -41,17 +41,8 @@ public sealed class Network.Page : ReadySet.BasePage {
             return _hostname;
         }
         set {
-            string? error;
-
             _hostname = value;
-            is_ready = validate_hostname (_hostname, out error);
-            hostname_error = error;
-
-            if (is_ready) {
-                hostname_entry.remove_css_class ("error");
-            } else {
-                hostname_entry.add_css_class ("error");
-            }
+            update_is_ready ();
         }
     }
 
@@ -94,6 +85,23 @@ public sealed class Network.Page : ReadySet.BasePage {
             SYNC_CREATE,
             set_visibility
         );
+
+        NetworkMonitor.get_default ().notify["network-available"].connect (update_is_ready);
+        update_is_ready ();
+    }
+
+    void update_is_ready () {
+        string? error;
+        bool good_hostname = validate_hostname (_hostname, out error);
+        hostname_error = error;
+
+        is_ready = good_hostname && validate_network ();
+
+        if (good_hostname) {
+            hostname_entry.remove_css_class ("error");
+        } else {
+            hostname_entry.add_css_class ("error");
+        }
     }
 
     bool set_visibility (Binding bind, Value n_items, ref Value visible) {

@@ -70,6 +70,7 @@ public class Network.Addin : ReadySet.StepAddin {
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
 
+        vars["required"] = new ReadySet.ContextVarInfo (BOOLEAN);
         vars["hostname"] = new ReadySet.ContextVarInfo (STRING);
         return vars;
     }
