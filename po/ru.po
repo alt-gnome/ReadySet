@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: rirusha@altlinux.org\n"
 "POT-Creation-Date: 2026-07-31 14:54+0000\n"
-"PO-Revision-Date: 2026-07-20 21:27+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-08-01 06:08+0000\n"
+"Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
 "ready-set/ru/>\n"
 "Language: ru\n"
@@ -99,58 +99,58 @@ msgstr "Что-то пошло не так"
 #: plugins/date-and-time/data/ui/carousel-selector.blp:55
 #: plugins/network/data/ui/ap-security-editor.blp:26
 msgid "Apply"
-msgstr ""
+msgstr "Применить"
 
 #: plugins/date-and-time/data/ui/date-selector.blp:5
 #: plugins/date-and-time/data/ui/page.blp:68
 msgid "Date"
-msgstr ""
+msgstr "Дата"
 
 #: plugins/date-and-time/data/ui/date-selector.blp:23
 #: plugins/date-and-time/data/ui/time-selector.blp:20
 #: plugins/network/data/ui/ap-security-editor.blp:25
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 #: plugins/date-and-time/data/ui/date-selector.blp:32
 #: plugins/date-and-time/data/ui/time-selector.blp:29
 msgid "Submit"
-msgstr ""
+msgstr "Принять"
 
 #: plugins/date-and-time/data/ui/page.blp:5
 #: plugins/date-and-time/data/ui/page.blp:11
 msgid "Date & Time"
-msgstr ""
+msgstr "Дата и Время"
 
 #: plugins/date-and-time/data/ui/page.blp:12
 msgid "Select your time zone"
-msgstr ""
+msgstr "Выберите свой часовой пояс"
 
 #: plugins/date-and-time/data/ui/page.blp:29
 msgid "Set time zone"
-msgstr ""
+msgstr "Выбрать часовой пояс"
 
 #: plugins/date-and-time/data/ui/page.blp:32
 msgid "Manual setting of time zone"
-msgstr ""
+msgstr "Ручная настройка часового пояса"
 
 #: plugins/date-and-time/data/ui/page.blp:40
 #: plugins/date-and-time/data/ui/timezone-list.blp:5
 msgid "Time zone"
-msgstr ""
+msgstr "Часовой пояс"
 
 #: plugins/date-and-time/data/ui/page.blp:57
 msgid "Set date and time"
-msgstr ""
+msgstr "Выбрать дату и время"
 
 #: plugins/date-and-time/data/ui/page.blp:60
 msgid "Manual setting of date and time"
-msgstr ""
+msgstr "Ручная настройка даты и времени"
 
 #: plugins/date-and-time/data/ui/page.blp:80
 #: plugins/date-and-time/data/ui/time-selector.blp:5
 msgid "Time"
-msgstr ""
+msgstr "Время"
 
 #: plugins/date-and-time/data/ui/timezone-list.blp:66
 msgid "Nothing found"
@@ -158,11 +158,11 @@ msgstr "Ничего не найдено"
 
 #: plugins/date-and-time/page.vala:141
 msgid "Failed to connect to timedate service: "
-msgstr ""
+msgstr "Не удалось подключиться к службе времени и даты: "
 
 #: plugins/date-and-time/plugin.vala:65
 msgid "Failed to connect to timedate service"
-msgstr ""
+msgstr "Не удалось подключиться к службе времени и даты"
 
 #: plugins/date-and-time/plugin.vala:79
 #, fuzzy
@@ -275,11 +275,11 @@ msgstr "Безопасность"
 
 #: plugins/network/data/ui/page.blp:25 plugins/network/data/ui/page.blp:30
 msgid "Network"
-msgstr ""
+msgstr "Сеть"
 
 #: plugins/network/data/ui/page.blp:31
 msgid "Set up your network connections"
-msgstr ""
+msgstr "Настройте ваши сетевые подключения"
 
 #: plugins/network/data/ui/page.blp:48
 #, fuzzy
@@ -288,31 +288,31 @@ msgstr "Полное имя"
 
 #: plugins/network/data/ui/page.blp:75
 msgid "SIM Cards and Mobile Network"
-msgstr ""
+msgstr "SIM Карты и Мобильная Сеть"
 
 #: plugins/network/data/ui/page.blp:79
 msgid "Ethernet"
-msgstr ""
+msgstr "Проводное подключение"
 
 #: plugins/network/data/ui/page.blp:92
 msgid "Wi-Fi"
-msgstr ""
+msgstr "Wi-Fi"
 
 #: plugins/network/data/ui/page.blp:107
 msgid "Wi-Fi adapter"
-msgstr ""
+msgstr "Wi-Fi адаптер"
 
 #: plugins/network/plugin.vala:166
 msgid "Failed to apply network settings"
-msgstr ""
+msgstr "Ошиба при настройке сети"
 
 #: plugins/network/utils.vala:32
 msgid "Leading hyphen is not allowed"
-msgstr ""
+msgstr "Начальный дефис не допускается"
 
 #: plugins/network/utils.vala:41
 msgid "Only Latin letters, digits and hyphens are allowed"
-msgstr ""
+msgstr "Допускаются только латинские буквы, цифры и дефисы"
 
 #: plugins/network/utils.vala:47
 #, fuzzy
@@ -321,71 +321,71 @@ msgstr "Имя пользователя слишком длинное"
 
 #: plugins/network/utils.vala:52
 msgid "Trailing hyphen is not allowed"
-msgstr ""
+msgstr "Завершающий дефис не допускается"
 
 #: plugins/network/wifi.vala:55
 msgid "Can't connect: undetermined security type"
-msgstr ""
+msgstr "Не удается подключиться: не определен тип защиты"
 
 #: plugins/network/wifi.vala:99
 msgid "Connection setup failed"
-msgstr ""
+msgstr "Не удалось установить соединение"
 
 #: plugins/network/wifi.vala:110
 msgid "Connection failed"
-msgstr ""
+msgstr "Не удалось установить соединение"
 
 #: plugins/network/wifi.vala:144
 msgid "Connecting…"
-msgstr ""
+msgstr "Подключение…"
 
 #: plugins/network/wifi.vala:149
 msgid "Connected"
-msgstr ""
+msgstr "Подключено"
 
 #: plugins/network/wifi.vala:151
 msgid "Connected without internet"
-msgstr ""
+msgstr "Подключено без доступа в Интернет"
 
 #: plugins/network/wifi.vala:155
 msgid "Disconnecting…"
-msgstr ""
+msgstr "Отключение…"
 
 #: plugins/network/wifi.vala:223
 msgid "WPA/WPA2/WPA3 Enterprise"
-msgstr ""
+msgstr "WPA/WPA2/WPA3 Enterprise"
 
 #: plugins/network/wifi.vala:228
 msgid "WPA3 Personal"
-msgstr ""
+msgstr "WPA3 Personal"
 
 #: plugins/network/wifi.vala:233
 msgid "WPA/WPA2 Personal"
-msgstr ""
+msgstr "WPA/WPA2 Personal"
 
 #: plugins/network/wifi.vala:238
 msgid "WEP 40/104-bit Key (Hex/ASCII)"
-msgstr ""
+msgstr "WEP 40/104-bit Key (Hex/ASCII)"
 
 #: plugins/network/wifi.vala:242
 msgid "WEP 128-bit Passphrase"
-msgstr ""
+msgstr "WEP 128-bit Passphrase"
 
 #: plugins/network/wifi.vala:247
 msgid "Dynamic WEP (802.1x)"
-msgstr ""
+msgstr "Dynamic WEP (802.1x)"
 
 #: plugins/network/wifi.vala:252
 msgid "LEAP"
-msgstr ""
+msgstr "LEAP"
 
 #: plugins/network/wifi.vala:257
 msgid "Enhanced Open"
-msgstr ""
+msgstr "Enhanced Open"
 
 #: plugins/software/data/ui/page.blp:5 plugins/software/data/ui/page.blp:11
 msgid "Third-Party Repositories"
-msgstr ""
+msgstr "Сторонние Репозитории"
 
 #: plugins/software/page.vala:24
 msgid ""
@@ -393,66 +393,74 @@ msgid ""
 "external sources, including popular apps and drivers that are important for "
 "some devices. Some proprietary software may be included."
 msgstr ""
+"Сторонние репозитории предоставляют доступ к дополнительному программному "
+"обеспечению из выбранных внешних источников, включая популярные приложения и "
+"драйверы, которые важны для некоторых устройств. Возможно, в них включено "
+"какое-либо несвободное программное обеспечение."
 
 #. vala-lint=line-length
 #: plugins/software/page.vala:26
 msgid "Manage third-party repositories."
-msgstr ""
+msgstr "Управление сторонними репозиториями."
 
 #: plugins/software/page.vala:83
 msgid "Software sources"
-msgstr ""
+msgstr "Источники ПО"
 
 #: plugins/software/page.vala:85
 msgid "Other software sources"
-msgstr ""
+msgstr "Другие источники ПО"
 
 #: plugins/software/page.vala:158
 msgid "Disable Third-Party repositories"
-msgstr ""
+msgstr "Отключить Сторонние репозитории"
 
 #: plugins/software/page.vala:161
 msgid "Enable Third-Party repositories"
-msgstr ""
+msgstr "Включить Сторонние репозитории"
 
 #: plugins/software/plugin.vala:68
 msgid "Failed to add a software source"
-msgstr ""
+msgstr "Ошибка при добавлении источника ПО"
 
 #: plugins/software/source-row.vala:88
 msgid "Non-Free Repository"
-msgstr ""
+msgstr "Несводобный Репозиторий"
 
 #: plugins/software/source-row.vala:88
 msgid ""
 "This repository contains software with a non-free license. Pay attention to "
 "the software license restrictions before usage."
 msgstr ""
+"Этот репозиторий содержит программное обеспечение с несвободной лицензией. "
+"Перед использованием обратите внимание на лицензионные ограничения "
+"программного обеспечения."
 
 #. vala-lint=line-length
 #: plugins/software/source-row.vala:90
 msgid "Ok"
-msgstr ""
+msgstr "Ок"
 
 #: plugins/software/source.vala:135
 #, c-format
 msgid "Failed to add or enable '%s' flatpak remote with name %s: %s"
 msgstr ""
+"Ошибка при добавлении или включении flatpak репозитория '%s' с именем %s: %s"
 
 #: plugins/software/source.vala:160
 #, c-format
 msgid "Failed to add '%s' stplr repository with name %s: %s"
-msgstr ""
+msgstr "Ошибка при добавлении stplr репозитория '%s' с именем %s: %s"
 
 #: plugins/software/source.vala:216
 #, c-format
 msgid "Failed to add apt repository with repos: %s: %s"
-msgstr ""
+msgstr "Ошибка при добавлении apt репозитория: %s: %s"
 
 #: plugins/software/source.vala:244
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to exec: %s: %s"
-msgstr "Не удалось сгенерироавть пароль"
+msgstr "Ошибка исполнения: %s: %s"
 
 #: plugins/user/data/ui/avatar-chooser.blp:5
 msgid "Select Avatar"
@@ -693,15 +701,15 @@ msgstr "Повторите пароль"
 
 #: plugins/user/utils.vala:315
 msgid "The entered password is not secure. Do you really want to use it?"
-msgstr ""
+msgstr "Введенный пароль небезопасен. Вы действительно хотите его использовать?"
 
 #: plugins/user/utils.vala:317
 msgid "_No"
-msgstr ""
+msgstr "_Нет"
 
 #: plugins/user/utils.vala:318
 msgid "_Yes"
-msgstr ""
+msgstr "_Да"
 
 #: plugins/welcome/data/ui/page.blp:5
 msgid "Welcome"
@@ -832,6 +840,8 @@ msgstr "Показать информацию о версии и выйти"
 #: src/options-handler.vala:132
 msgid "Run apply from config without running GUI"
 msgstr ""
+"Запустить apply, используя конфигурационный файл без запуска графического "
+"интерфейса"
 
 #: src/options-handler.vala:139
 msgid "App config file"
