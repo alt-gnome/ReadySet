@@ -17,7 +17,7 @@ Name: ready-set
 Version: @VERSION@
 Release: alt@RELEASE@
 
-Summary: The utility for configuring the system at the first start
+Summary: Modular (System Installer | Initial Setup Wizard)
 License: GPL-3.0-or-later
 Group: Graphical desktop/Other
 URL: https://altlinux.space/alt-gnome/ReadySet
@@ -245,6 +245,7 @@ Requires: %name = %EVR
 Summary: %name date-and-time plugin
 Group: Other
 
+Requires: gnome-control-center-data
 Requires: %name = %EVR
 
 %description plugin-date-and-time
@@ -262,6 +263,8 @@ Requires: %name = %EVR
 %package plugin-software-source-pot-generator
 Summary: Pot generator for source config files of %name software plugin
 Group: Development/Tools
+
+BuildArch: noarch
 
 %description plugin-software-source-pot-generator
 %summary.
