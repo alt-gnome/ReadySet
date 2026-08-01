@@ -29,9 +29,4 @@ configure_file(
   install_dir: steps_plugins_dir
 )
 
-install_data(
-  files('org.altlinux.ReadySet.Plugin.Software.rules'),
-  install_dir: rulesdir,
-)
-
 install_emptydir(pkgdata_dir / plugin_software_name / 'sources.d')

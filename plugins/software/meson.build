@@ -4,13 +4,19 @@ plugin_software_deps = [
   posix_dep,
 ]
 
+plugin_software_program_sources = files(
+  'program-utils.vala',
+)
+
+subdir('service')
+
 plugin_software_common_sources = files(
   'config.vapi',
   'group.vala',
   'source.vala',
   'sources.vala',
   'utils-common.vala',
-)
+) + plugin_software_program_sources
 
 plugin_software_sources = files(
   'page.vala',

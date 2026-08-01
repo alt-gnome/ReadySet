@@ -91,9 +91,8 @@ public partial sealed class Software.SourceStplr {
 
     public async override void undo () throws Error {
         try {
-            yield ReadySet.pkexec ({
-                "stplr", "repo", "remove", body.remote_name
-            });
+            var proxy = yield get_proxy ();
+            yield proxy.remove_stplr_repo (body.remote_name);
 
         } catch (Error e) {
             throw source_error_from_error (
@@ -143,23 +142,8 @@ public partial class Software.SourceAltRepo {
 
     public async override void undo () throws Error {
         try {
-            string[] cmd;
-            if (program_exists ("apm")) {
-                cmd = { "apm", "repo" };
-            } else {
-                cmd = { "apt-repo" };
-            }
-
-            cmd += "rm";
-
-            string[] str_cmds = {};
-            foreach (var r in arched_repos) {
-                var cmdp = cmd.copy ();
-                cmdp += r;
-                str_cmds += string.joinv (" ", cmdp);
-            }
-
-            yield ReadySet.pkexec ({ "bash", "-c", string.joinv (" && ", str_cmds) });
+            var proxy = yield get_proxy ();
+            yield proxy.remove_alt_repos (arched_repos);
 
         } catch (Error e) {
             throw source_error_from_error (
@@ -174,7 +158,7 @@ public partial class Software.SourceAltRepo {
 
     public override bool check () throws Error {
         try {
-            if (program_exists ("apm")) {
+            if (Program.exists ("apm")) {
                 var sp = new Subprocess.newv ({
                     "apm", "repo", "list", "--full", "--format", "json", "-a"
                 }, STDOUT_PIPE | STDERR_SILENCE);
@@ -229,7 +213,8 @@ public partial class Software.SourceCustom {
 
     public async override void undo () throws Error {
         try {
-            yield ReadySet.pkexec ({ "bash", "-c", body.cmd_undo });
+            var proxy = yield get_proxy ();
+            yield proxy.exec_custom (body.cmd_undo);
 
         } catch (Error e) {
             throw source_error_from_error (

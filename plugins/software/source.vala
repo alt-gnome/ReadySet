@@ -64,9 +64,9 @@ public partial class Software.Source : Serialize.DataObject, Serialize.YamlTypeF
                 //  libflatpak used
                 return true;
             case "stplr":
-                return program_exists ("stplr");
+                return Program.exists ("stplr");
             case "alt-repo":
-                return program_exists ("apm") || program_exists ("apt-repo");
+                return Program.exists ("apm") || Program.exists ("apt-repo");
             case "custom":
                 return true;
             default:
@@ -145,9 +145,8 @@ public partial sealed class Software.SourceFlatpak : SourceRemote {
 public partial sealed class Software.SourceStplr : SourceRemote {
     public async override void apply () throws Error {
         try {
-            yield ReadySet.pkexec ({
-                "stplr", "repo", "add", body.remote_name, body.url
-            });
+            var proxy = yield get_proxy ();
+            yield proxy.add_stplr_repo (body.remote_name, body.url);
 
         } catch (Error e) {
             if (NetworkMonitor.get_default ().get_connectivity () != FULL) {
@@ -192,23 +191,8 @@ public partial class Software.SourceAltRepo : Source {
 
     public async override void apply () throws Error {
         try {
-            string[] cmd;
-            if (program_exists ("apm")) {
-                cmd = { "apm", "repo" };
-            } else {
-                cmd = { "apt-repo" };
-            }
-
-            cmd += "add";
-
-            string[] str_cmds = {};
-            foreach (var r in arched_repos) {
-                var cmdp = cmd.copy ();
-                cmdp += r;
-                str_cmds += string.joinv (" ", cmdp);
-            }
-
-            yield ReadySet.pkexec ({ "bash", "-c", string.joinv (" && ", str_cmds) });
+            var proxy = yield get_proxy ();
+            yield proxy.add_alt_repos (arched_repos);
 
         } catch (Error e) {
             throw source_error_from_error (
@@ -236,7 +220,8 @@ public partial class Software.SourceCustom : Source {
 
     public async override void apply () throws Error {
         try {
-            yield ReadySet.pkexec ({ "bash", "-c", body.cmd_apply });
+            var proxy = yield get_proxy ();
+            yield proxy.exec_custom (body.cmd_apply);
 
         } catch (Error e) {
             throw source_error_from_error (

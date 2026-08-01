@@ -1,6 +1,5 @@
 deps = [
   flatpak_dep,
-  librs_dep,
   libserialize_dep,
   tuner_dep,
 ]

@@ -18,7 +18,34 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+[DBus (name = "org.altlinux.ReadySet.SoftwareSources")]
+public interface Software.Service : Object {
+    public async abstract void add_stplr_repo (string remote_name, string url) throws Error;
+
+    public async abstract void remove_stplr_repo (string remote_name) throws Error;
+
+    public async abstract void add_alt_repos (string[] repos) throws Error;
+
+    public async abstract void remove_alt_repos (string[] repos) throws Error;
+
+    public async abstract void exec_custom (string cmd) throws Error;
+}
+
 namespace Software {
+
+    public async Software.Service get_proxy () throws Error {
+        var con = yield Bus.get (BusType.SYSTEM);
+
+        if (con == null) {
+            error ("Failed to connect to bus");
+        }
+
+        return con.get_proxy_sync<Software.Service> (
+            "org.altlinux.ReadySet",
+            "/org/altlinux/ReadySet/SoftwareSources",
+            DBusProxyFlags.NONE
+        );
+    }
 
     Sources sources;
 
@@ -60,9 +87,5 @@ namespace Software {
         }
 
         return sources;
-    }
-
-    public bool program_exists (string program) {
-        return Environment.find_program_in_path (program) != null;
     }
 }

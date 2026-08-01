@@ -270,6 +270,8 @@ Group: Development/Tools
 Summary: Tuner plugin with %name software plugin functionality
 Group: Other
 
+Requires: %name-plugin-software = %EVR
+
 %description tuner-plugin-ready-set-software
 %summary.
 
@@ -410,6 +412,9 @@ Group: Other
 %_libdir/%name/plugins/steps/software.plugin
 %_libdir/%name/plugins/steps/libsoftware.so
 %_datadir/polkit-1/rules.d/%app_id.Plugin.Software.rules
+%_libdir/%name/plugins/service/libsoftware-sources.so
+%_libdir/%name/plugins/service/software-sources.plugin
+%_datadir/%name/software
 %doc plugins/software/README.*.md
 
 %files plugin-software-source-pot-generator
