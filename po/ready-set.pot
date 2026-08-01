@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-01 10:57+0000\n"
+"POT-Creation-Date: 2026-08-01 18:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -294,7 +294,7 @@ msgstr ""
 msgid "Wi-Fi adapter"
 msgstr ""
 
-#: plugins/network/plugin.vala:167
+#: plugins/network/plugin.vala:173
 msgid "Failed to apply network settings"
 msgstr ""
 
@@ -372,6 +372,18 @@ msgstr ""
 
 #: plugins/network/wifi.vala:257
 msgid "Enhanced Open"
+msgstr ""
+
+#: plugins/privacy/data/ui/page.blp:5 plugins/privacy/data/ui/page.blp:10
+msgid "Privacy"
+msgstr ""
+
+#: plugins/privacy/data/ui/page.blp:30
+msgid "Location Services"
+msgstr ""
+
+#: plugins/privacy/data/ui/page.blp:39
+msgid "Allows apps to determine your geographical location."
 msgstr ""
 
 #: plugins/software/data/ui/page.blp:5 plugins/software/data/ui/page.blp:11
