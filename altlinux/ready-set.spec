@@ -249,6 +249,7 @@ Requires: %name = %EVR
 Summary: %name date-and-time plugin
 Group: Other
 
+Requires: gnome-control-center-data
 Requires: %name = %EVR
 
 %description plugin-date-and-time
@@ -267,6 +268,8 @@ Requires: %name = %EVR
 Summary: Pot generator for source config files of %name software plugin
 Group: Development/Tools
 
+BuildArch: noarch
+
 %description plugin-software-source-pot-generator
 %summary.
 
@@ -283,6 +286,8 @@ Requires: %name-plugin-software = %EVR
 %package -n rpm-macros-%name
 Summary: RPM macros for %name plugins packages
 Group: Development/Other
+
+BuildArch: noarch
 
 %description -n rpm-macros-%name
 %summary.
