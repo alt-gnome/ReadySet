@@ -38,6 +38,7 @@ plugins/network/page.vala
 plugins/network/plugin.vala
 plugins/network/utils.vala
 plugins/network/wifi.vala
+plugins/privacy/data/ui/page.blp
 plugins/software/data/ui/page.blp
 plugins/software/page.vala
 plugins/software/plugin.vala
