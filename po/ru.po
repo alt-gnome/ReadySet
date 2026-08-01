@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: rirusha@altlinux.org\n"
 "POT-Creation-Date: 2026-07-31 14:54+0000\n"
-"PO-Revision-Date: 2026-07-20 21:27+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-08-01 05:47+0000\n"
+"Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
 "ready-set/ru/>\n"
 "Language: ru\n"
@@ -110,7 +110,7 @@ msgstr ""
 #: plugins/date-and-time/data/ui/time-selector.blp:20
 #: plugins/network/data/ui/ap-security-editor.blp:25
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 #: plugins/date-and-time/data/ui/date-selector.blp:32
 #: plugins/date-and-time/data/ui/time-selector.blp:29
@@ -401,11 +401,11 @@ msgstr ""
 
 #: plugins/software/page.vala:83
 msgid "Software sources"
-msgstr ""
+msgstr "Источники ПО"
 
 #: plugins/software/page.vala:85
 msgid "Other software sources"
-msgstr ""
+msgstr "Другие источники ПО"
 
 #: plugins/software/page.vala:158
 msgid "Disable Third-Party repositories"
@@ -421,18 +421,21 @@ msgstr ""
 
 #: plugins/software/source-row.vala:88
 msgid "Non-Free Repository"
-msgstr ""
+msgstr "Несводобный Репозиторий"
 
 #: plugins/software/source-row.vala:88
 msgid ""
 "This repository contains software with a non-free license. Pay attention to "
 "the software license restrictions before usage."
 msgstr ""
+"Этот репозиторий содержит программное обеспечение с несвободной лицензией. "
+"Перед использованием обратите внимание на лицензионные ограничения "
+"программного обеспечения."
 
 #. vala-lint=line-length
 #: plugins/software/source-row.vala:90
 msgid "Ok"
-msgstr ""
+msgstr "Ок"
 
 #: plugins/software/source.vala:135
 #, c-format
@@ -450,9 +453,9 @@ msgid "Failed to add apt repository with repos: %s: %s"
 msgstr ""
 
 #: plugins/software/source.vala:244
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to exec: %s: %s"
-msgstr "Не удалось сгенерироавть пароль"
+msgstr "Ошибка исполнения: %s: %s"
 
 #: plugins/user/data/ui/avatar-chooser.blp:5
 msgid "Select Avatar"
