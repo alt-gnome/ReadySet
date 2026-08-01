@@ -269,14 +269,14 @@ BuildArch: noarch
 %description plugin-software-source-pot-generator
 %summary.
 
-%package tuner-plugin-ready-set-software
+%package -n tuner-ready-set-software
 Summary: Tuner plugin with %name software plugin functionality
 Group: Other
 
 Requires: tuner
 Requires: %name-plugin-software = %EVR
 
-%description tuner-plugin-ready-set-software
+%description -n tuner-ready-set-software
 %summary.
 
 %prep
@@ -429,7 +429,7 @@ Requires: %name-plugin-software = %EVR
 %files plugin-software-source-pot-generator
 %_bindir/source-pot-generator
 
-%files tuner-plugin-%name-software -f %name-software.lang
+%files -n tuner-%name-software -f %name-software.lang
 %_libdir/tuner/plugins/lib%name-software.so
 %_libdir/tuner/plugins/%name-software.plugin
 %_datadir/metainfo/org.altlinux.ReadySetSoftware.TunerPlugin.metainfo.xml
