@@ -273,6 +273,7 @@ BuildArch: noarch
 Summary: Tuner plugin with %name software plugin functionality
 Group: Other
 
+Requires: tuner
 Requires: %name-plugin-software = %EVR
 
 %description tuner-plugin-ready-set-software
