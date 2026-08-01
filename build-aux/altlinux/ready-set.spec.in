@@ -303,6 +303,11 @@ Requires: %name-plugin-software = %EVR
 %_libexecdir/%app_id
 %_sysconfdir/%name
 %_datadir/%name
+%dir %_libdir/%name
+%dir %_libdir/%name/plugins
+%dir %_libdir/%name/plugins/steps
+%dir %_libdir/%name/plugins/installers
+%dir %_libdir/%name/plugins/service
 %_sharedstatedir/%name
 %_sysconfdir/dbus-1/system.d/%app_id.conf
 %_datadir/polkit-1/actions/%app_id.policy
