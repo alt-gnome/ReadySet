@@ -46,6 +46,8 @@ public sealed class Network.Page : ReadySet.BasePage {
         }
     }
 
+    public bool good_hostname { get; private set; }
+
     public string? hostname_error { get; private set; default = null; }
 
     construct {
@@ -92,7 +94,7 @@ public sealed class Network.Page : ReadySet.BasePage {
 
     void update_is_ready () {
         string? error;
-        bool good_hostname = validate_hostname (_hostname, out error);
+        good_hostname = validate_hostname (_hostname, out error);
         hostname_error = error;
 
         is_ready = good_hostname && validate_network ();
