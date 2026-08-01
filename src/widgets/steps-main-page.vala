@@ -170,12 +170,14 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         set {
             if (_last_current_page != null) {
                 _last_current_page.notify["is-ready"].disconnect (update_buttons);
+                _last_current_page.page.next.disconnect (continue_clicked);
                 notify["scroll-on-top"].disconnect (update_scroll);
             }
 
             _last_current_page = value;
 
             _last_current_page.notify["is-ready"].connect (update_buttons);
+            _last_current_page.page.next.connect (continue_clicked);
             notify["scroll-on-top"].connect (update_scroll);
             update_scroll ();
         }
