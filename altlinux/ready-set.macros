@@ -10,3 +10,4 @@
 
 %ready_set_steps_plugins_dir %__ready_set_libdir/plugins/steps
 %ready_set_installers_plugins_dir %__ready_set_libdir/plugins/installers
+%ready_set_service_plugins_dir %__ready_set_libdir/plugins/service
