@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/altlinux/ReadySet/Plugin/Privacy/">
+    <file preprocess="xml-stripblanks">ui/page.ui</file>
+    <file>style.css</file>
+  </gresource>
+</gresources>
