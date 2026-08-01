@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set-software\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-31 14:50+0000\n"
+"POT-Creation-Date: 2026-08-01 10:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,28 +58,28 @@ msgstr ""
 msgid "Failed to check '%s' flatpak remote with name %s: %s"
 msgstr ""
 
-#: plugins/software/tuner/src/source-tuner.vala:101
+#: plugins/software/tuner/src/source-tuner.vala:100
 #, c-format
 msgid "Failed to remove '%s' stplr repository with name %s: %s"
 msgstr ""
 
-#: plugins/software/tuner/src/source-tuner.vala:132
+#: plugins/software/tuner/src/source-tuner.vala:131
 #, c-format
 msgid "Failed to check '%s' stplr repository with name %s: %s"
 msgstr ""
 
-#: plugins/software/tuner/src/source-tuner.vala:167
+#: plugins/software/tuner/src/source-tuner.vala:151
 #, c-format
 msgid "Failed to remove apt repository with repos: %s: %s"
 msgstr ""
 
-#: plugins/software/tuner/src/source-tuner.vala:219
+#: plugins/software/tuner/src/source-tuner.vala:203
 #, c-format
 msgid "Failed to check apt repository with repos: %s: %s"
 msgstr ""
 
-#: plugins/software/tuner/src/source-tuner.vala:237
-#: plugins/software/tuner/src/source-tuner.vala:254
+#: plugins/software/tuner/src/source-tuner.vala:222
+#: plugins/software/tuner/src/source-tuner.vala:239
 #, c-format
 msgid "Failed to exec: %s: %s"
 msgstr ""

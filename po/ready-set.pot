@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-31 14:54+0000\n"
+"POT-Creation-Date: 2026-08-01 10:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,15 +76,15 @@ msgstr ""
 #. *
 #. * Title that will be shown at header or steps sidebar.
 #.
-#: lib/src/base/base-page.vala:63
+#: lib/src/base/base-page.vala:65
 msgid "Unknown"
 msgstr ""
 
-#: lib/src/base/base-page.vala:108
+#: lib/src/base/base-page.vala:110
 msgid "Unknown page"
 msgstr ""
 
-#: lib/src/base/base-page.vala:111
+#: lib/src/base/base-page.vala:113
 msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
@@ -294,23 +294,23 @@ msgstr ""
 msgid "Wi-Fi adapter"
 msgstr ""
 
-#: plugins/network/plugin.vala:166
+#: plugins/network/plugin.vala:167
 msgid "Failed to apply network settings"
 msgstr ""
 
-#: plugins/network/utils.vala:32
+#: plugins/network/utils.vala:40
 msgid "Leading hyphen is not allowed"
 msgstr ""
 
-#: plugins/network/utils.vala:41
+#: plugins/network/utils.vala:49
 msgid "Only Latin letters, digits and hyphens are allowed"
 msgstr ""
 
-#: plugins/network/utils.vala:47
+#: plugins/network/utils.vala:55
 msgid "Host name is too short"
 msgstr ""
 
-#: plugins/network/utils.vala:52
+#: plugins/network/utils.vala:60
 msgid "Trailing hyphen is not allowed"
 msgstr ""
 
@@ -430,17 +430,17 @@ msgstr ""
 msgid "Failed to add or enable '%s' flatpak remote with name %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:160
+#: plugins/software/source.vala:159
 #, c-format
 msgid "Failed to add '%s' stplr repository with name %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:216
+#: plugins/software/source.vala:200
 #, c-format
 msgid "Failed to add apt repository with repos: %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:244
+#: plugins/software/source.vala:229
 #, c-format
 msgid "Failed to exec: %s: %s"
 msgstr ""
@@ -527,6 +527,22 @@ msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:135
 msgid "Username will be used to name your home folder and can't be changed."
+msgstr ""
+
+#: plugins/user/page-password-common.vala:41
+msgid "Weak password"
+msgstr ""
+
+#: plugins/user/page-password-common.vala:42
+msgid "The entered password is not secure. Do you really want to use it?"
+msgstr ""
+
+#: plugins/user/page-password-common.vala:44
+msgid "_No"
+msgstr ""
+
+#: plugins/user/page-password-common.vala:45
+msgid "_Yes"
 msgstr ""
 
 #: plugins/user/page-password.vala:69
@@ -648,22 +664,6 @@ msgstr ""
 
 #: plugins/user/utils.vala:187
 msgid "Username cannot be empty"
-msgstr ""
-
-#: plugins/user/utils.vala:314
-msgid "Weak password"
-msgstr ""
-
-#: plugins/user/utils.vala:315
-msgid "The entered password is not secure. Do you really want to use it?"
-msgstr ""
-
-#: plugins/user/utils.vala:317
-msgid "_No"
-msgstr ""
-
-#: plugins/user/utils.vala:318
-msgid "_Yes"
 msgstr ""
 
 #: plugins/welcome/data/ui/page.blp:5
