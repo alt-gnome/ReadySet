@@ -318,17 +318,4 @@ namespace User {
             return password_is_correct (password);
         }
     }
-
-    Adw.AlertDialog create_bad_passwd_dialog () {
-        var dialog = new Adw.AlertDialog (
-            _("Weak password"),
-            _("The entered password is not secure. Do you really want to use it?")
-        );
-        dialog.add_response ("no", _("_No"));
-        dialog.add_response ("ok", _("_Yes"));
-        dialog.set_response_appearance ("no", Adw.ResponseAppearance.SUGGESTED);
-        dialog.set_default_response ("no");
-
-        return dialog;
-    }
 }

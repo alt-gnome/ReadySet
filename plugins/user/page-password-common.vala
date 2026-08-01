@@ -22,8 +22,6 @@ public abstract class User.PagePasswordCommon : ReadySet.BasePage {
 
     protected bool force_true = false;
 
-    protected bool dialog_shown = false;
-
     protected abstract string get_password ();
 
     protected abstract void update_is_ready ();
@@ -39,18 +37,25 @@ public abstract class User.PagePasswordCommon : ReadySet.BasePage {
             return true;
         }
 
-        var dialog = create_bad_passwd_dialog ();
+        var dialog = new Adw.AlertDialog (
+            _("Weak password"),
+            _("The entered password is not secure. Do you really want to use it?")
+        );
+        dialog.add_response ("no", _("_No"));
+        dialog.add_response ("ok", _("_Yes"));
+        dialog.set_response_appearance ("no", Adw.ResponseAppearance.SUGGESTED);
+        dialog.set_default_response ("no");
+
         dialog.response.connect (on_bad_passwd_dialog_response);
         dialog.present (this);
-        dialog_shown = true;
-        update_is_ready ();
 
         return false;
     }
 
     void on_bad_passwd_dialog_response (string response) {
-        force_true = response == "ok";
-        dialog_shown = false;
-        update_is_ready ();
+        if (response == "ok") {
+            force_true = true;
+            next ();
+        }
     }
 }
