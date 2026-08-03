@@ -5,6 +5,11 @@
 
 .* @rirusha
 
+# Date & Time plugin
+plugins/date-and-time/.* @x1z53
+
 # License agreement plugin
 plugins/license-agreement/.* @x1z53
-plugins/date-and-time/.* @x1z53
+
+# Network plugin
+plugins/date-and-tnetworkime/.* @brow
