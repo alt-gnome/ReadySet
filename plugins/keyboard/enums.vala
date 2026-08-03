@@ -41,6 +41,8 @@ namespace Keyboard {
 
         public string to_string () {
             switch (this) {
+                case NONE:
+                    return "";
                 case ALT_SHIFT:
                     return "grp:alt_shift_toggle";
                 case CTRL_SHIFT:
