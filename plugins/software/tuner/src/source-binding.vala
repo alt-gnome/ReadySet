@@ -32,7 +32,7 @@ public class ReadySetSoftware.SourceBinding : Tuner.Binding {
     }
 
     construct {
-        check_initial.begin ();
+        set_state (source.check ());
     }
 
     public override GLib.Type expected_type {
@@ -72,23 +72,6 @@ public class ReadySetSoftware.SourceBinding : Tuner.Binding {
         emit_changed ();
     }
 
-    async void check_initial () {
-        _busy = true;
-
-        try {
-            bool res = source.check ();
-            set_state (res);
-        } catch (Software.SourceError e) {
-            if (e.code != Software.SourceError.CANCELLED) {
-                Tuner.toast (e.message);
-            }
-        } catch (Error e) {
-            Tuner.toast (e.message);
-        } finally {
-            _busy = false;
-        }
-    }
-
     async void process (bool target_active, bool old_active) {
         try {
             if (target_active) {
@@ -114,18 +97,9 @@ public class ReadySetSoftware.SourceBinding : Tuner.Binding {
             _active = old_active;
         }
 
-        try {
-            _active = source.check ();
-        } catch (Software.SourceError e) {
-            if (e.code != Software.SourceError.CANCELLED) {
-                Tuner.toast (e.message);
-            }
-        } catch (Error e) {
-            Tuner.toast (e.message);
-        } finally {
-            _busy = false;
-            emit_changed ();
-        }
+        _active = source.check ();
+        _busy = false;
+        emit_changed ();
     }
 
     async bool confirm_nonfree_dialog () {

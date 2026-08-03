@@ -62,9 +62,9 @@ sources:
     body:
       cmd-apply: |
         exit 0
+      cmd-check: |
+        exit 0
+
       # Needs only for Tuner plugin
       cmd-undo: |
-        exit 0
-      # Needs only for Tuner plugin
-      cmd-check: |
         exit 0

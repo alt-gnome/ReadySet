@@ -31,6 +31,18 @@ public interface Software.Service : Object {
     public async abstract void exec_custom (string cmd) throws Error;
 }
 
+public sealed class Software.StplrRepo : Serialize.DataObject {
+
+    public string name { get; set; }
+
+    public string url { get; set; }
+}
+
+public sealed class Software.ApmRepo : Serialize.DataObject {
+
+    public string entry { get; set; }
+}
+
 namespace Software {
 
     public async Software.Service get_proxy () throws Error {

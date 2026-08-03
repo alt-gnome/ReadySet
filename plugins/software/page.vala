@@ -109,8 +109,14 @@ public sealed class Software.Page : ReadySet.BasePage {
                     initial_active = false;
                 }
 
-                sources_box.append (pref_group);
+                if (pref_group.get_row (0) != null) {
+                    sources_box.append (pref_group);
+                }
             }
+        }
+
+        if (sources_box.get_first_child () == null) {
+            Addin.get_instance ().enabled = false;
         }
 
         if (single_button) {
