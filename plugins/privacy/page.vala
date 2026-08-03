@@ -27,6 +27,8 @@ public sealed class Privacy.Page : ReadySet.BasePage {
     Settings location_settings = new Settings ("org.gnome.system.location");
 
     construct {
-        location_settings.bind ("enabled", location_row, "active", DEFAULT);
+        if (!Addin.get_instance ().context.sandbox) {
+            location_settings.bind ("enabled", location_row, "active", DEFAULT);
+        }
     }
 }

@@ -20,6 +20,8 @@
 
 public class Privacy.Addin : ReadySet.StepAddin {
 
+    static Addin instance;
+
     public override bool existing_user {
         get {
             return true;
@@ -32,10 +34,18 @@ public class Privacy.Addin : ReadySet.StepAddin {
         }
     }
 
+    construct {
+        instance = this;
+    }
+
     public async override ReadySet.BasePage[] build_pages () {
         return {
             new Privacy.Page (),
         };
+    }
+
+    internal static Addin get_instance () {
+        return instance;
     }
 }
 
