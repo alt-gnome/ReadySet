@@ -241,6 +241,15 @@ Requires: %name = %EVR
 %description plugin-welcome
 %summary.
 
+%package plugin-privacy
+Summary: %name privacy plugin
+Group: Other
+
+Requires: %name = %EVR
+
+%description plugin-privacy
+%summary.
+
 %package plugin-date-and-time
 Summary: %name date-and-time plugin
 Group: Other
@@ -411,6 +420,11 @@ Requires: %name-plugin-software = %EVR
 %_libdir/%name/plugins/steps/welcome.plugin
 %_libdir/%name/plugins/steps/libwelcome.so
 %doc plugins/welcome/README.*.md
+
+%files plugin-privacy
+%_libdir/%name/plugins/steps/privacy.plugin
+%_libdir/%name/plugins/steps/libprivacy.so
+%doc plugins/privacy/README.*.md
 
 %files plugin-date-and-time
 %_libdir/%name/plugins/steps/date-and-time.plugin
