@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set-software\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-01 18:48+0000\n"
+"POT-Creation-Date: 2026-08-03 23:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,57 +29,41 @@ msgstr ""
 msgid "Other software sources"
 msgstr ""
 
-#: plugins/software/tuner/src/source-binding.vala:132
+#: plugins/software/tuner/src/source-binding.vala:106
 msgid "Non-Free Repository"
 msgstr ""
 
-#: plugins/software/tuner/src/source-binding.vala:132
+#: plugins/software/tuner/src/source-binding.vala:106
 msgid ""
 "This repository contains software with a non-free license. Pay attention to "
 "the software license restrictions before usage."
 msgstr ""
 
 #. vala-lint=line-length
-#: plugins/software/tuner/src/source-binding.vala:134
+#: plugins/software/tuner/src/source-binding.vala:108
 msgid "Cancel"
 msgstr ""
 
-#: plugins/software/tuner/src/source-binding.vala:135
+#: plugins/software/tuner/src/source-binding.vala:109
 msgid "Ok"
 msgstr ""
 
-#: plugins/software/tuner/src/source-tuner.vala:53
+#: plugins/software/tuner/src/source-tuner.vala:49
 #, c-format
 msgid "Failed to disable '%s' flatpak remote with name %s: %s"
 msgstr ""
 
-#: plugins/software/tuner/src/source-tuner.vala:80
-#, c-format
-msgid "Failed to check '%s' flatpak remote with name %s: %s"
-msgstr ""
-
-#: plugins/software/tuner/src/source-tuner.vala:100
+#: plugins/software/tuner/src/source-tuner.vala:69
 #, c-format
 msgid "Failed to remove '%s' stplr repository with name %s: %s"
 msgstr ""
 
-#: plugins/software/tuner/src/source-tuner.vala:131
-#, c-format
-msgid "Failed to check '%s' stplr repository with name %s: %s"
-msgstr ""
-
-#: plugins/software/tuner/src/source-tuner.vala:151
+#: plugins/software/tuner/src/source-tuner.vala:89
 #, c-format
 msgid "Failed to remove apt repository with repos: %s: %s"
 msgstr ""
 
-#: plugins/software/tuner/src/source-tuner.vala:203
-#, c-format
-msgid "Failed to check apt repository with repos: %s: %s"
-msgstr ""
-
-#: plugins/software/tuner/src/source-tuner.vala:222
-#: plugins/software/tuner/src/source-tuner.vala:239
+#: plugins/software/tuner/src/source-tuner.vala:108
 #, c-format
 msgid "Failed to exec: %s: %s"
 msgstr ""

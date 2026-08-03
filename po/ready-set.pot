@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-01 18:50+0000\n"
+"POT-Creation-Date: 2026-08-03 23:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -220,11 +220,11 @@ msgstr ""
 msgid "Try writing"
 msgstr ""
 
-#: plugins/keyboard/enums.vala:72 plugins/keyboard/layout-switch-button.vala:62
+#: plugins/keyboard/enums.vala:74 plugins/keyboard/layout-switch-button.vala:72
 msgid "None"
 msgstr ""
 
-#: plugins/keyboard/plugin.vala:120
+#: plugins/keyboard/plugin.vala:121
 msgid "Error when setting keyboard layout"
 msgstr ""
 
@@ -410,11 +410,11 @@ msgstr ""
 msgid "Other software sources"
 msgstr ""
 
-#: plugins/software/page.vala:158
+#: plugins/software/page.vala:164
 msgid "Disable Third-Party repositories"
 msgstr ""
 
-#: plugins/software/page.vala:161
+#: plugins/software/page.vala:167
 msgid "Enable Third-Party repositories"
 msgstr ""
 
@@ -437,22 +437,22 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: plugins/software/source.vala:135
+#: plugins/software/source.vala:141
 #, c-format
 msgid "Failed to add or enable '%s' flatpak remote with name %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:159
+#: plugins/software/source.vala:186
 #, c-format
 msgid "Failed to add '%s' stplr repository with name %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:200
+#: plugins/software/source.vala:252
 #, c-format
 msgid "Failed to add apt repository with repos: %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:229
+#: plugins/software/source.vala:328
 #, c-format
 msgid "Failed to exec: %s: %s"
 msgstr ""
