@@ -196,8 +196,6 @@ public sealed class ReadySet.Application: Adw.Application {
     public async void build_steps () {
         var pages = new Gee.ArrayList<PageInfo> ();
 
-        string[] enabled_plugins = {};
-
         var initial_position = model == null ? 0 : model.get_selected ();
 
         yield plugin_manager.init_steps_once ();
@@ -208,10 +206,6 @@ public sealed class ReadySet.Application: Adw.Application {
             var addin = plugin_manager.get_step_addin (steps[i]);
 
             if (addin != null) {
-                if (addin.enabled) {
-                    enabled_plugins += addin.plugin_info.module_name;
-                }
-
                 var addin_pages = yield addin.build_pages ();
                 if (addin_pages.length == 0) {
                     pages.add (new PageInfo (
@@ -254,7 +248,7 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         if (context.mode == EXISTING_USER) {
-            if (check_nothing_to_do (enabled_plugins)) {
+            if (check_nothing_to_do (pages.to_array ())) {
                 print ("There is nothing to do\n");
                 quit ();
                 return;
@@ -265,19 +259,27 @@ public sealed class ReadySet.Application: Adw.Application {
         model.select_item (initial_position, true);
     }
 
-    bool check_nothing_to_do (string[] enabled_plugins) {
+    bool check_nothing_to_do (PageInfo[] pages) {
         var settings = new Settings ("org.altlinux.ReadySet");
         if (!settings.get_boolean ("existing-user-mode-enabled")) {
             return true;
         }
 
+        PageInfo[] layout_pages = {};
+
+        foreach (var p in pages) {
+            if (p.should_layout) {
+                layout_pages += p;
+            }
+        }
+
         var ntd = false;
 
-        if (enabled_plugins.length == 1) {
-            if (enabled_plugins[0] == "welcome") {
+        if (layout_pages.length == 1) {
+            if (layout_pages[0].plugin_info.module_name == "welcome") {
                 ntd = true;
             }
-        } else if (enabled_plugins.length == 0) {
+        } else if (layout_pages.length == 0) {
             ntd = true;
         }
 
