@@ -72,6 +72,8 @@ public sealed class ReadySet.Finalizer : Object {
 
             yield addin.apply (progress_data);
             progress_data.value = 1.0;
+
+            passed_plugins.add (steps[i]);
         }
 
         try {
