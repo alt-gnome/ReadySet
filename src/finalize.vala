@@ -56,6 +56,9 @@ public sealed class ReadySet.Finalizer : Object {
         var steps = plugin_manager.steps;
 
         var passed_plugins = new Gee.ArrayList<string> ();
+        var files_to_copy = new Gee.ArrayList<string>.wrap ({
+            ".config/dconf/user",
+        });
 
         for (int i = 0; i < steps.length; i++) {
             if (steps[i] == "welcome") {
@@ -74,6 +77,7 @@ public sealed class ReadySet.Finalizer : Object {
             progress_data.value = 1.0;
 
             passed_plugins.add (steps[i]);
+            files_to_copy.add_all_array (addin.files_to_copy);
         }
 
         try {
@@ -104,11 +108,7 @@ public sealed class ReadySet.Finalizer : Object {
             var rs_settings = new Settings ("org.altlinux.ReadySet");
             rs_settings.set_strv ("performed-steps", passed_plugins.to_array ());
 
-            const string[] FILES_TO_COPY = {
-                ".config/dconf/user"
-            };
-
-            foreach (var file in FILES_TO_COPY) {
+            foreach (var file in files_to_copy) {
                 try {
                     yield get_ready_set_proxy ().copy_to_user (
                         Path.build_filename (

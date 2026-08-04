@@ -94,6 +94,12 @@ public abstract class ReadySet.StepAddin : ExtensionBase {
     public virtual bool existing_user { get { return false; } }
 
     /**
+     * Files which will be copied to created user. Pathes relative to
+     * user's HOME dir.
+     */
+    public virtual string[] files_to_copy { owned get { return {}; } }
+
+    /**
      * Apply for initial setup.
      */
     public async virtual void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {}
