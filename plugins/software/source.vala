@@ -130,8 +130,11 @@ public partial sealed class Software.SourceFlatpak : SourceRemote {
                     inst.modify_remote (remote);
                 }
             } else {
-                remote = new Flatpak.Remote (body.remote_name);
-                remote.set_url (body.url);
+                var session = new ApiBase.Session ();
+                var request = new ApiBase.Request.GET (body.url);
+                var data = yield session.send_and_read_async (request);
+
+                remote = new Flatpak.Remote.from_file (body.remote_name, data);
                 inst.add_remote (remote, false);
             }
 
