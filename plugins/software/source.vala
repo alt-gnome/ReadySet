@@ -123,19 +123,20 @@ public partial sealed class Software.SourceFlatpak : SourceRemote {
                 }
             }
 
+            var session = new ApiBase.Session ();
+            var request = new ApiBase.Request.GET (body.url);
+            var data = yield session.send_and_read_async (request);
+
+            var new_remote = new Flatpak.Remote.from_file (body.remote_name, data);
+            new_remote.set_gpg_verify (true);
+
             if (remote != null) {
                 if (remote.get_disabled ()) {
                     remote.set_disabled (false);
-                    remote.set_url (body.url);
-                    inst.modify_remote (remote);
+                    inst.modify_remote (new_remote);
                 }
             } else {
-                var session = new ApiBase.Session ();
-                var request = new ApiBase.Request.GET (body.url);
-                var data = yield session.send_and_read_async (request);
-
-                remote = new Flatpak.Remote.from_file (body.remote_name, data);
-                inst.add_remote (remote, false);
+                inst.add_remote (new_remote, false);
             }
 
         } catch (Flatpak.Error e) {
