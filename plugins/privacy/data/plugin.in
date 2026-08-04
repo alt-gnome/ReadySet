@@ -1,0 +1,7 @@
+[Plugin]
+Name=@NAME@
+Module=@MODULE@
+Version=@VERSION@
+Authors=David Sultaniiazov
+Copyright=Copyright © 2025-2026 ALT Linux Team
+Website=https://altlinux.space/alt-gnome/ReadySet

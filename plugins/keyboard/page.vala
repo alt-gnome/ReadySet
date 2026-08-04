@@ -25,6 +25,8 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
     unowned Adw.Banner select_at_least_one_banner;
     [GtkChild]
     unowned Gtk.ListBox switch_box;
+    [GtkChild]
+    unowned LayoutSwitchRow switch_row;
 
     bool has_hw_keybaord = try_to_detect_hw_keyboatd ();
 
@@ -33,6 +35,21 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
         update_is_ready ();
 
         Addin.get_instance ().is_manager.init.begin ();
+
+        if (!Addin.get_instance ().context.sandbox) {
+            BindingFlags flags = BIDIRECTIONAL;
+
+            if (Addin.get_instance ().context.get_string ("keyboard.additinal-layout-grp") != "") {
+                flags |= SYNC_CREATE;
+            }
+
+            Addin.get_instance ().context.bind_context_to_property (
+                "keyboard.additinal-layout-grp",
+                switch_row,
+                "selected-grp",
+                flags
+            );
+        }
     }
 
     async void on_context_data_changed (string key) {

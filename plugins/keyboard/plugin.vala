@@ -67,6 +67,7 @@ public class Keyboard.Addin : ReadySet.StepAddin {
             typeof (InputSources), get_default ()
         );
         vars["preview-bin"] = new ReadySet.ContextVarInfo (STRING, "tecla");
+        vars["additinal-layout-grp"] = new ReadySet.ContextVarInfo (STRING);
         return vars;
     }
 

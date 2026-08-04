@@ -121,6 +121,3 @@ configure_file(
     'LIBEXECDIR': libexecdir
   },
 )
-
-install_emptydir(sysconfdir / meson.project_name())
-install_emptydir(localstatedir/ 'lib' / meson.project_name())

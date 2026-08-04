@@ -24,6 +24,16 @@ public sealed class Keyboard.LayoutSwitchRow : Adw.ComboRow {
         Object ();
     }
 
+    public string selected_grp {
+        owned get {
+            var s = (AdditionalLayoutSwitch) ((Adw.EnumListItem) selected_item).value;
+            return s.to_string ();
+        }
+        set {
+            set_selected (AdditionalLayoutSwitch.from_string (value));
+        }
+    }
+
     construct {
         notify["selected-item"].connect (on_item_selected);
         var sfactory = new Gtk.SignalListItemFactory ();
@@ -87,5 +97,7 @@ public sealed class Keyboard.LayoutSwitchRow : Adw.ComboRow {
         } else {
             settings.set_strv ("xkb-options", current_options_filtered.to_array ().copy ());
         }
+
+        notify_property ("selected-grp");
     }
 }

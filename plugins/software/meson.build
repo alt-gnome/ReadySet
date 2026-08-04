@@ -1,4 +1,5 @@
 plugin_software_deps = [
+  api_base_dep,
   flatpak_dep,
   librs_dep,
   posix_dep,

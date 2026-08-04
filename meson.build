@@ -1,7 +1,7 @@
 project(
   'ready-set',
   'vala',
-  version: '0.11.1',
+  version: '0.12.1',
   meson_version: '>= 1.9',
   license: 'GPL-3.0-or-later',
 )
@@ -26,6 +26,7 @@ add_project_arguments(
 )
 
 accountsservice_dep = dependency('accountsservice')
+api_base_dep = dependency('libapi-base-7')
 flatpak_dep = dependency('flatpak')
 gdm_dep = dependency('gdm', required: get_option('gdm'))
 gee_dep = dependency('gee-0.8')
@@ -118,6 +119,23 @@ subdir('lib')
 subdir('src')
 subdir('plugins')
 subdir('tests')
+
+install_emptydir(sysconfdir / meson.project_name())
+install_emptydir(localstatedir/ 'lib' / meson.project_name())
+
+# User hooks works only for service user under which executed initial-setup mode
+# Needs for phrog, for removing ready-set from first-run gsetting
+install_emptydir(user_pre_hooks_dir)
+install_emptydir(user_post_hooks_dir)
+
+install_emptydir(system_pre_hooks_dir)
+install_emptydir(system_post_hooks_dir)
+install_emptydir(installer_pre_hooks)
+install_emptydir(installer_post_hooks)
+
+install_emptydir(steps_plugins_dir)
+install_emptydir(installers_plugins_dir)
+install_emptydir(service_plugins_dir)
 
 gnome.post_install(
   glib_compile_schemas: true,

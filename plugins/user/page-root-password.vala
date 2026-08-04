@@ -53,8 +53,7 @@ public sealed class User.PageRootPassword : PagePasswordCommon {
     }
 
     protected override void update_is_ready () {
-        is_ready = !dialog_shown &&
-                   equal_switch_row.active || (!equal_switch_row.active &&
+        is_ready = equal_switch_row.active || (!equal_switch_row.active &&
                    (password_is_ready (root_password_entry.text) &&
                    root_password_entry.text == root_password_repeat_entry.text));
     }

@@ -7,9 +7,6 @@ on:
     branches:
       - "main"
 
-env:
-  LIBCASE_REPO: https://altlinux.space/api/packages/rirusha/alt/group/libcase-nightly.repo
-
 jobs:
   lint-vala:
     name: Check vala files
@@ -50,11 +47,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ github.event_name == 'pull_request' && github.token || secrets.REPO_TOKEN }}
-
-      - name: Add nightly repos
-        run: |
-          echo "rpm $LIBCASE_REPO x86_64 classic" >> /etc/apt/sources.list
-          echo "rpm $LIBCASE_REPO noarch classic" >> /etc/apt/sources.list
 
       - name: Setup
         run: make setup-ci
@@ -136,12 +128,12 @@ jobs:
           # - p11
         arch:
           - x86_64
-          # - aarch64
+          - aarch64
         include:
           - arch: x86_64
             runner: als-huge
-          # - arch: aarch64
-          #   runner: self-hosted-arm64-huge
+          - arch: aarch64
+            runner: self-hosted-arm64-huge
 
     needs:
       - lint-vala
@@ -162,11 +154,6 @@ jobs:
         run: |
           ./build-aux/altlinux/prepare ${{ needs.get-release.outputs.release }}
           git add .
-
-      - name: Add nightly repos
-        run: |
-          echo "rpm $LIBCASE_REPO ${{ matrix.arch }} classic" >> /etc/apt/sources.list
-          echo "rpm $LIBCASE_REPO noarch classic" >> /etc/apt/sources.list
 
       - name: Build
         run: |

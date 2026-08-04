@@ -3,22 +3,22 @@
 # This file is distributed under the same license as the ready-set package.
 # David Sultaniiazov <x1z53@alt-gnome.ru>, 2025.
 # Vladimir Romanov <rirusha@altlinux.org>, 2026.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
-"Report-Msgid-Bugs-To: rirusha@altlinux.org\n"
-"POT-Creation-Date: 2026-07-31 14:54+0000\n"
-"PO-Revision-Date: 2026-08-01 06:08+0000\n"
-"Last-Translator: rirusha <rirusha@altlinux.org>\n"
-"Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
-"ready-set/ru/>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-03 23:02+0000\n"
+"PO-Revision-Date: 2026-08-04 21:44+0300\n"
+"Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
+"Language-Team: Russian\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.17.1\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Gtranslator 50.0\n"
 
 #: data/ui/existing-user-end-page.blp:26
 msgid "Setup complete!"
@@ -79,15 +79,15 @@ msgstr "Главная"
 #. *
 #. * Title that will be shown at header or steps sidebar.
 #.
-#: lib/src/base/base-page.vala:63
+#: lib/src/base/base-page.vala:65
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: lib/src/base/base-page.vala:108
+#: lib/src/base/base-page.vala:110
 msgid "Unknown page"
 msgstr "Неизвестная страница"
 
-#: lib/src/base/base-page.vala:111
+#: lib/src/base/base-page.vala:113
 msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
@@ -165,19 +165,16 @@ msgid "Failed to connect to timedate service"
 msgstr "Не удалось подключиться к службе времени и даты"
 
 #: plugins/date-and-time/plugin.vala:79
-#, fuzzy
 msgid "Error when setting timezone"
-msgstr "Ошибка при настройке языка"
+msgstr "Ошибка при настройке часового пояса"
 
 #: plugins/date-and-time/plugin.vala:86
-#, fuzzy
 msgid "Error when setting NTP"
-msgstr "Ошибка при настройке языка"
+msgstr "Ошибка при настройке NTP"
 
 #: plugins/date-and-time/plugin.vala:94
-#, fuzzy
 msgid "Error when setting time"
-msgstr "Ошибка при настройке языка"
+msgstr "Ошибка при настройке времени"
 
 #: plugins/keyboard/data/ui/current-input-row.blp:28
 #: plugins/keyboard/data/ui/input-row.blp:23
@@ -227,11 +224,11 @@ msgstr "Показать раскладку через tecla"
 msgid "Try writing"
 msgstr "Попробуйте написать"
 
-#: plugins/keyboard/enums.vala:72 plugins/keyboard/layout-switch-button.vala:62
+#: plugins/keyboard/enums.vala:74 plugins/keyboard/layout-switch-button.vala:72
 msgid "None"
 msgstr "Ничего"
 
-#: plugins/keyboard/plugin.vala:120
+#: plugins/keyboard/plugin.vala:121
 msgid "Error when setting keyboard layout"
 msgstr "Ошибка при настройке раскладки клавиатуры"
 
@@ -282,9 +279,8 @@ msgid "Set up your network connections"
 msgstr "Настройте ваши сетевые подключения"
 
 #: plugins/network/data/ui/page.blp:48
-#, fuzzy
 msgid "Host Name"
-msgstr "Полное имя"
+msgstr "Имя компьютера"
 
 #: plugins/network/data/ui/page.blp:75
 msgid "SIM Cards and Mobile Network"
@@ -302,24 +298,23 @@ msgstr "Wi-Fi"
 msgid "Wi-Fi adapter"
 msgstr "Wi-Fi адаптер"
 
-#: plugins/network/plugin.vala:166
+#: plugins/network/plugin.vala:173
 msgid "Failed to apply network settings"
 msgstr "Ошиба при настройке сети"
 
-#: plugins/network/utils.vala:32
+#: plugins/network/utils.vala:40
 msgid "Leading hyphen is not allowed"
 msgstr "Начальный дефис не допускается"
 
-#: plugins/network/utils.vala:41
+#: plugins/network/utils.vala:49
 msgid "Only Latin letters, digits and hyphens are allowed"
 msgstr "Допускаются только латинские буквы, цифры и дефисы"
 
-#: plugins/network/utils.vala:47
-#, fuzzy
+#: plugins/network/utils.vala:55
 msgid "Host name is too short"
-msgstr "Имя пользователя слишком длинное"
+msgstr "Имя компьютера слишком короткое"
 
-#: plugins/network/utils.vala:52
+#: plugins/network/utils.vala:60
 msgid "Trailing hyphen is not allowed"
 msgstr "Завершающий дефис не допускается"
 
@@ -383,6 +378,18 @@ msgstr "LEAP"
 msgid "Enhanced Open"
 msgstr "Enhanced Open"
 
+#: plugins/privacy/data/ui/page.blp:5 plugins/privacy/data/ui/page.blp:10
+msgid "Privacy"
+msgstr "Приватность"
+
+#: plugins/privacy/data/ui/page.blp:30
+msgid "Location Services"
+msgstr "Службы определения местоположения"
+
+#: plugins/privacy/data/ui/page.blp:39
+msgid "Allows apps to determine your geographical location."
+msgstr "Позволяют приложениям определять ваше географическое местоположение."
+
 #: plugins/software/data/ui/page.blp:5 plugins/software/data/ui/page.blp:11
 msgid "Third-Party Repositories"
 msgstr "Сторонние Репозитории"
@@ -411,11 +418,11 @@ msgstr "Источники ПО"
 msgid "Other software sources"
 msgstr "Другие источники ПО"
 
-#: plugins/software/page.vala:158
+#: plugins/software/page.vala:164
 msgid "Disable Third-Party repositories"
 msgstr "Отключить Сторонние репозитории"
 
-#: plugins/software/page.vala:161
+#: plugins/software/page.vala:167
 msgid "Enable Third-Party repositories"
 msgstr "Включить Сторонние репозитории"
 
@@ -441,23 +448,23 @@ msgstr ""
 msgid "Ok"
 msgstr "Ок"
 
-#: plugins/software/source.vala:135
+#: plugins/software/source.vala:141
 #, c-format
 msgid "Failed to add or enable '%s' flatpak remote with name %s: %s"
 msgstr ""
 "Ошибка при добавлении или включении flatpak репозитория '%s' с именем %s: %s"
 
-#: plugins/software/source.vala:160
+#: plugins/software/source.vala:186
 #, c-format
 msgid "Failed to add '%s' stplr repository with name %s: %s"
 msgstr "Ошибка при добавлении stplr репозитория '%s' с именем %s: %s"
 
-#: plugins/software/source.vala:216
+#: plugins/software/source.vala:252
 #, c-format
 msgid "Failed to add apt repository with repos: %s: %s"
 msgstr "Ошибка при добавлении apt репозитория: %s: %s"
 
-#: plugins/software/source.vala:244
+#: plugins/software/source.vala:328
 #, c-format
 msgid "Failed to exec: %s: %s"
 msgstr "Ошибка исполнения: %s: %s"
@@ -547,6 +554,23 @@ msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 "Имя пользователя будет использовано для имени Вашей домашней директории и не "
 "может быть изменено."
+
+#: plugins/user/page-password-common.vala:41
+msgid "Weak password"
+msgstr "Ненадёжный пароль"
+
+#: plugins/user/page-password-common.vala:42
+msgid "The entered password is not secure. Do you really want to use it?"
+msgstr ""
+"Введенный пароль небезопасен. Вы действительно хотите его использовать?"
+
+#: plugins/user/page-password-common.vala:44
+msgid "_No"
+msgstr "_Нет"
+
+#: plugins/user/page-password-common.vala:45
+msgid "_Yes"
+msgstr "_Да"
 
 #: plugins/user/page-password.vala:69
 #, c-format
@@ -694,23 +718,6 @@ msgstr ""
 msgid "Username cannot be empty"
 msgstr "Имя пользователя не может быть пустым"
 
-#: plugins/user/utils.vala:314
-#, fuzzy
-msgid "Weak password"
-msgstr "Повторите пароль"
-
-#: plugins/user/utils.vala:315
-msgid "The entered password is not secure. Do you really want to use it?"
-msgstr "Введенный пароль небезопасен. Вы действительно хотите его использовать?"
-
-#: plugins/user/utils.vala:317
-msgid "_No"
-msgstr "_Нет"
-
-#: plugins/user/utils.vala:318
-msgid "_Yes"
-msgstr "_Да"
-
 #: plugins/welcome/data/ui/page.blp:5
 msgid "Welcome"
 msgstr "Добро пожаловать"
@@ -807,9 +814,8 @@ msgid "Sandbox run without doing anything in system"
 msgstr "Запуск в \"песочнице\" без изменения системы"
 
 #: src/options-handler.vala:83
-#, fuzzy
 msgid "Show indicators and sidebar with steps"
-msgstr "Не показывать индикаторы и сделать окно проще"
+msgstr "Показывать индикаторы и боковую панель с шагами"
 
 #: src/options-handler.vala:90
 msgid "Steps. E.g: `steps=language,keyboard`"

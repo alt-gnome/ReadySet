@@ -78,6 +78,30 @@ public sealed class Software.Sources : Object {
 
             list.add (s);
         }
+
+#if !TUNER
+        foreach (var gid in real_groups.keys) {
+            if (group_sources_map.has_key (gid)) {
+                var s_to_remove = new Gee.ArrayList<Source> ();
+                foreach (var s in group_sources_map[gid]) {
+                    if (s.check ()) {
+                        s_to_remove.add (s);
+                    }
+                }
+
+                if (real_groups[gid].required &&
+                    group_sources_map[gid].size - s_to_remove.size <= 1 &&
+                    group_sources_map[gid].size != 1
+                ) {
+                    real_sources.remove_all (group_sources_map[gid]);
+                    group_sources_map.unset (gid);
+                } else {
+                    group_sources_map[gid].remove_all (s_to_remove);
+                    real_sources.remove_all (s_to_remove);
+                }
+            }
+        }
+#endif
     }
 
     public new Source @get (int index) {

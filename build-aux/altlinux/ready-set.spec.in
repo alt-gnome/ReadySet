@@ -17,7 +17,7 @@ Name: ready-set
 Version: @VERSION@
 Release: alt@RELEASE@
 
-Summary: The utility for configuring the system at the first start
+Summary: Modular (System Installer | Initial Setup Wizard)
 License: GPL-3.0-or-later
 Group: Graphical desktop/Other
 URL: https://altlinux.space/alt-gnome/ReadySet
@@ -241,10 +241,20 @@ Requires: %name = %EVR
 %description plugin-welcome
 %summary.
 
+%package plugin-privacy
+Summary: %name privacy plugin
+Group: Other
+
+Requires: %name = %EVR
+
+%description plugin-privacy
+%summary.
+
 %package plugin-date-and-time
 Summary: %name date-and-time plugin
 Group: Other
 
+Requires: gnome-control-center-data
 Requires: %name = %EVR
 
 %description plugin-date-and-time
@@ -263,16 +273,19 @@ Requires: %name = %EVR
 Summary: Pot generator for source config files of %name software plugin
 Group: Development/Tools
 
+BuildArch: noarch
+
 %description plugin-software-source-pot-generator
 %summary.
 
-%package tuner-plugin-ready-set-software
+%package -n tuner-ready-set-software
 Summary: Tuner plugin with %name software plugin functionality
 Group: Other
 
+Requires: tuner
 Requires: %name-plugin-software = %EVR
 
-%description tuner-plugin-ready-set-software
+%description -n tuner-ready-set-software
 %summary.
 
 %prep
@@ -300,6 +313,11 @@ Requires: %name-plugin-software = %EVR
 %_libexecdir/%app_id
 %_sysconfdir/%name
 %_datadir/%name
+%dir %_libdir/%name
+%dir %_libdir/%name/plugins
+%dir %_libdir/%name/plugins/steps
+%dir %_libdir/%name/plugins/installers
+%dir %_libdir/%name/plugins/service
 %_sharedstatedir/%name
 %_sysconfdir/dbus-1/system.d/%app_id.conf
 %_datadir/polkit-1/actions/%app_id.policy
@@ -403,6 +421,11 @@ Requires: %name-plugin-software = %EVR
 %_libdir/%name/plugins/steps/libwelcome.so
 %doc plugins/welcome/README.*.md
 
+%files plugin-privacy
+%_libdir/%name/plugins/steps/privacy.plugin
+%_libdir/%name/plugins/steps/libprivacy.so
+%doc plugins/privacy/README.*.md
+
 %files plugin-date-and-time
 %_libdir/%name/plugins/steps/date-and-time.plugin
 %_libdir/%name/plugins/steps/libdate-and-time.so
@@ -420,7 +443,7 @@ Requires: %name-plugin-software = %EVR
 %files plugin-software-source-pot-generator
 %_bindir/source-pot-generator
 
-%files tuner-plugin-%name-software -f %name-software.lang
+%files -n tuner-%name-software -f %name-software.lang
 %_libdir/tuner/plugins/lib%name-software.so
 %_libdir/tuner/plugins/%name-software.plugin
 %_datadir/metainfo/org.altlinux.ReadySetSoftware.TunerPlugin.metainfo.xml

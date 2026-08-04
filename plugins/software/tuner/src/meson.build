@@ -1,13 +1,11 @@
 deps = [
+  api_base_dep,
   flatpak_dep,
   libserialize_dep,
   tuner_dep,
 ]
 
 sources = files(
-  'objects/apm-repo.vala',
-  'objects/stplr-repo.vala',
-
   'page.vala',
   'plugin.vala',
   'source-binding.vala',
@@ -20,7 +18,7 @@ tuner_plugin_c_args = [
 ]
 
 tuner_plugin_vala_args = [
-
+  '--define', 'TUNER',
 ]
 
 configure_file(output: 'config.h', configuration: conf_data)

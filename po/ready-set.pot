@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-31 14:54+0000\n"
+"POT-Creation-Date: 2026-08-03 23:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,15 +76,15 @@ msgstr ""
 #. *
 #. * Title that will be shown at header or steps sidebar.
 #.
-#: lib/src/base/base-page.vala:63
+#: lib/src/base/base-page.vala:65
 msgid "Unknown"
 msgstr ""
 
-#: lib/src/base/base-page.vala:108
+#: lib/src/base/base-page.vala:110
 msgid "Unknown page"
 msgstr ""
 
-#: lib/src/base/base-page.vala:111
+#: lib/src/base/base-page.vala:113
 msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
@@ -220,11 +220,11 @@ msgstr ""
 msgid "Try writing"
 msgstr ""
 
-#: plugins/keyboard/enums.vala:72 plugins/keyboard/layout-switch-button.vala:62
+#: plugins/keyboard/enums.vala:74 plugins/keyboard/layout-switch-button.vala:72
 msgid "None"
 msgstr ""
 
-#: plugins/keyboard/plugin.vala:120
+#: plugins/keyboard/plugin.vala:121
 msgid "Error when setting keyboard layout"
 msgstr ""
 
@@ -294,23 +294,23 @@ msgstr ""
 msgid "Wi-Fi adapter"
 msgstr ""
 
-#: plugins/network/plugin.vala:166
+#: plugins/network/plugin.vala:173
 msgid "Failed to apply network settings"
 msgstr ""
 
-#: plugins/network/utils.vala:32
+#: plugins/network/utils.vala:40
 msgid "Leading hyphen is not allowed"
 msgstr ""
 
-#: plugins/network/utils.vala:41
+#: plugins/network/utils.vala:49
 msgid "Only Latin letters, digits and hyphens are allowed"
 msgstr ""
 
-#: plugins/network/utils.vala:47
+#: plugins/network/utils.vala:55
 msgid "Host name is too short"
 msgstr ""
 
-#: plugins/network/utils.vala:52
+#: plugins/network/utils.vala:60
 msgid "Trailing hyphen is not allowed"
 msgstr ""
 
@@ -374,6 +374,18 @@ msgstr ""
 msgid "Enhanced Open"
 msgstr ""
 
+#: plugins/privacy/data/ui/page.blp:5 plugins/privacy/data/ui/page.blp:10
+msgid "Privacy"
+msgstr ""
+
+#: plugins/privacy/data/ui/page.blp:30
+msgid "Location Services"
+msgstr ""
+
+#: plugins/privacy/data/ui/page.blp:39
+msgid "Allows apps to determine your geographical location."
+msgstr ""
+
 #: plugins/software/data/ui/page.blp:5 plugins/software/data/ui/page.blp:11
 msgid "Third-Party Repositories"
 msgstr ""
@@ -398,11 +410,11 @@ msgstr ""
 msgid "Other software sources"
 msgstr ""
 
-#: plugins/software/page.vala:158
+#: plugins/software/page.vala:164
 msgid "Disable Third-Party repositories"
 msgstr ""
 
-#: plugins/software/page.vala:161
+#: plugins/software/page.vala:167
 msgid "Enable Third-Party repositories"
 msgstr ""
 
@@ -425,22 +437,22 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: plugins/software/source.vala:135
+#: plugins/software/source.vala:141
 #, c-format
 msgid "Failed to add or enable '%s' flatpak remote with name %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:160
+#: plugins/software/source.vala:186
 #, c-format
 msgid "Failed to add '%s' stplr repository with name %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:216
+#: plugins/software/source.vala:252
 #, c-format
 msgid "Failed to add apt repository with repos: %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:244
+#: plugins/software/source.vala:328
 #, c-format
 msgid "Failed to exec: %s: %s"
 msgstr ""
@@ -527,6 +539,22 @@ msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:135
 msgid "Username will be used to name your home folder and can't be changed."
+msgstr ""
+
+#: plugins/user/page-password-common.vala:41
+msgid "Weak password"
+msgstr ""
+
+#: plugins/user/page-password-common.vala:42
+msgid "The entered password is not secure. Do you really want to use it?"
+msgstr ""
+
+#: plugins/user/page-password-common.vala:44
+msgid "_No"
+msgstr ""
+
+#: plugins/user/page-password-common.vala:45
+msgid "_Yes"
 msgstr ""
 
 #: plugins/user/page-password.vala:69
@@ -648,22 +676,6 @@ msgstr ""
 
 #: plugins/user/utils.vala:187
 msgid "Username cannot be empty"
-msgstr ""
-
-#: plugins/user/utils.vala:314
-msgid "Weak password"
-msgstr ""
-
-#: plugins/user/utils.vala:315
-msgid "The entered password is not secure. Do you really want to use it?"
-msgstr ""
-
-#: plugins/user/utils.vala:317
-msgid "_No"
-msgstr ""
-
-#: plugins/user/utils.vala:318
-msgid "_Yes"
 msgstr ""
 
 #: plugins/welcome/data/ui/page.blp:5

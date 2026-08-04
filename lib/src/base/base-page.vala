@@ -34,6 +34,8 @@
  */
 public class ReadySet.BasePage : Adw.BreakpointBin {
 
+    public signal void next ();
+
     /**
      * Widget that will be located on top in the vertical layout and in the
      * sidebar in the horizontal one.

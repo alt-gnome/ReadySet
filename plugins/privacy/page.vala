@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2026 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2026 David Sultaniiazov <x1z53@alt-gnome.ru>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,17 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public sealed class ReadySetSoftware.StplrRepo : Serialize.DataObject {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Privacy/ui/page.ui")]
+public sealed class Privacy.Page : ReadySet.BasePage {
 
-    public string name { get; set; }
+    [GtkChild]
+    unowned Adw.SwitchRow location_row;
 
-    public string url { get; set; }
+    Settings location_settings = new Settings ("org.gnome.system.location");
+
+    construct {
+        if (!Addin.get_instance ().context.sandbox) {
+            location_settings.bind ("enabled", location_row, "active", DEFAULT);
+        }
+    }
 }

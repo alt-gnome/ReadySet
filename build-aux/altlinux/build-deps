@@ -13,6 +13,7 @@ gtk-doc
 libaccountsservice-devel
 libadwaita-devel
 libadwaita-gir-devel
+libapi-base-devel
 libcase-devel
 libcase-gir-devel
 libflatpak-devel

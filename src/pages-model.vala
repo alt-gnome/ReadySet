@@ -67,12 +67,19 @@ public sealed class ReadySet.PageInfo : Object {
         }
     }
 
+    static string[] performed_steps;
+
     public PageInfo (BasePage? page, StepAddin? plugin)
     requires (page != null || plugin != null) {
         Object (
             page: page,
             plugin: plugin
         );
+    }
+
+    static construct {
+        var rs_settings = new Settings ("org.altlinux.ReadySet");
+        performed_steps = rs_settings.get_strv ("performed-steps");
     }
 
     construct {
@@ -100,7 +107,15 @@ public sealed class ReadySet.PageInfo : Object {
     }
 
     void update_should_layout () {
-        var plugin_enabled = plugin != null ? plugin.enabled : true;
+        bool plugin_enabled = true;
+        if (plugin != null) {
+            if (plugin.context.mode == EXISTING_USER) {
+                plugin_enabled = plugin.enabled && plugin.existing_user &&
+                    !(plugin.plugin_info.module_name in performed_steps);
+            } else {
+                plugin_enabled = plugin.enabled;
+            }
+        }
         var page_accessible = page != null ? page.accessible : false;
 
         should_layout = plugin_enabled && page_accessible;
