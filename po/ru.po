@@ -3,22 +3,22 @@
 # This file is distributed under the same license as the ready-set package.
 # David Sultaniiazov <x1z53@alt-gnome.ru>, 2025.
 # Vladimir Romanov <rirusha@altlinux.org>, 2026.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-03 23:02+0000\n"
-"PO-Revision-Date: 2026-08-01 06:08+0000\n"
-"Last-Translator: rirusha <rirusha@altlinux.org>\n"
-"Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
-"ready-set/ru/>\n"
+"PO-Revision-Date: 2026-08-04 21:44+0300\n"
+"Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
+"Language-Team: Russian\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.17.1\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Gtranslator 50.0\n"
 
 #: data/ui/existing-user-end-page.blp:26
 msgid "Setup complete!"
@@ -165,19 +165,16 @@ msgid "Failed to connect to timedate service"
 msgstr "Не удалось подключиться к службе времени и даты"
 
 #: plugins/date-and-time/plugin.vala:79
-#, fuzzy
 msgid "Error when setting timezone"
-msgstr "Ошибка при настройке языка"
+msgstr "Ошибка при настройке часового пояса"
 
 #: plugins/date-and-time/plugin.vala:86
-#, fuzzy
 msgid "Error when setting NTP"
-msgstr "Ошибка при настройке языка"
+msgstr "Ошибка при настройке NTP"
 
 #: plugins/date-and-time/plugin.vala:94
-#, fuzzy
 msgid "Error when setting time"
-msgstr "Ошибка при настройке языка"
+msgstr "Ошибка при настройке времени"
 
 #: plugins/keyboard/data/ui/current-input-row.blp:28
 #: plugins/keyboard/data/ui/input-row.blp:23
@@ -282,9 +279,8 @@ msgid "Set up your network connections"
 msgstr "Настройте ваши сетевые подключения"
 
 #: plugins/network/data/ui/page.blp:48
-#, fuzzy
 msgid "Host Name"
-msgstr "Полное имя"
+msgstr "Имя компьютера"
 
 #: plugins/network/data/ui/page.blp:75
 msgid "SIM Cards and Mobile Network"
@@ -315,9 +311,8 @@ msgid "Only Latin letters, digits and hyphens are allowed"
 msgstr "Допускаются только латинские буквы, цифры и дефисы"
 
 #: plugins/network/utils.vala:55
-#, fuzzy
 msgid "Host name is too short"
-msgstr "Имя пользователя слишком длинное"
+msgstr "Имя компьютера слишком короткое"
 
 #: plugins/network/utils.vala:60
 msgid "Trailing hyphen is not allowed"
@@ -385,15 +380,15 @@ msgstr "Enhanced Open"
 
 #: plugins/privacy/data/ui/page.blp:5 plugins/privacy/data/ui/page.blp:10
 msgid "Privacy"
-msgstr ""
+msgstr "Приватность"
 
 #: plugins/privacy/data/ui/page.blp:30
 msgid "Location Services"
-msgstr ""
+msgstr "Службы определения местоположения"
 
 #: plugins/privacy/data/ui/page.blp:39
 msgid "Allows apps to determine your geographical location."
-msgstr ""
+msgstr "Позволяют приложениям определять ваше географическое местоположение."
 
 #: plugins/software/data/ui/page.blp:5 plugins/software/data/ui/page.blp:11
 msgid "Third-Party Repositories"
@@ -561,9 +556,8 @@ msgstr ""
 "может быть изменено."
 
 #: plugins/user/page-password-common.vala:41
-#, fuzzy
 msgid "Weak password"
-msgstr "Повторите пароль"
+msgstr "Ненадёжный пароль"
 
 #: plugins/user/page-password-common.vala:42
 msgid "The entered password is not secure. Do you really want to use it?"
@@ -820,9 +814,8 @@ msgid "Sandbox run without doing anything in system"
 msgstr "Запуск в \"песочнице\" без изменения системы"
 
 #: src/options-handler.vala:83
-#, fuzzy
 msgid "Show indicators and sidebar with steps"
-msgstr "Не показывать индикаторы и сделать окно проще"
+msgstr "Показывать индикаторы и боковую панель с шагами"
 
 #: src/options-handler.vala:90
 msgid "Steps. E.g: `steps=language,keyboard`"
