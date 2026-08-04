@@ -66,6 +66,7 @@ BuildRequires: pkgconfig(pwquality)
 BuildRequires: pkgconfig(systemd)
 BuildRequires: pkgconfig(tuner-1)
 BuildRequires: pkgconfig(xkbcommon)
+BuildRequires: pkgconfig(libapi-base-7)
 
 %description
 %summary.
