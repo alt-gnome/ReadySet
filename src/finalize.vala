@@ -55,7 +55,7 @@ public sealed class ReadySet.Finalizer : Object {
     async void finalize_initial_setup () throws ApplyError {
         var steps = plugin_manager.steps;
 
-        var passed_plugins = new Gee.ArrayList<string> ();
+        string[] passed_plugins = {};
         var files_to_copy = new Gee.ArrayList<string>.wrap ({
             ".config/dconf/user",
         });
@@ -76,7 +76,7 @@ public sealed class ReadySet.Finalizer : Object {
             yield addin.apply (progress_data);
             progress_data.value = 1.0;
 
-            passed_plugins.add (steps[i]);
+            passed_plugins += steps[i];
             files_to_copy.add_all_array (addin.files_to_copy);
         }
 
@@ -106,7 +106,7 @@ public sealed class ReadySet.Finalizer : Object {
 
         if (context.has_key ("user.username")) {
             var rs_settings = new Settings ("org.altlinux.ReadySet");
-            rs_settings.set_strv ("performed-steps", passed_plugins.to_array ());
+            rs_settings.set_strv ("performed-steps", passed_plugins);
 
             foreach (var file in files_to_copy) {
                 try {
