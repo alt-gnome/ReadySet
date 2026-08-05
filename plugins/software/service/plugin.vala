@@ -21,8 +21,60 @@
 [DBus (name = "org.altlinux.ReadySet.SoftwareSources")]
 public sealed class SoftwareSources.Service : Object {
 
+    const string SOFTWARE_ACTION = "org.altlinux.ReadySet.Software.ManageRepos";
+
+    public void add_flatpak_repo (string remote_name, string url, BusName sender) throws Error {
+        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+
+        var inst = new Flatpak.Installation.system ();
+
+        Flatpak.Remote? remote = null;
+        try {
+            remote = inst.get_remote_by_name (remote_name);
+        } catch (Flatpak.Error e) {
+            if (e.code != Flatpak.Error.REMOTE_NOT_FOUND) {
+                throw e;
+            }
+        }
+
+        var session = new ApiBase.Session ();
+        var request = new ApiBase.Request.GET (url);
+        var data = session.send_and_read (request);
+
+        var new_remote = new Flatpak.Remote.from_file (remote_name, data);
+        new_remote.set_gpg_verify (true);
+
+        if (remote != null) {
+            remote.set_disabled (false);
+            inst.modify_remote (remote);
+            inst.modify_remote (new_remote);
+        } else {
+            inst.add_remote (new_remote, false);
+        }
+    }
+
+    public void remove_flatpak_repo (string remote_name, BusName sender) throws Error {
+        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+
+        var inst = new Flatpak.Installation.system ();
+
+        Flatpak.Remote? remote = null;
+        try {
+            remote = inst.get_remote_by_name (remote_name);
+        } catch (Flatpak.Error e) {
+            if (e.code != Flatpak.Error.REMOTE_NOT_FOUND) {
+                throw e;
+            }
+        }
+
+        if (remote != null) {
+            remote.set_disabled (true);
+            inst.modify_remote (remote);
+        }
+    }
+
     public void add_stplr_repo (string remote_name, string url, BusName sender) throws Error {
-        ReadySetService.polkit_check_plugin (sender);
+        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
 
         var sp = new Subprocess.newv ({
             "stplr", "repo", "add", remote_name, url
@@ -31,7 +83,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 
     public void remove_stplr_repo (string remote_name, string url, BusName sender) throws Error {
-        ReadySetService.polkit_check_plugin (sender);
+        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
 
         var sp = new Subprocess.newv ({
             "stplr", "repo", "remove", remote_name
@@ -40,7 +92,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 
     public void add_alt_repos (string[] repos, BusName sender) throws Error {
-        ReadySetService.polkit_check_plugin (sender);
+        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
 
         string[] cmd;
         if (Program.exists ("apm")) {
@@ -65,7 +117,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 
     public void remove_alt_repos (string[] repos, BusName sender) throws Error {
-        ReadySetService.polkit_check_plugin (sender);
+        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
 
         string[] cmd;
         if (Program.exists ("apm")) {
@@ -90,7 +142,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 
     public void exec_custom (string cmd, BusName sender) throws Error {
-        ReadySetService.polkit_check_plugin (sender);
+        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
 
         var sp = new Subprocess.newv ({
             "bash", "-c", cmd
