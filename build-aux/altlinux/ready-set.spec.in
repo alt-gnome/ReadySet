@@ -438,6 +438,7 @@ Requires: %name-plugin-software = %EVR
 %_libdir/%name/plugins/steps/libsoftware.so
 %_libdir/%name/plugins/service/libsoftware-sources.so
 %_libdir/%name/plugins/service/software-sources.plugin
+%_datadir/polkit-1/actions/%app_id.Software.policy
 %_datadir/%name/software
 %doc plugins/software/README.*.md
 
