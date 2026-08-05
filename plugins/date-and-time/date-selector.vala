@@ -24,7 +24,7 @@ public class DateAndTime.DateSelector : Adw.PreferencesDialog {
     unowned DateAndTime.CarouselSelector selector;
 
     public int day { get; set; }
-    public uint month { get; set; }
+    public int month { get; set; }
     public int year { get; set; }
 
     public Serialize.Array<Gtk.Adjustment> adjustments {
@@ -69,7 +69,7 @@ public class DateAndTime.DateSelector : Adw.PreferencesDialog {
 
     [GtkCallback]
     void update_day () {
-        var first_of_month = new DateTime.local (year, (int) month, 1, 0, 0, 0);
+        var first_of_month = new DateTime.local (year, month, 1, 0, 0, 0);
         var next_month = first_of_month.add_months (1);
         var last_day = next_month.add_days (-1);
         day_limit = last_day.get_day_of_month ();
@@ -77,6 +77,7 @@ public class DateAndTime.DateSelector : Adw.PreferencesDialog {
         if (day > day_limit) {
             day = day_limit;
         }
+        selector.refill_models ();
     }
 
     [GtkCallback]
