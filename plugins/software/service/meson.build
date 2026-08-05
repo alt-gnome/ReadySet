@@ -1,4 +1,6 @@
 plugin_software_service_deps = [
+  api_base_dep,
+  flatpak_dep,
   librss_dep,
 ]
 
@@ -23,7 +25,7 @@ configure_file(
 )
 
 plugin_software_service_c_args = [
-  '-DG_LOG_DOMAIN="User"',
+  '-DG_LOG_DOMAIN="ReadySetSoftware"',
 ]
 
 shared_module(
@@ -33,4 +35,10 @@ shared_module(
   c_args: plugin_software_service_c_args,
   install: true,
   install_dir: service_plugins_dir
+)
+
+install_data(
+  'policy',
+  install_dir: datadir / 'polkit-1' / 'actions',
+  rename: 'org.altlinux.ReadySet.Software.policy'
 )

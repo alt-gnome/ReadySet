@@ -27,21 +27,8 @@ public partial sealed class Software.SourceFlatpak {
 
     public async override void undo () throws Error {
         try {
-            var inst = new Flatpak.Installation.system ();
-
-            Flatpak.Remote? remote = null;
-            try {
-                remote = inst.get_remote_by_name (body.remote_name);
-            } catch (Flatpak.Error e) {
-                if (e.code != Flatpak.Error.REMOTE_NOT_FOUND) {
-                    throw e;
-                }
-            }
-
-            if (remote != null) {
-                remote.set_disabled (true);
-                inst.modify_remote (remote);
-            }
+            var proxy = yield get_proxy ();
+            yield proxy.remove_flatpak_repo (body.remote_name);
 
         } catch (Error e) {
             throw source_error_from_error (
