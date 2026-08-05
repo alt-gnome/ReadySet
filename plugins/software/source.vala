@@ -112,32 +112,8 @@ public class Software.SourceRemote : Source {
 public partial sealed class Software.SourceFlatpak : SourceRemote {
     public async override void apply () throws Error {
         try {
-            var inst = new Flatpak.Installation.system ();
-
-            Flatpak.Remote? remote = null;
-            try {
-                remote = inst.get_remote_by_name (body.remote_name);
-            } catch (Flatpak.Error e) {
-                if (e.code != Flatpak.Error.REMOTE_NOT_FOUND) {
-                    throw e;
-                }
-            }
-
-            var session = new ApiBase.Session ();
-            var request = new ApiBase.Request.GET (body.url);
-            var data = yield session.send_and_read_async (request);
-
-            var new_remote = new Flatpak.Remote.from_file (body.remote_name, data);
-            new_remote.set_gpg_verify (true);
-
-            if (remote != null) {
-                if (remote.get_disabled ()) {
-                    remote.set_disabled (false);
-                    inst.modify_remote (new_remote);
-                }
-            } else {
-                inst.add_remote (new_remote, false);
-            }
+            var proxy = yield get_proxy ();
+            yield proxy.add_flatpak_repo (body.remote_name, body.url);
 
         } catch (Flatpak.Error e) {
             throw source_error_from_error (
