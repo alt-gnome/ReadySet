@@ -48,6 +48,53 @@ namespace DateAndTime {
         }
     }
 
+    string get_default_timezone (string lang) {
+        // Original list
+        // https://git.altlinux.org/gears/a/alterator-datetime.git?a=blob_plain;f=alterator-datetime/etc/defaultzones
+
+        switch (lang) {
+            case "BY":
+                return "Europe/Minsk";
+            case "GB":
+                return "Europe/London";
+            case "RU":
+                return "Europe/Moscow";
+            case "UA":
+                return "Europe/Kiev";
+            case "US":
+                return "America/New_York";
+            case "ES":
+                return "Europe/Madrid";
+            case "BR":
+                return "America/Sao_Paulo";
+            case "AR":
+                return "America/Argentina/Buenos_Aires";
+            case "CL":
+                return "America/Santiago";
+            case "VE":
+                return "America/Caracas";
+            case "UZ":
+                return "Asia/Tashkent";
+            case "POSIX":
+            default:
+                return "Europe/London";
+        }
+    }
+
+    public string? get_locale_country (string full_locale) {
+        if (full_locale == "") {
+            return null;
+        }
+
+        var locale = full_locale.split (".")[0].split ("@")[0].split ("_");
+
+        if (locale.length >= 2) {
+            return locale[1];
+        }
+
+        return null;
+    }
+
     DateAndTime.Timedate1 get_timedate_proxy () throws Error {
         var con = Bus.get_sync (BusType.SYSTEM);
 
