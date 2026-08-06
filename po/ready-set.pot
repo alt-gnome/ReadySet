@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-06 11:37+0000\n"
+"POT-Creation-Date: 2026-08-06 18:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,15 +41,15 @@ msgstr ""
 msgid "Nothing to show"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:594
+#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:593
 msgid "Go to previous page"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:613
+#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:612
 msgid "Next"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:626
+#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:625
 msgid "Extend/Retract keyboard"
 msgstr ""
 
@@ -99,7 +99,7 @@ msgid "Apply"
 msgstr ""
 
 #: plugins/date-and-time/data/ui/date-selector.blp:5
-#: plugins/date-and-time/data/ui/page.blp:70
+#: plugins/date-and-time/data/ui/page.blp:68
 msgid "Date"
 msgstr ""
 
@@ -128,7 +128,7 @@ msgid "Set time zone"
 msgstr ""
 
 #: plugins/date-and-time/data/ui/page.blp:34
-msgid "Manual setting of time zone"
+msgid "Automatic setting of time zone"
 msgstr ""
 
 #: plugins/date-and-time/data/ui/page.blp:42
@@ -136,15 +136,15 @@ msgstr ""
 msgid "Time zone"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:59
+#: plugins/date-and-time/data/ui/page.blp:58
 msgid "Set date and time"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:62
-msgid "Manual setting of date and time"
+#: plugins/date-and-time/data/ui/page.blp:61
+msgid "Automatic setting of date and time"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:82
+#: plugins/date-and-time/data/ui/page.blp:81
 #: plugins/date-and-time/data/ui/time-selector.blp:5
 msgid "Time"
 msgstr ""
@@ -461,24 +461,24 @@ msgstr ""
 msgid "Select Avatar"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:37
+#: plugins/user/data/ui/page-password.blp:38
 msgid "Be careful not to lose your password."
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:56
+#: plugins/user/data/ui/page-password.blp:57
 msgid "Your user’s password"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:65
+#: plugins/user/data/ui/page-password.blp:66
 msgid "Generate user password"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:80
+#: plugins/user/data/ui/page-password.blp:81
 #: plugins/user/data/ui/page-root-password.blp:84
 msgid "Passwords do not match"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:84
+#: plugins/user/data/ui/page-password.blp:85
 #: plugins/user/data/ui/page-root-password.blp:88
 msgid "Repeat password"
 msgstr ""
@@ -559,7 +559,7 @@ msgstr ""
 msgid "Set a Password for %s"
 msgstr ""
 
-#: plugins/user/plugin.vala:81
+#: plugins/user/plugin.vala:77
 msgid "Error when creating a user"
 msgstr ""
 
