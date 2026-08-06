@@ -1,4 +1,4 @@
-FROM altlinux.space/alt-atomic-lab/phosphophyllite/6.18/nightly:latest
+FROM altlinux.space/alt-atomic/phosphophyllite/6.18/nightly:latest
 
 RUN --mount=type=bind,source=./test-atomic/phosh/image.yml,target=/etc/apm/image.yml \
     --mount=type=bind,source=./test-atomic/phosh/resources,target=/etc/apm/resources \
