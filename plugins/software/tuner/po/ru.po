@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-06 11:37+0000\n"
+"POT-Creation-Date: 2026-08-06 18:05+0000\n"
 "PO-Revision-Date: 2026-08-01 05:47+0000\n"
 "Last-Translator: rirusha <rirusha@altlinux.org>\n"
 "Language-Team: Russian <https://translate.alt-gnome.ru/projects/ready-set/"
