@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set-software\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-03 23:02+0000\n"
+"POT-Creation-Date: 2026-08-06 11:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,22 +48,22 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: plugins/software/tuner/src/source-tuner.vala:49
+#: plugins/software/tuner/src/source-tuner.vala:36
 #, c-format
 msgid "Failed to disable '%s' flatpak remote with name %s: %s"
 msgstr ""
 
-#: plugins/software/tuner/src/source-tuner.vala:69
+#: plugins/software/tuner/src/source-tuner.vala:56
 #, c-format
 msgid "Failed to remove '%s' stplr repository with name %s: %s"
 msgstr ""
 
-#: plugins/software/tuner/src/source-tuner.vala:89
+#: plugins/software/tuner/src/source-tuner.vala:76
 #, c-format
 msgid "Failed to remove apt repository with repos: %s: %s"
 msgstr ""
 
-#: plugins/software/tuner/src/source-tuner.vala:108
+#: plugins/software/tuner/src/source-tuner.vala:95
 #, c-format
 msgid "Failed to exec: %s: %s"
 msgstr ""

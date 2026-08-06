@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-03 23:02+0000\n"
+"POT-Creation-Date: 2026-08-06 11:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -99,7 +99,7 @@ msgid "Apply"
 msgstr ""
 
 #: plugins/date-and-time/data/ui/date-selector.blp:5
-#: plugins/date-and-time/data/ui/page.blp:68
+#: plugins/date-and-time/data/ui/page.blp:70
 msgid "Date"
 msgstr ""
 
@@ -120,31 +120,31 @@ msgid "Date & Time"
 msgstr ""
 
 #: plugins/date-and-time/data/ui/page.blp:12
-msgid "Select your time zone"
+msgid "Select your time zone."
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:29
+#: plugins/date-and-time/data/ui/page.blp:31
 msgid "Set time zone"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:32
+#: plugins/date-and-time/data/ui/page.blp:34
 msgid "Manual setting of time zone"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:40
+#: plugins/date-and-time/data/ui/page.blp:42
 #: plugins/date-and-time/data/ui/timezone-list.blp:5
 msgid "Time zone"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:57
+#: plugins/date-and-time/data/ui/page.blp:59
 msgid "Set date and time"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:60
+#: plugins/date-and-time/data/ui/page.blp:62
 msgid "Manual setting of date and time"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:80
+#: plugins/date-and-time/data/ui/page.blp:82
 #: plugins/date-and-time/data/ui/time-selector.blp:5
 msgid "Time"
 msgstr ""
@@ -201,7 +201,7 @@ msgid "Typing"
 msgstr ""
 
 #: plugins/keyboard/data/ui/page.blp:30
-msgid "Select your keyboard layout or an input method"
+msgid "Select your keyboard layout or an input method."
 msgstr ""
 
 #: plugins/keyboard/data/ui/page.blp:35
@@ -271,7 +271,7 @@ msgid "Network"
 msgstr ""
 
 #: plugins/network/data/ui/page.blp:31
-msgid "Set up your network connections"
+msgid "Set up your network connections."
 msgstr ""
 
 #: plugins/network/data/ui/page.blp:48
@@ -437,22 +437,22 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: plugins/software/source.vala:141
+#: plugins/software/source.vala:121
 #, c-format
 msgid "Failed to add or enable '%s' flatpak remote with name %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:186
+#: plugins/software/source.vala:166
 #, c-format
 msgid "Failed to add '%s' stplr repository with name %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:252
+#: plugins/software/source.vala:232
 #, c-format
 msgid "Failed to add apt repository with repos: %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:328
+#: plugins/software/source.vala:308
 #, c-format
 msgid "Failed to exec: %s: %s"
 msgstr ""
@@ -518,7 +518,8 @@ msgid "About You"
 msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:30
-msgid "We need a few details to complete setup."
+#: plugins/user/data/ui/page-username.blp:106
+msgid "Set information about You."
 msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:74
@@ -527,10 +528,6 @@ msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:95
 msgid "Remove Avatar"
-msgstr ""
-
-#: plugins/user/data/ui/page-username.blp:106
-msgid "Set information about You"
 msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:123
@@ -743,7 +740,7 @@ msgstr ""
 msgid "Error message: %s"
 msgstr ""
 
-#: src/end-pages/installer.vala:66 src/finalize.vala:127
+#: src/end-pages/installer.vala:66 src/finalize.vala:129
 msgid "Installing system…"
 msgstr ""
 
