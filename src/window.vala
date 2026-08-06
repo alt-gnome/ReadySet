@@ -58,15 +58,9 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
 
         var app = Application.get_default ();
 
-        if (app.context.mode == EXISTING_USER) {
-            reload_window.begin (() => {
-                present ();
-            });
-        } else {
-            //  We start loading things after window appears on screen
-            //  So that the spinner is shown, and not just nothing
-            map.connect (window_initially_shown);
-        }
+        //  We start loading things after window appears on screen
+        //  So that the spinner is shown, and not just nothing
+        map.connect (window_initially_shown);
 
         simple = !Application.get_default ().options_handler.detailed;
 

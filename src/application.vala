@@ -193,7 +193,8 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
-    public async void build_steps () {
+    //  Returns false if nothing to do, true itherwise
+    public async bool build_steps (bool quiet = false) {
         var pages = new Gee.ArrayList<PageInfo> ();
 
         var initial_position = model == null ? 0 : model.get_selected ();
@@ -201,7 +202,7 @@ public sealed class ReadySet.Application: Adw.Application {
         yield plugin_manager.init_steps_once ();
         var steps = plugin_manager.steps;
 
-        print ("Loaded steps:\n");
+        if (!quiet) print ("Loaded steps:\n");
         for (int i = 0; i < steps.length; i++) {
             var addin = plugin_manager.get_step_addin (steps[i]);
 
@@ -221,7 +222,8 @@ public sealed class ReadySet.Application: Adw.Application {
                         ));
                     }
                 }
-                print ("  %s - %s\n", addin.plugin_info.module_name, addin.plugin_info.name);
+                if (!quiet) print ("  %s - %s\n", addin.plugin_info.module_name, addin.plugin_info.name);
+
             } else if (steps[i].has_prefix (PluginManager.INSTALLER_STEP_PREFIX)) {
                 var installer_step = installer_plugin.steps[PluginManager.get_real_page_id (steps[i])];
                 var installer_page = installer_step.build_page ();
@@ -230,14 +232,14 @@ public sealed class ReadySet.Application: Adw.Application {
                         installer_page,
                         null
                     ));
-                    print (
+                    if (!quiet) print (
                         "  %s%s (from `%s`)\n",
                         PluginManager.get_real_page_id (steps[i]),
                         installer_step.name != null ? " - %s".printf (installer_step.name) : "",
                         installer_plugin.plugin_info.module_name
                     );
                 } else {
-                    print ("  %s (skipped: failed to build installer page)\n", steps[i]);
+                    if (!quiet) print ("  %s (skipped: failed to build installer page)\n", steps[i]);
                 }
             } else {
                 error ("Unknown step `%s`", steps[i]);
@@ -250,13 +252,14 @@ public sealed class ReadySet.Application: Adw.Application {
         if (context.mode == EXISTING_USER) {
             if (check_nothing_to_do (pages.to_array ())) {
                 print ("There is nothing to do\n");
-                quit ();
-                return;
+                return false;
             }
         }
 
         model = new PagesModel (pages);
         model.select_item (initial_position, true);
+
+        return true;
     }
 
     bool check_nothing_to_do (PageInfo[] pages) {
@@ -308,6 +311,13 @@ public sealed class ReadySet.Application: Adw.Application {
         release ();
     }
 
+    void init_build_pages_cb (Object? obj, AsyncResult res) {
+        if (build_steps.end (res)) {
+            build_window ().present ();
+        }
+        release ();
+    }
+
     public override void activate () {
         base.activate ();
 
@@ -335,13 +345,6 @@ public sealed class ReadySet.Application: Adw.Application {
                 }
             }
 
-            var win = new Window (this) {
-                fullscreened = options_handler.fullscreen,
-                default_width = options_handler.width,
-                default_height = options_handler.height,
-                resizable = options_handler.resizable
-            };
-
             //  If mode is existing-user, window presents by itself after
             //  init. 
             //  We do this because of in install/initial-setup modes
@@ -349,13 +352,25 @@ public sealed class ReadySet.Application: Adw.Application {
             //  there can be situation where  there is nothing to do because
             //  of all steps where done at initial-setup stage. And if nothing
             //  to do, we can't show window for loading because blink.
-            if (context.mode != EXISTING_USER) {
-                win.present ();
+            if (context.mode == EXISTING_USER) {
+                hold ();
+                build_steps.begin (true, init_build_pages_cb);
+            } else {
+                build_window ().present ();
             }
 
         } else {
             active_window.present ();
         }
+    }
+
+    Window build_window () {
+        return new Window (this) {
+            fullscreened = options_handler.fullscreen,
+            default_width = options_handler.width,
+            default_height = options_handler.height,
+            resizable = options_handler.resizable
+        };
     }
 
     public new static ReadySet.Application get_default () {
