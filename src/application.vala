@@ -327,6 +327,7 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         if (active_window == null) {
+            //  Initial locale, if locale was set via config
             if (context.has_key ("language.locale")) {
                 var locale = context.get_string ("language.locale");
                 if (locale != null) {
