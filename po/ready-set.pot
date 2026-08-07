@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-06 18:05+0000\n"
+"POT-Creation-Date: 2026-08-07 11:41+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -314,63 +314,63 @@ msgstr ""
 msgid "Trailing hyphen is not allowed"
 msgstr ""
 
-#: plugins/network/wifi.vala:55
+#: plugins/network/wifi.vala:62
 msgid "Can't connect: undetermined security type"
 msgstr ""
 
-#: plugins/network/wifi.vala:99
+#: plugins/network/wifi.vala:138
 msgid "Connection setup failed"
 msgstr ""
 
-#: plugins/network/wifi.vala:110
+#: plugins/network/wifi.vala:149
 msgid "Connection failed"
 msgstr ""
 
-#: plugins/network/wifi.vala:144
+#: plugins/network/wifi.vala:185
 msgid "Connecting…"
 msgstr ""
 
-#: plugins/network/wifi.vala:149
+#: plugins/network/wifi.vala:190
 msgid "Connected"
 msgstr ""
 
-#: plugins/network/wifi.vala:151
+#: plugins/network/wifi.vala:192
 msgid "Connected without internet"
 msgstr ""
 
-#: plugins/network/wifi.vala:155
+#: plugins/network/wifi.vala:196
 msgid "Disconnecting…"
 msgstr ""
 
-#: plugins/network/wifi.vala:223
+#: plugins/network/wifi.vala:264
 msgid "WPA/WPA2/WPA3 Enterprise"
 msgstr ""
 
-#: plugins/network/wifi.vala:228
+#: plugins/network/wifi.vala:269
 msgid "WPA3 Personal"
 msgstr ""
 
-#: plugins/network/wifi.vala:233
+#: plugins/network/wifi.vala:274
 msgid "WPA/WPA2 Personal"
 msgstr ""
 
-#: plugins/network/wifi.vala:238
+#: plugins/network/wifi.vala:279
 msgid "WEP 40/104-bit Key (Hex/ASCII)"
 msgstr ""
 
-#: plugins/network/wifi.vala:242
+#: plugins/network/wifi.vala:283
 msgid "WEP 128-bit Passphrase"
 msgstr ""
 
-#: plugins/network/wifi.vala:247
+#: plugins/network/wifi.vala:288
 msgid "Dynamic WEP (802.1x)"
 msgstr ""
 
-#: plugins/network/wifi.vala:252
+#: plugins/network/wifi.vala:293
 msgid "LEAP"
 msgstr ""
 
-#: plugins/network/wifi.vala:257
+#: plugins/network/wifi.vala:298
 msgid "Enhanced Open"
 msgstr ""
 

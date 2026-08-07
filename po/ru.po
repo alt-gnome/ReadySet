@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the ready-set package.
 # David Sultaniiazov <x1z53@alt-gnome.ru>, 2025.
 # Vladimir Romanov <rirusha@altlinux.org>, 2026.
+# Valery Zabrovsky <brow@altlinux.org>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-06 18:05+0000\n"
-"PO-Revision-Date: 2026-08-04 21:44+0300\n"
-"Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
+"POT-Creation-Date: 2026-08-07 11:41+0300\n"
+"PO-Revision-Date: 2026-08-07 14:03+0300\n"
+"Last-Translator: Valery Zabrovsky <brow@altlinux.org>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -281,15 +282,15 @@ msgstr "Сеть"
 #: plugins/network/data/ui/page.blp:31
 #, fuzzy
 msgid "Set up your network connections."
-msgstr "Настройте ваши сетевые подключения"
+msgstr "Настройте сетевые подключения."
 
 #: plugins/network/data/ui/page.blp:48
 msgid "Host Name"
-msgstr "Имя компьютера"
+msgstr "Имя устройства"
 
 #: plugins/network/data/ui/page.blp:75
 msgid "SIM Cards and Mobile Network"
-msgstr "SIM Карты и Мобильная Сеть"
+msgstr "SIM-карты и мобильная сеть"
 
 #: plugins/network/data/ui/page.blp:79
 msgid "Ethernet"
@@ -301,15 +302,15 @@ msgstr "Wi-Fi"
 
 #: plugins/network/data/ui/page.blp:107
 msgid "Wi-Fi adapter"
-msgstr "Wi-Fi адаптер"
+msgstr "Адаптер Wi-Fi"
 
 #: plugins/network/plugin.vala:173
 msgid "Failed to apply network settings"
-msgstr "Ошиба при настройке сети"
+msgstr "Ошибка при сохранении настроек сети"
 
 #: plugins/network/utils.vala:40
 msgid "Leading hyphen is not allowed"
-msgstr "Начальный дефис не допускается"
+msgstr "Имя устройства не может начинаться с дефиса"
 
 #: plugins/network/utils.vala:49
 msgid "Only Latin letters, digits and hyphens are allowed"
@@ -317,69 +318,69 @@ msgstr "Допускаются только латинские буквы, ци�
 
 #: plugins/network/utils.vala:55
 msgid "Host name is too short"
-msgstr "Имя компьютера слишком короткое"
+msgstr "Имя устройства слишком короткое"
 
 #: plugins/network/utils.vala:60
 msgid "Trailing hyphen is not allowed"
-msgstr "Завершающий дефис не допускается"
+msgstr "Имя устройства не может оканчиваться дефисом"
 
-#: plugins/network/wifi.vala:55
+#: plugins/network/wifi.vala:62
 msgid "Can't connect: undetermined security type"
-msgstr "Не удается подключиться: не определен тип защиты"
+msgstr "Подключение невозможно: неизвестный тип защиты"
 
-#: plugins/network/wifi.vala:99
+#: plugins/network/wifi.vala:138
 msgid "Connection setup failed"
-msgstr "Не удалось установить соединение"
+msgstr "Не удалось настроить соединение"
 
-#: plugins/network/wifi.vala:110
+#: plugins/network/wifi.vala:149
 msgid "Connection failed"
 msgstr "Не удалось установить соединение"
 
-#: plugins/network/wifi.vala:144
+#: plugins/network/wifi.vala:185
 msgid "Connecting…"
 msgstr "Подключение…"
 
-#: plugins/network/wifi.vala:149
+#: plugins/network/wifi.vala:190
 msgid "Connected"
 msgstr "Подключено"
 
-#: plugins/network/wifi.vala:151
+#: plugins/network/wifi.vala:192
 msgid "Connected without internet"
 msgstr "Подключено без доступа в Интернет"
 
-#: plugins/network/wifi.vala:155
+#: plugins/network/wifi.vala:196
 msgid "Disconnecting…"
 msgstr "Отключение…"
 
-#: plugins/network/wifi.vala:223
+#: plugins/network/wifi.vala:264
 msgid "WPA/WPA2/WPA3 Enterprise"
 msgstr "WPA/WPA2/WPA3 Enterprise"
 
-#: plugins/network/wifi.vala:228
+#: plugins/network/wifi.vala:269
 msgid "WPA3 Personal"
 msgstr "WPA3 Personal"
 
-#: plugins/network/wifi.vala:233
+#: plugins/network/wifi.vala:274
 msgid "WPA/WPA2 Personal"
 msgstr "WPA/WPA2 Personal"
 
-#: plugins/network/wifi.vala:238
+#: plugins/network/wifi.vala:279
 msgid "WEP 40/104-bit Key (Hex/ASCII)"
-msgstr "WEP 40/104-bit Key (Hex/ASCII)"
+msgstr "40/104-битный ключ WEP (Hex или ASCII)"
 
-#: plugins/network/wifi.vala:242
+#: plugins/network/wifi.vala:283
 msgid "WEP 128-bit Passphrase"
-msgstr "WEP 128-bit Passphrase"
+msgstr "128-битная парольная фраза WEP"
 
-#: plugins/network/wifi.vala:247
+#: plugins/network/wifi.vala:288
 msgid "Dynamic WEP (802.1x)"
 msgstr "Dynamic WEP (802.1x)"
 
-#: plugins/network/wifi.vala:252
+#: plugins/network/wifi.vala:293
 msgid "LEAP"
 msgstr "LEAP"
 
-#: plugins/network/wifi.vala:257
+#: plugins/network/wifi.vala:298
 msgid "Enhanced Open"
 msgstr "Enhanced Open"
 
