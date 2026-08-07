@@ -160,7 +160,7 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
                 var timezone_abbreviation = now_dt_tz.get_timezone_abbreviation ();
                 timezone_label = @"<b>$(tz_item.country)</b> / $(tz_item.city) ($timezone_abbreviation)";
             } else {
-                timezone_label = @"$(now_identifier) ($(now_dt_tz.get_timezone_abbreviation ()))";
+                timezone_label = _("Undefined");
             }
         }
         selected_timezone = now_tz;
