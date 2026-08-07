@@ -2,16 +2,16 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the ready-set package.
 # David Sultaniiazov <x1z53@alt-gnome.ru>, 2025.
-# Vladimir Romanov <rirusha@altlinux.org>, 2026.
 # Valery Zabrovsky <brow@altlinux.org>, 2026.
+# Vladimir Romanov <rirusha@altlinux.org>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-07 11:48+0000\n"
-"PO-Revision-Date: 2026-08-07 14:03+0300\n"
-"Last-Translator: Valery Zabrovsky <brow@altlinux.org>\n"
+"PO-Revision-Date: 2026-08-07 14:56+0300\n"
+"Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -124,18 +124,16 @@ msgid "Date & Time"
 msgstr "Дата и Время"
 
 #: plugins/date-and-time/data/ui/page.blp:12
-#, fuzzy
 msgid "Select your time zone."
-msgstr "Выберите свой часовой пояс"
+msgstr "Выберите свой часовой пояс."
 
 #: plugins/date-and-time/data/ui/page.blp:31
 msgid "Set time zone"
 msgstr "Выбрать часовой пояс"
 
 #: plugins/date-and-time/data/ui/page.blp:34
-#, fuzzy
 msgid "Automatic setting of time zone"
-msgstr "Ручная настройка часового пояса"
+msgstr "Автоматическая настройка часового пояса"
 
 #: plugins/date-and-time/data/ui/page.blp:42
 #: plugins/date-and-time/data/ui/timezone-list.blp:5
@@ -147,9 +145,8 @@ msgid "Set date and time"
 msgstr "Выбрать дату и время"
 
 #: plugins/date-and-time/data/ui/page.blp:61
-#, fuzzy
 msgid "Automatic setting of date and time"
-msgstr "Ручная настройка даты и времени"
+msgstr "Автоматическая настройка даты и времени"
 
 #: plugins/date-and-time/data/ui/page.blp:81
 #: plugins/date-and-time/data/ui/time-selector.blp:5
@@ -166,7 +163,7 @@ msgstr "Не удалось подключиться к службе време�
 
 #: plugins/date-and-time/page.vala:165 plugins/date-and-time/page.vala:168
 msgid "Undefined"
-msgstr ""
+msgstr "Неопределён"
 
 #: plugins/date-and-time/plugin.vala:65
 msgid "Failed to connect to timedate service"
@@ -212,9 +209,8 @@ msgid "Typing"
 msgstr "Набор текста"
 
 #: plugins/keyboard/data/ui/page.blp:30
-#, fuzzy
 msgid "Select your keyboard layout or an input method."
-msgstr "Выберите раскладку клавиатуры или способ ввода"
+msgstr "Выберите раскладку клавиатуры или способ ввода."
 
 #: plugins/keyboard/data/ui/page.blp:35
 msgid "You must select at least one layout containing Latin characters"
@@ -284,7 +280,6 @@ msgid "Network"
 msgstr "Сеть"
 
 #: plugins/network/data/ui/page.blp:31
-#, fuzzy
 msgid "Set up your network connections."
 msgstr "Настройте сетевые подключения."
 
@@ -541,9 +536,8 @@ msgstr "О Вас"
 
 #: plugins/user/data/ui/page-username.blp:30
 #: plugins/user/data/ui/page-username.blp:106
-#, fuzzy
 msgid "Set information about You."
-msgstr "Введите информацию о Вас"
+msgstr "Введите информацию о Вас."
 
 #: plugins/user/data/ui/page-username.blp:74
 msgid "Change Avatar"
