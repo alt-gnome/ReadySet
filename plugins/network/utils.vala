@@ -66,8 +66,8 @@ namespace Network {
     }
 
     bool same_ssid (Bytes? ssid1, Bytes? ssid2) {
-        return ssid1 != null
-            && ssid2 != null
+        return ssid1 != null && ssid1.length > 0
+            && ssid2 != null && ssid2.length > 0
             && NM.Utils.same_ssid (ssid1.get_data (), ssid2.get_data (), true);
     }
 
@@ -107,20 +107,22 @@ namespace Network {
         return res;
     }
 
-    NM.Connection new_wireless_connection (
-            Bytes ssid,
-            NM.Utils.SecurityType sec
+    NM.Connection prepare_wireless_connection (
+            NM.DeviceWifi wlan,
+            NM.AccessPoint ap,
+            Bytes? hidden_ssid = null
     ) {
         NM.Connection conn = NM.SimpleConnection.new ();
+        Bytes ssid = (ap.ssid != null && ap.ssid.length > 0)
+                ? ap.ssid
+                : (!) hidden_ssid;
 
         conn.add_setting (new NM.SettingConnection () {
             uuid = NM.Utils.uuid_generate (),
             id = NM.Utils.ssid_to_utf8 (ssid.get_data ()),
+            interface_name = wlan.interface,
             type = "802-11-wireless",
             autoconnect = true,
-        });
-        conn.add_setting (new NM.SettingWireless () {
-            ssid = ssid,
         });
         conn.add_setting (new NM.SettingIP4Config () {
             method = "auto",
@@ -129,6 +131,31 @@ namespace Network {
             method = "auto",
         });
 
+        var setting_w = new NM.SettingWireless () {
+            ssid = ssid,
+        };
+        switch (ap.mode) {
+        case INFRA:
+            setting_w.mode = "infrastructure";
+            break;
+        case ADHOC:
+            setting_w.mode = "adhoc";
+            break;
+        case MESH:
+            setting_w.mode = "mesh";
+            break;
+        case AP:
+            setting_w.mode = "ap";
+            break;
+        default:
+            break;
+        }
+        conn.add_setting (setting_w);
+
+        return conn;
+    }
+
+    void apply_security (NM.Connection conn, NM.Utils.SecurityType sec) {
         switch (sec) {
         case WPA3_SUITE_B_192:
             conn.add_setting (new NM.SettingWirelessSecurity () {
@@ -187,10 +214,9 @@ namespace Network {
             });
             break;
         default:
+            conn.remove_setting (typeof (NM.SettingWirelessSecurity));
             break;
         }
-
-        return conn;
     }
 }
 

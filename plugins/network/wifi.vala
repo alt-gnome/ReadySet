@@ -25,19 +25,26 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
     unowned Gtk.Image icon;
 
     unowned NM.DeviceWifi device;
-    unowned Bytes ssid;
-    NM.ActiveConnection? listener = null;
+    unowned NM.AccessPoint point;
 
+    NM.ActiveConnection? listener = null;
     public string? status { get; private set; default = null; }
 
     NM.Utils.SecurityType[] security;
     public bool needs_secrets { get; private set; default = false; }
 
-    public AccessPointRow (NM.DeviceWifi wlan, NM.AccessPoint ap) {
+    public AccessPointRow (
+            NM.DeviceWifi wlan,
+            NM.AccessPoint ap,
+            Bytes? hidden_ssid = null
+    ) {
         device = wlan;
-        ssid = ap.ssid;
+        point = ap;
 
-        title = NM.Utils.ssid_to_utf8 (ssid?.get_data ());
+        Bytes ssid = (ap.ssid != null && ap.ssid.length > 0)
+                ? ap.ssid
+                : (!) hidden_ssid;
+        title = NM.Utils.ssid_to_utf8 (ssid.get_data ());
 
         if (ap.strength >= 60) {
             icon.icon_name = "radiowaves-1-symbolic";
@@ -71,7 +78,7 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         if (addin.context.sandbox) {
             if (needs_secrets) {
                 var dialog = new ApSecurityEditor (
-                    new_wireless_connection (ssid, NONE),
+                    prepare_wireless_connection (device, point),
                     security
                 );
                 dialog.present (root);
@@ -80,20 +87,52 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         }
 
         NM.RemoteConnection? conn = null;
+        NM.Connection? tmp = null;
 
         foreach (var known in addin.client.connections) {
-            if (same_ssid (ssid, known.get_setting_wireless ()?.ssid)) {
-                conn = known;
+            if (same_ssid (point.ssid, known.get_setting_wireless ()?.ssid)) {
+                if (device.interface == known.get_interface_name ()) {
+                    conn = known;
+                } else {
+                    tmp = NM.SimpleConnection.new_clone (known);
+
+                    // Set new UUID and device
+                    var setting_c = tmp.get_setting_connection ();
+                    if (setting_c == null) {
+                        tmp.add_setting (new NM.SettingConnection ());
+                        setting_c = tmp.get_setting_connection ();
+                    }
+                    setting_c.uuid = NM.Utils.uuid_generate ();
+                    setting_c.interface_name = device.interface;
+
+                    // Copy Wi-Fi secrets if needed and possible
+                    var setting_ws = known.get_setting_wireless_security ();
+                    if (setting_ws != null) {
+                        try {
+                            tmp.update_secrets (setting_ws.name,
+                                yield known.get_secrets_async (
+                                    setting_ws.name, null
+                                )
+                            );
+                        } catch (Error e) {
+                            warning (e.message);
+                        }
+                    }
+                }
                 break;
             }
         }
 
-        if (conn == null) {
+        bool need_new = conn == null;
+        if (need_new) {
+            if (tmp == null) {
+                tmp = prepare_wireless_connection (device, point);
+                apply_security (tmp, security[0]);
+            }
+
             try {
                 conn = yield addin.client.add_connection_async (
-                    new_wireless_connection (ssid, security[0]),
-                    false,
-                    null
+                    tmp, false, null
                 );
             } catch (Error e) {
                 status = _("Connection setup failed");
@@ -110,10 +149,12 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             status = _("Connection failed");
             warning (e.message);
 
-            try {
-                yield conn.delete_async (null);
-            } catch (Error e) {
-                error (e.message);
+            if (need_new) {
+                try {
+                    yield conn.delete_async (null);
+                } catch (Error e) {
+                    error (e.message);
+                }
             }
         }
     }
