@@ -87,20 +87,50 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         }
 
         NM.RemoteConnection? conn = null;
+        NM.Connection? tmp = null;
 
         foreach (var known in addin.client.connections) {
-            if (same_ssid (point.ssid, known.get_setting_wireless ()?.ssid)
-                    && device.interface == known.get_interface_name ()) {
-                conn = known;
+            if (same_ssid (point.ssid, known.get_setting_wireless ()?.ssid)) {
+                if (device.interface == known.get_interface_name ()) {
+                    conn = known;
+                } else {
+                    tmp = NM.SimpleConnection.new_clone (known);
+
+                    // Set new UUID and device
+                    var setting_c = tmp.get_setting_connection ();
+                    if (setting_c == null) {
+                        tmp.add_setting (new NM.SettingConnection ());
+                        setting_c = tmp.get_setting_connection ();
+                    }
+                    setting_c.uuid = NM.Utils.uuid_generate ();
+                    setting_c.interface_name = device.interface;
+
+                    // Copy Wi-Fi secrets if needed and possible
+                    var setting_ws = known.get_setting_wireless_security ();
+                    if (setting_ws != null) {
+                        try {
+                            tmp.update_secrets (setting_ws.name,
+                                yield known.get_secrets_async (
+                                    setting_ws.name, null
+                                )
+                            );
+                        } catch (Error e) {
+                            warning (e.message);
+                        }
+                    }
+                }
                 break;
             }
         }
 
         bool need_new = conn == null;
         if (need_new) {
-            try {
-                NM.Connection tmp = prepare_wireless_connection (device, point);
+            if (tmp == null) {
+                tmp = prepare_wireless_connection (device, point);
                 apply_security (tmp, security[0]);
+            }
+
+            try {
                 conn = yield addin.client.add_connection_async (
                     tmp, false, null
                 );
