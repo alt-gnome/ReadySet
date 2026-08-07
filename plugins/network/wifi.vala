@@ -88,7 +88,8 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             }
         }
 
-        if (conn == null) {
+        bool need_new = conn == null;
+        if (need_new) {
             try {
                 conn = yield addin.client.add_connection_async (
                     new_wireless_connection (ssid, security[0]),
@@ -110,10 +111,12 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             status = _("Connection failed");
             warning (e.message);
 
-            try {
-                yield conn.delete_async (null);
-            } catch (Error e) {
-                error (e.message);
+            if (need_new) {
+                try {
+                    yield conn.delete_async (null);
+                } catch (Error e) {
+                    error (e.message);
+                }
             }
         }
     }
