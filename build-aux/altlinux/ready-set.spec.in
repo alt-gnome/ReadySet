@@ -427,6 +427,7 @@ Requires: %name-plugin-software = %EVR
 %doc plugins/privacy/README.*.md
 
 %files plugin-date-and-time
+%_datadir/%name/date-and-time/default-timezones.json
 %_libdir/%name/plugins/steps/date-and-time.plugin
 %_libdir/%name/plugins/steps/libdate-and-time.so
 %_datadir/polkit-1/rules.d/%app_id.Plugin.DateAndTime.rules
