@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 11:41+0300\n"
+"POT-Creation-Date: 2026-08-07 11:48+0000\n"
 "PO-Revision-Date: 2026-08-07 14:03+0300\n"
 "Last-Translator: Valery Zabrovsky <brow@altlinux.org>\n"
 "Language-Team: Russian\n"
@@ -163,6 +163,10 @@ msgstr "Ничего не найдено"
 #: plugins/date-and-time/page.vala:141
 msgid "Failed to connect to timedate service: "
 msgstr "Не удалось подключиться к службе времени и даты: "
+
+#: plugins/date-and-time/page.vala:165 plugins/date-and-time/page.vala:168
+msgid "Undefined"
+msgstr ""
 
 #: plugins/date-and-time/plugin.vala:65
 msgid "Failed to connect to timedate service"
