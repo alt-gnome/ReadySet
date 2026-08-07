@@ -19,6 +19,8 @@
  */
 
 namespace DateAndTime {
+    Serialize.Dict<string>? default_timezones = null;
+
     int clamp_value (int value, int min, int max) {
         var delta = max - min;
 
@@ -46,6 +48,50 @@ namespace DateAndTime {
         } catch (Error e) {
             return "UTC";
         }
+    }
+
+    void read_default_timezones () {
+        try {
+            var file = File.new_build_filename (Config.READYSET_DATADIR, "date-and-time", "default-timezones.json");
+
+            uint8[] data;
+            file.load_contents (null, out data, null);
+            var content = (string) data;
+
+            default_timezones = Serialize.JsonWorker.simple_dict_from_json<string> (content);
+        } catch (Error error) {
+            warning (error.message);
+        }
+    }
+
+    string? get_default_timezone (string? identifier) {
+        if (default_timezones == null) {
+            read_default_timezones ();
+
+            if (default_timezones == null) {
+                return null;
+            }
+        }
+
+        if (default_timezones.has_key (identifier)) {
+            return default_timezones[identifier];
+        }
+
+        return null;
+    }
+
+    public string? get_locale_country (string full_locale) {
+        if (full_locale == "") {
+            return null;
+        }
+
+        var locale = full_locale.split (".")[0].split ("@")[0].split ("_");
+
+        if (locale.length >= 2) {
+            return locale[1];
+        }
+
+        return null;
     }
 
     DateAndTime.Timedate1 get_timedate_proxy () throws Error {
