@@ -48,7 +48,7 @@ namespace DateAndTime {
         }
     }
 
-    string? get_default_timezone (string identifier) {
+    string? get_default_timezone (string? identifier) {
         try {
             var file = File.new_build_filename (Config.READYSET_DATADIR, "date-and-time", "default-timezones.json");
 
