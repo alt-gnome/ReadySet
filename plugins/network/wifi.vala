@@ -25,19 +25,26 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
     unowned Gtk.Image icon;
 
     unowned NM.DeviceWifi device;
-    unowned Bytes ssid;
-    NM.ActiveConnection? listener = null;
+    unowned NM.AccessPoint point;
 
+    NM.ActiveConnection? listener = null;
     public string? status { get; private set; default = null; }
 
     NM.Utils.SecurityType[] security;
     public bool needs_secrets { get; private set; default = false; }
 
-    public AccessPointRow (NM.DeviceWifi wlan, NM.AccessPoint ap) {
+    public AccessPointRow (
+            NM.DeviceWifi wlan,
+            NM.AccessPoint ap,
+            Bytes? hidden_ssid = null
+    ) {
         device = wlan;
-        ssid = ap.ssid;
+        point = ap;
 
-        title = NM.Utils.ssid_to_utf8 (ssid?.get_data ());
+        Bytes ssid = (ap.ssid != null && ap.ssid.length > 0)
+                ? ap.ssid
+                : (!) hidden_ssid;
+        title = NM.Utils.ssid_to_utf8 (ssid.get_data ());
 
         if (ap.strength >= 60) {
             icon.icon_name = "radiowaves-1-symbolic";
@@ -71,7 +78,7 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         if (addin.context.sandbox) {
             if (needs_secrets) {
                 var dialog = new ApSecurityEditor (
-                    new_wireless_connection (ssid, NONE),
+                    prepare_wireless_connection (device, point),
                     security
                 );
                 dialog.present (root);
@@ -82,7 +89,8 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         NM.RemoteConnection? conn = null;
 
         foreach (var known in addin.client.connections) {
-            if (same_ssid (ssid, known.get_setting_wireless ()?.ssid)) {
+            if (same_ssid (point.ssid, known.get_setting_wireless ()?.ssid)
+                    && device.interface == known.get_interface_name ()) {
                 conn = known;
                 break;
             }
@@ -91,10 +99,10 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         bool need_new = conn == null;
         if (need_new) {
             try {
+                NM.Connection tmp = prepare_wireless_connection (device, point);
+                apply_security (tmp, security[0]);
                 conn = yield addin.client.add_connection_async (
-                    new_wireless_connection (ssid, security[0]),
-                    false,
-                    null
+                    tmp, false, null
                 );
             } catch (Error e) {
                 status = _("Connection setup failed");
