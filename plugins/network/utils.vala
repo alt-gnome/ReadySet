@@ -66,8 +66,8 @@ namespace Network {
     }
 
     bool same_ssid (Bytes? ssid1, Bytes? ssid2) {
-        return ssid1 != null
-            && ssid2 != null
+        return ssid1 != null && ssid1.length > 0
+            && ssid2 != null && ssid2.length > 0
             && NM.Utils.same_ssid (ssid1.get_data (), ssid2.get_data (), true);
     }
 
