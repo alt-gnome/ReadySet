@@ -48,37 +48,27 @@ namespace DateAndTime {
         }
     }
 
-    string get_default_timezone (string lang) {
-        // Original list
-        // https://git.altlinux.org/gears/a/alterator-datetime.git?a=blob_plain;f=alterator-datetime/etc/defaultzones
+    string? get_default_timezone (string identifier) {
+        try {
+            var file = File.new_build_filename (Config.READYSET_DATADIR, "date-and-time", "default-timezones.json");
 
-        switch (lang) {
-            case "BY":
-                return "Europe/Minsk";
-            case "GB":
-                return "Europe/London";
-            case "RU":
-                return "Europe/Moscow";
-            case "UA":
-                return "Europe/Kiev";
-            case "US":
-                return "America/New_York";
-            case "ES":
-                return "Europe/Madrid";
-            case "BR":
-                return "America/Sao_Paulo";
-            case "AR":
-                return "America/Argentina/Buenos_Aires";
-            case "CL":
-                return "America/Santiago";
-            case "VE":
-                return "America/Caracas";
-            case "UZ":
-                return "Asia/Tashkent";
-            case "POSIX":
-            default:
-                return "Europe/London";
+            uint8[] data;
+            file.load_contents (null, out data, null);
+            var content = (string) data;
+
+            var default_timezones =
+                Serialize.JsonWorker.simple_array_from_json<DateAndTime.DefaultTimezonesItem> (content);
+
+            foreach (var default_timezone in default_timezones) {
+                if (default_timezone.identifier == identifier) {
+                    return default_timezone.timezone;
+                }
+            }
+        } catch {
+
         }
+
+        return null;
     }
 
     public string? get_locale_country (string full_locale) {

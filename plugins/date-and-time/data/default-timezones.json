@@ -1,0 +1,50 @@
+[
+  {
+    "identifier": "BY",
+    "timezone": "Europe/Minsk"
+  },
+  {
+    "identifier": "GB",
+    "timezone": "Europe/London"
+  },
+  {
+    "identifier": "RU",
+    "timezone": "Europe/Moscow"
+  },
+  {
+    "identifier": "UA",
+    "timezone": "Europe/Kiev"
+  },
+  {
+    "identifier": "US",
+    "timezone": "America/New_York"
+  },
+  {
+    "identifier": "ES",
+    "timezone": "Europe/Madrid"
+  },
+  {
+    "identifier": "BR",
+    "timezone": "America/Sao_Paulo"
+  },
+  {
+    "identifier": "AR",
+    "timezone": "America/Argentina/Buenos_Aires"
+  },
+  {
+    "identifier": "CL",
+    "timezone": "America/Santiago"
+  },
+  {
+    "identifier": "VE",
+    "timezone": "America/Caracas"
+  },
+  {
+    "identifier": "UZ",
+    "timezone": "Asia/Tashkent"
+  },
+  {
+    "identifier": "POSIX",
+    "timezone": "Europe/London"
+  }
+]

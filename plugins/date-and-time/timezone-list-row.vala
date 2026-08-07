@@ -49,6 +49,11 @@ public class DateAndTime.TimezoneListRow : Gtk.Box {
     }
 }
 
+public class DateAndTime.DefaultTimezonesItem : Object {
+    public string identifier { get; set; }
+    public string timezone { get; set; }
+}
+
 public class DateAndTime.TimezoneListItem : Object {
     public string country_codes { get; private set; }
     public string country { get; private set; }
