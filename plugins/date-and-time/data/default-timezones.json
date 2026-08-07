@@ -1,50 +1,14 @@
-[
-  {
-    "identifier": "BY",
-    "timezone": "Europe/Minsk"
-  },
-  {
-    "identifier": "GB",
-    "timezone": "Europe/London"
-  },
-  {
-    "identifier": "RU",
-    "timezone": "Europe/Moscow"
-  },
-  {
-    "identifier": "UA",
-    "timezone": "Europe/Kiev"
-  },
-  {
-    "identifier": "US",
-    "timezone": "America/New_York"
-  },
-  {
-    "identifier": "ES",
-    "timezone": "Europe/Madrid"
-  },
-  {
-    "identifier": "BR",
-    "timezone": "America/Sao_Paulo"
-  },
-  {
-    "identifier": "AR",
-    "timezone": "America/Argentina/Buenos_Aires"
-  },
-  {
-    "identifier": "CL",
-    "timezone": "America/Santiago"
-  },
-  {
-    "identifier": "VE",
-    "timezone": "America/Caracas"
-  },
-  {
-    "identifier": "UZ",
-    "timezone": "Asia/Tashkent"
-  },
-  {
-    "identifier": "POSIX",
-    "timezone": "Europe/London"
-  }
-]
+{
+  "BY": "Europe/Minsk",
+  "GB": "Europe/London",
+  "RU": "Europe/Moscow",
+  "UA": "Europe/Kiev",
+  "US": "America/New_York",
+  "ES": "Europe/Madrid",
+  "BR": "America/Sao_Paulo",
+  "AR": "America/Argentina/Buenos_Aires",
+  "CL": "America/Santiago",
+  "VE": "America/Caracas",
+  "UZ": "Asia/Tashkent",
+  "POSIX": "Europe/London"
+}

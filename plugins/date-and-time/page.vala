@@ -153,12 +153,17 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
             if (Addin.get_instance ().context.has_key ("language.locale")) {
                 var locale = Addin.get_instance ().context.get_string ("language.locale");
                 now_identifier = get_default_timezone (get_locale_country (locale));
-                tz_item = TimezoneListItem.from_identifier (now_identifier);
-                now_tz = tz_item.timezone;
-                now_dt_tz = new DateTime.now (now_tz);
 
-                var timezone_abbreviation = now_dt_tz.get_timezone_abbreviation ();
-                timezone_label = @"<b>$(tz_item.country)</b> / $(tz_item.city) ($timezone_abbreviation)";
+                if (now_identifier != null) {
+                    tz_item = TimezoneListItem.from_identifier (now_identifier);
+                    now_tz = tz_item.timezone;
+                    now_dt_tz = new DateTime.now (now_tz);
+
+                    var timezone_abbreviation = now_dt_tz.get_timezone_abbreviation ();
+                    timezone_label = @"<b>$(tz_item.country)</b> / $(tz_item.city) ($timezone_abbreviation)";
+                } else {
+                    timezone_label = _("Undefined");
+                }
             } else {
                 timezone_label = _("Undefined");
             }
