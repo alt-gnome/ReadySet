@@ -175,6 +175,11 @@ jobs:
         denviron:
           - gnome
           - phosh
+        include:
+          - denviron: gnome
+            image: altlinux.space/alt-atomic/onyx/nightly:latest
+          - denviron: phosh
+            image: altlinux.space/alt-atomic/phosphophyllite/6.18/nightly:latest
 
     needs:
       - rpm-build
@@ -198,7 +203,7 @@ jobs:
         with:
           image-name: alt-gnome/ready-set-test-atomic
           image-tag: ${{ matrix.denviron }}
-          containerfile-path: ./test-atomic/${{ matrix.denviron }}/Containerfile
+          containerfile-path: ./test-atomic/Containerfile
 
           registry-password: ${{ secrets.TOKEN }}
 
@@ -207,5 +212,7 @@ jobs:
 
           extra-labels: |
             org.altlinux.installer.has-initial-setup=true
+          build-args: |
+            IMAGE=${{ matrix.image }}
 
           rechunk-enabled: false

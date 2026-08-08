@@ -1,0 +1,6 @@
+ARG IMAGE
+
+FROM $IMAGE
+
+RUN --mount=type=bind,source=./test-atomic/image.yml,target=/etc/apm/image.yml \
+    apm system image build
