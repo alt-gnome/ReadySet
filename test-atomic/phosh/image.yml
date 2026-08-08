@@ -8,27 +8,7 @@ modules:
 
   - type: packages
     body:
-      install:
-        - ready-set-phrog
-        - ready-set-plugin-language
-        - ready-set-plugin-keyboard
-        - ready-set-plugin-date-and-time
-        - ready-set-plugin-user-passwdqc
-        - ready-set-plugin-atomic-finalize
       upgrade: true
-
-  - name: Copy configuration
-    type: copy
-    body:
-      source: root
-      destination: /
-      replace: true
-
-  - name: Update sysusers
-    type: shell
-    body:
-      command: |
-        systemd-sysusers
 
   - name: Cleanup
     type: include
