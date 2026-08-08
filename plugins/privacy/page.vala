@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2026 David Sultaniiazov <x1z53@alt-gnome.ru>
+ * Copyright (C) 2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
