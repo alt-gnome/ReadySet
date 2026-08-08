@@ -343,7 +343,7 @@ Requires: %name-plugin-software = %EVR
 %_sysusersdir/%gis_name.conf
 
 %files phrog
-%_datadir/glib-2.0/schemas/50_%app_id.PhrogFirstRun.gschema.override
+%_sysconfdir/dconf/db/local.d/50_org.altlinux.ReadySet.phrog_first-run
 
 %files -n %ser_libname%soversion
 %_libdir/%ser_libname-%soversion.so.%soversion
