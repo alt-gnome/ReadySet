@@ -344,6 +344,7 @@ Requires: %name-plugin-software = %EVR
 
 %files phrog
 %_sysconfdir/dconf/db/local.d/50_org.altlinux.ReadySet.phrog_first-run
+%_sysusersdir/%name-phrog.conf
 
 %files -n %ser_libname%soversion
 %_libdir/%ser_libname-%soversion.so.%soversion
