@@ -13,7 +13,7 @@ The plugin is built in two variants with different password quality backends: `u
 | `user.with-root` | Enable the root password page | — |
 | `user.enforce-password-quality` | Prevent proceeding if the password is weak | — |
 | `user.passwd-conf-path` | Path to the password quality library configuration | — |
-| `user.avatar-directories` | Directories to search for avatar files. The `org.gnome.desktop.interface` `avatar-directories` setting is also used | — |
+| `user.avatar-directories` | Directories to search for avatar files. If no avatars are found, the `org.gnome.desktop.interface` `avatar-directories` setting is used as a fallback | — |
 
 ## Stored context variables
 
