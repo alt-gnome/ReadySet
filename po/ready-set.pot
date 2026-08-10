@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-03 23:02+0000\n"
+"POT-Creation-Date: 2026-08-07 11:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,15 +41,15 @@ msgstr ""
 msgid "Nothing to show"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:594
+#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:593
 msgid "Go to previous page"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:613
+#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:612
 msgid "Next"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:626
+#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:625
 msgid "Extend/Retract keyboard"
 msgstr ""
 
@@ -120,31 +120,31 @@ msgid "Date & Time"
 msgstr ""
 
 #: plugins/date-and-time/data/ui/page.blp:12
-msgid "Select your time zone"
+msgid "Select your time zone."
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:29
+#: plugins/date-and-time/data/ui/page.blp:31
 msgid "Set time zone"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:32
-msgid "Manual setting of time zone"
+#: plugins/date-and-time/data/ui/page.blp:34
+msgid "Automatic setting of time zone"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:40
+#: plugins/date-and-time/data/ui/page.blp:42
 #: plugins/date-and-time/data/ui/timezone-list.blp:5
 msgid "Time zone"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:57
+#: plugins/date-and-time/data/ui/page.blp:58
 msgid "Set date and time"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:60
-msgid "Manual setting of date and time"
+#: plugins/date-and-time/data/ui/page.blp:61
+msgid "Automatic setting of date and time"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:80
+#: plugins/date-and-time/data/ui/page.blp:81
 #: plugins/date-and-time/data/ui/time-selector.blp:5
 msgid "Time"
 msgstr ""
@@ -155,6 +155,10 @@ msgstr ""
 
 #: plugins/date-and-time/page.vala:141
 msgid "Failed to connect to timedate service: "
+msgstr ""
+
+#: plugins/date-and-time/page.vala:165 plugins/date-and-time/page.vala:168
+msgid "Undefined"
 msgstr ""
 
 #: plugins/date-and-time/plugin.vala:65
@@ -201,7 +205,7 @@ msgid "Typing"
 msgstr ""
 
 #: plugins/keyboard/data/ui/page.blp:30
-msgid "Select your keyboard layout or an input method"
+msgid "Select your keyboard layout or an input method."
 msgstr ""
 
 #: plugins/keyboard/data/ui/page.blp:35
@@ -271,7 +275,7 @@ msgid "Network"
 msgstr ""
 
 #: plugins/network/data/ui/page.blp:31
-msgid "Set up your network connections"
+msgid "Set up your network connections."
 msgstr ""
 
 #: plugins/network/data/ui/page.blp:48
@@ -314,63 +318,63 @@ msgstr ""
 msgid "Trailing hyphen is not allowed"
 msgstr ""
 
-#: plugins/network/wifi.vala:55
+#: plugins/network/wifi.vala:62
 msgid "Can't connect: undetermined security type"
 msgstr ""
 
-#: plugins/network/wifi.vala:99
+#: plugins/network/wifi.vala:138
 msgid "Connection setup failed"
 msgstr ""
 
-#: plugins/network/wifi.vala:110
+#: plugins/network/wifi.vala:149
 msgid "Connection failed"
 msgstr ""
 
-#: plugins/network/wifi.vala:144
+#: plugins/network/wifi.vala:185
 msgid "Connecting…"
 msgstr ""
 
-#: plugins/network/wifi.vala:149
+#: plugins/network/wifi.vala:190
 msgid "Connected"
 msgstr ""
 
-#: plugins/network/wifi.vala:151
+#: plugins/network/wifi.vala:192
 msgid "Connected without internet"
 msgstr ""
 
-#: plugins/network/wifi.vala:155
+#: plugins/network/wifi.vala:196
 msgid "Disconnecting…"
 msgstr ""
 
-#: plugins/network/wifi.vala:223
+#: plugins/network/wifi.vala:264
 msgid "WPA/WPA2/WPA3 Enterprise"
 msgstr ""
 
-#: plugins/network/wifi.vala:228
+#: plugins/network/wifi.vala:269
 msgid "WPA3 Personal"
 msgstr ""
 
-#: plugins/network/wifi.vala:233
+#: plugins/network/wifi.vala:274
 msgid "WPA/WPA2 Personal"
 msgstr ""
 
-#: plugins/network/wifi.vala:238
+#: plugins/network/wifi.vala:279
 msgid "WEP 40/104-bit Key (Hex/ASCII)"
 msgstr ""
 
-#: plugins/network/wifi.vala:242
+#: plugins/network/wifi.vala:283
 msgid "WEP 128-bit Passphrase"
 msgstr ""
 
-#: plugins/network/wifi.vala:247
+#: plugins/network/wifi.vala:288
 msgid "Dynamic WEP (802.1x)"
 msgstr ""
 
-#: plugins/network/wifi.vala:252
+#: plugins/network/wifi.vala:293
 msgid "LEAP"
 msgstr ""
 
-#: plugins/network/wifi.vala:257
+#: plugins/network/wifi.vala:298
 msgid "Enhanced Open"
 msgstr ""
 
@@ -437,22 +441,22 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: plugins/software/source.vala:141
+#: plugins/software/source.vala:121
 #, c-format
 msgid "Failed to add or enable '%s' flatpak remote with name %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:186
+#: plugins/software/source.vala:166
 #, c-format
 msgid "Failed to add '%s' stplr repository with name %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:252
+#: plugins/software/source.vala:232
 #, c-format
 msgid "Failed to add apt repository with repos: %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:328
+#: plugins/software/source.vala:308
 #, c-format
 msgid "Failed to exec: %s: %s"
 msgstr ""
@@ -461,24 +465,24 @@ msgstr ""
 msgid "Select Avatar"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:37
+#: plugins/user/data/ui/page-password.blp:38
 msgid "Be careful not to lose your password."
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:56
+#: plugins/user/data/ui/page-password.blp:57
 msgid "Your user’s password"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:65
+#: plugins/user/data/ui/page-password.blp:66
 msgid "Generate user password"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:80
+#: plugins/user/data/ui/page-password.blp:81
 #: plugins/user/data/ui/page-root-password.blp:84
 msgid "Passwords do not match"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:84
+#: plugins/user/data/ui/page-password.blp:85
 #: plugins/user/data/ui/page-root-password.blp:88
 msgid "Repeat password"
 msgstr ""
@@ -518,7 +522,8 @@ msgid "About You"
 msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:30
-msgid "We need a few details to complete setup."
+#: plugins/user/data/ui/page-username.blp:106
+msgid "Set information about You."
 msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:74
@@ -527,10 +532,6 @@ msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:95
 msgid "Remove Avatar"
-msgstr ""
-
-#: plugins/user/data/ui/page-username.blp:106
-msgid "Set information about You"
 msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:123
@@ -562,7 +563,7 @@ msgstr ""
 msgid "Set a Password for %s"
 msgstr ""
 
-#: plugins/user/plugin.vala:81
+#: plugins/user/plugin.vala:77
 msgid "Error when creating a user"
 msgstr ""
 
@@ -743,7 +744,7 @@ msgstr ""
 msgid "Error message: %s"
 msgstr ""
 
-#: src/end-pages/installer.vala:66 src/finalize.vala:127
+#: src/end-pages/installer.vala:66 src/finalize.vala:129
 msgid "Installing system…"
 msgstr ""
 

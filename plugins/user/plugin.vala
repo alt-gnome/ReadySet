@@ -37,10 +37,8 @@ public class User.Addin : ReadySet.StepAddin {
     public async override ReadySet.BasePage[] build_pages () {
         return {
             new User.PageUsername (),
-            new User.PagePassword ()
-#if WITH_ROOT_SET
-            , new User.PageRootPassword ()
-#endif
+            new User.PagePassword (),
+            new User.PageRootPassword ()
         };
     }
 
@@ -66,7 +64,6 @@ public class User.Addin : ReadySet.StepAddin {
                 user.set_icon_file (context.get_string ("user.avatar-file"));
             }
 
-#if WITH_ROOT_SET
             if (context.get_boolean ("user.with-root")) {
                 if (context.get_string ("user.root-password") != "") {
                     yield set_root_password (context.get_string ("user.root-password"));
@@ -75,7 +72,6 @@ public class User.Addin : ReadySet.StepAddin {
                     yield set_root_password (context.get_string ("user.password"));
                 }
             }
-#endif
 
         } catch (Error e) {
             throw ReadySet.ApplyError.build_error (_("Error when creating a user"), e.message);
@@ -87,9 +83,7 @@ public class User.Addin : ReadySet.StepAddin {
 
         //  Settings
         vars["avatar-file"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
-#if WITH_ROOT_SET
         vars["with-root"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
-#endif
         vars["enforce-password-quality"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
         vars["passwd-conf-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["avatar-directories"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV);
@@ -98,9 +92,8 @@ public class User.Addin : ReadySet.StepAddin {
         vars["username"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["fullname"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
-#if WITH_ROOT_SET
         vars["root-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
-#endif
+
         return vars;
     }
 

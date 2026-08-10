@@ -2,14 +2,15 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the ready-set package.
 # David Sultaniiazov <x1z53@alt-gnome.ru>, 2025.
+# Valery Zabrovsky <brow@altlinux.org>, 2026.
 # Vladimir Romanov <rirusha@altlinux.org>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-03 23:02+0000\n"
-"PO-Revision-Date: 2026-08-04 21:44+0300\n"
+"POT-Creation-Date: 2026-08-07 11:48+0000\n"
+"PO-Revision-Date: 2026-08-07 14:56+0300\n"
 "Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -44,15 +45,15 @@ msgstr "Всё готово!"
 msgid "Nothing to show"
 msgstr "Нечего показывать"
 
-#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:594
+#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:593
 msgid "Go to previous page"
 msgstr "К предыдущей странице"
 
-#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:613
+#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:612
 msgid "Next"
 msgstr "Дальше"
 
-#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:626
+#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:625
 msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
 
@@ -123,31 +124,31 @@ msgid "Date & Time"
 msgstr "Дата и Время"
 
 #: plugins/date-and-time/data/ui/page.blp:12
-msgid "Select your time zone"
-msgstr "Выберите свой часовой пояс"
+msgid "Select your time zone."
+msgstr "Выберите свой часовой пояс."
 
-#: plugins/date-and-time/data/ui/page.blp:29
+#: plugins/date-and-time/data/ui/page.blp:31
 msgid "Set time zone"
 msgstr "Выбрать часовой пояс"
 
-#: plugins/date-and-time/data/ui/page.blp:32
-msgid "Manual setting of time zone"
-msgstr "Ручная настройка часового пояса"
+#: plugins/date-and-time/data/ui/page.blp:34
+msgid "Automatic setting of time zone"
+msgstr "Автоматическая настройка часового пояса"
 
-#: plugins/date-and-time/data/ui/page.blp:40
+#: plugins/date-and-time/data/ui/page.blp:42
 #: plugins/date-and-time/data/ui/timezone-list.blp:5
 msgid "Time zone"
 msgstr "Часовой пояс"
 
-#: plugins/date-and-time/data/ui/page.blp:57
+#: plugins/date-and-time/data/ui/page.blp:58
 msgid "Set date and time"
 msgstr "Выбрать дату и время"
 
-#: plugins/date-and-time/data/ui/page.blp:60
-msgid "Manual setting of date and time"
-msgstr "Ручная настройка даты и времени"
+#: plugins/date-and-time/data/ui/page.blp:61
+msgid "Automatic setting of date and time"
+msgstr "Автоматическая настройка даты и времени"
 
-#: plugins/date-and-time/data/ui/page.blp:80
+#: plugins/date-and-time/data/ui/page.blp:81
 #: plugins/date-and-time/data/ui/time-selector.blp:5
 msgid "Time"
 msgstr "Время"
@@ -159,6 +160,10 @@ msgstr "Ничего не найдено"
 #: plugins/date-and-time/page.vala:141
 msgid "Failed to connect to timedate service: "
 msgstr "Не удалось подключиться к службе времени и даты: "
+
+#: plugins/date-and-time/page.vala:165 plugins/date-and-time/page.vala:168
+msgid "Undefined"
+msgstr "Неопределён"
 
 #: plugins/date-and-time/plugin.vala:65
 msgid "Failed to connect to timedate service"
@@ -204,8 +209,8 @@ msgid "Typing"
 msgstr "Набор текста"
 
 #: plugins/keyboard/data/ui/page.blp:30
-msgid "Select your keyboard layout or an input method"
-msgstr "Выберите раскладку клавиатуры или способ ввода"
+msgid "Select your keyboard layout or an input method."
+msgstr "Выберите раскладку клавиатуры или способ ввода."
 
 #: plugins/keyboard/data/ui/page.blp:35
 msgid "You must select at least one layout containing Latin characters"
@@ -275,16 +280,16 @@ msgid "Network"
 msgstr "Сеть"
 
 #: plugins/network/data/ui/page.blp:31
-msgid "Set up your network connections"
-msgstr "Настройте ваши сетевые подключения"
+msgid "Set up your network connections."
+msgstr "Настройте сетевые подключения."
 
 #: plugins/network/data/ui/page.blp:48
 msgid "Host Name"
-msgstr "Имя компьютера"
+msgstr "Имя устройства"
 
 #: plugins/network/data/ui/page.blp:75
 msgid "SIM Cards and Mobile Network"
-msgstr "SIM Карты и Мобильная Сеть"
+msgstr "SIM-карты и мобильная сеть"
 
 #: plugins/network/data/ui/page.blp:79
 msgid "Ethernet"
@@ -296,15 +301,15 @@ msgstr "Wi-Fi"
 
 #: plugins/network/data/ui/page.blp:107
 msgid "Wi-Fi adapter"
-msgstr "Wi-Fi адаптер"
+msgstr "Адаптер Wi-Fi"
 
 #: plugins/network/plugin.vala:173
 msgid "Failed to apply network settings"
-msgstr "Ошиба при настройке сети"
+msgstr "Ошибка при сохранении настроек сети"
 
 #: plugins/network/utils.vala:40
 msgid "Leading hyphen is not allowed"
-msgstr "Начальный дефис не допускается"
+msgstr "Имя устройства не может начинаться с дефиса"
 
 #: plugins/network/utils.vala:49
 msgid "Only Latin letters, digits and hyphens are allowed"
@@ -312,69 +317,69 @@ msgstr "Допускаются только латинские буквы, ци�
 
 #: plugins/network/utils.vala:55
 msgid "Host name is too short"
-msgstr "Имя компьютера слишком короткое"
+msgstr "Имя устройства слишком короткое"
 
 #: plugins/network/utils.vala:60
 msgid "Trailing hyphen is not allowed"
-msgstr "Завершающий дефис не допускается"
+msgstr "Имя устройства не может оканчиваться дефисом"
 
-#: plugins/network/wifi.vala:55
+#: plugins/network/wifi.vala:62
 msgid "Can't connect: undetermined security type"
-msgstr "Не удается подключиться: не определен тип защиты"
+msgstr "Подключение невозможно: неизвестный тип защиты"
 
-#: plugins/network/wifi.vala:99
+#: plugins/network/wifi.vala:138
 msgid "Connection setup failed"
-msgstr "Не удалось установить соединение"
+msgstr "Не удалось настроить соединение"
 
-#: plugins/network/wifi.vala:110
+#: plugins/network/wifi.vala:149
 msgid "Connection failed"
 msgstr "Не удалось установить соединение"
 
-#: plugins/network/wifi.vala:144
+#: plugins/network/wifi.vala:185
 msgid "Connecting…"
 msgstr "Подключение…"
 
-#: plugins/network/wifi.vala:149
+#: plugins/network/wifi.vala:190
 msgid "Connected"
 msgstr "Подключено"
 
-#: plugins/network/wifi.vala:151
+#: plugins/network/wifi.vala:192
 msgid "Connected without internet"
 msgstr "Подключено без доступа в Интернет"
 
-#: plugins/network/wifi.vala:155
+#: plugins/network/wifi.vala:196
 msgid "Disconnecting…"
 msgstr "Отключение…"
 
-#: plugins/network/wifi.vala:223
+#: plugins/network/wifi.vala:264
 msgid "WPA/WPA2/WPA3 Enterprise"
 msgstr "WPA/WPA2/WPA3 Enterprise"
 
-#: plugins/network/wifi.vala:228
+#: plugins/network/wifi.vala:269
 msgid "WPA3 Personal"
 msgstr "WPA3 Personal"
 
-#: plugins/network/wifi.vala:233
+#: plugins/network/wifi.vala:274
 msgid "WPA/WPA2 Personal"
 msgstr "WPA/WPA2 Personal"
 
-#: plugins/network/wifi.vala:238
+#: plugins/network/wifi.vala:279
 msgid "WEP 40/104-bit Key (Hex/ASCII)"
-msgstr "WEP 40/104-bit Key (Hex/ASCII)"
+msgstr "40/104-битный ключ WEP (Hex или ASCII)"
 
-#: plugins/network/wifi.vala:242
+#: plugins/network/wifi.vala:283
 msgid "WEP 128-bit Passphrase"
-msgstr "WEP 128-bit Passphrase"
+msgstr "128-битная парольная фраза WEP"
 
-#: plugins/network/wifi.vala:247
+#: plugins/network/wifi.vala:288
 msgid "Dynamic WEP (802.1x)"
 msgstr "Dynamic WEP (802.1x)"
 
-#: plugins/network/wifi.vala:252
+#: plugins/network/wifi.vala:293
 msgid "LEAP"
 msgstr "LEAP"
 
-#: plugins/network/wifi.vala:257
+#: plugins/network/wifi.vala:298
 msgid "Enhanced Open"
 msgstr "Enhanced Open"
 
@@ -448,23 +453,23 @@ msgstr ""
 msgid "Ok"
 msgstr "Ок"
 
-#: plugins/software/source.vala:141
+#: plugins/software/source.vala:121
 #, c-format
 msgid "Failed to add or enable '%s' flatpak remote with name %s: %s"
 msgstr ""
 "Ошибка при добавлении или включении flatpak репозитория '%s' с именем %s: %s"
 
-#: plugins/software/source.vala:186
+#: plugins/software/source.vala:166
 #, c-format
 msgid "Failed to add '%s' stplr repository with name %s: %s"
 msgstr "Ошибка при добавлении stplr репозитория '%s' с именем %s: %s"
 
-#: plugins/software/source.vala:252
+#: plugins/software/source.vala:232
 #, c-format
 msgid "Failed to add apt repository with repos: %s: %s"
 msgstr "Ошибка при добавлении apt репозитория: %s: %s"
 
-#: plugins/software/source.vala:328
+#: plugins/software/source.vala:308
 #, c-format
 msgid "Failed to exec: %s: %s"
 msgstr "Ошибка исполнения: %s: %s"
@@ -473,24 +478,24 @@ msgstr "Ошибка исполнения: %s: %s"
 msgid "Select Avatar"
 msgstr "Выбрать Аватар"
 
-#: plugins/user/data/ui/page-password.blp:37
+#: plugins/user/data/ui/page-password.blp:38
 msgid "Be careful not to lose your password."
 msgstr "Будьте внимательны, не потеряйте пароль."
 
-#: plugins/user/data/ui/page-password.blp:56
+#: plugins/user/data/ui/page-password.blp:57
 msgid "Your user’s password"
 msgstr "Пароль Вашего пользователя"
 
-#: plugins/user/data/ui/page-password.blp:65
+#: plugins/user/data/ui/page-password.blp:66
 msgid "Generate user password"
 msgstr "Сгенерировать пароль пользователя"
 
-#: plugins/user/data/ui/page-password.blp:80
+#: plugins/user/data/ui/page-password.blp:81
 #: plugins/user/data/ui/page-root-password.blp:84
 msgid "Passwords do not match"
 msgstr "Пароли не совпадают"
 
-#: plugins/user/data/ui/page-password.blp:84
+#: plugins/user/data/ui/page-password.blp:85
 #: plugins/user/data/ui/page-root-password.blp:88
 msgid "Repeat password"
 msgstr "Повторите пароль"
@@ -530,8 +535,9 @@ msgid "About You"
 msgstr "О Вас"
 
 #: plugins/user/data/ui/page-username.blp:30
-msgid "We need a few details to complete setup."
-msgstr "Для завершения осталось указать еще немного информации."
+#: plugins/user/data/ui/page-username.blp:106
+msgid "Set information about You."
+msgstr "Введите информацию о Вас."
 
 #: plugins/user/data/ui/page-username.blp:74
 msgid "Change Avatar"
@@ -540,10 +546,6 @@ msgstr "Изменить Аватар"
 #: plugins/user/data/ui/page-username.blp:95
 msgid "Remove Avatar"
 msgstr "Удалить Аватар"
-
-#: plugins/user/data/ui/page-username.blp:106
-msgid "Set information about You"
-msgstr "Введите информацию о Вас"
 
 #: plugins/user/data/ui/page-username.blp:123
 msgid "Full Name"
@@ -577,7 +579,7 @@ msgstr "_Да"
 msgid "Set a Password for %s"
 msgstr "Установите пароль для %s"
 
-#: plugins/user/plugin.vala:81
+#: plugins/user/plugin.vala:77
 msgid "Error when creating a user"
 msgstr "Ошибка при создании пользователя"
 
@@ -785,7 +787,7 @@ msgstr "Применение %s…"
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
-#: src/end-pages/installer.vala:66 src/finalize.vala:127
+#: src/end-pages/installer.vala:66 src/finalize.vala:129
 msgid "Installing system…"
 msgstr "Установка системы…"
 
@@ -861,6 +863,9 @@ msgstr "Тест"
 #: tests/plugins/test-common/data/ui/page.blp:27
 msgid "Test page"
 msgstr "Тестовая страница"
+
+#~ msgid "We need a few details to complete setup."
+#~ msgstr "Для завершения осталось указать еще немного информации."
 
 #~ msgid "The password must consist of at least one character"
 #~ msgstr "Пароль должен состоять минимум из одного символа"

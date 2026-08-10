@@ -39,7 +39,10 @@ plugin_date_and_time_link_args = [
 
 subdir('data')
 
-configure_file(output: 'config.h', configuration: global_conf)
+conf_data = configuration_data()
+conf_data.set_quoted('DATADIR', datadir)
+conf_data.set_quoted('READYSET_DATADIR', pkgdata_dir)
+configure_file(output: 'config.h', configuration: conf_data)
 
 shared_module(
   plugin_date_and_time_name,

@@ -1,5 +1,0 @@
-[Application]
-steps=language,keyboard,data-and-time,user-passwdqc,atomic-finalize
-
-[Context]
-user.with-root=true

@@ -194,7 +194,6 @@ namespace User {
         return Password.strength (password).level != BAD;
     }
 
-#if WITH_ROOT_SET
     async void set_root_password (string password) {
         try {
             var proxy = new DBusProxy.for_bus_sync (
@@ -216,7 +215,6 @@ namespace User {
             );
         } catch (Error e) {}
     }
-#endif
 
     string build_homed_password_record (string password) {
         var passwords = new Serialize.Array<string> ();

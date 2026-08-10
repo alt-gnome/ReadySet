@@ -1,7 +1,7 @@
 project(
   'ready-set',
   'vala',
-  version: '0.12.3',
+  version: '0.13',
   meson_version: '>= 1.9',
   license: 'GPL-3.0-or-later',
 )
@@ -48,7 +48,12 @@ if get_option('with_software_tuner_plugin').enabled()
 endif
 
 libversion = meson.project_version().replace('.rc', '')
-soversion = libversion.split('.')[0]
+version_parts = libversion.split('.')
+if version_parts[0] == '0'
+  soversion = version_parts[0] + '.' + version_parts[1]
+else
+  soversion = version_parts[0]
+endif
 pascal_name = 'ReadySet'
 app_id = 'org.altlinux.' + pascal_name
 

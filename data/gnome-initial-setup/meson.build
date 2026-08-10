@@ -20,7 +20,6 @@ i18n.merge_file(
 )
 
 subdir('sysusers')
-subdir('tmpfiles')
 
 configure_file(
   input: gis + '.session.conf.in',

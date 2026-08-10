@@ -20,5 +20,11 @@ def extract_project_version(filename):
     return None
 
 version = extract_project_version('meson.build').replace('.rc', '')
+version_parts = version.split('.')
+if version_parts[0] == '0':
+    soversion = version_parts[0] + '.' + version_parts[1]
+else:
+    soversion = version_parts[0]
 if version:
     print(version)
+    print(soversion)

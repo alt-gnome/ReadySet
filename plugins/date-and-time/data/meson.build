@@ -39,3 +39,8 @@ install_data(
   files('org.altlinux.ReadySet.Plugin.DateAndTime.rules'),
   install_dir: rulesdir,
 )
+
+install_data(
+  files('default-timezones.json'),
+  install_dir: pkgdata_dir / plugin_date_and_time_name,
+)

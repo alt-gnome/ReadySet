@@ -36,7 +36,12 @@ public sealed class User.PageRootPassword : PagePasswordCommon {
 
     construct {
         var context = Addin.get_instance ().context;
-        context.bind_context_to_property ("user.with-root", this, "accessible", BindingFlags.SYNC_CREATE);
+        context.bind_context_to_property (
+            "user.with-root",
+            this,
+            "accessible",
+            BindingFlags.SYNC_CREATE
+        );
 
         Addin.get_instance ().context.bind_context_to_property (
             "user.root-password",

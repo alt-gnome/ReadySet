@@ -9,13 +9,15 @@ template $DateAndTimePage: $ReadySetBasePage {
 
   info: $ReadySetStatusPage {
     title: _("Date & Time");
-    description: _("Select your time zone");
+    description: _("Select your time zone.");
     icon-name: "preferences-system-time-symbolic";
   };
 
   content: Adw.Clamp {
     margin-start: 12;
     margin-end: 12;
+    margin-top: 12;
+    margin-bottom: 12;
 
     Box {
       orientation: vertical;
@@ -28,22 +30,21 @@ template $DateAndTimePage: $ReadySetBasePage {
         Adw.PreferencesGroup {
           title: _("Set time zone");
 
-          Adw.ExpanderRow manual_timezone_switch {
-            title: _("Manual setting of time zone");
-            enable-expansion: bind template.manual-timezone bidirectional;
-            expanded: bind manual_timezone_switch.enable-expansion;
-            show-enable-switch: true;
+          Adw.SwitchRow auto_timezone_switch {
+            title: _("Automatic setting of time zone");
+            active: bind template.manual-timezone bidirectional inverted;
+          }
 
-            Adw.ActionRow timezone_row {
-              activated => $on_timezone_row_clicked();
-              activatable: true;
-              title: _("Time zone");
-              subtitle: bind template.timezone_label;
+          Adw.ActionRow timezone_row {
+            activated => $on_timezone_row_clicked();
+            activatable: true;
+            sensitive: bind auto_timezone_switch.active inverted;
+            title: _("Time zone");
+            subtitle: bind template.timezone_label;
 
-              [suffix]
-              Image {
-                icon-name: "go-next-symbolic";
-              }
+            [suffix]
+            Image {
+              icon-name: "go-next-symbolic";
             }
           }
         }
@@ -56,34 +57,34 @@ template $DateAndTimePage: $ReadySetBasePage {
         Adw.PreferencesGroup {
           title: _("Set date and time");
 
-          Adw.ExpanderRow manual_date_and_time_switch {
-            title: _("Manual setting of date and time");
-            enable-expansion: bind template.manual-date-and-time bidirectional;
-            expanded: bind manual_date_and_time_switch.enable-expansion;
-            show-enable-switch: true;
+          Adw.SwitchRow auto_date_and_time_switch {
+            title: _("Automatic setting of date and time");
+            active: bind template.manual-date-and-time bidirectional inverted;
+          }
 
-            Adw.ActionRow date_row {
-              activated => $on_date_row_clicked();
-              activatable: true;
-              title: _("Date");
-              subtitle: bind template.date_label;
+          Adw.ActionRow date_row {
+            activated => $on_date_row_clicked();
+            activatable: true;
+            title: _("Date");
+            subtitle: bind template.date_label;
+            sensitive: bind auto_date_and_time_switch.active inverted;
 
-              [suffix]
-              Image {
-                icon-name: "go-next-symbolic";
-              }
+            [suffix]
+            Image {
+              icon-name: "go-next-symbolic";
             }
+          }
 
-            Adw.ActionRow time_row {
-              activated => $on_time_row_clicked();
-              activatable: true;
-              title: _("Time");
-              subtitle: bind template.time_label;
+          Adw.ActionRow time_row {
+            activated => $on_time_row_clicked();
+            activatable: true;
+            title: _("Time");
+            subtitle: bind template.time_label;
+            sensitive: bind auto_date_and_time_switch.active inverted;
 
-              [suffix]
-              Image {
-                icon-name: "go-next-symbolic";
-              }
+            [suffix]
+            Image {
+              icon-name: "go-next-symbolic";
             }
           }
         }
