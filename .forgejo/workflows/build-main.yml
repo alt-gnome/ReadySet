@@ -27,8 +27,7 @@ jobs:
     runs-on: als-huge
     container: registry.altlinux.org/sisyphus/node:latest
     needs:
-      - lint-vala
-      - lint-blueprint
+      - lint
 
     steps:
       - name: Checkout repository
@@ -124,8 +123,7 @@ jobs:
             runner: self-hosted-arm64-huge
 
     needs:
-      - lint-vala
-      - lint-blueprint
+      - lint
       - get-release
       - build-doc-translation
 
