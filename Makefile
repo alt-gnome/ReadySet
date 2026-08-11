@@ -13,6 +13,12 @@ ifeq ($(PM),)
 $(error Package manager not found)
 endif
 
+ifeq ($(shell test -f .blueprintignore; echo $$?), 0)
+	BLUEPRINT_IGNORE := .blueprintignore
+else
+	BLUEPRINT_IGNORE := /dev/null
+endif
+
 .PHONY: setup setup-ci install compile test lint lint-fix install-deps coverage
 
 install-deps:
@@ -58,10 +64,10 @@ coverage: test
 
 lint:
 	io.elementary.vala-lint -d .
-	find ./ -name "*.blp" -print0 | xargs -0 blueprint-compiler format -s 2
+	find ./ -name "*.blp" -print0 | grep -zvFf $(BLUEPRINT_IGNORE) | xargs -0 blueprint-compiler format -s 2
 
 lint-fix:
-	find ./ -name "*.blp" -print0 | xargs -0 blueprint-compiler format -f -s 2
+	find ./ -name "*.blp" -print0 | grep -zvFf $(BLUEPRINT_IGNORE) | xargs -0 blueprint-compiler format -f -s 2
 
 pot:
 	./po/update_potfiles
