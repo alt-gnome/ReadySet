@@ -28,8 +28,7 @@
  * * bottom_widget
  * * content
  *
- * And data for showing up in indicators:
- * * title_icon_name
+ * And title
  * * title_header
  */
 public class ReadySet.BasePage : Adw.BreakpointBin {
@@ -55,12 +54,7 @@ public class ReadySet.BasePage : Adw.BreakpointBin {
     public Gtk.Widget bottom_widget { get; set; }
 
     /**
-     * Icon that will be shown at header or steps sidebar.
-     */
-    public string title_icon_name { get; set; default = "dialog-error-symbolic"; }
-
-    /**
-     * Title that will be shown at header or steps sidebar.
+     * Title that will be shown at header.
      */
     public string title_header { get; set; default = _("Unknown"); }
 

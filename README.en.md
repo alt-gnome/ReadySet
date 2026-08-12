@@ -67,9 +67,6 @@ App config file.
 #### `context`
 Context vars. Cumulative option in `VAR=VALUE` format. Can be passed multiple times.
 
-#### `detailed`
-Show indicators and sidebar with steps. The simple view is used by default.
-
 #### `force-layout`
 Set layout for window: `big`, `small`, `vertical`, `horizontal`. Auto by default.
 
