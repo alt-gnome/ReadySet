@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 11:48+0000\n"
+"POT-Creation-Date: 2026-08-12 18:44+0000\n"
 "PO-Revision-Date: 2026-08-07 14:56+0300\n"
 "Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
 "Language-Team: Russian\n"
@@ -45,50 +45,42 @@ msgstr "Всё готово!"
 msgid "Nothing to show"
 msgstr "Нечего показывать"
 
-#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:593
+#: data/ui/steps-main-page.blp:279 data/ui/steps-main-page.blp:463
 msgid "Go to previous page"
 msgstr "К предыдущей странице"
 
-#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:612
+#: data/ui/steps-main-page.blp:297 data/ui/steps-main-page.blp:482
 msgid "Next"
 msgstr "Дальше"
 
-#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:625
+#: data/ui/steps-main-page.blp:309 data/ui/steps-main-page.blp:495
 msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
 
-#: data/ui/steps-main-page.blp:482
+#: data/ui/steps-main-page.blp:351
 msgid "Open application menu"
 msgstr "Открыть меню приложения"
 
-#: data/ui/steps-main-page.blp:520
+#: data/ui/steps-main-page.blp:390
 msgid "Go up"
 msgstr "Наверх"
 
-#: data/ui/steps-main-page.blp:540 data/ui/steps-main-page.blp:546
+#: data/ui/steps-main-page.blp:410 data/ui/steps-main-page.blp:416
 msgid "Go up to the beginning"
 msgstr "Вернуться к началу"
 
-#: data/ui/window-content.blp:43
-msgid "All steps"
-msgstr "Все шаги"
-
-#: data/ui/window-content.blp:53
-msgid "Main"
-msgstr "Главная"
-
 #. *
-#. * Title that will be shown at header or steps sidebar.
+#. * Title that will be shown at header.
 #.
-#: lib/src/base/base-page.vala:65
+#: lib/src/base/base-page.vala:59
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: lib/src/base/base-page.vala:110
+#: lib/src/base/base-page.vala:104
 msgid "Unknown page"
 msgstr "Неизвестная страница"
 
-#: lib/src/base/base-page.vala:113
+#: lib/src/base/base-page.vala:107
 msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
@@ -103,7 +95,7 @@ msgid "Apply"
 msgstr "Применить"
 
 #: plugins/date-and-time/data/ui/date-selector.blp:5
-#: plugins/date-and-time/data/ui/page.blp:68
+#: plugins/date-and-time/data/ui/page.blp:67
 msgid "Date"
 msgstr "Дата"
 
@@ -119,36 +111,36 @@ msgid "Submit"
 msgstr "Принять"
 
 #: plugins/date-and-time/data/ui/page.blp:5
-#: plugins/date-and-time/data/ui/page.blp:11
+#: plugins/date-and-time/data/ui/page.blp:10
 msgid "Date & Time"
 msgstr "Дата и Время"
 
-#: plugins/date-and-time/data/ui/page.blp:12
+#: plugins/date-and-time/data/ui/page.blp:11
 msgid "Select your time zone."
 msgstr "Выберите свой часовой пояс."
 
-#: plugins/date-and-time/data/ui/page.blp:31
+#: plugins/date-and-time/data/ui/page.blp:30
 msgid "Set time zone"
 msgstr "Выбрать часовой пояс"
 
-#: plugins/date-and-time/data/ui/page.blp:34
+#: plugins/date-and-time/data/ui/page.blp:33
 msgid "Automatic setting of time zone"
 msgstr "Автоматическая настройка часового пояса"
 
-#: plugins/date-and-time/data/ui/page.blp:42
+#: plugins/date-and-time/data/ui/page.blp:41
 #: plugins/date-and-time/data/ui/timezone-list.blp:5
 msgid "Time zone"
 msgstr "Часовой пояс"
 
-#: plugins/date-and-time/data/ui/page.blp:58
+#: plugins/date-and-time/data/ui/page.blp:57
 msgid "Set date and time"
 msgstr "Выбрать дату и время"
 
-#: plugins/date-and-time/data/ui/page.blp:61
+#: plugins/date-and-time/data/ui/page.blp:60
 msgid "Automatic setting of date and time"
 msgstr "Автоматическая настройка даты и времени"
 
-#: plugins/date-and-time/data/ui/page.blp:81
+#: plugins/date-and-time/data/ui/page.blp:80
 #: plugins/date-and-time/data/ui/time-selector.blp:5
 msgid "Time"
 msgstr "Время"
@@ -204,20 +196,20 @@ msgstr "Добавить раскладку"
 msgid "Show more"
 msgstr "Показать больше"
 
-#: plugins/keyboard/data/ui/page.blp:24 plugins/keyboard/data/ui/page.blp:29
+#: plugins/keyboard/data/ui/page.blp:24 plugins/keyboard/data/ui/page.blp:28
 msgid "Typing"
 msgstr "Набор текста"
 
-#: plugins/keyboard/data/ui/page.blp:30
+#: plugins/keyboard/data/ui/page.blp:29
 msgid "Select your keyboard layout or an input method."
 msgstr "Выберите раскладку клавиатуры или способ ввода."
 
-#: plugins/keyboard/data/ui/page.blp:35
+#: plugins/keyboard/data/ui/page.blp:34
 msgid "You must select at least one layout containing Latin characters"
 msgstr ""
 "Должна быть выбрана хотя бы одна раскладка, содержащая латинские символы"
 
-#: plugins/keyboard/data/ui/page.blp:60
+#: plugins/keyboard/data/ui/page.blp:59
 msgid "You can specify additional layout switch combination"
 msgstr "Вы можете указать дополнительный способ переключения раскладки"
 
@@ -262,11 +254,11 @@ msgstr "Давайте начнём с выбора языка для прило
 msgid "License"
 msgstr "Лицензия"
 
-#: plugins/license-agreement/data/ui/page.blp:11
+#: plugins/license-agreement/data/ui/page.blp:10
 msgid "License Agreement"
 msgstr "Лицензионное соглашение"
 
-#: plugins/license-agreement/data/ui/page.blp:34
+#: plugins/license-agreement/data/ui/page.blp:33
 msgid "I have read the license and accept it"
 msgstr "Я ознакомился с лицензией и принимаю ее"
 
@@ -275,31 +267,31 @@ msgstr "Я ознакомился с лицензией и принимаю ее
 msgid "Security"
 msgstr "Безопасность"
 
-#: plugins/network/data/ui/page.blp:25 plugins/network/data/ui/page.blp:30
+#: plugins/network/data/ui/page.blp:25 plugins/network/data/ui/page.blp:29
 msgid "Network"
 msgstr "Сеть"
 
-#: plugins/network/data/ui/page.blp:31
+#: plugins/network/data/ui/page.blp:30
 msgid "Set up your network connections."
 msgstr "Настройте сетевые подключения."
 
-#: plugins/network/data/ui/page.blp:48
+#: plugins/network/data/ui/page.blp:47
 msgid "Host Name"
 msgstr "Имя устройства"
 
-#: plugins/network/data/ui/page.blp:75
+#: plugins/network/data/ui/page.blp:74
 msgid "SIM Cards and Mobile Network"
 msgstr "SIM-карты и мобильная сеть"
 
-#: plugins/network/data/ui/page.blp:79
+#: plugins/network/data/ui/page.blp:78
 msgid "Ethernet"
 msgstr "Проводное подключение"
 
-#: plugins/network/data/ui/page.blp:92
+#: plugins/network/data/ui/page.blp:91
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
-#: plugins/network/data/ui/page.blp:107
+#: plugins/network/data/ui/page.blp:106
 msgid "Wi-Fi adapter"
 msgstr "Адаптер Wi-Fi"
 
@@ -383,19 +375,19 @@ msgstr "LEAP"
 msgid "Enhanced Open"
 msgstr "Enhanced Open"
 
-#: plugins/privacy/data/ui/page.blp:5 plugins/privacy/data/ui/page.blp:10
+#: plugins/privacy/data/ui/page.blp:5 plugins/privacy/data/ui/page.blp:9
 msgid "Privacy"
 msgstr "Приватность"
 
-#: plugins/privacy/data/ui/page.blp:30
+#: plugins/privacy/data/ui/page.blp:29
 msgid "Location Services"
 msgstr "Службы определения местоположения"
 
-#: plugins/privacy/data/ui/page.blp:39
+#: plugins/privacy/data/ui/page.blp:38
 msgid "Allows apps to determine your geographical location."
 msgstr "Позволяют приложениям определять ваше географическое местоположение."
 
-#: plugins/software/data/ui/page.blp:5 plugins/software/data/ui/page.blp:11
+#: plugins/software/data/ui/page.blp:5 plugins/software/data/ui/page.blp:10
 msgid "Third-Party Repositories"
 msgstr "Сторонние Репозитории"
 
@@ -478,25 +470,25 @@ msgstr "Ошибка исполнения: %s: %s"
 msgid "Select Avatar"
 msgstr "Выбрать Аватар"
 
-#: plugins/user/data/ui/page-password.blp:38
+#: plugins/user/data/ui/page-password.blp:37
 msgid "Be careful not to lose your password."
 msgstr "Будьте внимательны, не потеряйте пароль."
 
-#: plugins/user/data/ui/page-password.blp:57
+#: plugins/user/data/ui/page-password.blp:56
 msgid "Your user’s password"
 msgstr "Пароль Вашего пользователя"
 
-#: plugins/user/data/ui/page-password.blp:66
+#: plugins/user/data/ui/page-password.blp:65
 msgid "Generate user password"
 msgstr "Сгенерировать пароль пользователя"
 
-#: plugins/user/data/ui/page-password.blp:81
-#: plugins/user/data/ui/page-root-password.blp:84
+#: plugins/user/data/ui/page-password.blp:80
+#: plugins/user/data/ui/page-root-password.blp:83
 msgid "Passwords do not match"
 msgstr "Пароли не совпадают"
 
-#: plugins/user/data/ui/page-password.blp:85
-#: plugins/user/data/ui/page-root-password.blp:88
+#: plugins/user/data/ui/page-password.blp:84
+#: plugins/user/data/ui/page-root-password.blp:87
 msgid "Repeat password"
 msgstr "Повторите пароль"
 
@@ -504,54 +496,54 @@ msgstr "Повторите пароль"
 msgid "Administrator"
 msgstr "Администратор"
 
-#: plugins/user/data/ui/page-root-password.blp:28
+#: plugins/user/data/ui/page-root-password.blp:27
 msgid "Set up security for Your device"
 msgstr "Настройте безопасность для Вашего устройства"
 
-#: plugins/user/data/ui/page-root-password.blp:29
+#: plugins/user/data/ui/page-root-password.blp:28
 msgid "You also can set password for administrator."
 msgstr "Вы также можете назначить пароль администратора."
 
-#: plugins/user/data/ui/page-root-password.blp:41
+#: plugins/user/data/ui/page-root-password.blp:40
 msgid "Set administrator same as user password"
 msgstr "Установить пароль администратора таким же, как и пароль пользователя"
 
-#: plugins/user/data/ui/page-root-password.blp:60
+#: plugins/user/data/ui/page-root-password.blp:59
 msgid "Administrator’s password"
 msgstr "Пароль администратора"
 
-#: plugins/user/data/ui/page-root-password.blp:69
+#: plugins/user/data/ui/page-root-password.blp:68
 msgid "Generate root password"
 msgstr "Сгенерировать пароль администратора"
 
 #: plugins/user/data/ui/page-username.blp:24
-#: plugins/user/data/ui/page-username.blp:138
+#: plugins/user/data/ui/page-username.blp:137
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: plugins/user/data/ui/page-username.blp:29
-#: plugins/user/data/ui/page-username.blp:105
+#: plugins/user/data/ui/page-username.blp:28
+#: plugins/user/data/ui/page-username.blp:104
 msgid "About You"
 msgstr "О Вас"
 
-#: plugins/user/data/ui/page-username.blp:30
-#: plugins/user/data/ui/page-username.blp:106
+#: plugins/user/data/ui/page-username.blp:29
+#: plugins/user/data/ui/page-username.blp:105
 msgid "Set information about You."
 msgstr "Введите информацию о Вас."
 
-#: plugins/user/data/ui/page-username.blp:74
+#: plugins/user/data/ui/page-username.blp:73
 msgid "Change Avatar"
 msgstr "Изменить Аватар"
 
-#: plugins/user/data/ui/page-username.blp:95
+#: plugins/user/data/ui/page-username.blp:94
 msgid "Remove Avatar"
 msgstr "Удалить Аватар"
 
-#: plugins/user/data/ui/page-username.blp:123
+#: plugins/user/data/ui/page-username.blp:122
 msgid "Full Name"
 msgstr "Полное имя"
 
-#: plugins/user/data/ui/page-username.blp:135
+#: plugins/user/data/ui/page-username.blp:134
 msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 "Имя пользователя будет использовано для имени Вашей домашней директории и не "
@@ -816,53 +808,58 @@ msgid "Sandbox run without doing anything in system"
 msgstr "Запуск в \"песочнице\" без изменения системы"
 
 #: src/options-handler.vala:83
-msgid "Show indicators and sidebar with steps"
-msgstr "Показывать индикаторы и боковую панель с шагами"
-
-#: src/options-handler.vala:90
 msgid "Steps. E.g: `steps=language,keyboard`"
 msgstr "Шаги. К примеру: `steps=language,keyboard`"
 
-#: src/options-handler.vala:97
+#: src/options-handler.vala:90
 msgid "Window can be resized or not"
 msgstr "Может размер окна быть изменен или нет"
 
-#: src/options-handler.vala:104
+#: src/options-handler.vala:97
 msgid "Width of a window"
 msgstr "Ширина окна"
 
-#: src/options-handler.vala:111
+#: src/options-handler.vala:104
 msgid "Height of a window"
 msgstr "Высота окна"
 
-#: src/options-handler.vala:118
+#: src/options-handler.vala:111
 msgid "Set layout for window: `big`, `small`, `vertical`, `horizontal`"
 msgstr ""
 "Назначить используемый внешний вид приложения: `big`, `small`, `vertical`, "
 "`horizontal`"
 
-#: src/options-handler.vala:125
+#: src/options-handler.vala:118
 msgid "Print version information and exit"
 msgstr "Показать информацию о версии и выйти"
 
-#: src/options-handler.vala:132
+#: src/options-handler.vala:125
 msgid "Run apply from config without running GUI"
 msgstr ""
 "Запустить apply, используя конфигурационный файл без запуска графического "
 "интерфейса"
 
-#: src/options-handler.vala:139
+#: src/options-handler.vala:132
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
 #: tests/plugins/test-common/data/ui/page.blp:23
-#: tests/plugins/test-common/data/ui/page.blp:32
+#: tests/plugins/test-common/data/ui/page.blp:31
 msgid "Test"
 msgstr "Тест"
 
-#: tests/plugins/test-common/data/ui/page.blp:27
+#: tests/plugins/test-common/data/ui/page.blp:26
 msgid "Test page"
 msgstr "Тестовая страница"
+
+#~ msgid "All steps"
+#~ msgstr "Все шаги"
+
+#~ msgid "Main"
+#~ msgstr "Главная"
+
+#~ msgid "Show indicators and sidebar with steps"
+#~ msgstr "Показывать индикаторы и боковую панель с шагами"
 
 #~ msgid "We need a few details to complete setup."
 #~ msgstr "Для завершения осталось указать еще немного информации."
