@@ -3,7 +3,6 @@ data/ui/initial-setup-end-page.blp
 data/ui/installer-end-page.blp
 data/ui/nothing-to-show.blp
 data/ui/steps-main-page.blp
-data/ui/window-content.blp
 lib/src/base/base-page.vala
 lib/src/lib-utils-internal.vala
 plugins/date-and-time/data/ui/carousel-selector.blp
@@ -68,6 +67,4 @@ src/pages-model.vala
 src/plugin-manager.vala
 src/widgets/positioned-stack.vala
 src/widgets/steps-main-page.vala
-src/widgets/steps-sidebar.vala
-src/window-content.vala
 tests/plugins/test-common/data/ui/page.blp
