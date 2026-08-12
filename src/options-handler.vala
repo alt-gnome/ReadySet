@@ -77,13 +77,6 @@ public sealed class ReadySet.OptionsHandler : Object {
             null
         },
         {
-            "detailed", '\0',
-            0, OptionArg.NONE,
-            null,
-            N_("Show indicators and sidebar with steps"),
-            null
-        },
-        {
             "steps", '\0',
             0, OptionArg.STRING,
             null,
@@ -159,8 +152,6 @@ public sealed class ReadySet.OptionsHandler : Object {
     public bool sandbox { get; set; }
 
     public bool fullscreen { get; set; }
-
-    public bool detailed { get; set; }
 
     public bool apply_only { get; set; }
 

@@ -23,7 +23,6 @@ using Adw 1;
 template $ReadySetStepsMainPage: Adw.BreakpointBin {
   width-request: 360;
   height-request: 294;
-  show-steps-list: bind steps_list_button.active bidirectional;
 
   Adw.Breakpoint big_breakpoint {
     condition ("min-height: 400px and min-width: 719px")
@@ -80,34 +79,8 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
 
           content: Adw.ToolbarView {
             [top]
-            Adw.HeaderBar {
-              show-back-button: false;
-              show-end-title-buttons: bind template.can-close;
-              show-start-title-buttons: false;
-
-              [start]
-              Adw.LayoutSlot {
-                id: "steps-button";
-              }
-
-              [start]
-              Adw.LayoutSlot {
-                id: "sandbox-label-left";
-              }
-
-              title-widget: Adw.LayoutSlot {
-                id: "pages-indicator";
-              };
-
-              [end]
-              Adw.LayoutSlot {
-                id: "context-button";
-              }
-
-              [end]
-              Adw.LayoutSlot {
-                id: "sandbox-label-right";
-              }
+            Adw.LayoutSlot {
+              id: "page-header";
             }
 
             [top]
@@ -158,16 +131,6 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
               [top]
               Adw.HeaderBar {
                 show-title: false;
-
-                [start]
-                Adw.LayoutSlot {
-                  id: "steps-button";
-                }
-
-                [start]
-                Adw.LayoutSlot {
-                  id: "sandbox-label-left";
-                }
               }
 
               content: ScrolledWindow {
@@ -182,34 +145,8 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
 
             content: Adw.ToolbarView {
               [top]
-              Adw.HeaderBar {
-                show-back-button: false;
-                show-end-title-buttons: bind template.can-close;
-                show-start-title-buttons: false;
-
-                [start]
-                Adw.LayoutSlot {
-                  id: "standalone-steps-button";
-                }
-
-                [start]
-                Adw.LayoutSlot {
-                  id: "standalone-sandbox-label-left";
-                }
-
-                title-widget: Adw.LayoutSlot {
-                  id: "pages-indicator";
-                };
-
-                [end]
-                Adw.LayoutSlot {
-                  id: "context-button";
-                }
-
-                [end]
-                Adw.LayoutSlot {
-                  id: "sandbox-label-right";
-                }
+              Adw.LayoutSlot {
+                id: "page-header";
               }
 
               [top]
@@ -264,16 +201,6 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
               [top]
               Adw.HeaderBar {
                 show-title: false;
-
-                [start]
-                Adw.LayoutSlot {
-                  id: "steps-button";
-                }
-
-                [start]
-                Adw.LayoutSlot {
-                  id: "sandbox-label-left";
-                }
               }
 
               content: ScrolledWindow {
@@ -293,34 +220,8 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
 
             content: Adw.ToolbarView {
               [top]
-              Adw.HeaderBar {
-                show-back-button: false;
-                show-end-title-buttons: bind template.can-close;
-                show-start-title-buttons: false;
-
-                [start]
-                Adw.LayoutSlot {
-                  id: "standalone-steps-button";
-                }
-
-                [start]
-                Adw.LayoutSlot {
-                  id: "standalone-sandbox-label-left";
-                }
-
-                title-widget: Adw.LayoutSlot {
-                  id: "pages-indicator";
-                };
-
-                [end]
-                Adw.LayoutSlot {
-                  id: "context-button";
-                }
-
-                [end]
-                Adw.LayoutSlot {
-                  id: "sandbox-label-right";
-                }
+              Adw.LayoutSlot {
+                id: "page-header";
               }
 
               [top]
@@ -418,82 +319,51 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
           }
         }
 
-        [steps-button]
-        ToggleButton steps_list_button {
-          styles [
-            "flat",
-          ]
+        [page-header]
+        Adw.HeaderBar {
+          show-back-button: false;
+          show-end-title-buttons: bind template.can-close;
+          show-start-title-buttons: false;
 
-          icon-name: "view-list-symbolic";
-          active: false;
-          valign: start;
-          visible: bind template.simple inverted;
-        }
+          [start]
+          Label sandbox_label_left {
+            styles [
+              "warning",
+            ]
 
-        [sandbox-label-left]
-        Label sandbox_label_left {
-          styles [
-            "warning",
-          ]
+            margin-start: 12;
+            margin-end: 12;
+            visible: false;
+            label: "s&box";
+          }
 
-          margin-start: 12;
-          margin-end: 12;
-          visible: false;
-          label: "s&box";
-        }
+          title-widget: $ReadySetPositionedStack title_stack {
+            transition-type: crossfade;
+            hexpand: true;
+          };
 
-        [standalone-steps-button]
-        ToggleButton standalone_steps_list_button {
-          styles [
-            "flat",
-          ]
+          [end]
+          Button context_button {
+            styles [
+              "flat",
+            ]
 
-          icon-name: "view-list-symbolic";
-          active: bind steps_list_button.active bidirectional;
-          valign: start;
-          visible: bind template.simple inverted;
-        }
+            tooltip-text: _("Open application menu");
+            icon-name: "open-menu-symbolic";
+            clicked => $on_context_button_clicked();
+          }
 
-        [standalone-sandbox-label-left]
-        Label standalone_sandbox_label {
-          styles [
-            "warning",
-          ]
+          [end]
+          Label sandbox_label_right {
+            styles [
+              "warning",
+            ]
 
-          margin-start: 12;
-          margin-end: 12;
-          visible: false;
-          label: "s&box";
-        }
-
-        [pages-indicator]
-        $ReadySetPagesIndicator pages_indicator {
-          vexpand: true;
-          valign: center;
-          show-icons: bind template.show-steps-list inverted;
-        }
-
-        [context-button]
-        Button context_button {
-          styles [
-            "flat",
-          ]
-
-          tooltip-text: _("Open application menu");
-          icon-name: "open-menu-symbolic";
-          clicked => $on_context_button_clicked();
-        }
-
-        [sandbox-label-right]
-        Label sandbox_label_right {
-          styles [
-            "warning",
-          ]
-
-          margin-start: 12;
-          margin-end: 12;
-          visible: false;
-          label: "s&box";
+            margin-start: 12;
+            margin-end: 12;
+            visible: false;
+            label: "s&box";
+          }
         }
 
         [main-body]
