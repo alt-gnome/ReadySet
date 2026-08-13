@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-13 14:25+0000\n"
+"POT-Creation-Date: 2026-08-13 16:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -422,7 +422,7 @@ msgstr ""
 msgid "Enable Third-Party repositories"
 msgstr ""
 
-#: plugins/software/plugin.vala:68
+#: plugins/software/plugin.vala:70
 msgid "Failed to add a software source"
 msgstr ""
 
@@ -734,17 +734,16 @@ msgstr ""
 msgid "System is ready to be used."
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:108
-#, c-format
-msgid "Applying %s…"
+#: src/end-pages/initial-setup.vala:94
+msgid "Applying changes…"
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:133 src/end-pages/installer.vala:96
+#: src/end-pages/initial-setup.vala:123 src/end-pages/installer.vala:96
 #, c-format
 msgid "Error message: %s"
 msgstr ""
 
-#: src/end-pages/installer.vala:66 src/finalize.vala:129
+#: src/end-pages/installer.vala:66 src/finalize.vala:198
 msgid "Installing system…"
 msgstr ""
 
