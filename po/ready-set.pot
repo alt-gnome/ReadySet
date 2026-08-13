@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-12 18:44+0000\n"
+"POT-Creation-Date: 2026-08-13 14:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,42 +41,50 @@ msgstr ""
 msgid "Nothing to show"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:279 data/ui/steps-main-page.blp:463
+#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:593
 msgid "Go to previous page"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:297 data/ui/steps-main-page.blp:482
+#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:612
 msgid "Next"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:309 data/ui/steps-main-page.blp:495
+#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:625
 msgid "Extend/Retract keyboard"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:351
+#: data/ui/steps-main-page.blp:482
 msgid "Open application menu"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:390
+#: data/ui/steps-main-page.blp:520
 msgid "Go up"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:410 data/ui/steps-main-page.blp:416
+#: data/ui/steps-main-page.blp:540 data/ui/steps-main-page.blp:546
 msgid "Go up to the beginning"
 msgstr ""
 
+#: data/ui/window-content.blp:43
+msgid "All steps"
+msgstr ""
+
+#: data/ui/window-content.blp:53
+msgid "Main"
+msgstr ""
+
 #. *
-#. * Title that will be shown at header.
+#. * Title that will be shown at header or steps sidebar.
 #.
-#: lib/src/base/base-page.vala:59
+#: lib/src/base/base-page.vala:65
 msgid "Unknown"
 msgstr ""
 
-#: lib/src/base/base-page.vala:104
+#: lib/src/base/base-page.vala:110
 msgid "Unknown page"
 msgstr ""
 
-#: lib/src/base/base-page.vala:107
+#: lib/src/base/base-page.vala:113
 msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
@@ -91,7 +99,7 @@ msgid "Apply"
 msgstr ""
 
 #: plugins/date-and-time/data/ui/date-selector.blp:5
-#: plugins/date-and-time/data/ui/page.blp:67
+#: plugins/date-and-time/data/ui/page.blp:68
 msgid "Date"
 msgstr ""
 
@@ -107,36 +115,36 @@ msgid "Submit"
 msgstr ""
 
 #: plugins/date-and-time/data/ui/page.blp:5
-#: plugins/date-and-time/data/ui/page.blp:10
+#: plugins/date-and-time/data/ui/page.blp:11
 msgid "Date & Time"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:11
+#: plugins/date-and-time/data/ui/page.blp:12
 msgid "Select your time zone."
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:30
+#: plugins/date-and-time/data/ui/page.blp:31
 msgid "Set time zone"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:33
+#: plugins/date-and-time/data/ui/page.blp:34
 msgid "Automatic setting of time zone"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:41
+#: plugins/date-and-time/data/ui/page.blp:42
 #: plugins/date-and-time/data/ui/timezone-list.blp:5
 msgid "Time zone"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:57
+#: plugins/date-and-time/data/ui/page.blp:58
 msgid "Set date and time"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:60
+#: plugins/date-and-time/data/ui/page.blp:61
 msgid "Automatic setting of date and time"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:80
+#: plugins/date-and-time/data/ui/page.blp:81
 #: plugins/date-and-time/data/ui/time-selector.blp:5
 msgid "Time"
 msgstr ""
@@ -192,19 +200,19 @@ msgstr ""
 msgid "Show more"
 msgstr ""
 
-#: plugins/keyboard/data/ui/page.blp:24 plugins/keyboard/data/ui/page.blp:28
+#: plugins/keyboard/data/ui/page.blp:24 plugins/keyboard/data/ui/page.blp:29
 msgid "Typing"
 msgstr ""
 
-#: plugins/keyboard/data/ui/page.blp:29
+#: plugins/keyboard/data/ui/page.blp:30
 msgid "Select your keyboard layout or an input method."
 msgstr ""
 
-#: plugins/keyboard/data/ui/page.blp:34
+#: plugins/keyboard/data/ui/page.blp:35
 msgid "You must select at least one layout containing Latin characters"
 msgstr ""
 
-#: plugins/keyboard/data/ui/page.blp:59
+#: plugins/keyboard/data/ui/page.blp:60
 msgid "You can specify additional layout switch combination"
 msgstr ""
 
@@ -249,11 +257,11 @@ msgstr ""
 msgid "License"
 msgstr ""
 
-#: plugins/license-agreement/data/ui/page.blp:10
+#: plugins/license-agreement/data/ui/page.blp:11
 msgid "License Agreement"
 msgstr ""
 
-#: plugins/license-agreement/data/ui/page.blp:33
+#: plugins/license-agreement/data/ui/page.blp:34
 msgid "I have read the license and accept it"
 msgstr ""
 
@@ -262,31 +270,31 @@ msgstr ""
 msgid "Security"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:25 plugins/network/data/ui/page.blp:29
+#: plugins/network/data/ui/page.blp:25 plugins/network/data/ui/page.blp:30
 msgid "Network"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:30
+#: plugins/network/data/ui/page.blp:31
 msgid "Set up your network connections."
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:47
+#: plugins/network/data/ui/page.blp:48
 msgid "Host Name"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:74
+#: plugins/network/data/ui/page.blp:75
 msgid "SIM Cards and Mobile Network"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:78
+#: plugins/network/data/ui/page.blp:79
 msgid "Ethernet"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:91
+#: plugins/network/data/ui/page.blp:92
 msgid "Wi-Fi"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:106
+#: plugins/network/data/ui/page.blp:107
 msgid "Wi-Fi adapter"
 msgstr ""
 
@@ -370,19 +378,19 @@ msgstr ""
 msgid "Enhanced Open"
 msgstr ""
 
-#: plugins/privacy/data/ui/page.blp:5 plugins/privacy/data/ui/page.blp:9
+#: plugins/privacy/data/ui/page.blp:5 plugins/privacy/data/ui/page.blp:10
 msgid "Privacy"
 msgstr ""
 
-#: plugins/privacy/data/ui/page.blp:29
+#: plugins/privacy/data/ui/page.blp:30
 msgid "Location Services"
 msgstr ""
 
-#: plugins/privacy/data/ui/page.blp:38
+#: plugins/privacy/data/ui/page.blp:39
 msgid "Allows apps to determine your geographical location."
 msgstr ""
 
-#: plugins/software/data/ui/page.blp:5 plugins/software/data/ui/page.blp:10
+#: plugins/software/data/ui/page.blp:5 plugins/software/data/ui/page.blp:11
 msgid "Third-Party Repositories"
 msgstr ""
 
@@ -457,25 +465,25 @@ msgstr ""
 msgid "Select Avatar"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:37
+#: plugins/user/data/ui/page-password.blp:38
 msgid "Be careful not to lose your password."
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:56
+#: plugins/user/data/ui/page-password.blp:57
 msgid "Your user’s password"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:65
+#: plugins/user/data/ui/page-password.blp:66
 msgid "Generate user password"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:80
-#: plugins/user/data/ui/page-root-password.blp:83
+#: plugins/user/data/ui/page-password.blp:81
+#: plugins/user/data/ui/page-root-password.blp:84
 msgid "Passwords do not match"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:84
-#: plugins/user/data/ui/page-root-password.blp:87
+#: plugins/user/data/ui/page-password.blp:85
+#: plugins/user/data/ui/page-root-password.blp:88
 msgid "Repeat password"
 msgstr ""
 
@@ -483,54 +491,54 @@ msgstr ""
 msgid "Administrator"
 msgstr ""
 
-#: plugins/user/data/ui/page-root-password.blp:27
+#: plugins/user/data/ui/page-root-password.blp:28
 msgid "Set up security for Your device"
 msgstr ""
 
-#: plugins/user/data/ui/page-root-password.blp:28
+#: plugins/user/data/ui/page-root-password.blp:29
 msgid "You also can set password for administrator."
 msgstr ""
 
-#: plugins/user/data/ui/page-root-password.blp:40
+#: plugins/user/data/ui/page-root-password.blp:41
 msgid "Set administrator same as user password"
 msgstr ""
 
-#: plugins/user/data/ui/page-root-password.blp:59
+#: plugins/user/data/ui/page-root-password.blp:60
 msgid "Administrator’s password"
 msgstr ""
 
-#: plugins/user/data/ui/page-root-password.blp:68
+#: plugins/user/data/ui/page-root-password.blp:69
 msgid "Generate root password"
 msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:24
-#: plugins/user/data/ui/page-username.blp:137
+#: plugins/user/data/ui/page-username.blp:138
 msgid "Username"
-msgstr ""
-
-#: plugins/user/data/ui/page-username.blp:28
-#: plugins/user/data/ui/page-username.blp:104
-msgid "About You"
 msgstr ""
 
 #: plugins/user/data/ui/page-username.blp:29
 #: plugins/user/data/ui/page-username.blp:105
+msgid "About You"
+msgstr ""
+
+#: plugins/user/data/ui/page-username.blp:30
+#: plugins/user/data/ui/page-username.blp:106
 msgid "Set information about You."
 msgstr ""
 
-#: plugins/user/data/ui/page-username.blp:73
+#: plugins/user/data/ui/page-username.blp:74
 msgid "Change Avatar"
 msgstr ""
 
-#: plugins/user/data/ui/page-username.blp:94
+#: plugins/user/data/ui/page-username.blp:95
 msgid "Remove Avatar"
 msgstr ""
 
-#: plugins/user/data/ui/page-username.blp:122
+#: plugins/user/data/ui/page-username.blp:123
 msgid "Full Name"
 msgstr ""
 
-#: plugins/user/data/ui/page-username.blp:134
+#: plugins/user/data/ui/page-username.blp:135
 msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 
@@ -797,10 +805,10 @@ msgid "App config file"
 msgstr ""
 
 #: tests/plugins/test-common/data/ui/page.blp:23
-#: tests/plugins/test-common/data/ui/page.blp:31
+#: tests/plugins/test-common/data/ui/page.blp:32
 msgid "Test"
 msgstr ""
 
-#: tests/plugins/test-common/data/ui/page.blp:26
+#: tests/plugins/test-common/data/ui/page.blp:27
 msgid "Test page"
 msgstr ""
