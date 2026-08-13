@@ -179,7 +179,7 @@ namespace Flatpak {
 		[CCode (has_construct_function = false)]
 		protected Instance ();
 		[Version (since = "1.1")]
-		public static GLib.GenericArray<Flatpak.Instance> get_all ();
+		public static GLib.GenericArray<weak Flatpak.Instance> get_all ();
 		[Version (since = "1.1")]
 		public unowned string? get_app ();
 		[Version (since = "1.1")]
