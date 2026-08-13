@@ -55,6 +55,61 @@ public sealed class ReadySet.Finalizer : Object {
         }
     }
 
+    Gee.ArrayList<StepAddin> reorder_steps (Gee.ArrayList<StepAddin> steps) {
+        var module_to_step = new Gee.HashMap<string, StepAddin> ();
+        foreach (var step in steps) {
+            module_to_step[step.reg_module_name] = step;
+        }
+
+        var dependents = new Gee.HashMap<string, Gee.ArrayList<string>> ();
+        var in_degree = new Gee.HashMap<string, int> ();
+
+        foreach (var step in steps) {
+            string module_name = step.reg_module_name;
+            in_degree[module_name] = 0;
+            dependents[module_name] = new Gee.ArrayList<string> ();
+        }
+
+        foreach (var step in steps) {
+            string module_name = step.reg_module_name;
+            foreach (var dep in step.apply_after) {
+                if (!module_to_step.has_key (dep)) {
+                    continue;
+                }
+
+                dependents[dep].add (module_name);
+                in_degree[module_name] = in_degree[module_name] + 1;
+            }
+        }
+
+        var queue = new Gee.ArrayList<string> ();
+        foreach (var step in steps) {
+            string module_name = step.reg_module_name;
+            if (in_degree[module_name] == 0) {
+                queue.add (module_name);
+            }
+        }
+
+        var sorted = new Gee.ArrayList<StepAddin> ();
+        while (queue.size > 0) {
+            string module_name = queue.remove_at (0);
+            sorted.add (module_to_step[module_name]);
+
+            foreach (var dependent in dependents[module_name]) {
+                in_degree[dependent] = in_degree[dependent] - 1;
+                if (in_degree[dependent] == 0) {
+                    queue.add (dependent);
+                }
+            }
+        }
+
+        if (sorted.size < steps.size) {
+            critical ("Cycle detected in apply_after dependencies");
+        }
+
+        return sorted;
+    }
+
     async void finalize_initial_setup () throws ApplyError {
         Gee.ArrayList<StepAddin> steps_addins_arr = new Gee.ArrayList<StepAddin> ();
 
@@ -75,6 +130,8 @@ public sealed class ReadySet.Finalizer : Object {
 
             steps_addins_arr.add (page_info.plugin);
         }
+
+        steps_addins_arr = reorder_steps (steps_addins_arr);
 
         string[] passed_plugins = {};
         var files_to_copy = new Gee.ArrayList<string>.wrap ({

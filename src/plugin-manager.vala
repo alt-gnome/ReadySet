@@ -205,12 +205,7 @@ public sealed class ReadySet.PluginManager : Object {
             if (steps_plugins.contains (steps[i])) {
                 var addin = steps_plugins[steps[i]];
 
-                string module_name;
-                if (addin.registration_module_name != null) {
-                    module_name = addin.registration_module_name;
-                } else {
-                    module_name = steps[i];
-                }
+                var module_name = addin.reg_module_name;
 
                 context.register_vars (module_name, addin.get_context_vars ());
 

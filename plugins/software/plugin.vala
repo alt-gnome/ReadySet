@@ -28,6 +28,8 @@ public class Software.Addin : ReadySet.StepAddin {
         }
     }
 
+    public override string[] apply_after { owned get { return { "user" }; } }
+
     construct {
         instance = this;
     }
