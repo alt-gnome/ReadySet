@@ -296,21 +296,6 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
-    void finalize_cb (Object? obj, AsyncResult res) {
-        var finalizer = (Finalizer) obj;
-        try {
-            finalizer.run.end (res);
-            print ("Done!\n");
-
-        } catch (ApplyError e) {
-            var error_data = apply_error_to_data (e);
-            print ("Failed: %s. %s\n", error_data.message, error_data.description);
-            Process.exit (-1);
-        }
-
-        release ();
-    }
-
     void init_build_pages_cb (Object? obj, AsyncResult res) {
         if (build_steps.end (res)) {
             build_window ().present ();
@@ -318,20 +303,37 @@ public sealed class ReadySet.Application: Adw.Application {
         release ();
     }
 
+    async void apply_only () {
+        yield build_steps (false);
+
+        var progress_data = new ProgressData ();
+        var finalizer = new Finalizer (
+            context,
+            model,
+            installer_plugin,
+            progress_data
+        );
+        try {
+            yield finalizer.run ();
+            print ("Done!\n");
+
+        } catch (ApplyError e) {
+            var error_data = apply_error_to_data (e);
+            print ("Failed: %s. %s\n", error_data.message, error_data.description);
+            Process.exit (-1);
+        }
+    }
+
+    void apply_only_cb (Object? obj, AsyncResult res) {
+        release ();
+    }
+
     public override void activate () {
         base.activate ();
 
         if (options_handler.apply_only) {
-            var progress_data = new ProgressData ();
-            var finalizer = new Finalizer (
-                context,
-                plugin_manager,
-                installer_plugin,
-                progress_data
-            );
-
             hold ();
-            finalizer.run.begin (finalize_cb);
+            apply_only.begin (apply_only_cb);
 
             return;
         }

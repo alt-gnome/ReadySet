@@ -82,7 +82,7 @@ public sealed class ReadySet.InstallerEndPage : Adw.Bin {
         } else {
             var finalizer = new Finalizer (
                 context,
-                app.plugin_manager,
+                app.model,
                 app.installer_plugin,
                 progress_data
             );

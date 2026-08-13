@@ -21,19 +21,22 @@
 public sealed class ReadySet.Finalizer : Object {
 
     public Context context { get; construct; }
-    public PluginManager plugin_manager { get; construct; }
+
+    public PagesModel model { get; construct; }
+
     public InstallerAddin? installer_plugin { get; construct; default = null; }
+
     public ProgressData progress_data { get; construct; }
 
     public Finalizer (
         Context context,
-        PluginManager plugin_manager,
+        PagesModel model,
         InstallerAddin? installer_plugin,
         ProgressData progress_data
     ) {
         Object (
             context: context,
-            plugin_manager: plugin_manager,
+            model: model,
             installer_plugin: installer_plugin,
             progress_data: progress_data
         );
@@ -53,30 +56,39 @@ public sealed class ReadySet.Finalizer : Object {
     }
 
     async void finalize_initial_setup () throws ApplyError {
-        var steps = plugin_manager.steps;
+        Gee.ArrayList<StepAddin> steps_addins_arr = new Gee.ArrayList<StepAddin> ();
+
+        for (int i = 0; i < model.get_n_items_unfiltered (); i++) {
+            var page_info = (PageInfo) model.get_item_unfiltered (i);
+
+            if (!page_info.can_be_applyed ()) {
+                continue;
+            }
+
+            if (page_info.plugin in steps_addins_arr) {
+                continue;
+            }
+
+            if (page_info.plugin_info.module_name == "welcome") {
+                continue;
+            }
+
+            steps_addins_arr.add (page_info.plugin);
+        }
 
         string[] passed_plugins = {};
         var files_to_copy = new Gee.ArrayList<string>.wrap ({
             ".config/dconf/user",
         });
 
-        for (int i = 0; i < steps.length; i++) {
-            if (steps[i] == "welcome") {
-                continue;
-            }
-
-            var addin = plugin_manager.get_step_addin (steps[i]);
-            if (addin == null || !addin.enabled) {
-                continue;
-            }
-
+        foreach (var addin in steps_addins_arr) {
             progress_data.value = 0.0;
             progress_data.message = "";
 
             yield addin.apply (progress_data);
             progress_data.value = 1.0;
 
-            passed_plugins += steps[i];
+            passed_plugins += addin.plugin_info.module_name;
             files_to_copy.add_all_array (addin.files_to_copy);
         }
 

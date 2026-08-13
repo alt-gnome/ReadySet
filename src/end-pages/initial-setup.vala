@@ -91,35 +91,25 @@ public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
         update_progress_visibility ();
 
         if (context.sandbox) {
-            Gee.ArrayList<StepAddin> steps_addins_arr = new Gee.ArrayList<StepAddin> ();
+            progress_data.message = _("Applying changes…");
 
-            for (int i = 0; i < app.model.get_n_items_unfiltered (); i++) {
-                var page_info = (PageInfo) app.model.get_item_unfiltered (i);
-                if (!page_info.can_be_applyed ()) continue;
-                if (!(page_info.plugin in steps_addins_arr) && page_info.plugin_info.module_name != "welcome") {
-                    steps_addins_arr.add (page_info.plugin);
-                }
-            }
+            Timeout.add_seconds (1, () => {
+                progress_data.value += 0.2;
 
-            progress_data.value = 0.0;
-            var progress_step = 1.0 / steps_addins_arr.size;
-
-            foreach (var step_addin in steps_addins_arr) {
-                progress_data.message = _("Applying %s…").printf (step_addin.plugin_info.module_name);
-
-                Timeout.add_seconds_once (1, () => {
+                if (progress_data.value >= 1.0) {
                     Idle.add (start_action.callback);
-                });
-                yield;
+                    return false;
+                }
 
-                progress_data.value += progress_step;
-            }
+                return true;
+            });
+            yield;
 
             stack.visible_child_name = "ready";
         } else {
             var finalizer = new Finalizer (
                 context,
-                app.plugin_manager,
+                app.model,
                 null,
                 progress_data
             );
