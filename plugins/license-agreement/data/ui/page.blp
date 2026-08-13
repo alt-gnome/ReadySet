@@ -3,6 +3,7 @@ using Adw 1;
 
 template $LicenseAgreementPage: $ReadySetBasePage {
   title-header: _("License");
+  title-icon-name: "document-text-symbolic";
   is-ready: bind check_button.active;
   notify::license-file-path => $read_license_file();
 

@@ -18,14 +18,28 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 using Gtk 4.0;
+using Adw 1;
 
-template $TestErrorPage: $ReadySetBasePage {
-  title-header: "Test Error";
-  title-icon-name: "zoom-original-symbolic";
+template $ReadySetPagesIndicator: Box {
+  orientation: vertical;
+  hexpand: true;
 
-  info: $ReadySetStatusPage {
-    title: "Test Error page";
-    description: "This is a test error page.";
-    icon-name: "zoom-original-symbolic";
-  };
+  Revealer {
+    reveal-child: bind template.show-icons;
+    transition-type: swing_up;
+
+    Adw.Carousel icons_box {
+      spacing: 8;
+      halign: fill;
+      hexpand: true;
+      interactive: false;
+    }
+  }
+
+  $ReadySetPositionedStack positioned_stack {
+    transition-type: crossfade;
+    hhomogeneous: true;
+    halign: center;
+    valign: center;
+  }
 }

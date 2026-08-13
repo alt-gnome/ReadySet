@@ -40,6 +40,8 @@ public sealed class ReadySet.PageInfo : Object {
 
     public string title_header { get; set; }
 
+    public string title_icon_name { get; set; }
+
     public bool is_compact {
         get {
             if (page.info == null) {
@@ -84,6 +86,7 @@ public sealed class ReadySet.PageInfo : Object {
         string[] props = {
             "is-ready",
             "title-header",
+            "title-icon-name"
         };
 
         if (page != null) {

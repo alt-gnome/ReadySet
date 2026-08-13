@@ -12,8 +12,11 @@
     <file preprocess="xml-stripblanks">ui/initial-setup-end-page.ui</file>
     <file preprocess="xml-stripblanks">ui/installer-end-page.ui</file>
     <file preprocess="xml-stripblanks">ui/nothing-to-show.ui</file>
+    <file preprocess="xml-stripblanks">ui/pages-indicator.ui</file>
     <file preprocess="xml-stripblanks">ui/step-row.ui</file>
     <file preprocess="xml-stripblanks">ui/steps-main-page.ui</file>
+    <file preprocess="xml-stripblanks">ui/steps-sidebar.ui</file>
+    <file preprocess="xml-stripblanks">ui/window-content.ui</file>
     <file preprocess="xml-stripblanks">ui/window.ui</file>
   </gresource>
 </gresources>

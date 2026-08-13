@@ -21,9 +21,11 @@ rs_app_vala_sources = files(
   'widgets/devel/window.vala',
 
   'widgets/nothing-to-show.vala',
+  'widgets/pages-indicator.vala',
   'widgets/positioned-stack.vala',
   'widgets/step-row.vala',
   'widgets/steps-main-page.vala',
+  'widgets/steps-sidebar.vala',
 
   'about.vala',
   'application.vala',
@@ -33,6 +35,7 @@ rs_app_vala_sources = files(
   'pages-model.vala',
   'plugin-manager.vala',
   'utils.vala',
+  'window-content.vala',
   'window.vala',
 )
 

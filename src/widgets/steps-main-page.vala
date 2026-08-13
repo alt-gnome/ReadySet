@@ -28,6 +28,12 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     [GtkChild]
     unowned PositionedStack info_positioned_stack;
     [GtkChild]
+    unowned PagesIndicator pages_indicator;
+    [GtkChild]
+    unowned Gtk.Label standalone_sandbox_label;
+    [GtkChild]
+    unowned Gtk.ToggleButton standalone_steps_list_button;
+    [GtkChild]
     unowned Gtk.Label sandbox_label_left;
     [GtkChild]
     unowned Gtk.CenterBox standalone_horizontal_bottom;
@@ -43,8 +49,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     unowned Gtk.Button osk_button;
     [GtkChild]
     unowned Gtk.Stack main_stack;
-    [GtkChild]
-    unowned PositionedStack title_stack;
 
     [GtkChild]
     unowned Gtk.Button to_up_button;
@@ -133,11 +137,15 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
     public bool can_close { get; set; }
 
+    public bool show_steps_list { get; set; }
+
     public bool is_ready_to_continue { get; set; }
 
     public bool can_up { get; set; }
 
     static Gee.ArrayList<string> passed_pages = new Gee.ArrayList<string> ();
+
+    public bool simple { get; set; }
 
     LayoutMode _layout_mode;
     public LayoutMode layout_mode {
@@ -205,6 +213,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
     construct {
         model = Application.get_default ().model;
+        pages_indicator.model = model;
 
         can_close = Application.get_default ().can_close;
         context_button.visible = Config.NIGHTLY;
@@ -213,13 +222,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
         set_breakpoints ();
 
-        title_stack.bind_model (model, create_title_func);
-
         setup.begin ();
-    }
-
-    Gtk.Widget create_title_func (PageInfo page_info) {
-        return new Adw.WindowTitle (page_info.title_header, "");
     }
 
     void update_model_binds () {
@@ -389,6 +392,9 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     }
 
     void update_standalone () {
+        standalone_sandbox_label.visible = ReadySet.Application.get_default ().context.sandbox &&
+            Config.NIGHTLY && standalone;
+        standalone_steps_list_button.visible = !simple && standalone;
         standalone_horizontal_bottom.visible = layout_mode == HORIZONTAL && standalone;
     }
 

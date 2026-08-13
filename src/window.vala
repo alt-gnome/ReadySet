@@ -47,6 +47,8 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
     string active;
     bool reloading = false;
 
+    bool simple;
+
     public Window (ReadySet.Application app) {
         Object (application: app);
     }
@@ -59,6 +61,8 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         //  We start loading things after window appears on screen
         //  So that the spinner is shown, and not just nothing
         map.connect (window_initially_shown);
+
+        simple = !Application.get_default ().has_installer;
 
         if (Config.NIGHTLY) {
             add_css_class ("devel");
@@ -95,7 +99,7 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
             active = B_NAME;
         }
 
-        stack.add_named (new StepsMainPage (), active);
+        stack.add_named (new WindowContent (simple), active);
         stack.set_visible_child_name (active);
         Timeout.add_once (stack.transition_duration, on_transition_ended);
     }

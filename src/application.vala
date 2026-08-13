@@ -36,7 +36,7 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
-    bool has_installer {
+    internal bool has_installer {
         get {
             return options_handler.installer != null;
         }
@@ -66,9 +66,11 @@ public sealed class ReadySet.Application: Adw.Application {
         typeof (StatusPage).ensure ();
         typeof (BasePage).ensure ();
 
+        typeof (PagesIndicator).ensure ();
         typeof (PositionedStack).ensure ();
         typeof (StepRow).ensure ();
         typeof (StepsMainPage).ensure ();
+        typeof (StepsSidebar).ensure ();
 
         typeof (InitialSetupEndPage).ensure ();
         typeof (InstallerEndPage).ensure ();
