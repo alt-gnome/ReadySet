@@ -42,6 +42,31 @@ public class User.Addin : ReadySet.StepAddin {
         };
     }
 
+    void set_user_icon_file (Act.User user, string icon_file) {
+        File? temporary_file = null;
+
+        try {
+            FileIOStream temporary_stream;
+            temporary_file = File.new_tmp ("ready-set-avatar-XXXXXX", out temporary_stream);
+
+            // A private source makes AccountsService store the icon in its
+            // managed directory instead of retaining a path under /usr/share.
+            temporary_stream.output_stream.splice (
+                File.new_for_path (icon_file).read (),
+                OutputStreamSpliceFlags.CLOSE_SOURCE
+            );
+            temporary_stream.close ();
+
+            user.set_icon_file (temporary_file.get_path ());
+        } catch (Error e) {
+            warning ("Failed to prepare avatar for AccountsService: %s", e.message);
+            user.set_icon_file (icon_file);
+        } finally {
+            if (temporary_file != null)
+                FileUtils.unlink (temporary_file.get_path ());
+        }
+    }
+
     public async override void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
         try {
             var user = yield Act.UserManager.get_default ().create_user_async (
@@ -61,7 +86,7 @@ public class User.Addin : ReadySet.StepAddin {
                 user.set_language (context.get_string ("language.locale"));
             }
             if (context.get_string ("user.avatar-file") != "") {
-                user.set_icon_file (context.get_string ("user.avatar-file"));
+                set_user_icon_file (user, context.get_string ("user.avatar-file"));
             }
 
             if (context.get_boolean ("user.with-root")) {
