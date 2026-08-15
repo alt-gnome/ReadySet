@@ -48,7 +48,11 @@ public sealed class User.PasswordStrength : Gtk.Box {
         set {
             _strength_level = value;
 
-            update_css_by_strength (this, _strength_level);
+            update_css_by_strength (
+                this,
+                _strength_level,
+                Addin.get_instance ().context.get_boolean ("user.enforce-password-quality")
+            );
         }
     }
 }

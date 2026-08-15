@@ -100,7 +100,11 @@ public sealed class User.PagePassword : PagePasswordCommon {
         password_strength.strength_level = strength.level;
         password_strength.strength = strength.value;
         password_strength.label = strength.hint;
-        update_css_by_strength (password_entry, strength.level);
+        update_css_by_strength (
+            password_entry,
+            strength.level,
+            Addin.get_instance ().context.get_boolean ("user.enforce-password-quality")
+        );
         password_strength.progress_bar_visible = strength.support_value;
         password_context_row.reveal_context = strength.level != GOOD;
 
