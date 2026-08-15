@@ -50,14 +50,18 @@ namespace User {
         return pwent != null;
     }
 
-    public void update_css_by_strength (Gtk.Widget row, StrengthLevel strength_level) {
+    public void update_css_by_strength (Gtk.Widget row, StrengthLevel strength_level, bool enforce_password_qwcheck) {
         row.remove_css_class ("error");
         row.remove_css_class ("warning");
         row.remove_css_class ("success");
 
         switch (strength_level) {
             case StrengthLevel.BAD:
-                row.add_css_class ("error");
+                if (enforce_password_qwcheck) {
+                    row.add_css_class ("error");
+                } else {
+                    row.add_css_class ("warning");
+                }
                 break;
             case StrengthLevel.NOT_BAD:
                 row.add_css_class ("warning");
