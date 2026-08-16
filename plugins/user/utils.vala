@@ -249,6 +249,36 @@ namespace User {
         );
     }
 
+    void set_user_icon_file (Act.User user, string icon_file) {
+        if (user.uses_homed ()) {
+            user.set_icon_file (icon_file);
+            return;
+        }
+
+        File? temporary_file = null;
+
+        try {
+            FileIOStream temporary_stream;
+            temporary_file = File.new_tmp ("ready-set-avatar-XXXXXX", out temporary_stream);
+
+            // A private source makes classic AccountsService store the icon in
+            // its managed directory instead of retaining a path under /usr/share.
+            temporary_stream.output_stream.splice (
+                File.new_for_path (icon_file).read (),
+                OutputStreamSpliceFlags.CLOSE_SOURCE
+            );
+            temporary_stream.close ();
+
+            user.set_icon_file (temporary_file.get_path ());
+        } catch (Error e) {
+            warning ("Failed to prepare avatar for AccountsService: %s", e.message);
+            user.set_icon_file (icon_file);
+        } finally {
+            if (temporary_file != null)
+                FileUtils.unlink (temporary_file.get_path ());
+        }
+    }
+
     public string[] get_context_facesdirs () {
         var context = Addin.get_instance ().context;
         var facesdir = new Gee.ArrayList<string> ();
