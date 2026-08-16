@@ -210,7 +210,7 @@ public sealed class ReadySet.PluginManager : Object {
                 context.register_vars (module_name, addin.get_context_vars ());
 
                 var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
-                var var_name = "%s.enabled".printf (steps[i]);
+                var var_name = "%s.enabled".printf (addin.reg_module_name);
                 vars[var_name] = new ContextVarInfo (
                     ContextType.BOOLEAN,
                     !(context.mode == EXISTING_USER &&
