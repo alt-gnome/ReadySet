@@ -23,7 +23,7 @@ public sealed class ReadySet.PluginManager : Object {
     internal const string INSTALLER_STEP_PREFIX = "installer.";
 
     string? installer_name;
-    bool steps_inited_once = false;
+    bool inited_once = false;
 
     public Context context { get; construct; }
 
@@ -287,8 +287,8 @@ public sealed class ReadySet.PluginManager : Object {
         }
     }
 
-    public async void init_steps_once () {
-        if (steps_inited_once) {
+    public async void call_init_once () {
+        if (inited_once) {
             return;
         }
 
@@ -302,6 +302,12 @@ public sealed class ReadySet.PluginManager : Object {
             }
         }
 
-        steps_inited_once = true;
+        if (installer_name != null) {
+            if (installers_plugins.contains (installer_name)) {
+                yield installers_plugins[installer_name].init_once ();
+            }
+        }
+
+        inited_once = true;
     }
 }
