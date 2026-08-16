@@ -491,10 +491,23 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
         if (position == n_items - 1) {
             var view = new Adw.ToolbarView ();
-            view.add_top_bar (new Adw.HeaderBar () {
+
+            var header_bar = new Adw.HeaderBar () {
                 show_title = false,
                 show_end_title_buttons = can_close,
-            });
+            };
+
+            view.add_top_bar (header_bar);
+
+            if (Config.NIGHTLY) {
+                var context_button = new Gtk.Button.from_icon_name (context_button.icon_name) {
+                    tooltip_text = context_button.tooltip_text,
+                    css_classes = context_button.css_classes
+                };
+                context_button.clicked.connect (on_context_button_clicked);
+
+                header_bar.pack_end (context_button);
+            }
 
             switch (Application.get_default ().context.mode) {
                 case EXISTING_USER:
