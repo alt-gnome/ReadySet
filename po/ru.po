@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-13 16:27+0000\n"
+"POT-Creation-Date: 2026-08-16 18:15+0000\n"
 "PO-Revision-Date: 2026-08-07 14:56+0300\n"
 "Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
 "Language-Team: Russian\n"
@@ -58,7 +58,8 @@ msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
 
 #: data/ui/steps-main-page.blp:482
-msgid "Open application menu"
+#, fuzzy
+msgid "Open Context menu"
 msgstr "Открыть меню приложения"
 
 #: data/ui/steps-main-page.blp:520
@@ -692,23 +693,23 @@ msgstr ""
 "Добавьте больше букв, цифр и символов пунктуации, чтобы сделать пароль "
 "сильнее."
 
-#: plugins/user/utils.vala:90
+#: plugins/user/utils.vala:94
 msgid "Name cannot be empty"
 msgstr "Имя не может быть пустым"
 
-#: plugins/user/utils.vala:178
+#: plugins/user/utils.vala:182
 msgid "That username isn't available. Please try another"
 msgstr "Это имя пользователя недоступно. Пожалуйста, попробуйте другое"
 
-#: plugins/user/utils.vala:180
+#: plugins/user/utils.vala:184
 msgid "The username is too long"
 msgstr "Имя пользователя слишком длинное"
 
-#: plugins/user/utils.vala:182
+#: plugins/user/utils.vala:186
 msgid "The username must start with a lower case letter from a-z"
 msgstr "Имя пользователя должно начинаться со строчной буквы от «a» до «z»"
 
-#: plugins/user/utils.vala:184
+#: plugins/user/utils.vala:188
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
@@ -716,7 +717,7 @@ msgstr ""
 "Имя пользователя может содержать только строчные буквы от «a» до «z», цифры "
 "и следущие символы: «-», «_»"
 
-#: plugins/user/utils.vala:187
+#: plugins/user/utils.vala:191
 msgid "Username cannot be empty"
 msgstr "Имя пользователя не может быть пустым"
 
