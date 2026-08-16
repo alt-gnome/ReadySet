@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-13 16:27+0000\n"
+"POT-Creation-Date: 2026-08-16 18:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,7 +54,7 @@ msgid "Extend/Retract keyboard"
 msgstr ""
 
 #: data/ui/steps-main-page.blp:482
-msgid "Open application menu"
+msgid "Open Context menu"
 msgstr ""
 
 #: data/ui/steps-main-page.blp:520
@@ -653,29 +653,29 @@ msgid ""
 "Adding more letters, numbers and punctuation will make the password stronger."
 msgstr ""
 
-#: plugins/user/utils.vala:90
+#: plugins/user/utils.vala:94
 msgid "Name cannot be empty"
 msgstr ""
 
-#: plugins/user/utils.vala:178
+#: plugins/user/utils.vala:182
 msgid "That username isn't available. Please try another"
 msgstr ""
 
-#: plugins/user/utils.vala:180
+#: plugins/user/utils.vala:184
 msgid "The username is too long"
 msgstr ""
 
-#: plugins/user/utils.vala:182
+#: plugins/user/utils.vala:186
 msgid "The username must start with a lower case letter from a-z"
 msgstr ""
 
-#: plugins/user/utils.vala:184
+#: plugins/user/utils.vala:188
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
 msgstr ""
 
-#: plugins/user/utils.vala:187
+#: plugins/user/utils.vala:191
 msgid "Username cannot be empty"
 msgstr ""
 
