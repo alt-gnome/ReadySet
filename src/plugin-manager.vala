@@ -23,7 +23,7 @@ public sealed class ReadySet.PluginManager : Object {
     internal const string INSTALLER_STEP_PREFIX = "installer.";
 
     string? installer_name;
-    bool steps_inited_once = false;
+    bool inited_once = false;
 
     public Context context { get; construct; }
 
@@ -215,7 +215,7 @@ public sealed class ReadySet.PluginManager : Object {
                 context.register_vars (module_name, addin.get_context_vars ());
 
                 var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
-                var var_name = "%s.enabled".printf (steps[i]);
+                var var_name = "%s.enabled".printf (addin.reg_module_name);
                 vars[var_name] = new ContextVarInfo (
                     ContextType.BOOLEAN,
                     !(context.mode == EXISTING_USER &&
@@ -284,14 +284,16 @@ public sealed class ReadySet.PluginManager : Object {
 
         context.register_vars ("installer", installers_plugins[installer_name].get_context_vars ());
 
+        installers_plugins[installer_name].context = context;
+
         var display = Gdk.Display.get_default ();
         if (display != null) {
             get_installer_plugin ().load_css_for_display (display);
         }
     }
 
-    public async void init_steps_once () {
-        if (steps_inited_once) {
+    public async void call_init_once () {
+        if (inited_once) {
             return;
         }
 
@@ -305,6 +307,12 @@ public sealed class ReadySet.PluginManager : Object {
             }
         }
 
-        steps_inited_once = true;
+        if (installer_name != null) {
+            if (installers_plugins.contains (installer_name)) {
+                yield installers_plugins[installer_name].init_once ();
+            }
+        }
+
+        inited_once = true;
     }
 }

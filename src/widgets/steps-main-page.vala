@@ -500,7 +500,8 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         if (position == n_items - 1) {
             var view = new Adw.ToolbarView ();
             view.add_top_bar (new Adw.HeaderBar () {
-                show_title = false
+                show_title = false,
+                show_end_title_buttons = can_close,
             });
 
             switch (Application.get_default ().context.mode) {
