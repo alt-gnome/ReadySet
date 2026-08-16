@@ -199,7 +199,9 @@ public sealed class ReadySet.Application: Adw.Application {
 
         var initial_position = model == null ? 0 : model.get_selected ();
 
-        yield plugin_manager.init_steps_once ();
+        //  It place here bacause build_steps is first async function that called in
+        //  Application class and init_steps_once.
+        yield plugin_manager.call_init_once ();
         var steps = plugin_manager.steps;
 
         if (!quiet) print ("Loaded steps:\n");
