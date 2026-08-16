@@ -279,7 +279,7 @@ public sealed class ReadySet.PluginManager : Object {
 
         context.register_vars ("installer", installers_plugins[installer_name].get_context_vars ());
 
-        addin.context = context;
+        installers_plugins[installer_name].context = context;
 
         var display = Gdk.Display.get_default ();
         if (display != null) {
