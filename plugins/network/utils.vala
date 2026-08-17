@@ -145,9 +145,9 @@ namespace Network {
             Bytes? hidden_ssid = null
     ) {
         NM.Connection conn = NM.SimpleConnection.new ();
-        Bytes ssid = (ap.ssid != null && ap.ssid.length > 0)
-                ? ap.ssid
-                : (!) hidden_ssid;
+        Bytes ssid = NM.Utils.is_empty_ssid (ap.ssid?.get_data ())
+                ? (!) hidden_ssid
+                : ap.ssid;
 
         conn.add_setting (new NM.SettingConnection () {
             uuid = NM.Utils.uuid_generate (),
@@ -293,15 +293,11 @@ public sealed class Network.AccessPointFilter : Gtk.Filter {
     }
 
     public override bool match (Object? obj) {
-        if (obj == null) {
-            return false;
-        }
-
         var ap = (NM.AccessPoint) obj;
-        if (ap.ssid == null || ap.ssid.length <= 0) {
+
+        if (NM.Utils.is_empty_ssid (ap?.ssid?.get_data ())) {
             return false;
         }
-
         return ssids.add (ap.ssid);
     }
 
