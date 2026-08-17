@@ -21,8 +21,18 @@ using Gtk 4.0;
 using Adw 1;
 
 template $NetworkEthernetRow: Adw.ActionRow {
-  activated => $edit_or_add_connection();
-
   [prefix]
   Image icon {}
+
+  [suffix]
+  Button settings {
+    styles [
+      "flat",
+    ]
+
+    icon-name: "wrench-wide-symbolic";
+    tooltip-text: _("Configure…");
+    valign: center;
+    clicked => $edit_or_add_connection();
+  }
 }
