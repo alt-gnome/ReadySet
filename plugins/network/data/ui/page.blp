@@ -77,6 +77,20 @@ template $NetworkPage: $ReadySetBasePage {
 
       Adw.PreferencesGroup ethernet_group {
         title: _("Ethernet");
+
+        [header-suffix]
+        Button add_ethernet_button {
+          styles [
+            "flat",
+          ]
+
+          clicked => $add_ethernet_connection();
+
+          Adw.ButtonContent {
+            icon-name: "list-add-symbolic";
+            label: _("Add a Connection…");
+          }
+        }
       }
 
       Adw.PreferencesGroup wifi_group {

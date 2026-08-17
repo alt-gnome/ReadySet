@@ -123,8 +123,7 @@ namespace Network {
         return res;
     }
 
-#if 0
-    NM.Connection prepare_wired_connection (NM.DeviceEthernet eth) {
+    NM.Connection prepare_wired_connection (NM.DeviceEthernet? eth) {
         NM.Connection conn = NM.SimpleConnection.new ();
         conn.add_setting (new NM.SettingWired () {
             auto_negotiate = true,
@@ -145,17 +144,19 @@ namespace Network {
             }
         }
 
-        conn.add_setting (new NM.SettingConnection () {
+        var setting_c = new NM.SettingConnection () {
             uuid = NM.Utils.uuid_generate (),
             id = conn_id.printf (idx),
-            interface_name = eth.interface,
             type = NM.SettingWired.SETTING_NAME,
             autoconnect = true,
-        });
+        };
+        if (eth != null) {
+            setting_c.interface_name = eth.interface;
+        }
+        conn.add_setting (setting_c);
 
         return conn;
     }
-#endif
 
     NM.Connection prepare_wireless_connection (
             NM.DeviceWifi wlan,
