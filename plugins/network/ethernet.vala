@@ -107,6 +107,25 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
         }
     }
 
+    void track_link_cooldown (NM.Device eth, uint to, uint from, uint reason) {
+        var to_state = (NM.DeviceState) to;
+        var from_state = (NM.DeviceState) from;
+        if ((NM.DeviceStateReason) reason == CARRIER) {
+            if (from_state == DISCONNECTED && to_state == UNAVAILABLE) {
+                // the cooldown begins
+                toggler.sensitive = false;
+                toggler.tooltip_text = _(
+                    "Please wait until devices reloading is over…"
+                );
+            } else if (from_state == UNAVAILABLE && to_state == DISCONNECTED) {
+                // the cooldown is over
+                eth.state_changed.disconnect (track_link_cooldown);
+                toggler.sensitive = true;
+                toggler.tooltip_text = null;
+            }
+        }
+    }
+
     [GtkCallback]
     async void toggle_connection () {
         if (internal_toggle || Addin.get_instance ().context.sandbox) {
@@ -119,6 +138,7 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
                 yield nmc.activate_connection_async (conn, null, null, null);
             } else {
                 yield device.disconnect_async (null);
+                device.state_changed.connect (track_link_cooldown);
             }
         } catch (Error e) {
             warning (e.message);
