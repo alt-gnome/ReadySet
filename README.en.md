@@ -132,5 +132,5 @@ meson compile -C _build
 - Vladimir Romanov <rirusha@altlinux.org> — developer
 - Viktoria Zubacheva <gingercat@alt-gnome.ru> — icon/design
 - Nina Petrova <1704.nina.petrova@gmail.com> — design
-
+- [GNOME Control Center](plugins/network/connection-editor/README.en.md)
 - [GNOME Initial Setup](https://gitlab.gnome.org/GNOME/gnome-initial-setup), the source of a lot of the logic
