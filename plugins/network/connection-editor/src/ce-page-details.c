@@ -28,7 +28,7 @@
 #include "ce-page.h"
 #include "ce-page-details.h"
 
-#include "../panel-common.h"
+#include "panel-common.h"
 
 struct _CEPageDetails
 {
