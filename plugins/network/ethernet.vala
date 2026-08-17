@@ -57,6 +57,7 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
             internal_toggle = true;
             toggler.active = true;
             internal_toggle = false;
+            toggler.visible = true;
         }
     }
 
@@ -67,6 +68,7 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
             internal_toggle = true;
             toggler.active = false;
             internal_toggle = false;
+            toggler.visible = true;
         }
     }
 
@@ -145,6 +147,7 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
             internal_toggle = true;
             toggler.active = !toggler.active;
             internal_toggle = false;
+            toggler.visible = false;
         }
     }
 
@@ -155,5 +158,6 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
             transient_for = root as Gtk.Window,
         };
         dialog.present ();
+        toggler.visible = true;
     }
 }
