@@ -45,30 +45,26 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
     }
 
     [GtkCallback]
-    async void edit_or_add_connection () {
+    void edit_or_add_connection () {
         NM.Client nmc = Addin.get_instance ().client;
         NM.Connection conn = device.active_connection?.connection;
         if (conn == null) {
-            try {
-                if (device.available_connections.length == 0) {
-                    yield nmc.add_connection_async (
-                        prepare_wired_connection (device), false, null
-                    );
+            // Pick the last used profile.
+            // (At initial setup, there is only automatic profile.)
+            uint64 timestamp = 0;
+            foreach (var known in device.available_connections) {
+                var setting_c = known.get_setting_connection ();
+                if (setting_c.timestamp > timestamp) {
+                    conn = known;
+                    timestamp = setting_c.timestamp;
                 }
-                yield nmc.activate_connection_async (
-                    device.available_connections[0], device, null, null
-                );
-            } catch (Error e) {
-                warning (e.message);
-                return;
             }
         }
-        var dialog = new Net.ConnectionEditor (
-            device.active_connection.connection,
-            device,
-            null,
-            Addin.get_instance ().client
-        ) {
+        if (conn == null) {
+            // That rare case when no connection exists
+            conn = prepare_wired_connection (device);
+        }
+        var dialog = new Net.ConnectionEditor (conn, device, null, nmc) {
             transient_for = root as Gtk.Window,
         };
         dialog.present ();
