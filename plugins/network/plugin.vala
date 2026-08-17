@@ -194,7 +194,7 @@ public class Network.Addin : ReadySet.StepAddin {
             );
 
             foreach (var conn in client.connections) {
-                yield conn.save_async (null);
+                yield conn.commit_changes_async (true, null);
             }
         } catch (Error e) {
             throw ReadySet.ApplyError.build_error (
