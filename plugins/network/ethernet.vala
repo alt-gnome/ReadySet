@@ -28,6 +28,7 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
         device = eth;
 
         title = device.get_description ();
+        activatable = !Addin.get_instance ().context.sandbox;
 
         device.notify["ip4-connectivity"].connect (update_icon);
         device.notify["ip6-connectivity"].connect (update_icon);
