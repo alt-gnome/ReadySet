@@ -11,7 +11,7 @@
 %define ser_libname %libname-service
 %define ser_girname %{girname}Service
 %define soversion 0.13
-%define minor_version 1
+%define minor_version 2
 %define gis_name gnome-initial-setup
 
 Name: ready-set
@@ -469,6 +469,10 @@ install -Dpm 0644 %SOURCE1 %buildroot%_rpmmacrosdir/%name
 %_rpmmacrosdir/%name
 
 %changelog
+* Mon Aug 17 2026 Vladimir Romanov <rirusha@altlinux.org> 0.13.2-alt1
+- New version: 0.13.2.
+- Fixed bug with build.
+
 * Sun Aug 16 2026 Vladimir Romanov <rirusha@altlinux.org> 0.13.1-alt1
 - New version: 0.13.1.
 - Fixed a few bugs with installer mode.
