@@ -21,7 +21,8 @@ using Gtk 4.0;
 using Adw 1;
 
 template $NetworkEthernetRow: Adw.ActionRow {
-  activatable: false;
+  activatable: true;
+  activated => $edit_or_add_connection();
 
   [prefix]
   Image icon {}

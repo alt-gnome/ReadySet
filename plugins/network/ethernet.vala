@@ -42,4 +42,17 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
             icon.icon_name = "offline-lan-symbolic";
         }
     }
+
+    [GtkCallback]
+    void edit_or_add_connection () {
+        var dialog = new Net.ConnectionEditor (
+            device.active_connection?.connection,
+            device,
+            null,
+            Addin.get_instance ().client
+        ) {
+            transient_for = root as Gtk.Window,
+        };
+        dialog.present ();
+    }
 }
