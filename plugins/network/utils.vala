@@ -107,6 +107,35 @@ namespace Network {
         return res;
     }
 
+    NM.Connection prepare_wired_connection (NM.DeviceEthernet eth) {
+        NM.Connection conn = NM.SimpleConnection.new ();
+        conn.add_setting (new NM.SettingIP4Config () {
+            method = "auto",
+        });
+        conn.add_setting (new NM.SettingIP6Config () {
+            method = "auto",
+        });
+
+        NM.Client nmc = Addin.get_instance ().client;
+        string conn_id = _("Wired connection %u");
+        uint idx = 1;
+        foreach (var known in nmc.connections) {
+            if (known.get_id () == conn_id.printf (idx)) {
+                ++idx;
+            }
+        }
+
+        conn.add_setting (new NM.SettingConnection () {
+            uuid = NM.Utils.uuid_generate (),
+            id = conn_id.printf (idx),
+            interface_name = eth.interface,
+            type = "802-3-ethernet",
+            autoconnect = true,
+        });
+
+        return conn;
+    }
+
     NM.Connection prepare_wireless_connection (
             NM.DeviceWifi wlan,
             NM.AccessPoint ap,

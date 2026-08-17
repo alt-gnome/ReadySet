@@ -44,9 +44,26 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
     }
 
     [GtkCallback]
-    void edit_or_add_connection () {
+    async void edit_or_add_connection () {
+        NM.Client nmc = Addin.get_instance ().client;
+        NM.Connection conn = device.active_connection?.connection;
+        if (conn == null) {
+            try {
+                if (device.available_connections.length == 0) {
+                    yield nmc.add_connection_async (
+                        prepare_wired_connection (device), false, null
+                    );
+                }
+                yield nmc.activate_connection_async (
+                    device.available_connections[0], device, null, null
+                );
+            } catch (Error e) {
+                warning (e.message);
+                return;
+            }
+        }
         var dialog = new Net.ConnectionEditor (
-            device.active_connection?.connection,
+            device.active_connection.connection,
             device,
             null,
             Addin.get_instance ().client
