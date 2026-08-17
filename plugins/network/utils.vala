@@ -109,6 +109,9 @@ namespace Network {
 
     NM.Connection prepare_wired_connection (NM.DeviceEthernet eth) {
         NM.Connection conn = NM.SimpleConnection.new ();
+        conn.add_setting (new NM.SettingWired () {
+            auto_negotiate = true,
+        });
         conn.add_setting (new NM.SettingIP4Config () {
             method = "auto",
         });
