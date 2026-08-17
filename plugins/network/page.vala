@@ -71,10 +71,9 @@ public sealed class Network.Page : ReadySet.BasePage {
         ethernet_adapters.bind_model (addin.ethers,
             (eth) => { return new EthernetRow ((NM.Connection) eth); }
         );
-        addin.ethers.bind_property ("n-items",
+        addin.context.bind_context_to_property ("network.has-wired",
             ethernet_group, "visible",
-            SYNC_CREATE,
-            set_visibility
+            SYNC_CREATE
         );
 
         wifi_adapters.bind_model (addin.wlans,

@@ -41,6 +41,8 @@ public class Network.Addin : ReadySet.StepAddin {
     public ListStore ethers { get; construct; }
     public ListStore wlans { get; construct; }
 
+    uint ether_devices = 0;
+
     static construct {
         typeof (ModeledStack).ensure ();
         typeof (DropDownStackSwitcher).ensure ();
@@ -78,6 +80,7 @@ public class Network.Addin : ReadySet.StepAddin {
 
         vars["required"] = new ReadySet.ContextVarInfo (BOOLEAN);
         vars["hostname"] = new ReadySet.ContextVarInfo (STRING);
+        vars["has-wired"] = new ReadySet.ContextVarInfo (BOOLEAN);
         return vars;
     }
 
@@ -148,6 +151,11 @@ public class Network.Addin : ReadySet.StepAddin {
 
     void add_device (NM.Device device) {
         switch (device.device_type) {
+        case ETHERNET:
+            if (ether_devices++ == 0) {
+                context.set_boolean ("network.has-wired", true);
+            }
+            break;
         case MODEM:
         case WIFI:
             device.state_changed.connect (update_device);
@@ -160,6 +168,11 @@ public class Network.Addin : ReadySet.StepAddin {
 
     void remove_device (NM.Device device) {
         switch (device.device_type) {
+        case ETHERNET:
+            if (--ether_devices == 0) {
+                context.set_boolean ("network.has-wired", false);
+            }
+            break;
         case MODEM:
         case WIFI:
             update_device (device);
