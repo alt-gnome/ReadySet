@@ -30,6 +30,7 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
     NM.ActiveConnection? active;
     unowned NM.DeviceEthernet? device = null;
 
+    bool device_transition = false;
     bool internal_toggle;
 
     public EthernetRow (NM.Connection eth) {
@@ -58,6 +59,10 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
 
     void check_for_activated (NM.ActiveConnection new_active) {
         if (new_active.uuid == conn.get_uuid ()) {
+            if (device != null) {
+                device_transition = true;
+            }
+
             active = new_active;
             update_active_device ();
             internal_toggle = true;
@@ -69,6 +74,11 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
 
     void check_for_deactivated (NM.ActiveConnection old_active) {
         if (old_active.uuid == conn.get_uuid ()) {
+            if (device_transition) {
+                device_transition = false;
+                return;
+            }
+
             active = null;
             update_active_device ();
             internal_toggle = true;
