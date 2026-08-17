@@ -30,13 +30,17 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
     NM.ActiveConnection? active;
     unowned NM.DeviceEthernet? device = null;
 
+    bool internal_toggle;
+
     public EthernetRow (NM.Connection eth) {
         NM.Client nmc = Addin.get_instance ().client;
 
         conn = eth;
         active = get_active_connection (conn);
         update_active_device ();
+        internal_toggle = true;
         toggler.active = active != null;
+        internal_toggle = false;
 
         conn.changed.connect (update_title);
         update_title ();
@@ -50,7 +54,9 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
         if (new_active.uuid == conn.get_uuid ()) {
             active = new_active;
             update_active_device ();
+            internal_toggle = true;
             toggler.active = true;
+            internal_toggle = false;
         }
     }
 
@@ -58,7 +64,9 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
         if (old_active.uuid == conn.get_uuid ()) {
             active = null;
             update_active_device ();
+            internal_toggle = true;
             toggler.active = false;
+            internal_toggle = false;
         }
     }
 
@@ -96,6 +104,27 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
             icon.icon_name = "lan-symbolic";
         } else {
             icon.icon_name = "offline-lan-symbolic";
+        }
+    }
+
+    [GtkCallback]
+    async void toggle_connection () {
+        if (internal_toggle || Addin.get_instance ().context.sandbox) {
+            return;
+        }
+
+        NM.Client nmc = Addin.get_instance ().client;
+        try {
+            if (toggler.active) {
+                yield nmc.activate_connection_async (conn, null, null, null);
+            } else {
+                yield device.disconnect_async (null);
+            }
+        } catch (Error e) {
+            warning (e.message);
+            internal_toggle = true;
+            toggler.active = !toggler.active;
+            internal_toggle = false;
         }
     }
 

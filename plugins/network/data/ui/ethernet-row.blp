@@ -27,6 +27,7 @@ template $NetworkEthernetRow: Adw.ActionRow {
   [suffix]
   Switch toggler {
     valign: center;
+    notify::active => $toggle_connection();
   }
 
   [suffix]
