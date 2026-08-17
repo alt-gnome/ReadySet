@@ -113,10 +113,10 @@ namespace Network {
             auto_negotiate = true,
         });
         conn.add_setting (new NM.SettingIP4Config () {
-            method = "auto",
+            method = NM.SettingIP4Config.METHOD_AUTO,
         });
         conn.add_setting (new NM.SettingIP6Config () {
-            method = "auto",
+            method = NM.SettingIP6Config.METHOD_AUTO,
         });
 
         NM.Client nmc = Addin.get_instance ().client;
@@ -132,7 +132,7 @@ namespace Network {
             uuid = NM.Utils.uuid_generate (),
             id = conn_id.printf (idx),
             interface_name = eth.interface,
-            type = "802-3-ethernet",
+            type = NM.SettingWired.SETTING_NAME,
             autoconnect = true,
         });
 
@@ -153,14 +153,14 @@ namespace Network {
             uuid = NM.Utils.uuid_generate (),
             id = NM.Utils.ssid_to_utf8 (ssid.get_data ()),
             interface_name = wlan.interface,
-            type = "802-11-wireless",
+            type = NM.SettingWireless.SETTING_NAME,
             autoconnect = true,
         });
         conn.add_setting (new NM.SettingIP4Config () {
-            method = "auto",
+            method = NM.SettingIP4Config.METHOD_AUTO,
         });
         conn.add_setting (new NM.SettingIP6Config () {
-            method = "auto",
+            method = NM.SettingIP6Config.METHOD_AUTO,
         });
 
         var setting_w = new NM.SettingWireless () {
@@ -168,16 +168,16 @@ namespace Network {
         };
         switch (ap.mode) {
         case INFRA:
-            setting_w.mode = "infrastructure";
+            setting_w.mode = NM.SettingWireless.MODE_INFRA;
             break;
         case ADHOC:
-            setting_w.mode = "adhoc";
+            setting_w.mode = NM.SettingWireless.MODE_ADHOC;
             break;
         case MESH:
-            setting_w.mode = "mesh";
+            setting_w.mode = NM.SettingWireless.MODE_MESH;
             break;
         case AP:
-            setting_w.mode = "ap";
+            setting_w.mode = NM.SettingWireless.MODE_AP;
             break;
         default:
             break;
