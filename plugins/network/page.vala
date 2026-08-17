@@ -69,7 +69,7 @@ public sealed class Network.Page : ReadySet.BasePage {
 #endif
 
         ethernet_adapters.bind_model (addin.ethers,
-            (eth) => { return new EthernetRow ((NM.DeviceEthernet) eth); }
+            (eth) => { return new EthernetRow ((NM.Connection) eth); }
         );
         addin.ethers.bind_property ("n-items",
             ethernet_group, "visible",

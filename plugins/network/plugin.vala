@@ -65,7 +65,7 @@ public class Network.Addin : ReadySet.StepAddin {
         }
 
         modems = new ListStore (typeof (NM.DeviceModem));
-        ethers = new ListStore (typeof (NM.DeviceEthernet));
+        ethers = new ListStore (typeof (NM.RemoteConnection));
         wlans = new ListStore (typeof (NM.DeviceWifi));
     }
 
@@ -86,11 +86,31 @@ public class Network.Addin : ReadySet.StepAddin {
     }
 
     public async override void init_once () {
+        client.connection_added.connect (add_wired_connection);
+        client.connection_removed.connect (remove_wired_connection);
+
+        foreach (var conn in client.connections) {
+            add_wired_connection (conn);
+        }
+
         client.device_added.connect (add_device);
         client.device_removed.connect (remove_device);
 
         foreach (var device in client.devices) {
             add_device (device);
+        }
+    }
+
+    void add_wired_connection (NM.RemoteConnection conn) {
+        if (conn.is_type (NM.SettingWired.SETTING_NAME)) {
+            ethers.append (conn);
+        }
+    }
+
+    void remove_wired_connection (NM.RemoteConnection conn) {
+        uint pos;
+        if (ethers.find_with_equal_func (conn, same_connections, out pos)) {
+            ethers.remove (pos);
         }
     }
 
@@ -118,9 +138,6 @@ public class Network.Addin : ReadySet.StepAddin {
         case MODEM:
             update_category (modems, device);
             break;
-        case ETHERNET:
-            update_category (ethers, device);
-            break;
         case WIFI:
             update_category (wlans, device);
             break;
@@ -132,7 +149,6 @@ public class Network.Addin : ReadySet.StepAddin {
     void add_device (NM.Device device) {
         switch (device.device_type) {
         case MODEM:
-        case ETHERNET:
         case WIFI:
             device.state_changed.connect (update_device);
             update_device (device);
@@ -145,7 +161,6 @@ public class Network.Addin : ReadySet.StepAddin {
     void remove_device (NM.Device device) {
         switch (device.device_type) {
         case MODEM:
-        case ETHERNET:
         case WIFI:
             update_device (device);
             device.state_changed.disconnect (update_device);

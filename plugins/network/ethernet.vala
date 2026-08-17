@@ -24,21 +24,60 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
     [GtkChild]
     unowned Gtk.Button settings;
 
-    unowned NM.DeviceEthernet device;
+    unowned NM.Connection conn;
+    unowned NM.DeviceEthernet? device = null;
 
-    public EthernetRow (NM.DeviceEthernet eth) {
-        device = eth;
+    public EthernetRow (NM.Connection eth) {
+        NM.Client nmc = Addin.get_instance ().client;
+        conn = eth;
 
-        title = device.get_description ();
+        string iface = eth.get_interface_name ();
+        if (iface != null) {
+            update_device ((NM.DeviceEthernet) nmc.get_device_by_iface (iface));
+        } else if (!find_active_device ()) {
+            update_icon ();
+        }
+
+        conn.changed.connect (update_title);
+        update_title ();
         settings.sensitive = !Addin.get_instance ().context.sandbox;
+    }
 
-        device.notify["ip4-connectivity"].connect (update_icon);
-        device.notify["ip6-connectivity"].connect (update_icon);
+    bool find_active_device () {
+        var active = get_active_connection (conn);
+        if (active == null) {
+            return false;
+        }
+
+        foreach (var possible in active.devices) {
+            if (possible.device_type == ETHERNET) {
+                update_device ((NM.DeviceEthernet) possible);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void update_device (NM.DeviceEthernet? new_device) {
+        if (device != null) {
+            device.notify["ip4-connectivity"].disconnect (update_icon);
+            device.notify["ip6-connectivity"].disconnect (update_icon);
+        }
+        device = new_device;
+        if (device != null) {
+            device.notify["ip4-connectivity"].connect (update_icon);
+            device.notify["ip6-connectivity"].connect (update_icon);
+        }
         update_icon ();
     }
 
+    void update_title () {
+        title = conn.get_id ();
+    }
+
     void update_icon () {
-        if (device.ip4_connectivity == FULL
+        if (device != null
+                && device.ip4_connectivity == FULL
                 && device.ip6_connectivity == FULL) {
             icon.icon_name = "lan-symbolic";
         } else {
@@ -47,29 +86,11 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
     }
 
     [GtkCallback]
-    void edit_or_add_connection () {
+    void edit_connection () {
         NM.Client nmc = Addin.get_instance ().client;
-        NM.Connection conn = device.active_connection?.connection;
-        if (conn == null) {
-            // Pick the last used profile.
-            // (At initial setup, there is only automatic profile.)
-            uint64 timestamp = 0;
-            foreach (var known in device.available_connections) {
-                var setting_c = known.get_setting_connection ();
-                if (setting_c.timestamp > timestamp) {
-                    conn = known;
-                    timestamp = setting_c.timestamp;
-                }
-            }
-        }
-        if (conn == null) {
-            // That rare case when no connection exists
-            conn = prepare_wired_connection (device);
-        }
         var dialog = new Net.ConnectionEditor (conn, device, null, nmc) {
             transient_for = root as Gtk.Window,
         };
-        dialog.set_title (title);
         dialog.present ();
     }
 }
