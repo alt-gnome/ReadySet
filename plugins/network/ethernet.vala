@@ -67,6 +67,7 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
         var dialog = new Net.ConnectionEditor (conn, device, null, nmc) {
             transient_for = root as Gtk.Window,
         };
+        dialog.set_title (title);
         dialog.present ();
     }
 }
