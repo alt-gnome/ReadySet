@@ -10,6 +10,7 @@ plugin_network_sources = files(
   'plugin.vala',
   'utils.vala',
   'ui-utils.vala',
+  'connection-editor/connection-editor.vapi',
   'ethernet.vala',
   'wifi.vala',
 )
