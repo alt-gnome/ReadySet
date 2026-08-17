@@ -186,7 +186,7 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             break;
         case ACTIVATED:
             if (device.ip4_connectivity == FULL
-                    && device.ip6_connectivity == FULL) {
+                    || device.ip6_connectivity == FULL) {
                 status = _("Connected");
             } else {
                 status = _("Connected without internet");

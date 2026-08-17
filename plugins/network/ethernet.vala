@@ -99,8 +99,8 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
 
     void update_icon () {
         if (device != null
-                && device.ip4_connectivity == FULL
-                && device.ip6_connectivity == FULL) {
+                && (device.ip4_connectivity == FULL
+                    || device.ip6_connectivity == FULL)) {
             icon.icon_name = "lan-symbolic";
         } else {
             icon.icon_name = "offline-lan-symbolic";
