@@ -22,48 +22,62 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
     [GtkChild]
     unowned Gtk.Image icon;
     [GtkChild]
+    unowned Gtk.Switch toggler;
+    [GtkChild]
     unowned Gtk.Button settings;
 
     unowned NM.Connection conn;
+    NM.ActiveConnection? active;
     unowned NM.DeviceEthernet? device = null;
 
     public EthernetRow (NM.Connection eth) {
         NM.Client nmc = Addin.get_instance ().client;
-        conn = eth;
 
-        string iface = eth.get_interface_name ();
-        if (iface != null) {
-            update_device ((NM.DeviceEthernet) nmc.get_device_by_iface (iface));
-        } else if (!find_active_device ()) {
-            update_icon ();
-        }
+        conn = eth;
+        active = get_active_connection (conn);
+        update_active_device ();
+        toggler.active = active != null;
 
         conn.changed.connect (update_title);
         update_title ();
         settings.sensitive = !Addin.get_instance ().context.sandbox;
+
+        nmc.active_connection_added.connect (check_for_activated);
+        nmc.active_connection_removed.connect (check_for_deactivated);
     }
 
-    bool find_active_device () {
-        var active = get_active_connection (conn);
-        if (active == null) {
-            return false;
+    void check_for_activated (NM.ActiveConnection new_active) {
+        if (new_active.uuid == conn.get_uuid ()) {
+            active = new_active;
+            update_active_device ();
+            toggler.active = true;
         }
-
-        foreach (var possible in active.devices) {
-            if (possible.device_type == ETHERNET) {
-                update_device ((NM.DeviceEthernet) possible);
-                return true;
-            }
-        }
-        return false;
     }
 
-    void update_device (NM.DeviceEthernet? new_device) {
+    void check_for_deactivated (NM.ActiveConnection old_active) {
+        if (old_active.uuid == conn.get_uuid ()) {
+            active = null;
+            update_active_device ();
+            toggler.active = false;
+        }
+    }
+
+    void update_active_device () {
         if (device != null) {
             device.notify["ip4-connectivity"].disconnect (update_icon);
             device.notify["ip6-connectivity"].disconnect (update_icon);
         }
-        device = new_device;
+
+        device = null;
+        if (active != null) {
+            foreach (var possible in active.devices) {
+                if (possible.device_type == ETHERNET) {
+                    device = (NM.DeviceEthernet) possible;
+                    break;
+                }
+            }
+        }
+
         if (device != null) {
             device.notify["ip4-connectivity"].connect (update_icon);
             device.notify["ip6-connectivity"].connect (update_icon);
