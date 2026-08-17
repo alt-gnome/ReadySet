@@ -1,7 +1,10 @@
+subdir('connection-editor')
+
 plugin_network_deps = [
   librs_dep,
   network_manager_dep,
   network_manager_gtk4_dep,
+  connection_editor_dep,
   libcase_dep,
 ]
 
