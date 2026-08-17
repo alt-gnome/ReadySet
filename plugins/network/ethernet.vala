@@ -48,6 +48,12 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
 
         nmc.active_connection_added.connect (check_for_activated);
         nmc.active_connection_removed.connect (check_for_deactivated);
+
+        toggler.bind_property ("visible",
+            this, "activatable-widget",
+            SYNC_CREATE,
+            set_primary_action
+        );
     }
 
     void check_for_activated (NM.ActiveConnection new_active) {
@@ -107,6 +113,15 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
         } else {
             icon.icon_name = "offline-lan-symbolic";
         }
+    }
+
+    bool set_primary_action (Binding bind, Value visible, ref Value widget) {
+        if (visible.get_boolean ()) {
+            widget.set_object (toggler);
+        } else {
+            widget.set_object (settings);
+        }
+        return true;
     }
 
     void track_link_cooldown (NM.Device eth, uint to, uint from, uint reason) {
