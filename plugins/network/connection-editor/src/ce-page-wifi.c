@@ -21,7 +21,7 @@
 
 #include "config.h"
 
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 #include <NetworkManager.h>
 #include <net/if_arp.h>
 

@@ -23,7 +23,7 @@
 
 #include "ce-ip-address-entry.h"
 #include "ui-helpers.h"
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 
 struct _CEIPAddressEntry
 {

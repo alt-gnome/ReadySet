@@ -169,6 +169,7 @@ Summary: %name network plugin
 Group: Other
 
 Requires: %name = %EVR
+Requires: gnome-control-center-data
 
 %description plugin-network
 %summary.
