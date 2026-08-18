@@ -80,6 +80,7 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
             }
 
             active = null;
+            device.state_changed.connect (track_link_cooldown);
             update_active_device ();
             internal_toggle = true;
             toggler.active = false;
@@ -150,6 +151,8 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
                 toggler.sensitive = true;
                 toggler.tooltip_text = null;
             }
+        } else {
+            eth.state_changed.disconnect (track_link_cooldown);
         }
     }
 
@@ -165,7 +168,6 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
                 yield nmc.activate_connection_async (conn, null, null, null);
             } else {
                 yield device.disconnect_async (null);
-                device.state_changed.connect (track_link_cooldown);
             }
         } catch (Error e) {
             warning (e.message);
