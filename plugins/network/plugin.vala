@@ -78,6 +78,14 @@ public class Network.Addin : ReadySet.StepAddin {
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
 
+        vars["simple"] = new ReadySet.ContextVarInfo (BOOLEAN) {
+            setter_func = (ref to, from) => {
+                var enable = from.get_boolean ();
+                to.set_boolean (enable);
+
+                enabled = enable ? client.connectivity != FULL : true;
+            },
+        };
         vars["required"] = new ReadySet.ContextVarInfo (BOOLEAN);
         vars["hostname"] = new ReadySet.ContextVarInfo (STRING);
         vars["has-wired"] = new ReadySet.ContextVarInfo (BOOLEAN);

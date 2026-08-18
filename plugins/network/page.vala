@@ -75,6 +75,10 @@ public sealed class Network.Page : ReadySet.BasePage {
             ethernet_group, "visible",
             SYNC_CREATE
         );
+        addin.context.bind_context_to_property ("network.simple",
+            add_ethernet_button, "visible",
+            SYNC_CREATE | INVERT_BOOLEAN
+        );
         add_ethernet_button.sensitive = !addin.context.sandbox;
 
         wifi_adapters.bind_model (addin.wlans,

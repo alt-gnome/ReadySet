@@ -34,7 +34,7 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
     bool internal_toggle;
 
     public EthernetRow (NM.Connection eth) {
-        NM.Client nmc = Addin.get_instance ().client;
+        var addin = Addin.get_instance ();
 
         conn = eth;
         active = get_active_connection (conn);
@@ -47,13 +47,17 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
         update_title ();
         settings.sensitive = !Addin.get_instance ().context.sandbox;
 
-        nmc.active_connection_added.connect (check_for_activated);
-        nmc.active_connection_removed.connect (check_for_deactivated);
+        addin.client.active_connection_added.connect (check_for_activated);
+        addin.client.active_connection_removed.connect (check_for_deactivated);
 
         toggler.bind_property ("visible",
             this, "activatable-widget",
             SYNC_CREATE,
             set_primary_action
+        );
+        addin.context.bind_context_to_property ("network.simple",
+            settings, "visible",
+            SYNC_CREATE | INVERT_BOOLEAN
         );
     }
 
@@ -129,8 +133,10 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
     bool set_primary_action (Binding bind, Value visible, ref Value widget) {
         if (visible.get_boolean ()) {
             widget.set_object (toggler);
-        } else {
+        } else if (settings.visible) {
             widget.set_object (settings);
+        } else {
+            activatable = false;
         }
         return true;
     }
