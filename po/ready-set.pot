@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-17 09:58+0300\n"
+"POT-Creation-Date: 2026-08-18 13:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,6 +94,7 @@ msgid "Something went wrong"
 msgstr ""
 
 #: plugins/date-and-time/data/ui/carousel-selector.blp:55
+#: plugins/network/connection-editor/src/wireguard-peer.blp:229
 #: plugins/network/data/ui/ap-security-editor.blp:26
 msgid "Apply"
 msgstr ""
@@ -265,9 +266,365 @@ msgstr ""
 msgid "I have read the license and accept it"
 msgstr ""
 
+#: plugins/network/connection-editor/src/8021x-security-page.blp:23
+msgid "802.1x _Security"
+msgstr ""
+
+#: plugins/network/connection-editor/src/bluetooth-page.blp:17
+#: plugins/network/connection-editor/src/ethernet-page.blp:29
+#: plugins/network/connection-editor/src/vpn-page.blp:23
+msgid "_Name"
+msgstr ""
+
+#: plugins/network/connection-editor/src/connection-editor.blp:19
+msgid "_Cancel"
+msgstr ""
+
+#: plugins/network/connection-editor/src/connection-editor.blp:26
+msgid "_Apply"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:21
+msgid "Signal Strength"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:39
+msgid "Weak"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:54
+msgid "Link speed"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:71
+msgid "1Mb/sec"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:87
 #: plugins/network/data/ui/ap-security-editor.blp:42
 #: plugins/user/data/ui/page-password.blp:24
 msgid "Security"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:104
+msgid "IPv4 Address"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:121
+msgid "IPv6 Address"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:138
+msgid "Hardware Address"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:155
+msgid "Supported Frequencies"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:172
+msgid "Default Route"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:190
+#: plugins/network/connection-editor/src/details-page.blp:208
+#: plugins/network/connection-editor/src/ip4-page.blp:168
+#: plugins/network/connection-editor/src/ip6-page.blp:179
+msgid "DNS"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:225
+msgid "Last Used"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:387
+msgid "Connect _automatically"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:401
+msgid "Make available to _other users"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:427
+msgid "_Metered connection: has data limits or can incur charges"
+msgstr ""
+
+#: plugins/network/connection-editor/src/details-page.blp:436
+msgid ""
+"Software updates and other large downloads will not be started automatically."
+msgstr ""
+
+#: plugins/network/connection-editor/src/ethernet-page.blp:48
+#: plugins/network/connection-editor/src/wifi-page.blp:56
+msgid "_MAC Address"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ethernet-page.blp:85
+msgid "M_TU"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ethernet-page.blp:98
+#: plugins/network/connection-editor/src/wifi-page.blp:81
+msgid "_Cloned Address"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ethernet-page.blp:109
+#: plugins/network/connection-editor/src/wireguard-page.blp:190
+msgid "bytes"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:22
+msgid "IPv_4 Method"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:38
+msgid "Automatic (DHCP)"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:49
+#: plugins/network/connection-editor/src/ip6-page.blp:60
+msgid "Link-Local Only"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:60
+#: plugins/network/connection-editor/src/ip6-page.blp:71
+msgid "Manual"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:71
+#: plugins/network/connection-editor/src/ip6-page.blp:82
+msgid "Disable"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:82
+msgid "Shared to other computers"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:107
+#: plugins/network/connection-editor/src/ip6-page.blp:118
+msgid "Addresses"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:121
+#: plugins/network/connection-editor/src/ip4-page.blp:254
+#: plugins/network/connection-editor/src/ip6-page.blp:132
+#: plugins/network/connection-editor/src/ip6-page.blp:265
+msgid "Address"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:131
+#: plugins/network/connection-editor/src/ip4-page.blp:264
+msgid "Netmask"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:141
+#: plugins/network/connection-editor/src/ip4-page.blp:274
+#: plugins/network/connection-editor/src/ip6-page.blp:152
+#: plugins/network/connection-editor/src/ip6-page.blp:285
+msgid "Gateway"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:178
+#: plugins/network/connection-editor/src/ip4-page.blp:233
+#: plugins/network/connection-editor/src/ip6-page.blp:38
+#: plugins/network/connection-editor/src/ip6-page.blp:189
+#: plugins/network/connection-editor/src/ip6-page.blp:244
+msgid "Automatic"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:186
+#: plugins/network/connection-editor/src/ip6-page.blp:197
+msgid "Automatic DNS"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:193
+#: plugins/network/connection-editor/src/ip6-page.blp:204
+msgid "DNS server address(es)"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:203
+#: plugins/network/connection-editor/src/ip6-page.blp:214
+msgid "Separate IP addresses with commas"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:223
+#: plugins/network/connection-editor/src/ip6-page.blp:234
+msgid "Routes"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:241
+#: plugins/network/connection-editor/src/ip6-page.blp:252
+msgid "Automatic Routes"
+msgstr ""
+
+#. Translators: Please see https://en.wikipedia.org/wiki/Metrics_(networking)
+#: plugins/network/connection-editor/src/ip4-page.blp:286
+#: plugins/network/connection-editor/src/ip6-page.blp:297
+msgid "Metric"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip4-page.blp:303
+#: plugins/network/connection-editor/src/ip6-page.blp:314
+msgid "Use this connection _only for resources on its network"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip6-page.blp:22
+msgid "IPv_6 Method"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip6-page.blp:49
+msgid "Automatic, DHCP only"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip6-page.blp:93
+msgid "Shared to other devices"
+msgstr ""
+
+#: plugins/network/connection-editor/src/ip6-page.blp:142
+#: plugins/network/connection-editor/src/ip6-page.blp:275
+msgid "Prefix"
+msgstr ""
+
+#: plugins/network/connection-editor/src/security-page.blp:23
+msgid "S_ecurity"
+msgstr ""
+
+#: plugins/network/connection-editor/src/vpn-page.blp:36
+msgid "<i>(Error: unable to load VPN connection editor)</i>"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wifi-page.blp:23
+msgid "_SSID"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wifi-page.blp:35
+msgid "_BSSID"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:22
+msgid "_Connection Name"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:45
+msgid "_Interface Name"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:56
+msgid "The name of the wireguard interface to create."
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:68
+msgid "_Private Key"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:79
+msgid "The 256 bit private key in base64 encoding"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:83
+msgid "Show/hide private key"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:95
+msgid "_Listen Port"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:107
+msgid ""
+"A port to listen on. If set to 'automatic', the port will be chosen randomly "
+"when the interface comes up."
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:128
+msgid "_fwmark"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:140
+msgid ""
+"A 32-bit fwmark for outgoing packets. Leave it to 'off' to disable fwmark."
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:160
+msgid "_MTU"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:200
+msgid "_Add peer routes"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:226
+msgid "_Peers"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:240
+msgid "Add WireGuard peer"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-page.blp:261
+msgid "No peers set up"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-peer.blp:47
+msgid "Options…"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-peer.blp:61
+msgid "Remove"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-peer.blp:94
+msgid "_Endpoint"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-peer.blp:105
+msgid ""
+"An endpoint IP or hostname, followed by a colon, and then a port number."
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-peer.blp:117
+msgid "_Public key"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-peer.blp:128
+msgid "A base64 public key calculated by 'wg pubkey' from a private key."
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-peer.blp:143
+msgid "_Pre-shared key"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-peer.blp:154
+msgid ""
+"A base64 preshared key generated by 'wg genpsk'. Optional, and may be "
+"omitted. Adds an additional layer of symmetric-key cryptography to be mixed "
+"into the already existing public-key cryptography, for post-quantum "
+"resistance."
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-peer.blp:170
+msgid "Allowed _IP addresses"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-peer.blp:181
+msgid ""
+"Comma-separated list of IP (v4 or v6) addresses with CIDR masks from which "
+"incoming traffic for this peer is allowed and to which outgoing traffic for "
+"this peer is directed."
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-peer.blp:193
+msgid "_Persistent keepalive"
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-peer.blp:207
+msgid ""
+"How often to send an authenticated empty packet to the peer for the purpose "
+"of keeping a stateful firewall or NAT mapping valid. This is optional and "
+"not recommended outside of specific setups."
+msgstr ""
+
+#: plugins/network/connection-editor/src/wireguard-peer.blp:215
+msgid "seconds"
 msgstr ""
 
 #: plugins/network/data/ui/ethernet-row.blp:40
@@ -306,11 +663,11 @@ msgstr ""
 msgid "Wi-Fi adapter"
 msgstr ""
 
-#: plugins/network/ethernet.vala:118
+#: plugins/network/ethernet.vala:152
 msgid "Please wait until devices reloading is over…"
 msgstr ""
 
-#: plugins/network/plugin.vala:201
+#: plugins/network/plugin.vala:214
 msgid "Failed to apply network settings"
 msgstr ""
 
