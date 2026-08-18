@@ -102,6 +102,12 @@ public class Network.Addin : ReadySet.StepAddin {
         foreach (var device in client.devices) {
             add_device (device);
         }
+
+        try {
+            yield client.check_connectivity_async (null);
+        } catch (Error e) {
+            error (e.message);
+        }
     }
 
     void add_wired_connection (NM.RemoteConnection conn) {
