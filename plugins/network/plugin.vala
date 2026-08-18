@@ -141,6 +141,17 @@ public class Network.Addin : ReadySet.StepAddin {
         case MODEM:
             update_category (modems, device);
             break;
+        case ETHERNET:
+            if (new_state != NM.DeviceState.UNMANAGED) {
+                if (ether_devices++ == 0) {
+                    context.set_boolean ("network.has-wired", true);
+                }
+            } else {
+                if (--ether_devices == 0) {
+                    context.set_boolean ("network.has-wired", false);
+                }
+            }
+            break;
         case WIFI:
             update_category (wlans, device);
             break;
@@ -151,12 +162,8 @@ public class Network.Addin : ReadySet.StepAddin {
 
     void add_device (NM.Device device) {
         switch (device.device_type) {
-        case ETHERNET:
-            if (ether_devices++ == 0) {
-                context.set_boolean ("network.has-wired", true);
-            }
-            break;
         case MODEM:
+        case ETHERNET:
         case WIFI:
             device.state_changed.connect (update_device);
             update_device (device);
@@ -168,12 +175,8 @@ public class Network.Addin : ReadySet.StepAddin {
 
     void remove_device (NM.Device device) {
         switch (device.device_type) {
-        case ETHERNET:
-            if (--ether_devices == 0) {
-                context.set_boolean ("network.has-wired", false);
-            }
-            break;
         case MODEM:
+        case ETHERNET:
         case WIFI:
             update_device (device);
             device.state_changed.disconnect (update_device);
