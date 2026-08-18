@@ -71,9 +71,10 @@ public sealed class Network.Page : ReadySet.BasePage {
         ethernet_group.bind_model (addin.ethers,
             (eth) => { return new EthernetRow ((NM.Connection) eth); }
         );
-        addin.context.bind_context_to_property ("network.has-wired",
+        addin.bind_property ("ether-devices-num",
             ethernet_group, "visible",
-            SYNC_CREATE
+            SYNC_CREATE,
+            set_visibility
         );
         addin.context.bind_context_to_property ("network.simple",
             add_ethernet_button, "visible",

@@ -41,7 +41,7 @@ public class Network.Addin : ReadySet.StepAddin {
     public ListStore ethers { get; construct; }
     public ListStore wlans { get; construct; }
 
-    uint ether_devices = 0;
+    public uint ether_devices_num { get; private set; default = 0; }
 
     static construct {
         typeof (ModeledStack).ensure ();
@@ -157,13 +157,9 @@ public class Network.Addin : ReadySet.StepAddin {
             break;
         case ETHERNET:
             if (new_state != NM.DeviceState.UNMANAGED) {
-                if (ether_devices++ == 0) {
-                    context.set_boolean ("network.has-wired", true);
-                }
+                ++ether_devices_num;
             } else {
-                if (--ether_devices == 0) {
-                    context.set_boolean ("network.has-wired", false);
-                }
+                --ether_devices_num;
             }
             break;
         case WIFI:
