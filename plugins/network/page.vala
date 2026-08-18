@@ -28,7 +28,7 @@ public sealed class Network.Page : ReadySet.BasePage {
     [GtkChild]
     unowned Adw.PreferencesGroup ethernet_group;
     [GtkChild]
-    unowned Gtk.ListBox ethernet_adapters;
+    unowned Gtk.Button add_ethernet_button;
 
     [GtkChild]
     unowned Adw.PreferencesGroup wifi_group;
@@ -68,14 +68,19 @@ public sealed class Network.Page : ReadySet.BasePage {
         simcard_group.visible = false;
 #endif
 
-        ethernet_adapters.bind_model (addin.ethers,
-            (eth) => { return new EthernetRow ((NM.DeviceEthernet) eth); }
+        ethernet_group.bind_model (addin.ethers,
+            (eth) => { return new EthernetRow ((NM.Connection) eth); }
         );
-        addin.ethers.bind_property ("n-items",
+        addin.bind_property ("ether-devices-num",
             ethernet_group, "visible",
             SYNC_CREATE,
             set_visibility
         );
+        addin.context.bind_context_to_property ("network.simple",
+            add_ethernet_button, "visible",
+            SYNC_CREATE | INVERT_BOOLEAN
+        );
+        add_ethernet_button.sensitive = !addin.context.sandbox;
 
         wifi_adapters.bind_model (addin.wlans,
             (wlan) => { return new WiFiAdapterBox ((NM.DeviceWifi) wlan); },
@@ -109,5 +114,17 @@ public sealed class Network.Page : ReadySet.BasePage {
     bool set_visibility (Binding bind, Value n_items, ref Value visible) {
         visible.set_boolean (n_items.get_uint () > 0);
         return true;
+    }
+
+    [GtkCallback]
+    async void add_ethernet_connection () {
+        NM.Client nmc = Addin.get_instance ().client;
+        try {
+            yield nmc.add_connection_async (
+                prepare_wired_connection (null), false, null
+            );
+        } catch (Error e) {
+            warning (e.message);
+        }
     }
 }

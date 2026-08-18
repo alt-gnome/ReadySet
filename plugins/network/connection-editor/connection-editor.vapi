@@ -17,28 +17,15 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-using Gtk 4.0;
-using Adw 1;
 
-template $NetworkEthernetRow: Adw.ActionRow {
-  [prefix]
-  Image icon {}
-
-  [suffix]
-  Switch toggler {
-    valign: center;
-    notify::active => $toggle_connection();
-  }
-
-  [suffix]
-  Button settings {
-    styles [
-      "flat",
-    ]
-
-    icon-name: "wrench-wide-symbolic";
-    tooltip-text: _("Configure…");
-    valign: center;
-    clicked => $edit_connection();
-  }
+[CCode (cprefix = "Net", lower_case_cprefix = "net_")]
+namespace Net {
+    [CCode (cheader_filename = "net-connection-editor.h", type_id = "net_connection_editor_get_type ()")]
+    public class ConnectionEditor : Adw.Window, Gtk.Accessible, Gtk.Buildable, Gtk.ConstraintTarget, Gtk.Native, Gtk.Root, Gtk.ShortcutManager {
+        [CCode (has_construct_function = false)]
+        public ConnectionEditor (NM.Connection? connection, NM.Device? device, NM.AccessPoint? ap, NM.Client client);
+        public void forget ();
+        public void set_title (string title);
+        public signal void done (bool object);
+    }
 }

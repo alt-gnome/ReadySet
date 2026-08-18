@@ -41,9 +41,9 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         device = wlan;
         point = ap;
 
-        Bytes ssid = (ap.ssid != null && ap.ssid.length > 0)
-                ? ap.ssid
-                : (!) hidden_ssid;
+        Bytes ssid = NM.Utils.is_empty_ssid (ap.ssid?.get_data ())
+                ? (!) hidden_ssid
+                : ap.ssid;
         title = NM.Utils.ssid_to_utf8 (ssid.get_data ());
 
         if (ap.strength >= 60) {
@@ -186,7 +186,7 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             break;
         case ACTIVATED:
             if (device.ip4_connectivity == FULL
-                    && device.ip6_connectivity == FULL) {
+                    || device.ip6_connectivity == FULL) {
                 status = _("Connected");
             } else {
                 status = _("Connected without internet");

@@ -41,6 +41,8 @@ public class Network.Addin : ReadySet.StepAddin {
     public ListStore ethers { get; construct; }
     public ListStore wlans { get; construct; }
 
+    public uint ether_devices_num { get; private set; default = 0; }
+
     static construct {
         typeof (ModeledStack).ensure ();
         typeof (DropDownStackSwitcher).ensure ();
@@ -65,7 +67,7 @@ public class Network.Addin : ReadySet.StepAddin {
         }
 
         modems = new ListStore (typeof (NM.DeviceModem));
-        ethers = new ListStore (typeof (NM.DeviceEthernet));
+        ethers = new ListStore (typeof (NM.RemoteConnection));
         wlans = new ListStore (typeof (NM.DeviceWifi));
     }
 
@@ -76,8 +78,17 @@ public class Network.Addin : ReadySet.StepAddin {
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
 
+        vars["simple"] = new ReadySet.ContextVarInfo (BOOLEAN) {
+            setter_func = (ref to, from) => {
+                var enable = from.get_boolean ();
+                to.set_boolean (enable);
+
+                enabled = enable ? client.connectivity != FULL : true;
+            },
+        };
         vars["required"] = new ReadySet.ContextVarInfo (BOOLEAN);
         vars["hostname"] = new ReadySet.ContextVarInfo (STRING);
+        vars["has-wired"] = new ReadySet.ContextVarInfo (BOOLEAN);
         return vars;
     }
 
@@ -86,11 +97,37 @@ public class Network.Addin : ReadySet.StepAddin {
     }
 
     public async override void init_once () {
+        client.connection_added.connect (add_wired_connection);
+        client.connection_removed.connect (remove_wired_connection);
+
+        foreach (var conn in client.connections) {
+            add_wired_connection (conn);
+        }
+
         client.device_added.connect (add_device);
         client.device_removed.connect (remove_device);
 
         foreach (var device in client.devices) {
             add_device (device);
+        }
+
+        try {
+            yield client.check_connectivity_async (null);
+        } catch (Error e) {
+            error (e.message);
+        }
+    }
+
+    void add_wired_connection (NM.RemoteConnection conn) {
+        if (conn.is_type (NM.SettingWired.SETTING_NAME)) {
+            ethers.append (conn);
+        }
+    }
+
+    void remove_wired_connection (NM.RemoteConnection conn) {
+        uint pos;
+        if (ethers.find_with_equal_func (conn, same_connections, out pos)) {
+            ethers.remove (pos);
         }
     }
 
@@ -119,7 +156,11 @@ public class Network.Addin : ReadySet.StepAddin {
             update_category (modems, device);
             break;
         case ETHERNET:
-            update_category (ethers, device);
+            if (new_state != NM.DeviceState.UNMANAGED) {
+                ++ether_devices_num;
+            } else {
+                --ether_devices_num;
+            }
             break;
         case WIFI:
             update_category (wlans, device);
@@ -166,7 +207,7 @@ public class Network.Addin : ReadySet.StepAddin {
             );
 
             foreach (var conn in client.connections) {
-                yield conn.save_async (null);
+                yield conn.commit_changes_async (true, null);
             }
         } catch (Error e) {
             throw ReadySet.ApplyError.build_error (

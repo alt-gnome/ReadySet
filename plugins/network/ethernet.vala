@@ -21,25 +21,176 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
 
     [GtkChild]
     unowned Gtk.Image icon;
+    [GtkChild]
+    unowned Gtk.Switch toggler;
+    [GtkChild]
+    unowned Gtk.Button settings;
 
-    unowned NM.DeviceEthernet device;
+    unowned NM.Connection conn;
+    NM.ActiveConnection? active;
+    unowned NM.DeviceEthernet? device = null;
 
-    public EthernetRow (NM.DeviceEthernet eth) {
-        device = eth;
+    bool device_transition = false;
+    bool internal_toggle;
 
-        title = device.get_description ();
+    public EthernetRow (NM.Connection eth) {
+        var addin = Addin.get_instance ();
 
-        device.notify["ip4-connectivity"].connect (update_icon);
-        device.notify["ip6-connectivity"].connect (update_icon);
+        conn = eth;
+        active = get_active_connection (conn);
+        update_active_device ();
+        internal_toggle = true;
+        toggler.active = active != null;
+        internal_toggle = false;
+
+        conn.changed.connect (update_title);
+        update_title ();
+        settings.sensitive = !Addin.get_instance ().context.sandbox;
+
+        addin.client.active_connection_added.connect (check_for_activated);
+        addin.client.active_connection_removed.connect (check_for_deactivated);
+
+        toggler.bind_property ("visible",
+            this, "activatable-widget",
+            SYNC_CREATE,
+            set_primary_action
+        );
+        addin.context.bind_context_to_property ("network.simple",
+            settings, "visible",
+            SYNC_CREATE | INVERT_BOOLEAN
+        );
+    }
+
+    void check_for_activated (NM.ActiveConnection new_active) {
+        if (new_active.uuid == conn.get_uuid ()) {
+            if (device != null) {
+                device_transition = true;
+            }
+
+            active = new_active;
+            update_active_device ();
+            internal_toggle = true;
+            toggler.active = true;
+            internal_toggle = false;
+            toggler.visible = true;
+        }
+    }
+
+    void check_for_deactivated (NM.ActiveConnection old_active) {
+        if (old_active.uuid == conn.get_uuid ()) {
+            if (device_transition) {
+                device_transition = false;
+                return;
+            }
+
+            active = null;
+            device.state_changed.connect (track_link_cooldown);
+            update_active_device ();
+            internal_toggle = true;
+            toggler.active = false;
+            internal_toggle = false;
+            toggler.visible = true;
+        }
+    }
+
+    void update_active_device () {
+        if (device != null) {
+            device.notify["ip4-connectivity"].disconnect (update_icon);
+            device.notify["ip6-connectivity"].disconnect (update_icon);
+        }
+
+        device = null;
+        if (active != null) {
+            foreach (var possible in active.devices) {
+                if (possible.device_type == ETHERNET) {
+                    device = (NM.DeviceEthernet) possible;
+                    break;
+                }
+            }
+        }
+
+        if (device != null) {
+            device.notify["ip4-connectivity"].connect (update_icon);
+            device.notify["ip6-connectivity"].connect (update_icon);
+        }
         update_icon ();
     }
 
+    void update_title () {
+        title = conn.get_id ();
+    }
+
     void update_icon () {
-        if (device.ip4_connectivity == FULL
-                && device.ip6_connectivity == FULL) {
+        if (device != null
+                && (device.ip4_connectivity == FULL
+                    || device.ip6_connectivity == FULL)) {
             icon.icon_name = "lan-symbolic";
         } else {
             icon.icon_name = "offline-lan-symbolic";
         }
+    }
+
+    bool set_primary_action (Binding bind, Value visible, ref Value widget) {
+        if (visible.get_boolean ()) {
+            widget.set_object (toggler);
+        } else if (settings.visible) {
+            widget.set_object (settings);
+        } else {
+            activatable = false;
+        }
+        return true;
+    }
+
+    void track_link_cooldown (NM.Device eth, uint to, uint from, uint reason) {
+        var to_state = (NM.DeviceState) to;
+        var from_state = (NM.DeviceState) from;
+        if ((NM.DeviceStateReason) reason == CARRIER) {
+            if (from_state == DISCONNECTED && to_state == UNAVAILABLE) {
+                // the cooldown begins
+                toggler.sensitive = false;
+                toggler.tooltip_text = _(
+                    "Please wait until devices reloading is over…"
+                );
+            } else if (from_state == UNAVAILABLE && to_state == DISCONNECTED) {
+                // the cooldown is over
+                eth.state_changed.disconnect (track_link_cooldown);
+                toggler.sensitive = true;
+                toggler.tooltip_text = null;
+            }
+        } else {
+            eth.state_changed.disconnect (track_link_cooldown);
+        }
+    }
+
+    [GtkCallback]
+    async void toggle_connection () {
+        if (internal_toggle || Addin.get_instance ().context.sandbox) {
+            return;
+        }
+
+        NM.Client nmc = Addin.get_instance ().client;
+        try {
+            if (toggler.active) {
+                yield nmc.activate_connection_async (conn, null, null, null);
+            } else {
+                yield device.disconnect_async (null);
+            }
+        } catch (Error e) {
+            warning (e.message);
+            internal_toggle = true;
+            toggler.active = !toggler.active;
+            internal_toggle = false;
+            toggler.visible = false;
+        }
+    }
+
+    [GtkCallback]
+    void edit_connection () {
+        NM.Client nmc = Addin.get_instance ().client;
+        var dialog = new Net.ConnectionEditor (conn, device, null, nmc) {
+            transient_for = root as Gtk.Window,
+        };
+        dialog.present ();
+        toggler.visible = true;
     }
 }

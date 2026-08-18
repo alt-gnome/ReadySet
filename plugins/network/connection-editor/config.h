@@ -17,28 +17,5 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-using Gtk 4.0;
-using Adw 1;
 
-template $NetworkEthernetRow: Adw.ActionRow {
-  [prefix]
-  Image icon {}
-
-  [suffix]
-  Switch toggler {
-    valign: center;
-    notify::active => $toggle_connection();
-  }
-
-  [suffix]
-  Button settings {
-    styles [
-      "flat",
-    ]
-
-    icon-name: "wrench-wide-symbolic";
-    tooltip-text: _("Configure…");
-    valign: center;
-    clicked => $edit_connection();
-  }
-}
+#define GETTEXT_PACKAGE "gnome-control-center-2.0"

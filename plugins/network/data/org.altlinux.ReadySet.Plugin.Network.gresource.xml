@@ -10,6 +10,7 @@
     <file alias="radiowaves-3-symbolic.svg">assets/icons/radiowaves-3-symbolic.svg</file>
     <file alias="radiowaves-4-symbolic.svg">assets/icons/radiowaves-4-symbolic.svg</file>
     <file alias="padlock2-symbolic.svg">assets/icons/padlock2-symbolic.svg</file>
+    <file alias="wrench-wide-symbolic.svg">assets/icons/wrench-wide-symbolic.svg</file>
   </gresource>
   <gresource prefix="/org/altlinux/ReadySet/Plugin/Network/">
     <file>style.css</file>
