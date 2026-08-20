@@ -84,8 +84,11 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
                 return;
             }
 
+            if (device != null) {
+                device.state_changed.connect (track_link_cooldown);
+            }
+
             active = null;
-            device.state_changed.connect (track_link_cooldown);
             update_active_device ();
             internal_toggle = true;
             toggler.active = false;
