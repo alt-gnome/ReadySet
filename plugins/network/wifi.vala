@@ -40,6 +40,8 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
     ) {
         device = wlan;
         point = ap;
+        wlan.add_weak_pointer (&device);
+        ap.add_weak_pointer (&point);
 
         Bytes ssid = NM.Utils.is_empty_ssid (ap.ssid?.get_data ())
                 ? (!) hidden_ssid
@@ -223,6 +225,7 @@ public sealed class Network.ApSecurityEditor : Adw.AlertDialog {
 
     public ApSecurityEditor (NM.Connection conn, NM.Utils.SecurityType[] sec) {
         connection = conn;
+        conn.add_weak_pointer (&connection);
         heading = connection.get_id ();
 
         AvailableWs mask = 0;
@@ -344,6 +347,7 @@ public sealed class Network.WiFiAdapterBox : Adw.Bin {
 
     public WiFiAdapterBox (NM.DeviceWifi wlan) {
         device = wlan;
+        wlan.add_weak_pointer (&device);
 
         box.bind_model (
             new Gtk.FilterListModel (

@@ -277,6 +277,7 @@ public sealed class Network.AccessPointSorter : Gtk.Sorter {
 
     public AccessPointSorter (NM.DeviceWifi wlan) {
         device = wlan;
+        wlan.add_weak_pointer (&device);
     }
 
     public override Gtk.Ordering compare (Object? obj1, Object? obj2) {

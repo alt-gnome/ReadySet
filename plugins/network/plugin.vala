@@ -82,7 +82,6 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         };
         vars["required"] = new ReadySet.ContextVarInfo (BOOLEAN);
         vars["hostname"] = new ReadySet.ContextVarInfo (STRING);
-        vars["has-wired"] = new ReadySet.ContextVarInfo (BOOLEAN);
         return vars;
     }
 
