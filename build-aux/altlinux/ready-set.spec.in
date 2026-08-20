@@ -94,6 +94,19 @@ Requires: phrog
 %description phrog
 %summary.
 
+%package any
+Summary: Files needed for work as initial-setup on any display manager
+Group: Graphical desktop/Other
+
+Requires: %name = %EVR
+Requires: systemd
+Requires: greetd
+
+%description any
+%summary.
+Vendor must provide /usr/libexec/ready-set-wm, which
+runs the ReadySet application inside a compositor.
+
 %package -n %libname%soversion
 Summary: %name library
 Group: System/Libraries
@@ -346,6 +359,12 @@ Requires: %name-plugin-software = %EVR
 %files phrog
 %_sysconfdir/dconf/db/local.d/50_org.altlinux.ReadySet.phrog_first-run
 %_sysusersdir/%name-phrog.conf
+
+%files any
+%_unitdir/%name-any.service
+%_libexecdir/%name-bootutil
+%_sysusersdir/%name-any.conf
+%doc data/any/README.*.md
 
 %files -n %ser_libname%soversion
 %_libdir/%ser_libname-%soversion.so.%soversion

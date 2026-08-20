@@ -151,26 +151,4 @@ namespace ReadySet {
      * @see ReadySet.ContextVarInfo
      */
     public delegate void ContextSetterFunc (ref Value this_value, Value new_value);
-
-    /**
-     * Runs `pkexec` with SHELL fixing.
-     */
-    public async void pkexec (owned string[] cmd, string? user = null, Cancellable? cancellable = null) throws Error {
-        var launcher = new SubprocessLauncher (NONE);
-        var argv = new Gee.ArrayList<string>.wrap ({ "pkexec" });
-
-        if (user != null) {
-            argv.add_all_array ({ "--user", user });
-        }
-
-        argv.add_all_array (cmd);
-
-        //  pkexec won't let us run the program if $SHELL isn't in /etc/shells,
-        //  so remove it from the environment.
-        launcher.unsetenv ("SHELL");
-        var process = launcher.spawnv (argv.to_array ().copy ());
-
-        yield process.wait_check_async (cancellable);
-    }
-
 }

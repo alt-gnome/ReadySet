@@ -1,0 +1,12 @@
+[Unit]
+Description=ReadySet initial setup for any display manager
+Before=display-manager.service
+After=systemd-user-sessions.service plymouth-quit.service systemd-logind.service dbus.service
+ConditionPathExists=@LIBEXECDIR@/@NAME@-wm
+
+[Service]
+Type=oneshot
+ExecStart=@LIBEXECDIR@/@NAME@-bootutil
+
+[Install]
+WantedBy=graphical.target
