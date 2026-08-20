@@ -32,6 +32,8 @@ public sealed class ReadySet.PageInfo : Object {
 
     public StepAddin? plugin { get; construct; }
 
+    public string id_prefix { get; construct; }
+
     public bool should_layout { get; private set; }
 
     public bool is_ready { get; set; }
@@ -69,11 +71,17 @@ public sealed class ReadySet.PageInfo : Object {
 
     static string[] performed_steps;
 
-    public PageInfo (BasePage? page, StepAddin? plugin)
-    requires (page != null || plugin != null) {
+    public PageInfo (BasePage? page, StepAddin plugin) {
         Object (
             page: page,
             plugin: plugin
+        );
+    }
+
+    public PageInfo.pluginless (BasePage? page, string id_prefix) {
+        Object (
+            page: page,
+            id_prefix: id_prefix
         );
     }
 
@@ -101,7 +109,7 @@ public sealed class ReadySet.PageInfo : Object {
         update_should_layout ();
 
         id = "%s-%s".printf (
-            plugin != null ? plugin.get_type ().name () : "None",
+            plugin != null ? plugin.get_type ().name () : id_prefix,
             page != null ? page.get_type ().name () : "None"
         );
     }

@@ -230,9 +230,9 @@ public sealed class ReadySet.Application: Adw.Application {
                 var installer_step = installer_plugin.steps[PluginManager.get_real_page_id (steps[i])];
                 var installer_page = installer_step.build_page ();
                 if (installer_page != null) {
-                    pages.add (new PageInfo (
+                    pages.add (new PageInfo.pluginless (
                         installer_page,
-                        null
+                        installer_plugin.get_type ().name ()
                     ));
                     if (!quiet) print (
                         "  %s%s (from `%s`)\n",
