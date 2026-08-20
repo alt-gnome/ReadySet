@@ -18,15 +18,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class DateAndTime.Addin : ReadySet.StepAddin {
+public class DateAndTime.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
 
     static Addin instance;
-
-    public override bool existing_user {
-        get {
-            return true;
-        }
-    }
 
     protected override string? resource_base_path {
         get {

@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Software.Addin : ReadySet.StepAddin {
+public class Software.Addin : ReadySet.StepAddin, ReadySet.ApplyAfter {
 
     static Addin instance;
 
@@ -27,8 +27,6 @@ public class Software.Addin : ReadySet.StepAddin {
             return "/org/altlinux/ReadySet/Plugin/Software/";
         }
     }
-
-    public override string[] apply_after { owned get { return { "user" }; } }
 
     construct {
         instance = this;
@@ -42,6 +40,10 @@ public class Software.Addin : ReadySet.StepAddin {
 
     internal static Addin get_instance () {
         return instance;
+    }
+
+    public string[] get_apply_after () {
+        return { "user" };
     }
 
     public override async void init_once () {

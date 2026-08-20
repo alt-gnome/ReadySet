@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Welcome.Addin : ReadySet.StepAddin {
+public class Welcome.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
 
     static Addin instance;
 
@@ -27,8 +27,6 @@ public class Welcome.Addin : ReadySet.StepAddin {
             return "/org/altlinux/ReadySet/Plugin/Welcome/";
         }
     }
-
-    public override bool existing_user { get { return true; } }
 
     construct {
         instance = this;

@@ -19,6 +19,10 @@ librs_vala_sources = files(
   'base/base-page.vala',
   'base/status-page.vala',
 
+  'ifaces/apply-after.vala',
+  'ifaces/existing-user.vala',
+  'ifaces/has-files-to-copy.vala',
+
   'context-object.vala',
   'context.vala',
   'context-internal.vala',

@@ -110,7 +110,12 @@ public sealed class ReadySet.PageInfo : Object {
         bool plugin_enabled = true;
         if (plugin != null) {
             if (plugin.context.mode == EXISTING_USER) {
-                plugin_enabled = plugin.enabled && plugin.existing_user &&
+                var eu = false;
+                if (plugin is ExistingUser) {
+                    eu = ((ExistingUser) plugin).get_existing_user ();
+                }
+
+                plugin_enabled = plugin.enabled && eu &&
                     !(plugin.plugin_info.module_name in performed_steps);
             } else {
                 plugin_enabled = plugin.enabled;

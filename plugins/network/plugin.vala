@@ -19,15 +19,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Network.Addin : ReadySet.StepAddin {
+public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
 
     static Addin instance;
-
-    public override bool existing_user {
-        get {
-            return true;
-        }
-    }
 
     protected override string? resource_base_path {
         get {

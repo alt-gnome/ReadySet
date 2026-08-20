@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2026 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,32 +18,15 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Privacy.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
+public interface ReadySet.ExistingUser : StepAddin {
 
-    static Addin instance;
-
-    protected override string? resource_base_path {
-        get {
-            return "/org/altlinux/ReadySet/Plugin/Privacy/";
-        }
+    /**
+     * Whether plugin support running without special permissuin for
+     * settings up current user.
+     *
+     * Running without GUI, so can be synchronous.
+     */
+    public virtual bool get_existing_user () {
+        return true;
     }
-
-    construct {
-        instance = this;
-    }
-
-    public async override ReadySet.BasePage[] build_pages () {
-        return {
-            new Privacy.Page (),
-        };
-    }
-
-    internal static Addin get_instance () {
-        return instance;
-    }
-}
-
-public void peas_register_types (TypeModule module) {
-    var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySet.StepAddin), typeof (Privacy.Addin));
 }

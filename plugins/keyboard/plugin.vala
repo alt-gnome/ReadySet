@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Keyboard.Addin : ReadySet.StepAddin {
+public class Keyboard.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
 
     static Addin instance;
 
@@ -29,8 +29,6 @@ public class Keyboard.Addin : ReadySet.StepAddin {
             return "/org/altlinux/ReadySet/Plugin/Keyboard/";
         }
     }
-
-    public override bool existing_user { get { return true; } }
 
     static construct {
         typeof (CurrentInputSources).ensure ();

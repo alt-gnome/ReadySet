@@ -72,13 +72,15 @@ public sealed class ReadySet.Finalizer : Object {
 
         foreach (var step in steps) {
             string module_name = step.plugin_name;
-            foreach (var dep in step.apply_after) {
-                if (!module_to_step.has_key (dep)) {
-                    continue;
-                }
+            if (step is ApplyAfter) {
+                foreach (var dep in ((ApplyAfter) step).get_apply_after ()) {
+                    if (!module_to_step.has_key (dep)) {
+                        continue;
+                    }
 
-                dependents[dep].add (module_name);
-                in_degree[module_name] = in_degree[module_name] + 1;
+                    dependents[dep].add (module_name);
+                    in_degree[module_name] = in_degree[module_name] + 1;
+                }
             }
         }
 
@@ -146,7 +148,10 @@ public sealed class ReadySet.Finalizer : Object {
             progress_data.value = 1.0;
 
             passed_plugins += addin.plugin_info.module_name;
-            files_to_copy.add_all_array (addin.files_to_copy);
+
+            if (addin is HasFilesToCopy) {
+                files_to_copy.add_all_array (((HasFilesToCopy) addin).get_files_to_copy ());
+            }
         }
 
         try {
