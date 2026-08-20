@@ -37,6 +37,7 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
         var addin = Addin.get_instance ();
 
         conn = eth;
+        eth.add_weak_pointer (&conn);
         active = get_active_connection (conn);
         update_active_device ();
         internal_toggle = true;
@@ -95,6 +96,7 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
 
     void update_active_device () {
         if (device != null) {
+            device.remove_weak_pointer (&device);
             device.notify["ip4-connectivity"].disconnect (update_icon);
             device.notify["ip6-connectivity"].disconnect (update_icon);
         }
@@ -110,6 +112,7 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
         }
 
         if (device != null) {
+            device.add_weak_pointer (&device);
             device.notify["ip4-connectivity"].connect (update_icon);
             device.notify["ip6-connectivity"].connect (update_icon);
         }
