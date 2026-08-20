@@ -58,7 +58,7 @@ public class Language.Addin : ReadySet.StepAddin {
         Intl.setlocale (LocaleCategory.ALL, nv);
 
         this_value.set_string (nv);
-        Addin.get_instance ().context.reload_window ();
+        context.reload_window ();
     }
 
     protected override string? resource_base_path {
