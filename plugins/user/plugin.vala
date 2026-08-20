@@ -22,7 +22,7 @@ public class User.Addin : ReadySet.StepAddin {
 
     static Addin instance;
 
-    public override string reg_module_name { get { return "user"; } }
+    public override string plugin_name { get { return "user"; } }
 
     protected override string? resource_base_path {
         get {

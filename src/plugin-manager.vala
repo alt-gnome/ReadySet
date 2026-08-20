@@ -205,12 +205,12 @@ public sealed class ReadySet.PluginManager : Object {
             if (steps_plugins.contains (steps[i])) {
                 var addin = steps_plugins[steps[i]];
 
-                var module_name = addin.reg_module_name;
+                var module_name = addin.plugin_name;
 
                 context.register_vars (module_name, addin.get_context_vars ());
 
                 var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
-                var var_name = "%s.enabled".printf (addin.reg_module_name);
+                var var_name = "%s.enabled".printf (addin.plugin_name);
                 vars[var_name] = new ContextVarInfo (
                     ContextType.BOOLEAN,
                     !(context.mode == EXISTING_USER &&

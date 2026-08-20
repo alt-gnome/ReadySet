@@ -78,7 +78,7 @@ public abstract class ReadySet.StepAddin : ExtensionBase {
      * Useful when plugins have similar context vars but different names
      * e.g. user-passwdqc/user-pwquality.
      */
-    public virtual string reg_module_name { get { return plugin_info.module_name; } }
+    public virtual string plugin_name { get { return plugin_info.module_name; } }
 
     /**
      * Whether `step` enabled or not.

@@ -58,20 +58,20 @@ public sealed class ReadySet.Finalizer : Object {
     Gee.ArrayList<StepAddin> reorder_steps (Gee.ArrayList<StepAddin> steps) {
         var module_to_step = new Gee.HashMap<string, StepAddin> ();
         foreach (var step in steps) {
-            module_to_step[step.reg_module_name] = step;
+            module_to_step[step.plugin_name] = step;
         }
 
         var dependents = new Gee.HashMap<string, Gee.ArrayList<string>> ();
         var in_degree = new Gee.HashMap<string, int> ();
 
         foreach (var step in steps) {
-            string module_name = step.reg_module_name;
+            string module_name = step.plugin_name;
             in_degree[module_name] = 0;
             dependents[module_name] = new Gee.ArrayList<string> ();
         }
 
         foreach (var step in steps) {
-            string module_name = step.reg_module_name;
+            string module_name = step.plugin_name;
             foreach (var dep in step.apply_after) {
                 if (!module_to_step.has_key (dep)) {
                     continue;
@@ -84,7 +84,7 @@ public sealed class ReadySet.Finalizer : Object {
 
         var queue = new Gee.ArrayList<string> ();
         foreach (var step in steps) {
-            string module_name = step.reg_module_name;
+            string module_name = step.plugin_name;
             if (in_degree[module_name] == 0) {
                 queue.add (module_name);
             }
