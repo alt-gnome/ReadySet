@@ -35,12 +35,29 @@ public sealed class ReadySet.WelcomePage : ReadySet.BasePage {
             }
         });
 
-        status_page.title = _("Welcome to %s!").printf (Environment.get_os_info (OsInfoKey.PRETTY_NAME));
-        if (Context.get_instance ().mode == EXISTING_USER) {
-            status_page.description = _("The system requires completion of the setup.") + " " + _("We will guide you through the necessary steps.");  // vala-lint=line-length
-
-        } else {
-            status_page.description = _("The setup will guide you from creating an account to enabling some features.") + " " + _("We will help you prepare everything in a moment.");  // vala-lint=line-length
+        switch (Context.get_instance ().mode) {
+            case EXISTING_USER:
+                status_page.title = _("Welcome to %s!").printf (Environment.get_os_info (OsInfoKey.PRETTY_NAME));
+                status_page.description = "%s %s".printf (
+                    _("The system requires completion of the setup."),
+                    _("We will guide you through the necessary steps.")
+                );
+                break;
+            case INITIAL_SETUP:
+                status_page.title = _("Welcome to %s!").printf (Environment.get_os_info (OsInfoKey.PRETTY_NAME));
+                status_page.description = "%s %s".printf (
+                    _("The setup will guide you from creating an account to enabling some features."),
+                    _("We will help you prepare everything in a moment.")
+                );
+                break;
+            //  Bad practive to show text before langauge, so it kind of fallback
+            case INSTALLER:
+                status_page.title = _("This is %s installer").printf (Environment.get_os_info (OsInfoKey.PRETTY_NAME));
+                status_page.description = "%s".printf (
+                    _("After some choices, the system will be installed on Your device.")
+                );
+                break;
         }
+
     }
 }
