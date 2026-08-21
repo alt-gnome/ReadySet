@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 13:50+0000\n"
+"POT-Creation-Date: 2026-08-21 17:39+0000\n"
 "PO-Revision-Date: 2026-08-17 09:58+0300\n"
 "Last-Translator: Valery Zabrovsky <brow@altlinux.org>\n"
 "Language-Team: Russian\n"
@@ -33,13 +33,17 @@ msgstr "Всё готово к использованию."
 msgid "Complete the setup"
 msgstr "Завершите настройку"
 
-#: data/ui/initial-setup-end-page.blp:36 data/ui/installer-end-page.blp:36
+#: data/ui/initial-setup-end-page.blp:36
 msgid "Setting up the system…"
 msgstr "Настройка вашей системы…"
 
 #: data/ui/initial-setup-end-page.blp:53 data/ui/installer-end-page.blp:53
 msgid "All done!"
 msgstr "Всё готово!"
+
+#: data/ui/installer-end-page.blp:36 src/end-pages/installer.vala:66
+msgid "Installing system…"
+msgstr "Установка системы…"
 
 #: data/ui/nothing-to-show.blp:30 plugins/language/data/ui/box.blp:44
 msgid "Nothing to show"
@@ -785,10 +789,6 @@ msgstr "Применение %s…"
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
-
-#: src/end-pages/installer.vala:66 src/finalize.vala:199
-msgid "Installing system…"
-msgstr "Установка системы…"
 
 #: src/options-handler.vala:39
 msgid "Context vars"
