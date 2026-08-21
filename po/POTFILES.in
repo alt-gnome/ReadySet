@@ -3,6 +3,7 @@ data/ui/initial-setup-end-page.blp
 data/ui/installer-end-page.blp
 data/ui/nothing-to-show.blp
 data/ui/steps-main-page.blp
+data/ui/welcome-page.blp
 data/ui/window-content.blp
 lib/src/base/base-page.vala
 lib/src/lib-utils-internal.vala
@@ -59,14 +60,13 @@ plugins/user/page-username.vala
 plugins/user/plugin.vala
 plugins/user/pwquality-utils.vala
 plugins/user/utils.vala
-plugins/welcome/data/ui/page.blp
-plugins/welcome/page.vala
 src/about.vala
 src/end-pages/initial-setup.vala
 src/end-pages/installer.vala
 src/finalize.vala
 src/options-handler.vala
 src/pages-model.vala
+src/pages/welcome-page.vala
 src/plugin-manager.vala
 src/widgets/positioned-stack.vala
 src/widgets/steps-main-page.vala
