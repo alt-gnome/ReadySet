@@ -187,19 +187,7 @@ public sealed class ReadySet.PluginManager : Object {
         var rs_settings = new Settings ("org.altlinux.ReadySet");
         string[] performed_steps = rs_settings.get_strv ("performed-steps");
 
-        string[] st = {};
-
-        //  We add welcome step in existing user mode if welcome step is not provided
-        if (context.mode == EXISTING_USER && in_steps[0] != "welcome" && has_step ("welcome")) {
-            st = { "welcome" };
-            foreach (var s in in_steps) {
-                st += s;
-            }
-        } else {
-            st = in_steps.copy ();
-        }
-
-        this.steps = st;
+        this.steps = in_steps.copy ();
 
         for (int i = 0; i < steps.length; i++) {
             if (steps_plugins.contains (steps[i])) {
