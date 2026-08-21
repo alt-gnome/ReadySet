@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 13:01+0000\n"
+"POT-Creation-Date: 2026-08-21 13:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -228,8 +228,13 @@ msgstr ""
 msgid "Try writing"
 msgstr ""
 
-#: plugins/keyboard/enums.vala:74 plugins/keyboard/layout-switch-button.vala:72
+#: plugins/keyboard/enums.vala:74 plugins/keyboard/layout-switch-button.vala:79
+#: plugins/keyboard/layout-switch-button.vala:100
 msgid "None"
+msgstr ""
+
+#: plugins/keyboard/layout-switch-button.vala:38
+msgid "Additinal layout switch"
 msgstr ""
 
 #: plugins/keyboard/plugin.vala:119
