@@ -18,6 +18,8 @@ rs_app_vala_sources = files(
   'end-pages/initial-setup.vala',
   'end-pages/installer.vala',
 
+  'pages/welcome-page.vala',
+
   'widgets/devel/window.vala',
 
   'widgets/nothing-to-show.vala',

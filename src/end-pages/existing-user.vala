@@ -32,7 +32,7 @@ public sealed class ReadySet.ExistingUserEndPage : Adw.Bin {
                 var page_info = (PageInfo) app.model.get_item (i);
 
                 if (!(page_info.plugin in steps_addins_arr) &&
-                    page_info.plugin.enabled && page_info.plugin_info.module_name != "welcome") {
+                    page_info.plugin.enabled) {
                     steps_addins_arr.add (page_info.plugin);
                 }
             }

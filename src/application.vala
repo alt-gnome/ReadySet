@@ -258,6 +258,13 @@ public sealed class ReadySet.Application: Adw.Application {
             }
         }
 
+        if (pages[0].plugin == null || !(pages[0].plugin is Welcome) || context.mode == EXISTING_USER) {
+            pages.insert (0, new PageInfo.pluginless (
+                new WelcomePage (),
+                "BuiltIn"
+            ));
+        }
+
         model = new PagesModel (pages);
         model.select_item (initial_position, true);
 
@@ -278,17 +285,7 @@ public sealed class ReadySet.Application: Adw.Application {
             }
         }
 
-        var ntd = false;
-
-        if (layout_pages.length == 1) {
-            if (layout_pages[0].plugin_info.module_name == "welcome") {
-                ntd = true;
-            }
-        } else if (layout_pages.length == 0) {
-            ntd = true;
-        }
-
-        return ntd;
+        return layout_pages.length == 0;
     }
 
     void reload_window () {

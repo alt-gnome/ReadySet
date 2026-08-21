@@ -126,10 +126,6 @@ public sealed class ReadySet.Finalizer : Object {
                 continue;
             }
 
-            if (page_info.plugin_info.module_name == "welcome") {
-                continue;
-            }
-
             steps_addins_arr.add (page_info.plugin);
         }
 
