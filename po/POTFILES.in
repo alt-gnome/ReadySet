@@ -63,7 +63,6 @@ plugins/user/utils.vala
 src/about.vala
 src/end-pages/initial-setup.vala
 src/end-pages/installer.vala
-src/finalize.vala
 src/options-handler.vala
 src/pages-model.vala
 src/pages/welcome.vala
