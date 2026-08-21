@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 11:52+0000\n"
+"POT-Creation-Date: 2026-08-21 13:01+0000\n"
 "PO-Revision-Date: 2026-08-17 09:58+0300\n"
 "Last-Translator: Valery Zabrovsky <brow@altlinux.org>\n"
 "Language-Team: Russian\n"
@@ -845,29 +845,39 @@ msgstr ""
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
-#: src/pages/welcome-page.vala:38
+#: src/pages/welcome.vala:40 src/pages/welcome.vala:47
 #, c-format
 msgid "Welcome to %s!"
 msgstr "Добро пожаловать в %s!"
 
-#: src/pages/welcome-page.vala:40
+#: src/pages/welcome.vala:42
 msgid "The system requires completion of the setup."
 msgstr "Система требует завершения настройки."
 
-#: src/pages/welcome-page.vala:40
+#: src/pages/welcome.vala:43
 msgid "We will guide you through the necessary steps."
 msgstr "Мы проведём вас по необходимым шагам."
 
-#: src/pages/welcome-page.vala:43
+#: src/pages/welcome.vala:49
 msgid ""
 "The setup will guide you from creating an account to enabling some features."
 msgstr ""
 "Настройка проведет вас от создания учетной записи до подключения некоторых "
 "возможностей."
 
-#: src/pages/welcome-page.vala:43
+#: src/pages/welcome.vala:50
 msgid "We will help you prepare everything in a moment."
 msgstr "Мы поможем вам все подготовить за мгновение."
+
+#. Bad practive to show text before langauge, so it kind of fallback
+#: src/pages/welcome.vala:55
+#, c-format
+msgid "This is %s installer"
+msgstr ""
+
+#: src/pages/welcome.vala:57
+msgid "After some choices, the system will be installed on Your device."
+msgstr ""
 
 #: tests/plugins/test-common/data/ui/page.blp:23
 #: tests/plugins/test-common/data/ui/page.blp:32
