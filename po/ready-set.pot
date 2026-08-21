@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 13:50+0000\n"
+"POT-Creation-Date: 2026-08-21 17:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,12 +29,16 @@ msgstr ""
 msgid "Complete the setup"
 msgstr ""
 
-#: data/ui/initial-setup-end-page.blp:36 data/ui/installer-end-page.blp:36
+#: data/ui/initial-setup-end-page.blp:36
 msgid "Setting up the system…"
 msgstr ""
 
 #: data/ui/initial-setup-end-page.blp:53 data/ui/installer-end-page.blp:53
 msgid "All done!"
+msgstr ""
+
+#: data/ui/installer-end-page.blp:36 src/end-pages/installer.vala:66
+msgid "Installing system…"
 msgstr ""
 
 #: data/ui/nothing-to-show.blp:30 plugins/language/data/ui/box.blp:44
@@ -741,10 +745,6 @@ msgstr ""
 #: src/end-pages/initial-setup.vala:123 src/end-pages/installer.vala:96
 #, c-format
 msgid "Error message: %s"
-msgstr ""
-
-#: src/end-pages/installer.vala:66 src/finalize.vala:199
-msgid "Installing system…"
 msgstr ""
 
 #: src/options-handler.vala:39
