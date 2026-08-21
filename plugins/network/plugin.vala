@@ -37,6 +37,8 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
 
     public uint ether_devices_num { get; private set; default = 0; }
 
+    bool simple;
+
     static construct {
         typeof (ModeledStack).ensure ();
         typeof (DropDownStackSwitcher).ensure ();
@@ -73,11 +75,12 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         var vars = base.get_context_vars ();
 
         vars["simple"] = new ReadySet.ContextVarInfo (BOOLEAN) {
-            setter_func = (ref to, from) => {
-                var enable = from.get_boolean ();
-                to.set_boolean (enable);
-
-                enabled = enable ? client.connectivity != FULL : true;
+            getter_func = () => {
+                return simple;
+            },
+            setter_func = (from) => {
+                simple = from.get_boolean ();
+                enabled = simple ? client.connectivity != FULL : true;
             },
         };
         vars["required"] = new ReadySet.ContextVarInfo (BOOLEAN);

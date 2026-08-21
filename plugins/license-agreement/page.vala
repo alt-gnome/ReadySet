@@ -43,7 +43,7 @@ public sealed class LicenseAgreement.Page : ReadySet.BasePage {
             return;
         }
 
-        var variants = get_language_variants (get_current_language ());
+        var variants = get_language_variants (ReadySet.get_current_lang ());
 
         var found = false;
         File? file = null;

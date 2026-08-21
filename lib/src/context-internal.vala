@@ -81,11 +81,9 @@ public partial class ReadySet.Context {
             debug ("Registering key %s with type %s", module_key, info.value_type.to_string ());
             data[module_key] = new ValueObject (info);
             data[module_key].data_key = module_key;
-            if (info.getter_func != null) {
-                data[module_key].set_getter (info.getter_func);
-            }
-            if (info.setter_func != null) {
-                data[module_key].set_setter (info.setter_func);
+
+            if (info.getter_func != null || info.setter_func != null) {
+                data[module_key].set_gsetters (info.getter_func, info.setter_func);
             }
             data[module_key].notify["real-value"].connect ((caller, param) => {
                 data_changed (((ValueObject) caller).data_key);

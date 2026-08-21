@@ -82,15 +82,6 @@ namespace Keyboard {
         return input_sources_settings;
     }
 
-    public string get_current_language () {
-        var context = Addin.get_instance ().context;
-        if (context.has_key ("language.locale")) {
-            return context.get_string ("language.locale");
-        }
-
-        return "C";
-    }
-
     public InputSources get_current_inputs () {
         var context = Addin.get_instance ().context;
 

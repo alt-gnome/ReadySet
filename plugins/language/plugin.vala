@@ -31,34 +31,12 @@ public class Language.Addin : ReadySet.StepAddin {
         }
     }
 
-    public Value get_current_locale_func (ref Value this_value) {
-        var locale = this_value.get_string ();
-
-        if (locale == "") {
-            debug ("Languages: %s", string.joinv (", ", Intl.get_language_names ()));
-
-            foreach (string lang in Intl.get_language_names ()) {
-                if (Gnome.Languages.parse_locale (lang, null, null, null, null)) {
-                    locale = lang;
-                    break;
-                }
-            }
-
-            if (locale == "") {
-                locale = "C";
-            }
-        }
-
-        this_value.set_string (locale);
-        return locale;
+    public Value get_current_locale_func () {
+        return ReadySet.get_current_lang ();
     }
 
-    public void set_current_locale_func (ref Value this_value, Value new_value) {
-        var nv = new_value.get_string ();
-        Intl.setlocale (LocaleCategory.ALL, nv);
-
-        this_value.set_string (nv);
-        context.reload_window ();
+    public void set_current_locale_func (Value new_value) {
+        ReadySet.set_current_lang (new_value.get_string ());
     }
 
     protected override string? resource_base_path {
@@ -80,10 +58,11 @@ public class Language.Addin : ReadySet.StepAddin {
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
-        vars["locale"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
 
-        vars["locale"].getter_func = get_current_locale_func;
-        vars["locale"].setter_func = set_current_locale_func;
+        vars["locale"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING) {
+            getter_func = get_current_locale_func,
+            setter_func = set_current_locale_func,
+        };
 
         return vars;
     }

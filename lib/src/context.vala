@@ -81,7 +81,7 @@ internal class ReadySet.ValueObject : Object {
         owned get {
             var new_val = Value (_value.type ());
             if (getter_func != null) {
-                getter_func (ref _value).copy (ref new_val);
+                getter_func ().copy (ref new_val);
             } else {
                 _value.copy (ref new_val);
             }
@@ -89,7 +89,7 @@ internal class ReadySet.ValueObject : Object {
         }
         set {
             if (setter_func != null) {
-                setter_func (ref _value, value);
+                setter_func (value);
             } else {
                 if (value_type == OBJECT) {
                     _value.set_object (value.get_object ());
@@ -119,12 +119,11 @@ internal class ReadySet.ValueObject : Object {
         );
     }
 
-    public void set_getter (ContextGetterFunc func) {
-        getter_func = func;
-    }
+    public void set_gsetters (ContextGetterFunc getter_func, ContextSetterFunc setter_func) {
+        assert (getter_func != null && setter_func != null);
 
-    public void set_setter (ContextSetterFunc func) {
-        setter_func = func;
+        this.getter_func = getter_func;
+        this.setter_func = setter_func;
     }
 
     construct {
@@ -233,6 +232,8 @@ public class ReadySet.ContextVarInfo : Object {
  */
 public partial class ReadySet.Context : Object {
 
+    static Context instance;
+
     /**
      * Whether application run in sandbox mode or not. Plugon should hold it
      * and not do any changes in system if this is true.
@@ -259,6 +260,14 @@ public partial class ReadySet.Context : Object {
         Object (
             sandbox: sandbox
         );
+    }
+
+    construct {
+        instance = this;
+    }
+
+    public static Context get_instance () {
+        return instance;
     }
 
     public unowned Binding? bind_context_to_property (
