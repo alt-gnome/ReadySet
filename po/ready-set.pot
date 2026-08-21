@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 11:52+0000\n"
+"POT-Creation-Date: 2026-08-21 13:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -798,26 +798,36 @@ msgstr ""
 msgid "App config file"
 msgstr ""
 
-#: src/pages/welcome-page.vala:38
+#: src/pages/welcome.vala:40 src/pages/welcome.vala:47
 #, c-format
 msgid "Welcome to %s!"
 msgstr ""
 
-#: src/pages/welcome-page.vala:40
+#: src/pages/welcome.vala:42
 msgid "The system requires completion of the setup."
 msgstr ""
 
-#: src/pages/welcome-page.vala:40
+#: src/pages/welcome.vala:43
 msgid "We will guide you through the necessary steps."
 msgstr ""
 
-#: src/pages/welcome-page.vala:43
+#: src/pages/welcome.vala:49
 msgid ""
 "The setup will guide you from creating an account to enabling some features."
 msgstr ""
 
-#: src/pages/welcome-page.vala:43
+#: src/pages/welcome.vala:50
 msgid "We will help you prepare everything in a moment."
+msgstr ""
+
+#. Bad practive to show text before langauge, so it kind of fallback
+#: src/pages/welcome.vala:55
+#, c-format
+msgid "This is %s installer"
+msgstr ""
+
+#: src/pages/welcome.vala:57
+msgid "After some choices, the system will be installed on Your device."
 msgstr ""
 
 #: tests/plugins/test-common/data/ui/page.blp:23
