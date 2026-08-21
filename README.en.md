@@ -25,7 +25,8 @@ The application is built from step plugins. Currently available step plugins are
 - [privacy](plugins/privacy/README.en.md)
 - [software](plugins/software/README.en.md)
 - [user](plugins/user/README.en.md) — built as `user-passwdqc` (default) and/or `user-pwquality`, depending on the `password_check_backend` build option
-- [welcome](plugins/welcome/README.en.md)
+
+If in steps list no step realizing `Welcome` interface on first place, welcome page will be shown at the beginning.
 
 Installer plugins are loaded separately via the `--installer` option. Their steps are referenced with the `installer.` prefix (e.g. `installer.example-step`).
 
