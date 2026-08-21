@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-18 13:48+0000\n"
+"POT-Creation-Date: 2026-08-21 11:52+0000\n"
 "PO-Revision-Date: 2026-08-17 09:58+0300\n"
 "Last-Translator: Valery Zabrovsky <brow@altlinux.org>\n"
 "Language-Team: Russian\n"
@@ -69,6 +69,10 @@ msgstr "Наверх"
 #: data/ui/steps-main-page.blp:540 data/ui/steps-main-page.blp:546
 msgid "Go up to the beginning"
 msgstr "Вернуться к началу"
+
+#: data/ui/welcome-page.blp:5
+msgid "Welcome"
+msgstr "Добро пожаловать"
 
 #: data/ui/window-content.blp:43
 msgid "All steps"
@@ -162,23 +166,23 @@ msgstr "Ничего не найдено"
 msgid "Failed to connect to timedate service: "
 msgstr "Не удалось подключиться к службе времени и даты: "
 
-#: plugins/date-and-time/page.vala:165 plugins/date-and-time/page.vala:168
+#: plugins/date-and-time/page.vala:164
 msgid "Undefined"
 msgstr "Неопределён"
 
-#: plugins/date-and-time/plugin.vala:65
+#: plugins/date-and-time/plugin.vala:59
 msgid "Failed to connect to timedate service"
 msgstr "Не удалось подключиться к службе времени и даты"
 
-#: plugins/date-and-time/plugin.vala:79
+#: plugins/date-and-time/plugin.vala:73
 msgid "Error when setting timezone"
 msgstr "Ошибка при настройке часового пояса"
 
-#: plugins/date-and-time/plugin.vala:86
+#: plugins/date-and-time/plugin.vala:80
 msgid "Error when setting NTP"
 msgstr "Ошибка при настройке NTP"
 
-#: plugins/date-and-time/plugin.vala:94
+#: plugins/date-and-time/plugin.vala:88
 msgid "Error when setting time"
 msgstr "Ошибка при настройке времени"
 
@@ -234,7 +238,7 @@ msgstr "Попробуйте написать"
 msgid "None"
 msgstr "Ничего"
 
-#: plugins/keyboard/plugin.vala:121
+#: plugins/keyboard/plugin.vala:119
 msgid "Error when setting keyboard layout"
 msgstr "Ошибка при настройке раскладки клавиатуры"
 
@@ -246,7 +250,7 @@ msgstr "Текущий язык"
 msgid "Language"
 msgstr "Язык"
 
-#: plugins/language/plugin.vala:122
+#: plugins/language/plugin.vala:97
 msgid "Error when setting language"
 msgstr "Ошибка при настройке языка"
 
@@ -312,11 +316,11 @@ msgstr "Wi-Fi"
 msgid "Wi-Fi adapter"
 msgstr "Адаптер Wi-Fi"
 
-#: plugins/network/ethernet.vala:152
+#: plugins/network/ethernet.vala:158
 msgid "Please wait until devices reloading is over…"
 msgstr "Устройства перезагружаются, подождите…"
 
-#: plugins/network/plugin.vala:214
+#: plugins/network/plugin.vala:210
 msgid "Failed to apply network settings"
 msgstr "Ошибка при сохранении настроек сети"
 
@@ -341,63 +345,63 @@ msgstr "Имя устройства не может оканчиваться д�
 msgid "Wired connection %u"
 msgstr "Проводное подключение %u"
 
-#: plugins/network/wifi.vala:62
+#: plugins/network/wifi.vala:64
 msgid "Can't connect: undetermined security type"
 msgstr "Подключение невозможно: неизвестный тип защиты"
 
-#: plugins/network/wifi.vala:138
+#: plugins/network/wifi.vala:140
 msgid "Connection setup failed"
 msgstr "Не удалось настроить соединение"
 
-#: plugins/network/wifi.vala:149
+#: plugins/network/wifi.vala:151
 msgid "Connection failed"
 msgstr "Не удалось установить соединение"
 
-#: plugins/network/wifi.vala:185
+#: plugins/network/wifi.vala:187
 msgid "Connecting…"
 msgstr "Подключение…"
 
-#: plugins/network/wifi.vala:190
+#: plugins/network/wifi.vala:192
 msgid "Connected"
 msgstr "Подключено"
 
-#: plugins/network/wifi.vala:192
+#: plugins/network/wifi.vala:194
 msgid "Connected without internet"
 msgstr "Подключено без доступа в Интернет"
 
-#: plugins/network/wifi.vala:196
+#: plugins/network/wifi.vala:198
 msgid "Disconnecting…"
 msgstr "Отключение…"
 
-#: plugins/network/wifi.vala:264
+#: plugins/network/wifi.vala:267
 msgid "WPA/WPA2/WPA3 Enterprise"
 msgstr "WPA/WPA2/WPA3 Enterprise"
 
-#: plugins/network/wifi.vala:269
+#: plugins/network/wifi.vala:272
 msgid "WPA3 Personal"
 msgstr "WPA3 Personal"
 
-#: plugins/network/wifi.vala:274
+#: plugins/network/wifi.vala:277
 msgid "WPA/WPA2 Personal"
 msgstr "WPA/WPA2 Personal"
 
-#: plugins/network/wifi.vala:279
+#: plugins/network/wifi.vala:282
 msgid "WEP 40/104-bit Key (Hex/ASCII)"
 msgstr "40/104-битный ключ WEP (Hex или ASCII)"
 
-#: plugins/network/wifi.vala:283
+#: plugins/network/wifi.vala:286
 msgid "WEP 128-bit Passphrase"
 msgstr "128-битная парольная фраза WEP"
 
-#: plugins/network/wifi.vala:288
+#: plugins/network/wifi.vala:291
 msgid "Dynamic WEP (802.1x)"
 msgstr "Dynamic WEP (802.1x)"
 
-#: plugins/network/wifi.vala:293
+#: plugins/network/wifi.vala:296
 msgid "LEAP"
 msgstr "LEAP"
 
-#: plugins/network/wifi.vala:298
+#: plugins/network/wifi.vala:301
 msgid "Enhanced Open"
 msgstr "Enhanced Open"
 
@@ -449,7 +453,7 @@ msgstr "Отключить Сторонние репозитории"
 msgid "Enable Third-Party repositories"
 msgstr "Включить Сторонние репозитории"
 
-#: plugins/software/plugin.vala:70
+#: plugins/software/plugin.vala:72
 msgid "Failed to add a software source"
 msgstr "Ошибка при добавлении источника ПО"
 
@@ -597,7 +601,7 @@ msgstr "_Да"
 msgid "Set a Password for %s"
 msgstr "Установите пароль для %s"
 
-#: plugins/user/plugin.vala:77
+#: plugins/user/plugin.vala:75
 msgid "Error when creating a user"
 msgstr "Ошибка при создании пользователя"
 
@@ -738,34 +742,6 @@ msgstr ""
 msgid "Username cannot be empty"
 msgstr "Имя пользователя не может быть пустым"
 
-#: plugins/welcome/data/ui/page.blp:5
-msgid "Welcome"
-msgstr "Добро пожаловать"
-
-#: plugins/welcome/page.vala:38
-#, c-format
-msgid "Welcome to %s!"
-msgstr "Добро пожаловать в %s!"
-
-#: plugins/welcome/page.vala:40
-msgid "The system requires completion of the setup."
-msgstr "Система требует завершения настройки."
-
-#: plugins/welcome/page.vala:40
-msgid "We will guide you through the necessary steps."
-msgstr "Мы проведём вас по необходимым шагам."
-
-#: plugins/welcome/page.vala:43
-msgid ""
-"The setup will guide you from creating an account to enabling some features."
-msgstr ""
-"Настройка проведет вас от создания учетной записи до подключения некоторых "
-"возможностей."
-
-#: plugins/welcome/page.vala:43
-msgid "We will help you prepare everything in a moment."
-msgstr "Мы поможем вам все подготовить за мгновение."
-
 #: src/about.vala:24
 msgid "Ready Set"
 msgstr "На Старт Внимание"
@@ -805,7 +781,7 @@ msgstr "Применение %s…"
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
-#: src/end-pages/installer.vala:66 src/finalize.vala:198
+#: src/end-pages/installer.vala:66 src/finalize.vala:199
 msgid "Installing system…"
 msgstr "Установка системы…"
 
@@ -868,6 +844,30 @@ msgstr ""
 #: src/options-handler.vala:132
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
+
+#: src/pages/welcome-page.vala:38
+#, c-format
+msgid "Welcome to %s!"
+msgstr "Добро пожаловать в %s!"
+
+#: src/pages/welcome-page.vala:40
+msgid "The system requires completion of the setup."
+msgstr "Система требует завершения настройки."
+
+#: src/pages/welcome-page.vala:40
+msgid "We will guide you through the necessary steps."
+msgstr "Мы проведём вас по необходимым шагам."
+
+#: src/pages/welcome-page.vala:43
+msgid ""
+"The setup will guide you from creating an account to enabling some features."
+msgstr ""
+"Настройка проведет вас от создания учетной записи до подключения некоторых "
+"возможностей."
+
+#: src/pages/welcome-page.vala:43
+msgid "We will help you prepare everything in a moment."
+msgstr "Мы поможем вам все подготовить за мгновение."
 
 #: tests/plugins/test-common/data/ui/page.blp:23
 #: tests/plugins/test-common/data/ui/page.blp:32
