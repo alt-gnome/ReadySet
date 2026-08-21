@@ -57,9 +57,7 @@ public class User.Addin : ReadySet.StepAddin {
                 user.set_password (context.get_string ("user.password"), "");
             }
 
-            if (context.has_key ("language.locale")) {
-                user.set_language (context.get_string ("language.locale"));
-            }
+            user.set_language (ReadySet.get_current_lang ());
             if (context.get_string ("user.avatar-file") != "") {
                 set_user_icon_file (user, context.get_string ("user.avatar-file"));
             }

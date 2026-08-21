@@ -141,7 +141,7 @@ public sealed class Keyboard.InputSourcesManager : Object {
         var inputs = get_current_inputs ();
         inputs.clear_automatically_added ();
 
-        if (Gnome.Languages.get_input_source_from_locale (get_current_language (), out type, out id)) {
+        if (Gnome.Languages.get_input_source_from_locale (ReadySet.get_current_lang (), out type, out id)) {
             inputs.add (new InputInfo (type, id) {
                 added_automatically = true
             });
@@ -150,7 +150,7 @@ public sealed class Keyboard.InputSourcesManager : Object {
             yield add_source_to_model (type, id, true);
         }
 
-        if (!Gnome.Languages.parse_locale (get_current_language (), out lang, out country, null, null)) {
+        if (!Gnome.Languages.parse_locale (ReadySet.get_current_lang (), out lang, out country, null, null)) {
             return;
         }
 

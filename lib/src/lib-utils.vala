@@ -143,14 +143,14 @@ namespace ReadySet {
      *
      * @see ReadySet.ContextVarInfo
      */
-    public delegate Value ContextGetterFunc (ref Value this_value);
+    public delegate Value ContextGetterFunc ();
 
     /**
      * Function that uses as setter in {@link Context} value.
      *
      * @see ReadySet.ContextVarInfo
      */
-    public delegate void ContextSetterFunc (ref Value this_value, Value new_value);
+    public delegate void ContextSetterFunc (Value new_value);
 
     /**
      * Runs `pkexec` with SHELL fixing.
@@ -173,4 +173,47 @@ namespace ReadySet {
         yield process.wait_check_async (cancellable);
     }
 
+    string locale;
+    public string get_current_lang () {
+        if (locale == null) {
+            locale = "";
+        }
+
+        if (locale == "") {
+            foreach (string lang in Intl.get_language_names ()) {
+                if (locale_is_corrent (lang)) {
+                    locale = lang;
+                    break;
+                }
+            }
+        }
+
+        if (locale == "") {
+            locale = "C";
+        }
+
+        return locale;
+    }
+
+    public void set_current_lang (string new_lang) {
+        locale = new_lang;
+        Intl.setlocale (LocaleCategory.ALL, new_lang);
+        Context.get_instance ().reload_window ();
+    }
+
+    Regex locale_regex;
+    bool locale_is_corrent (string locale) {
+        if (locale_regex == null) {
+            try {
+                locale_regex = new Regex (
+                    "^[A-Za-z][a-z]?[a-z]?(_[A-Z][A-Z])?(\\.[A-Za-z0-9][A-Za-z-0-9]*)?(@[a-z]*)?$"
+                );
+            } catch (Error e) {
+                warning (e.message);
+                return false;
+            }
+        }
+
+        return locale_regex.match (locale);
+    }
 }

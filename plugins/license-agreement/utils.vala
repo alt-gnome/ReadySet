@@ -114,15 +114,6 @@ namespace LicenseAgreement {
         return language;
     }
 
-    public string get_current_language () {
-        var context = Addin.get_instance ().context;
-        if (context.has_key ("language.locale")) {
-            return context.get_string ("language.locale");
-        }
-
-        return get_fallback_language ();
-    }
-
     public Gee.ArrayList<string> get_language_variants (string language) {
         var variant_regex = /^([^_]+)(_[^\.]+)?(\.[^@]+)?(@.+)?$/; // vala-lint=space-before-paren
 
