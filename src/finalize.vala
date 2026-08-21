@@ -196,8 +196,6 @@ public sealed class ReadySet.Finalizer : Object {
     }
 
     async void finalize_installer () throws ApplyError {
-        progress_data.message = _("Installing system…");
-
         yield installer_plugin.install (progress_data);
 
         try {
