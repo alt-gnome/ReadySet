@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-22 13:00+0000\n"
+"POT-Creation-Date: 2026-08-22 17:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,6 +71,10 @@ msgstr ""
 
 #: data/ui/steps-main-page.blp:648
 msgid "Return to setup"
+msgstr ""
+
+#: data/ui/summary-page.blp:5 data/ui/summary-page.blp:21
+msgid "Summary"
 msgstr ""
 
 #: data/ui/welcome-page.blp:5
