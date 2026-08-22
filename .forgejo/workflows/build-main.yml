@@ -87,7 +87,6 @@ jobs:
     needs:
       - lint
       - get-release
-      - build-doc-translation
 
     steps:
       - name: Install utils
