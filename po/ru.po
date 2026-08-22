@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-22 13:00+0000\n"
+"POT-Creation-Date: 2026-08-22 17:21+0000\n"
 "PO-Revision-Date: 2026-08-17 09:58+0300\n"
 "Last-Translator: Valery Zabrovsky <brow@altlinux.org>\n"
 "Language-Team: Russian\n"
@@ -78,6 +78,10 @@ msgstr "Вернуться к началу"
 #, fuzzy
 msgid "Return to setup"
 msgstr "Завершите настройку"
+
+#: data/ui/summary-page.blp:5 data/ui/summary-page.blp:21
+msgid "Summary"
+msgstr ""
 
 #: data/ui/welcome-page.blp:5
 msgid "Welcome"
