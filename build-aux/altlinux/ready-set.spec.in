@@ -234,15 +234,6 @@ Requires: %name-plugin-user-common = %EVR
 %description plugin-user-pwquality
 %summary.
 
-%package plugin-welcome
-Summary: %name welcome plugin
-Group: Other
-
-Requires: %name = %EVR
-
-%description plugin-welcome
-%summary.
-
 %package plugin-privacy
 Summary: %name privacy plugin
 Group: Other
@@ -417,11 +408,6 @@ Requires: %name-plugin-software = %EVR
 %files plugin-user-pwquality
 %_libdir/%name/plugins/steps/user-pwquality.plugin
 %_libdir/%name/plugins/steps/libuser-pwquality.so
-
-%files plugin-welcome
-%_libdir/%name/plugins/steps/welcome.plugin
-%_libdir/%name/plugins/steps/libwelcome.so
-%doc plugins/welcome/README.*.md
 
 %files plugin-privacy
 %_libdir/%name/plugins/steps/privacy.plugin
