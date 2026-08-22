@@ -66,9 +66,10 @@ jobs:
   rpm-build:
     if: github.event_name != 'pull_request'
     name: RPM build for ${{ matrix.branch }}.${{ matrix.arch }} and uploading
-    runs-on: ${{ matrix.runner }}
+    runs-on: als-huge
     container:
       image: altlinux.space/alt-security/${{ matrix.branch }}/hasher:latest
+      options: --platform linux/${{ matrix.arch }}
 
     strategy:
       matrix:
@@ -76,13 +77,8 @@ jobs:
           - sisyphus
           # - p11
         arch:
-          - x86_64
-          - aarch64
-        include:
-          - arch: x86_64
-            runner: als-huge
-          - arch: aarch64
-            runner: self-hosted-arm64-huge
+          - amd64
+          - arm64
 
     needs:
       - lint
