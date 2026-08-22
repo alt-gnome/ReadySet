@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 17:39+0000\n"
+"POT-Creation-Date: 2026-08-22 13:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,7 +57,7 @@ msgstr ""
 msgid "Extend/Retract keyboard"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:482
+#: data/ui/steps-main-page.blp:482 data/ui/steps-main-page.blp:660
 msgid "Open Context menu"
 msgstr ""
 
@@ -67,6 +67,10 @@ msgstr ""
 
 #: data/ui/steps-main-page.blp:540 data/ui/steps-main-page.blp:546
 msgid "Go up to the beginning"
+msgstr ""
+
+#: data/ui/steps-main-page.blp:648
+msgid "Return to setup"
 msgstr ""
 
 #: data/ui/welcome-page.blp:5
