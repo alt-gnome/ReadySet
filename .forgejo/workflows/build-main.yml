@@ -22,8 +22,8 @@ jobs:
         run: |
           make lint
 
-  build-doc-translation:
-    name: Build, update translation and upload doc
+  build-doc:
+    name: Build and upload doc
     runs-on: als-huge
     container: registry.altlinux.org/sisyphus/node:latest
     needs:
@@ -43,44 +43,6 @@ jobs:
 
       - name: Test
         run: make test
-
-      - name: Setup git
-        if: github.event_name != 'pull_request'
-        run: |
-          git config --global user.name "ReadySet Helper Bot"
-          git config --global user.email "ready-set-helper-bot@noreply.altlinux.space"
-          git config --global --add safe.directory '*'
-
-      - name: Update pot file for Weblate
-        if: github.event_name != 'pull_request'
-        run: |
-          has_real_changes() {
-            git diff --cached -U0 | grep -E '^[+-]' \
-              | grep -Ev '^[+-]{3}' \
-              | grep -Ev '^[+-]["#]' \
-              | grep -q '.'
-          }
-
-          make pot
-
-          git add .
-          git commit -m "i18n: Update POTFILES" || true
-
-          make update-pot
-          git add .
-
-          if has_real_changes; then
-            git commit -m "i18n: Update .pot file" || true
-
-            make update-po
-
-            git add *.po
-            git commit -m "i18n: Update .po files" || true
-          else
-            git reset --hard
-          fi
-
-          git push
 
       - name: Deploy pages
         if: github.event_name != 'pull_request'

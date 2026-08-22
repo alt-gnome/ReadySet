@@ -69,7 +69,7 @@ lint:
 lint-fix:
 	find ./ -name "*.blp" -print0 | grep -zvFf $(BLUEPRINT_IGNORE) | xargs -0 blueprint-compiler format -f -s 2
 
-pot:
+update-potfiles:
 	./po/update_potfiles
 
 update-pot:
