@@ -1,5 +1,0 @@
-[D-BUS Service]
-Name=@SERVICE_NAME@
-Exec=@LIBEXECDIR@/@SERVICE_NAME@
-User=@USER@
-SystemdService=@NAME@.service
