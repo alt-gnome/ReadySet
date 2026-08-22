@@ -73,6 +73,11 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     [GtkChild]
     unowned Adw.Bin bottom_bin;
 
+    [GtkChild]
+    unowned Adw.ToolbarView page_toolbar;
+    [GtkChild]
+    unowned Gtk.Button end_page_back_button;
+
     Devel.Window devel_window;
 
     Gtk.ScrolledWindow _current_scrolled_window;
@@ -490,47 +495,36 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         var n_items = model.get_n_items ();
 
         if (position == n_items - 1) {
-            var view = new Adw.ToolbarView ();
 
-            var header_bar = new Adw.HeaderBar () {
-                show_title = false,
-                show_end_title_buttons = can_close,
-            };
-
-            view.add_top_bar (header_bar);
-
-            if (Config.NIGHTLY) {
-                var context_button = new Gtk.Button.from_icon_name (context_button.icon_name) {
-                    tooltip_text = context_button.tooltip_text,
-                    css_classes = context_button.css_classes
-                };
-                context_button.clicked.connect (on_context_button_clicked);
-
-                header_bar.pack_end (context_button);
+            if (page_toolbar.content == null) {
+                switch (Application.get_default ().context.mode) {
+                    case EXISTING_USER:
+                        end_page_back_button.visible = true;
+                        page_toolbar.content = new ExistingUserEndPage ();
+                        break;
+                    case INITIAL_SETUP:
+                        var end_page = new InitialSetupEndPage ();
+                        page_toolbar.content = end_page;
+                        end_page.start_action.begin ();
+                        break;
+                    case INSTALLER:
+                        var end_page = new InstallerEndPage ();
+                        page_toolbar.content = end_page;
+                        end_page.start_action.begin ();
+                        break;
+                }
             }
 
-            switch (Application.get_default ().context.mode) {
-                case EXISTING_USER:
-                    view.content = new ExistingUserEndPage ();
-                    break;
-                case INITIAL_SETUP:
-                    var end_page = new InitialSetupEndPage ();
-                    view.content = end_page;
-                    end_page.start_action.begin ();
-                    break;
-                case INSTALLER:
-                    var end_page = new InstallerEndPage ();
-                    view.content = end_page;
-                    end_page.start_action.begin ();
-                    break;
-            }
-
-            main_stack.add_child (view);
-            main_stack.visible_child = view;
+            main_stack.visible_child_name = "end";
 
         } else {
             model.select_item (model.get_selected () + 1, true);
         }
+    }
+
+    [GtkCallback]
+    void to_main () {
+        main_stack.visible_child_name = "main";
     }
 
     void set_breakpoints () {
