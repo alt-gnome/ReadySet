@@ -259,9 +259,14 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         if (pages[0].plugin == null || !(pages[0].plugin is Welcome) || context.mode == EXISTING_USER) {
-            pages.insert (0, new PageInfo.pluginless (
-                new WelcomePage (),
-                "BuiltIn"
+            pages.insert (0, new PageInfo.builtin (
+                new WelcomePage ()
+            ));
+        }
+
+        if (context.mode == INSTALLER) {
+            pages.add (new PageInfo.builtin (
+                new SummaryPage (context)
             ));
         }
 

@@ -22,6 +22,8 @@ librs_vala_sources = files(
   'ifaces/apply-after.vala',
   'ifaces/existing-user.vala',
   'ifaces/has-files-to-copy.vala',
+  'ifaces/has-string-repr.vala',
+  'ifaces/has-widget-rerp.vala',
   'ifaces/welcome.vala',
 
   'context-object.vala',

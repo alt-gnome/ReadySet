@@ -1,0 +1,36 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ReadySetSummaryPage: $ReadySetBasePage {
+  title-header: _("Summary");
+  title-icon-name: "view-list-symbolic";
+  is-ready: true;
+
+  content: Adw.Clamp clamp {
+    maximum-size: 500;
+    margin-start: 12;
+    margin-end: 12;
+    margin-bottom: 12;
+    margin-top: 12;
+
+    Box {
+      spacing: 48;
+      orientation: vertical;
+
+      $ReadySetStatusPage status_page {
+        title: _("Summary");
+      }
+
+      ListBox list_box {
+        styles [
+          "boxed-list",
+        ]
+
+        selection-mode: none;
+
+        activate-on-single-click: true;
+        row-activated => $on_listbox_row_activated();
+      }
+    }
+  };
+}

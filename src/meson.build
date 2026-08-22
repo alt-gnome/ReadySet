@@ -18,11 +18,13 @@ rs_app_vala_sources = files(
   'end-pages/initial-setup.vala',
   'end-pages/installer.vala',
 
+  'pages/summary.vala',
   'pages/welcome.vala',
 
   'widgets/devel/window.vala',
 
   'widgets/nothing-to-show.vala',
+  'widgets/page-state-row.vala',
   'widgets/pages-indicator.vala',
   'widgets/positioned-stack.vala',
   'widgets/step-row.vala',

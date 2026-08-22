@@ -19,7 +19,7 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/User/ui/page-username.ui")]
-public class User.PageUsername : ReadySet.BasePage {
+public class User.PageUsername : ReadySet.BasePage, ReadySet.HasStringRepr {
 
     [GtkChild]
     unowned ContextRow fullname_context_row;
@@ -200,5 +200,10 @@ public class User.PageUsername : ReadySet.BasePage {
     void on_remove_avatar_button_clicked () {
         remove_avatar_button.visible = false;
         user_avatar_file = "";
+    }
+
+    public string get_string_repr () {
+        var context = Addin.get_instance ().context;
+        return "%s (%s)".printf (context.get_string ("user.fullname"), context.get_string ("user.username"));
     }
 }

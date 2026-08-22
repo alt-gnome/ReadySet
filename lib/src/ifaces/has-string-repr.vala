@@ -18,13 +18,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Language/ui/page.ui")]
-public sealed class Language.Page : ReadySet.BasePage, ReadySet.HasStringRepr {
+public interface ReadySet.HasStringRepr : BasePage {
 
-    public string get_string_repr () {
-        return Gnome.Languages.get_country_from_locale (
-            Addin.get_instance ().current_locale,
-            Addin.get_instance ().current_locale
-        );
-    }
+    /**
+     * String representation of this page.
+     */
+    public abstract string get_string_repr ();
 }

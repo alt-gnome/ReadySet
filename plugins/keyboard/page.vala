@@ -19,7 +19,7 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Keyboard/ui/page.ui")]
-public sealed class Keyboard.Page : ReadySet.BasePage {
+public sealed class Keyboard.Page : ReadySet.BasePage, ReadySet.HasStringRepr {
 
     [GtkChild]
     unowned Adw.Banner select_at_least_one_banner;
@@ -75,5 +75,15 @@ public sealed class Keyboard.Page : ReadySet.BasePage {
         var current_inputs = get_current_inputs ();
 
         switch_box.visible = current_inputs.size > 1 && has_hw_keybaord;
+    }
+
+    public string get_string_repr () {
+        var inputs = get_current_inputs ();
+
+        string[] simple_inputs = {};
+        foreach (var i in inputs.to_array ()) {
+            simple_inputs += i.id;
+        }
+        return string.joinv (", ", simple_inputs);
     }
 }

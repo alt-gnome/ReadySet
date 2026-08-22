@@ -20,6 +20,8 @@
 
 namespace ReadySet {
 
+    internal const string BUILTIN = "BuiltIn";
+
     public string context_key_to_env_key (string key) {
         var builder = new StringBuilder ();
 

@@ -44,6 +44,8 @@ public sealed class ReadySet.PageInfo : Object {
 
     public string title_icon_name { get; set; }
 
+    public bool built_in { get; construct; default = false; }
+
     public bool is_compact {
         get {
             if (page.info == null) {
@@ -74,7 +76,8 @@ public sealed class ReadySet.PageInfo : Object {
     public PageInfo (BasePage? page, StepAddin plugin) {
         Object (
             page: page,
-            plugin: plugin
+            plugin: plugin,
+            id_prefix: plugin.get_type ().name ()
         );
     }
 
@@ -82,6 +85,14 @@ public sealed class ReadySet.PageInfo : Object {
         Object (
             page: page,
             id_prefix: id_prefix
+        );
+    }
+
+    public PageInfo.builtin (BasePage? page) {
+        Object (
+            page: page,
+            id_prefix: "BuiltIn",
+            built_in: true
         );
     }
 
@@ -204,6 +215,15 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
 
     public uint get_n_items_unfiltered () {
         return store.get_n_items ();
+    }
+
+    public void select (PageInfo info) {
+        for (int i = 0; i < get_n_items (); i++) {
+            if (get_item (i) == info) {
+                select_item (i, true);
+                return;
+            }
+        }
     }
 
     public unowned PageInfo? get_selected_item () {
