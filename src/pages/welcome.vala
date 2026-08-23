@@ -23,18 +23,8 @@ public sealed class ReadySet.WelcomePage : ReadySet.BasePage {
 
     [GtkChild]
     unowned ReadySet.StatusPage status_page;
-    [GtkChild]
-    unowned Adw.Clamp clamp;
 
     construct {
-        clamp.notify["css-classes"].connect (() => {
-            if (clamp.has_css_class ("compact")) {
-                status_page.add_css_class ("compact");
-            } else {
-                status_page.remove_css_class ("compact");
-            }
-        });
-
         switch (Context.get_instance ().mode) {
             case EXISTING_USER:
                 status_page.title = _("Welcome to %s!").printf (Environment.get_os_info (OsInfoKey.PRETTY_NAME));

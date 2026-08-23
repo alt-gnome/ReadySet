@@ -70,10 +70,8 @@ public class User.PageUsername : ReadySet.BasePage, ReadySet.HasStringRepr {
 
         info_bin.notify["css-classes"].connect (() => {
             if (info_bin.has_css_class ("compact")) {
-                info_status_page.add_css_class ("compact");
                 avatar_image.size = 96;
             } else {
-                info_status_page.remove_css_class ("compact");
                 avatar_image.size = 128;
             }
         });
