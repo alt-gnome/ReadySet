@@ -149,7 +149,6 @@ public sealed class ReadySet.Application: Adw.Application {
         if (has_installer) {
             plugin_manager.check_installers ();
         }
-        options_handler.fill_context (context);
 
         if (!options_handler.apply_only) {
             context.reload_window.connect (reload_window);
@@ -201,7 +200,10 @@ public sealed class ReadySet.Application: Adw.Application {
 
         //  It place here bacause build_steps is first async function that called in
         //  Application class and init_steps_once.
-        yield plugin_manager.call_init_once ();
+        if (!plugin_manager.steps_inited) {
+            yield plugin_manager.call_init_once ();
+            options_handler.fill_context (context);
+        }
         var steps = plugin_manager.steps;
 
         if (!quiet) print ("Loaded steps:\n");
@@ -343,14 +345,6 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         if (active_window == null) {
-            //  Initial locale, if locale was set via config
-            if (context.has_key ("language.locale")) {
-                var locale = context.get_string ("language.locale");
-                if (locale != null) {
-                    Intl.setlocale (ALL, locale);
-                }
-            }
-
             //  If mode is existing-user, window presents by itself after
             //  init. 
             //  We do this because of in install/initial-setup modes

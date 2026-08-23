@@ -23,7 +23,8 @@ public sealed class ReadySet.PluginManager : Object {
     internal const string INSTALLER_STEP_PREFIX = "installer.";
 
     string? installer_name;
-    bool inited_once = false;
+
+    public bool steps_inited { get; private set; }
 
     public Context context { get; construct; }
 
@@ -281,10 +282,9 @@ public sealed class ReadySet.PluginManager : Object {
         }
     }
 
+    //  Returns true if all been inited, false otherwise.
     public async void call_init_once () {
-        if (inited_once) {
-            return;
-        }
+        assert (!steps_inited);
 
         for (int i = 0; i < steps.length; i++) {
             if (has_step (steps[i])) {
@@ -301,7 +301,5 @@ public sealed class ReadySet.PluginManager : Object {
                 yield installers_plugins[installer_name].init_once ();
             }
         }
-
-        inited_once = true;
     }
 }
