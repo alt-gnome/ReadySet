@@ -19,15 +19,7 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/ui/initial-setup-end-page.ui")]
-public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
-
-    const string SERVICE_NAME = "gdm-password";
-
-#if WITH_GDM
-    Gdm.Client client;
-    Gdm.Greeter greeter;
-    Gdm.UserVerifier user_verifier;
-#endif
+public sealed class ReadySet.InitialSetupEndPage : EndPage {
 
     [GtkChild]
     unowned Gtk.Stack stack;
@@ -44,8 +36,6 @@ public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
 
     ProgressData progress_data = new ProgressData ();
 
-    bool password_sent = false;
-
     construct {
         var name = Environment.get_os_info (OsInfoKey.NAME);
 
@@ -60,28 +50,7 @@ public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
         }
     }
 
-    public async void start_action () {
-        var app = Application.get_default ();
-        var context = app.context;
-
-#if WITH_GDM
-        if (!context.sandbox) {
-            try {
-                client = new Gdm.Client ();
-                greeter = yield client.get_greeter (null);
-                user_verifier = yield client.get_user_verifier (null);
-                debug ("Connected to GDM");
-            } catch (Error e) {
-                warning ("Failed to connect to GDM: %s", e.message);
-                client = null;
-                greeter = null;
-                user_verifier = null;
-            }
-        } else {
-            debug ("No GDM connection: or sandbox mode");
-        }
-#endif
-
+    public override async void start_action () {
         stack.visible_child_name = "applying";
 
         progress_data.bind_property ("message", apply_status_page, "description");
@@ -90,7 +59,7 @@ public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
         progress_data.notify["value"].connect (update_progress_visibility);
         update_progress_visibility ();
 
-        if (context.sandbox) {
+        if (sandbox) {
             progress_data.message = _("Applying changes…");
 
             Timeout.add_seconds (1, () => {
@@ -107,13 +76,6 @@ public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
 
             stack.visible_child_name = "ready";
         } else {
-            var finalizer = new Finalizer (
-                context,
-                app.model,
-                null,
-                progress_data
-            );
-
             try {
                 yield finalizer.run ();
                 stack.visible_child_name = "ready";
@@ -126,127 +88,7 @@ public sealed class ReadySet.InitialSetupEndPage : Adw.Bin {
         }
     }
 
-    [GtkCallback]
-    void on_finish () {
-        Application.get_default ().hide_window ();
-        done ();
-    }
-
     void update_progress_visibility () {
         progress_bar.visible = 1.0 > progress_data.value > 0;
     }
-
-    void done () {
-        var app = Application.get_default ();
-        var context = app.context;
-
-        if (context.sandbox) {
-            debug ("Doing nothing in sandbox");
-        } else {
-#if WITH_GDM
-            if (client == null) {
-                debug ("No GDM connection");
-            } else {
-                log_user_in ();
-                return;
-            }
-#endif
-#if WITH_PHROG
-            var phrog_schema = SettingsSchemaSource.get_default ().lookup ("mobi.phosh.phrog", false);
-            if (phrog_schema != null) {
-                var phrog_settings = new Settings (phrog_schema.get_id ());
-                phrog_settings.set_string ("first-run", "");
-            }
-#endif
-        }
-
-        app.quit ();
-    }
-
-#if WITH_GDM
-    void request_info_query (Gdm.UserVerifier user_verifier, string question, bool is_secret) {
-        /* TODO: pop up modal dialog */
-        debug (
-            "user verifier asks%s question: %s",
-            is_secret ? " secret" : "",
-            question
-        );
-    }
-
-    void on_info (Gdm.UserVerifier user_verifier, string service_name, string info) {
-        debug ("PAM module info: %s", info);
-    }
-
-    void on_problem (Gdm.UserVerifier user_verifier, string service_name, string problem) {
-        warning ("PAM module error: %s", problem);
-    }
-
-    void on_info_query (Gdm.UserVerifier user_verifier, string service_name, string question) {
-        request_info_query (user_verifier, question, false);
-    }
-
-    void on_secret_info_query (Gdm.UserVerifier user_verifier, string service_name, string question) {
-        var context = Application.get_default ().context;
-
-        debug ("PAM module secret info query %s", question);
-        if (context.has_key ("user.password") && !password_sent) {
-            debug ("sending password\n");
-            user_verifier.call_answer_query.begin (service_name, context.get_string ("user.password"), null);
-            password_sent = true;
-        } else {
-            request_info_query (user_verifier, question, true);
-        }
-    }
-
-    void on_session_opened (Gdm.Greeter greeter, string service_name, string session_id) {
-        try {
-            debug ("Starting session");
-            greeter.call_start_session_when_ready_sync (service_name, true, null);
-        } catch (Error e) {
-            warning ("Failed to open session: %s", e.message);
-        }
-    }
-
-    // void add_uid_file (int64 uid) {
-    //     var gis_uid_path = Path.build_filename (Environment.get_home_dir (), "gnome-initial-setup-uid");
-    //     var uid_str = uid.to_string ();
-
-    //     try {
-    //         FileUtils.set_contents (gis_uid_path, uid_str);
-    //     } catch (Error e) {
-    //         warning ("Unable to create %s: %s", gis_uid_path, e.message);
-    //     }
-    // }
-
-    void log_user_in () {
-        var context = Application.get_default ().context;
-
-        if (client == null) {
-            warning ("No GDM connection; not initiating login");
-            Application.get_default ().quit ();
-            return;
-        }
-
-        user_verifier.info.connect (on_info);
-        user_verifier.problem.connect (on_problem);
-        user_verifier.info_query.connect (on_info_query);
-        user_verifier.secret_info_query.connect (on_secret_info_query);
-        debug ("Connected callbacks to user-verifier");
-
-        greeter.session_opened.connect (on_session_opened);
-        debug ("Connected callbacks to greeter");
-
-        try {
-            debug ("Begin verification for user");
-            user_verifier.call_begin_verification_for_user_sync (
-                SERVICE_NAME,
-                context.get_string ("user.username"),
-                null
-            );
-            debug ("Verification for user succeed");
-        } catch (Error e) {
-            warning ("Could not begin verification: %s", e.message);
-        }
-    }
-#endif
 }

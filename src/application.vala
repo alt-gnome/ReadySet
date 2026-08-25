@@ -20,29 +20,32 @@
 
 public sealed class ReadySet.Application: Adw.Application {
 
-    const ActionEntry[] ACTION_ENTRIES = {
-        { "reload-window", reload_window },
+    ActionEntry[] action_entries = {
+        ActionEntry () {
+            name = "reload-window",
+            activate = reload_window
+        },
+        ActionEntry () {
+            name = "finish",
+            activate = finish,
+            parameter_type = "s"
+        },
     };
 
     public bool show_steps { get; set; default = false; }
 
-    internal OptionsHandler options_handler;
-    internal PluginManager plugin_manager { get; private set; }
-    internal Context context { get; private set; }
+    OptionsHandler options_handler;
+    PluginManager plugin_manager;
+    Context context;
+    FinalizerFactory finalizer_factory;
 
-    public bool can_close {
-        get {
-            return Config.NIGHTLY || options_handler.can_close;
-        }
-    }
-
-    internal bool has_installer {
+    bool has_installer {
         get {
             return options_handler.installer != null;
         }
     }
 
-    public InstallerAddin? installer_plugin {
+    InstallerAddin? installer_plugin {
         owned get {
             if (!has_installer) {
                 return null;
@@ -52,7 +55,7 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
-    public PagesModel? model { get; private set; default = null; }
+    internal PagesModel? model { get; private set; default = null; }
 
     public Application () {
         Object (
@@ -78,7 +81,20 @@ public sealed class ReadySet.Application: Adw.Application {
 
     construct {
         add_main_option_entries (OptionsHandler.OPTION_ENTRIES);
-        add_action_entries (ACTION_ENTRIES, this);
+
+        var actions = action_entries.copy ();
+        if (Config.NIGHTLY) {
+            actions += ActionEntry () {
+                name = "show-devel-window",
+                activate = show_devel_window
+            };
+        }
+
+        add_action_entries (
+            actions,
+            this
+        );
+
         set_accels_for_action ("app.quit", { "<primary>q" });
         set_accels_for_action ("win.about", { "<primary>o" });
 
@@ -149,6 +165,12 @@ public sealed class ReadySet.Application: Adw.Application {
         if (has_installer) {
             plugin_manager.check_installers ();
         }
+
+        finalizer_factory = new FinalizerFactory (
+            context,
+            installer_plugin
+        );
+        bind_property ("model", finalizer_factory, "model", SYNC_CREATE);
 
         if (!options_handler.sandbox) {
             exec_pre_hooks.begin ();
@@ -308,13 +330,7 @@ public sealed class ReadySet.Application: Adw.Application {
     async void apply_only () {
         yield build_steps (false);
 
-        var progress_data = new ProgressData ();
-        var finalizer = new Finalizer (
-            context,
-            model,
-            installer_plugin,
-            progress_data
-        );
+        var finalizer = finalizer_factory.build ();
         try {
             yield finalizer.run ();
             print ("Done!\n");
@@ -361,21 +377,46 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     Window build_window () {
-        return new Window (this) {
+        return new Window (
+            this,
+            has_installer,
+            new EndPageFactory (context, finalizer_factory),
+            options_handler.force_layout,
+            context.sandbox
+        ) {
             fullscreened = options_handler.fullscreen,
             default_width = options_handler.width,
             default_height = options_handler.height,
-            resizable = options_handler.resizable
+            resizable = options_handler.resizable,
+            deletable = Config.NIGHTLY || options_handler.can_close || context.mode == EXISTING_USER
         };
     }
 
-    public new static ReadySet.Application get_default () {
-        return (ReadySet.Application) GLib.Application.get_default ();
+    public new static ReadySet.Application? get_default () {
+        return (ReadySet.Application?) GLib.Application.get_default ();
     }
 
-    public void hide_window () {
-        if (active_window != null) {
-            active_window.hide ();
+    void show_devel_window () {
+        new Devel.Window (context, options_handler).present ();
+    }
+
+    void finish (SimpleAction action, Variant? parameter) {
+        switch (parameter.get_string ()) {
+            case "quit":
+                break;
+            case "post-act":
+                if (active_window != null) {
+                    active_window.hide ();
+                }
+                if (!context.sandbox) {
+                    var post_act = new PostAct (context);
+                    post_act.do ();
+                }
+                break;
+            case "reboot":
+                break;
         }
+
+        quit ();
     }
 }

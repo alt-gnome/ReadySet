@@ -15,8 +15,14 @@ rs_app_vala_sources = files(
   'dbus/rs-system-service.vala',
 
   'end-pages/existing-user.vala',
+  'end-pages/factory.vala',
   'end-pages/initial-setup.vala',
   'end-pages/installer.vala',
+
+  'finalizer/existing-user.vala',
+  'finalizer/finalizer.vala',
+  'finalizer/initial-setup.vala',
+  'finalizer/installer.vala',
 
   'pages/summary.vala',
   'pages/welcome.vala',
@@ -33,11 +39,11 @@ rs_app_vala_sources = files(
 
   'about.vala',
   'application.vala',
-  'finalize.vala',
   'main.vala',
   'options-handler.vala',
   'pages-model.vala',
   'plugin-manager.vala',
+  'post-act.vala',
   'utils.vala',
   'window-content.vala',
   'window.vala',

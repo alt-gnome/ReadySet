@@ -23,7 +23,6 @@ using Adw 1;
 template $ReadySetStepsMainPage: Adw.BreakpointBin {
   width-request: 360;
   height-request: 294;
-  show-steps-list: bind steps_list_button.active bidirectional;
 
   Adw.Breakpoint big_breakpoint {
     condition ("min-height: 400px and min-width: 719px")
@@ -82,7 +81,6 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
             [top]
             Adw.HeaderBar {
               show-back-button: false;
-              show-end-title-buttons: bind template.can-close;
               show-start-title-buttons: false;
 
               [start]
@@ -184,7 +182,6 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
               [top]
               Adw.HeaderBar {
                 show-back-button: false;
-                show-end-title-buttons: bind template.can-close;
                 show-start-title-buttons: false;
 
                 [start]
@@ -295,7 +292,6 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
               [top]
               Adw.HeaderBar {
                 show-back-button: false;
-                show-end-title-buttons: bind template.can-close;
                 show-start-title-buttons: false;
 
                 [start]
@@ -419,15 +415,17 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
         }
 
         [steps-button]
-        ToggleButton steps_list_button {
-          styles [
-            "flat",
-          ]
+        Adw.Bin {
+          ToggleButton steps_list_button {
+            styles [
+              "flat",
+            ]
 
-          icon-name: "view-list-symbolic";
-          active: false;
-          valign: start;
-          visible: bind template.simple inverted;
+            action-name: "wincon.show-sidebar";
+            icon-name: "view-list-symbolic";
+            valign: start;
+            visible: bind steps_list_button.sensitive;
+          }
         }
 
         [sandbox-label-left]
@@ -443,15 +441,17 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
         }
 
         [standalone-steps-button]
-        ToggleButton standalone_steps_list_button {
-          styles [
-            "flat",
-          ]
+        Adw.Bin {
+          ToggleButton standalone_steps_list_button {
+            styles [
+              "flat",
+            ]
 
-          icon-name: "view-list-symbolic";
-          active: bind steps_list_button.active bidirectional;
-          valign: start;
-          visible: bind template.simple inverted;
+            action-name: "wincon.show-sidebar";
+            icon-name: "view-list-symbolic";
+            visible: bind $and(steps_list_button.visible, template.standalone) as <bool>;
+            valign: start;
+          }
         }
 
         [standalone-sandbox-label-left]
@@ -471,17 +471,21 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
           vexpand: true;
           valign: center;
           show-icons: false;
+          model: bind template.model;
         }
 
         [context-button]
-        Button context_button {
-          styles [
-            "flat",
-          ]
+        Adw.Bin {
+          Button context_button {
+            styles [
+              "flat",
+            ]
 
-          tooltip-text: _("Open Context menu");
-          icon-name: "open-menu-symbolic";
-          clicked => $on_context_button_clicked();
+            action-name: "app.show-devel-window";
+            visible: bind context_button.sensitive;
+            tooltip-text: _("Open Context menu");
+            icon-name: "open-menu-symbolic";
+          }
         }
 
         [sandbox-label-right]
@@ -640,7 +644,6 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
         [top]
         Adw.HeaderBar {
           show-title: false;
-          show-end-title-buttons: bind template.can-close;
 
           [start]
           Button end_page_back_button {
@@ -656,10 +659,10 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
               "flat",
             ]
 
+            action-name: "app.show-devel-window";
             visible: bind context_button.visible;
             tooltip-text: _("Open Context menu");
             icon-name: "open-menu-symbolic";
-            clicked => $on_context_button_clicked();
           }
         }
       };

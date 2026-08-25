@@ -44,25 +44,39 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         }
     }
 
+    public bool show_steps_sidebar { get; construct; }
+
+    public EndPageFactory end_page_factory { get; construct; }
+
+    public string? force_layout { get; construct; }
+
+    public bool sandbox { get; construct; }
+
     string active;
     bool reloading = false;
 
-    bool simple;
-
-    public Window (ReadySet.Application app) {
-        Object (application: app);
+    public Window (
+        ReadySet.Application app,
+        bool show_steps_sidebar,
+        EndPageFactory end_page_factory,
+        string? force_layout,
+        bool sandbox
+    ) {
+        Object (
+            application: app,
+            show_steps_sidebar: show_steps_sidebar,
+            end_page_factory: end_page_factory,
+            force_layout: force_layout,
+            sandbox: sandbox
+        );
     }
 
     construct {
         add_action_entries (ACTION_ENTRIES, this);
 
-        var app = Application.get_default ();
-
         //  We start loading things after window appears on screen
         //  So that the spinner is shown, and not just nothing
         map.connect (window_initially_shown);
-
-        simple = !Application.get_default ().has_installer;
 
         if (Config.NIGHTLY) {
             add_css_class ("devel");
@@ -75,7 +89,7 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
     }
 
     protected override bool close_request () {
-        if (Application.get_default ().can_close) {
+        if (deletable) {
             return base.close_request ();
         }
 
@@ -99,7 +113,16 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
             active = B_NAME;
         }
 
-        stack.add_named (new WindowContent (simple), active);
+        stack.add_named (
+            new WindowContent (
+                show_steps_sidebar,
+                ((Application) application).model,
+                end_page_factory,
+                force_layout,
+                sandbox
+            ),
+            active
+        );
         stack.set_visible_child_name (active);
         Timeout.add_once (stack.transition_duration, on_transition_ended);
     }

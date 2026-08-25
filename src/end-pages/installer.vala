@@ -19,7 +19,7 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/ui/installer-end-page.ui")]
-public sealed class ReadySet.InstallerEndPage : Adw.Bin {
+public sealed class ReadySet.InstallerEndPage : EndPage {
 
     [GtkChild]
     unowned Gtk.Stack stack;
@@ -50,10 +50,7 @@ public sealed class ReadySet.InstallerEndPage : Adw.Bin {
         }
     }
 
-    public async void start_action () {
-        var app = Application.get_default ();
-        var context = app.context;
-
+    public override async void start_action () {
         stack.visible_child_name = "applying";
 
         progress_data.bind_property ("message", apply_status_page, "description");
@@ -62,7 +59,7 @@ public sealed class ReadySet.InstallerEndPage : Adw.Bin {
         progress_data.notify["value"].connect (update_progress_visibility);
         update_progress_visibility ();
 
-        if (context.sandbox) {
+        if (sandbox) {
             progress_data.message = _("Installing system…");
 
             Timeout.add_seconds (1, () => {
@@ -80,13 +77,6 @@ public sealed class ReadySet.InstallerEndPage : Adw.Bin {
             stack.visible_child_name = "ready";
 
         } else {
-            var finalizer = new Finalizer (
-                context,
-                app.model,
-                app.installer_plugin,
-                progress_data
-            );
-
             try {
                 yield finalizer.run ();
                 stack.visible_child_name = "ready";
@@ -97,11 +87,6 @@ public sealed class ReadySet.InstallerEndPage : Adw.Bin {
                 stack.visible_child_name = "error";
             }
         }
-    }
-
-    [GtkCallback]
-    void on_finish () {
-        Application.get_default ().quit ();
     }
 
     void update_progress_visibility () {

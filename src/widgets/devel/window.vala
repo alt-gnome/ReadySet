@@ -26,10 +26,15 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
     [GtkChild]
     unowned Gtk.ListBox list_box_options;
 
-    Context context;
+    public Context context { get; construct; }
+
+    public OptionsHandler opt_handler { get; construct; }
+
+    public Window (Context context, OptionsHandler opt_handler) {
+        Object (context: context, opt_handler: opt_handler);
+    }
 
     construct {
-        context = ReadySet.Application.get_default ().context;
         context.data_changed.connect (on_data_changed);
         fill_context ();
 
@@ -49,7 +54,6 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
             "context",
         };
 
-        var opt_handler = ReadySet.Application.get_default ().options_handler;
         foreach (var prop in opt_handler.get_class ().list_properties ()) {
             if (prop.name in IGNORE_PROPERTY) {
                 continue;

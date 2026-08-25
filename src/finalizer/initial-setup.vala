@@ -18,42 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public sealed class ReadySet.Finalizer : Object {
-
-    public Context context { get; construct; }
-
-    public PagesModel model { get; construct; }
-
-    public InstallerAddin? installer_plugin { get; construct; default = null; }
-
-    public ProgressData progress_data { get; construct; }
-
-    public Finalizer (
-        Context context,
-        PagesModel model,
-        InstallerAddin? installer_plugin,
-        ProgressData progress_data
-    ) {
-        Object (
-            context: context,
-            model: model,
-            installer_plugin: installer_plugin,
-            progress_data: progress_data
-        );
-    }
-
-    public async void run () throws ApplyError {
-        switch (context.mode) {
-            case INITIAL_SETUP:
-                yield finalize_initial_setup ();
-                break;
-            case INSTALLER:
-                yield finalize_installer ();
-                break;
-            default:
-                assert_not_reached ();
-        }
-    }
+public sealed class ReadySet.InitialSetupFinalizer : Finalizer {
 
     Gee.ArrayList<StepAddin> reorder_steps (Gee.ArrayList<StepAddin> steps) {
         var module_to_step = new Gee.HashMap<string, StepAddin> ();
@@ -112,7 +77,7 @@ public sealed class ReadySet.Finalizer : Object {
         return sorted;
     }
 
-    async void finalize_initial_setup () throws ApplyError {
+    public override async void run (ProgressData progress_data) throws ApplyError {
         Gee.ArrayList<StepAddin> steps_addins_arr = new Gee.ArrayList<StepAddin> ();
 
         for (int i = 0; i < model.get_n_items_unfiltered (); i++) {
@@ -193,29 +158,5 @@ public sealed class ReadySet.Finalizer : Object {
                 }
             }
         }
-    }
-
-    async void finalize_installer () throws ApplyError {
-        yield installer_plugin.install (progress_data);
-
-        try {
-            var raw_context = context.get_raw_string ();
-            var env = new Gee.ArrayList<string> ();
-
-            foreach (var key in raw_context.get_keys ()) {
-                env.add ("%s=%s".printf (context_key_to_env_key (key), raw_context[key]));
-            }
-
-            string hooks_type = "post";
-            string hooks_target = "installer";
-
-            foreach (var name in yield get_ready_set_proxy ().get_all_hooks (hooks_type, hooks_target)) {
-                yield get_ready_set_proxy ().exec_hook (hooks_type, hooks_target, name, env.to_array ());
-            }
-        } catch (Error e) {
-            warning ("Error on executing post hooks: %s", e.message);
-        }
-
-        progress_data.value = 1.0;
     }
 }

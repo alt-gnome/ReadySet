@@ -19,34 +19,19 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/ui/existing-user-end-page.ui")]
-public sealed class ReadySet.ExistingUserEndPage : Adw.Bin {
+public sealed class ReadySet.ExistingUserEndPage : EndPage {
 
-    [GtkCallback]
-    void on_complete () {
-        var app = Application.get_default ();
-
-        if (!app.context.sandbox) {
-            Gee.ArrayList<StepAddin> steps_addins_arr = new Gee.ArrayList<StepAddin> ();
-
-            for (int i = 0; i < app.model.get_n_items (); i++) {
-                var page_info = (PageInfo) app.model.get_item (i);
-
-                if (!(page_info.plugin in steps_addins_arr) &&
-                    page_info.plugin.enabled) {
-                    steps_addins_arr.add (page_info.plugin);
-                }
+    public override async void start_action () {
+        if (!sandbox) {
+            try {
+                yield finalizer.run ();
+            } catch (ApplyError e) {
+                //  Fake error
             }
-
-            var rs_settings = new Settings ("org.altlinux.ReadySet");
-            string[] passed_plugins = rs_settings.get_strv ("performed-steps");
-
-            foreach (var step_addin in steps_addins_arr) {
-                passed_plugins += step_addin.plugin_info.module_name;
-            }
-
-            rs_settings.set_strv ("performed-steps", passed_plugins);
         }
+    }
 
-        app.quit ();
+    public override bool can_go_prev () {
+        return true;
     }
 }
