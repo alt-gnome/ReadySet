@@ -120,15 +120,15 @@ public sealed class ReadySet.Application: Adw.Application {
         if (options_handler.force_mode == null) {
 #endif
             if (installer_plugin != null) {
-                context.mode = INSTALLER;
+                context.init_mode (INSTALLER);
             } else if (in_group ("ready-set") || in_group ("gnome-initial-setup")) {
-                context.mode = INITIAL_SETUP;
+                context.init_mode (INITIAL_SETUP);
             } else {
-                context.mode = EXISTING_USER;
+                context.init_mode (EXISTING_USER);
             }
 #if DEVEL
         } else {
-            context.mode = Mode.from_string (options_handler.force_mode);
+            context.init_mode (Mode.from_string (options_handler.force_mode));
         }
 #endif
 
@@ -262,7 +262,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
         if (pages[0].plugin == null || !(pages[0].plugin is Welcome) || context.mode == EXISTING_USER) {
             pages.insert (0, new PageInfo.builtin (
-                new WelcomePage ()
+                new WelcomePage (context.mode)
             ));
         }
 

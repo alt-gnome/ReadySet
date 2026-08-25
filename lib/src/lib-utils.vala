@@ -198,7 +198,6 @@ namespace ReadySet {
     public void set_current_lang (string new_lang) {
         locale = new_lang;
         Intl.setlocale (LocaleCategory.ALL, new_lang);
-        Context.get_instance ().reload_window ();
     }
 
     Regex locale_regex;

@@ -24,8 +24,14 @@ public sealed class ReadySet.WelcomePage : ReadySet.BasePage {
     [GtkChild]
     unowned ReadySet.StatusPage status_page;
 
+    public Mode mode { get; construct; }
+
+    public WelcomePage (Mode mode) {
+        Object (mode: mode);
+    }
+
     construct {
-        switch (Context.get_instance ().mode) {
+        switch (mode) {
             case EXISTING_USER:
                 status_page.title = _("Welcome to %s!").printf (Environment.get_os_info (OsInfoKey.PRETTY_NAME));
                 status_page.description = "%s %s".printf (
@@ -48,6 +54,5 @@ public sealed class ReadySet.WelcomePage : ReadySet.BasePage {
                 );
                 break;
         }
-
     }
 }

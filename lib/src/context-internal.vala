@@ -20,58 +20,7 @@
 
 public partial class ReadySet.Context {
 
-    public HashTable<string, string> get_raw_string () {
-        var raw_data = new HashTable<string, string> (str_hash, str_equal);
-
-        foreach (var key in get_keys ()) {
-            string str;
-            switch (data[key].value_type) {
-                case ContextType.STRING:
-                    str = get_string (key);
-                    break;
-                case ContextType.STRV:
-                    str = string.joinv (",", get_strv (key));
-                    break;
-                case ContextType.INT:
-                    str = get_int (key).to_string ();
-                    break;
-                case ContextType.DOUBLE:
-                    str = get_double (key).to_string ();
-                    break;
-                case ContextType.BOOLEAN:
-                    str = get_boolean (key).to_string ();
-                    break;
-                case ContextType.OBJECT:
-                    str = get_object (key).string_format;
-                    break;
-                default:
-                    assert_not_reached ();
-            }
-            raw_data[key] = str;
-        }
-
-        return raw_data;
-    }
-
-    public void set_raw (string key, string value) {
-        if (!has_key (key)) {
-            return;
-        }
-
-        var temp_kf = new KeyFile ();
-        temp_kf.set_list_separator (',');
-
-        const string INTERNAL_GROUP = "raw-group";
-
-        temp_kf.set_value (INTERNAL_GROUP, key, value);
-        try {
-            load_from_keyfile (temp_kf, INTERNAL_GROUP);
-        } catch (Error e) {
-            warning ("Error setting row value for key %s: %s", key, e.message);
-        }
-    }
-
-    public void register_vars (string module_name, HashTable<string, ContextVarInfo> vars) {
+    internal void register_vars (string module_name, HashTable<string, ContextVarInfo> vars) {
         vars.foreach ((key, info) => {
             var module_key = "%s.%s".printf (module_name, key);
 
@@ -90,55 +39,16 @@ public partial class ReadySet.Context {
             });
         });
     }
-
-    public void load_from_keyfile (KeyFile keyfile, string group_name) throws Error {
-        if (!keyfile.has_group (group_name)) {
-            debug ("Keyfile doesn't have group '%s'", group_name);
-            return;
-        }
-
-        foreach (var key in keyfile.get_keys (group_name)) {
-            if (!data.has_key (key)) {
-                warning ("Key %s not found in context, it will be ignored", key);
-                continue;
-            }
-
-            Value val;
-
-            if (data[key].value_type == OBJECT) {
-                val = Object.new (
-                    data[key].object_type,
-                    "string-format", keyfile.get_string (group_name, key) ?? ""
-                );
-
-            } else {
-                val = kf_value_to_value (
-                    keyfile,
-                    group_name,
-                    key,
-                    data[key].value_type.to_gtype ()
-                );
-            }
-
-            set_value (key, val);
-        }
-    }
 }
 
-namespace ReadySet {
-    internal Value kf_value_to_value (KeyFile keyfile, string group_name, string key, Type value_type) throws Error {
-        if (value_type == Type.BOOLEAN) {
-            return keyfile.get_boolean (group_name, key);
-        } else if (value_type == Type.STRING) {
-            return keyfile.get_string (group_name, key);
-        } else if (value_type == typeof (string[])) {
-            return keyfile.get_string_list (group_name, key);
-        } else if (value_type == Type.INT || value_type == Type.INT64) {
-            return keyfile.get_int64 (group_name, key);
-        } else if (value_type == Type.DOUBLE) {
-            return keyfile.get_double (group_name, key);
-        } else {
-            error ("Unknown keyfile desired type %s for key %s", value_type.name (), key);
-        }
+internal partial class ReadySet.ValueObject {
+
+    public string data_key;
+
+    public void set_gsetters (ContextGetterFunc getter_func, ContextSetterFunc setter_func) {
+        assert (getter_func != null && setter_func != null);
+
+        this.getter_func = getter_func;
+        this.setter_func = setter_func;
     }
 }

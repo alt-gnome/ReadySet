@@ -60,7 +60,7 @@ rs_app_sources = [
   rs_app_vala_sources,
   rs_app_vapi_sources,
   rs_app_resources,
-] + librs_sources + librs_vala_app_plugin_sources + librs_vala_app_only_sources
+] + librs_sources + librs_context_sources_internal + librs_utils_sources_internal + librs_ext_base_sources_internal
 
 rs_app_c_args = [
   '-DG_LOG_DOMAIN="ReadySet"',

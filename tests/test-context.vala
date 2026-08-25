@@ -350,12 +350,12 @@ void test_get_value () {
 
 void test_mode_property () {
     var ctx = create_test_context ();
-    ctx.mode = ReadySet.Mode.INSTALLER;
+    ctx.init_mode (INSTALLER);
     if (ctx.mode != ReadySet.Mode.INSTALLER) {
         Test.fail_printf ("Expected mode to be INSTALLER");
     }
 
-    ctx.mode = ReadySet.Mode.EXISTING_USER;
+    ctx.init_mode (EXISTING_USER);
     if (ctx.mode != ReadySet.Mode.EXISTING_USER) {
         Test.fail_printf ("Expected mode to be EXISTING_USER");
     }

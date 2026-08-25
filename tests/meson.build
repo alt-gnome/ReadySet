@@ -7,7 +7,6 @@ test_plugin_manager_conf.set_quoted('STEPS_PLUGINS_DIR', meson.current_build_dir
 test_plugin_manager_conf.set_quoted('INSTALLERS_PLUGINS_DIR', meson.current_build_dir() / 'plugins' / 'test-installer')
 
 configure_file(output: 'test-config.h', configuration: test_plugin_manager_conf)
-test_plugin_manager_config_h_dir = include_directories('.')
 
 test('plugin-manager',
   executable('test-plugin-manager',
@@ -15,11 +14,10 @@ test('plugin-manager',
       files(
         'test-plugin-manager.vala',
         'test-config.vapi',
-      ) + plugin_manager_sources,
-      librs_sources_with_app_tests,
+      ) + plugin_manager_sources + librs_sources_with_resources + librs_ext_base_sources_internal + librs_context_vars_internal,
     ],
     include_directories: [
-      test_plugin_manager_config_h_dir,
+      include_directories('.'),
       '..' / 'lib' / 'src',
     ],
     c_args: [
@@ -53,7 +51,7 @@ test('service-copy-to-user',
 
 test_context_sources = files(
   'test-context.vala',
-)
+) + librs_sources_with_resources + librs_context_sources_internal
 
 test_context_c_args = [
   '-DGETTEXT_PACKAGE="ready-set"',
@@ -65,10 +63,7 @@ test_context_vala_args = [
 
 test('context',
   executable('test-context',
-    sources: [
-      test_context_sources,
-      librs_sources_with_resources,
-    ],
+    sources: test_context_sources,
     include_directories: include_directories('../lib/src'),
     c_args: test_context_c_args,
     vala_args: test_context_vala_args,

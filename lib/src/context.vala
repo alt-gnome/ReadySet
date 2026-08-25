@@ -74,7 +74,7 @@ public enum ReadySet.ContextType {
     }
 }
 
-internal class ReadySet.ValueObject : Object {
+internal partial class ReadySet.ValueObject : Object {
 
     Value _value;
     public Value real_value {
@@ -100,8 +100,6 @@ internal class ReadySet.ValueObject : Object {
         }
     }
 
-    public string data_key;
-
     public Value? default_value { get; construct; }
 
     unowned ContextGetterFunc? getter_func = null;
@@ -117,13 +115,6 @@ internal class ReadySet.ValueObject : Object {
             default_value: info.default_value,
             object_type: info.nested_object_type
         );
-    }
-
-    public void set_gsetters (ContextGetterFunc getter_func, ContextSetterFunc setter_func) {
-        assert (getter_func != null && setter_func != null);
-
-        this.getter_func = getter_func;
-        this.setter_func = setter_func;
     }
 
     construct {
@@ -232,8 +223,6 @@ public class ReadySet.ContextVarInfo : Object {
  */
 public partial class ReadySet.Context : Object {
 
-    static Context instance;
-
     /**
      * Whether application run in sandbox mode or not. Plugon should hold it
      * and not do any changes in system if this is true.
@@ -245,7 +234,7 @@ public partial class ReadySet.Context : Object {
     /**
      * Current application mode. Plugins can handle various modes different.
      */
-    public Mode mode { get; internal set; }
+    public Mode mode { get; private set; }
 
     /**
      * Call application to reload window.
@@ -260,14 +249,6 @@ public partial class ReadySet.Context : Object {
         Object (
             sandbox: sandbox
         );
-    }
-
-    construct {
-        instance = this;
-    }
-
-    public static Context get_instance () {
-        return instance;
     }
 
     public unowned Binding? bind_context_to_property (
