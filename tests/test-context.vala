@@ -355,10 +355,13 @@ void test_mode_property () {
         Test.fail_printf ("Expected mode to be INSTALLER");
     }
 
-    ctx.init_mode (EXISTING_USER);
-    if (ctx.mode != ReadySet.Mode.EXISTING_USER) {
-        Test.fail_printf ("Expected mode to be EXISTING_USER");
+    if (Test.subprocess ()) {
+        ctx.init_mode (EXISTING_USER);
+        return;
     }
+
+    Test.trap_subprocess (null, 0, DEFAULT);
+    Test.trap_assert_failed ();
 }
 
 void test_bind_context_to_property () {
