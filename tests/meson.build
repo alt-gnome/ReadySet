@@ -14,7 +14,7 @@ test('plugin-manager',
       files(
         'test-plugin-manager.vala',
         'test-config.vapi',
-      ) + plugin_manager_sources + librs_sources_with_resources + librs_ext_base_sources_internal + librs_context_vars_internal,
+      ) + plugin_manager_sources + librs_sources_with_resources + librs_ext_base_sources_internal + librs_context_vars_sources_internal,
     ],
     include_directories: [
       include_directories('.'),
