@@ -17,6 +17,9 @@ jobs:
         with:
           token: ${{ secrets.REPO_TOKEN }}
 
+      - name: Setup
+        run: make setup-ci
+
       - name: Setup git
         run: |
           git config --global user.name "ReadySet Helper Bot"
