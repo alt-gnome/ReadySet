@@ -150,10 +150,6 @@ public sealed class ReadySet.Application: Adw.Application {
             plugin_manager.check_installers ();
         }
 
-        if (!options_handler.apply_only) {
-            context.reload_window.connect (reload_window);
-        }
-
         if (!options_handler.sandbox) {
             exec_pre_hooks.begin ();
         }

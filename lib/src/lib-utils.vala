@@ -198,6 +198,11 @@ namespace ReadySet {
     public void set_current_lang (string new_lang) {
         locale = new_lang;
         Intl.setlocale (LocaleCategory.ALL, new_lang);
+
+        var app = Application.get_default ();
+        if (app != null) {
+            app.activate_action ("reload-window", null);
+        }
     }
 
     Regex locale_regex;

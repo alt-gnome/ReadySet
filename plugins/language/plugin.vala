@@ -37,7 +37,6 @@ public class Language.Addin : ReadySet.StepAddin, ReadySet.Welcome {
 
     public void set_current_locale_func (Value new_value) {
         ReadySet.set_current_lang (new_value.get_string ());
-        context.reload_window ();
     }
 
     protected override string? resource_base_path {

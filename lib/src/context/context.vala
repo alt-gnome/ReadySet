@@ -236,11 +236,6 @@ public partial class ReadySet.Context : Object {
      */
     public Mode mode { get; private set; }
 
-    /**
-     * Call application to reload window.
-     */
-    public signal void reload_window ();
-
     public signal void data_changed (string key);
 
     Gee.HashMap<string, ValueObject> data = new Gee.HashMap<string, ValueObject> ();
