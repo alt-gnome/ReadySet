@@ -62,6 +62,7 @@ plugins/user/plugin.vala
 plugins/user/pwquality-utils.vala
 plugins/user/utils.vala
 src/about.vala
+src/application.vala
 src/end-pages/initial-setup.vala
 src/end-pages/installer.vala
 src/options-handler.vala
@@ -73,5 +74,4 @@ src/widgets/page-state-row.vala
 src/widgets/positioned-stack.vala
 src/widgets/steps-main-page.vala
 src/widgets/steps-sidebar.vala
-src/window-content.vala
 tests/plugins/test-common/data/ui/page.blp
