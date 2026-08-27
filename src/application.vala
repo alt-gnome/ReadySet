@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -38,6 +38,8 @@ public sealed class ReadySet.Application: Adw.Application {
     PluginManager plugin_manager;
     Context context;
     FinalizerFactory finalizer_factory;
+
+    PostAct post_act;
 
     bool has_installer {
         get {
@@ -358,7 +360,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
         if (active_window == null) {
             //  If mode is existing-user, window presents by itself after
-            //  init. 
+            //  init.
             //  We do this because of in install/initial-setup modes
             //  we should show at  least one page with setup. In existing-user
             //  there can be situation where  there is nothing to do because
@@ -403,20 +405,20 @@ public sealed class ReadySet.Application: Adw.Application {
     void finish (SimpleAction action, Variant? parameter) {
         switch (parameter.get_string ()) {
             case "quit":
+                quit ();
                 break;
             case "post-act":
                 if (active_window != null) {
                     active_window.hide ();
                 }
                 if (!context.sandbox) {
-                    var post_act = new PostAct (context);
-                    post_act.do ();
+                    post_act = new PostAct (context);
+                    post_act.do.begin ();
                 }
                 break;
             case "reboot":
+                quit ();
                 break;
         }
-
-        quit ();
     }
 }

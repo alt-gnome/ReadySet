@@ -1,24 +1,24 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public sealed class ReadySet.PostAct : Object, AsyncInitable {
+public sealed class ReadySet.PostAct : Object {
 
     const string SERVICE_NAME = "gdm-password";
 
@@ -36,28 +36,28 @@ public sealed class ReadySet.PostAct : Object, AsyncInitable {
         Object (context: context);
     }
 
-    public async bool init (GLib.Cancellable? cancellable) {
+    public async void @do () {
+#if WITH_GDM
         try {
             client = new Gdm.Client ();
             greeter = yield client.get_greeter (null);
             user_verifier = yield client.get_user_verifier (null);
             debug ("Connected to GDM");
-            return true;
         } catch (Error e) {
             warning ("Failed to connect to GDM: %s", e.message);
+#endif
             client = null;
             greeter = null;
             user_verifier = null;
-            return false;
+#if WITH_GDM
         }
-    }
+#endif
 
-    public void @do () {
 #if WITH_GDM
         if (client == null) {
             debug ("No GDM connection");
         } else {
-            log_user_in ();
+            yield log_user_in ();
             return;
         }
 #endif
@@ -123,7 +123,7 @@ public sealed class ReadySet.PostAct : Object, AsyncInitable {
     //     }
     // }
 
-    void log_user_in () {
+    async void log_user_in () {
         if (client == null) {
             warning ("No GDM connection; not initiating login");
             Application.get_default ().quit ();
@@ -141,7 +141,7 @@ public sealed class ReadySet.PostAct : Object, AsyncInitable {
 
         try {
             debug ("Begin verification for user");
-            user_verifier.call_begin_verification_for_user_sync (
+            yield user_verifier.call_begin_verification_for_user (
                 SERVICE_NAME,
                 context.get_string ("user.username"),
                 null
