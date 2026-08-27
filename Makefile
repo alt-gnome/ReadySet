@@ -57,6 +57,12 @@ uninstall:
 test: compile
 	meson test -C _build
 
+build-vagary:
+	./test-atomic/build-atomic altlinux.space/alt-atomic/onyx/nightly:latest --force-rebuild
+
+test-vagary:
+	cd test-atomic/vagary && vagary scenario.yml
+
 coverage: test
 	mkdir -p _build/meson-logs/coveragereport
 	gcovr _build -x -o _build/meson-logs/coverage.xml

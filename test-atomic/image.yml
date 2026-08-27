@@ -1,14 +1,18 @@
 modules:
-  - name: Install ReadySet
-    type: repos
+  - name: Build ReadySet
+    type: shell
     body:
-      custom:
-        - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/sisyphus.repo _arch_ classic
-        - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/sisyphus.repo noarch classic
+      command: |
+        cd /src
+        make setup
+        make install
 
-  - type: packages
+  - name: Install config
+    type: copy
     body:
-      upgrade: true
+      source: config
+      destination: /usr/share/ready-set/config
+      replace: true
 
   - name: Cleanup
     type: include
