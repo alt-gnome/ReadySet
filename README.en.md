@@ -1,7 +1,7 @@
 <div align="center">
 
   <img
-    src="data/icons/hicolor/scalable/apps/org.altlinux.ReadySet.svg"
+    src="data/icons/app/scalable.svg"
     height="128"
   />
 
