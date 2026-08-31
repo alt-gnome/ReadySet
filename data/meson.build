@@ -21,7 +21,7 @@ rs_app_blueprints = custom_target('blueprints',
 
 i18n.merge_file(
   input: configure_file(
-    input: files(app_id_dyn + '.desktop.in.in'),
+    input: files('id@0@.desktop.in.in'.format(devel_suffix)),
     output: app_id_dyn + '.desktop.in',
     configuration: {
       'LIBEXECDIR': libexecdir
@@ -34,7 +34,7 @@ i18n.merge_file(
   type: 'desktop'
 )
 
-rs_app_resource_files = files('@0@.gresource.xml'.format(app_id))
+rs_app_resource_files = files('gresource.xml')
 rs_app_resources = gnome.compile_resources(
   'ready-set-app-resources',
   rs_app_resource_files,
@@ -48,19 +48,19 @@ systemd_tmpfiles_dir = systemd.get_variable(pkgconfig: 'tmpfiles_dir')
 systemd_user_unit_dir = systemd.get_variable(pkgconfig: 'systemd_user_unit_dir')
 
 install_data(
-  files(meson.project_name() + '-sysusers.conf'),
+  files('sysusers.conf'),
   install_dir: systemd_sysusers_dir,
   rename: [meson.project_name() + '.conf']
 )
 
 install_data(
-  files(meson.project_name() + '-tmpfiles.conf'),
+  files('tmpfiles.conf'),
   install_dir: systemd_tmpfiles_dir,
   rename: [meson.project_name() + '.conf']
 )
 
 configure_file(
-  input: app_id + '.rules.in',
+  input: 'rules.in',
   output: app_id + '.rules',
   install: true,
   install_dir: rulesdir,
@@ -70,8 +70,9 @@ configure_file(
 )
 
 install_data(
-  'org.altlinux.ReadySet.gschema.xml',
+  'gschema.xml',
   install_dir: get_option('datadir') / 'glib-2.0' / 'schemas',
+  rename: app_id + '.gschema.xml'
 )
 
 compile_schemas = find_program('glib-compile-schemas', required: false)

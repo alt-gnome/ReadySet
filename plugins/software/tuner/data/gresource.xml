@@ -3,7 +3,7 @@
   <gresource prefix="/org/altlinux/ReadySetSoftware/TunerPlugin">
     <file>style.css</file>
   </gresource>
-  <gresource prefix="/org/altlinux/Tuner/icons/scalable/actions/">
-    <file alias="gis-software-symbolic.svg">../../data/icons/gis-software-symbolic.svg</file>
+  <gresource prefix="/org/altlinux/Tuner/">
+    <file>icons/scalable/actions/gis-software-symbolic.svg</file>
   </gresource>
 </gresources>
