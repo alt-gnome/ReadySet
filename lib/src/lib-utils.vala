@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -83,7 +83,7 @@ namespace ReadySet {
     }
 
     /**
-     * Class for handling progress data for continius operation in 
+     * Class for handling progress data for continius operation in
      * {@link InstallerAddin.install} and {@link StepAddin.apply}.
      */
     public sealed class ProgressData : Object {
@@ -151,27 +151,6 @@ namespace ReadySet {
      * @see ReadySet.ContextVarInfo
      */
     public delegate void ContextSetterFunc (Value new_value);
-
-    /**
-     * Runs `pkexec` with SHELL fixing.
-     */
-    public async void pkexec (owned string[] cmd, string? user = null, Cancellable? cancellable = null) throws Error {
-        var launcher = new SubprocessLauncher (NONE);
-        var argv = new Gee.ArrayList<string>.wrap ({ "pkexec" });
-
-        if (user != null) {
-            argv.add_all_array ({ "--user", user });
-        }
-
-        argv.add_all_array (cmd);
-
-        //  pkexec won't let us run the program if $SHELL isn't in /etc/shells,
-        //  so remove it from the environment.
-        launcher.unsetenv ("SHELL");
-        var process = launcher.spawnv (argv.to_array ().copy ());
-
-        yield process.wait_check_async (cancellable);
-    }
 
     string locale;
     public string get_current_lang () {
