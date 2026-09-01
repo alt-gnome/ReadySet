@@ -413,12 +413,18 @@ public sealed class ReadySet.Application: Adw.Application {
                 }
                 if (!context.sandbox) {
                     post_act = new PostAct (context);
-                    post_act.do.begin ();
+                    post_act.do.begin (on_do);
                 }
                 break;
             case "reboot":
                 quit ();
                 break;
+        }
+    }
+
+    void on_do (Object? obj, AsyncResult result) {
+        if (!post_act.do.end (result)) {
+            quit ();
         }
     }
 }

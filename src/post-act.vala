@@ -36,7 +36,8 @@ public sealed class ReadySet.PostAct : Object {
         Object (context: context);
     }
 
-    public async void @do () {
+    // return true if window should stay open
+    public async bool @do () {
 #if WITH_GDM
         try {
             client = new Gdm.Client ();
@@ -49,6 +50,7 @@ public sealed class ReadySet.PostAct : Object {
             client = null;
             greeter = null;
             user_verifier = null;
+            return false;
 #if WITH_GDM
         }
 #endif
@@ -58,7 +60,7 @@ public sealed class ReadySet.PostAct : Object {
             debug ("No GDM connection");
         } else {
             yield log_user_in ();
-            return;
+            return true;
         }
 #endif
 #if WITH_PHROG
@@ -68,6 +70,7 @@ public sealed class ReadySet.PostAct : Object {
             phrog_settings.set_string ("first-run", "");
         }
 #endif
+        return false;
     }
 
 #if WITH_GDM
