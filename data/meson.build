@@ -100,6 +100,10 @@ if get_option('phrog').enabled()
   subdir('phrog')
 endif
 
+if get_option('any').enabled()
+  subdir('any')
+endif
+
 foreach unit, wants: unit_files
   configure_file(
     input: unit + '.in',

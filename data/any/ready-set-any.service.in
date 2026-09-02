@@ -1,0 +1,12 @@
+[Unit]
+Description=ReadySet initial setup for any display manager
+Before=display-manager.service
+After=systemd-user-sessions.service plymouth-quit.service systemd-logind.service dbus.service
+
+[Service]
+ExecStart=greetd --config /usr/share/ready-set/any/greetd.toml
+Restart=no
+
+[Install]
+WantedBy=graphical.target
+RequiredBy=display-manager.service

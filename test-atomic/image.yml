@@ -7,6 +7,27 @@ modules:
         make setup
         make install
 
+  - name: Enable any
+    type: systemd
+    body:
+      targets:
+        - ready-set-any
+      enabled: true
+
+  - name: Install greetd
+    type: packages
+    body:
+      install:
+        - greetd
+        - weston
+
+  - name: Install any wm
+    type: copy
+    body:
+      source: any
+      destination: /usr/libexec/ready-set-wm
+      replace: true
+
   - name: Install config
     type: copy
     body:

@@ -57,7 +57,7 @@ uninstall:
 test: compile
 	meson test -C _build
 
-build-vagary:
+build-atomic:
 	./test-atomic/build-atomic altlinux.space/alt-atomic/onyx/nightly:latest --force-rebuild
 
 test-vagary:

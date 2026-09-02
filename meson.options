@@ -40,6 +40,14 @@ option(
   description: 'Add setup env for phrog (set first-run gsetting and unset in the end',
 )
 
+# Any DM
+option(
+  'any',
+  type: 'feature',
+  value: 'auto',
+  description: 'Add systemd service and bootutil for running initial-setup on any display manager',
+)
+
 # Keyboard
 option(
   'ibus',

@@ -1,0 +1,7 @@
+#!/bin/sh
+dbus_command=""
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+  dbus_command=dbus-run-session
+fi
+
+exec $dbus_command weston --shell=kiosk-shell.so -- "$@"
