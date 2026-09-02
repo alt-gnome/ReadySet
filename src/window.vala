@@ -44,30 +44,21 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         }
     }
 
+    public ApplicationService app_service { get; construct; }
+
     public bool show_steps_sidebar { get; construct; }
-
-    public EndPageFactory end_page_factory { get; construct; }
-
-    public string? force_layout { get; construct; }
-
-    public bool sandbox { get; construct; }
 
     string active;
     bool reloading = false;
 
     public Window (
         ReadySet.Application app,
-        bool show_steps_sidebar,
-        EndPageFactory end_page_factory,
-        string? force_layout,
-        bool sandbox
+        ApplicationService app_service
     ) {
         Object (
             application: app,
-            show_steps_sidebar: show_steps_sidebar,
-            end_page_factory: end_page_factory,
-            force_layout: force_layout,
-            sandbox: sandbox
+            app_service: app_service,
+            show_steps_sidebar: app_service.has_installer
         );
     }
 
@@ -81,6 +72,14 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         if (Config.NIGHTLY) {
             add_css_class ("devel");
         }
+
+        fullscreened = app_service.options_handler.fullscreen;
+        default_width = app_service.options_handler.width;
+        default_height = app_service.options_handler.height;
+        resizable = app_service.options_handler.resizable;
+        deletable = Config.NIGHTLY ||
+            app_service.options_handler.can_close ||
+            app_service.context.mode == EXISTING_USER;
     }
 
     void window_initially_shown () {
@@ -102,7 +101,7 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         }
 
         reloading = true;
-        yield Application.get_default ().build_steps ();
+        yield app_service.init_model ();
         set_window_content ();
     }
 
@@ -116,10 +115,10 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         stack.add_named (
             new WindowContent (
                 show_steps_sidebar,
-                ((Application) application).model,
-                end_page_factory,
-                force_layout,
-                sandbox
+                app_service.model,
+                new EndPageFactory (app_service.context, app_service.finalizer_factory),
+                app_service.options_handler.force_layout,
+                app_service.context.sandbox
             ),
             active
         );

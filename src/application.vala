@@ -32,32 +32,9 @@ public sealed class ReadySet.Application: Adw.Application {
         },
     };
 
-    public bool show_steps { get; set; default = false; }
+    ApplicationService app_service;
 
-    OptionsHandler options_handler;
-    PluginManager plugin_manager;
-    Context context;
-    FinalizerFactory finalizer_factory;
-
-    PostAct post_act;
-
-    bool has_installer {
-        get {
-            return options_handler.installer != null;
-        }
-    }
-
-    InstallerAddin? installer_plugin {
-        owned get {
-            if (!has_installer) {
-                return null;
-            }
-
-            return plugin_manager.get_installer_plugin ();
-        }
-    }
-
-    internal PagesModel? model { get; private set; default = null; }
+    bool print_ntd_only = false;
 
     public Application () {
         Object (
@@ -103,15 +80,18 @@ public sealed class ReadySet.Application: Adw.Application {
         set_option_context_parameter_string ("[COMMAND]");
         set_option_context_summary (
             "Commands:\n"
-            + "  generate-bash-completion    Output bash completion script"
+            + "  generate-bash-completion    %s\n".printf (_("Output bash completion script"))
         );
     }
 
     protected override bool local_command_line (ref unowned string[] arguments, out int exit_status) {
-        if (arguments.length > 1 && arguments[1] == "generate-bash-completion") {
-            Completions.print_completion_script ();
-            exit_status = 0;
-            return true;
+        message (string.joinv (", ", arguments));
+        if (arguments.length > 1) {
+            if (arguments[1] == "generate-bash-completion") {
+                Completions.print_completion_script ();
+                exit_status = 0;
+                return true;
+            }
         }
         return base.local_command_line (ref arguments, out exit_status);
     }
@@ -122,9 +102,7 @@ public sealed class ReadySet.Application: Adw.Application {
             return 0;
         }
 
-        options_handler = new OptionsHandler.from_options (options);
-        context = new Context (options_handler.sandbox);
-        plugin_manager = new PluginManager (context);
+        app_service = new ApplicationService (options);
 
         return -1;
     }
@@ -132,187 +110,7 @@ public sealed class ReadySet.Application: Adw.Application {
     protected override void startup () {
         base.startup ();
 
-        plugin_manager.init (options_handler.installer, options_handler.steps);
-
-#if DEVEL
-        if (options_handler.force_mode == null) {
-#endif
-            if (installer_plugin != null) {
-                context.init_mode (INSTALLER);
-            } else if (in_group ("ready-set") || in_group ("gnome-initial-setup")) {
-                context.init_mode (INITIAL_SETUP);
-            } else {
-                context.init_mode (EXISTING_USER);
-            }
-#if DEVEL
-        } else {
-            context.init_mode (Mode.from_string (options_handler.force_mode));
-        }
-#endif
-
-        if (options_handler.apply_only && context.mode == EXISTING_USER) {
-            error ("`finalize` can not be used in existing-user mode");
-        }
-
-        print ("\nApplication mode: %s\n\n", context.mode.to_string ());
-        if (has_installer) {
-            print (
-                "Installer:\n  %s - %s\n\n",
-                installer_plugin.plugin_info.module_name,
-                installer_plugin.plugin_info.name
-            );
-        }
-
-        plugin_manager.check_steps (options_handler.steps);
-        if (has_installer) {
-            plugin_manager.check_installers ();
-        }
-
-        finalizer_factory = new FinalizerFactory (
-            context,
-            installer_plugin
-        );
-        bind_property ("model", finalizer_factory, "model", SYNC_CREATE);
-
-        if (!options_handler.sandbox) {
-            exec_pre_hooks.begin ();
-        }
-
-        if (!options_handler.apply_only) {
-            init_lib_css ();
-        }
-    }
-
-    async void exec_pre_hooks () {
-        try {
-            string hooks_type = "pre";
-            string hooks_target;
-
-            if (context.mode == Mode.INITIAL_SETUP) {
-                hooks_target = "initial-setup";
-
-                var pre_hooks_dir = get_user_hooks_dir (hooks_type, hooks_target);
-
-                foreach (var name in ReadySet.get_all_hooks_from_dir (pre_hooks_dir)) {
-                    ReadySet.real_exec_hook_from_dir (pre_hooks_dir, name);
-                }
-
-            } else if (context.mode == Mode.INSTALLER) {
-                hooks_target = "installer";
-            } else {
-                return;
-            }
-
-            foreach (var name in yield get_ready_set_proxy ().get_all_hooks (hooks_type, hooks_target)) {
-                yield get_ready_set_proxy ().exec_hook (hooks_type, hooks_target, name);
-            }
-
-        } catch (Error e) {
-            warning ("Error on executing pre hooks: %s", e.message);
-        }
-    }
-
-    //  Returns false if nothing to do, true itherwise
-    public async bool build_steps (bool quiet = false) {
-        var pages = new Gee.ArrayList<PageInfo> ();
-
-        var initial_position = model == null ? 0 : model.get_selected ();
-
-        //  It place here bacause build_steps is first async function that called in
-        //  Application class and init_steps_once.
-        if (!plugin_manager.steps_inited) {
-            yield plugin_manager.call_init_once ();
-            options_handler.fill_context (context);
-        }
-        var steps = plugin_manager.steps;
-
-        if (!quiet) print ("Loaded steps:\n");
-        for (int i = 0; i < steps.length; i++) {
-            var addin = plugin_manager.get_step_addin (steps[i]);
-
-            if (addin != null) {
-                var addin_pages = yield addin.build_pages ();
-                if (addin_pages.length == 0) {
-                    pages.add (new PageInfo (
-                        null,
-                        addin
-                    ));
-
-                } else {
-                    foreach (var page in addin_pages) {
-                        pages.add (new PageInfo (
-                            page,
-                            addin
-                        ));
-                    }
-                }
-                if (!quiet) print ("  %s - %s\n", addin.plugin_info.module_name, addin.plugin_info.name);
-
-            } else if (steps[i].has_prefix (PluginManager.INSTALLER_STEP_PREFIX)) {
-                var installer_step = installer_plugin.steps[PluginManager.get_real_page_id (steps[i])];
-                var installer_page = installer_step.build_page ();
-                if (installer_page != null) {
-                    pages.add (new PageInfo.pluginless (
-                        installer_page,
-                        installer_plugin.get_type ().name ()
-                    ));
-                    if (!quiet) print (
-                        "  %s%s (from `%s`)\n",
-                        PluginManager.get_real_page_id (steps[i]),
-                        installer_step.name != null ? " - %s".printf (installer_step.name) : "",
-                        installer_plugin.plugin_info.module_name
-                    );
-                } else {
-                    if (!quiet) print ("  %s (skipped: failed to build installer page)\n", steps[i]);
-                }
-            } else {
-                error ("Unknown step `%s`", steps[i]);
-            }
-
-            Idle.add (build_steps.callback);
-            yield;
-        }
-
-        if (context.mode == EXISTING_USER) {
-            if (check_nothing_to_do (pages.to_array ())) {
-                print ("There is nothing to do\n");
-                return false;
-            }
-        }
-
-        if (pages[0].plugin == null || !(pages[0].plugin is Welcome) || context.mode == EXISTING_USER) {
-            pages.insert (0, new PageInfo.builtin (
-                new WelcomePage (context.mode)
-            ));
-        }
-
-        if (context.mode == INSTALLER) {
-            pages.add (new PageInfo.builtin (
-                new SummaryPage (context)
-            ));
-        }
-
-        model = new PagesModel (pages);
-        model.select_item (initial_position, true);
-
-        return true;
-    }
-
-    bool check_nothing_to_do (PageInfo[] pages) {
-        var settings = new Settings ("org.altlinux.ReadySet");
-        if (!settings.get_boolean ("existing-user-mode-enabled")) {
-            return true;
-        }
-
-        PageInfo[] layout_pages = {};
-
-        foreach (var p in pages) {
-            if (p.should_layout) {
-                layout_pages += p;
-            }
-        }
-
-        return layout_pages.length == 0;
+        app_service.init ();
     }
 
     void reload_window () {
@@ -322,17 +120,19 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
-    void init_build_pages_cb (Object? obj, AsyncResult res) {
-        if (build_steps.end (res)) {
-            build_window ().present ();
+    void init_model_cb (Object? obj, AsyncResult res) {
+        if (app_service.init_model.end (res)) {
+            if (!print_ntd_only) {
+                build_window ().present ();
+            }
         }
         release ();
     }
 
     async void apply_only () {
-        yield build_steps (false);
+        yield app_service.init_model ();
 
-        var finalizer = finalizer_factory.build ();
+        var finalizer = app_service.finalizer_factory.build ();
         try {
             yield finalizer.run ();
             print ("Done!\n");
@@ -351,7 +151,7 @@ public sealed class ReadySet.Application: Adw.Application {
     public override void activate () {
         base.activate ();
 
-        if (options_handler.apply_only) {
+        if (app_service.options_handler.apply_only) {
             hold ();
             apply_only.begin (apply_only_cb);
 
@@ -366,9 +166,9 @@ public sealed class ReadySet.Application: Adw.Application {
             //  there can be situation where  there is nothing to do because
             //  of all steps where done at initial-setup stage. And if nothing
             //  to do, we can't show window for loading because blink.
-            if (context.mode == EXISTING_USER) {
+            if (app_service.context.mode == EXISTING_USER) {
                 hold ();
-                build_steps.begin (true, init_build_pages_cb);
+                app_service.init_model.begin (init_model_cb);
             } else {
                 build_window ().present ();
             }
@@ -379,19 +179,7 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     Window build_window () {
-        return new Window (
-            this,
-            has_installer,
-            new EndPageFactory (context, finalizer_factory),
-            options_handler.force_layout,
-            context.sandbox
-        ) {
-            fullscreened = options_handler.fullscreen,
-            default_width = options_handler.width,
-            default_height = options_handler.height,
-            resizable = options_handler.resizable,
-            deletable = Config.NIGHTLY || options_handler.can_close || context.mode == EXISTING_USER
-        };
+        return new Window (this, app_service);
     }
 
     public new static ReadySet.Application? get_default () {
@@ -399,7 +187,7 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     void show_devel_window () {
-        new Devel.Window (context, options_handler).present ();
+        new Devel.Window (app_service.context, app_service.options_handler).present ();
     }
 
     void finish (SimpleAction action, Variant? parameter) {
@@ -411,9 +199,8 @@ public sealed class ReadySet.Application: Adw.Application {
                 if (active_window != null) {
                     active_window.hide ();
                 }
-                if (!context.sandbox) {
-                    post_act = new PostAct (context);
-                    post_act.do.begin (on_do);
+                if (!app_service.context.sandbox) {
+                    app_service.post_act.do.begin (on_do);
                 }
                 break;
             case "reboot":
@@ -423,7 +210,7 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     void on_do (Object? obj, AsyncResult result) {
-        if (!post_act.do.end (result)) {
+        if (!app_service.post_act.do.end (result)) {
             quit ();
         }
     }
