@@ -207,17 +207,14 @@ public sealed class ReadySet.ApplicationService : Object {
             yield;
         }
 
-        if (ntd_only) {
-             var res = check_nothing_to_do (pages.to_array ()) && context.mode == EXISTING_USER;
-             print ("%i\n", res ? 0 : 1);
-             return false;
-        }
-
-        if (context.mode == EXISTING_USER) {
-            if (check_nothing_to_do (pages.to_array ())) {
+        var ntd = context.mode == EXISTING_USER && check_nothing_to_do (pages.to_array ());
+        if (ntd) {
+            if (ntd_only) {
+                stderr.printf ("%i\n", ntd ? 0 : 1);
+            } else {
                 print ("There is nothing to do\n");
-                return false;
             }
+            return false;
         }
 
         if (pages[0].plugin == null || !(pages[0].plugin is Welcome) || context.mode == EXISTING_USER) {
@@ -255,7 +252,7 @@ public sealed class ReadySet.ApplicationService : Object {
         return layout_pages.length == 0;
     }
 
-    public async bool is_ntd () {
-        return yield build_model (true);
+    public async void is_ntd () requires (context.mode == EXISTING_USER) {
+        yield build_model (true);
     }
 }

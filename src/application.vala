@@ -32,14 +32,15 @@ public sealed class ReadySet.Application: Adw.Application {
         },
     };
 
+    public string? command { get; construct; }
+
     ApplicationService app_service;
 
-    bool print_ntd_only = false;
-
-    public Application () {
+    public Application (string? command) {
         Object (
             application_id: Config.APP_ID_DYN,
-            resource_base_path: "/org/altlinux/ReadySet/"
+            resource_base_path: "/org/altlinux/ReadySet/",
+            command: command
         );
     }
 
@@ -78,20 +79,14 @@ public sealed class ReadySet.Application: Adw.Application {
         set_accels_for_action ("win.about", { "<primary>o" });
 
         set_option_context_parameter_string ("[COMMAND]");
-        set_option_context_summary (
-            "Commands:\n"
-            + "  generate-bash-completion    %s\n".printf (_("Output bash completion script"))
-        );
+        set_option_context_summary (CommandHandler.build_summary ());
     }
 
     protected override bool local_command_line (ref unowned string[] arguments, out int exit_status) {
-        message (string.joinv (", ", arguments));
-        if (arguments.length > 1) {
-            if (arguments[1] == "generate-bash-completion") {
-                Completions.print_completion_script ();
-                exit_status = 0;
-                return true;
-            }
+        if (command == CommandHandler.BASH_COMP) {
+            Completions.print_completion_script ();
+            exit_status = 0;
+            return true;
         }
         return base.local_command_line (ref arguments, out exit_status);
     }
@@ -120,15 +115,6 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
-    void init_model_cb (Object? obj, AsyncResult res) {
-        if (app_service.init_model.end (res)) {
-            if (!print_ntd_only) {
-                build_window ().present ();
-            }
-        }
-        release ();
-    }
-
     async void apply_only () {
         yield app_service.init_model ();
 
@@ -144,16 +130,23 @@ public sealed class ReadySet.Application: Adw.Application {
         }
     }
 
-    void apply_only_cb (Object? obj, AsyncResult res) {
-        release ();
-    }
-
     public override void activate () {
         base.activate ();
 
         if (app_service.options_handler.apply_only) {
             hold ();
-            apply_only.begin (apply_only_cb);
+            apply_only.begin (() => {
+                release ();
+            });
+
+            return;
+        }
+
+        if (command == CommandHandler.NTD) {
+            hold ();
+            app_service.is_ntd.begin ((obj, res) => {
+                release ();
+            });
 
             return;
         }
@@ -168,7 +161,12 @@ public sealed class ReadySet.Application: Adw.Application {
             //  to do, we can't show window for loading because blink.
             if (app_service.context.mode == EXISTING_USER) {
                 hold ();
-                app_service.init_model.begin (init_model_cb);
+                app_service.init_model.begin ((obj, res) => {
+                    if (app_service.init_model.end (res)) {
+                        build_window ().present ();
+                    }
+                    release ();
+                });
             } else {
                 build_window ().present ();
             }
@@ -200,18 +198,16 @@ public sealed class ReadySet.Application: Adw.Application {
                     active_window.hide ();
                 }
                 if (!app_service.context.sandbox) {
-                    app_service.post_act.do.begin (on_do);
+                    app_service.post_act.do.begin ((obj, res) => {
+                        if (!app_service.post_act.do.end (res)) {
+                            quit ();
+                        }
+                    });
                 }
                 break;
             case "reboot":
                 quit ();
                 break;
-        }
-    }
-
-    void on_do (Object? obj, AsyncResult result) {
-        if (!app_service.post_act.do.end (result)) {
-            quit ();
         }
     }
 }
