@@ -62,7 +62,8 @@ plugins/user/plugin.vala
 plugins/user/pwquality-utils.vala
 plugins/user/utils.vala
 src/about.vala
-src/application.vala
+src/application-service.vala
+src/command-handler.vala
 src/end-pages/initial-setup.vala
 src/end-pages/installer.vala
 src/options-handler.vala
