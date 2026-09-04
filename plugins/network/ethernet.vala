@@ -26,7 +26,10 @@ public sealed class Network.EthernetAdapterRow : Adw.ActionRow {
 
     public EthernetAdapterRow (NM.DeviceEthernet eth) {
         device = eth;
-        eth.add_weak_pointer (&device);
+        device.add_weak_pointer (&device);
+        destroy.connect (() => {
+            device.remove_weak_pointer (&device);
+        });
 
         title = device.get_description ();
         Addin.get_instance ().context.bind_context_to_property (
@@ -75,7 +78,10 @@ public sealed class Network.EthernetAdapterWindow : Adw.Dialog {
         NM.Client nmc = Addin.get_instance ().client;
 
         device = eth;
-        eth.add_weak_pointer (&device);
+        device.add_weak_pointer (&device);
+        destroy.connect (() => {
+            device.remove_weak_pointer (&device);
+        });
 
         nmc.connection_added.connect (connection_added);
         nmc.connection_removed.connect (connection_removed);
@@ -141,9 +147,13 @@ public sealed class Network.EthernetConnectionRow : Adw.ActionRow {
             Gtk.CheckButton? radio_group = null
     ) {
         connection = conn;
-        conn.add_weak_pointer (&connection);
+        connection.add_weak_pointer (&connection);
         device = eth;
-        eth.add_weak_pointer (&device);
+        device.add_weak_pointer (&device);
+        destroy.connect (() => {
+            connection.remove_weak_pointer (&connection);
+            device.remove_weak_pointer (&device);
+        });
 
         radio.group = radio_group;
         radio.bind_property ("active",
