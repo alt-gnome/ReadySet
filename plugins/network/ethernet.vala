@@ -72,18 +72,19 @@ public sealed class Network.EthernetAdapterWindow : Adw.Window {
     unowned Adw.PreferencesGroup connections;
 
     unowned NM.DeviceEthernet device;
-    ListStore conn_list;
+    ListStore conn_list = new ListStore (typeof (NM.Connection));
 
     public EthernetAdapterWindow (NM.DeviceEthernet eth) {
-        var addin = Addin.get_instance ();
+        NM.Client nmc = Addin.get_instance ().client;
 
         device = eth;
         eth.add_weak_pointer (&device);
 
-        conn_list = new ListStore (typeof (NM.Connection));
-        conn_list.splice (0, 0, device.available_connections.data);
-        addin.client.connection_added.connect (connection_added);
-        addin.client.connection_removed.connect (connection_removed);
+        nmc.connection_added.connect (connection_added);
+        nmc.connection_removed.connect (connection_removed);
+        foreach (var conn in nmc.connections) {
+            connection_added (conn);
+        }
 
         title = device.get_description ();
         connections.bind_model (conn_list,
