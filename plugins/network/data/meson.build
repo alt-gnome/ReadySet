@@ -5,7 +5,7 @@ plugin_network_blueprints = files(
   'ui/combo-stackswitcher.blp',
   'ui/ethernet-adapter-row.blp',
   'ui/ethernet-adapter-window.blp',
-  'ui/ethernet-row.blp',
+  'ui/ethernet-connection-row.blp',
   'ui/wifi-adapter-box.blp',
   'ui/access-point-row.blp',
   'ui/ap-security-editor.blp',

@@ -33,6 +33,7 @@ namespace Network {
         return conn1.get_uuid () == conn2.get_uuid ();
     }
 
+#if 0
     NM.ActiveConnection? get_active_connection (NM.Connection connection) {
         NM.Client nmc = Addin.get_instance ().client;
         foreach (var active in nmc.active_connections) {
@@ -42,6 +43,7 @@ namespace Network {
         }
         return null;
     }
+#endif
 
     bool validate_network () {
         if (Addin.get_instance ().context.get_boolean ("network.required")) {

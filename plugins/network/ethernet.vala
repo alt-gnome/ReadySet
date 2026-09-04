@@ -87,7 +87,9 @@ public sealed class Network.EthernetAdapterWindow : Adw.Window {
 
         title = device.get_description ();
         connections.bind_model (conn_list,
-            (conn) => { return new EthernetRow ((NM.Connection) conn); }
+            (conn) => { return new EthernetConnectionRow (
+                (NM.Connection) conn, device
+            ); }
         );
     }
 
@@ -122,137 +124,34 @@ public sealed class Network.EthernetAdapterWindow : Adw.Window {
     }
 }
 
-[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Network/ui/ethernet-row.ui")]
-public sealed class Network.EthernetRow : Adw.ActionRow {
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Network/ui/ethernet-connection-row.ui")]
+public sealed class Network.EthernetConnectionRow : Adw.ActionRow {
 
-    [GtkChild]
-    unowned Gtk.Image icon;
-    [GtkChild]
-    unowned Gtk.Switch toggler;
     [GtkChild]
     unowned Gtk.Button settings;
 
-    unowned NM.Connection conn;
-    NM.ActiveConnection? active;
-    unowned NM.DeviceEthernet? device = null;
+    unowned NM.Connection connection;
+    unowned NM.DeviceEthernet device;
 
-    bool device_transition = false;
-    bool internal_toggle;
-
-    public EthernetRow (NM.Connection eth) {
+    public EthernetConnectionRow (NM.Connection conn, NM.DeviceEthernet eth) {
         var addin = Addin.get_instance ();
 
-        conn = eth;
-        eth.add_weak_pointer (&conn);
-        active = get_active_connection (conn);
-        update_active_device ();
-        internal_toggle = true;
-        toggler.active = active != null;
-        internal_toggle = false;
+        connection = conn;
+        conn.add_weak_pointer (&connection);
+        device = eth;
+        eth.add_weak_pointer (&device);
 
         conn.changed.connect (update_title);
         update_title ();
-        settings.sensitive = !Addin.get_instance ().context.sandbox;
-
-        addin.client.active_connection_added.connect (check_for_activated);
-        addin.client.active_connection_removed.connect (check_for_deactivated);
-
-        toggler.bind_property ("visible",
-            this, "activatable-widget",
-            SYNC_CREATE,
-            set_primary_action
-        );
-        addin.context.bind_context_to_property ("network.simple",
-            settings, "visible",
-            SYNC_CREATE | INVERT_BOOLEAN
-        );
-    }
-
-    void check_for_activated (NM.ActiveConnection new_active) {
-        if (new_active.uuid == conn.get_uuid ()) {
-            if (device != null) {
-                device_transition = true;
-            }
-
-            active = new_active;
-            update_active_device ();
-            internal_toggle = true;
-            toggler.active = true;
-            internal_toggle = false;
-            toggler.visible = true;
-        }
-    }
-
-    void check_for_deactivated (NM.ActiveConnection old_active) {
-        if (old_active.uuid == conn.get_uuid ()) {
-            if (device_transition) {
-                device_transition = false;
-                return;
-            }
-
-            if (device != null) {
-                device.state_changed.connect (track_link_cooldown);
-            }
-
-            active = null;
-            update_active_device ();
-            internal_toggle = true;
-            toggler.active = false;
-            internal_toggle = false;
-            toggler.visible = true;
-        }
-    }
-
-    void update_active_device () {
-        if (device != null) {
-            device.remove_weak_pointer (&device);
-            device.notify["ip4-connectivity"].disconnect (update_icon);
-            device.notify["ip6-connectivity"].disconnect (update_icon);
-        }
-
-        device = null;
-        if (active != null) {
-            foreach (var possible in active.devices) {
-                if (possible.device_type == ETHERNET) {
-                    device = (NM.DeviceEthernet) possible;
-                    break;
-                }
-            }
-        }
-
-        if (device != null) {
-            device.add_weak_pointer (&device);
-            device.notify["ip4-connectivity"].connect (update_icon);
-            device.notify["ip6-connectivity"].connect (update_icon);
-        }
-        update_icon ();
+        activatable = !addin.context.sandbox;
+        settings.sensitive = activatable;
     }
 
     void update_title () {
-        title = conn.get_id ();
+        title = connection.get_id ();
     }
 
-    void update_icon () {
-        if (device != null
-                && (device.ip4_connectivity == FULL
-                    || device.ip6_connectivity == FULL)) {
-            icon.icon_name = "lan-symbolic";
-        } else {
-            icon.icon_name = "offline-lan-symbolic";
-        }
-    }
-
-    bool set_primary_action (Binding bind, Value visible, ref Value widget) {
-        if (visible.get_boolean ()) {
-            widget.set_object (toggler);
-        } else if (settings.visible) {
-            widget.set_object (settings);
-        } else {
-            activatable = false;
-        }
-        return true;
-    }
-
+#if 0
     void track_link_cooldown (NM.Device eth, uint to, uint from, uint reason) {
         var to_state = (NM.DeviceState) to;
         var from_state = (NM.DeviceState) from;
@@ -273,36 +172,26 @@ public sealed class Network.EthernetRow : Adw.ActionRow {
             eth.state_changed.disconnect (track_link_cooldown);
         }
     }
+#endif
 
     [GtkCallback]
-    async void toggle_connection () {
-        if (internal_toggle || Addin.get_instance ().context.sandbox) {
-            return;
-        }
-
-        NM.Client nmc = Addin.get_instance ().client;
+    async void activate_connection () {
         try {
-            if (toggler.active) {
-                yield nmc.activate_connection_async (conn, null, null, null);
-            } else {
-                yield device.disconnect_async (null);
-            }
+            yield Addin.get_instance ().client.activate_connection_async (
+                connection, device, null, null
+            );
         } catch (Error e) {
             warning (e.message);
-            internal_toggle = true;
-            toggler.active = !toggler.active;
-            internal_toggle = false;
-            toggler.visible = false;
         }
     }
 
     [GtkCallback]
     void edit_connection () {
-        NM.Client nmc = Addin.get_instance ().client;
-        var dialog = new Net.ConnectionEditor (conn, device, null, nmc) {
-            transient_for = root as Gtk.Window,
+        var editor = new Net.ConnectionEditor (
+            connection, device, null, Addin.get_instance ().client
+        ) {
+            transient_for = get_native () as Gtk.Window,
         };
-        dialog.present ();
-        toggler.visible = true;
+        editor.present ();
     }
 }
