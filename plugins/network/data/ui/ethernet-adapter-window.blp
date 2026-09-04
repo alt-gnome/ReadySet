@@ -38,8 +38,22 @@ template $NetworkEthernetAdapterWindow: Adw.Window {
       margin-bottom: 12;
       margin-top: 12;
 
-      Adw.PreferencesGroup connections {
+      Adw.PreferencesGroup {
         title: _("Available Connections");
+
+        ScrolledWindow {
+          propagate-natural-width: true;
+          propagate-natural-height: true;
+
+          ListBox connections {
+            styles [
+              "boxed-list",
+            ]
+
+            valign: start;
+            selection-mode: none;
+          }
+        }
       }
 
       Adw.PreferencesGroup {
