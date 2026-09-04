@@ -53,8 +53,11 @@ public sealed class Network.EthernetAdapterRow : Adw.ActionRow {
     [GtkCallback]
     void on_activated () {
         if (dialog == null) {
+            var native = get_native () as Gtk.Window;
             dialog = new EthernetAdapterWindow (device) {
-                transient_for = get_native () as Gtk.Window,
+                transient_for = native,
+                width_request = native.get_width () * 3 / 5,
+                height_request = native.get_height () * 4 / 5,
             };
         }
         dialog.present ();
