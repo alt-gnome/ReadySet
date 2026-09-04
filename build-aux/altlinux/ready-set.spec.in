@@ -1,5 +1,5 @@
 # If you want to suggest changes, please send PR on
-# https://altlinux.space/alt-gnome/ReadySet to altlinux branch 
+# https://altlinux.space/alt-gnome/ReadySet to altlinux branch
 
 %define _unpackaged_files_terminate_build 1
 
@@ -311,7 +311,7 @@ Requires: %name-plugin-software = %EVR
 %dir %_libdir/%name/plugins/steps
 %dir %_libdir/%name/plugins/installers
 %dir %_libdir/%name/plugins/service
-%_sharedstatedir/%name
+%ghost %_sharedstatedir/%name
 %_sysconfdir/dbus-1/system.d/%app_id.conf
 %_datadir/polkit-1/actions/%app_id.policy
 %_datadir/dbus-1/system-services/%app_id.service
@@ -327,7 +327,7 @@ Requires: %name-plugin-software = %EVR
 %_desktopdir/%gis_name.desktop
 %_datadir/dconf/profile/%gis_name
 %_datadir/%gis_name
-%_sharedstatedir/%gis_name
+%ghost %_sharedstatedir/%gis_name
 %_datadir/gnome-session/sessions/%gis_name.session
 %_datadir/gnome-shell/modes/initial-setup.json
 %_userunitdir/%gis_name.service
