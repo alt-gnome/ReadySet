@@ -21,7 +21,11 @@ using Gtk 4.0;
 using Adw 1;
 
 template $NetworkEthernetConnectionRow: Adw.ActionRow {
-  activated => $activate_connection();
+  [prefix]
+  CheckButton radio {
+    valign: center;
+    toggled => $activate_connection();
+  }
 
   [suffix]
   Button settings {

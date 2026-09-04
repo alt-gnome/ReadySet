@@ -73,6 +73,7 @@ public sealed class Network.EthernetAdapterWindow : Adw.Window {
 
     unowned NM.DeviceEthernet device;
     ListStore conn_list = new ListStore (typeof (NM.Connection));
+    Gtk.CheckButton radio_group = new Gtk.CheckButton ();
 
     public EthernetAdapterWindow (NM.DeviceEthernet eth) {
         NM.Client nmc = Addin.get_instance ().client;
@@ -89,7 +90,7 @@ public sealed class Network.EthernetAdapterWindow : Adw.Window {
         title = device.get_description ();
         connections.bind_model (conn_list,
             (conn) => { return new EthernetConnectionRow (
-                (NM.Connection) conn, device
+                (NM.Connection) conn, device, radio_group
             ); }
         );
     }
@@ -129,60 +130,81 @@ public sealed class Network.EthernetAdapterWindow : Adw.Window {
 public sealed class Network.EthernetConnectionRow : Adw.ActionRow {
 
     [GtkChild]
+    unowned Gtk.CheckButton radio;
+    [GtkChild]
     unowned Gtk.Button settings;
 
     unowned NM.Connection connection;
     unowned NM.DeviceEthernet device;
 
-    public EthernetConnectionRow (NM.Connection conn, NM.DeviceEthernet eth) {
-        var addin = Addin.get_instance ();
+    bool internal_toggle = false;
 
+    public EthernetConnectionRow (
+            NM.Connection conn,
+            NM.DeviceEthernet eth,
+            Gtk.CheckButton? radio_group = null
+    ) {
         connection = conn;
         conn.add_weak_pointer (&connection);
         device = eth;
         eth.add_weak_pointer (&device);
 
+        radio.group = radio_group;
+        radio.bind_property ("active",
+            this, "activatable-widget",
+            SYNC_CREATE,
+            set_primary_action
+        );
         conn.changed.connect (update_title);
         update_title ();
-        activatable = !addin.context.sandbox;
-        settings.sensitive = activatable;
+        settings.sensitive = !Addin.get_instance ().context.sandbox;
+
+        realize.connect (() => {
+            device.notify["active-connection"].connect (update_active);
+            update_active ();
+        });
+        unrealize.connect (() => {
+            device.notify["active-connection"].disconnect (update_active);
+        });
     }
 
     void update_title () {
         title = connection.get_id ();
     }
 
-#if 0
-    void track_link_cooldown (NM.Device eth, uint to, uint from, uint reason) {
-        var to_state = (NM.DeviceState) to;
-        var from_state = (NM.DeviceState) from;
-        if ((NM.DeviceStateReason) reason == CARRIER) {
-            if (from_state == DISCONNECTED && to_state == UNAVAILABLE) {
-                // the cooldown begins
-                toggler.sensitive = false;
-                toggler.tooltip_text = _(
-                    "Please wait until devices reloading is over…"
-                );
-            } else if (from_state == UNAVAILABLE && to_state == DISCONNECTED) {
-                // the cooldown is over
-                eth.state_changed.disconnect (track_link_cooldown);
-                toggler.sensitive = true;
-                toggler.tooltip_text = null;
-            }
+    bool set_primary_action (Binding bind, Value active, ref Value widget) {
+        if (active.get_boolean () && !Addin.get_instance ().context.sandbox) {
+            widget.set_object (settings);
         } else {
-            eth.state_changed.disconnect (track_link_cooldown);
+            widget.set_object (radio);
         }
+        return true;
     }
-#endif
+
+    void update_active () {
+        internal_toggle = true;
+        radio.active = device.active_connection?.uuid == connection.get_uuid ();
+        internal_toggle = false;
+    }
 
     [GtkCallback]
     async void activate_connection () {
+        var addin = Addin.get_instance ();
+        if (addin.context.sandbox || internal_toggle) {
+            return;
+        }
+
         try {
-            yield Addin.get_instance ().client.activate_connection_async (
-                connection, device, null, null
-            );
+            if (radio.active) {
+                yield addin.client.activate_connection_async (
+                    connection, device, null, null
+                );
+            } else {
+                yield device.disconnect_async (null);
+            }
         } catch (Error e) {
             warning (e.message);
+            radio.active = !radio.active;
         }
     }
 
