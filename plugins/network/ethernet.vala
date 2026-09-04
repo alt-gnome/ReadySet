@@ -54,7 +54,7 @@ public sealed class Network.EthernetAdapterRow : Adw.ActionRow {
     void on_activated () {
         if (dialog == null) {
             dialog = new EthernetAdapterWindow (device) {
-                transient_for = root as Gtk.Window,
+                transient_for = get_native () as Gtk.Window,
             };
         }
         dialog.present ();
