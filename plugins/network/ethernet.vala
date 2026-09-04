@@ -23,7 +23,6 @@ public sealed class Network.EthernetAdapterRow : Adw.ActionRow {
     unowned Gtk.Image icon;
 
     unowned NM.DeviceEthernet device;
-    EthernetAdapterWindow dialog = null;
 
     public EthernetAdapterRow (NM.DeviceEthernet eth) {
         device = eth;
@@ -52,24 +51,18 @@ public sealed class Network.EthernetAdapterRow : Adw.ActionRow {
 
     [GtkCallback]
     void on_activated () {
-        if (dialog == null) {
-            var native = get_native () as Gtk.Window;
-            dialog = new EthernetAdapterWindow (device) {
-                transient_for = native,
-                width_request = native.get_width () * 3 / 5,
-                height_request = native.get_height () * 4 / 5,
-            };
-        }
-        dialog.present ();
-    }
-
-    ~EthernetAdapterRow () {
-        dialog?.destroy ();
+        Gtk.Native native = get_native ();
+        int side = int.min (native.get_width (), native.get_height ()) * 4 / 5;
+        var dialog = new EthernetAdapterWindow (device) {
+            width_request = side,
+            height_request = side,
+        };
+        dialog.present (native);
     }
 }
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Network/ui/ethernet-adapter-window.ui")]
-public sealed class Network.EthernetAdapterWindow : Adw.Window {
+public sealed class Network.EthernetAdapterWindow : Adw.Dialog {
 
     [GtkChild]
     unowned Adw.PreferencesGroup connections;
