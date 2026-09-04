@@ -44,6 +44,7 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         typeof (DropDownStackSwitcher).ensure ();
         typeof (ComboRowStackSwitcher).ensure ();
 
+        typeof (EthernetAdapterRow).ensure ();
         typeof (EthernetRow).ensure ();
 
         typeof (WiFiAdapterBox).ensure ();
@@ -63,7 +64,7 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         }
 
         modems = new ListStore (typeof (NM.DeviceModem));
-        ethers = new ListStore (typeof (NM.RemoteConnection));
+        ethers = new ListStore (typeof (NM.DeviceEthernet));
         wlans = new ListStore (typeof (NM.DeviceWifi));
     }
 
@@ -93,13 +94,6 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
     }
 
     public async override void init_once () {
-        client.connection_added.connect (add_wired_connection);
-        client.connection_removed.connect (remove_wired_connection);
-
-        foreach (var conn in client.connections) {
-            add_wired_connection (conn);
-        }
-
         client.device_added.connect (add_device);
         client.device_removed.connect (remove_device);
 
@@ -114,22 +108,11 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         }
     }
 
-    void add_wired_connection (NM.RemoteConnection conn) {
-        if (conn.is_type (NM.SettingWired.SETTING_NAME)) {
-            ethers.append (conn);
-        }
-    }
-
-    void remove_wired_connection (NM.RemoteConnection conn) {
-        uint pos;
-        if (ethers.find_with_equal_func (conn, same_connections, out pos)) {
-            ethers.remove (pos);
-        }
-    }
-
     static void update_category (ListStore category, NM.Device device) {
         uint pos;
-        bool ok = device.state != UNMANAGED && device.state != UNAVAILABLE;
+        bool ok = device.state != UNMANAGED
+            && (device.device_type == ETHERNET || device.state != UNAVAILABLE);
+
         if (category.find_with_equal_func (device, same_devices, out pos)) {
             if (!ok) {
                 category.remove (pos);
@@ -152,11 +135,7 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
             update_category (modems, device);
             break;
         case ETHERNET:
-            if (new_state != NM.DeviceState.UNMANAGED) {
-                ++ether_devices_num;
-            } else {
-                --ether_devices_num;
-            }
+            update_category (ethers, device);
             break;
         case WIFI:
             update_category (wlans, device);
