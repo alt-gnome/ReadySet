@@ -28,37 +28,32 @@ template $NetworkEthernetAdapterWindow: Adw.Window {
     [top]
     Adw.HeaderBar {}
 
-    Box {
+    Adw.Clamp {
       orientation: vertical;
-      spacing: 12;
       margin-start: 12;
       margin-end: 12;
       margin-bottom: 12;
       margin-top: 12;
 
-      Adw.PreferencesGroup {
-        title: _("Available Connections");
+      ScrolledWindow {
+        propagate-natural-width: true;
+        propagate-natural-height: true;
 
-        ScrolledWindow {
-          propagate-natural-width: true;
-          propagate-natural-height: true;
+        Box {
+          orientation: vertical;
+          spacing: 12;
 
-          ListBox connections {
-            styles [
-              "boxed-list",
-            ]
-
-            valign: start;
-            selection-mode: none;
+          Adw.PreferencesGroup connections {
+            title: _("Available Connections");
           }
-        }
-      }
 
-      Adw.PreferencesGroup {
-        Adw.ButtonRow {
-          start-icon-name: "list-add-symbolic";
-          title: _("Add a Connection…");
-          activated => $add_connection();
+          Adw.PreferencesGroup {
+            Adw.ButtonRow {
+              start-icon-name: "list-add-symbolic";
+              title: _("Add a Connection…");
+              activated => $add_connection();
+            }
+          }
         }
       }
     }

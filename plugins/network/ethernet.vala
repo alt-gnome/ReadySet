@@ -72,7 +72,7 @@ public sealed class Network.EthernetAdapterRow : Adw.ActionRow {
 public sealed class Network.EthernetAdapterWindow : Adw.Window {
 
     [GtkChild]
-    unowned Gtk.ListBox connections;
+    unowned Adw.PreferencesGroup connections;
 
     unowned NM.DeviceEthernet device;
     ListStore conn_list = new ListStore (typeof (NM.Connection));
