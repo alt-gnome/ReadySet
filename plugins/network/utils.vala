@@ -27,13 +27,11 @@ namespace Network {
         return dev1.interface == dev2.interface;
     }
 
-#if 0
     bool same_connections (Object obj1, Object obj2) {
         var conn1 = (NM.Connection) obj1;
         var conn2 = (NM.Connection) obj2;
         return conn1.get_uuid () == conn2.get_uuid ();
     }
-#endif
 
     NM.ActiveConnection? get_active_connection (NM.Connection connection) {
         NM.Client nmc = Addin.get_instance ().client;
@@ -125,7 +123,6 @@ namespace Network {
         return res;
     }
 
-#if 0
     NM.Connection prepare_wired_connection (NM.DeviceEthernet? eth) {
         NM.Connection conn = NM.SimpleConnection.new ();
         conn.add_setting (new NM.SettingWired () {
@@ -160,7 +157,6 @@ namespace Network {
 
         return conn;
     }
-#endif
 
     NM.Connection prepare_wireless_connection (
             NM.DeviceWifi wlan,

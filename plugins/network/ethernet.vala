@@ -23,12 +23,18 @@ public sealed class Network.EthernetAdapterRow : Adw.ActionRow {
     unowned Gtk.Image icon;
 
     unowned NM.DeviceEthernet device;
+    EthernetAdapterWindow dialog = null;
 
     public EthernetAdapterRow (NM.DeviceEthernet eth) {
         device = eth;
         eth.add_weak_pointer (&device);
 
         title = device.get_description ();
+        Addin.get_instance ().context.bind_context_to_property (
+            "network.simple",
+            this, "activatable",
+            SYNC_CREATE | INVERT_BOOLEAN
+        );
 
         device.notify["ip4-connectivity"].connect (update_icon);
         device.notify["ip6-connectivity"].connect (update_icon);
@@ -41,6 +47,77 @@ public sealed class Network.EthernetAdapterRow : Adw.ActionRow {
             icon.icon_name = "lan-symbolic";
         } else {
             icon.icon_name = "offline-lan-symbolic";
+        }
+    }
+
+    [GtkCallback]
+    void on_activated () {
+        if (dialog == null) {
+            dialog = new EthernetAdapterWindow (device) {
+                transient_for = root as Gtk.Window,
+            };
+        }
+        dialog.present ();
+    }
+
+    ~EthernetAdapterRow () {
+        dialog?.destroy ();
+    }
+}
+
+[GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Network/ui/ethernet-adapter-window.ui")]
+public sealed class Network.EthernetAdapterWindow : Adw.Window {
+
+    [GtkChild]
+    unowned Adw.PreferencesGroup connections;
+
+    unowned NM.DeviceEthernet device;
+    ListStore conn_list;
+
+    public EthernetAdapterWindow (NM.DeviceEthernet eth) {
+        var addin = Addin.get_instance ();
+
+        device = eth;
+        eth.add_weak_pointer (&device);
+
+        conn_list = new ListStore (typeof (NM.Connection));
+        conn_list.splice (0, 0, device.available_connections.data);
+        addin.client.connection_added.connect (connection_added);
+        addin.client.connection_removed.connect (connection_removed);
+
+        title = device.get_description ();
+        connections.bind_model (conn_list,
+            (conn) => { return new EthernetRow ((NM.Connection) conn); }
+        );
+    }
+
+    void connection_added (NM.RemoteConnection conn) {
+        if (device.connection_valid (conn)) {
+            conn_list.append (conn);
+        }
+    }
+
+    void connection_removed (NM.RemoteConnection conn) {
+        uint pos;
+        if (conn_list.find_with_equal_func (conn, same_connections, out pos)) {
+            conn_list.remove (pos);
+        }
+    }
+
+    [GtkCallback]
+    async void add_connection () {
+        var addin = Addin.get_instance ();
+        NM.Connection conn = prepare_wired_connection (device);
+
+        if (addin.context.sandbox) {
+            conn_list.append (conn);
+            return;
+        }
+
+        try {
+            yield addin.client.add_connection_async (conn, false, null);
+        } catch (Error e) {
+            warning (e.message);
         }
     }
 }

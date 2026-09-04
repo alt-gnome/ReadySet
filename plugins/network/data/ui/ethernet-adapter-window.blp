@@ -20,9 +20,35 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $NetworkEthernetAdapterRow: Adw.ActionRow {
-  activated => $on_activated();
+template $NetworkEthernetAdapterWindow: Adw.Window {
+  hide-on-close: true;
+  modal: true;
+  width-request: 600;
+  height-request: 400;
 
-  [prefix]
-  Image icon {}
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {}
+
+    Box {
+      orientation: vertical;
+      spacing: 12;
+      margin-start: 12;
+      margin-end: 12;
+      margin-bottom: 12;
+      margin-top: 12;
+
+      Adw.PreferencesGroup connections {
+        title: _("Available Connections");
+      }
+
+      Adw.PreferencesGroup {
+        Adw.ButtonRow {
+          start-icon-name: "list-add-symbolic";
+          title: _("Add a Connection…");
+          activated => $add_connection();
+        }
+      }
+    }
+  }
 }

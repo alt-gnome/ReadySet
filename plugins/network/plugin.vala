@@ -45,6 +45,7 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         typeof (ComboRowStackSwitcher).ensure ();
 
         typeof (EthernetAdapterRow).ensure ();
+        typeof (EthernetAdapterWindow).ensure ();
         typeof (EthernetRow).ensure ();
 
         typeof (WiFiAdapterBox).ensure ();
