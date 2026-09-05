@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -201,16 +201,25 @@ public sealed class ReadySet.PluginManager : Object {
                 var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
                 var var_name = "%s.enabled".printf (addin.plugin_name);
 
-                var eu = false;
+                bool default_value = context.mode != EXISTING_USER;
+
+                var eu = ExistingUserStatus.NO;
                 if (addin is ExistingUser) {
                     eu = ((ExistingUser) addin).get_existing_user ();
                 }
 
-                vars[var_name] = new ContextVarInfo (
-                    ContextType.BOOLEAN,
-                    !(context.mode == EXISTING_USER &&
-                            (addin.plugin_info.module_name in performed_steps || !eu))
-                );
+                switch (eu) {
+                    case IF_NOT_PASSED:
+                        default_value = default_value || !(addin.plugin_info.module_name in performed_steps);
+                        break;
+                    case YES:
+                        default_value = true;
+                        break;
+                    case NO:
+                        break;
+                }
+
+                vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN, default_value);
                 context.register_vars ("steps", vars);
 
                 context.bind_context_to_property (

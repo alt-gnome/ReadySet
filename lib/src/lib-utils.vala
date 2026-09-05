@@ -20,6 +20,25 @@
 
 namespace ReadySet {
 
+    /**
+     * Status of method {@link ReadySet.ExistingUser.get_existing_user}
+     */
+    public enum ExistingUserStatus {
+        /**
+         * Can be shown at `existing-user` mode only if not present at
+         * `performed-steps` list.
+         */
+        IF_NOT_PASSED,
+        /**
+         * Will be shown anyway.
+         */
+        YES,
+        /**
+         * Can't be shown at `existing-user` mode.
+         */
+        NO;
+    }
+
     public enum LayoutMode {
         VERTICAL,
         HORIZONTAL,
