@@ -26,6 +26,10 @@ public sealed class ReadySet.ExistingUserFinalizer : Finalizer {
         for (int i = 0; i < model.get_n_items (); i++) {
             var page_info = (PageInfo) model.get_item (i);
 
+            if (page_info.plugin == null) {
+                continue;
+            }
+
             if (!(page_info.plugin in steps_addins_arr) &&
                 page_info.plugin.enabled) {
                 steps_addins_arr.add (page_info.plugin);
