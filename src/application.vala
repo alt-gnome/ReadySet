@@ -161,7 +161,7 @@ public sealed class ReadySet.Application: Adw.Application {
             //  to do, we can't show window for loading because blink.
             if (app_service.context.mode == EXISTING_USER) {
                 hold ();
-                app_service.init_model.begin ((obj, res) => {
+                app_service.init_model.begin (true, (obj, res) => {
                     if (app_service.init_model.end (res)) {
                         build_window ().present ();
                     }

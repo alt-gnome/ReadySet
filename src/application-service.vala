@@ -143,8 +143,8 @@ public sealed class ReadySet.ApplicationService : Object {
         }
     }
 
-    public async bool init_model () {
-        return yield build_model ();
+    public async bool init_model (bool quiet = false) {
+        return yield build_model (quiet);
     }
 
     async bool build_model (bool ntd_only = false) {
