@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -52,9 +52,12 @@ public class User.Addin : ReadySet.StepAddin {
             );
 
             if (user.uses_homed ()) {
+                if (context.get_string ("user.password") == "" && context.get_string ("user.password-hash") != "") {
+                    warning ("Password hash set but plain version doesn't. It could leads to unexpected behaivor");
+                }
                 yield set_homed_password (context.get_string ("user.username"), context.get_string ("user.password"));
             } else {
-                user.set_password (context.get_string ("user.password"), "");
+                yield set_user_password (context.get_string ("user.password-hash"), (uint) user.get_uid ());
             }
 
             user.set_language (ReadySet.get_current_lang ());
@@ -63,17 +66,41 @@ public class User.Addin : ReadySet.StepAddin {
             }
 
             if (context.get_boolean ("user.with-root")) {
-                if (context.get_string ("user.root-password") != "") {
-                    yield set_root_password (context.get_string ("user.root-password"));
-                    context.set_string ("user.root-password", "");
+                if (context.get_string ("user.root-password-hash") != "") {
+                    yield set_user_password (context.get_string ("user.root-password-hash"), 0);
                 } else {
-                    yield set_root_password (context.get_string ("user.password"));
+                    yield set_user_password (context.get_string ("user.password-hash"), 0);
                 }
             }
 
         } catch (Error e) {
             throw ReadySet.ApplyError.build_error (_("Error when creating a user"), e.message);
         }
+    }
+
+    public async override void init_once () {
+        context.data_changed.connect (on_data_changed);
+    }
+
+    void on_data_changed (Object obj, string key) {
+        var context = (ReadySet.Context) obj;
+        string pas;
+
+        switch (key) {
+            case "user.password":
+                pas = context.get_string ("user.password");
+                break;
+            case "user.root-password":
+                pas = context.get_string ("user.root-password");
+                break;
+            default:
+                return;
+        }
+
+        context.set_string (
+            key + "-hash",
+            pas != "" ? UserC.hash_password (pas) : ""
+        );
     }
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
@@ -89,8 +116,11 @@ public class User.Addin : ReadySet.StepAddin {
         //  Storage
         vars["username"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["fullname"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+
         vars["password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["password-hash"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["root-password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["root-password-hash"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
 
         return vars;
     }

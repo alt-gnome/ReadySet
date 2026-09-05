@@ -397,8 +397,6 @@ Requires: %name-plugin-software = %EVR
 
 %files plugin-user-common
 %_datadir/polkit-1/rules.d/%app_id.Plugin.User.rules
-%_libdir/%name/plugins/service/libuser-root.so
-%_libdir/%name/plugins/service/user-root.plugin
 %doc plugins/user/README.*.md
 
 %files plugin-user-passwdqc

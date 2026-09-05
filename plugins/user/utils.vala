@@ -1,22 +1,31 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
+
+[DBus (name = "org.freedesktop.Accounts")]
+public interface User.AccountsUser : Object {
+
+    public abstract async void set_password (
+        string password,
+        string hint
+    ) throws Error;
+}
 
 namespace User {
 
@@ -31,6 +40,25 @@ namespace User {
         BAD,
         NOT_BAD,
         GOOD;
+    }
+
+    async User.AccountsUser get_user_proxy (uint uid) throws Error {
+        var con = yield Bus.get (BusType.SYSTEM);
+
+        if (con == null) {
+            error ("Failed to connect to bus");
+        }
+
+        return con.get_proxy_sync<User.AccountsUser> (
+            "org.freedesktop.Accounts.User",
+            "/org/freedesktop/Accounts/User%u".printf (uid),
+            DBusProxyFlags.NONE
+        );
+    }
+
+    async void set_user_password (string password_hash, uint uid) throws Error {
+        var proxy = yield get_user_proxy (uid);
+        yield proxy.set_password (password_hash, "");
     }
 
     public void update_correct (Adw.PreferencesRow row, bool is_correct) {
@@ -196,28 +224,6 @@ namespace User {
 
     bool password_is_correct (string password) {
         return Password.strength (password).level != BAD;
-    }
-
-    async void set_root_password (string password) {
-        try {
-            var proxy = new DBusProxy.for_bus_sync (
-                SYSTEM,
-                NONE,
-                null,
-                "org.altlinux.ReadySet",
-                "/org/altlinux/ReadySet/UserRoot",
-                "org.altlinux.ReadySet.UserRoot",
-                null
-            );
-
-            proxy.call_sync (
-                "SetRootPassword",
-                new Variant ("(s)", password),
-                DBusCallFlags.NONE,
-                -1,
-                null
-            );
-        } catch (Error e) {}
     }
 
     string build_homed_password_record (string password) {

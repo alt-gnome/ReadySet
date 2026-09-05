@@ -7,8 +7,6 @@ else
   password_check_backend = [password_check_backend]
 endif
 
-subdir('service')
-
 foreach pwcheck_backend : password_check_backend
   plugin_user_deps = [
     accountsservice_dep,
@@ -21,6 +19,11 @@ foreach pwcheck_backend : password_check_backend
 
   plugin_user_vapi_sources = files(
     'config.vapi',
+    'crypt-util.vapi',
+  )
+
+  plugin_user_c_sources = files(
+    'crypt-util.c',
   )
 
   plugin_user_vala_sources = files(
@@ -41,6 +44,7 @@ foreach pwcheck_backend : password_check_backend
   plugin_user_sources = [
     plugin_user_vapi_sources,
     plugin_user_vala_sources,
+    plugin_user_c_sources,
   ]
 
   plugin_user_pretty_name = 'User with ' + pwcheck_backend + ' password check'

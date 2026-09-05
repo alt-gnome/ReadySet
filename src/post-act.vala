@@ -97,7 +97,7 @@ public sealed class ReadySet.PostAct : Object {
 
     void on_secret_info_query (Gdm.UserVerifier user_verifier, string service_name, string question) {
         debug ("PAM module secret info query %s", question);
-        if (context.has_key ("user.password") && !password_sent) {
+        if (context.has_key ("user.plain-password") && !password_sent) {
             debug ("sending password\n");
             user_verifier.call_answer_query.begin (service_name, context.get_string ("user.password"), null);
             password_sent = true;
