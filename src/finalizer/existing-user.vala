@@ -36,13 +36,12 @@ public sealed class ReadySet.ExistingUserFinalizer : Finalizer {
             }
         }
 
-        var rs_settings = new Settings ("org.altlinux.ReadySet");
-        string[] passed_plugins = rs_settings.get_strv ("performed-steps");
+        string[] passed_plugins = {};
 
         foreach (var step_addin in steps_addins_arr) {
             passed_plugins += step_addin.plugin_info.module_name;
         }
 
-        rs_settings.set_strv ("performed-steps", passed_plugins);
+        update_performed_steps (passed_plugins);
     }
 }

@@ -140,8 +140,7 @@ public sealed class ReadySet.InitialSetupFinalizer : Finalizer {
         }
 
         if (context.has_key ("user.username")) {
-            var rs_settings = new Settings ("org.altlinux.ReadySet");
-            rs_settings.set_strv ("performed-steps", passed_plugins);
+            update_performed_steps (passed_plugins);
 
             foreach (var file in files_to_copy) {
                 try {
