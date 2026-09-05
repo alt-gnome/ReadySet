@@ -50,7 +50,9 @@ public partial abstract class ReadySet.ExtensionBase : Peas.ExtensionBase {
 
     /**
      * Init plugin. Calls by application after context was set.
-     * Calls once.
+     * But before config/cli options values set.
+     * It similar to set non-construct properties and doing something
+     * at `construct` block.
      */
     public virtual void init_once () {}
 
