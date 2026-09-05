@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -77,10 +77,10 @@ public class Language.Addin : ReadySet.StepAddin, ReadySet.Welcome {
         return instance;
     }
 
-    public async override void init_once () {
+    public override void init_once () {
         if (!context.sandbox && context.mode == INITIAL_SETUP) {
             try {
-                enabled = (yield new Polkit.Permission ("org.freedesktop.locale1.set-locale", null, null)).allowed &&
+                enabled = new Polkit.Permission.sync ("org.freedesktop.locale1.set-locale", null, null).allowed &&
                     context.get_boolean ("steps.language.enabled");
             } catch (Error e) {
                 error (e.message);

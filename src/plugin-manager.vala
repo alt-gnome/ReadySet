@@ -24,8 +24,6 @@ public sealed class ReadySet.PluginManager : Object {
 
     string? installer_name;
 
-    public bool steps_inited { get; private set; }
-
     public Context context { get; construct; }
 
     public string[] steps { get; private set; }
@@ -185,9 +183,6 @@ public sealed class ReadySet.PluginManager : Object {
             error ("No steps specified");
         }
 
-        var rs_settings = new Settings ("org.altlinux.ReadySet");
-        string[] performed_steps = rs_settings.get_strv ("performed-steps");
-
         this.steps = in_steps.copy ();
 
         for (int i = 0; i < steps.length; i++) {
@@ -201,25 +196,7 @@ public sealed class ReadySet.PluginManager : Object {
                 var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
                 var var_name = "%s.enabled".printf (addin.plugin_name);
 
-                bool default_value = context.mode != EXISTING_USER;
-
-                var eu = ExistingUserStatus.NO;
-                if (addin is ExistingUser) {
-                    eu = ((ExistingUser) addin).get_existing_user ();
-                }
-
-                switch (eu) {
-                    case IF_NOT_PASSED:
-                        default_value = default_value || !(addin.plugin_info.module_name in performed_steps);
-                        break;
-                    case YES:
-                        default_value = true;
-                        break;
-                    case NO:
-                        break;
-                }
-
-                vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN, default_value);
+                vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN, true);
                 context.register_vars ("steps", vars);
 
                 context.bind_context_to_property (
@@ -291,23 +268,20 @@ public sealed class ReadySet.PluginManager : Object {
         }
     }
 
-    //  Returns true if all been inited, false otherwise.
-    public async void call_init_once () {
-        assert (!steps_inited);
-
+    public void init_plugins () {
         for (int i = 0; i < steps.length; i++) {
             if (has_step (steps[i])) {
                 var addin = get_step_addin (steps[i]);
 
                 if (addin != null) {
-                    yield addin.init_once ();
+                    addin.init_once ();
                 }
             }
         }
 
         if (installer_name != null) {
             if (installers_plugins.contains (installer_name)) {
-                yield installers_plugins[installer_name].init_once ();
+                installers_plugins[installer_name].init_once ();
             }
         }
     }

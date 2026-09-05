@@ -49,10 +49,10 @@ public class Keyboard.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         return instance;
     }
 
-    public async override void init_once () {
+    public override void init_once () {
         if (!context.sandbox && context.mode == INITIAL_SETUP) {
             try {
-                enabled = (yield new Polkit.Permission ("org.freedesktop.locale1.set-keyboard", null, null)).allowed;
+                enabled = new Polkit.Permission.sync ("org.freedesktop.locale1.set-keyboard", null, null).allowed;
             } catch (Error e) {
                 error (e.message);
             }

@@ -97,6 +97,9 @@ public sealed class ReadySet.ApplicationService : Object {
             plugin_manager.check_installers ();
         }
 
+        plugin_manager.init_plugins ();
+        options_handler.fill_context (context);
+
         finalizer_factory = new FinalizerFactory (
             context,
             installer_plugin
@@ -152,12 +155,6 @@ public sealed class ReadySet.ApplicationService : Object {
 
         var initial_position = model == null ? 0 : model.get_selected ();
 
-        //  It place here bacause build_steps is first async function that called in
-        //  Application class and init_steps_once.
-        if (!plugin_manager.steps_inited) {
-            yield plugin_manager.call_init_once ();
-            options_handler.fill_context (context);
-        }
         var steps = plugin_manager.steps;
 
         if (!quite) print ("Loaded steps:\n");
