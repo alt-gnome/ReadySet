@@ -141,9 +141,9 @@ public sealed class ReadySet.PageInfo : Object {
                         plugin_enabled = plugin_enabled && !(plugin.plugin_info.module_name in performed_steps);
                         break;
                     case YES:
-                        plugin_enabled = true;
                         break;
                     case NO:
+                        plugin_enabled = false;
                         break;
                 }
 
