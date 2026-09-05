@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-22 17:21+0000\n"
+"POT-Creation-Date: 2026-09-03 11:34+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -291,7 +291,15 @@ msgstr ""
 msgid "Security"
 msgstr ""
 
-#: plugins/network/data/ui/ethernet-row.blp:40
+#: plugins/network/data/ui/ethernet-adapter-window.blp:40
+msgid "Available Connections"
+msgstr ""
+
+#: plugins/network/data/ui/ethernet-adapter-window.blp:60
+msgid "Add a Connection…"
+msgstr ""
+
+#: plugins/network/data/ui/ethernet-connection-row.blp:37
 msgid "Configure…"
 msgstr ""
 
@@ -315,43 +323,35 @@ msgstr ""
 msgid "Ethernet"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:91
-msgid "Add a Connection…"
-msgstr ""
-
-#: plugins/network/data/ui/page.blp:97
+#: plugins/network/data/ui/page.blp:83
 msgid "Wi-Fi"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:112
+#: plugins/network/data/ui/page.blp:98
 msgid "Wi-Fi adapter"
 msgstr ""
 
-#: plugins/network/ethernet.vala:158
-msgid "Please wait until devices reloading is over…"
-msgstr ""
-
-#: plugins/network/plugin.vala:210
+#: plugins/network/plugin.vala:190
 msgid "Failed to apply network settings"
 msgstr ""
 
-#: plugins/network/utils.vala:56
+#: plugins/network/utils.vala:58
 msgid "Leading hyphen is not allowed"
 msgstr ""
 
-#: plugins/network/utils.vala:65
+#: plugins/network/utils.vala:67
 msgid "Only Latin letters, digits and hyphens are allowed"
 msgstr ""
 
-#: plugins/network/utils.vala:71
+#: plugins/network/utils.vala:73
 msgid "Host name is too short"
 msgstr ""
 
-#: plugins/network/utils.vala:76
+#: plugins/network/utils.vala:78
 msgid "Trailing hyphen is not allowed"
 msgstr ""
 
-#: plugins/network/utils.vala:139
+#: plugins/network/utils.vala:141
 #, c-format
 msgid "Wired connection %u"
 msgstr ""

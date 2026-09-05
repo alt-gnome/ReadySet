@@ -20,14 +20,13 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $NetworkEthernetRow: Adw.ActionRow {
-  [prefix]
-  Image icon {}
+template $NetworkEthernetConnectionRow: Adw.ActionRow {
+  use-markup: false;
 
-  [suffix]
-  Switch toggler {
+  [prefix]
+  CheckButton radio {
     valign: center;
-    notify::active => $toggle_connection();
+    toggled => $activate_connection();
   }
 
   [suffix]

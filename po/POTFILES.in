@@ -36,7 +36,8 @@ plugins/language/select-title.vala
 plugins/license-agreement/data/ui/page.blp
 plugins/license-agreement/page.vala
 plugins/network/data/ui/ap-security-editor.blp
-plugins/network/data/ui/ethernet-row.blp
+plugins/network/data/ui/ethernet-adapter-window.blp
+plugins/network/data/ui/ethernet-connection-row.blp
 plugins/network/data/ui/page.blp
 plugins/network/ethernet.vala
 plugins/network/page.vala

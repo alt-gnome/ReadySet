@@ -285,6 +285,21 @@ apply_clicked_cb (NetConnectionEditor *self)
 
         eap_method_ca_cert_ignore_save (self->connection);
 
+        if (self->is_new_connection) {
+                nm_client_add_connection_async (self->client,
+                                                self->orig_connection,
+                                                FALSE,
+                                                NULL,
+                                                added_connection_cb,
+                                                g_object_ref (self));
+        } else {
+                nm_remote_connection_commit_changes_async (NM_REMOTE_CONNECTION (self->orig_connection),
+                                                           FALSE,
+                                                           NULL,
+                                                           updated_connection_cb,
+                                                           g_object_ref (self));
+        }
+
         gtk_widget_set_visible (GTK_WIDGET (self), FALSE);
 }
 

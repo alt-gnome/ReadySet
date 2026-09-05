@@ -18,7 +18,9 @@
     <file preprocess="xml-stripblanks">ui/modeled-stack.ui</file>
     <file preprocess="xml-stripblanks">ui/dd-stackswitcher.ui</file>
     <file preprocess="xml-stripblanks">ui/combo-stackswitcher.ui</file>
-    <file preprocess="xml-stripblanks">ui/ethernet-row.ui</file>
+    <file preprocess="xml-stripblanks">ui/ethernet-adapter-row.ui</file>
+    <file preprocess="xml-stripblanks">ui/ethernet-adapter-window.ui</file>
+    <file preprocess="xml-stripblanks">ui/ethernet-connection-row.ui</file>
     <file preprocess="xml-stripblanks">ui/wifi-adapter-box.ui</file>
     <file preprocess="xml-stripblanks">ui/access-point-row.ui</file>
     <file preprocess="xml-stripblanks">ui/ap-security-editor.ui</file>

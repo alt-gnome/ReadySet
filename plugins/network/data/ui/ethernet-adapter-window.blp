@@ -20,33 +20,44 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $NetworkAccessPointRow: Adw.ActionRow {
-  use-markup: false;
-  activatable: true;
-  activated => $on_activated();
+template $NetworkEthernetAdapterWindow: Adw.Dialog {
+  width-request: 360;
+  height-request: 294;
+  content-width: 450;
+  content-height: 600;
 
-  [prefix]
-  Overlay {
-    child: Image icon {};
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {}
 
-    [overlay]
-    Image {
-      icon-name: "padlock2-symbolic";
-      visible: bind template.needs-secrets;
-      halign: center;
-      valign: center;
-      pixel-size: 8;
+    Adw.Clamp {
+      orientation: vertical;
       margin-start: 12;
+      margin-end: 12;
+      margin-bottom: 12;
       margin-top: 12;
+
+      ScrolledWindow {
+        propagate-natural-width: true;
+        propagate-natural-height: true;
+
+        Box {
+          orientation: vertical;
+          spacing: 12;
+
+          Adw.PreferencesGroup connections {
+            title: _("Available Connections");
+          }
+
+          Adw.PreferencesGroup {
+            Adw.ButtonRow {
+              start-icon-name: "list-add-symbolic";
+              title: _("Add a Connection…");
+              activated => $add_connection();
+            }
+          }
+        }
+      }
     }
-  }
-
-  [suffix]
-  Label {
-    styles [
-      "subtitle",
-    ]
-
-    label: bind template.status;
   }
 }

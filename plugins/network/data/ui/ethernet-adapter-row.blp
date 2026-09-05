@@ -20,33 +20,9 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $NetworkAccessPointRow: Adw.ActionRow {
-  use-markup: false;
-  activatable: true;
+template $NetworkEthernetAdapterRow: Adw.ActionRow {
   activated => $on_activated();
 
   [prefix]
-  Overlay {
-    child: Image icon {};
-
-    [overlay]
-    Image {
-      icon-name: "padlock2-symbolic";
-      visible: bind template.needs-secrets;
-      halign: center;
-      valign: center;
-      pixel-size: 8;
-      margin-start: 12;
-      margin-top: 12;
-    }
-  }
-
-  [suffix]
-  Label {
-    styles [
-      "subtitle",
-    ]
-
-    label: bind template.status;
-  }
+  Image icon {}
 }
