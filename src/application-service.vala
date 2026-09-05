@@ -144,10 +144,10 @@ public sealed class ReadySet.ApplicationService : Object {
     }
 
     public async bool init_model (bool quiet = false) {
-        return yield build_model (quiet);
+        return yield build_model (false, quiet);
     }
 
-    async bool build_model (bool ntd_only = false) {
+    async bool build_model (bool ntd_only, bool quite) {
         var pages = new Gee.ArrayList<PageInfo> ();
 
         var initial_position = model == null ? 0 : model.get_selected ();
@@ -160,7 +160,7 @@ public sealed class ReadySet.ApplicationService : Object {
         }
         var steps = plugin_manager.steps;
 
-        if (!ntd_only) print ("Loaded steps:\n");
+        if (!quite) print ("Loaded steps:\n");
         for (int i = 0; i < steps.length; i++) {
             var addin = plugin_manager.get_step_addin (steps[i]);
 
@@ -180,7 +180,7 @@ public sealed class ReadySet.ApplicationService : Object {
                         ));
                     }
                 }
-                if (!ntd_only) print ("  %s - %s\n", addin.plugin_info.module_name, addin.plugin_info.name);
+                if (!quite) print ("  %s - %s\n", addin.plugin_info.module_name, addin.plugin_info.name);
 
             } else if (steps[i].has_prefix (PluginManager.INSTALLER_STEP_PREFIX)) {
                 var installer_step = installer_plugin.steps[PluginManager.get_real_page_id (steps[i])];
@@ -190,14 +190,14 @@ public sealed class ReadySet.ApplicationService : Object {
                         installer_page,
                         installer_plugin.get_type ().name ()
                     ));
-                    if (!ntd_only) print (
+                    if (!quite) print (
                         "  %s%s (from `%s`)\n",
                         PluginManager.get_real_page_id (steps[i]),
                         installer_step.name != null ? " - %s".printf (installer_step.name) : "",
                         installer_plugin.plugin_info.module_name
                     );
                 } else {
-                    if (!ntd_only) print ("  %s (skipped: failed to build installer page)\n", steps[i]);
+                    if (!quite) print ("  %s (skipped: failed to build installer page)\n", steps[i]);
                 }
             } else {
                 error ("Unknown step `%s`", steps[i]);
@@ -253,6 +253,6 @@ public sealed class ReadySet.ApplicationService : Object {
     }
 
     public async void is_ntd () requires (context.mode == EXISTING_USER) {
-        yield build_model (true);
+        yield build_model (true, true);
     }
 }
