@@ -305,7 +305,17 @@ Requires: %name-plugin-software = %EVR
 %_userunitdir/%name-existing-user.service
 %_libexecdir/%app_id
 %_sysconfdir/%name
-%_datadir/%name
+%dir %_datadir/%name
+%dir %_datadir/%name/initial-setup-post-hooks
+%dir %_datadir/%name/initial-setup-post-hooks/system
+%dir %_datadir/%name/initial-setup-post-hooks/user
+%dir %_datadir/%name/initial-setup-pre-hooks
+%dir %_datadir/%name/initial-setup-pre-hooks/system
+%dir %_datadir/%name/initial-setup-pre-hooks/user
+%dir %_datadir/%name/installer-post-hooks
+%dir %_datadir/%name/installer-post-hooks/system
+%dir %_datadir/%name/installer-pre-hooks
+%dir %_datadir/%name/installer-pre-hooks/system
 %dir %_libdir/%name
 %dir %_libdir/%name/plugins
 %dir %_libdir/%name/plugins/steps
@@ -393,6 +403,7 @@ Requires: %name-plugin-software = %EVR
 %files plugin-license-agreement
 %_libdir/%name/plugins/steps/license-agreement.plugin
 %_libdir/%name/plugins/steps/liblicense-agreement.so
+$_datadir/glib-2.0/schemas/%app_id.LicenseAgreement.gschema.xml
 %doc plugins/license-agreement/README.*.md
 
 %files plugin-user-common
@@ -413,7 +424,7 @@ Requires: %name-plugin-software = %EVR
 %doc plugins/privacy/README.*.md
 
 %files plugin-date-and-time
-%_datadir/%name/date-and-time/default-timezones.json
+%_datadir/%name/date-and-time
 %_libdir/%name/plugins/steps/date-and-time.plugin
 %_libdir/%name/plugins/steps/libdate-and-time.so
 %_datadir/polkit-1/rules.d/%app_id.Plugin.DateAndTime.rules
