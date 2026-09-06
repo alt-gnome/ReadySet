@@ -44,6 +44,7 @@ public sealed class ReadySet.CommandHandler : Object {
 
         if (initial_args.length == 1) {
             args = initial_args.copy ();
+            return;
         }
 
         var program = initial_args[0];
