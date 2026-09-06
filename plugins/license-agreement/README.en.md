@@ -8,6 +8,7 @@ Displays a license agreement loaded from `license-agreement.file-path`.
 | -------- | ----------- | ------------- |
 | `license-agreement.file-path` | Absolute path to a license file containing the `LANG` placeholder | — |
 | `license-agreement.language-fallback` | Fallback language used when the selected locale is not found | `C` |
+| `license-agreement.installer` | If true, on `initial-setup` we only save hash and recheck it on `existing-user` | — |
 
 ## Explanation
 
