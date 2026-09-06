@@ -245,6 +245,8 @@ public sealed class ReadySet.OptionsHandler : Object {
                 error ("Invalid context var: %s", context_var);
             }
         }
+
+        ctx.lock_all_settings ();
     }
 
     Value opt_to_value (Variant opt, Type value_type) {

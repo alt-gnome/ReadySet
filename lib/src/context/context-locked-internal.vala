@@ -23,4 +23,10 @@ public partial class ReadySet.Context {
     internal bool get_locked (string key) {
         return data[key].locked;
     }
+
+    internal void lock_all_settings () {
+        foreach (var val_obj in data.values) {
+            val_obj.lock_setting ();
+        }
+    }
 }

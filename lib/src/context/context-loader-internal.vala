@@ -51,7 +51,7 @@ public partial class ReadySet.Context {
 
             set_value (key, val);
             if (with_lock) {
-                data[key].try_lock ();
+                data[key].lock_setting ();
             }
         }
     }
@@ -78,7 +78,7 @@ namespace ReadySet {
 
 internal partial class ReadySet.ValueObject {
 
-    public void try_lock () {
+    public void lock_setting () {
         if (setting) {
             locked = true;
         }
