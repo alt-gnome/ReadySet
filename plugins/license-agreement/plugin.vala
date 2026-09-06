@@ -44,6 +44,10 @@ public class LicenseAgreement.Addin : ReadySet.StepAddin, ReadySet.ExistingUser 
     }
 
     public override void init () {
+        if (context.get_string ("license-agreement.file-path") == "") {
+            return;
+        }
+
         Settings la_settings = new Settings ("org.altlinux.ReadySet.license-agreement");
         passed_hash = la_settings.get_string ("passed-license-hash");
 
