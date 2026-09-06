@@ -152,32 +152,17 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         if (active_window == null) {
-            //  If mode is existing-user, window presents by itself after
-            //  init.
-            //  We do this because of in install/initial-setup modes
-            //  we should show at  least one page with setup. In existing-user
-            //  there can be situation where  there is nothing to do because
-            //  of all steps where done at initial-setup stage. And if nothing
-            //  to do, we can't show window for loading because blink.
-            if (app_service.context.mode == EXISTING_USER) {
-                hold ();
-                app_service.init_model.begin (true, (obj, res) => {
-                    if (app_service.init_model.end (res)) {
-                        build_window ().present ();
-                    }
-                    release ();
-                });
-            } else {
-                build_window ().present ();
-            }
+            hold ();
+            app_service.init_model.begin (true, (obj, res) => {
+                if (app_service.init_model.end (res)) {
+                    new Window (this, app_service).present ();
+                }
+                release ();
+            });
 
         } else {
             active_window.present ();
         }
-    }
-
-    Window build_window () {
-        return new Window (this, app_service);
     }
 
     public new static ReadySet.Application? get_default () {

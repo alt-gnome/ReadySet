@@ -65,10 +65,6 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
     construct {
         add_action_entries (ACTION_ENTRIES, this);
 
-        //  We start loading things after window appears on screen
-        //  So that the spinner is shown, and not just nothing
-        map.connect (window_initially_shown);
-
         if (Config.NIGHTLY) {
             add_css_class ("devel");
         }
@@ -80,11 +76,8 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         deletable = Config.NIGHTLY ||
             app_service.options_handler.can_close ||
             app_service.context.mode == EXISTING_USER;
-    }
 
-    void window_initially_shown () {
-        reload_window.begin ();
-        map.disconnect (window_initially_shown);
+        set_window_content ();
     }
 
     protected override bool close_request () {
