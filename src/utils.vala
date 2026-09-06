@@ -66,12 +66,19 @@ namespace ReadySet {
 
     void update_performed_steps (string[] new_passed_plugins) {
         var rs_settings = new Settings ("org.altlinux.ReadySet");
-        string[] current_passed_plugins = rs_settings.get_strv ("performed-steps");
 
-        var pp_set = new Gee.HashSet<string> ();
-        pp_set.add_all_array (current_passed_plugins);
-        pp_set.add_all_array (new_passed_plugins);
+        string[] pp_set = {};
+        foreach (var el in rs_settings.get_strv ("performed-steps")) {
+            if (!(el in pp_set)) {
+                pp_set += el;
+            }
+        }
+        foreach (var el in new_passed_plugins) {
+            if (!(el in pp_set)) {
+                pp_set += el;
+            }
+        }
 
-        rs_settings.set_strv ("performed-steps", pp_set.to_array ());
+        rs_settings.set_strv ("performed-steps", pp_set);
     }
 }
