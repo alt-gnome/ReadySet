@@ -78,7 +78,7 @@ public class User.Addin : ReadySet.StepAddin {
         }
     }
 
-    public override void init_once () {
+    public override void init_context () {
         context.data_changed.connect (on_data_changed);
     }
 

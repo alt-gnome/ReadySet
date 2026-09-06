@@ -97,8 +97,9 @@ public sealed class ReadySet.ApplicationService : Object {
             plugin_manager.check_installers ();
         }
 
-        plugin_manager.init_plugins ();
+        plugin_manager.init_plugins_context ();
         options_handler.fill_context (context);
+        plugin_manager.init_plugins ();
 
         finalizer_factory = new FinalizerFactory (
             context,

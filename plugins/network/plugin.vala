@@ -94,7 +94,7 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         return { new Network.Page () };
     }
 
-    public override void init_once () {
+    public override void init_context () {
         client.device_added.connect (add_device);
         client.device_removed.connect (remove_device);
 

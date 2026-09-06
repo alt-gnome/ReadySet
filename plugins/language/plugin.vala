@@ -77,7 +77,7 @@ public class Language.Addin : ReadySet.StepAddin, ReadySet.Welcome {
         return instance;
     }
 
-    public override void init_once () {
+    public override void init_context () {
         if (!context.sandbox && context.mode == INITIAL_SETUP) {
             try {
                 enabled = new Polkit.Permission.sync ("org.freedesktop.locale1.set-locale", null, null).allowed &&

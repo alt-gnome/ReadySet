@@ -46,7 +46,7 @@ public class Software.Addin : ReadySet.StepAddin, ReadySet.ApplyAfter {
         return { "user" };
     }
 
-    public override void init_once () {
+    public override void init_context () {
         var sources_dir = Path.build_filename (
             Config.READYSET_DATADIR,
             Addin.get_instance ().plugin_info.module_name,

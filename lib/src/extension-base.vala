@@ -49,12 +49,14 @@ public partial abstract class ReadySet.ExtensionBase : Peas.ExtensionBase {
     }
 
     /**
-     * Init plugin. Calls by application after context was set.
-     * But before config/cli options values set.
-     * It similar to set non-construct properties and doing something
-     * at `construct` block.
+     * Calls after context was set, but before config/cli options values set.
      */
-    public virtual void init_once () {}
+    public virtual void init_context () {}
+
+    /**
+     * Calls after initial config/cli options values set.
+     */
+    public virtual void init () {}
 
     /**
      * Get context variables for registration. Calls by application.

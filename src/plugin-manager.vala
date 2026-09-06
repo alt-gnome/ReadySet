@@ -268,20 +268,38 @@ public sealed class ReadySet.PluginManager : Object {
         }
     }
 
-    public void init_plugins () {
+    public void init_plugins_context () {
         for (int i = 0; i < steps.length; i++) {
             if (has_step (steps[i])) {
                 var addin = get_step_addin (steps[i]);
 
                 if (addin != null) {
-                    addin.init_once ();
+                    addin.init_context ();
                 }
             }
         }
 
         if (installer_name != null) {
             if (installers_plugins.contains (installer_name)) {
-                installers_plugins[installer_name].init_once ();
+                installers_plugins[installer_name].init_context ();
+            }
+        }
+    }
+
+    public void init_plugins () {
+        for (int i = 0; i < steps.length; i++) {
+            if (has_step (steps[i])) {
+                var addin = get_step_addin (steps[i]);
+
+                if (addin != null) {
+                    addin.init ();
+                }
+            }
+        }
+
+        if (installer_name != null) {
+            if (installers_plugins.contains (installer_name)) {
+                installers_plugins[installer_name].init ();
             }
         }
     }
