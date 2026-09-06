@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-[DBus (name = "org.freedesktop.Accounts")]
+[DBus (name = "org.freedesktop.Accounts.User")]
 public interface User.AccountsUser : Object {
 
     public abstract async void set_password (
@@ -50,7 +50,7 @@ namespace User {
         }
 
         return con.get_proxy_sync<User.AccountsUser> (
-            "org.freedesktop.Accounts.User",
+            "org.freedesktop.Accounts",
             "/org/freedesktop/Accounts/User%u".printf (uid),
             DBusProxyFlags.NONE
         );
