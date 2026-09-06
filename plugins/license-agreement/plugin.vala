@@ -56,6 +56,9 @@ public class LicenseAgreement.Addin : ReadySet.StepAddin, ReadySet.ExistingUser 
     }
 
     public async override ReadySet.BasePage[] build_pages () {
+        if (context.get_boolean ("license-agreement.installer")) {
+            return {};
+        }
         return {
             new LicenseAgreement.Page (),
         };
@@ -69,7 +72,17 @@ public class LicenseAgreement.Addin : ReadySet.StepAddin, ReadySet.ExistingUser 
         var vars = base.get_context_vars ();
         vars["file-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING) { setting = true };
         vars["language-fallback"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING, "C") { setting = true };
+        vars["installer"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN) { setting = true };
         return vars;
+    }
+
+    public async override void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
+        if (context.sandbox) {
+            return;
+        }
+
+        Settings la_settings = new Settings ("org.altlinux.ReadySet.license-agreement");
+        la_settings.set_string ("passed-license-hash", new_hash);
     }
 }
 
