@@ -84,8 +84,9 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
                 simple = from.get_boolean ();
                 enabled = simple ? client.connectivity != FULL : true;
             },
+            setting = true
         };
-        vars["required"] = new ReadySet.ContextVarInfo (BOOLEAN);
+        vars["required"] = new ReadySet.ContextVarInfo (BOOLEAN) { setting = true };
         vars["hostname"] = new ReadySet.ContextVarInfo (STRING);
         return vars;
     }

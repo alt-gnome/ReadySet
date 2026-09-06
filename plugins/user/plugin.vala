@@ -107,15 +107,15 @@ public class User.Addin : ReadySet.StepAddin {
         var vars = base.get_context_vars ();
 
         //  Settings
-        vars["avatar-file"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
-        vars["with-root"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
-        vars["enforce-password-quality"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN);
-        vars["passwd-conf-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
-        vars["avatar-directories"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV);
+        vars["with-root"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN) { setting = true };
+        vars["enforce-password-quality"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN) { setting = true };
+        vars["passwd-conf-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING) { setting = true };
+        vars["avatar-directories"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV) { setting = true };
 
         //  Storage
         vars["username"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["fullname"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+        vars["avatar-file"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
 
         vars["password"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
         vars["password-hash"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);

@@ -58,7 +58,7 @@ public class Software.Addin : ReadySet.StepAddin, ReadySet.ApplyAfter {
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
         vars["enabled-sources"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV);
-        vars["single-button"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN, false);
+        vars["single-button"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN, false) { setting = true };
         return vars;
     }
 
