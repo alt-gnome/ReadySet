@@ -15,6 +15,8 @@ Displays a license agreement loaded from `license-agreement.file-path`.
 
 If no matching file is found, `license-agreement.language-fallback` is used as `LANG`.
 
+NOTE: Path with fallback **MUST** be present.
+
 ## Example
 
 ```

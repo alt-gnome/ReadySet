@@ -5,9 +5,8 @@ template $LicenseAgreementPage: $ReadySetBasePage {
   title-header: _("License");
   title-icon-name: "document-text-symbolic";
   is-ready: bind check_button.active;
-  notify::license-file-path => $read_license_file();
 
-  info: $ReadySetStatusPage {
+  info: $ReadySetStatusPage status_page {
     title: _("License Agreement");
     icon-name: "document-text-symbolic";
   };
@@ -29,6 +28,7 @@ template $LicenseAgreementPage: $ReadySetBasePage {
 
       CheckButton check_button {
         halign: center;
+        toggled => $on_checkbutton_toggled();
 
         Label {
           label: _("I have read the license and accept it");
