@@ -8,7 +8,7 @@ plugin_license_agreement_resources = gnome.compile_resources(
   source_dir: meson.current_build_dir(),
   dependencies: custom_target(
     'blueprints',
-    
+
     input: plugin_license_agreement_blueprints,
     output: '.',
     command: [ find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@' ],
@@ -27,4 +27,10 @@ configure_file(
   },
   install: true,
   install_dir: steps_plugins_dir
+)
+
+install_data(
+  'gschema.xml',
+  install_dir: get_option('datadir') / 'glib-2.0' / 'schemas',
+  rename: app_id + '.LicenseAgreement.gschema.xml'
 )

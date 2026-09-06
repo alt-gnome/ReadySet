@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2026 David Sultaniiazov <x1z53@alt-gnome.ru>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -206,5 +206,50 @@ namespace LicenseAgreement {
     struct TagReplacement {
         string pattern;
         string replacement;
+    }
+
+    string? get_raw_license_text (string? path_pattern, bool fallback_only) {
+        if (path_pattern == "" || path_pattern == null) {
+            return null;
+        }
+
+        string path = "";
+        if (fallback_only) {
+            path = path_pattern.replace ("LANG", get_fallback_language ());
+
+            if (!FileUtils.test (path, EXISTS | IS_REGULAR )) {
+                return null;
+            }
+        } else {
+            var found = false;
+            var variants = get_language_variants (ReadySet.get_current_lang ());
+
+            foreach (var variant in variants) {
+                path = path_pattern.replace ("LANG", variant);
+
+                if (FileUtils.test (path, EXISTS | IS_REGULAR )) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                return null;
+            }
+        }
+
+        var file = File.new_for_path (path);
+
+        string text;
+
+        try {
+            uint8[] data;
+            file.load_contents (null, out data, null);
+            text = ((string) data);
+        } catch (Error error) {
+            return null;
+        }
+
+        return text;
     }
 }
