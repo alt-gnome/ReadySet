@@ -35,7 +35,11 @@ public sealed class ReadySet.InstallerFinalizer : Finalizer {
             string hooks_target = "installer";
 
             foreach (var name in yield get_ready_set_proxy ().get_all_hooks (hooks_type, hooks_target)) {
-                yield get_ready_set_proxy ().exec_hook (hooks_type, hooks_target, name, env.to_array ());
+                try {
+                    yield get_ready_set_proxy ().exec_hook (hooks_type, hooks_target, name, env.to_array ());
+                } catch (Error e) {
+                    warning ("Error on executing post hook %s: %s", name, e.message);
+                }
             }
         } catch (Error e) {
             warning ("Error on executing post hooks: %s", e.message);
