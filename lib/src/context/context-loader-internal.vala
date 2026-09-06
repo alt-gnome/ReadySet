@@ -1,26 +1,26 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 public partial class ReadySet.Context {
 
-    internal void load_from_keyfile (KeyFile keyfile, string group_name) throws Error {
+    internal void load_from_keyfile (KeyFile keyfile, string group_name, bool with_lock = false) throws Error {
         if (!keyfile.has_group (group_name)) {
             debug ("Keyfile doesn't have group '%s'", group_name);
             return;
@@ -50,6 +50,9 @@ public partial class ReadySet.Context {
             }
 
             set_value (key, val);
+            if (with_lock) {
+                data[key].try_lock ();
+            }
         }
     }
 }
@@ -68,6 +71,16 @@ namespace ReadySet {
             return keyfile.get_double (group_name, key);
         } else {
             error ("Unknown keyfile desired type %s for key %s", value_type.name (), key);
+        }
+    }
+}
+
+
+internal partial class ReadySet.ValueObject {
+
+    public void try_lock () {
+        if (setting) {
+            locked = true;
         }
     }
 }

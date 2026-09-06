@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -88,6 +88,11 @@ internal partial class ReadySet.ValueObject : Object {
             return new_val;
         }
         set {
+            if (locked) {
+                warning ("Cannot set value of locked variable");
+                return;
+            }
+
             if (setter_func != null) {
                 setter_func (value);
             } else {
@@ -100,7 +105,11 @@ internal partial class ReadySet.ValueObject : Object {
         }
     }
 
+    public bool locked { get; private set; }
+
     public Value? default_value { get; construct; }
+
+    public bool setting { get; set; default = false; }
 
     unowned ContextGetterFunc? getter_func = null;
     unowned ContextSetterFunc? setter_func = null;
@@ -113,7 +122,8 @@ internal partial class ReadySet.ValueObject : Object {
         Object (
             value_type: info.value_type,
             default_value: info.default_value,
-            object_type: info.nested_object_type
+            object_type: info.nested_object_type,
+            setting: info.setting
         );
     }
 
@@ -160,6 +170,12 @@ public class ReadySet.ContextVarInfo : Object {
      * Default value. Needs for resettings value via {@link Context.reset}.
      */
     public Value? default_value { get; construct; }
+
+    /**
+     * Whether this variable is a setting. Settings could be set only with
+     * config/cli options.
+     */
+    public bool setting { get; set; default = false; }
 
     /**
      * Func that will be used as get function.
