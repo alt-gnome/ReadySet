@@ -403,7 +403,7 @@ Requires: %name-plugin-software = %EVR
 %files plugin-license-agreement
 %_libdir/%name/plugins/steps/license-agreement.plugin
 %_libdir/%name/plugins/steps/liblicense-agreement.so
-$_datadir/glib-2.0/schemas/%app_id.LicenseAgreement.gschema.xml
+%_datadir/glib-2.0/schemas/%app_id.LicenseAgreement.gschema.xml
 %doc plugins/license-agreement/README.*.md
 
 %files plugin-user-common
