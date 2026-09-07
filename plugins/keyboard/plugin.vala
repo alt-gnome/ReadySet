@@ -52,7 +52,8 @@ public class Keyboard.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
     public override void init_context () {
         if (!context.sandbox && context.mode == INITIAL_SETUP) {
             try {
-                enabled = new Polkit.Permission.sync ("org.freedesktop.locale1.set-keyboard", null, null).allowed;
+                enabled = new Polkit.Permission.sync ("org.freedesktop.locale1.set-keyboard", null, null).allowed &&
+                    context.get_boolean ("steps.language.enabled");
             } catch (Error e) {
                 error (e.message);
             }
