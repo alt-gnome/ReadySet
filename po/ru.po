@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-06 20:29+0000\n"
-"PO-Revision-Date: 2026-09-03 11:34+0300\n"
-"Last-Translator: Valery Zabrovsky <brow@altlinux.org>\n"
+"PO-Revision-Date: 2026-09-07 12:14+0300\n"
+"Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -62,9 +62,8 @@ msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
 
 #: data/ui/steps-main-page.blp:486 data/ui/steps-main-page.blp:664
-#, fuzzy
 msgid "Open Context menu"
-msgstr "Открыть меню приложения"
+msgstr "Открыть меню Контекста"
 
 #: data/ui/steps-main-page.blp:524
 msgid "Go up"
@@ -75,13 +74,12 @@ msgid "Go up to the beginning"
 msgstr "Вернуться к началу"
 
 #: data/ui/steps-main-page.blp:651
-#, fuzzy
 msgid "Return to setup"
-msgstr "Завершите настройку"
+msgstr "Назад к настройке"
 
 #: data/ui/summary-page.blp:5 data/ui/summary-page.blp:21
 msgid "Summary"
-msgstr ""
+msgstr "Сводка"
 
 #: data/ui/welcome-page.blp:5
 msgid "Welcome"
@@ -254,7 +252,7 @@ msgstr "Ничего"
 
 #: plugins/keyboard/layout-switch-button.vala:38
 msgid "Additinal layout switch"
-msgstr ""
+msgstr "Дополнительное переключение раскладок"
 
 #: plugins/keyboard/plugin.vala:119
 msgid "Error when setting keyboard layout"
@@ -298,6 +296,8 @@ msgid ""
 "We have updated our License Agreement. Please accept the new terms to "
 "continue."
 msgstr ""
+"Мы обновили наше Лицензионное соглашение. Пожалуйста, примите новые условия, "
+"чтобы продолжить."
 
 #: plugins/network/data/ui/ap-security-editor.blp:42
 #: plugins/user/data/ui/page-password.blp:24
@@ -777,15 +777,15 @@ msgstr "Vladimir Romanov <rirusha@altlinux.org>"
 
 #: src/command-handler.vala:69
 msgid "Commands"
-msgstr ""
+msgstr "Команды"
 
 #: src/command-handler.vala:77
 msgid "Generate bash completion script"
-msgstr ""
+msgstr "Сгенерировать скрипт автодополнения для bash"
 
 #: src/command-handler.vala:80
 msgid "Print 0 if nothing to do else 1 to stderr"
-msgstr ""
+msgstr "Вывести 0, если делать нечего, иначе 1 в stderr"
 
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
 #: src/end-pages/initial-setup.vala:44 src/end-pages/installer.vala:44
@@ -808,9 +808,8 @@ msgid "System is ready to be used."
 msgstr "Система готова к использованию."
 
 #: src/end-pages/initial-setup.vala:63
-#, fuzzy
 msgid "Applying changes…"
-msgstr "Применение %s…"
+msgstr "Применение изменений…"
 
 #: src/end-pages/initial-setup.vala:85 src/end-pages/installer.vala:86
 #, c-format
@@ -905,11 +904,11 @@ msgstr "Мы поможем вам все подготовить за мгнов
 #: src/pages/welcome.vala:51
 #, c-format
 msgid "This is %s installer"
-msgstr ""
+msgstr "Это установщик %s"
 
 #: src/pages/welcome.vala:53
 msgid "After some choices, the system will be installed on Your device."
-msgstr ""
+msgstr "После выбора параметров система будет установлена на Ваше устройство."
 
 #: tests/plugins/test-common/data/ui/page.blp:23
 #: tests/plugins/test-common/data/ui/page.blp:32
