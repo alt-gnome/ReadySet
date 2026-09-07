@@ -19,9 +19,13 @@ librs_vala_sources = files(
   'base/base-page.vala',
   'base/status-page.vala',
 
-  'context-object.vala',
-  'context.vala',
-  'context-internal.vala',
+  'ifaces/apply-after.vala',
+  'ifaces/existing-user.vala',
+  'ifaces/has-files-to-copy.vala',
+  'ifaces/has-string-repr.vala',
+  'ifaces/has-widget-rerp.vala',
+  'ifaces/welcome.vala',
+
   'extension-base.vala',
   'installer-addin.vala',
   'installer-step.vala',
@@ -29,11 +33,15 @@ librs_vala_sources = files(
   'step-addin.vala',
 )
 
-librs_vala_app_plugin_sources = files(
+subdir('context')
+
+librs_ext_base_sources_internal = files(
   'extension-base-internal.vala',
 )
 
-librs_vala_app_only_sources = files(
+librs_context_sources_internal = librs_context_vars_sources_internal + librs_context_mode_sources_internal + librs_context_raw_sources_internal + librs_context_loader_sources_internal
+
+librs_utils_sources_internal = files(
   'lib-utils-internal.vala',
 )
 
@@ -45,11 +53,10 @@ librs_sources = [
   librs_c_sources,
   librs_vapi_sources,
   librs_vala_sources,
+  librs_context_sources,
 ]
 
 librs_sources_with_resources = librs_sources + [librs_resources]
-librs_sources_with_app = librs_sources_with_resources + librs_vala_app_plugin_sources + librs_vala_app_only_sources
-librs_sources_with_app_tests = librs_sources_with_resources + librs_vala_app_plugin_sources
 
 librs_c_args = [
   '-DG_LOG_DOMAIN="libready-set"',

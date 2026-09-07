@@ -39,11 +39,17 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             Bytes? hidden_ssid = null
     ) {
         device = wlan;
+        device.add_weak_pointer (&device);
         point = ap;
+        point.add_weak_pointer (&point);
+        destroy.connect (() => {
+            device.remove_weak_pointer (&device);
+            point.remove_weak_pointer (&point);
+        });
 
-        Bytes ssid = (ap.ssid != null && ap.ssid.length > 0)
-                ? ap.ssid
-                : (!) hidden_ssid;
+        Bytes ssid = NM.Utils.is_empty_ssid (ap.ssid?.get_data ())
+                ? (!) hidden_ssid
+                : ap.ssid;
         title = NM.Utils.ssid_to_utf8 (ssid.get_data ());
 
         if (ap.strength >= 60) {
@@ -186,7 +192,7 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             break;
         case ACTIVATED:
             if (device.ip4_connectivity == FULL
-                    && device.ip6_connectivity == FULL) {
+                    || device.ip6_connectivity == FULL) {
                 status = _("Connected");
             } else {
                 status = _("Connected without internet");
@@ -223,6 +229,10 @@ public sealed class Network.ApSecurityEditor : Adw.AlertDialog {
 
     public ApSecurityEditor (NM.Connection conn, NM.Utils.SecurityType[] sec) {
         connection = conn;
+        connection.add_weak_pointer (&connection);
+        destroy.connect (() => {
+            connection.remove_weak_pointer (&connection);
+        });
         heading = connection.get_id ();
 
         AvailableWs mask = 0;
@@ -344,6 +354,10 @@ public sealed class Network.WiFiAdapterBox : Adw.Bin {
 
     public WiFiAdapterBox (NM.DeviceWifi wlan) {
         device = wlan;
+        device.add_weak_pointer (&device);
+        destroy.connect (() => {
+            device.remove_weak_pointer (&device);
+        });
 
         box.bind_model (
             new Gtk.FilterListModel (

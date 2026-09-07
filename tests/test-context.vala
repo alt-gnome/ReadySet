@@ -350,15 +350,18 @@ void test_get_value () {
 
 void test_mode_property () {
     var ctx = create_test_context ();
-    ctx.mode = ReadySet.Mode.INSTALLER;
+    ctx.init_mode (INSTALLER);
     if (ctx.mode != ReadySet.Mode.INSTALLER) {
         Test.fail_printf ("Expected mode to be INSTALLER");
     }
 
-    ctx.mode = ReadySet.Mode.EXISTING_USER;
-    if (ctx.mode != ReadySet.Mode.EXISTING_USER) {
-        Test.fail_printf ("Expected mode to be EXISTING_USER");
+    if (Test.subprocess ()) {
+        ctx.init_mode (EXISTING_USER);
+        return;
     }
+
+    Test.trap_subprocess (null, 0, DEFAULT);
+    Test.trap_assert_failed ();
 }
 
 void test_bind_context_to_property () {

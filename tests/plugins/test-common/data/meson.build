@@ -10,7 +10,7 @@ plugin_test_resources = gnome.compile_resources(
   source_dir: meson.current_build_dir(),
   dependencies: custom_target(
     'blueprints',
-    
+
     input: plugin_test_blueprints,
     output: '.',
     command: [ find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@' ],
@@ -20,12 +20,12 @@ plugin_test_resources = gnome.compile_resources(
 
 if (get_option('install_tests').enabled())
   install_subdir(
-    'post-hooks',
+    'initial-setup-post-hooks',
     install_dir: datadir / meson.project_name()
   )
 
   install_subdir(
-    'pre-hooks',
+    'initial-setup-pre-hooks',
     install_dir: datadir / meson.project_name()
   )
 endif

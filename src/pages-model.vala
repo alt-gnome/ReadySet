@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -32,6 +32,8 @@ public sealed class ReadySet.PageInfo : Object {
 
     public StepAddin? plugin { get; construct; }
 
+    public string id_prefix { get; construct; }
+
     public bool should_layout { get; private set; }
 
     public bool is_ready { get; set; }
@@ -41,6 +43,8 @@ public sealed class ReadySet.PageInfo : Object {
     public string title_header { get; set; }
 
     public string title_icon_name { get; set; }
+
+    public bool built_in { get; construct; default = false; }
 
     public bool is_compact {
         get {
@@ -69,11 +73,26 @@ public sealed class ReadySet.PageInfo : Object {
 
     static string[] performed_steps;
 
-    public PageInfo (BasePage? page, StepAddin? plugin)
-    requires (page != null || plugin != null) {
+    public PageInfo (BasePage? page, StepAddin plugin) {
         Object (
             page: page,
-            plugin: plugin
+            plugin: plugin,
+            id_prefix: plugin.get_type ().name ()
+        );
+    }
+
+    public PageInfo.pluginless (BasePage? page, string id_prefix) {
+        Object (
+            page: page,
+            id_prefix: id_prefix
+        );
+    }
+
+    public PageInfo.builtin (BasePage? page) {
+        Object (
+            page: page,
+            id_prefix: "BuiltIn",
+            built_in: true
         );
     }
 
@@ -101,7 +120,7 @@ public sealed class ReadySet.PageInfo : Object {
         update_should_layout ();
 
         id = "%s-%s".printf (
-            plugin != null ? plugin.get_type ().name () : "None",
+            plugin != null ? plugin.get_type ().name () : id_prefix,
             page != null ? page.get_type ().name () : "None"
         );
     }
@@ -110,8 +129,24 @@ public sealed class ReadySet.PageInfo : Object {
         bool plugin_enabled = true;
         if (plugin != null) {
             if (plugin.context.mode == EXISTING_USER) {
-                plugin_enabled = plugin.enabled && plugin.existing_user &&
-                    !(plugin.plugin_info.module_name in performed_steps);
+                plugin_enabled = plugin.enabled;
+
+                var eu = ExistingUserStatus.NO;
+                if (plugin is ExistingUser) {
+                    eu = ((ExistingUser) plugin).get_existing_user ();
+                }
+
+                switch (eu) {
+                    case IF_NOT_PASSED:
+                        plugin_enabled = plugin_enabled && !(plugin.plugin_info.module_name in performed_steps);
+                        break;
+                    case YES:
+                        break;
+                    case NO:
+                        plugin_enabled = false;
+                        break;
+                }
+
             } else {
                 plugin_enabled = plugin.enabled;
             }
@@ -191,6 +226,15 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
 
     public uint get_n_items_unfiltered () {
         return store.get_n_items ();
+    }
+
+    public void select (PageInfo info) {
+        for (int i = 0; i < get_n_items (); i++) {
+            if (get_item (i) == info) {
+                select_item (i, true);
+                return;
+            }
+        }
     }
 
     public unowned PageInfo? get_selected_item () {

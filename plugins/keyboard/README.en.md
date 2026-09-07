@@ -13,4 +13,4 @@ Configure keyboard input sources.
 | Variable | Description |
 | -------- | ----------- |
 | `keyboard.input-sources` | Selected keyboard input sources |
-| `additinal-layout-grp` | Additinial layout switch method |
+| `additional-layout-grp` | Additional layout switch method |

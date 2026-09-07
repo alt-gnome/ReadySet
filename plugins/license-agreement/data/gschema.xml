@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="ready-set">
+	<schema id="org.altlinux.ReadySet.license-agreement" path="/org/altlinux/ReadySet/license-agreement/">
+
+		<key name="passed-license-hash" type="s">
+			<default>''</default>
+			<summary>Hash of the passed license agreement</summary>
+		</key>
+
+	</schema>
+
+</schemalist>

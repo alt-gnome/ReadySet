@@ -1,4 +1,0 @@
-FROM altlinux.space/alt-atomic/onyx/nightly:latest
-
-RUN --mount=type=bind,source=./test-atomic/gnome/image.yml,target=/etc/apm/image.yml \
-    apm system image build

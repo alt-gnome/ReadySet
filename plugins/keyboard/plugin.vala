@@ -1,24 +1,24 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Keyboard.Addin : ReadySet.StepAddin {
+public class Keyboard.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
 
     static Addin instance;
 
@@ -29,8 +29,6 @@ public class Keyboard.Addin : ReadySet.StepAddin {
             return "/org/altlinux/ReadySet/Plugin/Keyboard/";
         }
     }
-
-    public override bool existing_user { get { return true; } }
 
     static construct {
         typeof (CurrentInputSources).ensure ();
@@ -51,10 +49,10 @@ public class Keyboard.Addin : ReadySet.StepAddin {
         return instance;
     }
 
-    public async override void init_once () {
+    public override void init_context () {
         if (!context.sandbox && context.mode == INITIAL_SETUP) {
             try {
-                enabled = (yield new Polkit.Permission ("org.freedesktop.locale1.set-keyboard", null, null)).allowed;
+                enabled = new Polkit.Permission.sync ("org.freedesktop.locale1.set-keyboard", null, null).allowed;
             } catch (Error e) {
                 error (e.message);
             }
@@ -66,7 +64,7 @@ public class Keyboard.Addin : ReadySet.StepAddin {
         vars["input-sources"] = new ReadySet.ContextVarInfo.object (
             typeof (InputSources), get_default ()
         );
-        vars["preview-bin"] = new ReadySet.ContextVarInfo (STRING, "tecla");
+        vars["preview-bin"] = new ReadySet.ContextVarInfo (STRING, "tecla") { setting = true };
         vars["additinal-layout-grp"] = new ReadySet.ContextVarInfo (STRING);
         return vars;
     }
@@ -114,7 +112,7 @@ public class Keyboard.Addin : ReadySet.StepAddin {
                 settings.get_string ("xkb-model"),
                 string.joinv (",", variants.to_array ()),
                 string.joinv (",", settings.get_strv ("xkb-options")),
-                true,
+                false,
                 true
             );
         } catch (Error e) {

@@ -68,3 +68,5 @@ build-dir
 
 # Poedit db
 *.mo
+
+.vagary

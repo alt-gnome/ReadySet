@@ -8,8 +8,8 @@ on:
       - "main"
 
 jobs:
-  lint-vala:
-    name: Check vala files
+  lint:
+    name: Lint
     runs-on: als-tiny
     container:
       image: altlinux.space/alt-gnome/coding-style-image:latest
@@ -19,28 +19,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check files
-        uses: alt-gnome/coding-style-actions/vala@main
+        run: |
+          make lint
 
-  lint-blueprint:
-    name: Check blueprint files
-    runs-on: als-tiny
-    container:
-      image: altlinux.space/alt-gnome/coding-style-image:latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Check files
-        uses: alt-gnome/coding-style-actions/blueprint@main
-
-  build-doc-translation:
-    name: Build, update translation and upload doc
+  build-doc:
+    name: Build and upload doc
     runs-on: als-huge
     container: registry.altlinux.org/sisyphus/node:latest
     needs:
-      - lint-vala
-      - lint-blueprint
+      - lint
 
     steps:
       - name: Checkout repository
@@ -56,44 +43,6 @@ jobs:
 
       - name: Test
         run: make test
-
-      - name: Setup git
-        if: github.event_name != 'pull_request'
-        run: |
-          git config --global user.name "ReadySet Helper Bot"
-          git config --global user.email "ready-set-helper-bot@noreply.altlinux.space"
-          git config --global --add safe.directory '*'
-
-      - name: Update pot file for Weblate
-        if: github.event_name != 'pull_request'
-        run: |
-          has_real_changes() {
-            git diff --cached -U0 | grep -E '^[+-]' \
-              | grep -Ev '^[+-]{3}' \
-              | grep -Ev '^[+-]["#]' \
-              | grep -q '.'
-          }
-
-          make pot
-
-          git add .
-          git commit -m "i18n: Update POTFILES" || true
-
-          make update-pot
-          git add .
-
-          if has_real_changes; then
-            git commit -m "i18n: Update .pot file" || true
-
-            make update-po
-
-            git add *.po
-            git commit -m "i18n: Update .po files" || true
-          else
-            git reset --hard
-          fi
-
-          git push
 
       - name: Deploy pages
         if: github.event_name != 'pull_request'
@@ -117,9 +66,10 @@ jobs:
   rpm-build:
     if: github.event_name != 'pull_request'
     name: RPM build for ${{ matrix.branch }}.${{ matrix.arch }} and uploading
-    runs-on: ${{ matrix.runner }}
+    runs-on: als-huge
     container:
       image: altlinux.space/alt-security/${{ matrix.branch }}/hasher:latest
+      options: --platform linux/${{ matrix.arch }}
 
     strategy:
       matrix:
@@ -127,19 +77,12 @@ jobs:
           - sisyphus
           # - p11
         arch:
-          - x86_64
-          - aarch64
-        include:
-          - arch: x86_64
-            runner: als-huge
-          - arch: aarch64
-            runner: self-hosted-arm64-huge
+          - amd64
+          # - arm64
 
     needs:
-      - lint-vala
-      - lint-blueprint
+      - lint
       - get-release
-      - build-doc-translation
 
     steps:
       - name: Install utils
@@ -166,46 +109,3 @@ jobs:
           directory: ~/hasher/repo
           token: ${{ secrets.TOKEN }}
           group: ready-set-nightly/${{ matrix.branch }}
-
-  build-test-image:
-    name: Build ${{ matrix.denviron }} image
-    runs-on: als-huge
-    strategy:
-      matrix:
-        denviron:
-          - gnome
-          - phosh
-
-    needs:
-      - rpm-build
-    if: github.event_name != 'pull_request'
-    env:
-      LOCAL_BUILD_NAME: localhost/image
-      REGISTRY: altlinux.space
-    container:
-      image: altlinux.space/alt-atomic/builder-image:sisyphus
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - id: get_commit
-        name: Get current commit
-        run: |
-          echo "commit=$(git rev-parse HEAD)" >> $FORGEJO_OUTPUT
-
-      - name: Build&Push image
-        uses: alt-atomic/actions/build-and-push@c882944ee9b49d04f3f2030aa47c435515a66657
-        with:
-          image-name: alt-gnome/ready-set-test-atomic
-          image-tag: ${{ matrix.denviron }}
-          containerfile-path: ./test-atomic/${{ matrix.denviron }}/Containerfile
-
-          registry-password: ${{ secrets.TOKEN }}
-
-          pretty-name: ReadySet Atomic test image
-          version: ${{ steps.get_commit.outputs.commit }}
-
-          extra-labels: |
-            org.altlinux.installer.has-initial-setup=true
-
-          rechunk-enabled: false

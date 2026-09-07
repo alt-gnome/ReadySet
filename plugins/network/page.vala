@@ -27,8 +27,6 @@ public sealed class Network.Page : ReadySet.BasePage {
 
     [GtkChild]
     unowned Adw.PreferencesGroup ethernet_group;
-    [GtkChild]
-    unowned Gtk.ListBox ethernet_adapters;
 
     [GtkChild]
     unowned Adw.PreferencesGroup wifi_group;
@@ -68,8 +66,10 @@ public sealed class Network.Page : ReadySet.BasePage {
         simcard_group.visible = false;
 #endif
 
-        ethernet_adapters.bind_model (addin.ethers,
-            (eth) => { return new EthernetRow ((NM.DeviceEthernet) eth); }
+        ethernet_group.bind_model (addin.ethers,
+            (ether) => {
+                return new EthernetAdapterRow ((NM.DeviceEthernet) ether);
+            }
         );
         addin.ethers.bind_property ("n-items",
             ethernet_group, "visible",

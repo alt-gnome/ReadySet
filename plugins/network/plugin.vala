@@ -1,33 +1,27 @@
 /*
  * Copyright (C) 2025-2026 Vladimir Romanov <rirusha@altlinux.org>
  * Copyright (C) 2026 Valery Zabrovsky <brow@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Network.Addin : ReadySet.StepAddin {
+public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
 
     static Addin instance;
-
-    public override bool existing_user {
-        get {
-            return true;
-        }
-    }
 
     protected override string? resource_base_path {
         get {
@@ -41,12 +35,18 @@ public class Network.Addin : ReadySet.StepAddin {
     public ListStore ethers { get; construct; }
     public ListStore wlans { get; construct; }
 
+    public uint ether_devices_num { get; private set; default = 0; }
+
+    bool simple;
+
     static construct {
         typeof (ModeledStack).ensure ();
         typeof (DropDownStackSwitcher).ensure ();
         typeof (ComboRowStackSwitcher).ensure ();
 
-        typeof (EthernetRow).ensure ();
+        typeof (EthernetAdapterRow).ensure ();
+        typeof (EthernetAdapterWindow).ensure ();
+        typeof (EthernetConnectionRow).ensure ();
 
         typeof (WiFiAdapterBox).ensure ();
         typeof (AccessPointRow).ensure ();
@@ -76,7 +76,17 @@ public class Network.Addin : ReadySet.StepAddin {
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
 
-        vars["required"] = new ReadySet.ContextVarInfo (BOOLEAN);
+        vars["simple"] = new ReadySet.ContextVarInfo (BOOLEAN) {
+            getter_func = () => {
+                return simple;
+            },
+            setter_func = (from) => {
+                simple = from.get_boolean ();
+                enabled = simple ? client.connectivity != FULL : true;
+            },
+            setting = true
+        };
+        vars["required"] = new ReadySet.ContextVarInfo (BOOLEAN) { setting = true };
         vars["hostname"] = new ReadySet.ContextVarInfo (STRING);
         return vars;
     }
@@ -85,18 +95,28 @@ public class Network.Addin : ReadySet.StepAddin {
         return { new Network.Page () };
     }
 
-    public async override void init_once () {
+    public override void init_context () {
         client.device_added.connect (add_device);
         client.device_removed.connect (remove_device);
 
         foreach (var device in client.devices) {
             add_device (device);
         }
+
+        client.check_connectivity_async.begin (null, (obj, res) => {
+            try {
+                client.check_connectivity_async.end (res);
+            } catch (Error e) {
+                error (e.message);
+            }
+        });
     }
 
     static void update_category (ListStore category, NM.Device device) {
         uint pos;
-        bool ok = device.state != UNMANAGED && device.state != UNAVAILABLE;
+        bool ok = device.state != UNMANAGED
+            && (device.device_type == ETHERNET || device.state != UNAVAILABLE);
+
         if (category.find_with_equal_func (device, same_devices, out pos)) {
             if (!ok) {
                 category.remove (pos);
@@ -166,7 +186,7 @@ public class Network.Addin : ReadySet.StepAddin {
             );
 
             foreach (var conn in client.connections) {
-                yield conn.save_async (null);
+                yield conn.commit_changes_async (true, null);
             }
         } catch (Error e) {
             throw ReadySet.ApplyError.build_error (

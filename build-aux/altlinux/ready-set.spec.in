@@ -1,5 +1,5 @@
 # If you want to suggest changes, please send PR on
-# https://altlinux.space/alt-gnome/ReadySet to altlinux branch 
+# https://altlinux.space/alt-gnome/ReadySet to altlinux branch
 
 %define _unpackaged_files_terminate_build 1
 
@@ -169,6 +169,7 @@ Summary: %name network plugin
 Group: Other
 
 Requires: %name = %EVR
+Requires: gnome-control-center-data
 
 %description plugin-network
 %summary.
@@ -231,15 +232,6 @@ Group: Other
 Requires: %name-plugin-user-common = %EVR
 
 %description plugin-user-pwquality
-%summary.
-
-%package plugin-welcome
-Summary: %name welcome plugin
-Group: Other
-
-Requires: %name = %EVR
-
-%description plugin-welcome
 %summary.
 
 %package plugin-privacy
@@ -313,13 +305,23 @@ Requires: %name-plugin-software = %EVR
 %_userunitdir/%name-existing-user.service
 %_libexecdir/%app_id
 %_sysconfdir/%name
-%_datadir/%name
+%dir %_datadir/%name
+%dir %_datadir/%name/initial-setup-post-hooks
+%dir %_datadir/%name/initial-setup-post-hooks/system
+%dir %_datadir/%name/initial-setup-post-hooks/user
+%dir %_datadir/%name/initial-setup-pre-hooks
+%dir %_datadir/%name/initial-setup-pre-hooks/system
+%dir %_datadir/%name/initial-setup-pre-hooks/user
+%dir %_datadir/%name/installer-post-hooks
+%dir %_datadir/%name/installer-post-hooks/system
+%dir %_datadir/%name/installer-pre-hooks
+%dir %_datadir/%name/installer-pre-hooks/system
 %dir %_libdir/%name
 %dir %_libdir/%name/plugins
 %dir %_libdir/%name/plugins/steps
 %dir %_libdir/%name/plugins/installers
 %dir %_libdir/%name/plugins/service
-%_sharedstatedir/%name
+%ghost %_sharedstatedir/%name
 %_sysconfdir/dbus-1/system.d/%app_id.conf
 %_datadir/polkit-1/actions/%app_id.policy
 %_datadir/dbus-1/system-services/%app_id.service
@@ -335,7 +337,7 @@ Requires: %name-plugin-software = %EVR
 %_desktopdir/%gis_name.desktop
 %_datadir/dconf/profile/%gis_name
 %_datadir/%gis_name
-%_sharedstatedir/%gis_name
+%ghost %_sharedstatedir/%gis_name
 %_datadir/gnome-session/sessions/%gis_name.session
 %_datadir/gnome-shell/modes/initial-setup.json
 %_userunitdir/%gis_name.service
@@ -401,12 +403,11 @@ Requires: %name-plugin-software = %EVR
 %files plugin-license-agreement
 %_libdir/%name/plugins/steps/license-agreement.plugin
 %_libdir/%name/plugins/steps/liblicense-agreement.so
+%_datadir/glib-2.0/schemas/%app_id.LicenseAgreement.gschema.xml
 %doc plugins/license-agreement/README.*.md
 
 %files plugin-user-common
 %_datadir/polkit-1/rules.d/%app_id.Plugin.User.rules
-%_libdir/%name/plugins/service/libuser-root.so
-%_libdir/%name/plugins/service/user-root.plugin
 %doc plugins/user/README.*.md
 
 %files plugin-user-passwdqc
@@ -417,18 +418,13 @@ Requires: %name-plugin-software = %EVR
 %_libdir/%name/plugins/steps/user-pwquality.plugin
 %_libdir/%name/plugins/steps/libuser-pwquality.so
 
-%files plugin-welcome
-%_libdir/%name/plugins/steps/welcome.plugin
-%_libdir/%name/plugins/steps/libwelcome.so
-%doc plugins/welcome/README.*.md
-
 %files plugin-privacy
 %_libdir/%name/plugins/steps/privacy.plugin
 %_libdir/%name/plugins/steps/libprivacy.so
 %doc plugins/privacy/README.*.md
 
 %files plugin-date-and-time
-%_datadir/%name/date-and-time/default-timezones.json
+%_datadir/%name/date-and-time
 %_libdir/%name/plugins/steps/date-and-time.plugin
 %_libdir/%name/plugins/steps/libdate-and-time.so
 %_datadir/polkit-1/rules.d/%app_id.Plugin.DateAndTime.rules

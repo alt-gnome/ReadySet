@@ -7,7 +7,6 @@ plugins = [
   'network',
   'privacy',
   'user',
-  'welcome',
 ]
 
 foreach plugin : plugins

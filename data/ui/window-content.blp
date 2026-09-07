@@ -35,7 +35,7 @@ template $ReadySetWindowContent: Adw.BreakpointBin {
   Adw.OverlaySplitView split_view {
     collapsed: true;
     pin-sidebar: true;
-    show-sidebar: bind steps_main_page.show-steps-list bidirectional;
+    show-sidebar: bind template.show_sidebar bidirectional;
     min-sidebar-width: 340;
 
     sidebar: Adw.NavigationPage {
@@ -43,18 +43,14 @@ template $ReadySetWindowContent: Adw.BreakpointBin {
       title: _("All steps");
 
       child: $ReadySetStepsSidebar steps_sidebar {
-        model: bind steps_main_page.model;
+        model: bind template.model;
         request-close => $close_sidebar();
       };
     };
 
-    content: Adw.NavigationPage {
+    content: Adw.NavigationPage main_page {
       name: "main";
       title: _("Main");
-
-      child: $ReadySetStepsMainPage steps_main_page {
-        simple: bind template.simple;
-      };
     };
   }
 }

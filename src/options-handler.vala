@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -74,13 +74,6 @@ public sealed class ReadySet.OptionsHandler : Object {
             0, OptionArg.NONE,
             null,
             N_("Sandbox run without doing anything in system"),
-            null
-        },
-        {
-            "detailed", '\0',
-            0, OptionArg.NONE,
-            null,
-            N_("Show indicators and sidebar with steps"),
             null
         },
         {
@@ -160,8 +153,6 @@ public sealed class ReadySet.OptionsHandler : Object {
 
     public bool fullscreen { get; set; }
 
-    public bool detailed { get; set; }
-
     public bool apply_only { get; set; }
 
     public bool can_close { get; set; }
@@ -240,7 +231,7 @@ public sealed class ReadySet.OptionsHandler : Object {
     public void fill_context (Context ctx) {
         if (conf_file != null) {
             try {
-                ctx.load_from_keyfile (conf_keyfile, CTX_GROUP_NAME);
+                ctx.load_from_keyfile (conf_keyfile, CTX_GROUP_NAME, true);
             } catch (Error e) {
                 error ("Error in working with config file: %s", e.message);
             }
@@ -249,11 +240,13 @@ public sealed class ReadySet.OptionsHandler : Object {
         foreach (var context_var in context) {
             var context_var_parts = context_var.split ("=", 2);
             if (context_var_parts.length == 2) {
-                ctx.set_raw (context_var_parts[0], context_var_parts[1]);
+                ctx.set_raw (context_var_parts[0], context_var_parts[1], true);
             } else {
                 error ("Invalid context var: %s", context_var);
             }
         }
+
+        ctx.lock_all_settings ();
     }
 
     Value opt_to_value (Variant opt, Type value_type) {

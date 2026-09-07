@@ -78,7 +78,7 @@ public abstract class ReadySet.StepAddin : ExtensionBase {
      * Useful when plugins have similar context vars but different names
      * e.g. user-passwdqc/user-pwquality.
      */
-    public virtual string? registration_module_name { get { return plugin_info.module_name; } }
+    public virtual string plugin_name { get { return plugin_info.module_name; } }
 
     /**
      * Whether `step` enabled or not.
@@ -86,18 +86,6 @@ public abstract class ReadySet.StepAddin : ExtensionBase {
      * @see ReadySet.StepAddin
      */
     public virtual bool enabled { get; set; default = true; }
-
-    /**
-     * Whether plugin support running without special permissuin for
-     * settings up current user.
-     */
-    public virtual bool existing_user { get { return false; } }
-
-    /**
-     * Files which will be copied to created user. Pathes relative to
-     * user's HOME dir.
-     */
-    public virtual string[] files_to_copy { owned get { return {}; } }
 
     /**
      * Apply for initial setup.

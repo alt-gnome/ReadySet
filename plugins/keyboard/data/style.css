@@ -16,3 +16,7 @@
     padding-top: 12px;
     padding-bottom: 12px;
 }
+
+.sheet-list > row {
+    padding: 3px 6px;
+}

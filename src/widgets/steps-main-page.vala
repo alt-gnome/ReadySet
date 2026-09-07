@@ -28,19 +28,13 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     [GtkChild]
     unowned PositionedStack info_positioned_stack;
     [GtkChild]
-    unowned PagesIndicator pages_indicator;
-    [GtkChild]
     unowned Gtk.Label standalone_sandbox_label;
-    [GtkChild]
-    unowned Gtk.ToggleButton standalone_steps_list_button;
     [GtkChild]
     unowned Gtk.Label sandbox_label_left;
     [GtkChild]
     unowned Gtk.CenterBox standalone_horizontal_bottom;
     [GtkChild]
     unowned Gtk.Label sandbox_label_right;
-    [GtkChild]
-    unowned Gtk.Button context_button;
     [GtkChild]
     unowned Gtk.Revealer to_up_revealer;
     [GtkChild]
@@ -73,7 +67,10 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     [GtkChild]
     unowned Adw.Bin bottom_bin;
 
-    Devel.Window devel_window;
+    [GtkChild]
+    unowned Adw.ToolbarView page_toolbar;
+    [GtkChild]
+    unowned Gtk.Button end_page_back_button;
 
     Gtk.ScrolledWindow _current_scrolled_window;
     protected Gtk.ScrolledWindow current_scrolled_window {
@@ -135,17 +132,11 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         }
     }
 
-    public bool can_close { get; set; }
-
-    public bool show_steps_list { get; set; }
-
     public bool is_ready_to_continue { get; set; }
 
     public bool can_up { get; set; }
 
     static Gee.ArrayList<string> passed_pages = new Gee.ArrayList<string> ();
-
-    public bool simple { get; set; }
 
     LayoutMode _layout_mode;
     public LayoutMode layout_mode {
@@ -211,18 +202,29 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
     Binding[] model_pages_bindings = {};
 
+    public EndPageFactory end_page_factory { get; construct; }
+
+    public string? force_layout { get; construct; }
+
+    public bool sandbox { get; construct; }
+
+    public StepsMainPage (
+        PagesModel model,
+        EndPageFactory end_page_factory,
+        string? force_layout,
+        bool sandbox
+    ) {
+        Object (
+            model: model,
+            end_page_factory: end_page_factory,
+            force_layout: force_layout,
+            sandbox: sandbox
+        );
+    }
+
     construct {
-        model = Application.get_default ().model;
-        pages_indicator.model = model;
-
-        can_close = Application.get_default ().can_close;
-        context_button.visible = Config.NIGHTLY;
-        sandbox_label_left.visible = ReadySet.Application.get_default ().context.sandbox && Config.NIGHTLY;
-        sandbox_label_right.visible = ReadySet.Application.get_default ().context.sandbox && !Config.NIGHTLY;
-
-        notify["show-steps-list"].connect (update_icons_visible);
-        notify["simple"].connect (update_icons_visible);
-        update_icons_visible ();
+        sandbox_label_left.visible = sandbox && Config.NIGHTLY;
+        sandbox_label_right.visible = sandbox && !Config.NIGHTLY;
 
         set_breakpoints ();
 
@@ -371,10 +373,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         }
     }
 
-    void update_icons_visible () {
-        pages_indicator.show_icons = !show_steps_list && !simple;
-    }
-
     void selection_changed () {
         update_buttons ();
         update_scroll ();
@@ -400,9 +398,8 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     }
 
     void update_standalone () {
-        standalone_sandbox_label.visible = ReadySet.Application.get_default ().context.sandbox &&
+        standalone_sandbox_label.visible = sandbox &&
             Config.NIGHTLY && standalone;
-        standalone_steps_list_button.visible = !simple && standalone;
         standalone_horizontal_bottom.visible = layout_mode == HORIZONTAL && standalone;
     }
 
@@ -432,21 +429,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
         is_ready_to_continue = selected_item.is_ready;
         can_cancel = model.get_selected () > 0;
-    }
-
-    [GtkCallback]
-    void on_context_button_clicked () {
-        if (devel_window == null) {
-            devel_window = new Devel.Window ();
-            devel_window.close_request.connect (on_devel_close_request);
-        }
-
-        devel_window.present ();
-    }
-
-    bool on_devel_close_request () {
-        devel_window = null;
-        return false;
     }
 
     [GtkCallback]
@@ -498,39 +480,27 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         var n_items = model.get_n_items ();
 
         if (position == n_items - 1) {
-            var view = new Adw.ToolbarView ();
-            view.add_top_bar (new Adw.HeaderBar () {
-                show_title = false,
-                show_end_title_buttons = can_close,
-            });
 
-            switch (Application.get_default ().context.mode) {
-                case EXISTING_USER:
-                    view.content = new ExistingUserEndPage ();
-                    break;
-                case INITIAL_SETUP:
-                    var end_page = new InitialSetupEndPage ();
-                    view.content = end_page;
-                    end_page.start_action.begin ();
-                    break;
-                case INSTALLER:
-                    var end_page = new InstallerEndPage ();
-                    view.content = end_page;
-                    end_page.start_action.begin ();
-                    break;
+            if (page_toolbar.content == null) {
+                var page = end_page_factory.build ();
+                page_toolbar.content = page;
+                end_page_back_button.visible = page.can_go_prev ();
+                page.start_action.begin ();
             }
 
-            main_stack.add_child (view);
-            main_stack.visible_child = view;
+            main_stack.visible_child_name = "end";
 
         } else {
             model.select_item (model.get_selected () + 1, true);
         }
     }
 
-    void set_breakpoints () {
-        var force_layout = Application.get_default ().options_handler.force_layout;
+    [GtkCallback]
+    void to_main () {
+        main_stack.visible_child_name = "main";
+    }
 
+    void set_breakpoints () {
         if (force_layout != null) {
             Adw.Breakpoint? force_breakpoint = null;
             switch (layout_mode_from_string (force_layout)) {
@@ -566,5 +536,10 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                 Adw.BreakpointConditionLengthType.MIN_HEIGHT, 0, Adw.LengthUnit.SP
             );
         }
+    }
+
+    [GtkCallback]
+    bool @and (bool a, bool b) {
+        return a && b;
     }
 }

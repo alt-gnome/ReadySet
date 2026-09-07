@@ -1,7 +1,7 @@
 <div align="center">
 
   <img
-    src="data/icons/hicolor/scalable/apps/org.altlinux.ReadySet.svg"
+    src="data/icons/app/scalable.svg"
     height="128"
   />
 
@@ -21,9 +21,12 @@ The application is built from step plugins. Currently available step plugins are
 - [keyboard](plugins/keyboard/README.en.md)
 - [language](plugins/language/README.en.md)
 - [license-agreement](plugins/license-agreement/README.en.md)
+- [network](plugins/network/README.en.md)
+- [privacy](plugins/privacy/README.en.md)
 - [software](plugins/software/README.en.md)
 - [user](plugins/user/README.en.md) — built as `user-passwdqc` (default) and/or `user-pwquality`, depending on the `password_check_backend` build option
-- [welcome](plugins/welcome/README.en.md)
+
+If in steps list no step realizing `Welcome` interface on first place, welcome page will be shown at the beginning.
 
 Installer plugins are loaded separately via the `--installer` option. Their steps are referenced with the `installer.` prefix (e.g. `installer.example-step`).
 
@@ -53,50 +56,50 @@ Context configuration options for individual plugins can be found in their READM
 
 ### Options
 
-#### `context`
-Cumulative option in `VAR=VALUE` format. Can be passed multiple times.
+#### `apply-only`
+Run apply from config without running GUI. Cannot be used in `existing-user` mode.
 
 #### `can-close`
-Make the window closable even in non-nightly builds. In `nightly=true` builds the window is always closable. `false` by default.
+Make window closable always. In `nightly=true` builds the window is always closable. `false` by default.
 
-#### `fullscreen`
-Run the window in fullscreen.
+#### `conf-file`
+App config file.
 
-#### `installer`
-Specify the installer plugin module name.
-
-#### `sandbox`
-Run without applying changes to the system.
+#### `context`
+Context vars. Cumulative option in `VAR=VALUE` format. Can be passed multiple times.
 
 #### `detailed`
-Show step indicators and a sidebar with steps. The simple view is used by default.
-
-#### `steps`
-Comma-separated list of step plugin module names. E.g: `language,keyboard,user-passwdqc`.
-
-#### `resizable`
-Allow window resizing. `false` by default.
-
-#### `width`
-Initial window width. `1000` by default.
-
-#### `height`
-Initial window height. `800` by default.
+Show indicators and sidebar with steps. The simple view is used by default.
 
 #### `force-layout`
-Force the window layout: `big`, `small`, `vertical`, `horizontal`. Auto by default.
+Set layout for window: `big`, `small`, `vertical`, `horizontal`. Auto by default.
 
 #### `force-mode`
-Force the application mode: `installer`, `initial-setup`, `existing-user`. Can be used only in `nightly=true` builds. Auto by default.
+Force run with mode: `installer`, `initial-setup`, `existing-user`. Can be used only in `nightly=true` builds. Auto by default.
 
-#### `apply-only`
-Apply the configuration and exit without launching the GUI. Cannot be used in `existing-user` mode.
+#### `fullscreen`
+Run window in fullscreen.
+
+#### `height`
+Height of a window. `800` by default.
+
+#### `installer`
+Specify installer plugin.
+
+#### `resizable`
+Window can be resized or not. `false` by default.
+
+#### `sandbox`
+Sandbox run without doing anything in system.
+
+#### `steps`
+Steps. Comma-separated list of step plugin module names. E.g: `language,keyboard,user-passwdqc`.
 
 #### `version`
 Print version information and exit.
 
-#### `conf-file`
-Path to the application configuration file.
+#### `width`
+Width of a window. `1000` by default.
 
 ## Commands
 
@@ -130,5 +133,5 @@ meson compile -C _build
 - Vladimir Romanov <rirusha@altlinux.org> — developer
 - Viktoria Zubacheva <gingercat@alt-gnome.ru> — icon/design
 - Nina Petrova <1704.nina.petrova@gmail.com> — design
-
+- [GNOME Control Center](plugins/network/connection-editor/README.en.md)
 - [GNOME Initial Setup](https://gitlab.gnome.org/GNOME/gnome-initial-setup), the source of a lot of the logic

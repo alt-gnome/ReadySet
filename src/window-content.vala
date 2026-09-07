@@ -23,24 +23,51 @@ public sealed class ReadySet.WindowContent : Adw.BreakpointBin {
 
     [GtkChild]
     unowned Adw.OverlaySplitView split_view;
+    [GtkChild]
+    unowned Adw.NavigationPage main_page;
 
-    public bool simple { get; construct; }
+    public bool show_steps_sidebar { get; construct; }
 
-    public WindowContent (bool simple) {
+    public PagesModel model { get; construct; }
+
+    public EndPageFactory end_page_factory { get; construct; }
+
+    public string? force_layout { get; construct; }
+
+    public bool sandbox { get; construct; }
+
+    public bool show_sidebar { get; set; }
+
+    public WindowContent (
+        bool show_steps_sidebar,
+        PagesModel model,
+        EndPageFactory end_page_factory,
+        string? force_layout,
+        bool sandbox
+    ) {
         Object (
-            simple: simple
+            show_steps_sidebar: show_steps_sidebar,
+            model: model,
+            end_page_factory: end_page_factory,
+            force_layout: force_layout,
+            sandbox: sandbox
         );
     }
 
-    construct {
-        GLib.Application.get_default ().bind_property (
-            "show-steps",
-            split_view,
-            "show-sidebar",
-            BindingFlags.BIDIRECTIONAL | BindingFlags.SYNC_CREATE
-        );
+    static construct {
+        install_property_action ("wincon.show-sidebar", "show-sidebar");
+    }
 
-        split_view.enable_show_gesture = !simple;
+    construct {
+        split_view.enable_show_gesture = show_steps_sidebar;
+        action_set_enabled ("wincon.show-sidebar", show_steps_sidebar);
+
+        main_page.child = new StepsMainPage (
+            model,
+            end_page_factory,
+            force_layout,
+            sandbox
+        );
     }
 
     [GtkCallback]

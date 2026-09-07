@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -44,38 +44,44 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         }
     }
 
+    public ApplicationService app_service { get; construct; }
+
+    public bool show_steps_sidebar { get; construct; }
+
     string active;
     bool reloading = false;
 
-    bool simple;
-
-    public Window (ReadySet.Application app) {
-        Object (application: app);
+    public Window (
+        ReadySet.Application app,
+        ApplicationService app_service
+    ) {
+        Object (
+            application: app,
+            app_service: app_service,
+            show_steps_sidebar: app_service.has_installer
+        );
     }
 
     construct {
         add_action_entries (ACTION_ENTRIES, this);
 
-        var app = Application.get_default ();
-
-        //  We start loading things after window appears on screen
-        //  So that the spinner is shown, and not just nothing
-        map.connect (window_initially_shown);
-
-        simple = !Application.get_default ().options_handler.detailed;
-
         if (Config.NIGHTLY) {
             add_css_class ("devel");
         }
-    }
 
-    void window_initially_shown () {
-        reload_window.begin ();
-        map.disconnect (window_initially_shown);
+        fullscreened = app_service.options_handler.fullscreen;
+        default_width = app_service.options_handler.width;
+        default_height = app_service.options_handler.height;
+        resizable = app_service.options_handler.resizable;
+        deletable = Config.NIGHTLY ||
+            app_service.options_handler.can_close ||
+            app_service.context.mode == EXISTING_USER;
+
+        set_window_content ();
     }
 
     protected override bool close_request () {
-        if (Application.get_default ().can_close) {
+        if (deletable) {
             return base.close_request ();
         }
 
@@ -88,7 +94,7 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         }
 
         reloading = true;
-        yield Application.get_default ().build_steps ();
+        yield app_service.init_model ();
         set_window_content ();
     }
 
@@ -99,7 +105,16 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
             active = B_NAME;
         }
 
-        stack.add_named (new WindowContent (simple), active);
+        stack.add_named (
+            new WindowContent (
+                show_steps_sidebar,
+                app_service.model,
+                new EndPageFactory (app_service.context, app_service.finalizer_factory),
+                app_service.options_handler.force_layout,
+                app_service.context.sandbox
+            ),
+            active
+        );
         stack.set_visible_child_name (active);
         Timeout.add_once (stack.transition_duration, on_transition_ended);
     }

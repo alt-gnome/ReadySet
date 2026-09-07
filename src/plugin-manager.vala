@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -23,7 +23,6 @@ public sealed class ReadySet.PluginManager : Object {
     internal const string INSTALLER_STEP_PREFIX = "installer.";
 
     string? installer_name;
-    bool inited_once = false;
 
     public Context context { get; construct; }
 
@@ -184,43 +183,20 @@ public sealed class ReadySet.PluginManager : Object {
             error ("No steps specified");
         }
 
-        var rs_settings = new Settings ("org.altlinux.ReadySet");
-        string[] performed_steps = rs_settings.get_strv ("performed-steps");
-
-        string[] st = {};
-
-        //  We add welcome step in existing user mode if welcome step is not provided
-        if (context.mode == EXISTING_USER && in_steps[0] != "welcome" && has_step ("welcome")) {
-            st = { "welcome" };
-            foreach (var s in in_steps) {
-                st += s;
-            }
-        } else {
-            st = in_steps.copy ();
-        }
-
-        this.steps = st;
+        this.steps = in_steps.copy ();
 
         for (int i = 0; i < steps.length; i++) {
             if (steps_plugins.contains (steps[i])) {
                 var addin = steps_plugins[steps[i]];
 
-                string module_name;
-                if (addin.registration_module_name != null) {
-                    module_name = addin.registration_module_name;
-                } else {
-                    module_name = steps[i];
-                }
+                var module_name = addin.plugin_name;
 
                 context.register_vars (module_name, addin.get_context_vars ());
 
                 var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);
-                var var_name = "%s.enabled".printf (addin.registration_module_name);
-                vars[var_name] = new ContextVarInfo (
-                    ContextType.BOOLEAN,
-                    !(context.mode == EXISTING_USER &&
-                            (addin.plugin_info.module_name in performed_steps || !addin.existing_user))
-                );
+                var var_name = "%s.enabled".printf (addin.plugin_name);
+
+                vars[var_name] = new ContextVarInfo (ContextType.BOOLEAN, true);
                 context.register_vars ("steps", vars);
 
                 context.bind_context_to_property (
@@ -292,27 +268,39 @@ public sealed class ReadySet.PluginManager : Object {
         }
     }
 
-    public async void call_init_once () {
-        if (inited_once) {
-            return;
-        }
-
+    public void init_plugins_context () {
         for (int i = 0; i < steps.length; i++) {
             if (has_step (steps[i])) {
                 var addin = get_step_addin (steps[i]);
 
                 if (addin != null) {
-                    yield addin.init_once ();
+                    addin.init_context ();
                 }
             }
         }
 
         if (installer_name != null) {
             if (installers_plugins.contains (installer_name)) {
-                yield installers_plugins[installer_name].init_once ();
+                installers_plugins[installer_name].init_context ();
+            }
+        }
+    }
+
+    public void init_plugins () {
+        for (int i = 0; i < steps.length; i++) {
+            if (has_step (steps[i])) {
+                var addin = get_step_addin (steps[i]);
+
+                if (addin != null) {
+                    addin.init ();
+                }
             }
         }
 
-        inited_once = true;
+        if (installer_name != null) {
+            if (installers_plugins.contains (installer_name)) {
+                installers_plugins[installer_name].init ();
+            }
+        }
     }
 }

@@ -15,12 +15,22 @@ rs_app_vala_sources = files(
   'dbus/rs-system-service.vala',
 
   'end-pages/existing-user.vala',
+  'end-pages/factory.vala',
   'end-pages/initial-setup.vala',
   'end-pages/installer.vala',
+
+  'finalizer/existing-user.vala',
+  'finalizer/finalizer.vala',
+  'finalizer/initial-setup.vala',
+  'finalizer/installer.vala',
+
+  'pages/summary.vala',
+  'pages/welcome.vala',
 
   'widgets/devel/window.vala',
 
   'widgets/nothing-to-show.vala',
+  'widgets/page-state-row.vala',
   'widgets/pages-indicator.vala',
   'widgets/positioned-stack.vala',
   'widgets/step-row.vala',
@@ -29,11 +39,13 @@ rs_app_vala_sources = files(
 
   'about.vala',
   'application.vala',
-  'finalize.vala',
+  'application-service.vala',
+  'command-handler.vala',
   'main.vala',
   'options-handler.vala',
   'pages-model.vala',
   'plugin-manager.vala',
+  'post-act.vala',
   'utils.vala',
   'window-content.vala',
   'window.vala',
@@ -56,7 +68,7 @@ rs_app_sources = [
   rs_app_vala_sources,
   rs_app_vapi_sources,
   rs_app_resources,
-] + librs_sources + librs_vala_app_plugin_sources + librs_vala_app_only_sources
+] + librs_sources + librs_context_sources_internal + librs_utils_sources_internal + librs_ext_base_sources_internal + librs_context_locked_sources_internal
 
 rs_app_c_args = [
   '-DG_LOG_DOMAIN="ReadySet"',

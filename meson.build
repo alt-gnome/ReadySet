@@ -1,7 +1,7 @@
 project(
   'ready-set',
   'vala',
-  version: '0.13.3',
+  version: '0.14.0',
   meson_version: '>= 1.9',
   license: 'GPL-3.0-or-later',
 )
@@ -57,11 +57,13 @@ endif
 pascal_name = 'ReadySet'
 app_id = 'org.altlinux.' + pascal_name
 
+devel_suffix = ''
+
 if get_option('nightly')
-  app_id_dyn = app_id + '.Devel'
-else
-  app_id_dyn = app_id
+  devel_suffix = '.Devel'
 endif
+
+app_id_dyn = app_id + devel_suffix
 
 supported_languages_arr = []
 linguas = fs.read(meson.current_source_dir() / 'po' / 'LINGUAS').split()

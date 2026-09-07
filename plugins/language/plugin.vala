@@ -1,24 +1,24 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Language.Addin : ReadySet.StepAddin {
+public class Language.Addin : ReadySet.StepAddin, ReadySet.Welcome {
 
     static Addin instance;
 
@@ -31,34 +31,12 @@ public class Language.Addin : ReadySet.StepAddin {
         }
     }
 
-    public Value get_current_locale_func (ref Value this_value) {
-        var locale = this_value.get_string ();
-
-        if (locale == "") {
-            debug ("Languages: %s", string.joinv (", ", Intl.get_language_names ()));
-
-            foreach (string lang in Intl.get_language_names ()) {
-                if (Gnome.Languages.parse_locale (lang, null, null, null, null)) {
-                    locale = lang;
-                    break;
-                }
-            }
-
-            if (locale == "") {
-                locale = "C";
-            }
-        }
-
-        this_value.set_string (locale);
-        return locale;
+    public Value get_current_locale_func () {
+        return ReadySet.get_current_lang ();
     }
 
-    public void set_current_locale_func (ref Value this_value, Value new_value) {
-        var nv = new_value.get_string ();
-        Intl.setlocale (LocaleCategory.ALL, nv);
-
-        this_value.set_string (nv);
-        Addin.get_instance ().context.reload_window ();
+    public void set_current_locale_func (Value new_value) {
+        ReadySet.set_current_lang (new_value.get_string ());
     }
 
     protected override string? resource_base_path {
@@ -66,10 +44,6 @@ public class Language.Addin : ReadySet.StepAddin {
             return "/org/altlinux/ReadySet/Plugin/Language/";
         }
     }
-
-    //  We can't change shell's language, so hide page.
-    //  This plugin can still provides getter/setter for current language.
-    public override bool existing_user { get { return false; } }
 
     static construct {
         typeof (SelectTitle).ensure ();
@@ -84,10 +58,11 @@ public class Language.Addin : ReadySet.StepAddin {
 
     public override HashTable<string, ReadySet.ContextVarInfo> get_context_vars () {
         var vars = base.get_context_vars ();
-        vars["locale"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
 
-        vars["locale"].getter_func = get_current_locale_func;
-        vars["locale"].setter_func = set_current_locale_func;
+        vars["locale"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING) {
+            getter_func = get_current_locale_func,
+            setter_func = set_current_locale_func,
+        };
 
         return vars;
     }
@@ -102,10 +77,10 @@ public class Language.Addin : ReadySet.StepAddin {
         return instance;
     }
 
-    public async override void init_once () {
+    public override void init_context () {
         if (!context.sandbox && context.mode == INITIAL_SETUP) {
             try {
-                enabled = (yield new Polkit.Permission ("org.freedesktop.locale1.set-locale", null, null)).allowed &&
+                enabled = new Polkit.Permission.sync ("org.freedesktop.locale1.set-locale", null, null).allowed &&
                     context.get_boolean ("steps.language.enabled");
             } catch (Error e) {
                 error (e.message);

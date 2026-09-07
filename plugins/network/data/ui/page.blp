@@ -77,15 +77,6 @@ template $NetworkPage: $ReadySetBasePage {
 
       Adw.PreferencesGroup ethernet_group {
         title: _("Ethernet");
-
-        ListBox ethernet_adapters {
-          styles [
-            "boxed-list",
-          ]
-
-          valign: start;
-          selection-mode: none;
-        }
       }
 
       Adw.PreferencesGroup wifi_group {
@@ -93,7 +84,7 @@ template $NetworkPage: $ReadySetBasePage {
 
         Revealer {
           reveal-child: bind wlan_switch.activatable;
-          transition-type: fade_slide_down;
+          transition-type: slide_down;
 
           ListBox {
             styles [

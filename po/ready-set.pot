@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 11:48+0000\n"
+"POT-Creation-Date: 2026-09-06 20:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr ""
 msgid "Complete the setup"
 msgstr ""
 
-#: data/ui/initial-setup-end-page.blp:36 data/ui/installer-end-page.blp:36
+#: data/ui/initial-setup-end-page.blp:36
 msgid "Setting up the system…"
 msgstr ""
 
@@ -37,32 +37,48 @@ msgstr ""
 msgid "All done!"
 msgstr ""
 
+#: data/ui/installer-end-page.blp:36 src/end-pages/installer.vala:63
+msgid "Installing system…"
+msgstr ""
+
 #: data/ui/nothing-to-show.blp:30 plugins/language/data/ui/box.blp:44
 msgid "Nothing to show"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:378 data/ui/steps-main-page.blp:593
+#: data/ui/steps-main-page.blp:374 data/ui/steps-main-page.blp:597
 msgid "Go to previous page"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:396 data/ui/steps-main-page.blp:612
+#: data/ui/steps-main-page.blp:392 data/ui/steps-main-page.blp:616
 msgid "Next"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:408 data/ui/steps-main-page.blp:625
+#: data/ui/steps-main-page.blp:404 data/ui/steps-main-page.blp:629
 msgid "Extend/Retract keyboard"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:482
-msgid "Open application menu"
+#: data/ui/steps-main-page.blp:486 data/ui/steps-main-page.blp:664
+msgid "Open Context menu"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:520
+#: data/ui/steps-main-page.blp:524
 msgid "Go up"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:540 data/ui/steps-main-page.blp:546
+#: data/ui/steps-main-page.blp:544 data/ui/steps-main-page.blp:550
 msgid "Go up to the beginning"
+msgstr ""
+
+#: data/ui/steps-main-page.blp:651
+msgid "Return to setup"
+msgstr ""
+
+#: data/ui/summary-page.blp:5 data/ui/summary-page.blp:21
+msgid "Summary"
+msgstr ""
+
+#: data/ui/welcome-page.blp:5
+msgid "Welcome"
 msgstr ""
 
 #: data/ui/window-content.blp:43
@@ -157,23 +173,23 @@ msgstr ""
 msgid "Failed to connect to timedate service: "
 msgstr ""
 
-#: plugins/date-and-time/page.vala:165 plugins/date-and-time/page.vala:168
+#: plugins/date-and-time/page.vala:164
 msgid "Undefined"
 msgstr ""
 
-#: plugins/date-and-time/plugin.vala:65
+#: plugins/date-and-time/plugin.vala:59
 msgid "Failed to connect to timedate service"
 msgstr ""
 
-#: plugins/date-and-time/plugin.vala:79
+#: plugins/date-and-time/plugin.vala:73
 msgid "Error when setting timezone"
 msgstr ""
 
-#: plugins/date-and-time/plugin.vala:86
+#: plugins/date-and-time/plugin.vala:80
 msgid "Error when setting NTP"
 msgstr ""
 
-#: plugins/date-and-time/plugin.vala:94
+#: plugins/date-and-time/plugin.vala:88
 msgid "Error when setting time"
 msgstr ""
 
@@ -224,11 +240,16 @@ msgstr ""
 msgid "Try writing"
 msgstr ""
 
-#: plugins/keyboard/enums.vala:74 plugins/keyboard/layout-switch-button.vala:72
+#: plugins/keyboard/enums.vala:74 plugins/keyboard/layout-switch-button.vala:79
+#: plugins/keyboard/layout-switch-button.vala:100
 msgid "None"
 msgstr ""
 
-#: plugins/keyboard/plugin.vala:121
+#: plugins/keyboard/layout-switch-button.vala:38
+msgid "Additinal layout switch"
+msgstr ""
+
+#: plugins/keyboard/plugin.vala:119
 msgid "Error when setting keyboard layout"
 msgstr ""
 
@@ -240,7 +261,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: plugins/language/plugin.vala:122
+#: plugins/language/plugin.vala:97
 msgid "Error when setting language"
 msgstr ""
 
@@ -257,7 +278,7 @@ msgstr ""
 msgid "License"
 msgstr ""
 
-#: plugins/license-agreement/data/ui/page.blp:11
+#: plugins/license-agreement/data/ui/page.blp:10
 msgid "License Agreement"
 msgstr ""
 
@@ -265,9 +286,27 @@ msgstr ""
 msgid "I have read the license and accept it"
 msgstr ""
 
+#: plugins/license-agreement/page.vala:53
+msgid ""
+"We have updated our License Agreement. Please accept the new terms to "
+"continue."
+msgstr ""
+
 #: plugins/network/data/ui/ap-security-editor.blp:42
 #: plugins/user/data/ui/page-password.blp:24
 msgid "Security"
+msgstr ""
+
+#: plugins/network/data/ui/ethernet-adapter-window.blp:49
+msgid "Available Connections"
+msgstr ""
+
+#: plugins/network/data/ui/ethernet-adapter-window.blp:55
+msgid "Add a Connection…"
+msgstr ""
+
+#: plugins/network/data/ui/ethernet-connection-row.blp:39
+msgid "Configure…"
 msgstr ""
 
 #: plugins/network/data/ui/page.blp:25 plugins/network/data/ui/page.blp:30
@@ -290,91 +329,96 @@ msgstr ""
 msgid "Ethernet"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:92
+#: plugins/network/data/ui/page.blp:83
 msgid "Wi-Fi"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:107
+#: plugins/network/data/ui/page.blp:98
 msgid "Wi-Fi adapter"
 msgstr ""
 
-#: plugins/network/plugin.vala:173
+#: plugins/network/plugin.vala:193
 msgid "Failed to apply network settings"
 msgstr ""
 
-#: plugins/network/utils.vala:40
+#: plugins/network/utils.vala:58
 msgid "Leading hyphen is not allowed"
 msgstr ""
 
-#: plugins/network/utils.vala:49
+#: plugins/network/utils.vala:67
 msgid "Only Latin letters, digits and hyphens are allowed"
 msgstr ""
 
-#: plugins/network/utils.vala:55
+#: plugins/network/utils.vala:73
 msgid "Host name is too short"
 msgstr ""
 
-#: plugins/network/utils.vala:60
+#: plugins/network/utils.vala:78
 msgid "Trailing hyphen is not allowed"
 msgstr ""
 
-#: plugins/network/wifi.vala:62
+#: plugins/network/utils.vala:141
+#, c-format
+msgid "Wired connection %u"
+msgstr ""
+
+#: plugins/network/wifi.vala:68
 msgid "Can't connect: undetermined security type"
 msgstr ""
 
-#: plugins/network/wifi.vala:138
+#: plugins/network/wifi.vala:144
 msgid "Connection setup failed"
 msgstr ""
 
-#: plugins/network/wifi.vala:149
+#: plugins/network/wifi.vala:155
 msgid "Connection failed"
 msgstr ""
 
-#: plugins/network/wifi.vala:185
+#: plugins/network/wifi.vala:191
 msgid "Connecting…"
 msgstr ""
 
-#: plugins/network/wifi.vala:190
+#: plugins/network/wifi.vala:196
 msgid "Connected"
 msgstr ""
 
-#: plugins/network/wifi.vala:192
+#: plugins/network/wifi.vala:198
 msgid "Connected without internet"
 msgstr ""
 
-#: plugins/network/wifi.vala:196
+#: plugins/network/wifi.vala:202
 msgid "Disconnecting…"
 msgstr ""
 
-#: plugins/network/wifi.vala:264
+#: plugins/network/wifi.vala:274
 msgid "WPA/WPA2/WPA3 Enterprise"
 msgstr ""
 
-#: plugins/network/wifi.vala:269
+#: plugins/network/wifi.vala:279
 msgid "WPA3 Personal"
 msgstr ""
 
-#: plugins/network/wifi.vala:274
+#: plugins/network/wifi.vala:284
 msgid "WPA/WPA2 Personal"
 msgstr ""
 
-#: plugins/network/wifi.vala:279
+#: plugins/network/wifi.vala:289
 msgid "WEP 40/104-bit Key (Hex/ASCII)"
 msgstr ""
 
-#: plugins/network/wifi.vala:283
+#: plugins/network/wifi.vala:293
 msgid "WEP 128-bit Passphrase"
 msgstr ""
 
-#: plugins/network/wifi.vala:288
+#: plugins/network/wifi.vala:298
 msgid "Dynamic WEP (802.1x)"
 msgstr ""
 
-#: plugins/network/wifi.vala:293
+#: plugins/network/wifi.vala:303
 msgid "LEAP"
 msgstr ""
 
-#: plugins/network/wifi.vala:298
+#: plugins/network/wifi.vala:308
 msgid "Enhanced Open"
 msgstr ""
 
@@ -422,7 +466,7 @@ msgstr ""
 msgid "Enable Third-Party repositories"
 msgstr ""
 
-#: plugins/software/plugin.vala:68
+#: plugins/software/plugin.vala:72
 msgid "Failed to add a software source"
 msgstr ""
 
@@ -653,56 +697,30 @@ msgid ""
 "Adding more letters, numbers and punctuation will make the password stronger."
 msgstr ""
 
-#: plugins/user/utils.vala:90
+#: plugins/user/utils.vala:122
 msgid "Name cannot be empty"
 msgstr ""
 
-#: plugins/user/utils.vala:178
+#: plugins/user/utils.vala:210
 msgid "That username isn't available. Please try another"
 msgstr ""
 
-#: plugins/user/utils.vala:180
+#: plugins/user/utils.vala:212
 msgid "The username is too long"
 msgstr ""
 
-#: plugins/user/utils.vala:182
+#: plugins/user/utils.vala:214
 msgid "The username must start with a lower case letter from a-z"
 msgstr ""
 
-#: plugins/user/utils.vala:184
+#: plugins/user/utils.vala:216
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
 msgstr ""
 
-#: plugins/user/utils.vala:187
+#: plugins/user/utils.vala:219
 msgid "Username cannot be empty"
-msgstr ""
-
-#: plugins/welcome/data/ui/page.blp:5
-msgid "Welcome"
-msgstr ""
-
-#: plugins/welcome/page.vala:38
-#, c-format
-msgid "Welcome to %s!"
-msgstr ""
-
-#: plugins/welcome/page.vala:40
-msgid "The system requires completion of the setup."
-msgstr ""
-
-#: plugins/welcome/page.vala:40
-msgid "We will guide you through the necessary steps."
-msgstr ""
-
-#: plugins/welcome/page.vala:43
-msgid ""
-"The setup will guide you from creating an account to enabling some features."
-msgstr ""
-
-#: plugins/welcome/page.vala:43
-msgid "We will help you prepare everything in a moment."
 msgstr ""
 
 #: src/about.vala:24
@@ -714,38 +732,45 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
+#: src/command-handler.vala:69
+msgid "Commands"
+msgstr ""
+
+#: src/command-handler.vala:77
+msgid "Generate bash completion script"
+msgstr ""
+
+#: src/command-handler.vala:80
+msgid "Print 0 if nothing to do else 1 to stderr"
+msgstr ""
+
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/end-pages/initial-setup.vala:54 src/end-pages/installer.vala:44
+#: src/end-pages/initial-setup.vala:44 src/end-pages/installer.vala:44
 #, c-format
 msgid "_Start Using %s"
 msgstr ""
 
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/end-pages/initial-setup.vala:56 src/end-pages/installer.vala:46
+#: src/end-pages/initial-setup.vala:46 src/end-pages/installer.vala:46
 #, c-format
 msgid "%s is ready to be used."
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:58 src/end-pages/installer.vala:48
+#: src/end-pages/initial-setup.vala:48 src/end-pages/installer.vala:48
 msgid "_Start Using the System"
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:59 src/end-pages/installer.vala:49
+#: src/end-pages/initial-setup.vala:49 src/end-pages/installer.vala:49
 msgid "System is ready to be used."
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:108
-#, c-format
-msgid "Applying %s…"
+#: src/end-pages/initial-setup.vala:63
+msgid "Applying changes…"
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:133 src/end-pages/installer.vala:96
+#: src/end-pages/initial-setup.vala:85 src/end-pages/installer.vala:86
 #, c-format
 msgid "Error message: %s"
-msgstr ""
-
-#: src/end-pages/installer.vala:66 src/finalize.vala:129
-msgid "Installing system…"
 msgstr ""
 
 #: src/options-handler.vala:39
@@ -773,39 +798,67 @@ msgid "Sandbox run without doing anything in system"
 msgstr ""
 
 #: src/options-handler.vala:83
-msgid "Show indicators and sidebar with steps"
-msgstr ""
-
-#: src/options-handler.vala:90
 msgid "Steps. E.g: `steps=language,keyboard`"
 msgstr ""
 
-#: src/options-handler.vala:97
+#: src/options-handler.vala:90
 msgid "Window can be resized or not"
 msgstr ""
 
-#: src/options-handler.vala:104
+#: src/options-handler.vala:97
 msgid "Width of a window"
 msgstr ""
 
-#: src/options-handler.vala:111
+#: src/options-handler.vala:104
 msgid "Height of a window"
 msgstr ""
 
-#: src/options-handler.vala:118
+#: src/options-handler.vala:111
 msgid "Set layout for window: `big`, `small`, `vertical`, `horizontal`"
 msgstr ""
 
-#: src/options-handler.vala:125
+#: src/options-handler.vala:118
 msgid "Print version information and exit"
 msgstr ""
 
-#: src/options-handler.vala:132
+#: src/options-handler.vala:125
 msgid "Run apply from config without running GUI"
 msgstr ""
 
-#: src/options-handler.vala:139
+#: src/options-handler.vala:132
 msgid "App config file"
+msgstr ""
+
+#: src/pages/welcome.vala:36 src/pages/welcome.vala:43
+#, c-format
+msgid "Welcome to %s!"
+msgstr ""
+
+#: src/pages/welcome.vala:38
+msgid "The system requires completion of the setup."
+msgstr ""
+
+#: src/pages/welcome.vala:39
+msgid "We will guide you through the necessary steps."
+msgstr ""
+
+#: src/pages/welcome.vala:45
+msgid ""
+"The setup will guide you from creating an account to enabling some features."
+msgstr ""
+
+#: src/pages/welcome.vala:46
+msgid "We will help you prepare everything in a moment."
+msgstr ""
+
+#. Bad practive to show text before langauge, so it kind of fallback
+#: src/pages/welcome.vala:51
+#, c-format
+msgid "This is %s installer"
+msgstr ""
+
+#: src/pages/welcome.vala:53
+msgid "After some choices, the system will be installed on Your device."
 msgstr ""
 
 #: tests/plugins/test-common/data/ui/page.blp:23

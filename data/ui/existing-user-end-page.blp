@@ -20,7 +20,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $ReadySetExistingUserEndPage: Adw.Bin {
+template $ReadySetExistingUserEndPage: $ReadySetEndPage {
   Adw.StatusPage {
     icon-name: "org.altlinux.ReadySet-symbolic";
     title: _("Setup complete!");
@@ -36,7 +36,8 @@ template $ReadySetExistingUserEndPage: Adw.Bin {
       label: _("Complete the setup");
       width-request: 156;
       can-shrink: true;
-      clicked => $on_complete();
+      action-name: "app.finish";
+      action-target: "'quit'";
     }
   }
 }

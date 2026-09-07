@@ -49,3 +49,7 @@ sources:
       url: https://flathub.org/repo/flathub.flatpakrepo
       remote-name: flathub
 ```
+
+## Tuner plugin
+
+When built with the `with_software_tuner_plugin=enabled` option, the software functionality is also built as a Tuner plugin (`ready-set-software`) for use with the [Tuner](https://altlinux.space/alt-gnome/tuner) application.

@@ -19,5 +19,12 @@
  */
 
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Plugin/Language/ui/page.ui")]
-public sealed class Language.Page : ReadySet.BasePage {
+public sealed class Language.Page : ReadySet.BasePage, ReadySet.HasStringRepr {
+
+    public string get_string_repr () {
+        return Gnome.Languages.get_country_from_locale (
+            Addin.get_instance ().current_locale,
+            Addin.get_instance ().current_locale
+        );
+    }
 }

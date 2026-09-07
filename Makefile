@@ -13,6 +13,12 @@ ifeq ($(PM),)
 $(error Package manager not found)
 endif
 
+ifeq ($(shell test -f .blueprintignore; echo $$?), 0)
+	BLUEPRINT_IGNORE := .blueprintignore
+else
+	BLUEPRINT_IGNORE := /dev/null
+endif
+
 .PHONY: setup setup-ci install compile test lint lint-fix install-deps coverage
 
 install-deps:
@@ -51,6 +57,12 @@ uninstall:
 test: compile
 	meson test -C _build
 
+build-vagary:
+	./test-atomic/build-atomic altlinux.space/alt-atomic/onyx/nightly:latest --force-rebuild
+
+test-vagary:
+	cd test-atomic/vagary && vagary scenario.yml
+
 coverage: test
 	mkdir -p _build/meson-logs/coveragereport
 	gcovr _build -x -o _build/meson-logs/coverage.xml
@@ -58,12 +70,12 @@ coverage: test
 
 lint:
 	io.elementary.vala-lint -d .
-	find ./ -name "*.blp" -print0 | xargs -0 blueprint-compiler format -s 2
+	find ./ -name "*.blp" -print0 | grep -zvFf $(BLUEPRINT_IGNORE) | xargs -0 blueprint-compiler format -s 2
 
 lint-fix:
-	find ./ -name "*.blp" -print0 | xargs -0 blueprint-compiler format -f -s 2
+	find ./ -name "*.blp" -print0 | grep -zvFf $(BLUEPRINT_IGNORE) | xargs -0 blueprint-compiler format -f -s 2
 
-pot:
+update-potfiles:
 	./po/update_potfiles
 
 update-pot:
