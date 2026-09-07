@@ -27,6 +27,7 @@ add_project_arguments(
 
 accountsservice_dep = dependency('accountsservice')
 api_base_dep = dependency('libapi-base-7')
+crypt_dep = meson.get_compiler('c').find_library('crypt')
 flatpak_dep = dependency('flatpak')
 gdm_dep = dependency('gdm', required: get_option('gdm'))
 gee_dep = dependency('gee-0.8')
