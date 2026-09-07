@@ -172,20 +172,7 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
         "should-layout"
     ));
 
-    public Gee.ArrayList<PageInfo> pages { get; construct; }
-
-    public PagesModel (Gee.ArrayList<PageInfo> pages) {
-        Object (
-            pages: pages
-        );
-    }
-
     construct {
-        foreach (var page in pages) {
-            store.append (page);
-
-            page.notify["should-layout"].connect (page_should_layout_changed);
-        }
         real_model = new Gtk.SingleSelection (new Gtk.FilterListModel (
             store, filter
         ));
@@ -194,6 +181,16 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
         real_model.items_changed.connect (on_real_model_items_changed);
 
         unselect_all ();
+    }
+
+    public void insert (int position, PageInfo page) {
+        page.notify["should-layout"].connect (page_should_layout_changed);
+        store.insert (position, page);
+    }
+
+    public void append (PageInfo page) {
+        page.notify["should-layout"].connect (page_should_layout_changed);
+        store.append (page);
     }
 
     void page_should_layout_changed () {
