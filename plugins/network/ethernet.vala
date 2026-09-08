@@ -28,7 +28,7 @@ public sealed class Network.EthernetAdapterRow : Adw.ActionRow {
         device = eth;
         device.add_weak_pointer (&device);
         destroy.connect (() => {
-            device.remove_weak_pointer (&device);
+            device?.remove_weak_pointer (&device);
         });
 
         title = device.get_description ();
@@ -74,7 +74,7 @@ public sealed class Network.EthernetAdapterWindow : Adw.Dialog {
         device = eth;
         device.add_weak_pointer (&device);
         destroy.connect (() => {
-            device.remove_weak_pointer (&device);
+            device?.remove_weak_pointer (&device);
         });
 
         nmc.connection_added.connect (connection_added);
@@ -145,8 +145,8 @@ public sealed class Network.EthernetConnectionRow : Adw.ActionRow {
         device = eth;
         device.add_weak_pointer (&device);
         destroy.connect (() => {
-            connection.remove_weak_pointer (&connection);
-            device.remove_weak_pointer (&device);
+            connection?.remove_weak_pointer (&connection);
+            device?.remove_weak_pointer (&device);
         });
 
         radio.group = radio_group;

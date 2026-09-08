@@ -48,8 +48,8 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         point = ap;
         point.add_weak_pointer (&point);
         destroy.connect (() => {
-            device.remove_weak_pointer (&device);
-            point.remove_weak_pointer (&point);
+            device?.remove_weak_pointer (&device);
+            point?.remove_weak_pointer (&point);
         });
 
         Bytes ssid = NM.Utils.is_empty_ssid (ap.ssid?.get_data ())
@@ -258,7 +258,7 @@ public sealed class Network.ApSecurityEditor : Adw.AlertDialog {
         connection = conn;
         connection.add_weak_pointer (&connection);
         destroy.connect (() => {
-            connection.remove_weak_pointer (&connection);
+            connection?.remove_weak_pointer (&connection);
         });
         heading = connection.get_id ();
 
@@ -383,7 +383,7 @@ public sealed class Network.WiFiAdapterBox : Adw.Bin {
         device = wlan;
         device.add_weak_pointer (&device);
         destroy.connect (() => {
-            device.remove_weak_pointer (&device);
+            device?.remove_weak_pointer (&device);
         });
 
         box.bind_model (
