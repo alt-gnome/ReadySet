@@ -18,6 +18,14 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+[DBus (name = "org.freedesktop.Accounts")]
+public interface User.Accounts : Object {
+
+    public abstract async ObjectPath find_user_by_id (
+        int64 id
+    ) throws Error;
+}
+
 [DBus (name = "org.freedesktop.Accounts.User")]
 public interface User.AccountsUser : Object {
 
@@ -49,11 +57,11 @@ namespace User {
             error ("Failed to connect to bus");
         }
 
-        return con.get_proxy_sync<User.AccountsUser> (
-            "org.freedesktop.Accounts",
-            "/org/freedesktop/Accounts/User%u".printf (uid),
-            DBusProxyFlags.NONE
-        );
+        var act = yield con.get_proxy<Accounts> ("org.freedesktop.Accounts", "/org/freedesktop/Accounts", NONE);
+        var user_path = yield act.find_user_by_id (uid);
+        var user = yield con.get_proxy<AccountsUser> ("org.freedesktop.Accounts", user_path, NONE);
+
+        return user;
     }
 
     async void set_user_password (string password_hash, uint uid) throws Error {
