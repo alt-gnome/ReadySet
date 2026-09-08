@@ -29,9 +29,7 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
     unowned NM.DeviceWifi device;
     unowned NM.AccessPoint point;
     NM.Connection connection = null;
-
     NM.ActiveConnection? listener = null;
-    public string? status { get; private set; default = null; }
 
     NM.Utils.SecurityType[] security;
     public bool needs_secrets { get; private set; default = false; }
@@ -135,7 +133,7 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
                         connection, false, null
                     );
                 } catch (Error e) {
-                    status = _("Connection setup failed");
+                    subtitle = _("Connection setup failed");
                     warning (e.message);
                     return;
                 }
@@ -159,7 +157,7 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
                 connection, device, null, null
             );
         } catch (Error e) {
-            status = _("Connection failed");
+            subtitle = _("Connection failed");
             warning (e.message);
         }
     }
@@ -181,27 +179,27 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
 
     void update_status () {
         if (listener == null) {
-            status = null;
+            subtitle = null;
             return;
         }
 
         switch (listener.state) {
         case ACTIVATING:
-            status = _("Connecting…");
+            subtitle = _("Connecting…");
             break;
         case ACTIVATED:
             if (device.ip4_connectivity == FULL
                     || device.ip6_connectivity == FULL) {
-                status = _("Connected");
+                subtitle = _("Connected");
             } else {
-                status = _("Connected without internet");
+                subtitle = _("Connected without internet");
             }
             break;
         case DEACTIVATING:
-            status = _("Disconnecting…");
+            subtitle = _("Disconnecting…");
             break;
         default:
-            status = null;
+            subtitle = null;
             break;
         }
     }
