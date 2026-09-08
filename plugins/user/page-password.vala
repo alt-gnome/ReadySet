@@ -102,7 +102,7 @@ public sealed class User.PagePassword : PagePasswordCommon {
         password_strength.label = strength.hint;
         update_css_by_strength (
             password_entry,
-            strength.level,
+            password_entry.text.length == 0 ? StrengthLevel.FATALBAD : strength.level,
             Addin.get_instance ().context.get_boolean ("user.enforce-password-quality")
         );
         password_strength.progress_bar_visible = strength.support_value;

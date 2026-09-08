@@ -37,6 +37,7 @@ namespace User {
     }
 
     public enum StrengthLevel {
+        FATALBAD,
         BAD,
         NOT_BAD,
         GOOD;
@@ -84,6 +85,9 @@ namespace User {
         row.remove_css_class ("success");
 
         switch (strength_level) {
+            case StrengthLevel.FATALBAD:
+                row.add_css_class ("error");
+                break;
             case StrengthLevel.BAD:
                 if (enforce_password_qwcheck) {
                     row.add_css_class ("error");
