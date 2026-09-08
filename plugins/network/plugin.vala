@@ -35,8 +35,6 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
     public ListStore ethers { get; construct; }
     public ListStore wlans { get; construct; }
 
-    public uint ether_devices_num { get; private set; default = 0; }
-
     bool simple;
 
     static construct {
