@@ -21,36 +21,55 @@
 namespace ReadySet {
 
     /**
-     * Status of method {@link ReadySet.ExistingUser.get_existing_user}
+     * Policy returned by {@link ReadySet.ExistingUser.get_existing_user}.
      */
     public enum ExistingUserStatus {
-        /**
-         * Can be shown at `existing-user` mode only if not present at
-         * `performed-steps` list.
-         */
+        /** Show the step only when it is absent from `performed-steps`. */
         IF_NOT_PASSED,
-        /**
-         * Will be shown anyway.
-         */
+        /** Always show the step in existing-user mode. */
         YES,
-        /**
-         * Can't be shown at `existing-user` mode.
-         */
+        /** Never show the step in existing-user mode. */
         NO;
     }
 
+    /**
+     * Responsive layout state reported to {@link ReadySet.BasePage}.
+     *
+     * `VERTICAL` and `HORIZONTAL` describe the content arrangement, while
+     * `BIG` and `SMALL` describe the available window size. Consumers should
+     * handle the values relevant to the breakpoint they observe.
+     */
     public enum LayoutMode {
+        /** Widgets are arranged vertically. */
         VERTICAL,
+        /** Widgets are arranged horizontally. */
         HORIZONTAL,
+        /** The page has a large amount of available space. */
         BIG,
+        /** The page has a limited amount of available space. */
         SMALL;
     }
 
+    /**
+     * Operating mode of the ReadySet application.
+     */
     public enum Mode {
+        /** Configure a newly created system or user session. */
         INITIAL_SETUP,
+        /** Collect settings and install a system. */
         INSTALLER,
+        /** Configure an existing user's current session. */
         EXISTING_USER;
 
+        /**
+         * Parses a mode identifier.
+         *
+         * Accepted values are `initial-setup`, `installer`, and
+         * `existing-user`. Any other value causes a fatal error.
+         *
+         * @param str the mode identifier
+         * @return the parsed mode
+         */
         public static Mode from_string (string str) {
             switch (str) {
                 case "initial-setup":
@@ -64,6 +83,11 @@ namespace ReadySet {
             }
         }
 
+        /**
+         * Returns this mode's stable identifier.
+         *
+         * @return `initial-setup`, `installer`, or `existing-user`
+         */
         public string to_string () {
             switch (this) {
                 case INITIAL_SETUP:
@@ -95,6 +119,12 @@ namespace ReadySet {
          */
         public string description { get; set; }
 
+        /**
+         * Creates structured error data.
+         *
+         * @param message the short error title
+         * @param description the detailed error description
+         */
         public ApplyErrorData (string message, string description) {
             this.message = message;
             this.description = description;
@@ -102,8 +132,12 @@ namespace ReadySet {
     }
 
     /**
-     * Class for handling progress data for continius operation in
-     * {@link InstallerAddin.install} and {@link StepAddin.apply}.
+     * Mutable progress information for long-running apply and install
+     * operations.
+     *
+     * A newly created instance starts with {@link ProgressData.value} set to
+     * `0.0`. Implementations update the same instance while
+     * {@link InstallerAddin.install} or {@link StepAddin.apply} is running.
      */
     public sealed class ProgressData : Object {
 
@@ -146,9 +180,14 @@ namespace ReadySet {
         NO_PERMISSION;
 
         /**
-         * Build error from message and description. Returns error with
-         * json serialized {@link ApplyErrorData} in message.
+         * Builds an error containing serialized structured error data.
          *
+         * The returned error has code {@link ApplyError.BASE}; its message is
+         * the JSON representation of {@link ApplyErrorData}.
+         *
+         * @param message the short error title
+         * @param description the detailed error description
+         * @return a new structured apply error
          * @see ApplyErrorData
          */
         public static ApplyError build_error (string message, string description) {
@@ -158,20 +197,32 @@ namespace ReadySet {
     }
 
     /**
-     * Function that uses as getter in {@link Context} value.
+     * Reads the current value of an externally backed context variable.
      *
+     * @return the current value
      * @see ReadySet.ContextVarInfo
      */
     public delegate Value ContextGetterFunc ();
 
     /**
-     * Function that uses as setter in {@link Context} value.
+     * Writes an externally backed context variable.
      *
+     * @param new_value the value to store
      * @see ReadySet.ContextVarInfo
      */
     public delegate void ContextSetterFunc (Value new_value);
 
     string locale;
+
+    /**
+     * Returns the current locale identifier.
+     *
+     * On the first call, the function selects the first valid entry reported
+     * by {@link GLib.Intl.get_language_names} and caches it. It returns `C`
+     * when no valid locale can be found.
+     *
+     * @return the cached locale identifier
+     */
     public string get_current_lang () {
         if (locale == null) {
             locale = "";
@@ -193,6 +244,15 @@ namespace ReadySet {
         return locale;
     }
 
+    /**
+     * Changes the process locale and requests a window reload.
+     *
+     * The locale is applied to all categories with
+     * {@link GLib.Intl.setlocale}. If a default application exists, its
+     * `reload-window` action is activated so the UI can reflect the change.
+     *
+     * @param new_lang the locale identifier to apply
+     */
     public void set_current_lang (string new_lang) {
         locale = new_lang;
         Intl.setlocale (LocaleCategory.ALL, new_lang);

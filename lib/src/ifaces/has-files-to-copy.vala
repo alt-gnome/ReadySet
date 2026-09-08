@@ -18,11 +18,18 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/**
+ * Provides files that should be copied into a newly created user's home
+ * directory.
+ */
 public interface ReadySet.HasFilesToCopy : StepAddin {
 
     /**
-     * Files which will be copied to created user. Pathes relative to
-     * user's HOME dir.
+     * Returns files to copy for the newly created user.
+     *
+     * Each path is relative to the user's home directory.
+     *
+     * @return the relative paths to copy
      */
     public abstract string[] get_files_to_copy ();
 }

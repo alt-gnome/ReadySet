@@ -25,6 +25,14 @@
  */
 public partial abstract class ReadySet.ExtensionBase : Peas.ExtensionBase {
 
+    /**
+     * Base path of this extension's compiled resources.
+     *
+     * Override this property when the extension ships a gresource bundle.
+     * The application uses the path to load extension resources, including a
+     * `style.css` file when one is present. The default value is `null`, which
+     * means that the extension does not provide a resource base path.
+     */
     public virtual string? resource_base_path {
         get {
             return null;
@@ -49,22 +57,34 @@ public partial abstract class ReadySet.ExtensionBase : Peas.ExtensionBase {
     }
 
     /**
-     * Calls after context was set, but before config/cli options values set.
+     * Initializes the extension after {@link ExtensionBase.context} is set.
+     *
+     * This hook is called before values from configuration and command-line
+     * options are applied to the context.
      */
     public virtual void init_context () {}
 
     /**
-     * Calls after initial config/cli options values set.
+     * Initializes the extension after initial configuration and command-line
+     * option values have been applied to the context.
      */
     public virtual void init () {}
 
     /**
-     * Get context variables for registration. Calls by application.
-     * Better to this for getting created {@link GLib.HashTable}.
+     * Returns the context variables provided by this extension.
+     *
+     * Override this method and add entries to the table returned by the base
+     * implementation:
      * {{{
-     *  base.get_context_vars ()
+     * var vars = base.get_context_vars ();
+     * vars["enabled"] = new ContextVarInfo (ContextType.BOOLEAN, true);
+     * return vars;
      * }}}
      *
+     * The application registers the returned variables under the extension's
+     * module name. The default implementation returns a new empty table.
+     *
+     * @return a newly allocated table of variable names and their metadata
      */
     public virtual HashTable<string, ContextVarInfo> get_context_vars () {
         var vars = new HashTable<string, ContextVarInfo> (str_hash, str_equal);

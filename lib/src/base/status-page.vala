@@ -25,12 +25,26 @@
 [GtkTemplate (ui = "/org/altlinux/ReadySet/Lib/ui/base/status-page.ui")]
 public sealed class ReadySet.StatusPage : Adw.Bin {
 
+    /**
+     * Image displayed above the title.
+     *
+     * When set, this takes precedence over {@link StatusPage.icon_name}.
+     */
     public Gdk.Paintable paintable { get; set; }
 
+    /**
+     * Name of the icon displayed when {@link StatusPage.paintable} is not set.
+     */
     public string icon_name { get; set; }
 
+    /**
+     * Primary text displayed by the page.
+     */
     public string title { get; set; }
 
+    /**
+     * Secondary text displayed below the title.
+     */
     public string description { get; set; }
 
     static construct {

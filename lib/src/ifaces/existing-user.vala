@@ -18,17 +18,22 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/**
+ * Declares whether a step is available in existing-user mode.
+ *
+ * Step plugins that do not implement this interface are treated as returning
+ * {@link ReadySet.ExistingUserStatus.NO}.
+ */
 public interface ReadySet.ExistingUser : StepAddin {
 
     /**
-     * Whether plugin support running without special permissuin for
-     * settings up current user.
+     * Returns the policy for showing this step in existing-user mode.
      *
-     * Running without GUI, so can be synchronous.
-     * If plugin not realize this interface, application will use
-     * {@link ReadySet.ExistingUserStatus.NO} as status.
+     * The default implementation returns
+     * {@link ReadySet.ExistingUserStatus.IF_NOT_PASSED}, so the step is shown
+     * only when it is absent from the performed-steps list.
      *
-     * {@link ReadySet.ExistingUserStatus.IF_NOT_PASSED} by default.
+     * @return the existing-user availability policy
      */
     public virtual ExistingUserStatus get_existing_user () {
         return IF_NOT_PASSED;

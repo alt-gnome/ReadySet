@@ -1,39 +1,38 @@
 /*
  * Copyright (C) 2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 /**
- * Base class for all pages that will be build via
- * {@link ReadySet.StepAddin.build_pages}.
+ * Base class for pages provided by step and installer plugins.
  *
- * It has data for showing up widgets:
- * * info
- * * top_widget
- * * bottom_widget
- * * content
- *
- * And data for showing up in indicators:
- * * title_icon_name
- * * title_header
+ * Pages returned by {@link ReadySet.StepAddin.build_pages} and
+ * {@link ReadySet.InstallerStep.build_page} use this class to expose their
+ * content, auxiliary widgets, navigation state, and presentation metadata.
  */
 public class ReadySet.BasePage : Adw.BreakpointBin {
 
+    /**
+     * Requests navigation to the next page.
+     *
+     * A page can emit this signal when an action inside its content should
+     * behave like the application's continue button.
+     */
     public signal void next ();
 
     /**
@@ -120,9 +119,11 @@ public class ReadySet.BasePage : Adw.BreakpointBin {
     }
 
     /**
-     * Triggered when continue button clicked.
+     * Handles an attempt to continue from this page.
      *
-     * return   true if the continuation should work, false otherwise.
+     * Override this method to validate or save the page state before
+     * navigation. It is called when the application's continue button is
+     * activated. If need to go next, emit {@link ReadySet.BasePage.next} signal.
      */
     public virtual void try_continue () {
         next ();
