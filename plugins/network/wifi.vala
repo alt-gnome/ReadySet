@@ -26,7 +26,7 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
 
     unowned NM.DeviceWifi device;
     unowned NM.AccessPoint point;
-    NM.RemoteConnection connection = null;
+    NM.Connection connection = null;
 
     NM.ActiveConnection? listener = null;
     public string? status { get; private set; default = null; }
@@ -103,22 +103,54 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         }
 
         if (connection == null) {
-            NM.Connection newconn = prepare_wireless_connection (device, point);
-            apply_security (newconn, security[0]);
+            connection = prepare_wireless_connection (device, point);
+            apply_security (connection, security[0]);
 
-            try {
-                connection = yield addin.client.add_connection_async (
-                    newconn, false, null
-                );
-            } catch (Error e) {
-                status = _("Connection setup failed");
-                warning (e.message);
+            switch (security[0]) {
+            case WPA3_SUITE_B_192:
+            case WPA2_ENTERPRISE:
+            case WPA_ENTERPRISE:
+            case DYNAMIC_WEP:
+                var editor = new Net.ConnectionEditor (
+                    connection, device, point, addin.client
+                ) {
+                    transient_for = get_native () as Gtk.Window,
+                };
+                editor.done.connect (on_editor_closed);
+                editor.present ();
                 return;
+            default:
+                try {
+                    connection = yield addin.client.add_connection_async (
+                        connection, false, null
+                    );
+                } catch (Error e) {
+                    status = _("Connection setup failed");
+                    warning (e.message);
+                    return;
+                }
+                break;
             }
         }
 
+        yield activate_connection ();
+    }
+
+    async void on_editor_closed (bool res) {
+        if (res) {
+            foreach (var conn in Addin.get_instance ().client.connections) {
+                if (same_connections (connection, conn)) {
+                    connection = conn;
+                    yield activate_connection ();
+                    break;
+                }
+            }
+        }
+    }
+
+    async void activate_connection () {
         try {
-            yield addin.client.activate_connection_async (
+            yield Addin.get_instance ().client.activate_connection_async (
                 connection, device, null, null
             );
         } catch (Error e) {
