@@ -63,12 +63,13 @@ public sealed class User.PageRootPassword : PagePasswordCommon {
                    root_password_entry.text == root_password_repeat_entry.text));
     }
 
-    public override bool try_continue () {
+    public override void try_continue () {
         if (equal_switch_row.active) {
-            return true;
+            next ();
+            return;
         }
 
-        return base.try_continue ();
+        base.try_continue ();
     }
 
     [GtkCallback]

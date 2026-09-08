@@ -124,7 +124,7 @@ public class ReadySet.BasePage : Adw.BreakpointBin {
      *
      * return   true if the continuation should work, false otherwise.
      */
-    public virtual bool try_continue () {
-        return true;
+    public virtual void try_continue () {
+        next ();
     }
 }

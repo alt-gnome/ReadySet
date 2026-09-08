@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -161,14 +161,14 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         set {
             if (_last_current_page != null) {
                 _last_current_page.notify["is-ready"].disconnect (update_buttons);
-                _last_current_page.page.next.disconnect (continue_clicked);
+                _last_current_page.page.next.disconnect (next);
                 notify["scroll-on-top"].disconnect (update_scroll);
             }
 
             _last_current_page = value;
 
             _last_current_page.notify["is-ready"].connect (update_buttons);
-            _last_current_page.page.next.connect (continue_clicked);
+            _last_current_page.page.next.connect (next);
             notify["scroll-on-top"].connect (update_scroll);
             update_scroll ();
         }
@@ -472,10 +472,10 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
     [GtkCallback]
     void continue_clicked () {
-        if (!model.get_selected_item ().page.try_continue ()) {
-            return;
-        }
+        model.get_selected_item ().page.try_continue ();
+    }
 
+    void next () {
         var position = model.get_selected ();
         var n_items = model.get_n_items ();
 
