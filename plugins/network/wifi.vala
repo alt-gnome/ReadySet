@@ -26,6 +26,7 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
 
     unowned NM.DeviceWifi device;
     unowned NM.AccessPoint point;
+    NM.RemoteConnection connection = null;
 
     NM.ActiveConnection? listener = null;
     public string? status { get; private set; default = null; }
@@ -70,6 +71,15 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             needs_secrets = security[0] != OWE && security[0] != NONE;
         }
 
+        foreach (var known in Addin.get_instance ().client.connections) {
+            string? conn_iface = known.get_interface_name ();
+            if (same_ssid (point.ssid, known.get_setting_wireless ()?.ssid)
+                    && (conn_iface == null || device.interface == conn_iface)) {
+                connection = known;
+                break;
+            }
+        }
+
         if (ap == device.active_access_point) {
             activatable = false;
             device.notify["active-connection"].connect (listen_to_active);
@@ -92,28 +102,13 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             return;
         }
 
-        NM.RemoteConnection? conn = null;
-        NM.Connection? tmp = null;
-
-        foreach (var known in addin.client.connections) {
-            string? conn_iface = known.get_interface_name ();
-            if (same_ssid (point.ssid, known.get_setting_wireless ()?.ssid)
-                    && (conn_iface == null || device.interface == conn_iface)) {
-                conn = known;
-                break;
-            }
-        }
-
-        bool need_new = conn == null;
-        if (need_new) {
-            if (tmp == null) {
-                tmp = prepare_wireless_connection (device, point);
-                apply_security (tmp, security[0]);
-            }
+        if (connection == null) {
+            NM.Connection newconn = prepare_wireless_connection (device, point);
+            apply_security (newconn, security[0]);
 
             try {
-                conn = yield addin.client.add_connection_async (
-                    tmp, false, null
+                connection = yield addin.client.add_connection_async (
+                    newconn, false, null
                 );
             } catch (Error e) {
                 status = _("Connection setup failed");
@@ -124,19 +119,11 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
 
         try {
             yield addin.client.activate_connection_async (
-                conn, device, null, null
+                connection, device, null, null
             );
         } catch (Error e) {
             status = _("Connection failed");
             warning (e.message);
-
-            if (need_new) {
-                try {
-                    yield conn.delete_async (null);
-                } catch (Error e) {
-                    error (e.message);
-                }
-            }
         }
     }
 
