@@ -23,6 +23,8 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
 
     [GtkChild]
     unowned Gtk.Image icon;
+    [GtkChild]
+    unowned Gtk.Button settings;
 
     unowned NM.DeviceWifi device;
     unowned NM.AccessPoint point;
@@ -39,6 +41,8 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             NM.AccessPoint ap,
             Bytes? hidden_ssid = null
     ) {
+        var addin = Addin.get_instance ();
+
         device = wlan;
         device.add_weak_pointer (&device);
         point = ap;
@@ -63,6 +67,8 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             icon.icon_name = "radiowaves-4-symbolic";
         }
 
+        settings.sensitive = !addin.context.sandbox;
+
         security = get_available_ap_security (device, ap);
         if (security.length == 0) {
             activatable = false;
@@ -71,17 +77,19 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             needs_secrets = security[0] != OWE && security[0] != NONE;
         }
 
-        foreach (var known in Addin.get_instance ().client.connections) {
-            string? conn_iface = known.get_interface_name ();
-            if (same_ssid (point.ssid, known.get_setting_wireless ()?.ssid)
-                    && (conn_iface == null || device.interface == conn_iface)) {
-                connection = known;
+        addin.client.connection_added.connect (connection_added);
+        addin.client.connection_removed.connect (connection_removed);
+        foreach (var known in addin.client.connections) {
+            if (connection != null) {
                 break;
             }
+            connection_added (known);
         }
 
         if (ap == device.active_access_point) {
-            activatable = false;
+            if (addin.context.sandbox) {
+                activatable = false;
+            }
             device.notify["active-connection"].connect (listen_to_active);
             listen_to_active ();
         }
@@ -102,6 +110,11 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             return;
         }
 
+        if (point == device.active_access_point) {
+            settings.activate ();
+            return;
+        }
+
         if (connection == null) {
             connection = prepare_wireless_connection (device, point);
             apply_security (connection, security[0]);
@@ -111,17 +124,14 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             case WPA2_ENTERPRISE:
             case WPA_ENTERPRISE:
             case DYNAMIC_WEP:
-                var editor = new Net.ConnectionEditor (
-                    connection, device, point, addin.client
-                ) {
-                    transient_for = get_native () as Gtk.Window,
-                };
+                var editor = create_editor ();
                 editor.done.connect (on_editor_closed);
+                editor.set_title (title);
                 editor.present ();
                 return;
             default:
                 try {
-                    connection = yield addin.client.add_connection_async (
+                    yield addin.client.add_connection_async (
                         connection, false, null
                     );
                 } catch (Error e) {
@@ -136,16 +146,11 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
         yield activate_connection ();
     }
 
-    async void on_editor_closed (bool res) {
+    async void on_editor_closed (Net.ConnectionEditor editor, bool res) {
         if (res) {
-            foreach (var conn in Addin.get_instance ().client.connections) {
-                if (same_connections (connection, conn)) {
-                    connection = conn;
-                    yield activate_connection ();
-                    break;
-                }
-            }
+            yield activate_connection ();
         }
+        editor.done.disconnect (on_editor_closed);
     }
 
     async void activate_connection () {
@@ -199,6 +204,34 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             status = null;
             break;
         }
+    }
+
+    void connection_added (NM.RemoteConnection conn) {
+        if (same_ssid (point.ssid, conn.get_setting_wireless ()?.ssid)
+                && device.connection_valid (conn)) {
+            connection = conn;
+            settings.visible = true;
+        }
+    }
+
+    void connection_removed (NM.RemoteConnection conn) {
+        if (connection?.get_uuid () == conn.get_uuid ()) {
+            connection = null;
+            settings.visible = false;
+        }
+    }
+
+    Net.ConnectionEditor create_editor () {
+        return new Net.ConnectionEditor (
+            connection, device, point, Addin.get_instance ().client
+        ) {
+            transient_for = get_native () as Gtk.Window,
+        };
+    }
+
+    [GtkCallback]
+    void edit_connection () {
+        create_editor ().present ();
     }
 }
 

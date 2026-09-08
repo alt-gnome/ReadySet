@@ -49,4 +49,17 @@ template $NetworkAccessPointRow: Adw.ActionRow {
 
     label: bind template.status;
   }
+
+  [suffix]
+  Button settings {
+    styles [
+      "flat",
+    ]
+
+    icon-name: "wrench-wide-symbolic";
+    tooltip-text: _("Configure…");
+    visible: false;
+    valign: center;
+    clicked => $edit_connection();
+  }
 }
