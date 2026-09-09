@@ -46,16 +46,11 @@ public sealed class ReadySet.PostAct : Object {
             debug ("Connected to GDM");
         } catch (Error e) {
             warning ("Failed to connect to GDM: %s", e.message);
-#endif
             client = null;
             greeter = null;
             user_verifier = null;
-            return false;
-#if WITH_GDM
         }
-#endif
 
-#if WITH_GDM
         if (client == null) {
             debug ("No GDM connection");
         } else {
