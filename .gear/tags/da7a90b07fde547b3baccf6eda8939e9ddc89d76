@@ -1,0 +1,6 @@
+object 50806197b542abc694c2c460cc2448c1bfaefd78
+type commit
+tag v0.14.2
+tagger Vladimir Romanov <rirusha@altlinux.org> 1788995594 +0300
+
+Release v0.14.2
