@@ -57,11 +57,14 @@ uninstall:
 test: compile
 	meson test -C _build
 
-build-vagary:
-	./test-atomic/build-atomic altlinux.space/alt-atomic/onyx/nightly:latest --force-rebuild
+build-atomic-onyx:
+	./test-atomic/build-atomic altlinux.space/alt-atomic/onyx/nightly:latest --force-rebuild --out test-atomic/vagary-onyx/image.raw
+
+build-atomic-phosphophyllite:
+	./test-atomic/build-atomic altlinux.space/alt-atomic/phosphophyllite/6.18/nightly:latest --force-rebuild --out test-atomic/vagary-phosphophyllite/image.raw
 
 test-vagary:
-	cd test-atomic/vagary && vagary scenario.yml
+	cd test-atomic/vagary-onyx && vagary scenario.yml
 
 coverage: test
 	mkdir -p _build/meson-logs/coveragereport

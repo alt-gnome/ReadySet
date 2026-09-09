@@ -1,20 +1,26 @@
 #!/usr/bin/bash -ex
 
-RAW_PATH="test-atomic/vagary/disk.img"
+RAW_PATH=
 FORCE_REBUILD=false
 LOCAL_IMAGE=localhost/ready-set-atomic
 
-sudo rm -f "$RAW_PATH"
-
 TMPDIR=$PWD/.vagary/tmp
-mkdir -p $TMPDIR
+mkdir -p "$TMPDIR"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --force-rebuild) FORCE_REBUILD=true; shift ;;
+        --out)
+            [[ $# -ge 2 ]] || { echo "--out requires a path" >&2; exit 2; }
+            RAW_PATH="$2"
+            shift 2
+            ;;
+        --out=*) RAW_PATH="${1#--out=}"; shift ;;
         *) IMAGE_ARG="$1"; shift ;;
     esac
 done
+
+sudo rm -f test-atomic/*/image.raw
 
 if [[ "$FORCE_REBUILD" == true ]] || ! podman image exists $LOCAL_IMAGE; then
     rm -rf "$RAW_PATH"

@@ -3,7 +3,7 @@
 machine:
   provider: qemu
   disk_format: raw
-  disk_image: disk.img
+  disk_image: image.raw
 
 steps:
   - name: Recorded scenario
