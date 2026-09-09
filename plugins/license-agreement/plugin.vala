@@ -54,7 +54,9 @@ public class LicenseAgreement.Addin : ReadySet.StepAddin, ReadySet.ExistingUser 
         var text = get_raw_license_text (context.get_string ("license-agreement.file-path"), true);
 
         // Fallback have to be always present
-        assert (text != null && text != "");
+        if (text == null || text == "") {
+            error ("Fallback license text is empty ot non exists");
+        }
 
         new_hash = Checksum.compute_for_string (SHA512, text);
     }
