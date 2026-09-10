@@ -18,6 +18,12 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/**
+ * Base class for plugins that extend the ReadySet system D-Bus service.
+ *
+ * Each plugin supplies a path below `/org/altlinux/ReadySet` and registers
+ * its D-Bus object on the service connection.
+ */
 public abstract class ReadySet.ServiceAddin : Peas.ExtensionBase {
 
     construct {

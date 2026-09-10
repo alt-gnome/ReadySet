@@ -18,7 +18,21 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/**
+ * Base class for plugins that perform actions after the ReadySet workflow.
+ *
+ * Post-act plugins receive the completed configuration context and may request
+ * that the application window remain open by returning an appropriate status
+ * flag.
+ */
 public abstract class ReadySet.PostActAddin : Peas.ExtensionBase {
 
+    /**
+     * Performs the plugin's post-workflow action.
+     *
+     * @param context the completed ReadySet configuration context
+     * @return status flags that control post-act handling
+     * @throws GLib.Error when the action cannot be completed
+     */
     public abstract async PostActStatusFlags run (Context context) throws Error;
 }
