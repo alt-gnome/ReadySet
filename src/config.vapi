@@ -15,4 +15,5 @@ namespace Config {
     public const string GDMEXPORTDIR;
     public const string STEPS_PLUGINS_DIR;
     public const string INSTALLERS_PLUGINS_DIR;
+    public const string POST_ACT_PLUGINS_DIR;
 }

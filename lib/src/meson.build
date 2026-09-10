@@ -30,6 +30,7 @@ librs_vala_sources = files(
   'installer-addin.vala',
   'installer-step.vala',
   'lib-utils.vala',
+  'post-act-addin.vala',
   'service-addin.vala',
   'step-addin.vala',
 )
@@ -150,6 +151,7 @@ pkgconfig.generate(
     'installer_pre_hooks=' + installer_pre_hooks.replace(pkgdata_dir, '${pkgdata_dir}'),
     'installer_post_hooks=' + installer_post_hooks.replace(pkgdata_dir, '${pkgdata_dir}'),
     'steps_plugins_dir=' + steps_plugins_dir.replace(pkglib_dir, '${pkglib_dir}'),
+    'post_act_plugins_dir=' + post_act_plugins_dir.replace(pkglib_dir, '${pkglib_dir}'),
     'installers_plugins_dir=' + installers_plugins_dir.replace(pkglib_dir, '${pkglib_dir}'),
   ],
   version: libversion,

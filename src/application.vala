@@ -183,12 +183,15 @@ public sealed class ReadySet.Application: Adw.Application {
                     active_window.hide ();
                 }
                 if (!app_service.context.sandbox) {
-                    app_service.post_act.do.begin ((obj, res) => {
-                        if (!app_service.post_act.do.end (res)) {
+                    app_service.post_act.run.begin ((obj, res) => {
+                        var status = app_service.post_act.run.end (res);
+
+                        if ((status & PostActStatusFlags.STAY_OPEN) == 0) {
                             quit ();
                         }
                     });
                 }
+
                 break;
             case "reboot":
                 quit ();

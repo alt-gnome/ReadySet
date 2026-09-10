@@ -4,3 +4,4 @@ install_subdir(
 )
 
 subdir('sysusers')
+subdir('post-act')

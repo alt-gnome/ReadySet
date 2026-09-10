@@ -74,8 +74,6 @@ foreach lang : linguas
 endforeach
 supported_languages_arr += ['en']
 
-gis = 'gnome-initial-setup'
-
 prefix = get_option('prefix')
 bindir = prefix / get_option('bindir')
 datadir = prefix / get_option('datadir')
@@ -98,6 +96,7 @@ installer_post_hooks = pkgdata_dir / 'installer-post-hooks' / 'system'
 
 steps_plugins_dir = pkglib_dir / 'plugins' / 'steps'
 installers_plugins_dir = pkglib_dir / 'plugins' / 'installers'
+post_act_plugins_dir = pkglib_dir / 'plugins' / 'post-act'
 service_plugins_dir = pkglib_dir / 'plugins' / 'service'
 
 global_conf = configuration_data()
@@ -114,15 +113,17 @@ global_conf.set_quoted('DATADIR', datadir)
 global_conf.set_quoted('LIBEXECDIR', libexecdir)
 global_conf.set_quoted('GNOMELOCALEDIR', localedir)
 global_conf.set_quoted('SUPPORTED_LANGUAGES', '|'.join(supported_languages_arr))
-global_conf.set_quoted('GDMEXPORTDIR', join_paths(prefix, get_option('gdm_rundir'), gis))
+global_conf.set_quoted('GDMEXPORTDIR', join_paths(prefix, get_option('gdm_rundir'), 'gnome-initial-setup'))
 global_conf.set_quoted('STEPS_PLUGINS_DIR', steps_plugins_dir)
 global_conf.set_quoted('INSTALLERS_PLUGINS_DIR', installers_plugins_dir)
+global_conf.set_quoted('POST_ACT_PLUGINS_DIR', post_act_plugins_dir)
 global_conf.set_quoted('SERVICE_PLUGINS_DIR', service_plugins_dir)
 
 subdir('vapi')
 subdir('data')
 subdir('po')
 subdir('lib')
+subdir('integrations')
 subdir('service')
 subdir('src')
 subdir('plugins')
@@ -143,6 +144,7 @@ install_emptydir(installer_post_hooks)
 
 install_emptydir(steps_plugins_dir)
 install_emptydir(installers_plugins_dir)
+install_emptydir(post_act_plugins_dir)
 install_emptydir(service_plugins_dir)
 
 gnome.post_install(

@@ -33,6 +33,17 @@ namespace ReadySet {
     }
 
     /**
+     * Status flags that post-act plugins can return.
+     */
+    [Flags]
+    public enum PostActStatusFlags {
+        /**
+         * Application window should stay opened. (e.g. gdm needs it)
+         */
+        STAY_OPEN;
+    }
+
+    /**
      * Responsive layout state reported to {@link ReadySet.BasePage}.
      *
      * `VERTICAL` and `HORIZONTAL` describe the content arrangement, while
