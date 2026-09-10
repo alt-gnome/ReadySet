@@ -78,7 +78,7 @@ namespace ReadySet.Completions {
 
         print ("    case \"${prev}\" in\n");
 
-        print ("        generate-bash-completion)\n");
+        print ("        %s)\n", CommandHandler.BASH_COMP);
         print ("            return\n");
         print ("            ;;\n");
 
@@ -143,7 +143,15 @@ namespace ReadySet.Completions {
         }
 
         print ("    esac\n\n");
-        print ("    commands=\"generate-bash-completion\"\n\n");
+        print ("    commands=\"");
+        first_opt = true;
+        foreach (var command in CommandHandler.ALL) {
+            if (!first_opt)
+                print (" ");
+            first_opt = false;
+            print ("%s", command);
+        }
+        print ("\"\n\n");
         print ("    if [[ ${cur} == -* ]]; then\n");
         print ("        COMPREPLY=( $(compgen -W \"${opts}\" -- \"${cur}\") )\n");
         print ("        return\n");
