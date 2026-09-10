@@ -278,4 +278,37 @@ namespace ReadySet {
 
         return locale_regex.match (locale);
     }
+
+    /**
+     * Check polkit access for org.altlinux.ReadySet.Plugins action.
+     */
+    public void polkit_check_plugin (BusName sender) throws DBusError {
+        polkit_check (sender, "org.altlinux.ReadySet.Plugins");
+    }
+
+    /**
+     * Check polkit acces for "action_id".
+     */
+    public void polkit_check (BusName sender, string action_id) throws DBusError {
+        Polkit.AuthorizationResult result;
+
+        try {
+            var authority = Polkit.Authority.get_sync (null);
+            var subject = new Polkit.SystemBusName (sender);
+            result = authority.check_authorization_sync (
+                subject,
+                action_id,
+                null,
+                Polkit.CheckAuthorizationFlags.ALLOW_USER_INTERACTION,
+                null
+            );
+
+        } catch (Error e) {
+            throw new DBusError.ACCESS_DENIED ("Failed to check authorization: " + e.message);
+        }
+
+        if (!result.get_is_authorized ()) {
+            throw new DBusError.ACCESS_DENIED ("Not authorized");
+        }
+    }
 }

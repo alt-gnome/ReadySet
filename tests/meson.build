@@ -32,6 +32,7 @@ test('plugin-manager',
       libadwaita_dep,
       libpeas_dep,
       libserialize_dep,
+      polkit_dep,
     ],
   )
 )

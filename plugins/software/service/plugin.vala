@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -24,7 +24,7 @@ public sealed class SoftwareSources.Service : Object {
     const string SOFTWARE_ACTION = "org.altlinux.ReadySet.Software.ManageRepos";
 
     public void add_flatpak_repo (string remote_name, string url, BusName sender) throws Error {
-        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+        ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         var inst = new Flatpak.Installation.system ();
 
@@ -54,7 +54,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 
     public void remove_flatpak_repo (string remote_name, BusName sender) throws Error {
-        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+        ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         var inst = new Flatpak.Installation.system ();
 
@@ -74,7 +74,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 
     public void add_stplr_repo (string remote_name, string url, BusName sender) throws Error {
-        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+        ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         var sp = new Subprocess.newv ({
             "stplr", "repo", "add", remote_name, url
@@ -83,7 +83,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 
     public void remove_stplr_repo (string remote_name, string url, BusName sender) throws Error {
-        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+        ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         var sp = new Subprocess.newv ({
             "stplr", "repo", "remove", remote_name
@@ -92,7 +92,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 
     public void add_alt_repos (string[] repos, BusName sender) throws Error {
-        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+        ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         string[] cmd;
         if (Program.exists ("apm")) {
@@ -117,7 +117,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 
     public void remove_alt_repos (string[] repos, BusName sender) throws Error {
-        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+        ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         string[] cmd;
         if (Program.exists ("apm")) {
@@ -142,7 +142,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 
     public void exec_custom (string cmd, BusName sender) throws Error {
-        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+        ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         var sp = new Subprocess.newv ({
             "bash", "-c", cmd
@@ -151,7 +151,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 }
 
-public sealed class SoftwareSources.Addin : ReadySetService.Addin {
+public sealed class SoftwareSources.Addin : ReadySet.ServiceAddin {
 
     public override string get_object_path () {
         return "/SoftwareSources";
@@ -164,5 +164,5 @@ public sealed class SoftwareSources.Addin : ReadySetService.Addin {
 
 public void peas_register_types (TypeModule module) {
     var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySetService.Addin), typeof (SoftwareSources.Addin));
+    obj.register_extension_type (typeof (ReadySet.ServiceAddin), typeof (SoftwareSources.Addin));
 }

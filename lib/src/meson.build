@@ -30,6 +30,7 @@ librs_vala_sources = files(
   'installer-addin.vala',
   'installer-step.vala',
   'lib-utils.vala',
+  'service-addin.vala',
   'step-addin.vala',
 )
 
@@ -71,6 +72,7 @@ librs_dependencies = [
   libadwaita_dep,
   libpeas_dep,
   libserialize_dep,
+  polkit_dep,
 ]
 
 librs_deps_pkgs = []

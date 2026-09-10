@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -44,7 +44,7 @@ void on_bus_aquired (DBusConnection conn, string name) {
         var engine = get_engine ();
         addins = new Peas.ExtensionSet.with_properties (
             engine,
-            typeof (ReadySetService.Addin),
+            typeof (ReadySet.ServiceAddin),
             {}, {}
         );
 
@@ -52,7 +52,7 @@ void on_bus_aquired (DBusConnection conn, string name) {
             var info = (Peas.PluginInfo) engine.get_item (i);
             engine.load_plugin (info);
             message ("%s loaded", info.module_name);
-            var plugin = (ReadySetService.Addin) addins.get_extension (info);
+            var plugin = (ReadySet.ServiceAddin) addins.get_extension (info);
             plugin.register_service (conn, "/org/altlinux/ReadySet" + plugin.get_object_path ());
         }
 
