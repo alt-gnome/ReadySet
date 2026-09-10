@@ -2,7 +2,9 @@
 
 Enable third-party software repositories.
 
-Source definitions are loaded from the plugin data directory (usually `/usr/share/ready-set/software/sources.d`) from `*.yml` (or `*.yaml`) files. The plugin is hidden if no valid sources are found.
+Source definitions are loaded from `*.yml` and `*.yaml` files in the plugin data
+directory (usually `/usr/share/ready-set/software/sources.d`). The plugin is
+hidden when no valid sources are found. It runs after the `user` step.
 
 ## Settings
 
@@ -24,6 +26,13 @@ Supported source types:
 - `stplr` — add a Stapler repository
 - `alt-repo` — add an ALT Linux apt repository
 - `custom` — run a custom shell command
+
+For `flatpak` and `stplr`, `body` contains `url` and `remote-name`. For
+`alt-repo`, it contains `repos`, a list of apt source lines. For `custom`, it
+contains `cmd-apply`; `cmd-check` determines its current state, and `cmd-undo`
+is used by the optional Tuner integration. Source metadata can include `group`,
+`gettext-domain`, and `non-free`; group metadata can include `gettext-domain`,
+`required`, and `priority`.
 
 ## Example
 
@@ -52,4 +61,6 @@ sources:
 
 ## Tuner plugin
 
-When built with the `with_software_tuner_plugin=enabled` option, the software functionality is also built as a Tuner plugin (`ready-set-software`) for use with the [Tuner](https://altlinux.space/alt-gnome/tuner) application.
+When built with `-Dwith_software_tuner_plugin=enabled`, the software
+functionality is also built as the `ready-set-software` Tuner plugin for use
+with [Tuner](https://altlinux.space/alt-gnome/tuner).

@@ -1,6 +1,8 @@
 # Date & Time plugin
 
-Configure the timezone and date/time.
+Configures the timezone and date/time through `org.freedesktop.timedate1`. By
+default, automatic timezone detection and NTP are enabled. Manual values are
+applied only when their corresponding automatic setting is disabled.
 
 ## Settings
 
@@ -14,4 +16,4 @@ Configure the timezone and date/time.
 | Variable | Description |
 | -------- | ----------- |
 | `date-and-time.timezone` | Selected timezone |
-| `date-and-time.datetime` | Selected date and time as a Unix timestamp |
+| `date-and-time.datetime` | Selected date and time as a Unix timestamp in seconds |

@@ -8,7 +8,7 @@ Displays a license agreement loaded from `license-agreement.file-path`.
 | -------- | ----------- | ------------- |
 | `license-agreement.file-path` | Absolute path to a license file containing the `LANG` placeholder | — |
 | `license-agreement.language-fallback` | Fallback language used when the selected locale is not found | `C` |
-| `license-agreement.installer` | If true, on `initial-setup` we only save hash and recheck it on `existing-user` | — |
+| `license-agreement.installer` | When `true`, omit the page during initial setup, save the license hash, and show it later to an existing user only when the text has changed | `false` |
 
 ## Explanation
 
@@ -16,7 +16,8 @@ Displays a license agreement loaded from `license-agreement.file-path`.
 
 If no matching file is found, `license-agreement.language-fallback` is used as `LANG`.
 
-NOTE: Path with fallback **MUST** be present.
+The file for the fallback locale **must** exist and must not be empty; the
+plugin uses it to calculate the accepted-license hash.
 
 ## Example
 

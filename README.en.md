@@ -13,6 +13,9 @@
 
 </div>
 
+Ready Set is a modular GTK application for configuring a system during
+installation, first startup, or an existing user's session.
+
 ## Available steps
 
 The application is built from step plugins. Currently available step plugins are:
@@ -26,7 +29,8 @@ The application is built from step plugins. Currently available step plugins are
 - [software](plugins/software/README.en.md)
 - [user](plugins/user/README.en.md) — built as `user-passwdqc` (default) and/or `user-pwquality`, depending on the `password_check_backend` build option
 
-If in steps list no step realizing `Welcome` interface on first place, welcome page will be shown at the beginning.
+If the first selected step does not implement the `Welcome` interface, Ready Set
+shows its built-in welcome page first.
 
 Installer plugins are loaded separately via the `--installer` option. Their steps are referenced with the `installer.` prefix (e.g. `installer.example-step`).
 
@@ -42,7 +46,11 @@ The mode can be forced with `--force-mode` in `nightly=true` builds.
 
 ## Configuration
 
-Ready Set is fully configurable. Desired behavior can be passed either through command-line options or through a configuration file (command-line options override values from the configuration file).
+Ready Set is configured through command-line options and a key file. Command-line
+options override the configuration file. Application options belong to the
+`[Application]` group; plugin context values belong to `[Context]`. Values passed
+through `--context` and values loaded from `[Context]` are locked, so the UI
+cannot overwrite centrally supplied values.
 
 Configuration file priority (only the first found file is used; fields from other files are not merged):
 
@@ -66,10 +74,9 @@ Make window closable always. In `nightly=true` builds the window is always closa
 App config file.
 
 #### `context`
-Context vars. Cumulative option in `VAR=VALUE` format. Can be passed multiple times.
-
-#### `detailed`
-Show indicators and sidebar with steps. The simple view is used by default.
+Context values in `KEY=VALUE` form. This cumulative option can be supplied more
+than once. String lists use commas, for example
+`--context keyboard.input-sources=xkb::us,xkb::ru`.
 
 #### `force-layout`
 Set layout for window: `big`, `small`, `vertical`, `horizontal`. Auto by default.
@@ -93,7 +100,8 @@ Window can be resized or not. `false` by default.
 Sandbox run without doing anything in system.
 
 #### `steps`
-Steps. Comma-separated list of step plugin module names. E.g: `language,keyboard,user-passwdqc`.
+Comma-separated list of step plugin module names, for example
+`language,keyboard,user-passwdqc`.
 
 #### `version`
 Print version information and exit.
@@ -106,6 +114,8 @@ Width of a window. `1000` by default.
 In addition to the standard launch, Ready Set supports:
 
 - `generate-bash-completion` — output a bash completion script.
+- `nothing-to-do` — write `0` to standard error when no setup work is needed,
+  or `1` otherwise.
 
 ## Translating
 
@@ -117,7 +127,9 @@ You can help with translations via [ALT Gnome Translate](https://translate.alt-g
 
 ## Testing
 
-For testing purposes you should use the `--sandbox` option.
+Use `--sandbox` to exercise the workflow without changing system settings if plugins supports it. Run
+the project test suite from a configured build directory with
+`meson test -C _build`.
 
 ## Building from sources
 

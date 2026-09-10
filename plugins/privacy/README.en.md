@@ -1,3 +1,5 @@
 # Privacy plugin
 
-Configure privacy settings. Currently controls the location services setting (`org.gnome.system.location enabled`).
+Configures privacy settings for an existing user. Currently it controls the
+location-services switch, `org.gnome.system.location enabled`; it does not
+define extra Ready Set context variables.

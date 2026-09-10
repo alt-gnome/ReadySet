@@ -1,6 +1,7 @@
 # Keyboard plugin
 
-Configure keyboard input sources.
+Configures GNOME input sources and applies the resulting X11 keyboard layout
+through `org.freedesktop.locale1`.
 
 ## Settings
 
@@ -13,4 +14,4 @@ Configure keyboard input sources.
 | Variable | Description |
 | -------- | ----------- |
 | `keyboard.input-sources` | Selected keyboard input sources |
-| `additional-layout-grp` | Additional layout switch method |
+| `keyboard.additinal-layout-grp` | Additional layout-switch method (the key name is intentionally spelled as implemented) |
