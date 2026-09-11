@@ -204,7 +204,9 @@ public sealed class Network.EthernetConnectionRow : Adw.ActionRow {
             }
         } catch (Error e) {
             warning (e.message);
+            internal_toggle = true;
             radio.active = !radio.active;
+            internal_toggle = false;
         }
     }
 
