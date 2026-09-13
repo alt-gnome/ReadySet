@@ -41,6 +41,8 @@ namespace ReadySet {
 
     public delegate Gtk.Widget CreateFunc (PageInfo page);
 
+    public delegate void DisposeFunc (Gtk.Widget widget);
+
     public bool in_group (string group_name) {
         unowned Posix.Passwd? passwd = Posix.getpwuid (Posix.getuid ());
         if (passwd == null) {

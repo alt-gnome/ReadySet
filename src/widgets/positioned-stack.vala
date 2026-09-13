@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -66,6 +66,7 @@ public class ReadySet.PositionedStack : Adw.Bin {
     public PagesModel? model { get; private set; }
 
     weak CreateFunc create_func;
+    weak DisposeFunc? dispose_func;
     Gtk.Stack stack = new Gtk.Stack ();
 
     construct {
@@ -104,7 +105,7 @@ public class ReadySet.PositionedStack : Adw.Bin {
         notify_property ("visible-child");
     }
 
-    public void bind_model (PagesModel? model, owned CreateFunc create_func) {
+    public void bind_model (PagesModel? model, owned CreateFunc create_func, owned DisposeFunc? dispose_func = null) {
         if (this.model != null) {
             this.model.selection_changed.disconnect (on_selection_changed);
             this.model.items_changed.disconnect (on_items_changed);
@@ -115,6 +116,7 @@ public class ReadySet.PositionedStack : Adw.Bin {
 
         this.model = model;
         this.create_func = create_func;
+        this.dispose_func = dispose_func;
 
         if (model != null) {
             model.selection_changed.connect (on_selection_changed);
@@ -179,15 +181,14 @@ public class ReadySet.PositionedStack : Adw.Bin {
         var child = stack.get_child_by_name (id);
         if (child != null) {
             stack.remove (child);
+            if (dispose_func != null) {
+                dispose_func (child);
+            }
         }
     }
 
     void add_page (PageInfo page_info) {
         var widget = create_func (page_info);
-
-        if (widget.get_parent () != null) {
-            widget.unparent ();
-        }
 
         stack.add_titled (
             widget,

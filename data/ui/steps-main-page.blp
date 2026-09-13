@@ -28,7 +28,6 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
     condition ("min-height: 400px and min-width: 719px")
 
     setters {
-      template.current-scrolled-window: regular_scrolled_window;
       mlv.layout-name: "regular";
       template.layout-mode: big;
     }
@@ -60,7 +59,6 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
 
     setters {
       template.is-compact: true;
-      template.current-scrolled-window: horizontal_scrolled_window;
       mlv.layout-name: "horizontal";
       template.layout-mode: horizontal;
     }
@@ -113,21 +111,10 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
               id: "top-widget";
             }
 
-            content: Overlay {
-              $ReadySetPositionedStack vertical_stack {
-                valign: fill;
-                vexpand: true;
-                transition-type: slide-left-right;
-              }
-
-              [overlay]
-              Adw.LayoutSlot {
-                halign: end;
-                valign: end;
-                hexpand: false;
-                vexpand: false;
-                id: "overlay-place";
-              }
+            content: $ReadySetPositionedStack vertical_stack {
+              valign: fill;
+              vexpand: true;
+              transition-type: slide-left-right;
             };
 
             [bottom]
@@ -214,24 +201,8 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
                 id: "top-widget";
               }
 
-              content: Overlay {
-                ScrolledWindow regular_scrolled_window {
-                  propagate-natural-height: true;
-                  hscrollbar-policy: never;
-
-                  Adw.LayoutSlot {
-                    id: "main-body";
-                  }
-                }
-
-                [overlay]
-                Adw.LayoutSlot {
-                  halign: end;
-                  valign: end;
-                  hexpand: false;
-                  vexpand: false;
-                  id: "overlay-place";
-                }
+              content: Adw.LayoutSlot {
+                id: "main-body";
               };
 
               [bottom]
@@ -324,24 +295,8 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
                 id: "top-widget";
               }
 
-              content: Overlay {
-                ScrolledWindow horizontal_scrolled_window {
-                  propagate-natural-height: true;
-                  hscrollbar-policy: never;
-
-                  Adw.LayoutSlot {
-                    id: "main-body";
-                  }
-                }
-
-                [overlay]
-                Adw.LayoutSlot {
-                  halign: end;
-                  valign: end;
-                  hexpand: false;
-                  vexpand: false;
-                  id: "overlay-place";
-                }
+              content: Adw.LayoutSlot {
+                id: "main-body";
               };
 
               [bottom]
@@ -503,60 +458,6 @@ template $ReadySetStepsMainPage: Adw.BreakpointBin {
         [main-body]
         $ReadySetPositionedStack positioned_stack {
           transition-type: slide-left-right;
-        }
-
-        [overlay-place]
-        Revealer to_up_revealer {
-          margin-end: 18;
-          margin-bottom: 12;
-          transition-type: crossfade;
-          transition-duration: 200;
-          halign: end;
-          visible: false;
-          notify::child-revealed => $on_to_up_revealer_child_revealed();
-
-          Button to_up_button {
-            styles [
-              "background",
-              "to-up-button",
-            ]
-
-            tooltip-text: _("Go up");
-            height-request: 48;
-            valign: center;
-            clicked => $up_clicked();
-
-            Box {
-              orientation: horizontal;
-              halign: center;
-              valign: center;
-
-              Revealer to_up_label_revealer {
-                transition-type: slide_left;
-                transition-duration: 200;
-                reveal-child: false;
-                halign: center;
-                valign: center;
-                margin-start: 4;
-
-                Label {
-                  margin-end: 12;
-                  label: _("Go up to the beginning");
-                }
-              }
-
-              Image {
-                accessibility {
-                  label: _("Go up to the beginning");
-                }
-
-                margin-end: 4;
-                halign: center;
-                valign: center;
-                icon-name: "top-large-symbolic";
-              }
-            }
-          }
         }
 
         [info-body]

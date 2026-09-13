@@ -29,8 +29,6 @@ public sealed class LicenseAgreement.Page : ReadySet.BasePage {
     public string license_agreement_file_path { get; set; }
     public string license_text { get; set; default = ""; }
 
-    public override bool need_go_up_button { get { return false; } }
-
     construct {
         var raw_text = get_raw_license_text (
             Addin.get_instance ().context.get_string ("license-agreement.file-path"),
