@@ -46,17 +46,7 @@ public class ReadySet.PositionedStack : Adw.Bin {
             return stack.visible_child;
         }
         set {
-            var from = stack.visible_child;
-            var to = value;
-
-            if (with_crossfade && from != to) {
-                to.opacity = 1.0;
-
-                if (from != null) {
-                    fade_away (from);
-                }
-            }
-            stack.set_visible_child (to);
+            stack.set_visible_child (value);
             notify_property ("position");
         }
     }
@@ -66,8 +56,6 @@ public class ReadySet.PositionedStack : Adw.Bin {
             return stack.pages.get_n_items ();
         }
     }
-
-    public bool with_crossfade { get; set; default = false; }
 
     public bool hhomogeneous { get; set; default = false; }
 
@@ -135,20 +123,6 @@ public class ReadySet.PositionedStack : Adw.Bin {
             model.items_changed.connect (on_items_changed);
             fill ();
         }
-    }
-
-    void fade_away (Gtk.Widget widget) {
-        var ani = new Adw.TimedAnimation (
-            widget,
-            1.0,
-            0,
-            stack.transition_duration,
-            new Adw.CallbackAnimationTarget ((value) => {
-                widget.opacity = 1.0 - Math.pow (1.0 - value, 3.0);
-            })
-        );
-
-        ani.play ();
     }
 
     public void clear () {
@@ -241,9 +215,5 @@ public class ReadySet.PositionedStack : Adw.Bin {
             add_page ((PageInfo) model.get_item (i));
         }
         on_selection_changed (model.get_selected (), 1);
-
-        if (with_crossfade) {
-            visible_child.opacity = 1.0;
-        }
     }
 }
