@@ -23,8 +23,6 @@ public sealed class ReadySet.WelcomePage : ReadySet.BasePage {
 
     [GtkChild]
     unowned ReadySet.StatusPage status_page;
-    [GtkChild]
-    unowned Gtk.Box header_box;
 
     public Mode mode { get; construct; }
 
@@ -59,9 +57,12 @@ public sealed class ReadySet.WelcomePage : ReadySet.BasePage {
 
         title_icon_name = Config.APP_ID_DYN + "-symbolic";
 
-    void css_class_changed () {
-        var compact = has_css_class ("compact");
-        header_box.visible = !compact;
-        valign = compact ? Gtk.Align.CENTER : Gtk.Align.FILL;
+        var logo = Environment.get_os_info ("LOGO");
+
+        if (logo != null) {
+            status_page.icon_name = logo;
+        } else {
+            status_page.icon_name = Config.APP_ID_DYN;
+        }
     }
 }

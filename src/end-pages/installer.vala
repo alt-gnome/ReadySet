@@ -47,14 +47,6 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
         } else {
             status_page.description = _("System is installed on Your device.");
         }
-
-        var logo = Environment.get_os_info ("LOGO");
-
-        if (logo != null) {
-            status_page.icon_name = logo;
-        } else {
-            status_page.icon_name = "org.altlinux.ReadySet-symbolic";
-        }
     }
 
     public override async void start_action () {

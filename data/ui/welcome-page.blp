@@ -4,36 +4,16 @@ using Adw 1;
 template $ReadySetWelcomePage: $ReadySetBasePage {
   title-header: _("Welcome");
   is-ready: true;
-  vexpand: true;
 
-  content: Box {
-    orientation: vertical;
-    spacing: 48;
+  content: Adw.Clamp clamp {
+    maximum-size: 500;
+    margin-start: 12;
+    margin-end: 12;
+    margin-bottom: 12;
+    margin-top: 12;
 
-    Box header_box {
-      styles [
-        "welcome-header-box",
-      ]
-
-      Picture header {
-        hexpand: true;
-        vexpand: true;
-        content-fit: contain;
-        file: "resource:///org/altlinux/ReadySet/icons/initial-setup-welcome.svg";
-      }
-    }
-
-    Adw.Clamp clamp {
-      maximum-size: 500;
-      margin-start: 12;
-      margin-end: 12;
-      margin-bottom: 12;
-      margin-top: 12;
-      vexpand: true;
-
-      $ReadySetStatusPage status_page {
-        valign: center;
-      }
+    $ReadySetStatusPage status_page {
+      valign: center;
     }
   };
 }
