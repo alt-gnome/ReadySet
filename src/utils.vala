@@ -39,12 +39,12 @@ namespace ReadySet {
     }
 
     public bool can_reboot_system () throws Error {
-        var proxy = get_proxy();
+        var proxy = get_proxy ();
         return proxy.can_reboot () == "yes";
     }
 
     public async void reboot_system () throws Error {
-        var proxy = get_proxy();
+        var proxy = get_proxy ();
         yield proxy.reboot (true);
     }
 
