@@ -53,7 +53,7 @@ public sealed class ReadySet.PageInfo : Object {
         set {
             if (value) {
                 if (page.info != null) {
-                    page.content.add_css_class ("compact");
+                    page.info.add_css_class ("compact");
                 }
                 page.add_css_class ("compact");
             } else {
