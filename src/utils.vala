@@ -23,18 +23,29 @@ namespace ReadySet {
     [DBus (name = "org.freedesktop.login1.Manager")]
     private interface Login1 : Object {
         public abstract async void reboot (bool interactive) throws Error;
+        public abstract string can_reboot () throws Error;
     }
 
-    public async void reboot_system () throws Error {
-        var connection = yield Bus.get (BusType.SYSTEM);
+    Login1 get_proxy () throws Error {
+        var connection = Bus.get_sync (BusType.SYSTEM);
 
-        var login1 = yield connection.get_proxy<Login1> (
+        var login1 = connection.get_proxy_sync<Login1> (
             "org.freedesktop.login1",
             "/org/freedesktop/login1",
             DBusProxyFlags.NONE
         );
 
-        yield login1.reboot (true);
+        return login1;
+    }
+
+    public bool can_reboot_system () throws Error {
+        var proxy = get_proxy();
+        return proxy.can_reboot () == "yes";
+    }
+
+    public async void reboot_system () throws Error {
+        var proxy = get_proxy();
+        yield proxy.reboot (true);
     }
 
     internal const string BUILTIN = "BuiltIn";

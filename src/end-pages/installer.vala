@@ -31,6 +31,10 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
     unowned Gtk.ProgressBar progress_bar;
     [GtkChild]
     unowned Adw.StatusPage status_page;
+    [GtkChild]
+    unowned Gtk.Button quit_button;
+    [GtkChild]
+    unowned Gtk.Button reboot_button;
 
     ProgressData progress_data = new ProgressData ();
 
@@ -79,11 +83,13 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
             });
             yield;
 
+            update_reboot_visible ();
             stack.visible_child_name = "ready";
 
         } else {
             try {
                 yield finalizer.run (progress_data);
+                update_reboot_visible ();
                 stack.visible_child_name = "ready";
             } catch (ApplyError e) {
                 var error_data = apply_error_to_data (e);
@@ -91,6 +97,23 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
                 error_status_page.description = _("Error message: %s").printf (error_data.description);
                 stack.visible_child_name = "error";
             }
+        }
+    }
+
+    void update_reboot_visible () {
+        var can_reboot = false;
+        try {
+            can_reboot = can_reboot_system ();
+        } catch (Error e) {}
+
+        can_reboot = can_reboot && sandbox;
+
+        if (can_reboot) {
+            quit_button.remove_css_class ("suggested-action");
+            reboot_button.visible = true;
+        } else {
+            quit_button.add_css_class ("suggested-action");
+            reboot_button.visible = false;
         }
     }
 
