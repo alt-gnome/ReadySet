@@ -57,9 +57,7 @@ public sealed class ReadySet.WelcomePage : ReadySet.BasePage {
                 break;
         }
 
-        notify["css-classes"].connect (css_class_changed);
-        css_class_changed ();
-    }
+        title_icon_name = Config.APP_ID_DYN + "-symbolic";
 
     void css_class_changed () {
         var compact = has_css_class ("compact");
