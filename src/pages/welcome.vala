@@ -64,6 +64,6 @@ public sealed class ReadySet.WelcomePage : ReadySet.BasePage {
     void css_class_changed () {
         var compact = has_css_class ("compact");
         header_box.visible = !compact;
-        valign = compact ? Gtk.Align.CENTER : Gtk.Align.START;
+        valign = compact ? Gtk.Align.CENTER : Gtk.Align.FILL;
     }
 }
