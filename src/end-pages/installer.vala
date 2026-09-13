@@ -31,8 +31,6 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
     unowned Gtk.ProgressBar progress_bar;
     [GtkChild]
     unowned Adw.StatusPage status_page;
-    [GtkChild]
-    unowned Gtk.Button finish_button;
 
     ProgressData progress_data = new ProgressData ();
 
@@ -41,12 +39,17 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
 
         if (name != null) {
             //  Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-            finish_button.label = _("_Start Using %s").printf (name);
-            //  Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-            status_page.description = _("%s is ready to be used.").printf (name);
+            status_page.description = _("%s is installed on Your device.").printf (name);
         } else {
-            finish_button.label = _("_Start Using the System");
-            status_page.description = _("System is ready to be used.");
+            status_page.description = _("System is installed on Your device.");
+        }
+
+        var logo = Environment.get_os_info ("LOGO");
+
+        if (logo != null) {
+            status_page.icon_name = logo;
+        } else {
+            status_page.icon_name = "org.altlinux.ReadySet-symbolic";
         }
     }
 

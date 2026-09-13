@@ -12,3 +12,8 @@
 .context {
     background-color: var(--view-bg-color);
 }
+
+.welcome-header-box {
+  padding: 30px;
+  background: linear-gradient(to bottom, #e3ecf8, #c4cdd8);
+}

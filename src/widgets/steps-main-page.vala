@@ -283,7 +283,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         };
 
         var box = new Gtk.Box (VERTICAL, 36) {
-            valign = CENTER
+            valign = page.page.valign
         };
         scrolled_window.child = box;
 

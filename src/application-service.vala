@@ -223,7 +223,7 @@ public sealed class ReadySet.ApplicationService : Object {
 
         if (context.mode == INSTALLER) {
             new_model.append (new PageInfo.builtin (
-                new SummaryPage (context)
+                new SummaryPage (context, this)
             ));
         }
 

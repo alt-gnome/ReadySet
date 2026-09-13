@@ -49,21 +49,40 @@ template $ReadySetInstallerEndPage: $ReadySetEndPage {
       name: "ready";
 
       child: Adw.StatusPage status_page {
-        icon-name: "org.altlinux.ReadySet-symbolic";
         title: _("All done!");
 
-        Button finish_button {
-          styles [
-            "pill",
-            "suggested-action",
-          ]
-
-          use-underline: true;
+        Box {
+          spacing: 24;
           halign: center;
-          width-request: 156;
-          can-shrink: true;
-          action-name: "app.finish";
-          action-target: "'quit'";
+
+          Button {
+            styles [
+              "pill",
+            ]
+
+            label: _("Continue using live system");
+            use-underline: true;
+            halign: center;
+            width-request: 156;
+            can-shrink: true;
+            action-name: "app.finish";
+            action-target: "'quit'";
+          }
+
+          Button {
+            styles [
+              "pill",
+              "suggested-action",
+            ]
+
+            label: _("Reboot now");
+            use-underline: true;
+            halign: center;
+            width-request: 156;
+            can-shrink: true;
+            action-name: "app.finish";
+            action-target: "'reboot'";
+          }
         }
       };
     }
