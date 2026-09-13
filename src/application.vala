@@ -120,7 +120,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
         var finalizer = app_service.finalizer_factory.build ();
         try {
-            yield finalizer.run ();
+            yield finalizer.run (new ProgressData ());
             print ("Done!\n");
 
         } catch (ApplyError e) {

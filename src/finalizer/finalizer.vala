@@ -69,5 +69,5 @@ public abstract class ReadySet.Finalizer : Object {
 
     public InstallerAddin? installer_plugin { get; set; }
 
-    public abstract async void run (ProgressData progress_data = new ProgressData ()) throws ApplyError;
+    public abstract async void run (ProgressData progress_data) throws ApplyError;
 }
