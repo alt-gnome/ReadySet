@@ -165,7 +165,7 @@ namespace ReadySet {
         /**
          * Binds with {@link Gtk.ProgressBar.pulse_step} property.
          */
-        public bool pulse_step { get; set; }
+        public double pulse_step { get; set; }
 
         /**
          * Message that will be presented as current log.
