@@ -153,9 +153,19 @@ namespace ReadySet {
     public sealed class ProgressData : Object {
 
         /**
+         * Calls {@link Gtk.ProgressBar.pulse} property.
+         */
+        public signal void pulse ();
+
+        /**
          * Progress value from 0.0 to 1.0.
          */
         public double value { get; set; default = 0.0; }
+
+        /**
+         * Binds with {@link Gtk.ProgressBar.pulse_step} property.
+         */
+        public bool pulse_step { get; set; }
 
         /**
          * Message that will be presented as current log.

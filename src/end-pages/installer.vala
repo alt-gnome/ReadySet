@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -55,6 +55,8 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
 
         progress_data.bind_property ("message", apply_status_page, "description");
         progress_data.bind_property ("value", progress_bar, "fraction");
+        progress_data.bind_property ("pulse-step", progress_bar, "pulse-step");
+        progress_data.pulse.connect (on_pulse);
 
         progress_data.notify["value"].connect (update_progress_visibility);
         update_progress_visibility ();
@@ -78,7 +80,7 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
 
         } else {
             try {
-                yield finalizer.run ();
+                yield finalizer.run (progress_data);
                 stack.visible_child_name = "ready";
             } catch (ApplyError e) {
                 var error_data = apply_error_to_data (e);
@@ -87,6 +89,10 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
                 stack.visible_child_name = "error";
             }
         }
+    }
+
+    void on_pulse () {
+        progress_data.pulse ();
     }
 
     void update_progress_visibility () {
