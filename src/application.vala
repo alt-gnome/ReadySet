@@ -194,7 +194,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
                 break;
             case "reboot":
-                quit ();
+                reboot_system.begin ();
                 break;
         }
     }
