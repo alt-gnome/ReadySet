@@ -23,6 +23,8 @@ public sealed class ReadySet.WelcomePage : ReadySet.BasePage {
 
     [GtkChild]
     unowned ReadySet.StatusPage status_page;
+    [GtkChild]
+    unowned Gtk.Box header_box;
 
     public Mode mode { get; construct; }
 
@@ -55,6 +57,13 @@ public sealed class ReadySet.WelcomePage : ReadySet.BasePage {
                 break;
         }
 
-        valign = START;
+        notify["css-classes"].connect (css_class_changed);
+        css_class_changed ();
+    }
+
+    void css_class_changed () {
+        var compact = has_css_class ("compact");
+        header_box.visible = !compact;
+        valign = compact ? Gtk.Align.CENTER : Gtk.Align.START;
     }
 }

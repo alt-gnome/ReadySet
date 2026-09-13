@@ -48,25 +48,19 @@ public sealed class ReadySet.PageInfo : Object {
 
     public bool is_compact {
         get {
-            if (page.info == null) {
-                return page.content.has_css_class ("compact");
-            } else {
-                return page.info.has_css_class ("compact");
-            }
+            return page.has_css_class ("compact");
         }
         set {
             if (value) {
-                if (page.info == null) {
+                if (page.info != null) {
                     page.content.add_css_class ("compact");
-                } else {
-                    page.info.add_css_class ("compact");
                 }
+                page.add_css_class ("compact");
             } else {
-                if (page.info == null) {
-                    page.content.remove_css_class ("compact");
-                } else {
+                if (page.info != null) {
                     page.info.remove_css_class ("compact");
                 }
+                page.remove_css_class ("compact");
             }
         }
     }
