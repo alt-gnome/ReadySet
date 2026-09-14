@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-06 20:29+0000\n"
+"POT-Creation-Date: 2026-09-13 21:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,39 +37,39 @@ msgstr ""
 msgid "All done!"
 msgstr ""
 
-#: data/ui/installer-end-page.blp:36 src/end-pages/installer.vala:63
+#: data/ui/installer-end-page.blp:36 src/end-pages/installer.vala:64
 msgid "Installing system…"
+msgstr ""
+
+#: data/ui/installer-end-page.blp:64
+msgid "Continue using live system"
+msgstr ""
+
+#: data/ui/installer-end-page.blp:79
+msgid "Reboot now"
 msgstr ""
 
 #: data/ui/nothing-to-show.blp:30 plugins/language/data/ui/box.blp:44
 msgid "Nothing to show"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:374 data/ui/steps-main-page.blp:597
+#: data/ui/steps-main-page.blp:329 data/ui/steps-main-page.blp:498
 msgid "Go to previous page"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:392 data/ui/steps-main-page.blp:616
+#: data/ui/steps-main-page.blp:347 data/ui/steps-main-page.blp:517
 msgid "Next"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:404 data/ui/steps-main-page.blp:629
+#: data/ui/steps-main-page.blp:359 data/ui/steps-main-page.blp:530
 msgid "Extend/Retract keyboard"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:486 data/ui/steps-main-page.blp:664
+#: data/ui/steps-main-page.blp:441 data/ui/steps-main-page.blp:565
 msgid "Open Context menu"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:524
-msgid "Go up"
-msgstr ""
-
-#: data/ui/steps-main-page.blp:544 data/ui/steps-main-page.blp:550
-msgid "Go up to the beginning"
-msgstr ""
-
-#: data/ui/steps-main-page.blp:651
+#: data/ui/steps-main-page.blp:552
 msgid "Return to setup"
 msgstr ""
 
@@ -92,15 +92,15 @@ msgstr ""
 #. *
 #. * Title that will be shown at header or steps sidebar.
 #.
-#: lib/src/base/base-page.vala:65
+#: lib/src/base/base-page.vala:64
 msgid "Unknown"
 msgstr ""
 
-#: lib/src/base/base-page.vala:110
+#: lib/src/base/base-page.vala:101
 msgid "Unknown page"
 msgstr ""
 
-#: lib/src/base/base-page.vala:113
+#: lib/src/base/base-page.vala:104
 msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
@@ -249,7 +249,7 @@ msgstr ""
 msgid "Additinal layout switch"
 msgstr ""
 
-#: plugins/keyboard/plugin.vala:119
+#: plugins/keyboard/plugin.vala:120
 msgid "Error when setting keyboard layout"
 msgstr ""
 
@@ -286,10 +286,15 @@ msgstr ""
 msgid "I have read the license and accept it"
 msgstr ""
 
-#: plugins/license-agreement/page.vala:53
+#: plugins/license-agreement/page.vala:51
 msgid ""
 "We have updated our License Agreement. Please accept the new terms to "
 "continue."
+msgstr ""
+
+#: plugins/network/data/ui/access-point-row.blp:51
+#: plugins/network/data/ui/ethernet-connection-row.blp:39
+msgid "Configure…"
 msgstr ""
 
 #: plugins/network/data/ui/ap-security-editor.blp:42
@@ -303,10 +308,6 @@ msgstr ""
 
 #: plugins/network/data/ui/ethernet-adapter-window.blp:55
 msgid "Add a Connection…"
-msgstr ""
-
-#: plugins/network/data/ui/ethernet-connection-row.blp:39
-msgid "Configure…"
 msgstr ""
 
 #: plugins/network/data/ui/page.blp:25 plugins/network/data/ui/page.blp:30
@@ -337,7 +338,7 @@ msgstr ""
 msgid "Wi-Fi adapter"
 msgstr ""
 
-#: plugins/network/plugin.vala:193
+#: plugins/network/plugin.vala:191
 msgid "Failed to apply network settings"
 msgstr ""
 
@@ -362,63 +363,63 @@ msgstr ""
 msgid "Wired connection %u"
 msgstr ""
 
-#: plugins/network/wifi.vala:68
+#: plugins/network/wifi.vala:73
 msgid "Can't connect: undetermined security type"
 msgstr ""
 
-#: plugins/network/wifi.vala:144
+#: plugins/network/wifi.vala:136
 msgid "Connection setup failed"
 msgstr ""
 
-#: plugins/network/wifi.vala:155
+#: plugins/network/wifi.vala:160
 msgid "Connection failed"
 msgstr ""
 
-#: plugins/network/wifi.vala:191
+#: plugins/network/wifi.vala:188
 msgid "Connecting…"
 msgstr ""
 
-#: plugins/network/wifi.vala:196
+#: plugins/network/wifi.vala:193
 msgid "Connected"
 msgstr ""
 
-#: plugins/network/wifi.vala:198
+#: plugins/network/wifi.vala:195
 msgid "Connected without internet"
 msgstr ""
 
-#: plugins/network/wifi.vala:202
+#: plugins/network/wifi.vala:199
 msgid "Disconnecting…"
 msgstr ""
 
-#: plugins/network/wifi.vala:274
+#: plugins/network/wifi.vala:299
 msgid "WPA/WPA2/WPA3 Enterprise"
 msgstr ""
 
-#: plugins/network/wifi.vala:279
+#: plugins/network/wifi.vala:304
 msgid "WPA3 Personal"
 msgstr ""
 
-#: plugins/network/wifi.vala:284
+#: plugins/network/wifi.vala:309
 msgid "WPA/WPA2 Personal"
 msgstr ""
 
-#: plugins/network/wifi.vala:289
+#: plugins/network/wifi.vala:314
 msgid "WEP 40/104-bit Key (Hex/ASCII)"
 msgstr ""
 
-#: plugins/network/wifi.vala:293
+#: plugins/network/wifi.vala:318
 msgid "WEP 128-bit Passphrase"
 msgstr ""
 
-#: plugins/network/wifi.vala:298
+#: plugins/network/wifi.vala:323
 msgid "Dynamic WEP (802.1x)"
 msgstr ""
 
-#: plugins/network/wifi.vala:303
+#: plugins/network/wifi.vala:328
 msgid "LEAP"
 msgstr ""
 
-#: plugins/network/wifi.vala:308
+#: plugins/network/wifi.vala:333
 msgid "Enhanced Open"
 msgstr ""
 
@@ -513,21 +514,21 @@ msgstr ""
 msgid "Be careful not to lose your password."
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:57
+#: plugins/user/data/ui/page-password.blp:59
 msgid "Your user’s password"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:66
+#: plugins/user/data/ui/page-password.blp:68
 msgid "Generate user password"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:81
-#: plugins/user/data/ui/page-root-password.blp:84
+#: plugins/user/data/ui/page-password.blp:83
+#: plugins/user/data/ui/page-root-password.blp:86
 msgid "Passwords do not match"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:85
-#: plugins/user/data/ui/page-root-password.blp:88
+#: plugins/user/data/ui/page-password.blp:87
+#: plugins/user/data/ui/page-root-password.blp:90
 msgid "Repeat password"
 msgstr ""
 
@@ -547,11 +548,11 @@ msgstr ""
 msgid "Set administrator same as user password"
 msgstr ""
 
-#: plugins/user/data/ui/page-root-password.blp:60
+#: plugins/user/data/ui/page-root-password.blp:62
 msgid "Administrator’s password"
 msgstr ""
 
-#: plugins/user/data/ui/page-root-password.blp:69
+#: plugins/user/data/ui/page-root-password.blp:71
 msgid "Generate root password"
 msgstr ""
 
@@ -586,19 +587,19 @@ msgstr ""
 msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 
-#: plugins/user/page-password-common.vala:41
+#: plugins/user/page-password-common.vala:43
 msgid "Weak password"
 msgstr ""
 
-#: plugins/user/page-password-common.vala:42
+#: plugins/user/page-password-common.vala:44
 msgid "The entered password is not secure. Do you really want to use it?"
 msgstr ""
 
-#: plugins/user/page-password-common.vala:44
+#: plugins/user/page-password-common.vala:46
 msgid "_No"
 msgstr ""
 
-#: plugins/user/page-password-common.vala:45
+#: plugins/user/page-password-common.vala:47
 msgid "_Yes"
 msgstr ""
 
@@ -697,29 +698,29 @@ msgid ""
 "Adding more letters, numbers and punctuation will make the password stronger."
 msgstr ""
 
-#: plugins/user/utils.vala:122
+#: plugins/user/utils.vala:134
 msgid "Name cannot be empty"
 msgstr ""
 
-#: plugins/user/utils.vala:210
+#: plugins/user/utils.vala:222
 msgid "That username isn't available. Please try another"
 msgstr ""
 
-#: plugins/user/utils.vala:212
+#: plugins/user/utils.vala:224
 msgid "The username is too long"
 msgstr ""
 
-#: plugins/user/utils.vala:214
+#: plugins/user/utils.vala:226
 msgid "The username must start with a lower case letter from a-z"
 msgstr ""
 
-#: plugins/user/utils.vala:216
+#: plugins/user/utils.vala:228
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
 msgstr ""
 
-#: plugins/user/utils.vala:219
+#: plugins/user/utils.vala:231
 msgid "Username cannot be empty"
 msgstr ""
 
@@ -745,32 +746,42 @@ msgid "Print 0 if nothing to do else 1 to stderr"
 msgstr ""
 
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/end-pages/initial-setup.vala:44 src/end-pages/installer.vala:44
+#: src/end-pages/initial-setup.vala:44
 #, c-format
 msgid "_Start Using %s"
 msgstr ""
 
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/end-pages/initial-setup.vala:46 src/end-pages/installer.vala:46
+#: src/end-pages/initial-setup.vala:46
 #, c-format
 msgid "%s is ready to be used."
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:48 src/end-pages/installer.vala:48
+#: src/end-pages/initial-setup.vala:48
 msgid "_Start Using the System"
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:49 src/end-pages/installer.vala:49
+#: src/end-pages/initial-setup.vala:49
 msgid "System is ready to be used."
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:63
+#: src/end-pages/initial-setup.vala:65
 msgid "Applying changes…"
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:85 src/end-pages/installer.vala:86
+#: src/end-pages/initial-setup.vala:87 src/end-pages/installer.vala:89
 #, c-format
 msgid "Error message: %s"
+msgstr ""
+
+#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
+#: src/end-pages/installer.vala:46
+#, c-format
+msgid "%s is installed on Your device."
+msgstr ""
+
+#: src/end-pages/installer.vala:48
+msgid "System is installed on Your device."
 msgstr ""
 
 #: src/options-handler.vala:39
