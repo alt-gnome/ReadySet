@@ -17,3 +17,8 @@
   padding: 30px;
   background: linear-gradient(to bottom, #e3ecf8, #c4cdd8);
 }
+
+.none-back > .sidebar-pane {
+  background: none;
+  box-shadow: none;
+}

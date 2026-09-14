@@ -108,7 +108,7 @@ public sealed class ReadySet.OptionsHandler : Object {
             "force-layout", '\0',
             0, OptionArg.STRING,
             null,
-            N_("Set layout for window: `big`, `small`, `vertical`, `horizontal`"),
+            N_("Set layout for window: `big`, `small`, `vertical`"),
             "FORCE_LAYOUT"
         },
         {

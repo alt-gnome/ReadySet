@@ -32,8 +32,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     [GtkChild]
     unowned Gtk.Label sandbox_label_left;
     [GtkChild]
-    unowned Gtk.CenterBox standalone_horizontal_bottom;
-    [GtkChild]
     unowned Gtk.Label sandbox_label_right;
     [GtkChild]
     unowned Gtk.CenterBox button_center_box;
@@ -53,8 +51,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     unowned Adw.Breakpoint small_breakpoint;
     [GtkChild]
     unowned Adw.Breakpoint vertical_breakpoint;
-    [GtkChild]
-    unowned Adw.Breakpoint horizontal_breakpoint;
 
     [GtkChild]
     unowned Adw.Bin top_bin;
@@ -66,7 +62,16 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     [GtkChild]
     unowned Gtk.Button end_page_back_button;
 
-    public bool standalone { get; set; }
+    bool _standalone;
+    public bool standalone {
+        get {
+            return _standalone;
+        }
+        set {
+            _standalone = value;
+            update_center_button_pos ();
+        }
+    }
 
     bool _is_compact;
     protected bool is_compact {
@@ -96,6 +101,9 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
             }
         }
     }
+
+    public bool center_buttons { get; set; }
+    bool center_buttons_hold = false;
 
     public bool is_ready_to_continue { get; set; }
 
@@ -337,7 +345,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     void update_standalone () {
         standalone_sandbox_label.visible = sandbox &&
             Config.NIGHTLY && standalone;
-        standalone_horizontal_bottom.visible = layout_mode == HORIZONTAL && standalone;
     }
 
     void update_buttons () {
@@ -410,16 +417,12 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                 case VERTICAL:
                     force_breakpoint = vertical_breakpoint;
                     break;
-                case HORIZONTAL:
-                    force_breakpoint = horizontal_breakpoint;
-                    break;
             }
 
             Adw.Breakpoint[] all_breakpoints = {
                 big_breakpoint,
                 small_breakpoint,
                 vertical_breakpoint,
-                horizontal_breakpoint
             };
 
             foreach (var bp in all_breakpoints) {
@@ -438,5 +441,24 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     [GtkCallback]
     bool @and (bool a, bool b) {
         return a && b;
+    }
+
+    [GtkCallback]
+    void on_eventcontrollermotion_enter () {
+        center_buttons_hold = true;
+    }
+
+    [GtkCallback]
+    void on_eventcontrollermotion_leave () {
+        center_buttons_hold = false;
+        update_center_button_pos ();
+    }
+
+    void update_center_button_pos () {
+        if (center_buttons_hold) {
+            return;
+        }
+
+        center_buttons = standalone;
     }
 }

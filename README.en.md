@@ -79,7 +79,7 @@ than once. String lists use commas, for example
 `--context keyboard.input-sources=xkb::us,xkb::ru`.
 
 #### `force-layout`
-Set layout for window: `big`, `small`, `vertical`, `horizontal`. Auto by default.
+Set layout for window: `big`, `small`, `vertical`. Auto by default.
 
 #### `force-mode`
 Force run with mode: `installer`, `initial-setup`, `existing-user`. Can be used only in `nightly=true` builds. Auto by default.

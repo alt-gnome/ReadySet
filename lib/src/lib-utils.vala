@@ -46,15 +46,13 @@ namespace ReadySet {
     /**
      * Responsive layout state reported to {@link ReadySet.BasePage}.
      *
-     * `VERTICAL` and `HORIZONTAL` describe the content arrangement, while
+     * `VERTICAL` describe the content arrangement, while
      * `BIG` and `SMALL` describe the available window size. Consumers should
      * handle the values relevant to the breakpoint they observe.
      */
     public enum LayoutMode {
         /** Widgets are arranged vertically. */
         VERTICAL,
-        /** Widgets are arranged horizontally. */
-        HORIZONTAL,
         /** The page has a large amount of available space. */
         BIG,
         /** The page has a limited amount of available space. */
