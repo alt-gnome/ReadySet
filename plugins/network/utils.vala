@@ -100,8 +100,6 @@ namespace Network {
             WPA2_PSK,
             WPA_ENTERPRISE,
             WPA_PSK,
-            STATIC_WEP,
-            DYNAMIC_WEP,
             LEAP,
             OWE,
             NONE,
@@ -242,16 +240,6 @@ namespace Network {
         case WPA_PSK:
             conn.add_setting (new NM.SettingWirelessSecurity () {
                 key_mgmt = "wpa-psk",
-            });
-            break;
-        case STATIC_WEP:
-            conn.add_setting (new NM.SettingWirelessSecurity () {
-                key_mgmt = "none",
-            });
-            break;
-        case DYNAMIC_WEP:
-            conn.add_setting (new NM.SettingWirelessSecurity () {
-                key_mgmt = "ieee8021x",
             });
             break;
         case LEAP:

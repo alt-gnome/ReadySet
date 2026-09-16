@@ -121,7 +121,6 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             case WPA3_SUITE_B_192:
             case WPA2_ENTERPRISE:
             case WPA_ENTERPRISE:
-            case DYNAMIC_WEP:
                 var editor = create_editor ();
                 editor.done.connect (on_editor_closed);
                 editor.set_title (title);
@@ -241,8 +240,6 @@ public sealed class Network.ApSecurityEditor : Adw.AlertDialog {
         WS_WPA_EAP,
         WS_SAE,
         WS_WPA_PSK,
-        WS_WEP_KEY,
-        WS_DYNAMIC_WEP,
         WS_LEAP,
         WS_OWE;
     }
@@ -276,12 +273,6 @@ public sealed class Network.ApSecurityEditor : Adw.AlertDialog {
             case WPA_PSK:
                 mask |= WS_WPA_PSK;
                 break;
-            case STATIC_WEP:
-                mask |= WS_WEP_KEY;
-                break;
-            case DYNAMIC_WEP:
-                mask |= WS_DYNAMIC_WEP;
-                break;
             case LEAP:
                 mask |= WS_LEAP;
                 break;
@@ -307,20 +298,6 @@ public sealed class Network.ApSecurityEditor : Adw.AlertDialog {
             var page = new NMA.WsWpaPsk (connection, false);
             page.ws_changed.connect (validate);
             stack.add_titled (page, null, _("WPA/WPA2 Personal"));
-        }
-        if (WS_WEP_KEY in mask) {
-            var page1 = new NMA.WsWepKey (connection, KEY, false, false);
-            page1.ws_changed.connect (validate);
-            stack.add_titled (page1, null, _("WEP 40/104-bit Key (Hex/ASCII)"));
-
-            var page2 = new NMA.WsWepKey (connection, PASSPHRASE, false, false);
-            page2.ws_changed.connect (validate);
-            stack.add_titled (page2, null, _("WEP 128-bit Passphrase"));
-        }
-        if (WS_DYNAMIC_WEP in mask) {
-            var page = new NMA.WsDynamicWep (connection, true, false);
-            page.ws_changed.connect (validate);
-            stack.add_titled (page, null, _("Dynamic WEP (802.1x)"));
         }
         if (WS_LEAP in mask) {
             var page = new NMA.WsLeap (connection, false);
