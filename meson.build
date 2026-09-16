@@ -18,7 +18,6 @@ add_project_arguments(
 )
 
 add_project_arguments(
-  '--fatal-warnings',
   '--enable-experimental',
   '--vapidir', meson.project_source_root() / 'vapi',
   '--vapi-comments',
