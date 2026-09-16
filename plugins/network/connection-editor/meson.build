@@ -10,6 +10,6 @@ connection_editor_deps = [
 subdir(connection_editor_srcdir)
 
 connection_editor_dep = declare_dependency(
-  link_whole: libconnection_editor,
+  link_with: libconnection_editor,
   include_directories: connection_editor_srcdir,
 )
