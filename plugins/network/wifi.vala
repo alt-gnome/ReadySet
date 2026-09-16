@@ -228,7 +228,11 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
 
     [GtkCallback]
     void edit_connection () {
-        create_editor ().present ();
+        if (Addin.get_instance ().context.get_boolean ("network.simple")) {
+            new ApSecurityEditor (connection, security).present (get_native ());
+        } else {
+            create_editor ().present ();
+        }
     }
 }
 
