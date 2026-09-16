@@ -261,6 +261,24 @@ public sealed class Network.ApSecurityEditor : Adw.AlertDialog {
         });
         heading = connection.get_id ();
 
+        var with_secrets = NM.SimpleConnection.new_clone (connection);
+        var ws = connection.get_setting_wireless_security ();
+        var remote = connection as NM.RemoteConnection;
+        if (remote != null) {
+            var setting_name = ws?.key_mgmt == "wpa-eap"
+                    ? NM.Setting8021x.SETTING_NAME
+                    : NM.SettingWirelessSecurity.SETTING_NAME;
+
+            try {
+                with_secrets.update_secrets (setting_name,
+                    remote.get_secrets (setting_name)
+                );
+            } catch (Error e) {
+                warning (e.message);
+                with_secrets = connection;
+            }
+        }
+
         AvailableWs mask = 0;
         foreach (var type in sec) {
             switch (type) {
@@ -289,29 +307,49 @@ public sealed class Network.ApSecurityEditor : Adw.AlertDialog {
         }
 
         if (WS_WPA_EAP in mask) {
-            var page = new NMA.WsWpaEap (connection, true, false, null);
+            var page = new NMA.WsWpaEap (with_secrets, true, false, null);
             page.ws_changed.connect (validate);
-            stack.add_titled (page, null, _("WPA/WPA2/WPA3 Enterprise"));
+            stack.add_titled (page, "wpa-eap", _("WPA/WPA2/WPA3 Enterprise"));
         }
         if (WS_SAE in mask) {
-            var page = new NMA.WsSae (connection, false);
+            var page = new NMA.WsSae (with_secrets, false);
             page.ws_changed.connect (validate);
-            stack.add_titled (page, null, _("WPA3 Personal"));
+            stack.add_titled (page, "sae", _("WPA3 Personal"));
         }
         if (WS_WPA_PSK in mask) {
-            var page = new NMA.WsWpaPsk (connection, false);
+            var page = new NMA.WsWpaPsk (with_secrets, false);
             page.ws_changed.connect (validate);
-            stack.add_titled (page, null, _("WPA/WPA2 Personal"));
+            stack.add_titled (page, "wpa-psk", _("WPA/WPA2 Personal"));
         }
         if (WS_LEAP in mask) {
-            var page = new NMA.WsLeap (connection, false);
+            var page = new NMA.WsLeap (with_secrets, false);
             page.ws_changed.connect (validate);
-            stack.add_titled (page, null, _("LEAP"));
+            stack.add_titled (page, "leap", _("LEAP"));
         }
         if (WS_OWE in mask) {
-            var page = new NMA.WsOwe (connection);
+            var page = new NMA.WsOwe (with_secrets);
             page.ws_changed.connect (validate);
-            stack.add_titled (page, null, _("Enhanced Open"));
+            stack.add_titled (page, "owe", _("Enhanced Open"));
+        }
+
+        switch (ws?.key_mgmt) {
+        case "wpa-eap":
+            stack.visible_child_name = "wpa-eap";
+            break;
+        case "sae":
+            stack.visible_child_name = "sae";
+            break;
+        case "wpa-psk":
+            stack.visible_child_name = "wpa-psk";
+            break;
+        case "ieee8021x":
+            if (ws?.auth_alg == "leap") {
+                stack.visible_child_name = "leap";
+            }
+            break;
+        case "owe":
+            stack.visible_child_name = "owe";
+            break;
         }
 
         stack.notify["visible-child"].connect_after (validate_current);
