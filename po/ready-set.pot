@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-13 21:22+0000\n"
+"POT-Creation-Date: 2026-09-17 08:56+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -358,7 +358,7 @@ msgstr ""
 msgid "Trailing hyphen is not allowed"
 msgstr ""
 
-#: plugins/network/utils.vala:141
+#: plugins/network/utils.vala:139
 #, c-format
 msgid "Wired connection %u"
 msgstr ""
@@ -367,59 +367,47 @@ msgstr ""
 msgid "Can't connect: undetermined security type"
 msgstr ""
 
-#: plugins/network/wifi.vala:136
+#: plugins/network/wifi.vala:162
 msgid "Connection setup failed"
 msgstr ""
 
-#: plugins/network/wifi.vala:160
+#: plugins/network/wifi.vala:174
 msgid "Connection failed"
 msgstr ""
 
-#: plugins/network/wifi.vala:188
+#: plugins/network/wifi.vala:202
 msgid "Connecting…"
 msgstr ""
 
-#: plugins/network/wifi.vala:193
+#: plugins/network/wifi.vala:207
 msgid "Connected"
 msgstr ""
 
-#: plugins/network/wifi.vala:195
+#: plugins/network/wifi.vala:209
 msgid "Connected without internet"
 msgstr ""
 
-#: plugins/network/wifi.vala:199
+#: plugins/network/wifi.vala:213
 msgid "Disconnecting…"
 msgstr ""
 
-#: plugins/network/wifi.vala:299
+#: plugins/network/wifi.vala:327
 msgid "WPA/WPA2/WPA3 Enterprise"
 msgstr ""
 
-#: plugins/network/wifi.vala:304
+#: plugins/network/wifi.vala:332
 msgid "WPA3 Personal"
 msgstr ""
 
-#: plugins/network/wifi.vala:309
+#: plugins/network/wifi.vala:337
 msgid "WPA/WPA2 Personal"
 msgstr ""
 
-#: plugins/network/wifi.vala:314
-msgid "WEP 40/104-bit Key (Hex/ASCII)"
-msgstr ""
-
-#: plugins/network/wifi.vala:318
-msgid "WEP 128-bit Passphrase"
-msgstr ""
-
-#: plugins/network/wifi.vala:323
-msgid "Dynamic WEP (802.1x)"
-msgstr ""
-
-#: plugins/network/wifi.vala:328
+#: plugins/network/wifi.vala:342
 msgid "LEAP"
 msgstr ""
 
-#: plugins/network/wifi.vala:333
+#: plugins/network/wifi.vala:347
 msgid "Enhanced Open"
 msgstr ""
 
