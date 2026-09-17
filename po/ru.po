@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-13 21:22+0000\n"
+"POT-Creation-Date: 2026-09-17 08:56+0300\n"
 "PO-Revision-Date: 2026-09-07 12:14+0300\n"
 "Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
 "Language-Team: Russian\n"
@@ -365,7 +365,7 @@ msgstr "Имя устройства слишком короткое"
 msgid "Trailing hyphen is not allowed"
 msgstr "Имя устройства не может оканчиваться дефисом"
 
-#: plugins/network/utils.vala:141
+#: plugins/network/utils.vala:139
 #, c-format
 msgid "Wired connection %u"
 msgstr "Проводное подключение %u"
@@ -374,59 +374,47 @@ msgstr "Проводное подключение %u"
 msgid "Can't connect: undetermined security type"
 msgstr "Подключение невозможно: неизвестный тип защиты"
 
-#: plugins/network/wifi.vala:136
+#: plugins/network/wifi.vala:162
 msgid "Connection setup failed"
 msgstr "Не удалось настроить соединение"
 
-#: plugins/network/wifi.vala:160
+#: plugins/network/wifi.vala:174
 msgid "Connection failed"
 msgstr "Не удалось установить соединение"
 
-#: plugins/network/wifi.vala:188
+#: plugins/network/wifi.vala:202
 msgid "Connecting…"
 msgstr "Подключение…"
 
-#: plugins/network/wifi.vala:193
+#: plugins/network/wifi.vala:207
 msgid "Connected"
 msgstr "Подключено"
 
-#: plugins/network/wifi.vala:195
+#: plugins/network/wifi.vala:209
 msgid "Connected without internet"
 msgstr "Подключено без доступа в Интернет"
 
-#: plugins/network/wifi.vala:199
+#: plugins/network/wifi.vala:213
 msgid "Disconnecting…"
 msgstr "Отключение…"
 
-#: plugins/network/wifi.vala:299
+#: plugins/network/wifi.vala:327
 msgid "WPA/WPA2/WPA3 Enterprise"
 msgstr "WPA/WPA2/WPA3 Enterprise"
 
-#: plugins/network/wifi.vala:304
+#: plugins/network/wifi.vala:332
 msgid "WPA3 Personal"
 msgstr "WPA3 Personal"
 
-#: plugins/network/wifi.vala:309
+#: plugins/network/wifi.vala:337
 msgid "WPA/WPA2 Personal"
 msgstr "WPA/WPA2 Personal"
 
-#: plugins/network/wifi.vala:314
-msgid "WEP 40/104-bit Key (Hex/ASCII)"
-msgstr "40/104-битный ключ WEP (Hex или ASCII)"
-
-#: plugins/network/wifi.vala:318
-msgid "WEP 128-bit Passphrase"
-msgstr "128-битная парольная фраза WEP"
-
-#: plugins/network/wifi.vala:323
-msgid "Dynamic WEP (802.1x)"
-msgstr "Dynamic WEP (802.1x)"
-
-#: plugins/network/wifi.vala:328
+#: plugins/network/wifi.vala:342
 msgid "LEAP"
 msgstr "LEAP"
 
-#: plugins/network/wifi.vala:333
+#: plugins/network/wifi.vala:347
 msgid "Enhanced Open"
 msgstr "Enhanced Open"
 
@@ -930,6 +918,15 @@ msgstr "Тест"
 #: tests/plugins/test-common/data/ui/page.blp:27
 msgid "Test page"
 msgstr "Тестовая страница"
+
+#~ msgid "WEP 40/104-bit Key (Hex/ASCII)"
+#~ msgstr "40/104-битный ключ WEP (Hex или ASCII)"
+
+#~ msgid "WEP 128-bit Passphrase"
+#~ msgstr "128-битная парольная фраза WEP"
+
+#~ msgid "Dynamic WEP (802.1x)"
+#~ msgstr "Dynamic WEP (802.1x)"
 
 #~ msgid "Go up"
 #~ msgstr "Наверх"
