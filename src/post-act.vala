@@ -50,7 +50,7 @@ public sealed class ReadySet.PostAct : Object {
         var engine = get_engine ();
         addins = new Peas.ExtensionSet.with_properties (
             engine,
-            typeof (ReadySet.ServiceAddin),
+            typeof (ReadySet.PostActAddin),
             {}, {}
         );
 
