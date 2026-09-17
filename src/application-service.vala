@@ -205,20 +205,23 @@ public sealed class ReadySet.ApplicationService : Object {
             yield;
         }
 
-        var ntd = context.mode == EXISTING_USER && new_model.get_n_items () == 0;
-        if (ntd) {
-            if (ntd_only) {
-                stderr.printf ("%i\n", ntd ? 0 : 1);
-            } else {
-                print ("There is nothing to do\n");
-            }
+
+        var is_empty = new_model.get_n_items () == 0;
+        var ntd = context.mode == EXISTING_USER && is_empty;
+        if (ntd_only) {
+            stderr.printf ("%i\n", ntd ? 0 : 1);
+            return false;
+        } else if (ntd) {
+            print ("There is nothing to do\n");
             return false;
         }
 
-        if (!(((PageInfo) new_model.get_item (0)).plugin is Welcome)) {
-            new_model.insert (0, new PageInfo.builtin (
-                new WelcomePage (context.mode)
-            ));
+        if (!is_empty) {
+            if (!(((PageInfo) new_model.get_item (0)).plugin is Welcome)) {
+                new_model.insert (0, new PageInfo.builtin (
+                    new WelcomePage (context.mode)
+                ));
+            }
         }
 
         if (context.mode == INSTALLER) {
