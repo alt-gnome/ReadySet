@@ -121,19 +121,22 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             case WPA3_SUITE_B_192:
             case WPA2_ENTERPRISE:
             case WPA_ENTERPRISE:
-                var editor = create_editor ();
-                editor.done.connect (on_editor_closed);
-                editor.set_title (title);
-                editor.present ();
-                return;
+                if (addin.context.get_boolean ("network.simple")) {
+                    var editor = new ApSecurityEditor (connection, security);
+                    if ((yield editor.choose (get_native (), null)) != "apply"
+                            || !(yield add_connection ())) {
+                        return;
+                    }
+                } else {
+                    var editor = create_editor ();
+                    editor.done.connect (on_editor_closed);
+                    editor.set_title (title);
+                    editor.present ();
+                    return;
+                }
+                break;
             default:
-                try {
-                    yield addin.client.add_connection_async (
-                        connection, false, null
-                    );
-                } catch (Error e) {
-                    subtitle = _("Connection setup failed");
-                    warning (e.message);
+                if (!(yield add_connection ())) {
                     return;
                 }
                 break;
@@ -148,6 +151,18 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             yield activate_connection ();
         }
         editor.done.disconnect (on_editor_closed);
+    }
+
+    async bool add_connection () {
+        try {
+            return (yield Addin.get_instance ().client.add_connection_async (
+                connection, false, null
+            )) != null;
+        } catch (Error e) {
+            subtitle = _("Connection setup failed");
+            warning (e.message);
+            return false;
+        }
     }
 
     async void activate_connection () {
