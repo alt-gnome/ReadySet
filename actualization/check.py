@@ -15,7 +15,7 @@ def run(command, description, **kwargs):
     log(f"$ {command if isinstance(command, str) else shlex.join(command)}")
 
     try:
-        subprocess.run(command, check=True, **kwargs)
+        return subprocess.run(command, check=True, **kwargs)
     except subprocess.CalledProcessError as error:
         log(f"Failed with exit code {error.returncode}: {description}")
         raise
@@ -95,6 +95,15 @@ def main():
         run(['git', 'clone', repo_url, temp_dir], "Cloning repository")
         
         os.chdir(temp_dir)
+
+        tag = run(
+            ['git', 'describe', '--tags', '--abbrev=0', '--first-parent', 'origin/main'],
+            "Finding the latest tag on origin/main",
+            stdout=subprocess.PIPE,
+            text=True,
+        ).stdout.strip()
+        log(f"Using tag: {tag}")
+        run(['git', 'checkout', '--detach', tag], f"Checking out tag {tag}")
         
         if run_cmd:
             run(['bash', '-x', '-c', 'set -e\n' + run_cmd], "Running configured commands")
