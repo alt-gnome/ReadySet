@@ -52,11 +52,16 @@ options override the configuration file. Application options belong to the
 through `--context` and values loaded from `[Context]` are locked, so the UI
 cannot overwrite centrally supplied values.
 
-Configuration file priority (only the first found file is used; fields from other files are not merged):
+Configuration priority (only the first found way is used; fields from other ways are not applied):
 
 1. The file specified via the `--conf-file` option
-2. `/etc/ready-set/config`
-3. `/usr/share/ready-set/config`
+2. Local config: `/etc/ready-set/config` and `/etc/ready-set/config.d/` (sorted alphabetically)
+3. Vendor config: `/usr/share/ready-set/config` and `/usr/share/ready-set/config.d/` (sorted alphabetically)
+
+When a config file is loaded (not via the `--conf-file` option), files from its
+`config.d` directory are loaded as well and merged into it. Values from
+`config.d` files override the main config; values from later files override
+earlier ones.
 
 An example configuration file can be found [here](example/example.conf).
 
