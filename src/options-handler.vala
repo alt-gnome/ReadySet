@@ -183,12 +183,12 @@ public sealed class ReadySet.OptionsHandler : Object {
             } else if (standard_local_conf_file.query_exists ()) {
                 conf_file = standard_local_conf_file.get_path ();
                 conf_keyfile.load_from_file (conf_file, KeyFileFlags.NONE);
-                load_conf_files_from_dir (standard_local_conf_dir);
+                load_conf_files_from_dir (standard_local_conf_dir, conf_keyfile);
 
             } else if (standard_distro_conf_file.query_exists ()) {
                 conf_file = standard_distro_conf_file.get_path ();
                 conf_keyfile.load_from_file (conf_file, KeyFileFlags.NONE);
-                load_conf_files_from_dir (standard_distro_conf_dir);
+                load_conf_files_from_dir (standard_distro_conf_dir, conf_keyfile);
             }
 
             foreach (var prop in this.get_class ().list_properties ()) {
@@ -236,7 +236,7 @@ public sealed class ReadySet.OptionsHandler : Object {
         }
     }
 
-    void load_conf_files_from_dir (File dir) throws Error {
+    internal static void load_conf_files_from_dir (File dir, KeyFile merge_target) throws Error {
         if (!dir.query_exists ()) {
             return;
         }
@@ -260,11 +260,11 @@ public sealed class ReadySet.OptionsHandler : Object {
             var keyfile = new KeyFile ();
             keyfile.set_list_separator (SEP);
             keyfile.load_from_file (file.get_path (), KeyFileFlags.NONE);
-            merge_keyfile (conf_keyfile, keyfile);
+            merge_keyfile (merge_target, keyfile);
         }
     }
 
-    void merge_keyfile (KeyFile merge_target, KeyFile merge_source) throws Error {
+    internal static void merge_keyfile (KeyFile merge_target, KeyFile merge_source) throws Error {
         foreach (var group in merge_source.get_groups ()) {
             foreach (var key in merge_source.get_keys (group)) {
                 merge_target.set_value (
