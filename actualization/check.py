@@ -7,6 +7,19 @@ import subprocess
 import shutil
 import shlex
 
+def log(message):
+    print(f"[actualization] {message}", file=sys.stderr, flush=True)
+
+def run(command, description, **kwargs):
+    log(description)
+    log(f"$ {command if isinstance(command, str) else shlex.join(command)}")
+
+    try:
+        subprocess.run(command, check=True, **kwargs)
+    except subprocess.CalledProcessError as error:
+        log(f"Failed with exit code {error.returncode}: {description}")
+        raise
+
 def is_binary(path):
     try:
         with open(path, 'rb') as f:
@@ -64,10 +77,14 @@ def main():
     run_cmd = config.get('run', '')
     outputs = config.get('outputs', ['./'])
     exclude = config.get('exclude', [])
+
+    log(f"Config: {sys.argv[1]}")
+    log(f"Repository: {repo_url}")
+    log(f"Tracking directory: {tracking_dir}")
     
     if deps:
         cmd = "apt-get install -y " + " ".join(shlex.quote(dep) for dep in deps)
-        subprocess.run(cmd, shell=True, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        run(cmd, f"Installing {len(deps)} dependencies", shell=True)
         
     temp_dir = '/tmp/check_repo'
     if os.path.exists(temp_dir):
@@ -75,14 +92,15 @@ def main():
     os.makedirs(temp_dir)
     
     try:
-        subprocess.run(['git', 'clone', repo_url, temp_dir], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        run(['git', 'clone', repo_url, temp_dir], "Cloning repository")
         
         os.chdir(temp_dir)
         
         if run_cmd:
-            subprocess.run(['bash', '-c', 'set -e\n' + run_cmd], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            run(['bash', '-x', '-c', 'set -e\n' + run_cmd], "Running configured commands")
             
         abs_outputs = [os.path.abspath(out) for out in outputs]
+        log(f"Collecting outputs: {', '.join(outputs)}")
         
         expanded_exclude = []
         for exc in exclude:
@@ -100,6 +118,7 @@ def main():
                     expanded_exclude.append(p_abs)
                 
         copy_outputs_to_tracking(abs_outputs, expanded_exclude, tracking_dir)
+        log("Outputs collected successfully")
         
     finally:
         os.chdir('/')
