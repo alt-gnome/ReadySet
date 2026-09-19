@@ -6,12 +6,20 @@ librs_context_raw_sources_internal = files(
   'context-raw-internal.vala',
 )
 
+librs_context_raw_get_sources_internal = files(
+  'context-raw-get-internal.vala',
+)
+
 librs_context_loader_sources_internal = files(
   'context-loader-internal.vala',
 )
 
 librs_context_locked_sources_internal = files(
   'context-locked-internal.vala',
+)
+
+librs_context_locked_get_sources_internal = files(
+  'context-locked-get-internal.vala',
 )
 
 librs_context_vars_sources_internal = files(

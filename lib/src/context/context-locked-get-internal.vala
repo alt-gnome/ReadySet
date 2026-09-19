@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
+ * Copyright (C) 2025-2026 David Sultaniiazov <x1z53@alt-gnome.ru>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,7 @@
 
 public partial class ReadySet.Context {
 
-    internal void lock_all_settings () {
-        foreach (var val_obj in data.values) {
-            val_obj.lock_setting ();
-        }
+    internal bool get_locked (string key) {
+        return data[key].locked;
     }
 }

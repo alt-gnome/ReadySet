@@ -116,7 +116,7 @@ test_options_handler_sources = files(
   'options-handler-config.vapi',
 ) + files(
   meson.project_source_root() / 'src' / 'options-handler.vala',
-) + librs_sources_with_resources + librs_context_sources_internal + librs_context_locked_sources_internal
+) + librs_sources_with_resources + librs_context_loader_sources_internal + librs_context_raw_sources_internal + librs_context_locked_sources_internal
 
 test_options_handler_vala_args = [
   '--vapidir', meson.project_source_root() / 'lib' / 'src',

@@ -41,7 +41,7 @@ librs_ext_base_sources_internal = files(
   'extension-base-internal.vala',
 )
 
-librs_context_sources_internal = librs_context_vars_sources_internal + librs_context_mode_sources_internal + librs_context_raw_sources_internal + librs_context_loader_sources_internal
+librs_context_sources_internal = librs_context_vars_sources_internal + librs_context_mode_sources_internal + librs_context_raw_sources_internal + librs_context_raw_get_sources_internal + librs_context_loader_sources_internal
 
 librs_utils_sources_internal = files(
   'lib-utils-internal.vala',
