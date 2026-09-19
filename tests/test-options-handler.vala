@@ -22,7 +22,14 @@ const string APP_GROUP = "Application";
 const string CTX_GROUP = "Context";
 
 File create_temp_dir () {
-    return File.new_for_path (DirUtils.make_tmp ("readyset-conf-XXXXXX"));
+    string path;
+    try {
+        path = DirUtils.make_tmp ("readyset-conf-XXXXXX");
+    } catch (FileError e) {
+        Test.fail_printf ("Failed to create temp dir: %s", e.message);
+        return File.new_for_path ("");
+    }
+    return File.new_for_path (path);
 }
 
 void write_conf_file (File dir, string name, string contents) {
