@@ -59,7 +59,7 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         try {
             client = new NM.Client ();
         } catch (Error e) {
-            critical (e.message);
+            warning (e.message);
         }
 
         modems = new ListStore (typeof (NM.DeviceModem));
@@ -94,6 +94,17 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
     }
 
     public override void init_context () {
+        if (client == null) {
+            return;
+        }
+
+        if (client.nm_running) {
+            client.notify["nm-running"].disconnect (init_context);
+        } else {
+            client.notify["nm-running"].connect (init_context);
+            return;
+        }
+
         client.device_added.connect (add_device);
         client.device_removed.connect (remove_device);
 
