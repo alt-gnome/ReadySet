@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-17 08:56+0300\n"
+"POT-Creation-Date: 2026-09-22 11:12+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -322,23 +322,39 @@ msgstr ""
 msgid "Host Name"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:75
+#: plugins/network/data/ui/page.blp:84
 msgid "SIM Cards and Mobile Network"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:79
+#: plugins/network/data/ui/page.blp:88
 msgid "Ethernet"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:83
+#: plugins/network/data/ui/page.blp:92
 msgid "Wi-Fi"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:98
+#: plugins/network/data/ui/page.blp:107
 msgid "Wi-Fi adapter"
 msgstr ""
 
-#: plugins/network/plugin.vala:191
+#: plugins/network/data/ui/page.blp:128
+msgid "Starting up…"
+msgstr ""
+
+#: plugins/network/data/ui/page.blp:129
+msgid "Waiting for NetworkManager"
+msgstr ""
+
+#: plugins/network/data/ui/page.blp:137
+msgid "Networking is unavailable"
+msgstr ""
+
+#: plugins/network/data/ui/page.blp:138
+msgid "NetworkManager is not running"
+msgstr ""
+
+#: plugins/network/plugin.vala:204
 msgid "Failed to apply network settings"
 msgstr ""
 
@@ -358,7 +374,7 @@ msgstr ""
 msgid "Trailing hyphen is not allowed"
 msgstr ""
 
-#: plugins/network/utils.vala:139
+#: plugins/network/utils.vala:158
 #, c-format
 msgid "Wired connection %u"
 msgstr ""
