@@ -121,10 +121,14 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         });
     }
 
-    static void update_category (ListStore category, NM.Device device) {
+    static void update_category (
+            ListStore category,
+            NM.Device device,
+            NM.DeviceState state = device.state
+    ) {
         uint pos;
-        bool ok = device.state != UNMANAGED
-            && (device.device_type == ETHERNET || device.state != UNAVAILABLE);
+        bool ok = state != UNKNOWN && state != UNMANAGED
+            && (device.device_type == ETHERNET || state != UNAVAILABLE);
 
         if (category.find_with_equal_func (device, same_devices, out pos)) {
             if (!ok) {
@@ -145,13 +149,13 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
     ) {
         switch (device.device_type) {
         case MODEM:
-            update_category (modems, device);
+            update_category (modems, device, new_state);
             break;
         case ETHERNET:
-            update_category (ethers, device);
+            update_category (ethers, device, new_state);
             break;
         case WIFI:
-            update_category (wlans, device);
+            update_category (wlans, device, new_state);
             break;
         default:
             break;
@@ -176,8 +180,8 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         case MODEM:
         case ETHERNET:
         case WIFI:
-            update_device (device);
             device.state_changed.disconnect (update_device);
+            update_device (device, NM.DeviceState.UNKNOWN);
             break;
         default:
             break;
