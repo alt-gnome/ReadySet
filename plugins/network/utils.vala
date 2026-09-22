@@ -83,6 +83,25 @@ namespace Network {
         return true;
     }
 
+    async Hostname1 get_hostname_proxy () throws Error {
+        var con = yield Bus.get (SYSTEM, null);
+        if (con == null) {
+            error ("Failed to connect to bus");
+        }
+
+        return yield con.get_proxy<Hostname1> (
+            "org.freedesktop.hostname1",
+            "/org/freedesktop/hostname1",
+            NONE,
+            null
+        );
+    }
+
+    async void set_hostname (string hostname) throws Error {
+        Hostname1 proxy = yield get_hostname_proxy ();
+        yield proxy.set_static_hostname (hostname);
+    }
+
     bool same_ssid (Bytes? ssid1, Bytes? ssid2) {
         return ssid1 != null && ssid1.length > 0
             && ssid2 != null && ssid2.length > 0
@@ -259,6 +278,15 @@ namespace Network {
             break;
         }
     }
+}
+
+[DBus (name = "org.freedesktop.hostname1")]
+public interface Network.Hostname1 : Object {
+
+    public abstract async void set_static_hostname (
+            string hostname,
+            bool interactive = true
+    ) throws Error;
 }
 
 public sealed class Network.AccessPointSorter : Gtk.Sorter {

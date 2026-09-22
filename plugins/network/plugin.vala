@@ -59,7 +59,7 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         try {
             client = new NM.Client ();
         } catch (Error e) {
-            critical (e.message);
+            warning (e.message);
         }
 
         modems = new ListStore (typeof (NM.DeviceModem));
@@ -94,6 +94,17 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
     }
 
     public override void init_context () {
+        if (client == null) {
+            return;
+        }
+
+        if (client.nm_running) {
+            client.notify["nm-running"].disconnect (init_context);
+        } else {
+            client.notify["nm-running"].connect (init_context);
+            return;
+        }
+
         client.device_added.connect (add_device);
         client.device_removed.connect (remove_device);
 
@@ -110,10 +121,14 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         });
     }
 
-    static void update_category (ListStore category, NM.Device device) {
+    static void update_category (
+            ListStore category,
+            NM.Device device,
+            NM.DeviceState state = device.state
+    ) {
         uint pos;
-        bool ok = device.state != UNMANAGED
-            && (device.device_type == ETHERNET || device.state != UNAVAILABLE);
+        bool ok = state != UNKNOWN && state != UNMANAGED
+            && (device.device_type == ETHERNET || state != UNAVAILABLE);
 
         if (category.find_with_equal_func (device, same_devices, out pos)) {
             if (!ok) {
@@ -134,13 +149,13 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
     ) {
         switch (device.device_type) {
         case MODEM:
-            update_category (modems, device);
+            update_category (modems, device, new_state);
             break;
         case ETHERNET:
-            update_category (ethers, device);
+            update_category (ethers, device, new_state);
             break;
         case WIFI:
-            update_category (wlans, device);
+            update_category (wlans, device, new_state);
             break;
         default:
             break;
@@ -165,8 +180,8 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         case MODEM:
         case ETHERNET:
         case WIFI:
-            update_device (device);
             device.state_changed.disconnect (update_device);
+            update_device (device, NM.DeviceState.UNKNOWN);
             break;
         default:
             break;
@@ -179,9 +194,7 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         }
 
         try {
-            yield client.save_hostname_async (
-                context.get_string ("network.hostname"), null
-            );
+            yield set_hostname (context.get_string ("network.hostname"));
 
             foreach (var conn in client.connections) {
                 yield conn.commit_changes_async (true, null);

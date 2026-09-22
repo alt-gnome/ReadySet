@@ -71,40 +71,78 @@ template $NetworkPage: $ReadySetBasePage {
         }
       }
 
-      Adw.PreferencesGroup simcard_group {
-        title: _("SIM Cards and Mobile Network");
-      }
+      Stack networking {
+        transition-type: crossfade;
+        hhomogeneous: true;
+        vhomogeneous: false;
 
-      Adw.PreferencesGroup ethernet_group {
-        title: _("Ethernet");
-      }
+        StackPage {
+          name: "running";
 
-      Adw.PreferencesGroup wifi_group {
-        title: _("Wi-Fi");
+          child: Box {
+            orientation: vertical;
+            spacing: 12;
 
-        Revealer {
-          reveal-child: bind wlan_switch.activatable;
-          transition-type: slide_down;
-
-          ListBox {
-            styles [
-              "boxed-list",
-            ]
-
-            margin-bottom: 12;
-            selection-mode: none;
-
-            $NetworkComboRowStackSwitcher wlan_switch {
-              title: _("Wi-Fi adapter");
-              stack: bind wifi_adapters.stack;
+            Adw.PreferencesGroup simcard_group {
+              title: _("SIM Cards and Mobile Network");
             }
-          }
+
+            Adw.PreferencesGroup ethernet_group {
+              title: _("Ethernet");
+            }
+
+            Adw.PreferencesGroup wifi_group {
+              title: _("Wi-Fi");
+
+              Revealer {
+                reveal-child: bind wlan_switch.activatable;
+                transition-type: slide_down;
+
+                ListBox {
+                  styles [
+                    "boxed-list",
+                  ]
+
+                  margin-bottom: 12;
+                  selection-mode: none;
+
+                  $NetworkComboRowStackSwitcher wlan_switch {
+                    title: _("Wi-Fi adapter");
+                    stack: bind wifi_adapters.stack;
+                  }
+                }
+              }
+
+              $NetworkModeledStack wifi_adapters {
+                hhomogeneous: true;
+                vhomogeneous: false;
+                transition-type: slide_left_right;
+              }
+            }
+          };
         }
 
-        $NetworkModeledStack wifi_adapters {
-          hhomogeneous: true;
-          vhomogeneous: false;
-          transition-type: slide_left_right;
+        StackPage {
+          name: "waiting";
+
+          child: Adw.StatusPage {
+            paintable: Adw.SpinnerPaintable {
+              widget: template;
+            };
+
+            title: _("Starting up…");
+            description: _("Waiting for NetworkManager");
+          };
+        }
+
+        StackPage {
+          name: "fail";
+
+          child: Adw.StatusPage {
+            icon-name: "dialog-error-symbolic";
+            title: _("Networking is unavailable");
+            description: _("NetworkManager is not running");
+          };
         }
       }
     }

@@ -23,6 +23,9 @@ public sealed class Network.Page : ReadySet.BasePage {
     [GtkChild]
     unowned Adw.EntryRow hostname_entry;
     [GtkChild]
+    unowned Gtk.Stack networking;
+
+    [GtkChild]
     unowned Adw.PreferencesGroup simcard_group;
 
     [GtkChild]
@@ -55,6 +58,10 @@ public sealed class Network.Page : ReadySet.BasePage {
             "network.hostname",
             SYNC_CREATE
         );
+
+        addin.client.notify["nm-running"].connect (set_networking_page);
+        addin.client.notify["startup"].connect (set_networking_page);
+        set_networking_page ();
 
 #if 0
         addin.modems.bind_property ("n-items",
@@ -103,6 +110,17 @@ public sealed class Network.Page : ReadySet.BasePage {
             hostname_entry.remove_css_class ("error");
         } else {
             hostname_entry.add_css_class ("error");
+        }
+    }
+
+    void set_networking_page () {
+        NM.Client nmc = Addin.get_instance ().client;
+        if (nmc.nm_running) {
+            networking.visible_child_name = "running";
+        } else if (nmc.startup) {
+            networking.visible_child_name = "waiting";
+        } else {
+            networking.visible_child_name = "fail";
         }
     }
 
