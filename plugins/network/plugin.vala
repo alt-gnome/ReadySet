@@ -194,9 +194,7 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         }
 
         try {
-            yield client.save_hostname_async (
-                context.get_string ("network.hostname"), null
-            );
+            yield set_hostname (context.get_string ("network.hostname"));
 
             foreach (var conn in client.connections) {
                 yield conn.commit_changes_async (true, null);
