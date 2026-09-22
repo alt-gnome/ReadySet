@@ -31,6 +31,9 @@ public sealed class ReadySet.OptionsHandler : Object {
     File standard_distro_conf_file = File.new_build_filename (Config.DATADIR, Config.NAME, "config");
     File standard_local_conf_file = File.new_build_filename (Config.SYSCONFDIR, Config.NAME, "config");
 
+    File standard_distro_conf_dir;
+    File standard_local_conf_dir;
+
     internal const OptionEntry[] OPTION_ENTRIES = {
         {
             "context", '\0',
@@ -169,6 +172,9 @@ public sealed class ReadySet.OptionsHandler : Object {
         conf_keyfile = new KeyFile ();
         conf_keyfile.set_list_separator (SEP);
 
+        standard_distro_conf_dir = File.new_build_filename (standard_distro_conf_file.get_path () + ".d");
+        standard_local_conf_dir = File.new_build_filename (standard_local_conf_file.get_path () + ".d");
+
         try {
             if (options.contains (OPT_CONF_FILE)) {
                 conf_file = options.lookup_value (OPT_CONF_FILE, null).get_bytestring ();
@@ -177,10 +183,12 @@ public sealed class ReadySet.OptionsHandler : Object {
             } else if (standard_local_conf_file.query_exists ()) {
                 conf_file = standard_local_conf_file.get_path ();
                 conf_keyfile.load_from_file (conf_file, KeyFileFlags.NONE);
+                load_conf_files_from_dir (standard_local_conf_dir, conf_keyfile);
 
             } else if (standard_distro_conf_file.query_exists ()) {
                 conf_file = standard_distro_conf_file.get_path ();
                 conf_keyfile.load_from_file (conf_file, KeyFileFlags.NONE);
+                load_conf_files_from_dir (standard_distro_conf_dir, conf_keyfile);
             }
 
             foreach (var prop in this.get_class ().list_properties ()) {
@@ -228,8 +236,48 @@ public sealed class ReadySet.OptionsHandler : Object {
         }
     }
 
+    internal static void load_conf_files_from_dir (File dir, KeyFile merge_target) throws Error {
+        if (!dir.query_exists ()) {
+            return;
+        }
+
+        var file_enumerator = dir.enumerate_children (
+            FileAttribute.STANDARD_NAME,
+            FileQueryInfoFlags.NONE
+        );
+
+        var file_names = new Gee.ArrayList<string> ();
+        FileInfo file_info;
+        while ((file_info = file_enumerator.next_file ()) != null) {
+            file_names.add (file_info.get_name ());
+        }
+
+        file_names.sort ();
+
+        foreach (var file_name in file_names) {
+            var file = dir.get_child (file_name);
+
+            var keyfile = new KeyFile ();
+            keyfile.set_list_separator (SEP);
+            keyfile.load_from_file (file.get_path (), KeyFileFlags.NONE);
+            merge_keyfile (merge_target, keyfile);
+        }
+    }
+
+    internal static void merge_keyfile (KeyFile merge_target, KeyFile merge_source) throws Error {
+        foreach (var group in merge_source.get_groups ()) {
+            foreach (var key in merge_source.get_keys (group)) {
+                merge_target.set_value (
+                    group,
+                    key,
+                    merge_source.get_value (group, key)
+                );
+            }
+        }
+    }
+
     public void fill_context (Context ctx) {
-        if (conf_file != null) {
+        if (conf_keyfile.has_group (CTX_GROUP_NAME)) {
             try {
                 ctx.load_from_keyfile (conf_keyfile, CTX_GROUP_NAME, true);
             } catch (Error e) {

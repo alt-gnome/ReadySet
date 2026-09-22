@@ -103,3 +103,34 @@ test('service-hooks',
     ],
   )
 )
+
+options_handler_test_config = configuration_data()
+options_handler_test_config.set_quoted('NAME', 'ready-set')
+options_handler_test_config.set_quoted('DATADIR', '/usr/share')
+options_handler_test_config.set_quoted('SYSCONFDIR', '/etc')
+
+configure_file(output: 'options-handler-config.h', configuration: options_handler_test_config)
+
+test_options_handler_sources = files(
+  'test-options-handler.vala',
+  'options-handler-config.vapi',
+) + files(
+  meson.project_source_root() / 'src' / 'options-handler.vala',
+) + librs_sources_with_resources + librs_context_loader_sources_internal + librs_context_raw_sources_internal + librs_context_locked_sources_internal
+
+test_options_handler_vala_args = [
+  '--vapidir', meson.project_source_root() / 'lib' / 'src',
+]
+
+test('options-handler',
+  executable('test-options-handler',
+    sources: test_options_handler_sources,
+    include_directories: [
+      include_directories('.'),
+      include_directories('../src'),
+      include_directories('../lib/src'),
+    ],
+    vala_args: test_options_handler_vala_args,
+    dependencies: [gee_dep] + librs_dependencies,
+  )
+)
