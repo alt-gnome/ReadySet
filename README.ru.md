@@ -109,8 +109,10 @@ meson test -C _build
 
 ## Благодарности
 
-- Владимир Романов <rirusha@altlinux.org> — разработчик
-- Виктория Зубачева <gingercat@alt-gnome.ru> — иконка и дизайн
+- Vladimir Romanov <rirusha@altlinux.org> — сопровождающий
+- Valery Zabrovsky <brow@altlinux.org> — сопровождающий плагина `network`
+- David Sultaniiazov <x1z53@alt-gnome.ru> — сопровождающий плагинов `license-agreement` и `date-and-time`
+- Виктория Зубачева <gingercat@alt-gnome.ru> — иконки и дизайн
 - Нина Петрова <1704.nina.petrova@gmail.com> — дизайн
 - [GNOME Control Center](plugins/network/connection-editor/README.ru.md)
 - [GNOME Initial Setup](https://gitlab.gnome.org/GNOME/gnome-initial-setup) —

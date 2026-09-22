@@ -147,8 +147,10 @@ meson compile -C _build
 
 ## Credits
 
-- Vladimir Romanov <rirusha@altlinux.org> — developer
-- Viktoria Zubacheva <gingercat@alt-gnome.ru> — icon/design
+- Vladimir Romanov <rirusha@altlinux.org> — maintainer
+- Valery Zabrovsky <brow@altlinux.org> — `network` plugin maintainer
+- David Sultaniiazov <x1z53@alt-gnome.ru> — `license-agreement` and `date-and-time` plugins maintainer
+- Viktoria Zubacheva <gingercat@alt-gnome.ru> — icons/design
 - Nina Petrova <1704.nina.petrova@gmail.com> — design
 - [GNOME Control Center](plugins/network/connection-editor/README.en.md)
 - [GNOME Initial Setup](https://gitlab.gnome.org/GNOME/gnome-initial-setup), the source of a lot of the logic
