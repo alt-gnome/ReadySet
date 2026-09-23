@@ -68,7 +68,7 @@ jobs:
     name: RPM build for ${{ matrix.branch }}.${{ matrix.arch }} and uploading
     runs-on: als-huge
     container:
-      image: altlinux.space/alt-security/${{ matrix.branch }}/hasher:latest
+      image: altlinux.space/alt-hub/${{ matrix.branch }}/flatpak-builder:latest
       options: --platform linux/${{ matrix.arch }}
 
     strategy:
@@ -78,7 +78,7 @@ jobs:
           # - p11
         arch:
           - amd64
-          # - arm64
+          - arm64
 
     needs:
       - lint
