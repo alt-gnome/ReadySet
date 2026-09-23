@@ -74,13 +74,15 @@ public class DateAndTime.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
             }
         }
 
-        try {
-            yield proxy.set_ntp (automatic_datetime);
-        } catch (Error e) {
-            throw ReadySet.ApplyError.build_error (_("Error when setting NTP"), e.message);
+        if (proxy.can_ntp) {
+            try {
+                yield proxy.set_ntp (automatic_datetime);
+            } catch (Error e) {
+                throw ReadySet.ApplyError.build_error (_("Error when setting NTP"), e.message);
+            }
         }
 
-        if (!automatic_datetime) {
+        if (!automatic_datetime || !proxy.can_ntp) {
             try {
                 var datetime = context.get_int ("date-and-time.datetime");
                 yield proxy.set_time ((int64) datetime * 1000000);
