@@ -65,20 +65,17 @@ jobs:
 
   rpm-build:
     if: github.event_name != 'pull_request'
-    name: RPM build for ${{ matrix.branch }}.${{ matrix.arch }} and uploading
+    name: RPM build for ${{ matrix.arch }} and uploading
     runs-on: als-huge
     container:
-      image: altlinux.space/alt-security/${{ matrix.branch }}/hasher:latest
+      image: altlinux.space/alt-hub/sisyphus/flatpak-builder:latest
       options: --platform linux/${{ matrix.arch }}
 
     strategy:
       matrix:
-        branch:
-          - sisyphus
-          # - p11
         arch:
           - amd64
-          # - arm64
+          - arm64
 
     needs:
       - lint
@@ -108,4 +105,4 @@ jobs:
         with:
           directory: ~/hasher/repo
           token: ${{ secrets.TOKEN }}
-          group: ready-set-nightly/${{ matrix.branch }}
+          group: ready-set-nightly/sisyphus
