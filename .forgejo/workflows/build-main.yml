@@ -65,6 +65,7 @@ jobs:
 
   rpm-build:
     if: github.event_name != 'pull_request'
+    continue-on-error: ${{ matrix.arch == 'arm64' }}
     name: RPM build for ${{ matrix.arch }} and uploading
     runs-on: als-huge
     container:
@@ -72,6 +73,7 @@ jobs:
       options: --platform linux/${{ matrix.arch }}
 
     strategy:
+      fail-fast: false
       matrix:
         arch:
           - amd64
