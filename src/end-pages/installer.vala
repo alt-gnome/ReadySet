@@ -110,7 +110,7 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
     }
 
     void on_pulse () {
-        progress_data.pulse ();
+        progress_bar.pulse ();
     }
 
     void update_progress_visibility () {
