@@ -93,6 +93,8 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         }
     }
 
+    public bool can_use_ntp { get; set; }
+
     TimeZone? _selected_timezone;
     TimeZone? selected_timezone {
         get { return _selected_timezone; }
@@ -134,11 +136,19 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         Settings datetime_settings = new Settings ("org.gnome.desktop.datetime");
         manual_timezone = !datetime_settings.get_boolean ("automatic-timezone");
 
-        manual_date_and_time = false;
         try {
-            manual_date_and_time = !get_timedate_proxy ().ntp;
+            var proxy = get_timedate_proxy ();
+            can_use_ntp = proxy.can_ntp;
+
+            if (can_use_ntp) {
+                manual_date_and_time = !proxy.ntp;
+            } else {
+                manual_date_and_time = true;
+            }
         } catch (Error e) {
             warning (_("Failed to connect to timedate service: ") + e.message);
+            can_use_ntp = false;
+            manual_date_and_time = true;
         }
 
         var now_tz = new TimeZone.local ();
