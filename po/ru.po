@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 11:12+0300\n"
+"POT-Creation-Date: 2026-09-24 07:55+0000\n"
 "PO-Revision-Date: 2026-09-22 11:18+0300\n"
 "Last-Translator: Valery Zabrovsky <brow@altlinux.org>\n"
 "Language-Team: Russian\n"
@@ -57,23 +57,23 @@ msgstr ""
 msgid "Nothing to show"
 msgstr "Нечего показывать"
 
-#: data/ui/steps-main-page.blp:329 data/ui/steps-main-page.blp:498
-msgid "Go to previous page"
-msgstr "К предыдущей странице"
-
-#: data/ui/steps-main-page.blp:347 data/ui/steps-main-page.blp:517
-msgid "Next"
-msgstr "Дальше"
-
-#: data/ui/steps-main-page.blp:359 data/ui/steps-main-page.blp:530
-msgid "Extend/Retract keyboard"
-msgstr "Показать/Скрыть клавиатуру"
-
-#: data/ui/steps-main-page.blp:441 data/ui/steps-main-page.blp:565
+#: data/ui/steps-main-page.blp:304 data/ui/steps-main-page.blp:433
 msgid "Open Context menu"
 msgstr "Открыть меню Контекста"
 
-#: data/ui/steps-main-page.blp:552
+#: data/ui/steps-main-page.blp:361
+msgid "Go to previous page"
+msgstr "К предыдущей странице"
+
+#: data/ui/steps-main-page.blp:380
+msgid "Next"
+msgstr "Дальше"
+
+#: data/ui/steps-main-page.blp:393
+msgid "Extend/Retract keyboard"
+msgstr "Показать/Скрыть клавиатуру"
+
+#: data/ui/steps-main-page.blp:420
 msgid "Return to setup"
 msgstr "Назад к настройке"
 
@@ -291,7 +291,7 @@ msgstr "Лицензионное соглашение"
 msgid "I have read the license and accept it"
 msgstr "Я ознакомился с лицензией и принимаю ее"
 
-#: plugins/license-agreement/page.vala:51
+#: plugins/license-agreement/page.vala:53
 msgid ""
 "We have updated our License Agreement. Please accept the new terms to "
 "continue."
@@ -329,35 +329,35 @@ msgstr "Настройте сетевые подключения."
 msgid "Host Name"
 msgstr "Имя устройства"
 
-#: plugins/network/data/ui/page.blp:84
+#: plugins/network/data/ui/page.blp:87
 msgid "SIM Cards and Mobile Network"
 msgstr "SIM-карты и мобильная сеть"
 
-#: plugins/network/data/ui/page.blp:88
+#: plugins/network/data/ui/page.blp:91
 msgid "Ethernet"
 msgstr "Проводное подключение"
 
-#: plugins/network/data/ui/page.blp:92
+#: plugins/network/data/ui/page.blp:95
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
-#: plugins/network/data/ui/page.blp:107
+#: plugins/network/data/ui/page.blp:110
 msgid "Wi-Fi adapter"
 msgstr "Адаптер Wi-Fi"
 
-#: plugins/network/data/ui/page.blp:128
+#: plugins/network/data/ui/page.blp:133
 msgid "Starting up…"
 msgstr "Подготовка…"
 
-#: plugins/network/data/ui/page.blp:129
+#: plugins/network/data/ui/page.blp:134
 msgid "Waiting for NetworkManager"
 msgstr "Ожидание запуска NetworkManager"
 
-#: plugins/network/data/ui/page.blp:137
+#: plugins/network/data/ui/page.blp:143
 msgid "Networking is unavailable"
 msgstr "Настройка сети недоступна"
 
-#: plugins/network/data/ui/page.blp:138
+#: plugins/network/data/ui/page.blp:144
 msgid "NetworkManager is not running"
 msgstr "NetworkManager не запущен"
 
@@ -832,63 +832,64 @@ msgstr "После выбора параметров система будет �
 msgid "System is installed on Your device."
 msgstr "После выбора параметров система будет установлена на Ваше устройство."
 
-#: src/options-handler.vala:39
+#: src/options-handler.vala:42
 msgid "Context vars"
 msgstr "Переменные контекста"
 
-#: src/options-handler.vala:47
+#: src/options-handler.vala:50
 msgid "Force run with mode"
 msgstr "Запустить в определенном режиме"
 
-#: src/options-handler.vala:55
+#: src/options-handler.vala:58
 msgid "Make window closable always"
 msgstr "Сделать окно всегда закрываемым"
 
-#: src/options-handler.vala:62
+#: src/options-handler.vala:65
 msgid "Run window in fullscreen"
 msgstr "Запуск окна в полноэкранном режиме"
 
-#: src/options-handler.vala:69
+#: src/options-handler.vala:72
 msgid "Specify installer plugin"
 msgstr "Указать плагин-установщик"
 
-#: src/options-handler.vala:76
+#: src/options-handler.vala:79
 msgid "Sandbox run without doing anything in system"
 msgstr "Запуск в \"песочнице\" без изменения системы"
 
-#: src/options-handler.vala:83
+#: src/options-handler.vala:86
 msgid "Steps. E.g: `steps=language,keyboard`"
 msgstr "Шаги. К примеру: `steps=language,keyboard`"
 
-#: src/options-handler.vala:90
+#: src/options-handler.vala:93
 msgid "Window can be resized or not"
 msgstr "Может размер окна быть изменен или нет"
 
-#: src/options-handler.vala:97
+#: src/options-handler.vala:100
 msgid "Width of a window"
 msgstr "Ширина окна"
 
-#: src/options-handler.vala:104
+#: src/options-handler.vala:107
 msgid "Height of a window"
 msgstr "Высота окна"
 
-#: src/options-handler.vala:111
-msgid "Set layout for window: `big`, `small`, `vertical`, `horizontal`"
+#: src/options-handler.vala:114
+#, fuzzy
+msgid "Set layout for window: `big`, `small`, `vertical`"
 msgstr ""
 "Назначить используемый внешний вид приложения: `big`, `small`, `vertical`, "
 "`horizontal`"
 
-#: src/options-handler.vala:118
+#: src/options-handler.vala:121
 msgid "Print version information and exit"
 msgstr "Показать информацию о версии и выйти"
 
-#: src/options-handler.vala:125
+#: src/options-handler.vala:128
 msgid "Run apply from config without running GUI"
 msgstr ""
 "Запустить apply, используя конфигурационный файл без запуска графического "
 "интерфейса"
 
-#: src/options-handler.vala:132
+#: src/options-handler.vala:135
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
