@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 11:12+0300\n"
+"POT-Creation-Date: 2026-09-24 07:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,23 +53,23 @@ msgstr ""
 msgid "Nothing to show"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:329 data/ui/steps-main-page.blp:498
-msgid "Go to previous page"
-msgstr ""
-
-#: data/ui/steps-main-page.blp:347 data/ui/steps-main-page.blp:517
-msgid "Next"
-msgstr ""
-
-#: data/ui/steps-main-page.blp:359 data/ui/steps-main-page.blp:530
-msgid "Extend/Retract keyboard"
-msgstr ""
-
-#: data/ui/steps-main-page.blp:441 data/ui/steps-main-page.blp:565
+#: data/ui/steps-main-page.blp:304 data/ui/steps-main-page.blp:433
 msgid "Open Context menu"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:552
+#: data/ui/steps-main-page.blp:361
+msgid "Go to previous page"
+msgstr ""
+
+#: data/ui/steps-main-page.blp:380
+msgid "Next"
+msgstr ""
+
+#: data/ui/steps-main-page.blp:393
+msgid "Extend/Retract keyboard"
+msgstr ""
+
+#: data/ui/steps-main-page.blp:420
 msgid "Return to setup"
 msgstr ""
 
@@ -286,7 +286,7 @@ msgstr ""
 msgid "I have read the license and accept it"
 msgstr ""
 
-#: plugins/license-agreement/page.vala:51
+#: plugins/license-agreement/page.vala:53
 msgid ""
 "We have updated our License Agreement. Please accept the new terms to "
 "continue."
@@ -322,35 +322,35 @@ msgstr ""
 msgid "Host Name"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:84
+#: plugins/network/data/ui/page.blp:87
 msgid "SIM Cards and Mobile Network"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:88
+#: plugins/network/data/ui/page.blp:91
 msgid "Ethernet"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:92
+#: plugins/network/data/ui/page.blp:95
 msgid "Wi-Fi"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:107
+#: plugins/network/data/ui/page.blp:110
 msgid "Wi-Fi adapter"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:128
+#: plugins/network/data/ui/page.blp:133
 msgid "Starting up…"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:129
+#: plugins/network/data/ui/page.blp:134
 msgid "Waiting for NetworkManager"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:137
+#: plugins/network/data/ui/page.blp:143
 msgid "Networking is unavailable"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:138
+#: plugins/network/data/ui/page.blp:144
 msgid "NetworkManager is not running"
 msgstr ""
 
@@ -788,59 +788,59 @@ msgstr ""
 msgid "System is installed on Your device."
 msgstr ""
 
-#: src/options-handler.vala:39
+#: src/options-handler.vala:42
 msgid "Context vars"
 msgstr ""
 
-#: src/options-handler.vala:47
+#: src/options-handler.vala:50
 msgid "Force run with mode"
 msgstr ""
 
-#: src/options-handler.vala:55
+#: src/options-handler.vala:58
 msgid "Make window closable always"
 msgstr ""
 
-#: src/options-handler.vala:62
+#: src/options-handler.vala:65
 msgid "Run window in fullscreen"
 msgstr ""
 
-#: src/options-handler.vala:69
+#: src/options-handler.vala:72
 msgid "Specify installer plugin"
 msgstr ""
 
-#: src/options-handler.vala:76
+#: src/options-handler.vala:79
 msgid "Sandbox run without doing anything in system"
 msgstr ""
 
-#: src/options-handler.vala:83
+#: src/options-handler.vala:86
 msgid "Steps. E.g: `steps=language,keyboard`"
 msgstr ""
 
-#: src/options-handler.vala:90
+#: src/options-handler.vala:93
 msgid "Window can be resized or not"
 msgstr ""
 
-#: src/options-handler.vala:97
+#: src/options-handler.vala:100
 msgid "Width of a window"
 msgstr ""
 
-#: src/options-handler.vala:104
+#: src/options-handler.vala:107
 msgid "Height of a window"
 msgstr ""
 
-#: src/options-handler.vala:111
-msgid "Set layout for window: `big`, `small`, `vertical`, `horizontal`"
+#: src/options-handler.vala:114
+msgid "Set layout for window: `big`, `small`, `vertical`"
 msgstr ""
 
-#: src/options-handler.vala:118
+#: src/options-handler.vala:121
 msgid "Print version information and exit"
 msgstr ""
 
-#: src/options-handler.vala:125
+#: src/options-handler.vala:128
 msgid "Run apply from config without running GUI"
 msgstr ""
 
-#: src/options-handler.vala:132
+#: src/options-handler.vala:135
 msgid "App config file"
 msgstr ""
 
