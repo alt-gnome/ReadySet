@@ -60,10 +60,9 @@ namespace Network {
         return true;
     }
 
-    bool validate_hostname (string hostname, out string? error) {
+    bool validate_hostname (string hostname) throws HostnameError {
         if (hostname.has_prefix ("-")) {
-            error = _("Leading hyphen is not allowed");
-            return false;
+            throw new HostnameError.PREFIX (_("Leading hyphen is not allowed"));
         }
 
         unichar cur;
@@ -71,22 +70,22 @@ namespace Network {
 
         while (hostname.get_next_char (ref idx, out cur)) {
             if ((cur >= 0x80 || !cur.isalnum ()) && cur != '-') {
-                error = _("Only Latin letters, digits and hyphens are allowed");
-                return false;
+                throw new HostnameError.INVALID_CHAR (
+                    _("Only Latin letters, digits and hyphens are allowed")
+                );
             }
         }
 
         if (idx < 4) {
-            error = _("Host name is too short");
-            return false;
+            throw new HostnameError.LENGTH (_("Host name is too short"));
         }
 
         if (hostname[idx - 1] == '-') {
-            error = _("Trailing hyphen is not allowed");
-            return false;
+            throw new HostnameError.SUFFIX (
+                _("Trailing hyphen is not allowed")
+            );
         }
 
-        error = null;
         return true;
     }
 

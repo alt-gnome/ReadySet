@@ -100,17 +100,17 @@ public sealed class Network.Page : ReadySet.BasePage {
     }
 
     void update_is_ready () {
-        string? error;
-        good_hostname = validate_hostname (_hostname, out error);
-        hostname_error = error;
-
-        is_ready = good_hostname && validate_network ();
-
-        if (good_hostname) {
+        try {
+            good_hostname = validate_hostname (_hostname);
+            hostname_error = null;
             hostname_entry.remove_css_class ("error");
-        } else {
+        } catch (HostnameError e) {
+            good_hostname = false;
+            hostname_error = e.message;
             hostname_entry.add_css_class ("error");
         }
+
+        is_ready = good_hostname && validate_network ();
     }
 
     void set_networking_page () {
