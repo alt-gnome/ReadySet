@@ -21,6 +21,13 @@
 
 namespace Network {
 
+    errordomain HostnameError {
+        LENGTH,
+        PREFIX,
+        SUFFIX,
+        INVALID_CHAR
+    }
+
     bool same_devices (Object obj1, Object obj2) {
         var dev1 = (NM.Device) obj1;
         var dev2 = (NM.Device) obj2;
