@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 07:55+0000\n"
+"POT-Creation-Date: 2026-10-01 11:55+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -358,23 +358,35 @@ msgstr ""
 msgid "Failed to apply network settings"
 msgstr ""
 
-#: plugins/network/utils.vala:58
-msgid "Leading hyphen is not allowed"
-msgstr ""
-
-#: plugins/network/utils.vala:67
-msgid "Only Latin letters, digits and hyphens are allowed"
-msgstr ""
-
-#: plugins/network/utils.vala:73
+#: plugins/network/utils.vala:65
 msgid "Host name is too short"
 msgstr ""
 
-#: plugins/network/utils.vala:78
-msgid "Trailing hyphen is not allowed"
+#: plugins/network/utils.vala:68
+msgid "Host name is too long"
 msgstr ""
 
-#: plugins/network/utils.vala:158
+#: plugins/network/utils.vala:74
+msgid "Empty host name sections are not allowed"
+msgstr ""
+
+#: plugins/network/utils.vala:80
+msgid "A host name section cannot start with a hyphen"
+msgstr ""
+
+#: plugins/network/utils.vala:90
+msgid "Non-ASCII characters are not allowed"
+msgstr ""
+
+#: plugins/network/utils.vala:95
+msgid "Only letters, digits, hyphens and dots are allowed"
+msgstr ""
+
+#: plugins/network/utils.vala:102
+msgid "A host name section cannot end with a hyphen"
+msgstr ""
+
+#: plugins/network/utils.vala:182
 #, c-format
 msgid "Wired connection %u"
 msgstr ""
