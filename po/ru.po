@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 07:55+0000\n"
-"PO-Revision-Date: 2026-09-22 11:18+0300\n"
+"POT-Creation-Date: 2026-10-01 11:55+0300\n"
+"PO-Revision-Date: 2026-10-01 12:08+0300\n"
 "Last-Translator: Valery Zabrovsky <brow@altlinux.org>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -365,23 +365,35 @@ msgstr "NetworkManager не запущен"
 msgid "Failed to apply network settings"
 msgstr "Ошибка при сохранении настроек сети"
 
-#: plugins/network/utils.vala:58
-msgid "Leading hyphen is not allowed"
-msgstr "Имя устройства не может начинаться с дефиса"
-
-#: plugins/network/utils.vala:67
-msgid "Only Latin letters, digits and hyphens are allowed"
-msgstr "Допускаются только латинские буквы, цифры и дефисы"
-
-#: plugins/network/utils.vala:73
+#: plugins/network/utils.vala:65
 msgid "Host name is too short"
 msgstr "Имя устройства слишком короткое"
 
-#: plugins/network/utils.vala:78
-msgid "Trailing hyphen is not allowed"
-msgstr "Имя устройства не может оканчиваться дефисом"
+#: plugins/network/utils.vala:68
+msgid "Host name is too long"
+msgstr "Имя устройства слишком длинное"
 
-#: plugins/network/utils.vala:158
+#: plugins/network/utils.vala:74
+msgid "Empty host name sections are not allowed"
+msgstr "Пустые части в имени устройства недопустимы"
+
+#: plugins/network/utils.vala:80
+msgid "A host name section cannot start with a hyphen"
+msgstr "Части имени устройства не могут начинаться с дефиса"
+
+#: plugins/network/utils.vala:90
+msgid "Non-ASCII characters are not allowed"
+msgstr "Допускаются только символы ASCII"
+
+#: plugins/network/utils.vala:95
+msgid "Only letters, digits, hyphens and dots are allowed"
+msgstr "Допускаются только буквы, цифры, дефисы и точки"
+
+#: plugins/network/utils.vala:102
+msgid "A host name section cannot end with a hyphen"
+msgstr "Части имени устройства не могут оканчиваться дефисом"
+
+#: plugins/network/utils.vala:182
 #, c-format
 msgid "Wired connection %u"
 msgstr "Проводное подключение %u"

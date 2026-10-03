@@ -21,6 +21,13 @@
 
 namespace Network {
 
+    errordomain HostnameError {
+        LENGTH,
+        PREFIX,
+        SUFFIX,
+        INVALID_CHAR
+    }
+
     bool same_devices (Object obj1, Object obj2) {
         var dev1 = (NM.Device) obj1;
         var dev2 = (NM.Device) obj2;
@@ -53,33 +60,50 @@ namespace Network {
         return true;
     }
 
-    bool validate_hostname (string hostname, out string? error) {
-        if (hostname.has_prefix ("-")) {
-            error = _("Leading hyphen is not allowed");
-            return false;
+    bool validate_hostname (string hostname) throws HostnameError {
+        if (hostname.length < 4) {
+            throw new HostnameError.LENGTH (_("Host name is too short"));
+        }
+        if (hostname.length > 64) {
+            throw new HostnameError.LENGTH (_("Host name is too long"));
         }
 
-        unichar cur;
-        int idx = 0;
+        foreach (var part in hostname.split (".", -1)) {
+            if (part.length == 0) {
+                throw new HostnameError.INVALID_CHAR (
+                    _("Empty host name sections are not allowed")
+                );
+            }
 
-        while (hostname.get_next_char (ref idx, out cur)) {
-            if ((cur >= 0x80 || !cur.isalnum ()) && cur != '-') {
-                error = _("Only Latin letters, digits and hyphens are allowed");
-                return false;
+            if (part.get_char (0) == '-') {
+                throw new HostnameError.PREFIX (
+                    _("A host name section cannot start with a hyphen")
+                );
+            }
+
+            unichar cur;
+            int idx = 0;
+
+            while (part.get_next_char (ref idx, out cur)) {
+                if (cur > 0x7f) {
+                    throw new HostnameError.INVALID_CHAR (
+                        _("Non-ASCII characters are not allowed")
+                    );
+                }
+                if (!cur.isalnum () && cur != '-') {
+                    throw new HostnameError.INVALID_CHAR (
+                        _("Only letters, digits, hyphens and dots are allowed")
+                    );
+                }
+            }
+
+            if (part.get_char (idx - 1) == '-') {
+                throw new HostnameError.SUFFIX (
+                    _("A host name section cannot end with a hyphen")
+                );
             }
         }
 
-        if (idx < 4) {
-            error = _("Host name is too short");
-            return false;
-        }
-
-        if (hostname[idx - 1] == '-') {
-            error = _("Trailing hyphen is not allowed");
-            return false;
-        }
-
-        error = null;
         return true;
     }
 
