@@ -68,7 +68,7 @@ public class Software.Addin : ReadySet.StepAddin, ReadySet.ApplyAfter {
                 try {
                     yield s.apply ();
                 } catch (Error e) {
-                    throw ReadySet.ApplyError.build_error (
+                    warning (
                         _("Failed to add a software source"),
                         e.message
                     );
