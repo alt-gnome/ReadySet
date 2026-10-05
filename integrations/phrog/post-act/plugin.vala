@@ -21,6 +21,10 @@
 public sealed class PhrogFirstRun.Addin : ReadySet.PostActAddin {
 
     public override async ReadySet.PostActStatusFlags run (ReadySet.Context context) throws Error {
+        if (context.mode != INITIAL_SETUP) {
+            return 0;
+        }
+
         var phrog_schema = SettingsSchemaSource.get_default ().lookup ("mobi.phosh.phrog", false);
         if (phrog_schema != null) {
             var phrog_settings = new Settings (phrog_schema.get_id ());

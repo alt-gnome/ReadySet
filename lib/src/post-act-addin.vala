@@ -19,7 +19,8 @@
  */
 
 /**
- * Base class for plugins that perform actions after the ReadySet workflow.
+ * Base class for plugins that perform actions after the ReadySet
+ * initial-setup/existing workflow.
  *
  * Post-act plugins receive the completed configuration context and may request
  * that the application window remain open by returning an appropriate status

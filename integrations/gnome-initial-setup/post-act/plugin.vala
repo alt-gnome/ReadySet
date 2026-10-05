@@ -31,6 +31,10 @@ public sealed class GDMENter.Addin : ReadySet.PostActAddin {
     bool password_sent = false;
 
     public override async ReadySet.PostActStatusFlags run (ReadySet.Context context) throws Error {
+        if (context.mode != INITIAL_SETUP) {
+            return 0;
+        }
+
         this.context = context;
 
         try {
