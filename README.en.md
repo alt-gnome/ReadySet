@@ -114,6 +114,9 @@ Print version information and exit.
 #### `width`
 Width of a window. `1000` by default.
 
+#### `style`
+CSS style file which will be added to window.
+
 ## Commands
 
 In addition to the standard launch, Ready Set supports:

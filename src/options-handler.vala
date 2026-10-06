@@ -129,6 +129,13 @@ public sealed class ReadySet.OptionsHandler : Object {
             null
         },
         {
+            "style", '\0',
+            0, OptionArg.STRING,
+            null,
+            N_("Add css style for window"),
+            "STYLE"
+        },
+        {
             OPT_CONF_FILE, '\0',
             0, OptionArg.FILENAME,
             null,
@@ -163,6 +170,8 @@ public sealed class ReadySet.OptionsHandler : Object {
     public string? force_layout { get; set; }
 
     public string? installer { get; set; default = null; }
+
+    public string? style { get; set; default = null; }
 
 #if DEVEL
     public string? force_mode { get; set; default = null; }
