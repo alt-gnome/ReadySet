@@ -34,7 +34,9 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     [GtkChild]
     unowned Gtk.Label sandbox_label_right;
     [GtkChild]
-    unowned Gtk.CenterBox button_center_box;
+    unowned Gtk.Box button_box;
+    [GtkChild]
+    unowned Gtk.CenterBox center_button_box;
     [GtkChild]
     unowned Gtk.Button osk_button;
     [GtkChild]
@@ -62,16 +64,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     [GtkChild]
     unowned Gtk.Button end_page_back_button;
 
-    bool _standalone;
-    public bool standalone {
-        get {
-            return _standalone;
-        }
-        set {
-            _standalone = value;
-            update_center_button_pos ();
-        }
-    }
+    public bool standalone { get; set; }
 
     bool _is_compact;
     protected bool is_compact {
@@ -87,7 +80,8 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                     go_prev_button.height_request =
                     go_prev_button.width_request =
                     32;
-                button_center_box.margin_bottom = 6;
+                button_box.margin_bottom = 6;
+                center_button_box.margin_bottom = 6;
                 go_next_button.remove_css_class ("pill");
 
             } else {
@@ -96,14 +90,12 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                     go_prev_button.height_request =
                     go_prev_button.width_request =
                     48;
-                button_center_box.margin_bottom = 12;
+                button_box.margin_bottom = 12;
+                center_button_box.margin_bottom = 6;
                 go_next_button.add_css_class ("pill");
             }
         }
     }
-
-    public bool center_buttons { get; set; }
-    bool center_buttons_hold = false;
 
     public bool is_ready_to_continue { get; set; }
 
@@ -441,24 +433,5 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     [GtkCallback]
     bool @and (bool a, bool b) {
         return a && b;
-    }
-
-    [GtkCallback]
-    void on_eventcontrollermotion_enter () {
-        center_buttons_hold = true;
-    }
-
-    [GtkCallback]
-    void on_eventcontrollermotion_leave () {
-        center_buttons_hold = false;
-        update_center_button_pos ();
-    }
-
-    void update_center_button_pos () {
-        if (center_buttons_hold) {
-            return;
-        }
-
-        center_buttons = standalone;
     }
 }
