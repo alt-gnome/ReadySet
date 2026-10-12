@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-01 11:55+0300\n"
+"POT-Creation-Date: 2026-10-06 17:15+0000\n"
 "PO-Revision-Date: 2026-10-01 12:08+0300\n"
 "Last-Translator: Valery Zabrovsky <brow@altlinux.org>\n"
 "Language-Team: Russian\n"
@@ -57,23 +57,23 @@ msgstr ""
 msgid "Nothing to show"
 msgstr "Нечего показывать"
 
-#: data/ui/steps-main-page.blp:304 data/ui/steps-main-page.blp:433
+#: data/ui/steps-main-page.blp:321 data/ui/steps-main-page.blp:436
 msgid "Open Context menu"
 msgstr "Открыть меню Контекста"
 
-#: data/ui/steps-main-page.blp:361
-msgid "Go to previous page"
-msgstr "К предыдущей странице"
-
-#: data/ui/steps-main-page.blp:380
+#: data/ui/steps-main-page.blp:365
 msgid "Next"
 msgstr "Дальше"
 
-#: data/ui/steps-main-page.blp:393
+#: data/ui/steps-main-page.blp:383
+msgid "Go to previous page"
+msgstr "К предыдущей странице"
+
+#: data/ui/steps-main-page.blp:403
 msgid "Extend/Retract keyboard"
 msgstr "Показать/Скрыть клавиатуру"
 
-#: data/ui/steps-main-page.blp:420
+#: data/ui/steps-main-page.blp:423
 msgid "Return to setup"
 msgstr "Назад к настройке"
 
@@ -119,7 +119,7 @@ msgid "Apply"
 msgstr "Применить"
 
 #: plugins/date-and-time/data/ui/date-selector.blp:5
-#: plugins/date-and-time/data/ui/page.blp:68
+#: plugins/date-and-time/data/ui/page.blp:69
 msgid "Date"
 msgstr "Дата"
 
@@ -164,7 +164,7 @@ msgstr "Выбрать дату и время"
 msgid "Automatic setting of date and time"
 msgstr "Автоматическая настройка даты и времени"
 
-#: plugins/date-and-time/data/ui/page.blp:81
+#: plugins/date-and-time/data/ui/page.blp:82
 #: plugins/date-and-time/data/ui/time-selector.blp:5
 msgid "Time"
 msgstr "Время"
@@ -173,11 +173,11 @@ msgstr "Время"
 msgid "Nothing found"
 msgstr "Ничего не найдено"
 
-#: plugins/date-and-time/page.vala:141
+#: plugins/date-and-time/page.vala:149
 msgid "Failed to connect to timedate service: "
 msgstr "Не удалось подключиться к службе времени и даты: "
 
-#: plugins/date-and-time/page.vala:164
+#: plugins/date-and-time/page.vala:174
 msgid "Undefined"
 msgstr "Неопределён"
 
@@ -189,11 +189,11 @@ msgstr "Не удалось подключиться к службе време�
 msgid "Error when setting timezone"
 msgstr "Ошибка при настройке часового пояса"
 
-#: plugins/date-and-time/plugin.vala:80
+#: plugins/date-and-time/plugin.vala:81
 msgid "Error when setting NTP"
 msgstr "Ошибка при настройке NTP"
 
-#: plugins/date-and-time/plugin.vala:88
+#: plugins/date-and-time/plugin.vala:90
 msgid "Error when setting time"
 msgstr "Ошибка при настройке времени"
 
@@ -450,11 +450,11 @@ msgstr "Enhanced Open"
 msgid "Privacy"
 msgstr "Приватность"
 
-#: plugins/privacy/data/ui/page.blp:30
+#: plugins/privacy/data/ui/page.blp:33
 msgid "Location Services"
 msgstr "Службы определения местоположения"
 
-#: plugins/privacy/data/ui/page.blp:39
+#: plugins/privacy/data/ui/page.blp:42
 msgid "Allows apps to determine your geographical location."
 msgstr "Позволяют приложениям определять ваше географическое местоположение."
 
@@ -902,6 +902,10 @@ msgstr ""
 "интерфейса"
 
 #: src/options-handler.vala:135
+msgid "Add css style for window"
+msgstr ""
+
+#: src/options-handler.vala:142
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
