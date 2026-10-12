@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-01 11:55+0300\n"
+"POT-Creation-Date: 2026-10-06 17:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,23 +53,23 @@ msgstr ""
 msgid "Nothing to show"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:304 data/ui/steps-main-page.blp:433
+#: data/ui/steps-main-page.blp:321 data/ui/steps-main-page.blp:436
 msgid "Open Context menu"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:361
-msgid "Go to previous page"
-msgstr ""
-
-#: data/ui/steps-main-page.blp:380
+#: data/ui/steps-main-page.blp:365
 msgid "Next"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:393
+#: data/ui/steps-main-page.blp:383
+msgid "Go to previous page"
+msgstr ""
+
+#: data/ui/steps-main-page.blp:403
 msgid "Extend/Retract keyboard"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:420
+#: data/ui/steps-main-page.blp:423
 msgid "Return to setup"
 msgstr ""
 
@@ -115,7 +115,7 @@ msgid "Apply"
 msgstr ""
 
 #: plugins/date-and-time/data/ui/date-selector.blp:5
-#: plugins/date-and-time/data/ui/page.blp:68
+#: plugins/date-and-time/data/ui/page.blp:69
 msgid "Date"
 msgstr ""
 
@@ -160,7 +160,7 @@ msgstr ""
 msgid "Automatic setting of date and time"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:81
+#: plugins/date-and-time/data/ui/page.blp:82
 #: plugins/date-and-time/data/ui/time-selector.blp:5
 msgid "Time"
 msgstr ""
@@ -169,11 +169,11 @@ msgstr ""
 msgid "Nothing found"
 msgstr ""
 
-#: plugins/date-and-time/page.vala:141
+#: plugins/date-and-time/page.vala:149
 msgid "Failed to connect to timedate service: "
 msgstr ""
 
-#: plugins/date-and-time/page.vala:164
+#: plugins/date-and-time/page.vala:174
 msgid "Undefined"
 msgstr ""
 
@@ -185,11 +185,11 @@ msgstr ""
 msgid "Error when setting timezone"
 msgstr ""
 
-#: plugins/date-and-time/plugin.vala:80
+#: plugins/date-and-time/plugin.vala:81
 msgid "Error when setting NTP"
 msgstr ""
 
-#: plugins/date-and-time/plugin.vala:88
+#: plugins/date-and-time/plugin.vala:90
 msgid "Error when setting time"
 msgstr ""
 
@@ -443,11 +443,11 @@ msgstr ""
 msgid "Privacy"
 msgstr ""
 
-#: plugins/privacy/data/ui/page.blp:30
+#: plugins/privacy/data/ui/page.blp:33
 msgid "Location Services"
 msgstr ""
 
-#: plugins/privacy/data/ui/page.blp:39
+#: plugins/privacy/data/ui/page.blp:42
 msgid "Allows apps to determine your geographical location."
 msgstr ""
 
@@ -853,6 +853,10 @@ msgid "Run apply from config without running GUI"
 msgstr ""
 
 #: src/options-handler.vala:135
+msgid "Add css style for window"
+msgstr ""
+
+#: src/options-handler.vala:142
 msgid "App config file"
 msgstr ""
 
