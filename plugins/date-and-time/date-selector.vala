@@ -40,7 +40,7 @@ public class DateAndTime.DateSelector : Adw.PreferencesDialog {
         var _date = Addin.get_instance ().context.get_int ("date-and-time.datetime");
         DateTime date;
         if (_date == 0) {
-            date = new DateTime.now_local ();
+            date = get_initial_datetime ();
         } else {
             date = new DateTime.from_unix_local (_date);
         }

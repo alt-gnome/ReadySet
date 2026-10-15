@@ -34,6 +34,13 @@ namespace DateAndTime {
         return value;
     }
 
+    public DateTime get_initial_datetime () {
+        var build_timestamp = int64.parse (Config.BUILD_TIMESTAMP);
+        var system_timestamp = new DateTime.now_local ().to_unix ();
+        var initial_timestamp = system_timestamp > build_timestamp ? system_timestamp : build_timestamp;
+        return new DateTime.from_unix_local (initial_timestamp);
+    }
+
     string get_utc_offset_string (string identifier) {
         try {
             var tz = new TimeZone.identifier (identifier);
