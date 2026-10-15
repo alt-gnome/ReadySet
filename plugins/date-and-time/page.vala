@@ -176,10 +176,10 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         }
         selected_timezone = now_tz;
 
-        var now = new DateTime.now_local ();
-        selected_datetime = now;
-        date_label = now.format ("%d.%m.%Y");
-        time_label = now.format ("%H:%M");
+        var initial_datetime = get_initial_datetime ();
+        selected_datetime = initial_datetime;
+        date_label = initial_datetime.format ("%d.%m.%Y");
+        time_label = initial_datetime.format ("%H:%M");
         date_selected = true;
         time_selected = true;
 

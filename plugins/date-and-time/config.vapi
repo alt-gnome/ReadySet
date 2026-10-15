@@ -2,4 +2,5 @@
 namespace Config {
     public const string DATADIR;
     public const string READYSET_DATADIR;
+    public const string BUILD_TIMESTAMP;
 }

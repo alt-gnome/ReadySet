@@ -39,9 +39,12 @@ plugin_date_and_time_link_args = [
 
 subdir('data')
 
+build_timestamp = run_command('date', '+%s', check: true).stdout().strip()
+
 conf_data = configuration_data()
 conf_data.set_quoted('DATADIR', datadir)
 conf_data.set_quoted('READYSET_DATADIR', pkgdata_dir)
+conf_data.set_quoted('BUILD_TIMESTAMP', build_timestamp)
 configure_file(output: 'config.h', configuration: conf_data)
 
 shared_module(
