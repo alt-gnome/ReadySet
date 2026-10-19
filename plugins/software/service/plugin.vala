@@ -23,53 +23,62 @@ public sealed class SoftwareSources.Service : Object {
 
     const string SOFTWARE_ACTION = "org.altlinux.ReadySet.Software.ManageRepos";
 
-    public void add_flatpak_repo (string remote_name, string url, BusName sender) throws Error {
+    public async void add_flatpak_repo (
+        string remote_name,
+        string flatpakrepo_url,
+        string repo_url,
+        BusName sender
+    ) throws Error {
         ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         var inst = new Flatpak.Installation.system ();
-
-        Flatpak.Remote? remote = null;
-        try {
-            remote = inst.get_remote_by_name (remote_name);
-        } catch (Flatpak.Error e) {
-            if (e.code != Flatpak.Error.REMOTE_NOT_FOUND) {
-                throw e;
+        foreach (var remote in inst.list_remotes ()) {
+            if (remote.get_url () == repo_url) {
+                remote.set_disabled (false);
+                inst.modify_remote (remote);
+                return;
             }
         }
 
         var session = new ApiBase.Session ();
-        var request = new ApiBase.Request.GET (url);
-        var data = session.send_and_read (request);
+        var request = new ApiBase.Request.GET (flatpakrepo_url);
+        var data = yield session.send_and_read_async (request);
+        if (data == null) {
+            throw new IOError.INVALID_DATA (
+                "Empty response from '%s'".printf (flatpakrepo_url)
+            );
+        }
 
-        var new_remote = new Flatpak.Remote.from_file (remote_name, data);
-        new_remote.set_gpg_verify (true);
+        uint suffix = 0;
+        while (true) {
+            string available_name = suffix == 0
+                ? remote_name
+                : "%s%u".printf (remote_name, suffix);
+            var new_remote = new Flatpak.Remote.from_file (available_name, data);
+            new_remote.set_gpg_verify (true);
 
-        if (remote != null) {
-            remote.set_disabled (false);
-            inst.modify_remote (remote);
-            inst.modify_remote (new_remote);
-        } else {
-            inst.add_remote (new_remote, false);
+            try {
+                inst.add_remote (new_remote, false);
+                break;
+            } catch (Flatpak.Error e) {
+                if (e.code != Flatpak.Error.ALREADY_INSTALLED) {
+                    throw e;
+                }
+
+                suffix++;
+            }
         }
     }
 
-    public void remove_flatpak_repo (string remote_name, BusName sender) throws Error {
+    public void remove_flatpak_repo (string repo_url, BusName sender) throws Error {
         ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         var inst = new Flatpak.Installation.system ();
-
-        Flatpak.Remote? remote = null;
-        try {
-            remote = inst.get_remote_by_name (remote_name);
-        } catch (Flatpak.Error e) {
-            if (e.code != Flatpak.Error.REMOTE_NOT_FOUND) {
-                throw e;
+        foreach (var remote in inst.list_remotes ()) {
+            if (remote.get_url () == repo_url) {
+                remote.set_disabled (true);
+                inst.modify_remote (remote);
             }
-        }
-
-        if (remote != null) {
-            remote.set_disabled (true);
-            inst.modify_remote (remote);
         }
     }
 

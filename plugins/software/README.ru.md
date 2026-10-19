@@ -24,12 +24,13 @@
 - `alt-repo` — добавить apt-репозиторий ALT Linux;
 - `custom` — выполнить произвольную команду shell.
 
-Для `flatpak` и `stplr` секция `body` содержит `url` и `remote-name`. Для
-`alt-repo` она содержит `repos` — список строк источников apt. Для `custom`
-нужен `cmd-apply`; `cmd-check` определяет его текущее состояние, а `cmd-undo`
-используется необязательной интеграцией с Tuner. У источника доступны метаданные
-`group`, `gettext-domain` и `non-free`; у группы — `gettext-domain`, `required`
-и `priority`.
+Для `flatpak` секция `body` содержит URL файла `.flatpakrepo` в `url`, URL
+репозитория из этого файла в `repo-url` и имя remote в `remote-name`. Для
+`stplr` она содержит `url` и `remote-name`. Для `alt-repo` она содержит `repos`
+— список строк источников apt. Для `custom` нужен `cmd-apply`; `cmd-check`
+определяет его текущее состояние, а `cmd-undo` используется необязательной
+интеграцией с Tuner. У источника доступны метаданные `group`, `gettext-domain`
+и `non-free`; у группы — `gettext-domain`, `required` и `priority`.
 
 ## Пример
 
@@ -53,6 +54,7 @@ sources:
     gettext-domain: ready-set
     body:
       url: https://flathub.org/repo/flathub.flatpakrepo
+      repo-url: https://dl.flathub.org/repo/
       remote-name: flathub
 ```
 
