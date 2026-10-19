@@ -58,8 +58,8 @@ public sealed class ReadySet.InitialSetupEndPage : EndPage {
         progress_data.bind_property ("pulse-step", progress_bar, "pulse-step");
         progress_data.pulse.connect (on_pulse);
 
-        progress_data.notify["value"].connect (update_progress_visibility);
-        update_progress_visibility ();
+        progress_data.notify["value"].connect (enable_progress_visible);
+        progress_data.pulse.connect (enable_progress_visible);
 
         if (sandbox) {
             progress_data.message = _("Applying changes…");
@@ -94,7 +94,7 @@ public sealed class ReadySet.InitialSetupEndPage : EndPage {
         progress_data.pulse ();
     }
 
-    void update_progress_visibility () {
+    void enable_progress_visible () {
         progress_bar.visible = 1.0 > progress_data.value > 0;
     }
 }
