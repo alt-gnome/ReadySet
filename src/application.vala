@@ -170,7 +170,7 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     void show_devel_window () {
-        new Devel.Window (app_service.context, app_service.options_handler).present ();
+        Devel.Window.show (app_service.context, app_service.options_handler);
     }
 
     void finish (SimpleAction action, Variant? parameter) {
