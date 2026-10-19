@@ -25,12 +25,17 @@
 - `custom` — выполнить произвольную команду shell.
 
 Для `flatpak` секция `body` содержит URL файла `.flatpakrepo` в `url`, URL
-репозитория из этого файла в `repo-url` и имя remote в `remote-name`. Для
-`stplr` она содержит `url` и `remote-name`. Для `alt-repo` она содержит `repos`
-— список строк источников apt. Для `custom` нужен `cmd-apply`; `cmd-check`
-определяет его текущее состояние, а `cmd-undo` используется необязательной
-интеграцией с Tuner. У источника доступны метаданные `group`, `gettext-domain`
-и `non-free`; у группы — `gettext-domain`, `required` и `priority`.
+репозитория из этого файла в `repo-url` и предпочтительное имя удалённого
+репозитория в `remote-name`. Все три поля обязательны. `repo-url` используется
+для определения состояния источника независимо от фактического имени remote.
+Некорректные источники Flatpak с неполной секцией `body` игнорируются.
+
+Для `stplr` секция `body` содержит `url` и `remote-name`. Для `alt-repo` она
+содержит `repos` — список строк источников apt. Для `custom` нужен `cmd-apply`;
+`cmd-check` определяет его текущее состояние, а `cmd-undo` используется
+необязательной интеграцией с Tuner. У источника доступны метаданные `group`,
+`gettext-domain` и `non-free`; у группы — `gettext-domain`, `required` и
+`priority`.
 
 ## Пример
 

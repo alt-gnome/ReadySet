@@ -1,40 +1,41 @@
 # Software plugin
 
-Enable third-party software repositories.
-
-Source definitions are loaded from `*.yml` and `*.yaml` files in the plugin data
-directory (usually `/usr/share/ready-set/software/sources.d`). The plugin is
-hidden when no valid sources are found. It runs after the `user` step.
+Enables third-party software repositories. Source definitions are loaded from
+`*.yml` and `*.yaml` files in the plugin data directory (usually
+`/usr/share/ready-set/software/sources.d`). The plugin is hidden when no valid
+sources are found. It runs after the `user` step.
 
 ## Settings
 
 | Variable | Description | Default value |
-| -------- | ----------- | ------------- |
+| --- | --- | --- |
 | `software.single-button` | Show a single enable/disable button instead of per-source toggles | `false` |
 
 ## Stored context variables
 
 | Variable | Description |
-| -------- | ----------- |
+| --- | --- |
 | `software.enabled-sources` | List of selected source IDs |
 
 ## Source types
 
-Supported source types:
-
-- `flatpak` — add a Flatpak remote
-- `stplr` — add a Stapler repository
-- `alt-repo` — add an ALT Linux apt repository
-- `custom` — run a custom shell command
+- `flatpak` — add a Flatpak remote;
+- `stplr` — add a Stapler repository;
+- `alt-repo` — add an ALT Linux apt repository;
+- `custom` — run a custom shell command.
 
 For `flatpak`, `body` contains the `.flatpakrepo` file URL in `url`, the
-repository URL from that file in `repo-url`, and the remote name in
-`remote-name`. For `stplr`, it contains `url` and `remote-name`. For `alt-repo`,
-it contains `repos`, a list of apt source lines. For `custom`, it contains
-`cmd-apply`; `cmd-check` determines its current state, and `cmd-undo` is used by
-the optional Tuner integration. Source metadata can include `group`,
-`gettext-domain`, and `non-free`; group metadata can include `gettext-domain`,
-`required`, and `priority`.
+repository URL from that file in `repo-url`, and the preferred remote name in
+`remote-name`. All three fields are required. `repo-url` is used to determine
+the source state independently of the actual remote name. Invalid Flatpak
+sources with an incomplete `body` section are ignored.
+
+For `stplr`, `body` contains `url` and `remote-name`. For `alt-repo`, it contains
+`repos`, a list of apt source lines. For `custom`, it requires `cmd-apply`;
+`cmd-check` determines its current state, and `cmd-undo` is used by the optional
+Tuner integration. Source metadata can include `group`, `gettext-domain`, and
+`non-free`; group metadata can include `gettext-domain`, `required`, and
+`priority`.
 
 ## Example
 

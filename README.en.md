@@ -9,12 +9,13 @@
     Ready, Set, Go!
   </h1>
 
-  <div align="center"><h4>A utility for configuring the system at the first startup</h4></div>
+  <div align="center"><h4>A utility for configuring the system during installation, first startup, or a user session</h4></div>
 
 </div>
 
-Ready Set is a modular GTK application for configuring a system during
-installation, first startup, or an existing user's session.
+Ready Set is a modular GTK application. Its page sequence is assembled from
+step plugins, and known values can be supplied through configuration instead
+of asking the user to enter them again.
 
 ## Available steps
 
@@ -38,8 +39,8 @@ Installer plugins are loaded separately via the `--installer` option. Their step
 
 Ready Set automatically detects the mode it runs in:
 
-- `installer` — when an installer plugin is specified with `--installer`.
-- `initial-setup` — when running as the `ready-set` or `gnome-initial-setup` user.
+- `installer` — when an installer plugin is specified with `--installer`;
+- `initial-setup` — when running as the `ready-set` or `gnome-initial-setup` user;
 - `existing-user` — when running under a regular user account.
 
 The mode can be forced with `--force-mode` in `nightly=true` builds.
@@ -54,9 +55,9 @@ cannot overwrite centrally supplied values.
 
 Configuration priority (only the first found way is used; fields from other ways are not applied):
 
-1. The file specified via the `--conf-file` option
-2. Local config: `/etc/ready-set/config` and `/etc/ready-set/config.d/` (sorted alphabetically)
-3. Vendor config: `/usr/share/ready-set/config` and `/usr/share/ready-set/config.d/` (sorted alphabetically)
+1. The file specified via the `--conf-file` option.
+2. Local config: `/etc/ready-set/config` and `/etc/ready-set/config.d/` (sorted alphabetically).
+3. Vendor config: `/usr/share/ready-set/config` and `/usr/share/ready-set/config.d/` (sorted alphabetically).
 
 When a config file is loaded (not via the `--conf-file` option), files from its
 `config.d` directory are loaded as well and merged into it. Values from
@@ -108,14 +109,14 @@ Sandbox run without doing anything in system.
 Comma-separated list of step plugin module names, for example
 `language,keyboard,user-passwdqc`.
 
+#### `style`
+CSS style file which will be added to window.
+
 #### `version`
 Print version information and exit.
 
 #### `width`
 Width of a window. `1000` by default.
-
-#### `style`
-CSS style file which will be added to window.
 
 ## Commands
 
@@ -135,7 +136,7 @@ You can help with translations via [ALT Gnome Translate](https://translate.alt-g
 
 ## Testing
 
-Use `--sandbox` to exercise the workflow without changing system settings if plugins supports it. Run
+Use `--sandbox` to exercise the workflow without changing system settings if plugins support it. Run
 the project test suite from a configured build directory with
 `meson test -C _build`.
 
