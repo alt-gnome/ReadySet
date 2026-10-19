@@ -6,11 +6,16 @@ if gdm_dep.found()
 
   unit_files += {
     gis / gis + '.service' : [],
+    gis / meson.project_name() + '-existing-user-gnome.service' : [ 'gnome-session.target.wants/' ],
   }
 endif
 
 if get_option('phrog').enabled()
   subdir('phrog')
+
+  unit_files += {
+    'phrog' / meson.project_name() + '-existing-user-phrog.service' : [ 'gnome-session.target.wants/' ],
+  }
 endif
 
 foreach unit, wants: unit_files

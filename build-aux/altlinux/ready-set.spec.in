@@ -75,6 +75,7 @@ Group: Graphical desktop/Other
 Requires: %name = %EVR
 Requires: gdm
 Conflicts: %gis_name
+Conflicts: %name-phrog
 
 %description gdm
 %summary.
@@ -261,8 +262,6 @@ Requires: %name-plugin-software = %EVR
 %_iconsdir/hicolor/*/apps/%{app_id}*
 %_datadir/applications/%{app_id}*
 %_datadir/polkit-1/rules.d/%app_id.rules
-%_userunitdir/gnome-session.target.wants/%name-existing-user.service
-%_userunitdir/%name-existing-user.service
 %_libexecdir/%app_id
 %_sysconfdir/%name
 %dir %_datadir/%name
@@ -305,12 +304,16 @@ Requires: %name-plugin-software = %EVR
 %_sysusersdir/%gis_name.conf
 %_libdir/%name/plugins/post-act/gdm-login.plugin
 %_libdir/%name/plugins/post-act/libgdm-login.so
+%_userunitdir/gnome-session.target.wants/%name-existing-user-gnome.service
+%_userunitdir/%name-existing-user-gnome.service
 
 %files phrog
 %_sysconfdir/dconf/db/local.d/50_org.altlinux.ReadySet.phrog_first-run
 %_sysusersdir/%name-phrog.conf
 %_libdir/%name/plugins/post-act/phrog-first-run-unset.plugin
 %_libdir/%name/plugins/post-act/libphrog-first-run-unset.so
+%_userunitdir/gnome-session.target.wants/%name-existing-user-phrog.service
+%_userunitdir/%name-existing-user-phrog.service
 
 %files -n %libname%soversion
 %_libdir/%libname-%soversion.so.%soversion

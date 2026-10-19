@@ -1,0 +1,12 @@
+[Unit]
+Description=ReadySet setup for existing user
+
+BindsTo=gnome-session.target
+After=gnome-session.target
+
+ConditionUser=!@system
+
+[Service]
+Type=oneshot
+ExecStart=@LIBEXECDIR@/ready-set
+Restart=no
