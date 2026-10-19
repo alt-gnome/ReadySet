@@ -27,10 +27,12 @@ Supported source types:
 - `alt-repo` — add an ALT Linux apt repository
 - `custom` — run a custom shell command
 
-For `flatpak` and `stplr`, `body` contains `url` and `remote-name`. For
-`alt-repo`, it contains `repos`, a list of apt source lines. For `custom`, it
-contains `cmd-apply`; `cmd-check` determines its current state, and `cmd-undo`
-is used by the optional Tuner integration. Source metadata can include `group`,
+For `flatpak`, `body` contains the `.flatpakrepo` file URL in `url`, the
+repository URL from that file in `repo-url`, and the remote name in
+`remote-name`. For `stplr`, it contains `url` and `remote-name`. For `alt-repo`,
+it contains `repos`, a list of apt source lines. For `custom`, it contains
+`cmd-apply`; `cmd-check` determines its current state, and `cmd-undo` is used by
+the optional Tuner integration. Source metadata can include `group`,
 `gettext-domain`, and `non-free`; group metadata can include `gettext-domain`,
 `required`, and `priority`.
 
@@ -56,6 +58,7 @@ sources:
     gettext-domain: ready-set
     body:
       url: https://flathub.org/repo/flathub.flatpakrepo
+      repo-url: https://dl.flathub.org/repo/
       remote-name: flathub
 ```
 

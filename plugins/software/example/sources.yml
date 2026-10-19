@@ -24,6 +24,7 @@ sources:
     gettext-domain: ready-set
     body:
       url: https://flathub.org/repo/flathub.flatpakrepo
+      repo-url: https://dl.flathub.org/repo/
       remote-name: flathub
   - id: flathub-proxy
     type: flatpak
@@ -33,6 +34,7 @@ sources:
     gettext-domain: ready-set
     body:
       url: https://flathub.alt-gnome.ru/repo/flathub.flatpakrepo
+      repo-url: https://flathub.alt-gnome.ru/repo/
       remote-name: flathub-proxy
   - id: aides
     type: stplr
