@@ -25,4 +25,11 @@ template $NetworkEthernetAdapterRow: Adw.ActionRow {
 
   [prefix]
   Image icon {}
+
+  [suffix]
+  Image {
+    visible: bind template.activatable;
+    icon-name: "go-next-symbolic";
+    valign: center;
+  }
 }
