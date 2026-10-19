@@ -98,7 +98,7 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
             can_reboot = can_reboot_system ();
         } catch (Error e) {}
 
-        can_reboot = can_reboot && sandbox;
+        can_reboot = can_reboot && !sandbox;
 
         if (can_reboot) {
             quit_button.remove_css_class ("suggested-action");
