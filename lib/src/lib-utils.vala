@@ -205,7 +205,6 @@ namespace ReadySet {
         public string name { get; construct; }
 
         /**
-         * Human readable name. It will be shown at stage list with it state in UI.
          * The step size is relative to global progress. It can be from 0 to 1. The
          * remaining progress will be divided between stages, where size is -1. It is
          * advisable to leave at least one stage with the value -1.
