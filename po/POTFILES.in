@@ -73,6 +73,7 @@ src/pages-model.vala
 src/pages/summary.vala
 src/pages/welcome.vala
 src/plugin-manager.vala
+src/widgets/installer-stage-row.vala
 src/widgets/page-state-row.vala
 src/widgets/positioned-stack.vala
 src/widgets/steps-main-page.vala

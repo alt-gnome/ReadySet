@@ -41,10 +41,10 @@ public sealed class ReadySet.InstallerStageRow : Gtk.ListBoxRow {
         var state = (InstallerStageState) value_from.get_enum ();
         switch (state) {
             case PASSED:
-                value_to.set_string (_("<b>Завершено</b>"));
+                value_to.set_string ("<b>%s</b>".printf (_("Finished")));
                 break;
             case NOT_PASSED:
-                value_to.set_string (_("<b>Ожидание</b>"));
+                value_to.set_string ("<b>%s</b>".printf (_("Waiting")));
                 break;
             case CURRENT:
                 value_to.set_string ("");

@@ -132,7 +132,7 @@ public sealed class ReadySet.OptionsHandler : Object {
             "style", '\0',
             0, OptionArg.STRING,
             null,
-            N_("Add css style for window"),
+            N_("Add css stylesheet for window"),
             "STYLE"
         },
         {

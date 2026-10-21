@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-06 17:15+0000\n"
+"POT-Creation-Date: 2026-10-21 17:28+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,19 +33,31 @@ msgstr ""
 msgid "Setting up the system…"
 msgstr ""
 
-#: data/ui/initial-setup-end-page.blp:53 data/ui/installer-end-page.blp:53
+#: data/ui/initial-setup-end-page.blp:53 data/ui/installer-end-page.blp:196
 msgid "All done!"
 msgstr ""
 
-#: data/ui/installer-end-page.blp:36 src/end-pages/installer.vala:64
+#: data/ui/installer-end-page.blp:55
 msgid "Installing system…"
 msgstr ""
 
-#: data/ui/installer-end-page.blp:64
+#: data/ui/installer-end-page.blp:56
+msgid "This could take a while. Don’t turn of a computer."
+msgstr ""
+
+#: data/ui/installer-end-page.blp:123 data/ui/installer-end-page.blp:136
+msgid "Detailed information"
+msgstr ""
+
+#: data/ui/installer-end-page.blp:170 data/ui/installer-end-page.blp:181
+msgid "Hide logs"
+msgstr ""
+
+#: data/ui/installer-end-page.blp:207
 msgid "Continue using live system"
 msgstr ""
 
-#: data/ui/installer-end-page.blp:79
+#: data/ui/installer-end-page.blp:222
 msgid "Reboot now"
 msgstr ""
 
@@ -105,7 +117,7 @@ msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
 #. It's not json string, just return message
-#: lib/src/lib-utils-internal.vala:47
+#: lib/src/lib-utils-internal.vala:47 src/end-pages/installer.vala:198
 msgid "Something went wrong"
 msgstr ""
 
@@ -502,22 +514,22 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: plugins/software/source.vala:121
+#: plugins/software/source.vala:135
 #, c-format
 msgid "Failed to add or enable '%s' flatpak remote with name %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:166
+#: plugins/software/source.vala:176
 #, c-format
 msgid "Failed to add '%s' stplr repository with name %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:232
+#: plugins/software/source.vala:242
 #, c-format
 msgid "Failed to add apt repository with repos: %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:308
+#: plugins/software/source.vala:318
 #, c-format
 msgid "Failed to exec: %s: %s"
 msgstr ""
@@ -785,19 +797,35 @@ msgstr ""
 msgid "Applying changes…"
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:87 src/end-pages/installer.vala:89
+#: src/end-pages/initial-setup.vala:87 src/end-pages/installer.vala:121
 #, c-format
 msgid "Error message: %s"
 msgstr ""
 
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/end-pages/installer.vala:46
+#: src/end-pages/installer.vala:64
 #, c-format
 msgid "%s is installed on Your device."
 msgstr ""
 
-#: src/end-pages/installer.vala:48
+#: src/end-pages/installer.vala:66
 msgid "System is installed on Your device."
+msgstr ""
+
+#: src/end-pages/installer.vala:103
+msgid "Preparing"
+msgstr ""
+
+#: src/end-pages/installer.vala:104
+msgid "Installing"
+msgstr ""
+
+#: src/end-pages/installer.vala:105
+msgid "Cleaning"
+msgstr ""
+
+#: src/end-pages/installer.vala:199
+msgid "Details"
 msgstr ""
 
 #: src/options-handler.vala:42
@@ -853,7 +881,7 @@ msgid "Run apply from config without running GUI"
 msgstr ""
 
 #: src/options-handler.vala:135
-msgid "Add css style for window"
+msgid "Add css stylesheet for window"
 msgstr ""
 
 #: src/options-handler.vala:142
@@ -890,6 +918,14 @@ msgstr ""
 
 #: src/pages/welcome.vala:53
 msgid "After some choices, the system will be installed on Your device."
+msgstr ""
+
+#: src/widgets/installer-stage-row.vala:44
+msgid "Finished"
+msgstr ""
+
+#: src/widgets/installer-stage-row.vala:47
+msgid "Waiting"
 msgstr ""
 
 #: tests/plugins/test-common/data/ui/page.blp:23
