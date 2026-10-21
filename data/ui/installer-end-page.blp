@@ -83,7 +83,10 @@ template $ReadySetInstallerEndPage: $ReadySetEndPage {
 
                       Box {
                         Label description_label {
-                          visible: bind $description_label_is_not_empty(description_label.label, global_percentage_label.visible) as <bool>;
+                          visible: bind $description_label_is_not_empty(
+                            description_label.label,
+                            global_percentage_label.visible
+                            ) as <bool>;
                           hexpand: true;
                           xalign: 0.0;
                         }
@@ -128,7 +131,6 @@ template $ReadySetInstallerEndPage: $ReadySetEndPage {
                 margin-end: 12;
                 halign: end;
                 valign: center;
-
                 clicked => $toggle_log();
 
                 Adw.ButtonContent {
@@ -173,7 +175,6 @@ template $ReadySetInstallerEndPage: $ReadySetEndPage {
                   valign: start;
                   margin-end: 12;
                   margin-top: 12;
-
                   clicked => $toggle_log();
 
                   Adw.ButtonContent {

@@ -242,8 +242,6 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
             val += 0.2;
         }
 
-        progress_data.push_log ("Long data:  data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data data" + Uuid.string_random ());
-
         progress_data.pass_stage ("2");
 
         progress_data.push_log ("Warning example");

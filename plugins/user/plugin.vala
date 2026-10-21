@@ -108,7 +108,9 @@ public class User.Addin : ReadySet.StepAddin {
 
         //  Settings
         vars["with-root"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN) { setting = true };
-        vars["enforce-password-quality"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN) { setting = true };
+        vars["enforce-password-quality"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN) {
+            setting = true
+        };
         vars["passwd-conf-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING) { setting = true };
         vars["avatar-directories"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV) { setting = true };
 

@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2025-2026 David Sultaniiazov <x1z53@alt-gnome.ru>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -177,7 +177,11 @@ void test_string_list_merge () {
         return;
     }
     if (sources.length != 2 || sources[0] != "xkb::us" || sources[1] != "xkb::ru") {
-        Test.fail_printf ("Expected 'keyboard.input-sources' = [xkb::us][xkb::ru], got [%s][%s]", sources[0], sources[1]);
+        Test.fail_printf (
+            "Expected 'keyboard.input-sources' = [xkb::us][xkb::ru], got [%s][%s]",
+            sources[0],
+            sources[1]
+        );
     }
 
     cleanup_dir (dir);
