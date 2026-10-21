@@ -54,6 +54,8 @@ public partial abstract class ReadySet.InstallerAddin : ExtensionBase {
     /**
      * Returnes stages of current installer. They can be marked as `passed` via
      * {@link ReadySet.InstallerProgressData.pass_stage} at {@link install} running.
+     *
+     * This method calls once when installation process begin. But before {@link install}.
      */
     public async abstract InstallerStage[] get_stages ();
 
@@ -63,6 +65,33 @@ public partial abstract class ReadySet.InstallerAddin : ExtensionBase {
      * The application calls this method from its finish page. Update
      * `progres_data` to report a progress value from `0.0` to `1.0` and a
      * current status message.
+     *
+     * Example:
+     * {{{
+     *  ReadySet.InstallerProgressData progress_data;
+     *
+     *  public async override ReadySet.InstallerStage[] get_stages () {
+     *      return yield get_stages_from_backend ();
+     *  }
+     *
+     *  public async override void install (ReadySet.InstallerProgressData progress_data) throws ReadySet.ApplyError {
+     *      progress_data.pulse_step = 0.4;
+     *
+     *      example_backend.progress_data = progress_data;
+     *      example_backend.events.connect (handle_events);
+     *      yield example_backend.run ();
+     *  }
+     *
+     *  void handle_events (EventData event) {
+     *      if (event.type_ == "stage-passed") {
+     *          progress_data.pass_stage = event.stage;
+     *      } else if (event.type_ == "progress") {
+     *          progress_data.value = event.progress;
+     *      } else {
+     *          progress_data.pulse ();
+     *      }
+     *  }
+     * }}}
      */
-    public async abstract void install (ReadySet.InstallerProgressData progres_data) throws ReadySet.ApplyError;
+    public async abstract void install (ReadySet.InstallerProgressData progress_data) throws ReadySet.ApplyError;
 }
