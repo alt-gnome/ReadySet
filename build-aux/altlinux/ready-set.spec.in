@@ -64,6 +64,7 @@ BuildRequires: pkgconfig(systemd)
 BuildRequires: pkgconfig(tuner-1)
 BuildRequires: pkgconfig(xkbcommon)
 BuildRequires: pkgconfig(libapi-base-7)
+BuildRequires: pkgconfig(vte-2.91-gtk4)
 
 %description
 %summary.
