@@ -263,7 +263,7 @@ namespace ReadySet {
         /**
          * Icon name which will be bind to end page icon.
          */
-        public string? icon_name { get; set; default = "org.altlinux.ReadySet-symbolic"; }
+        public string? icon_name { get; set; }
 
         /**
          * Mark stage as passed.

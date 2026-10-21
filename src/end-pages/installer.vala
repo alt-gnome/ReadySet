@@ -54,7 +54,7 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
     [GtkChild]
     unowned Adw.ToastOverlay toast_overlay;
 
-    InstallerProgressData progress_data = new InstallerProgressData ();
+    InstallerProgressData progress_data = new InstallerProgressData () { icon_name = Config.APP_ID_DYN + "-symbolic" };
 
     construct {
         var name = Environment.get_os_info (OsInfoKey.NAME);
