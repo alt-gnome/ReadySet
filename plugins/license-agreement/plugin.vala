@@ -82,7 +82,7 @@ public class LicenseAgreement.Addin : ReadySet.StepAddin, ReadySet.ExistingUser 
         return vars;
     }
 
-    public async override void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
+    public async override void apply (ReadySet.InitialSetupProgressData progres_data) throws ReadySet.ApplyError {
         if (context.sandbox) {
             return;
         }

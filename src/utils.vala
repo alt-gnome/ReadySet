@@ -111,4 +111,8 @@ namespace ReadySet {
 
         rs_settings.set_strv ("performed-steps", pp_set);
     }
+
+    string errorify (string str) {
+        return "\x1b[31m%s\x1b[0m".printf (str);
+    }
 }

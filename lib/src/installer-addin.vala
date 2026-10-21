@@ -52,11 +52,17 @@ public partial abstract class ReadySet.InstallerAddin : ExtensionBase {
     }
 
     /**
+     * Returnes stages of current installer. They can be marked as `passed` via
+     * {@link ReadySet.InstallerProgressData.pass_stage} at {@link install} running.
+     */
+    public abstract InstallerStage[] get_stages ();
+
+    /**
      * Performs the installation asynchronously.
      *
      * The application calls this method from its finish page. Update
      * `progres_data` to report a progress value from `0.0` to `1.0` and a
      * current status message.
      */
-    public async abstract void install (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError;
+    public async abstract void install (ReadySet.InstallerProgressData progres_data) throws ReadySet.ApplyError;
 }

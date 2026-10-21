@@ -14,6 +14,22 @@
 }
 
 .welcome-header-box {
-  padding: 30px;
-  background: linear-gradient(to bottom, #e3ecf8, #c4cdd8);
+    padding: 30px;
+    background: linear-gradient(to bottom, #e3ecf8, #c4cdd8);
+}
+
+list.stages-box {
+    background: none;
+}
+
+list.stages-box > row {
+    padding: 3px;
+}
+
+list.stages-box row:hover {
+    background: none;
+}
+
+vte-terminal.log-view {
+    padding: 6px;
 }

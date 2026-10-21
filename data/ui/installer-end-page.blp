@@ -19,6 +19,7 @@
  */
 using Gtk 4.0;
 using Adw 1;
+using Vte 2.91;
 
 template $ReadySetInstallerEndPage: $ReadySetEndPage {
   Stack stack {
@@ -28,18 +29,175 @@ template $ReadySetInstallerEndPage: $ReadySetEndPage {
     StackPage {
       name: "applying";
 
-      child: Adw.StatusPage apply_status_page {
-        paintable: Adw.SpinnerPaintable {
-          widget: template;
-        };
+      child: Adw.ToastOverlay toast_overlay {
+        Box {
+          orientation: vertical;
 
-        title: _("Installing system…");
+          Overlay {
+            ScrolledWindow {
+              propagate-natural-height: true;
+              hscrollbar-policy: never;
 
-        Adw.Clamp {
-          maximum-size: 360;
+              Box {
+                orientation: vertical;
+                spacing: 48;
+                valign: center;
+                hexpand: true;
+                vexpand: true;
 
-          ProgressBar progress_bar {
-            visible: false;
+                $ReadySetStatusPage icon_status_page {
+                  styles [
+                    "accent",
+                  ]
+                }
+
+                $ReadySetStatusPage {
+                  title: _("Installing system…");
+                  description: _("This could take a while. Don’t turn of a computer.");
+                }
+
+                Adw.Clamp {
+                  maximum-size: 650;
+
+                  Box {
+                    spacing: 12;
+                    orientation: vertical;
+
+                    Box progress_box {
+                      styles [
+                        "accent",
+                      ]
+
+                      orientation: vertical;
+
+                      Revealer progress_revealer {
+                        reveal-child: false;
+
+                        ProgressBar progress_bar {
+                          margin-bottom: 12;
+                        }
+                      }
+
+                      Box {
+                        Label description_label {
+                          visible: bind $description_label_is_not_empty(description_label.label, global_percentage_label.visible) as <bool>;
+                          hexpand: true;
+                          xalign: 0.0;
+                        }
+
+                        Label global_percentage_label {
+                          use-markup: true;
+                          halign: end;
+                        }
+                      }
+                    }
+
+                    Separator {
+                      orientation: horizontal;
+                    }
+
+                    ListBox stages_box {
+                      styles [
+                        "stages-box",
+                      ]
+
+                      selection-mode: none;
+                    }
+                  }
+                }
+              }
+            }
+
+            [overlay]
+            Revealer log_btn_revealer {
+              reveal-child: false;
+              transition-type: crossfade;
+              transition-duration: 300;
+              halign: end;
+              valign: end;
+
+              Button log_btn {
+                tooltip-text: _("Detailed information");
+                icon-name: "utilities-terminal-symbolic";
+                margin-bottom: 12;
+                margin-start: 6;
+                margin-top: 6;
+                margin-end: 12;
+                halign: end;
+                valign: center;
+
+                clicked => $toggle_log();
+
+                Adw.ButtonContent {
+                  icon-name: "utilities-terminal-symbolic";
+                  label: _("Detailed information");
+                }
+              }
+            }
+          }
+
+          Revealer log_revealer {
+            reveal-child: false;
+
+            Box {
+              orientation: vertical;
+
+              Separator {
+                orientation: horizontal;
+              }
+
+              Overlay {
+                ScrolledWindow {
+                  height-request: 300;
+
+                  // TextView logs_view {
+                  //   styles [
+                  //     "log-view",
+                  //   ]
+
+                  //   editable: false;
+                  //   cursor-visible: false;
+                  //   monospace: true;
+
+                  //   wrap-mode: word_char;
+
+                  //   left-margin: 12;
+                  //   right-margin: 12;
+                  //   top-margin: 10;
+                  //   bottom-margin: 10;
+                  //   pixels-below-lines: 4;
+                  // }
+
+                  Vte.Terminal logs_view {
+                    input-enabled: false;
+                    scrollback-lines: 10_000;
+                    scroll-on-output: true;
+                    allow-bold: true;
+                  }
+                }
+
+                [overlay]
+                Button {
+                  styles [
+                    "background",
+                  ]
+
+                  tooltip-text: _("Hide logs");
+                  icon-name: "utilities-terminal-symbolic";
+                  halign: end;
+                  valign: start;
+                  margin-end: 12;
+                  margin-top: 12;
+
+                  clicked => $toggle_log();
+
+                  Adw.ButtonContent {
+                    icon-name: "utilities-terminal-symbolic";
+                    label: _("Hide logs");
+                  }
+                }
+              }
+            }
           }
         }
       };
@@ -85,14 +243,6 @@ template $ReadySetInstallerEndPage: $ReadySetEndPage {
             action-target: "'reboot'";
           }
         }
-      };
-    }
-
-    StackPage {
-      name: "error";
-
-      child: Adw.StatusPage error_status_page {
-        icon-name: "dialog-error-symbolic";
       };
     }
   }

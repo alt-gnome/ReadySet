@@ -41,6 +41,7 @@ network_manager_dep = dependency ('libnm', version: '>= 1.24.0')
 network_manager_gtk4_dep = dependency ('libnma-gtk4', version: '>= 1.8.36')
 polkit_dep = dependency('polkit-gobject-1')
 posix_dep = meson.get_compiler('vala').find_library('posix')
+vte_dep = dependency('vte-2.91-gtk4')
 xkb_dep = dependency('xkbcommon')
 
 if get_option('with_software_tuner_plugin').enabled()

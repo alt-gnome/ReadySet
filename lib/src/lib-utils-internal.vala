@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -45,6 +45,43 @@ namespace ReadySet {
         } catch (Serialize.Error e) {
             //  It's not json string, just return message
             return new ApplyErrorData (_("Something went wrong"), error.message);
+        }
+    }
+
+    public partial class InstallerProgressData {
+
+        internal void fill_stages (InstallerStage[] stages) requires (stages.length > 0) {
+            stages_store.remove_all ();
+
+            double left_size = 1.0;
+            InstallerStage[] sizeless_stages = {};
+
+            foreach (var stage in stages) {
+                stages_store.append (stage);
+
+                assert ((0.0 <= stage.size < 1.0) || stage.size == -1);
+
+                if (stage.size >= 0) {
+                    left_size -= stage.size;
+                } else {
+                    sizeless_stages += stage;
+                }
+            }
+
+            if (left_size < 0 || left_size == 0 && sizeless_stages.length != 0) {
+                warning ("Wrong size summ");
+            }
+
+            var div = left_size / sizeless_stages.length;
+            foreach (var stage in sizeless_stages) {
+                stage.size = div;
+            }
+
+            stages[0].state = CURRENT;
+        }
+
+        internal ListModel get_model () {
+            return stages_store;
         }
     }
 }

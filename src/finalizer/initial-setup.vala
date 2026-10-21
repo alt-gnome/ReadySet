@@ -78,6 +78,10 @@ public sealed class ReadySet.InitialSetupFinalizer : Finalizer {
     }
 
     public override async void run (ProgressData progress_data) throws ApplyError {
+        assert (progress_data is InitialSetupProgressData);
+
+        var is_progress_data = (InitialSetupProgressData) progress_data;
+
         Gee.ArrayList<StepAddin> steps_addins_arr = new Gee.ArrayList<StepAddin> ();
 
         for (int i = 0; i < model.get_n_items_unfiltered (); i++) {
@@ -102,11 +106,11 @@ public sealed class ReadySet.InitialSetupFinalizer : Finalizer {
         });
 
         foreach (var addin in steps_addins_arr) {
-            progress_data.value = 0.0;
-            progress_data.message = "";
+            is_progress_data.value = 0.0;
+            is_progress_data.description = "";
 
-            yield addin.apply (progress_data);
-            progress_data.value = 1.0;
+            yield addin.apply (is_progress_data);
+            is_progress_data.value = 1.0;
 
             passed_plugins += addin.plugin_info.module_name;
 

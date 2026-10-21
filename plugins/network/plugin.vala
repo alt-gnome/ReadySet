@@ -188,7 +188,7 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         }
     }
 
-    public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
+    public async override void apply (ReadySet.InitialSetupProgressData progress_data) throws ReadySet.ApplyError {
         if (context.sandbox) {
             return;
         }

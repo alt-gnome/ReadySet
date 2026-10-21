@@ -35,6 +35,7 @@ libserialize-gir-devel
 libsystemd-devel
 libtuner-devel
 libtuner-gir-devel
+libvte3-gir-devel
 libxkbcommon-devel
 meson
 vala

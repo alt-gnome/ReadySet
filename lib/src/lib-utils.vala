@@ -148,17 +148,31 @@ namespace ReadySet {
      * `0.0`. Implementations update the same instance while
      * {@link InstallerAddin.install} or {@link StepAddin.apply} is running.
      */
-    public sealed class ProgressData : Object {
+    public class ProgressData : Object {
+
+        public bool visibility { get; set; }
 
         /**
          * Calls {@link Gtk.ProgressBar.pulse} property.
+         * Also set {@link visibility} to true.
          */
-        public signal void pulse ();
+        public signal void pulse () {
+            visibility = true;
+        }
 
+        double _value = 0.0;
         /**
          * Progress value from 0.0 to 1.0.
          */
-        public double value { get; set; default = 0.0; }
+        public double value {
+            get {
+                return _value;
+            }
+            set {
+                _value = value;
+                visibility = _value > 0 || visibility ? true : false;
+            }
+        }
 
         /**
          * Binds with {@link Gtk.ProgressBar.pulse_step} property.
@@ -166,9 +180,132 @@ namespace ReadySet {
         public double pulse_step { get; set; }
 
         /**
-         * Message that will be presented as current log.
+         * Description that will be presented as current step.
          */
-        public string message { get; set; }
+        public string description { get; set; }
+    }
+
+    public enum InstallerStageState {
+        NOT_PASSED,
+        CURRENT,
+        PASSED;
+    }
+
+    public sealed class InstallerStage : Object {
+
+        /**
+         * Id of stage. Stage can be marked as passed via {@link InstallerProgressData.pass_stage}.
+         * Stage next to it will be marked as {@link InstallerStageState.CURRENT}
+         */
+        public string id { get; construct; }
+
+        /**
+         * Human readable name. It well be shown at stage list with it state in UI.
+         */
+        public string name { get; construct; }
+
+        /**
+         * Human readable name. It will be shown at stage list with it state in UI.
+         * The step size is relative to global progress. It can be from 0 to 1. The
+         * remaining progress will be divided between stages, where size is -1. It is
+         * advisable to leave at least one stage with the value -1.
+         */
+        public double size { get; internal set construct; }
+
+        internal bool is_current {
+            get {
+                return state == CURRENT;
+            }
+        }
+
+        internal uint numeric_state {
+            get {
+                return (uint) state;
+            }
+        }
+
+        InstallerStageState _state;
+
+        internal InstallerStageState state {
+            get {
+                return _state;
+            }
+            set {
+                _state = value;
+                notify_property ("is-current");
+                notify_property ("numeric-state");
+            }
+        }
+
+        /**
+         * @see InstallerStage.id
+         * @see InstallerStage.name
+         * @see InstallerStage.size
+         */
+        public InstallerStage (string id, string name, double size = -1) {
+            Object (id: id, name: name, size: size);
+        }
+    }
+
+    public partial class InstallerProgressData : ProgressData {
+
+        ListStore stages_store = new ListStore (typeof (InstallerStage));
+
+        /**
+         * Push logs to detailed information. It supports terminal codes.
+         */
+        public signal void push_log (string log_part);
+
+        /**
+         * Paintable which will be bind to end page icon.
+         */
+        public Gdk.Paintable? paintable { get; set; }
+
+        /**
+         * Icon name which will be bind to end page icon.
+         */
+        public string? icon_name { get; set; default = "org.altlinux.ReadySet-symbolic"; }
+
+        /**
+         * Mark stage as passed.
+         *
+         * @see InstallerStage
+         */
+        public signal void pass_stage (string id) {
+            int passed_index = -1;
+
+            for (int i = 0; i < stages_store.get_n_items (); i++) {
+                var stage = (InstallerStage) stages_store.get_item (i);
+
+                if (stage.id == id) {
+                    passed_index = i;
+                    if (stage.state == PASSED) {
+                        warning ("Can't pass passed stage");
+                        return;
+                    }
+                    break;
+                }
+            }
+
+            if (passed_index == -1) {
+                warning ("Trying to pass non-existing stage");
+                return;
+            }
+
+            for (int i = 0; i < stages_store.get_n_items (); i++) {
+                var stage = (InstallerStage) stages_store.get_item (i);
+
+                if (i <= passed_index) {
+                    stage.state = PASSED;
+                } else {
+                    stage.state = CURRENT;
+                    return;
+                }
+            }
+        }
+    }
+
+    public class InitialSetupProgressData : ProgressData {
     }
 
     /**

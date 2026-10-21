@@ -96,12 +96,12 @@ public abstract class ReadySet.StepAddin : ExtensionBase {
      *
      * The default implementation completes without making changes. Override
      * it to persist the settings collected by the step, updating
-     * `progres_data` as the operation proceeds.
+     * `progress_data` as the operation proceeds.
      *
-     * @param progres_data mutable progress information for the operation
+     * @param progress_data mutable progress information for the operation
      * @throws ReadySet.ApplyError when the step cannot be applied
      */
-    public async virtual void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {}
+    public async virtual void apply (ReadySet.InitialSetupProgressData progress_data) throws ReadySet.ApplyError {}
 
     /**
      * Builds the pages contributed by this step.

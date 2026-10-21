@@ -34,7 +34,7 @@ public sealed class ReadySet.InitialSetupEndPage : EndPage {
     [GtkChild]
     unowned Gtk.Button finish_button;
 
-    ProgressData progress_data = new ProgressData ();
+    InitialSetupProgressData progress_data = new InitialSetupProgressData ();
 
     construct {
         var name = Environment.get_os_info (OsInfoKey.NAME);
@@ -53,7 +53,7 @@ public sealed class ReadySet.InitialSetupEndPage : EndPage {
     public override async void start_action () {
         stack.visible_child_name = "applying";
 
-        progress_data.bind_property ("message", apply_status_page, "description");
+        progress_data.bind_property ("description", apply_status_page, "description");
         progress_data.bind_property ("value", progress_bar, "fraction");
         progress_data.bind_property ("pulse-step", progress_bar, "pulse-step");
         progress_data.pulse.connect (on_pulse);
@@ -62,7 +62,7 @@ public sealed class ReadySet.InitialSetupEndPage : EndPage {
         progress_data.pulse.connect (enable_progress_visible);
 
         if (sandbox) {
-            progress_data.message = _("Applying changes…");
+            progress_data.description = _("Applying changes…");
 
             Timeout.add_seconds (1, () => {
                 progress_data.value += 0.2;

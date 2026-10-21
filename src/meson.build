@@ -29,6 +29,7 @@ rs_app_vala_sources = files(
 
   'widgets/devel/window.vala',
 
+  'widgets/installer-stage-row.vala',
   'widgets/nothing-to-show.vala',
   'widgets/page-state-row.vala',
   'widgets/pages-indicator.vala',
@@ -58,6 +59,7 @@ rs_app_dependencies = [
   libadwaita_dep,
   libpeas_dep,
   posix_dep,
+  vte_dep,
 ] + librs_dependencies
 
 if gdm_dep.found()

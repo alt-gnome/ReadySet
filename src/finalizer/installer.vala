@@ -21,7 +21,13 @@
 public sealed class ReadySet.InstallerFinalizer : Finalizer {
 
     public override async void run (ProgressData progress_data) throws ApplyError {
-        yield installer_plugin.install (progress_data);
+        assert (progress_data is InstallerProgressData);
+
+        var i_progress_data = (InstallerProgressData) progress_data;
+
+        i_progress_data.fill_stages (installer_plugin.get_stages ());
+
+        yield installer_plugin.install (i_progress_data);
 
         try {
             var raw_context = context.get_raw_string ();
@@ -45,6 +51,6 @@ public sealed class ReadySet.InstallerFinalizer : Finalizer {
             warning ("Error on executing post hooks: %s", e.message);
         }
 
-        progress_data.value = 1.0;
+        i_progress_data.value = 1.0;
     }
 }
