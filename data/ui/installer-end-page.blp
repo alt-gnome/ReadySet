@@ -150,24 +150,6 @@ template $ReadySetInstallerEndPage: $ReadySetEndPage {
                 ScrolledWindow {
                   height-request: 300;
 
-                  // TextView logs_view {
-                  //   styles [
-                  //     "log-view",
-                  //   ]
-
-                  //   editable: false;
-                  //   cursor-visible: false;
-                  //   monospace: true;
-
-                  //   wrap-mode: word_char;
-
-                  //   left-margin: 12;
-                  //   right-margin: 12;
-                  //   top-margin: 10;
-                  //   bottom-margin: 10;
-                  //   pixels-below-lines: 4;
-                  // }
-
                   Vte.Terminal logs_view {
                     input-enabled: false;
                     scrollback-lines: 10_000;
