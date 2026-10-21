@@ -25,7 +25,7 @@ public sealed class ReadySet.InstallerFinalizer : Finalizer {
 
         var i_progress_data = (InstallerProgressData) progress_data;
 
-        i_progress_data.fill_stages (installer_plugin.get_stages ());
+        i_progress_data.fill_stages (yield installer_plugin.get_stages ());
 
         yield installer_plugin.install (i_progress_data);
 

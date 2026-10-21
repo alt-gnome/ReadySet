@@ -28,7 +28,7 @@ public class TestInstaller.Addin : ReadySet.InstallerAddin {
         }
     }
 
-    public override ReadySet.InstallerStage[] get_stages () {
+    public async override ReadySet.InstallerStage[] get_stages () {
         return { new ReadySet.InstallerStage ("1", "Step") };
     }
 

@@ -55,7 +55,7 @@ public partial abstract class ReadySet.InstallerAddin : ExtensionBase {
      * Returnes stages of current installer. They can be marked as `passed` via
      * {@link ReadySet.InstallerProgressData.pass_stage} at {@link install} running.
      */
-    public abstract InstallerStage[] get_stages ();
+    public async abstract InstallerStage[] get_stages ();
 
     /**
      * Performs the installation asynchronously.
