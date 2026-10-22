@@ -307,6 +307,10 @@ namespace Network {
 [DBus (name = "org.freedesktop.hostname1")]
 public interface Network.Hostname1 : Object {
 
+    public abstract string default_hostname { owned get; }
+    [DBus (name = "MachineID")]
+    public abstract uint8[] machine_id { owned get; }
+
     public abstract async void set_static_hostname (
             string hostname,
             bool interactive = true
