@@ -121,6 +121,20 @@ namespace Network {
         );
     }
 
+    Hostname1 get_hostname_proxy_sync () throws Error {
+        var con = Bus.get_sync (SYSTEM);
+        if (con == null) {
+            error ("Failed to connect to bus");
+        }
+
+        return con.get_proxy_sync<Hostname1> (
+            "org.freedesktop.hostname1",
+            "/org/freedesktop/hostname1",
+            NONE,
+            null
+        );
+    }
+
     async void set_hostname (string hostname) throws Error {
         Hostname1 proxy = yield get_hostname_proxy ();
         yield proxy.set_static_hostname (hostname);
