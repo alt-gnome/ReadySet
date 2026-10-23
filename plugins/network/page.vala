@@ -36,7 +36,7 @@ public sealed class Network.Page : ReadySet.BasePage {
     [GtkChild]
     unowned ModeledStack wifi_adapters;
 
-    string _hostname = generate_hostname ();
+    string _hostname = Addin.get_instance ().default_hostname;
     public string hostname {
         get {
             return _hostname;

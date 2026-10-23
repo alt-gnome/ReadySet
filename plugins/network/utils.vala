@@ -135,29 +135,28 @@ namespace Network {
         );
     }
 
-    string generate_hostname () {
+    string hostname_inject_machine_id (string name) {
+        // we should fit a hyphen and at least one hex digit
+        int chars_left = 63 - name.length;
+        if (chars_left <= 0) {
+            return name;
+        }
+
+        string suffix;
         try {
-            Hostname1 proxy = get_hostname_proxy_sync ();
-            string name = proxy.default_hostname;
-
-            // we should fit a hyphen and at least one hex digit
-            int chars_left = 63 - name.length;
-            if (chars_left <= 0) {
-                return name;
-            }
-
-            string suffix = "-" + Checksum.compute_for_data (
-                SHA256, proxy.machine_id
+            suffix = "-" + Checksum.compute_for_data (
+                SHA256, get_hostname_proxy_sync ().machine_id
             )[0 : int.min (8, chars_left)];
-            int first_dot = name.index_of_char ('.');
-            if (first_dot < 0) {
-                return name + suffix;
-            }
-            return name.splice (first_dot, first_dot, suffix);
         } catch (Error e) {
             warning (e.message);
-            return Environment.get_host_name ();
+            return name;
         }
+
+        int first_dot = name.index_of_char ('.');
+        if (first_dot < 0) {
+            return name + suffix;
+        }
+        return name.splice (first_dot, first_dot, suffix);
     }
 
     async void set_hostname (string hostname) throws Error {

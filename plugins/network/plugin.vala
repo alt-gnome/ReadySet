@@ -29,6 +29,12 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         }
     }
 
+    public string default_hostname {
+        get {
+            return Environment.get_host_name ();
+        }
+    }
+
     public NM.Client client { get; construct; }
 
     public ListStore modems { get; construct; }
@@ -194,7 +200,11 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         }
 
         try {
-            yield set_hostname (context.get_string ("network.hostname"));
+            string name = context.get_string ("network.hostname");
+            if (name == default_hostname) {
+                name = hostname_inject_machine_id (name);
+            }
+            yield set_hostname (name);
 
             foreach (var conn in client.connections) {
                 yield conn.commit_changes_async (true, null);
