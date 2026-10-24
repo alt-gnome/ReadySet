@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-21 17:28+0300\n"
+"POT-Creation-Date: 2026-10-24 13:22+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Setting up the system…"
 msgstr ""
 
-#: data/ui/initial-setup-end-page.blp:53 data/ui/installer-end-page.blp:196
+#: data/ui/initial-setup-end-page.blp:53 data/ui/installer-end-page.blp:197
 msgid "All done!"
 msgstr ""
 
@@ -45,19 +45,19 @@ msgstr ""
 msgid "This could take a while. Don’t turn of a computer."
 msgstr ""
 
-#: data/ui/installer-end-page.blp:123 data/ui/installer-end-page.blp:136
+#: data/ui/installer-end-page.blp:126 data/ui/installer-end-page.blp:138
 msgid "Detailed information"
 msgstr ""
 
-#: data/ui/installer-end-page.blp:170 data/ui/installer-end-page.blp:181
+#: data/ui/installer-end-page.blp:172 data/ui/installer-end-page.blp:182
 msgid "Hide logs"
 msgstr ""
 
-#: data/ui/installer-end-page.blp:207
+#: data/ui/installer-end-page.blp:208
 msgid "Continue using live system"
 msgstr ""
 
-#: data/ui/installer-end-page.blp:222
+#: data/ui/installer-end-page.blp:223
 msgid "Reboot now"
 msgstr ""
 
@@ -117,7 +117,7 @@ msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
 #. It's not json string, just return message
-#: lib/src/lib-utils-internal.vala:47 src/end-pages/installer.vala:198
+#: lib/src/lib-utils-internal.vala:47 src/end-pages/installer.vala:199
 msgid "Something went wrong"
 msgstr ""
 
@@ -366,7 +366,7 @@ msgstr ""
 msgid "NetworkManager is not running"
 msgstr ""
 
-#: plugins/network/plugin.vala:204
+#: plugins/network/plugin.vala:214
 msgid "Failed to apply network settings"
 msgstr ""
 
@@ -398,7 +398,7 @@ msgstr ""
 msgid "A host name section cannot end with a hyphen"
 msgstr ""
 
-#: plugins/network/utils.vala:182
+#: plugins/network/utils.vala:220
 #, c-format
 msgid "Wired connection %u"
 msgstr ""
@@ -797,34 +797,38 @@ msgstr ""
 msgid "Applying changes…"
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:87 src/end-pages/installer.vala:121
+#: src/end-pages/initial-setup.vala:87 src/end-pages/installer.vala:120
 #, c-format
 msgid "Error message: %s"
 msgstr ""
 
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/end-pages/installer.vala:64
+#: src/end-pages/installer.vala:66
 #, c-format
 msgid "%s is installed on Your device."
 msgstr ""
 
-#: src/end-pages/installer.vala:66
+#: src/end-pages/installer.vala:68
 msgid "System is installed on Your device."
 msgstr ""
 
-#: src/end-pages/installer.vala:103
+#: src/end-pages/installer.vala:102
 msgid "Preparing"
 msgstr ""
 
-#: src/end-pages/installer.vala:104
+#: src/end-pages/installer.vala:103
 msgid "Installing"
 msgstr ""
 
-#: src/end-pages/installer.vala:105
+#: src/end-pages/installer.vala:104
 msgid "Cleaning"
 msgstr ""
 
-#: src/end-pages/installer.vala:199
+#: src/end-pages/installer.vala:123
+msgid "Installation error"
+msgstr ""
+
+#: src/end-pages/installer.vala:200
 msgid "Details"
 msgstr ""
 
@@ -920,12 +924,16 @@ msgstr ""
 msgid "After some choices, the system will be installed on Your device."
 msgstr ""
 
-#: src/widgets/installer-stage-row.vala:44
+#: src/widgets/installer-stage-row.vala:46
 msgid "Finished"
 msgstr ""
 
-#: src/widgets/installer-stage-row.vala:47
+#: src/widgets/installer-stage-row.vala:49
 msgid "Waiting"
+msgstr ""
+
+#: src/widgets/installer-stage-row.vala:53
+msgid "Processing…"
 msgstr ""
 
 #: tests/plugins/test-common/data/ui/page.blp:23

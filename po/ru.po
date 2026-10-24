@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-21 17:28+0300\n"
-"PO-Revision-Date: 2026-10-21 17:30+0300\n"
+"POT-Creation-Date: 2026-10-24 13:22+0300\n"
+"PO-Revision-Date: 2026-10-24 13:24+0300\n"
 "Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -37,7 +37,7 @@ msgstr "Завершите настройку"
 msgid "Setting up the system…"
 msgstr "Настройка вашей системы…"
 
-#: data/ui/initial-setup-end-page.blp:53 data/ui/installer-end-page.blp:196
+#: data/ui/initial-setup-end-page.blp:53 data/ui/installer-end-page.blp:197
 msgid "All done!"
 msgstr "Всё готово!"
 
@@ -49,19 +49,19 @@ msgstr "Установка системы…"
 msgid "This could take a while. Don’t turn of a computer."
 msgstr "Это может занять некоторое время. Не выключайте компьютер."
 
-#: data/ui/installer-end-page.blp:123 data/ui/installer-end-page.blp:136
+#: data/ui/installer-end-page.blp:126 data/ui/installer-end-page.blp:138
 msgid "Detailed information"
 msgstr "Подробная информация"
 
-#: data/ui/installer-end-page.blp:170 data/ui/installer-end-page.blp:181
+#: data/ui/installer-end-page.blp:172 data/ui/installer-end-page.blp:182
 msgid "Hide logs"
 msgstr "Спрятать логи"
 
-#: data/ui/installer-end-page.blp:207
+#: data/ui/installer-end-page.blp:208
 msgid "Continue using live system"
 msgstr "Продолжить использование текущей системы"
 
-#: data/ui/installer-end-page.blp:222
+#: data/ui/installer-end-page.blp:223
 msgid "Reboot now"
 msgstr "Перезагрузиться"
 
@@ -121,7 +121,7 @@ msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
 #. It's not json string, just return message
-#: lib/src/lib-utils-internal.vala:47 src/end-pages/installer.vala:198
+#: lib/src/lib-utils-internal.vala:47 src/end-pages/installer.vala:199
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
@@ -373,7 +373,7 @@ msgstr "Настройка сети недоступна"
 msgid "NetworkManager is not running"
 msgstr "NetworkManager не запущен"
 
-#: plugins/network/plugin.vala:204
+#: plugins/network/plugin.vala:214
 msgid "Failed to apply network settings"
 msgstr "Ошибка при сохранении настроек сети"
 
@@ -405,7 +405,7 @@ msgstr "Допускаются только буквы, цифры, дефисы
 msgid "A host name section cannot end with a hyphen"
 msgstr "Части имени устройства не могут оканчиваться дефисом"
 
-#: plugins/network/utils.vala:182
+#: plugins/network/utils.vala:220
 #, c-format
 msgid "Wired connection %u"
 msgstr "Проводное подключение %u"
@@ -840,34 +840,38 @@ msgstr "Система готова к использованию."
 msgid "Applying changes…"
 msgstr "Применение изменений…"
 
-#: src/end-pages/initial-setup.vala:87 src/end-pages/installer.vala:121
+#: src/end-pages/initial-setup.vala:87 src/end-pages/installer.vala:120
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/end-pages/installer.vala:64
+#: src/end-pages/installer.vala:66
 #, c-format
 msgid "%s is installed on Your device."
 msgstr "Дистрибутив %s установлен на Ваше устройство."
 
-#: src/end-pages/installer.vala:66
+#: src/end-pages/installer.vala:68
 msgid "System is installed on Your device."
 msgstr "Система установлена на Ваше устройство."
 
-#: src/end-pages/installer.vala:103
+#: src/end-pages/installer.vala:102
 msgid "Preparing"
 msgstr "Подготовка"
 
-#: src/end-pages/installer.vala:104
+#: src/end-pages/installer.vala:103
 msgid "Installing"
 msgstr "Установка"
 
-#: src/end-pages/installer.vala:105
+#: src/end-pages/installer.vala:104
 msgid "Cleaning"
 msgstr "Очистка"
 
-#: src/end-pages/installer.vala:199
+#: src/end-pages/installer.vala:123
+msgid "Installation error"
+msgstr "Ошибка установки"
+
+#: src/end-pages/installer.vala:200
 msgid "Details"
 msgstr "Детали"
 
@@ -968,13 +972,17 @@ msgstr "Это установщик %s"
 msgid "After some choices, the system will be installed on Your device."
 msgstr "После выбора параметров система будет установлена на Ваше устройство."
 
-#: src/widgets/installer-stage-row.vala:44
+#: src/widgets/installer-stage-row.vala:46
 msgid "Finished"
-msgstr "Завершение"
+msgstr "Завершено"
 
-#: src/widgets/installer-stage-row.vala:47
+#: src/widgets/installer-stage-row.vala:49
 msgid "Waiting"
 msgstr "Ожидание"
+
+#: src/widgets/installer-stage-row.vala:53
+msgid "Processing…"
+msgstr "В процессе…"
 
 #: tests/plugins/test-common/data/ui/page.blp:23
 #: tests/plugins/test-common/data/ui/page.blp:32
