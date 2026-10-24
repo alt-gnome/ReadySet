@@ -186,8 +186,8 @@ namespace ReadySet {
     }
 
     public enum InstallerStageState {
-        NOT_PASSED,
         CURRENT,
+        NOT_PASSED,
         PASSED;
     }
 
@@ -223,7 +223,7 @@ namespace ReadySet {
             }
         }
 
-        InstallerStageState _state;
+        InstallerStageState _state = NOT_PASSED;
 
         internal InstallerStageState state {
             get {

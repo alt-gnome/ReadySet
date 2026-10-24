@@ -26,6 +26,8 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
     [GtkChild]
     unowned StatusPage icon_status_page;
     [GtkChild]
+    unowned StatusPage main_status_page;
+    [GtkChild]
     unowned Gtk.ProgressBar progress_bar;
     [GtkChild]
     unowned Gtk.Revealer progress_revealer;
@@ -87,10 +89,7 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
 
         var model = progress_data.get_model ();
 
-        var filter_model = new Gtk.FilterListModel (model, new Gtk.BoolFilter (
-            new Gtk.PropertyExpression (typeof (InstallerStage), null, "is-current")
-        ) { invert = true }) { watch_items = true };
-        var sort_model = new Gtk.SortListModel (filter_model, new Gtk.NumericSorter (
+        var sort_model = new Gtk.SortListModel (model, new Gtk.NumericSorter (
             new Gtk.PropertyExpression (typeof (InstallerStage), null, "numeric-state")
         ) { sort_order = Gtk.SortType.ASCENDING });
 
@@ -121,6 +120,8 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
             progress_data.push_log (errorify (_("Error message: %s").printf (error_data.description)));
             set_error ();
             progress_data.icon_name = "dialog-error-symbolic";
+            main_status_page.title = _("Installation error");
+            main_status_page.description = error_data.message;
         }
     }
 

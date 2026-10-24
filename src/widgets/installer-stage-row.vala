@@ -41,13 +41,16 @@ public sealed class ReadySet.InstallerStageRow : Gtk.ListBoxRow {
         var state = (InstallerStageState) value_from.get_enum ();
         switch (state) {
             case PASSED:
+                remove_css_class ("accent");
+                add_css_class ("dimmed");
                 value_to.set_string ("<b>%s</b>".printf (_("Finished")));
                 break;
             case NOT_PASSED:
                 value_to.set_string ("<b>%s</b>".printf (_("Waiting")));
                 break;
             case CURRENT:
-                value_to.set_string ("");
+                add_css_class ("accent");
+                value_to.set_string ("<b>%s</b>".printf (_("Processing…")));
                 break;
         }
 
