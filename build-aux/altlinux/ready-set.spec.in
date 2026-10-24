@@ -43,6 +43,7 @@ BuildRequires: gir(NM) = 1.0
 BuildRequires: gir(Peas) = 2
 BuildRequires: gir(Serialize) = 7
 BuildRequires: gir(Tuner) = 1
+BuildRequires: gir(Vte) = 2.91
 BuildRequires: typelib(Case) = 0
 BuildRequires: pkgconfig(accountsservice)
 BuildRequires: pkgconfig(flatpak)
