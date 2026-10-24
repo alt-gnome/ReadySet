@@ -121,6 +121,44 @@ namespace Network {
         );
     }
 
+    Hostname1 get_hostname_proxy_sync () throws Error {
+        var con = Bus.get_sync (SYSTEM);
+        if (con == null) {
+            error ("Failed to connect to bus");
+        }
+
+        return con.get_proxy_sync<Hostname1> (
+            "org.freedesktop.hostname1",
+            "/org/freedesktop/hostname1",
+            NONE,
+            null
+        );
+    }
+
+    string hostname_inject_machine_id (string name) {
+        // we should fit a hyphen and at least one hex digit
+        int chars_left = 63 - name.length;
+        if (chars_left <= 0) {
+            return name;
+        }
+
+        string suffix;
+        try {
+            suffix = "-" + Checksum.compute_for_data (
+                SHA256, get_hostname_proxy_sync ().machine_id
+            )[0 : int.min (8, chars_left)];
+        } catch (Error e) {
+            warning (e.message);
+            return name;
+        }
+
+        int first_dot = name.index_of_char ('.');
+        if (first_dot < 0) {
+            return name + suffix;
+        }
+        return name.splice (first_dot, first_dot, suffix);
+    }
+
     async void set_hostname (string hostname) throws Error {
         Hostname1 proxy = yield get_hostname_proxy ();
         yield proxy.set_static_hostname (hostname);
@@ -306,6 +344,10 @@ namespace Network {
 
 [DBus (name = "org.freedesktop.hostname1")]
 public interface Network.Hostname1 : Object {
+
+    public abstract string default_hostname { owned get; }
+    [DBus (name = "MachineID")]
+    public abstract uint8[] machine_id { owned get; }
 
     public abstract async void set_static_hostname (
             string hostname,
