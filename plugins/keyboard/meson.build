@@ -55,7 +55,6 @@ shared_module(
   vala_args: plugin_keyboard_vala_args,
   dependencies: plugin_keyboard_deps,
   c_args: plugin_keyboard_c_args,
-  vala_args: plugin_keyboard_vala_args,
   install: true,
   install_dir: steps_plugins_dir,
 )
