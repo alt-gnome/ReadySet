@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -23,58 +23,67 @@ public sealed class SoftwareSources.Service : Object {
 
     const string SOFTWARE_ACTION = "org.altlinux.ReadySet.Software.ManageRepos";
 
-    public void add_flatpak_repo (string remote_name, string url, BusName sender) throws Error {
-        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+    public async void add_flatpak_repo (
+        string remote_name,
+        string flatpakrepo_url,
+        string repo_url,
+        BusName sender
+    ) throws Error {
+        ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         var inst = new Flatpak.Installation.system ();
-
-        Flatpak.Remote? remote = null;
-        try {
-            remote = inst.get_remote_by_name (remote_name);
-        } catch (Flatpak.Error e) {
-            if (e.code != Flatpak.Error.REMOTE_NOT_FOUND) {
-                throw e;
+        foreach (var remote in inst.list_remotes ()) {
+            if (remote.get_url () == repo_url) {
+                remote.set_disabled (false);
+                inst.modify_remote (remote);
+                return;
             }
         }
 
         var session = new ApiBase.Session ();
-        var request = new ApiBase.Request.GET (url);
-        var data = session.send_and_read (request);
+        var request = new ApiBase.Request.GET (flatpakrepo_url);
+        var data = yield session.send_and_read_async (request);
+        if (data == null) {
+            throw new IOError.INVALID_DATA (
+                "Empty response from '%s'".printf (flatpakrepo_url)
+            );
+        }
 
-        var new_remote = new Flatpak.Remote.from_file (remote_name, data);
-        new_remote.set_gpg_verify (true);
+        uint suffix = 0;
+        while (true) {
+            string available_name = suffix == 0
+                ? remote_name
+                : "%s%u".printf (remote_name, suffix);
+            var new_remote = new Flatpak.Remote.from_file (available_name, data);
+            new_remote.set_gpg_verify (true);
 
-        if (remote != null) {
-            remote.set_disabled (false);
-            inst.modify_remote (remote);
-            inst.modify_remote (new_remote);
-        } else {
-            inst.add_remote (new_remote, false);
+            try {
+                inst.add_remote (new_remote, false);
+                break;
+            } catch (Flatpak.Error e) {
+                if (e.code != Flatpak.Error.ALREADY_INSTALLED) {
+                    throw e;
+                }
+
+                suffix++;
+            }
         }
     }
 
-    public void remove_flatpak_repo (string remote_name, BusName sender) throws Error {
-        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+    public void remove_flatpak_repo (string repo_url, BusName sender) throws Error {
+        ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         var inst = new Flatpak.Installation.system ();
-
-        Flatpak.Remote? remote = null;
-        try {
-            remote = inst.get_remote_by_name (remote_name);
-        } catch (Flatpak.Error e) {
-            if (e.code != Flatpak.Error.REMOTE_NOT_FOUND) {
-                throw e;
+        foreach (var remote in inst.list_remotes ()) {
+            if (remote.get_url () == repo_url) {
+                remote.set_disabled (true);
+                inst.modify_remote (remote);
             }
-        }
-
-        if (remote != null) {
-            remote.set_disabled (true);
-            inst.modify_remote (remote);
         }
     }
 
     public void add_stplr_repo (string remote_name, string url, BusName sender) throws Error {
-        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+        ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         var sp = new Subprocess.newv ({
             "stplr", "repo", "add", remote_name, url
@@ -83,7 +92,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 
     public void remove_stplr_repo (string remote_name, string url, BusName sender) throws Error {
-        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+        ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         var sp = new Subprocess.newv ({
             "stplr", "repo", "remove", remote_name
@@ -92,7 +101,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 
     public void add_alt_repos (string[] repos, BusName sender) throws Error {
-        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+        ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         string[] cmd;
         if (Program.exists ("apm")) {
@@ -117,7 +126,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 
     public void remove_alt_repos (string[] repos, BusName sender) throws Error {
-        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+        ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         string[] cmd;
         if (Program.exists ("apm")) {
@@ -142,7 +151,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 
     public void exec_custom (string cmd, BusName sender) throws Error {
-        ReadySetService.polkit_check (sender, SOFTWARE_ACTION);
+        ReadySet.polkit_check (sender, SOFTWARE_ACTION);
 
         var sp = new Subprocess.newv ({
             "bash", "-c", cmd
@@ -151,7 +160,7 @@ public sealed class SoftwareSources.Service : Object {
     }
 }
 
-public sealed class SoftwareSources.Addin : ReadySetService.Addin {
+public sealed class SoftwareSources.Addin : ReadySet.ServiceAddin {
 
     public override string get_object_path () {
         return "/SoftwareSources";
@@ -164,5 +173,5 @@ public sealed class SoftwareSources.Addin : ReadySetService.Addin {
 
 public void peas_register_types (TypeModule module) {
     var obj = (Peas.ObjectModule) module;
-    obj.register_extension_type (typeof (ReadySetService.Addin), typeof (SoftwareSources.Addin));
+    obj.register_extension_type (typeof (ReadySet.ServiceAddin), typeof (SoftwareSources.Addin));
 }

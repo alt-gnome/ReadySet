@@ -29,6 +29,7 @@ rs_app_vala_sources = files(
 
   'widgets/devel/window.vala',
 
+  'widgets/installer-stage-row.vala',
   'widgets/nothing-to-show.vala',
   'widgets/page-state-row.vala',
   'widgets/pages-indicator.vala',
@@ -58,6 +59,7 @@ rs_app_dependencies = [
   libadwaita_dep,
   libpeas_dep,
   posix_dep,
+  vte_dep,
 ] + librs_dependencies
 
 if gdm_dep.found()
@@ -68,7 +70,7 @@ rs_app_sources = [
   rs_app_vala_sources,
   rs_app_vapi_sources,
   rs_app_resources,
-] + librs_sources + librs_context_sources_internal + librs_utils_sources_internal + librs_ext_base_sources_internal + librs_context_locked_sources_internal
+] + librs_sources + librs_context_sources_internal + librs_utils_sources_internal + librs_ext_base_sources_internal + librs_context_locked_sources_internal + librs_context_locked_get_sources_internal
 
 rs_app_c_args = [
   '-DG_LOG_DOMAIN="ReadySet"',

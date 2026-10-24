@@ -63,7 +63,11 @@ public sealed class Network.ModeledStack : Adw.Bin {
         this.title_func = (owned) title_func;
         if ((this.model = model) != null) {
             this.model.items_changed.connect (update_pages);
-            update_pages (0, 0, this.model.get_n_items ());
+            update_pages (
+                0,
+                _stack.pages.get_n_items (),
+                this.model.get_n_items ()
+            );
         }
     }
 

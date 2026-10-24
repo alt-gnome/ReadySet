@@ -1,7 +1,7 @@
 project(
   'ready-set',
   'vala',
-  version: '0.14.2',
+  version: '0.15.0',
   meson_version: '>= 1.9',
   license: 'GPL-3.0-or-later',
 )
@@ -26,6 +26,7 @@ add_project_arguments(
 
 accountsservice_dep = dependency('accountsservice')
 api_base_dep = dependency('libapi-base-7')
+crypt_dep = meson.get_compiler('c').find_library('crypt')
 flatpak_dep = dependency('flatpak')
 gdm_dep = dependency('gdm', required: get_option('gdm'))
 gee_dep = dependency('gee-0.8')
@@ -36,10 +37,11 @@ libadwaita_dep = dependency('libadwaita-1', version: '>= 1.7')
 libcase_dep = dependency('libcase-0', fallback: ['libcase', 'lib_dep'])
 libpeas_dep = dependency('libpeas-2')
 libserialize_dep = dependency('libserialize-7', version: '>= 7.9')
-network_manager_dep = dependency ('libnm', version: '>= 1.2')
-network_manager_gtk4_dep = dependency ('libnma-gtk4', version: '>= 1.0')
+network_manager_dep = dependency ('libnm', version: '>= 1.24.0')
+network_manager_gtk4_dep = dependency ('libnma-gtk4', version: '>= 1.8.36')
 polkit_dep = dependency('polkit-gobject-1')
 posix_dep = meson.get_compiler('vala').find_library('posix')
+vte_dep = dependency('vte-2.91-gtk4')
 xkb_dep = dependency('xkbcommon')
 
 if get_option('with_software_tuner_plugin').enabled()
@@ -72,8 +74,6 @@ foreach lang : linguas
 endforeach
 supported_languages_arr += ['en']
 
-gis = 'gnome-initial-setup'
-
 prefix = get_option('prefix')
 bindir = prefix / get_option('bindir')
 datadir = prefix / get_option('datadir')
@@ -96,6 +96,7 @@ installer_post_hooks = pkgdata_dir / 'installer-post-hooks' / 'system'
 
 steps_plugins_dir = pkglib_dir / 'plugins' / 'steps'
 installers_plugins_dir = pkglib_dir / 'plugins' / 'installers'
+post_act_plugins_dir = pkglib_dir / 'plugins' / 'post-act'
 service_plugins_dir = pkglib_dir / 'plugins' / 'service'
 
 global_conf = configuration_data()
@@ -112,16 +113,18 @@ global_conf.set_quoted('DATADIR', datadir)
 global_conf.set_quoted('LIBEXECDIR', libexecdir)
 global_conf.set_quoted('GNOMELOCALEDIR', localedir)
 global_conf.set_quoted('SUPPORTED_LANGUAGES', '|'.join(supported_languages_arr))
-global_conf.set_quoted('GDMEXPORTDIR', join_paths(prefix, get_option('gdm_rundir'), gis))
+global_conf.set_quoted('GDMEXPORTDIR', join_paths(prefix, get_option('gdm_rundir'), 'gnome-initial-setup'))
 global_conf.set_quoted('STEPS_PLUGINS_DIR', steps_plugins_dir)
 global_conf.set_quoted('INSTALLERS_PLUGINS_DIR', installers_plugins_dir)
+global_conf.set_quoted('POST_ACT_PLUGINS_DIR', post_act_plugins_dir)
 global_conf.set_quoted('SERVICE_PLUGINS_DIR', service_plugins_dir)
 
 subdir('vapi')
 subdir('data')
 subdir('po')
-subdir('service')
 subdir('lib')
+subdir('integrations')
+subdir('service')
 subdir('src')
 subdir('plugins')
 subdir('tests')
@@ -141,6 +144,7 @@ install_emptydir(installer_post_hooks)
 
 install_emptydir(steps_plugins_dir)
 install_emptydir(installers_plugins_dir)
+install_emptydir(post_act_plugins_dir)
 install_emptydir(service_plugins_dir)
 
 gnome.post_install(

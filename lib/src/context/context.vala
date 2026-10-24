@@ -25,14 +25,32 @@
  * @see ReadySet.Context
  */
 public enum ReadySet.ContextType {
+    /**
+     * A UTF-8 string represented by {@link GLib.Type.STRING}.
+     */
     STRING,
+    /**
+     * A boolean represented by {@link GLib.Type.BOOLEAN}.
+     */
     BOOLEAN,
+    /**
+     * A null-terminated string array.
+     */
     STRV,
+    /**
+     * A 64-bit signed integer represented by {@link GLib.Type.INT64}.
+     */
     INT,
+    /**
+     * A double-precision floating-point number.
+     */
     DOUBLE,
+    /**
+     * A subclass of {@link ReadySet.ContextObject}.
+     */
     OBJECT;
 
-    public static ContextType from_gtype (Type t) {
+    internal static ContextType from_gtype (Type t) {
         if (t == Type.STRING) {
             return STRING;
         } else if (t == Type.BOOLEAN) {
@@ -50,7 +68,7 @@ public enum ReadySet.ContextType {
         }
     }
 
-    public Type to_gtype () {
+    internal Type to_gtype () {
         switch (this) {
             case STRING:
                 return Type.STRING;
@@ -69,7 +87,7 @@ public enum ReadySet.ContextType {
         }
     }
 
-    public string to_string () {
+    internal string to_string () {
         return to_gtype ().name ();
     }
 }
@@ -164,6 +182,9 @@ internal partial class ReadySet.ValueObject : Object {
  */
 public class ReadySet.ContextVarInfo : Object {
 
+    /**
+     * Type of value stored in the context variable.
+     */
     public ContextType value_type { get; construct; }
 
     /**
@@ -187,14 +208,24 @@ public class ReadySet.ContextVarInfo : Object {
      */
     public unowned ContextSetterFunc? setter_func = null;
 
+    /**
+     * Concrete {@link ReadySet.ContextObject} type stored by an object
+     * variable.
+     *
+     * This is {@link GLib.Type.NONE} for non-object variables.
+     */
     public Type nested_object_type { get; construct; }
 
     /**
-     * Constructor for any {@link ReadySet.ContextType} type except
-     * {@link ReadySet.ContextType.OBJECT}.
+     * Creates metadata for a non-object context variable.
      *
-     * Use {@link ReadySet.ContextVarInfo} object
-     * constructor for {@link ReadySet.ContextType.OBJECT} type.
+     * Use `object` constructor for
+     * {@link ReadySet.ContextType.OBJECT}. When supplied, `default_value`
+     * must have the GLib type represented by `value_type`.
+     *
+     * @param value_type the type of the context variable
+     * @param default_value the value restored by {@link Context.reset}, or
+     * `null` when the variable has no explicit default
      */
     public ContextVarInfo (ContextType value_type, Value? default_value = null) {
         if (value_type == OBJECT) {
@@ -209,9 +240,16 @@ public class ReadySet.ContextVarInfo : Object {
     }
 
     /**
-     * Constructor for {@link ReadySet.ContextType.OBJECT} type.
+     * Creates metadata for an object context variable.
      *
-     * Use {@link ReadySet.ContextVarInfo} constructor for any other type.
+     * `nested_object_type` must be a concrete
+     * {@link ReadySet.ContextObject} type. When supplied, `default_value`
+     * must contain an object of exactly that type.
+     *
+     * @param nested_object_type the concrete object type stored by the
+     * variable
+     * @param default_value the value restored by {@link Context.reset}, or
+     * `null` when the variable has no default
      */
     public ContextVarInfo.object (Type nested_object_type, Value? default_value = null) {
         Object (
@@ -233,35 +271,60 @@ public class ReadySet.ContextVarInfo : Object {
 }
 
 /**
- * A way of communicating between plugins or an application.
+ * Shared state used for communication between plugins and the application.
  *
- * Store application state and varoius variables between plugins.
+ * Extensions declare variables through
+ * {@link ReadySet.ExtensionBase.get_context_vars}. Consumers can then access
+ * registered values by key or bind them to GObject properties.
  */
 public partial class ReadySet.Context : Object {
 
     /**
-     * Whether application run in sandbox mode or not. Plugon should hold it
-     * and not do any changes in system if this is true.
-     * Also better not to call system dbus, so application can be run in
-     * sandbox environment e.g. distrobox for test purpose.
+     * Whether the application is running in sandbox mode.
+     *
+     * Plugins must avoid modifying the host system when this is `true` and
+     * should avoid host system-bus calls. This allows the application to run
+     * safely in test environments such as container.
      */
     public bool sandbox { get; construct; default = true; }
 
     /**
-     * Current application mode. Plugins can handle various modes different.
+     * Current application mode.
+     *
+     * Plugins can use this value to adapt their behavior to initial setup,
+     * installation, or existing-user sessions.
      */
     public Mode mode { get; private set; }
 
+    /**
+     * Emitted after the value identified by `key` changes.
+     *
+     * @param key the key of the changed context variable
+     */
     public signal void data_changed (string key);
 
     Gee.HashMap<string, ValueObject> data = new Gee.HashMap<string, ValueObject> ();
 
-    public Context (bool sandbox) {
+    internal Context (bool sandbox) {
         Object (
             sandbox: sandbox
         );
     }
 
+    /**
+     * Binds a context value to a GObject property.
+     *
+     * `source_key` must identify a registered variable compatible with the
+     * target property. {@link GLib.BindingFlags.INVERT_BOOLEAN} can only be
+     * used when both values are boolean. Other binding flags have the same
+     * meaning as in {@link GLib.Object.bind_property}.
+     *
+     * @param source_key the registered context key
+     * @param target the object that owns the target property
+     * @param target_property the target property name
+     * @param flags flags controlling the binding
+     * @return the newly created binding
+     */
     public unowned Binding? bind_context_to_property (
         string source_key,
         Object target,
@@ -294,6 +357,20 @@ public partial class ReadySet.Context : Object {
         }
     }
 
+    /**
+     * Binds a GObject property to a context value.
+     *
+     * `target_key` must identify a registered variable compatible with the
+     * source property. {@link GLib.BindingFlags.INVERT_BOOLEAN} can only be
+     * used when both values are boolean. Other binding flags have the same
+     * meaning as in {@link GLib.Object.bind_property}.
+     *
+     * @param source the object that owns the source property
+     * @param source_property the source property name
+     * @param target_key the registered context key
+     * @param flags flags controlling the binding
+     * @return the newly created binding
+     */
     public unowned Binding? bind_property_to_context (
         Object source,
         string source_property,
@@ -395,14 +472,33 @@ public partial class ReadySet.Context : Object {
         return true;
     }
 
+    /**
+     * Returns all registered context keys.
+     *
+     * @return a newly allocated array of keys
+     */
     public string[] get_keys () {
         return data.keys.to_array ();
     }
 
+    /**
+     * Checks whether a key is registered.
+     *
+     * @param key the context key to look up
+     * @return `true` when the key is registered
+     */
     public bool has_key (string key) {
         return data.has_key (key);
     }
 
+    /**
+     * Returns the value type of a registered key.
+     *
+     * Passing an unknown key causes a fatal error.
+     *
+     * @param key a registered context key
+     * @return the key's value type
+     */
     public ContextType get_value_type (string key) {
         if (check_key (key)) {
             return data[key].value_type;
@@ -411,6 +507,16 @@ public partial class ReadySet.Context : Object {
         }
     }
 
+    /**
+     * Sets a registered context value.
+     *
+     * The value must match the key's declared type. Object values must have
+     * exactly the concrete type declared by
+     * {@link ReadySet.ContextVarInfo.nested_object_type}.
+     *
+     * @param key a registered context key
+     * @param value the new value
+     */
     public void set_value (string key, owned Value value) {
         bool res;
         if (data[key].value_type == OBJECT) {
@@ -424,6 +530,12 @@ public partial class ReadySet.Context : Object {
         }
     }
 
+    /**
+     * Gets a copy of a registered context value.
+     *
+     * @param key the context key to read
+     * @return the value, or `null` when the key is unknown
+     */
     public Value? get_value (string key) {
         if (check_key (key)) {
             return data[key].real_value;
@@ -432,10 +544,27 @@ public partial class ReadySet.Context : Object {
         }
     }
 
+    /**
+     * Sets an object context value.
+     *
+     * The object's concrete type must match the type registered for `key`.
+     *
+     * @param key a registered object key
+     * @param value the new object value
+     */
     public void set_object (string key, owned ContextObject value) {
         set_value (key, value);
     }
 
+    /**
+     * Creates and sets an object value from its string representation.
+     *
+     * The concrete object type registered for `key` must provide a
+     * `string-format` property.
+     *
+     * @param key a registered object key
+     * @param value the object's string representation
+     */
     public void set_object_string (string key, owned string value) {
         if (check_key (key)) {
             set_object (key, (ContextObject) Object.new (
@@ -445,6 +574,13 @@ public partial class ReadySet.Context : Object {
         }
     }
 
+    /**
+     * Gets an object context value.
+     *
+     * @param key the object key to read
+     * @return the stored object, or `null` if the key is unknown or has a
+     * different type
+     */
     public ContextObject? get_object (string key) {
         if (check_key (key, OBJECT)) {
             return (ContextObject?) data[key].real_value.get_object ();
@@ -453,10 +589,23 @@ public partial class ReadySet.Context : Object {
         }
     }
 
+    /**
+     * Sets a string context value.
+     *
+     * @param key a registered string key
+     * @param value the new value
+     */
     public void set_string (string key, owned string value) {
         set_value (key, value);
     }
 
+    /**
+     * Gets a string context value.
+     *
+     * @param key the string key to read
+     * @return a copy of the string, or `null` if the key is unknown or has a
+     * different type
+     */
     public string? get_string (string key) {
         if (check_key (key, STRING)) {
             return data[key].real_value.dup_string ();
@@ -465,10 +614,23 @@ public partial class ReadySet.Context : Object {
         }
     }
 
+    /**
+     * Sets a boolean context value.
+     *
+     * @param key a registered boolean key
+     * @param value the new value
+     */
     public void set_boolean (string key, bool value) {
         set_value (key, value);
     }
 
+    /**
+     * Gets a boolean context value.
+     *
+     * @param key the boolean key to read
+     * @return the value, or `false` if the key is unknown or has a different
+     * type
+     */
     public bool get_boolean (string key) {
         if (check_key (key, BOOLEAN)) {
             return data[key].real_value.get_boolean ();
@@ -477,10 +639,23 @@ public partial class ReadySet.Context : Object {
         }
     }
 
+    /**
+     * Sets a string-array context value.
+     *
+     * @param key a registered string-array key
+     * @param value the new array
+     */
     public void set_strv (string key, owned string[] value) {
         set_value (key, value);
     }
 
+    /**
+     * Gets a string-array context value.
+     *
+     * @param key the string-array key to read
+     * @return a copy of the array, or an empty array if the key is unknown,
+     * has a different type, or contains no array
+     */
     public string[] get_strv (string key) {
         if (check_key (key, STRV)) {
             var arr = ReadySetC.safe_copy ((string[]) data[key].real_value.get_boxed ());
@@ -492,10 +667,22 @@ public partial class ReadySet.Context : Object {
         return {};
     }
 
+    /**
+     * Sets a int64 context value.
+     *
+     * @param key a registered integer key
+     * @param value the new value
+     */
     public void set_int (string key, int64 value) {
         set_value (key, value);
     }
 
+    /**
+     * Gets a int64 context value.
+     *
+     * @param key the integer key to read
+     * @return the value, or `0` if the key is unknown or has a different type
+     */
     public int64 get_int (string key) {
         if (check_key (key, INT)) {
             return data[key].real_value.get_int64 ();
@@ -504,10 +691,23 @@ public partial class ReadySet.Context : Object {
         }
     }
 
+    /**
+     * Sets a double context value.
+     *
+     * @param key a registered double key
+     * @param value the new value
+     */
     public void set_double (string key, double value) {
         set_value (key, value);
     }
 
+    /**
+     * Gets a double context value.
+     *
+     * @param key the double key to read
+     * @return the value, or `0.0` if the key is unknown or has a different
+     * type
+     */
     public double get_double (string key) {
         if (check_key (key, DOUBLE)) {
             return data[key].real_value.get_double ();
@@ -516,6 +716,14 @@ public partial class ReadySet.Context : Object {
         }
     }
 
+    /**
+     * Restores a context value to its registered default.
+     *
+     * Nothing changes if the key is unknown or has no default value. Object
+     * defaults are copied with {@link ReadySet.ContextObject.copy}.
+     *
+     * @param key the context key to reset
+     */
     public void reset (string key) {
         if (check_key (key)) {
             data[key].reset ();

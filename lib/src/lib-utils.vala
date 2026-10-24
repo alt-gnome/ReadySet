@@ -21,36 +21,64 @@
 namespace ReadySet {
 
     /**
-     * Status of method {@link ReadySet.ExistingUser.get_existing_user}
+     * Policy returned by {@link ReadySet.ExistingUser.get_existing_user}.
      */
     public enum ExistingUserStatus {
-        /**
-         * Can be shown at `existing-user` mode only if not present at
-         * `performed-steps` list.
-         */
+        /** Show the step only when it is absent from `performed-steps`. */
         IF_NOT_PASSED,
-        /**
-         * Will be shown anyway.
-         */
+        /** Always show the step in existing-user mode. */
         YES,
-        /**
-         * Can't be shown at `existing-user` mode.
-         */
+        /** Never show the step in existing-user mode. */
         NO;
     }
 
+    /**
+     * Status flags that post-act plugins can return.
+     */
+    [Flags]
+    public enum PostActStatusFlags {
+        /**
+         * Application window should stay opened. (e.g. gdm needs it)
+         */
+        STAY_OPEN;
+    }
+
+    /**
+     * Responsive layout state reported to {@link ReadySet.BasePage}.
+     *
+     * `VERTICAL` describe the content arrangement, while
+     * `BIG` and `SMALL` describe the available window size. Consumers should
+     * handle the values relevant to the breakpoint they observe.
+     */
     public enum LayoutMode {
+        /** Widgets are arranged vertically. */
         VERTICAL,
-        HORIZONTAL,
+        /** The page has a large amount of available space. */
         BIG,
+        /** The page has a limited amount of available space. */
         SMALL;
     }
 
+    /**
+     * Operating mode of the ReadySet application.
+     */
     public enum Mode {
+        /** Configure a newly created system or user session. */
         INITIAL_SETUP,
+        /** Collect settings and install a system. */
         INSTALLER,
+        /** Configure an existing user's current session. */
         EXISTING_USER;
 
+        /**
+         * Parses a mode identifier.
+         *
+         * Accepted values are `initial-setup`, `installer`, and
+         * `existing-user`. Any other value causes a fatal error.
+         *
+         * @param str the mode identifier
+         * @return the parsed mode
+         */
         public static Mode from_string (string str) {
             switch (str) {
                 case "initial-setup":
@@ -64,6 +92,11 @@ namespace ReadySet {
             }
         }
 
+        /**
+         * Returns this mode's stable identifier.
+         *
+         * @return `initial-setup`, `installer`, or `existing-user`
+         */
         public string to_string () {
             switch (this) {
                 case INITIAL_SETUP:
@@ -95,6 +128,12 @@ namespace ReadySet {
          */
         public string description { get; set; }
 
+        /**
+         * Creates structured error data.
+         *
+         * @param message the short error title
+         * @param description the detailed error description
+         */
         public ApplyErrorData (string message, string description) {
             this.message = message;
             this.description = description;
@@ -102,20 +141,170 @@ namespace ReadySet {
     }
 
     /**
-     * Class for handling progress data for continius operation in
-     * {@link InstallerAddin.install} and {@link StepAddin.apply}.
+     * Mutable progress information for long-running apply and install
+     * operations.
+     *
+     * A newly created instance starts with {@link ProgressData.value} set to
+     * `0.0`. Implementations update the same instance while
+     * {@link InstallerAddin.install} or {@link StepAddin.apply} is running.
      */
-    public sealed class ProgressData : Object {
+    public class ProgressData : Object {
 
+        public bool visibility { get; set; }
+
+        /**
+         * Calls {@link Gtk.ProgressBar.pulse} property.
+         * Also set {@link visibility} to true.
+         */
+        public signal void pulse () {
+            visibility = true;
+        }
+
+        double _value = 0.0;
         /**
          * Progress value from 0.0 to 1.0.
          */
-        public double value { get; set; default = 0.0; }
+        public double value {
+            get {
+                return _value;
+            }
+            set {
+                _value = value;
+                visibility = _value > 0 || visibility ? true : false;
+            }
+        }
 
         /**
-         * Message that will be presented as current log.
+         * Binds with {@link Gtk.ProgressBar.pulse_step} property.
          */
-        public string message { get; set; }
+        public double pulse_step { get; set; }
+
+        /**
+         * Description that will be presented as current step.
+         */
+        public string description { get; set; }
+    }
+
+    public enum InstallerStageState {
+        CURRENT,
+        NOT_PASSED,
+        PASSED;
+    }
+
+    public sealed class InstallerStage : Object {
+
+        /**
+         * Id of stage. Stage can be marked as passed via {@link InstallerProgressData.pass_stage}.
+         * Stage next to it will be marked as {@link InstallerStageState.CURRENT}
+         */
+        public string id { get; construct; }
+
+        /**
+         * Human readable name. It well be shown at stage list with it state in UI.
+         */
+        public string name { get; construct; }
+
+        /**
+         * The step size is relative to global progress. It can be from 0 to 1. The
+         * remaining progress will be divided between stages, where size is -1. It is
+         * advisable to leave at least one stage with the value -1.
+         */
+        public double size { get; internal set construct; }
+
+        internal bool is_current {
+            get {
+                return state == CURRENT;
+            }
+        }
+
+        internal uint numeric_state {
+            get {
+                return (uint) state;
+            }
+        }
+
+        InstallerStageState _state = NOT_PASSED;
+
+        internal InstallerStageState state {
+            get {
+                return _state;
+            }
+            set {
+                _state = value;
+                notify_property ("is-current");
+                notify_property ("numeric-state");
+            }
+        }
+
+        /**
+         * @see InstallerStage.id
+         * @see InstallerStage.name
+         * @see InstallerStage.size
+         */
+        public InstallerStage (string id, string name, double size = -1) {
+            Object (id: id, name: name, size: size);
+        }
+    }
+
+    public partial class InstallerProgressData : ProgressData {
+
+        ListStore stages_store = new ListStore (typeof (InstallerStage));
+
+        /**
+         * Push logs to detailed information. It supports terminal codes.
+         */
+        public signal void push_log (string log_part);
+
+        /**
+         * Paintable which will be bind to end page icon.
+         */
+        public Gdk.Paintable? paintable { get; set; }
+
+        /**
+         * Icon name which will be bind to end page icon.
+         */
+        public string? icon_name { get; set; }
+
+        /**
+         * Mark stage as passed.
+         *
+         * @see InstallerStage
+         */
+        public signal void pass_stage (string id) {
+            int passed_index = -1;
+
+            for (int i = 0; i < stages_store.get_n_items (); i++) {
+                var stage = (InstallerStage) stages_store.get_item (i);
+
+                if (stage.id == id) {
+                    passed_index = i;
+                    if (stage.state == PASSED) {
+                        warning ("Can't pass passed stage");
+                        return;
+                    }
+                    break;
+                }
+            }
+
+            if (passed_index == -1) {
+                warning ("Trying to pass non-existing stage");
+                return;
+            }
+
+            for (int i = 0; i < stages_store.get_n_items (); i++) {
+                var stage = (InstallerStage) stages_store.get_item (i);
+
+                if (i <= passed_index) {
+                    stage.state = PASSED;
+                } else {
+                    stage.state = CURRENT;
+                    return;
+                }
+            }
+        }
+    }
+
+    public class InitialSetupProgressData : ProgressData {
     }
 
     /**
@@ -146,9 +335,14 @@ namespace ReadySet {
         NO_PERMISSION;
 
         /**
-         * Build error from message and description. Returns error with
-         * json serialized {@link ApplyErrorData} in message.
+         * Builds an error containing serialized structured error data.
          *
+         * The returned error has code {@link ApplyError.BASE}; its message is
+         * the JSON representation of {@link ApplyErrorData}.
+         *
+         * @param message the short error title
+         * @param description the detailed error description
+         * @return a new structured apply error
          * @see ApplyErrorData
          */
         public static ApplyError build_error (string message, string description) {
@@ -158,20 +352,32 @@ namespace ReadySet {
     }
 
     /**
-     * Function that uses as getter in {@link Context} value.
+     * Reads the current value of an externally backed context variable.
      *
+     * @return the current value
      * @see ReadySet.ContextVarInfo
      */
     public delegate Value ContextGetterFunc ();
 
     /**
-     * Function that uses as setter in {@link Context} value.
+     * Writes an externally backed context variable.
      *
+     * @param new_value the value to store
      * @see ReadySet.ContextVarInfo
      */
     public delegate void ContextSetterFunc (Value new_value);
 
     string locale;
+
+    /**
+     * Returns the current locale identifier.
+     *
+     * On the first call, the function selects the first valid entry reported
+     * by {@link GLib.Intl.get_language_names} and caches it. It returns `C`
+     * when no valid locale can be found.
+     *
+     * @return the cached locale identifier
+     */
     public string get_current_lang () {
         if (locale == null) {
             locale = "";
@@ -193,6 +399,15 @@ namespace ReadySet {
         return locale;
     }
 
+    /**
+     * Changes the process locale and requests a window reload.
+     *
+     * The locale is applied to all categories with
+     * {@link GLib.Intl.setlocale}. If a default application exists, its
+     * `reload-window` action is activated so the UI can reflect the change.
+     *
+     * @param new_lang the locale identifier to apply
+     */
     public void set_current_lang (string new_lang) {
         locale = new_lang;
         Intl.setlocale (LocaleCategory.ALL, new_lang);
@@ -217,5 +432,38 @@ namespace ReadySet {
         }
 
         return locale_regex.match (locale);
+    }
+
+    /**
+     * Check polkit access for org.altlinux.ReadySet.Plugins action.
+     */
+    public void polkit_check_plugin (BusName sender) throws DBusError {
+        polkit_check (sender, "org.altlinux.ReadySet.Plugins");
+    }
+
+    /**
+     * Check polkit acces for "action_id".
+     */
+    public void polkit_check (BusName sender, string action_id) throws DBusError {
+        Polkit.AuthorizationResult result;
+
+        try {
+            var authority = Polkit.Authority.get_sync (null);
+            var subject = new Polkit.SystemBusName (sender);
+            result = authority.check_authorization_sync (
+                subject,
+                action_id,
+                null,
+                Polkit.CheckAuthorizationFlags.ALLOW_USER_INTERACTION,
+                null
+            );
+
+        } catch (Error e) {
+            throw new DBusError.ACCESS_DENIED ("Failed to check authorization: " + e.message);
+        }
+
+        if (!result.get_is_authorized ()) {
+            throw new DBusError.ACCESS_DENIED ("Not authorized");
+        }
     }
 }

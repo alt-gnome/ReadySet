@@ -19,22 +19,25 @@
  */
 
 /**
- * Object that {@link ReadySet.Context} understand and which
- * can be registered.
+ * Base class for object values stored in {@link ReadySet.Context}.
+ *
+ * Subclasses provide a stable string representation for configuration
+ * serialization and a copy operation for resetting and retrieving values.
  */
 public abstract class ReadySet.ContextObject : Object {
 
     /**
-     * Object in string format.
+     * Serialized string representation of this object.
      *
-     * You must override getter/setter methods. On getter you must return
-     * string representation of object. On setter you must parse string
-     * representation of object.
+     * The getter must serialize the current state. The setter must parse the
+     * supplied representation and update the object.
      */
     public abstract string string_format { owned get; set; }
 
     /**
-     * Copy func for {@link ContextObject}.
+     * Creates an independent copy of this object.
+     *
+     * @return a copy with the same value
      */
     public abstract ContextObject copy ();
 }

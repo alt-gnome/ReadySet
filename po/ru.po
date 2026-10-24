@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-06 20:29+0000\n"
-"PO-Revision-Date: 2026-09-07 12:14+0300\n"
+"POT-Creation-Date: 2026-10-24 13:22+0300\n"
+"PO-Revision-Date: 2026-10-24 13:24+0300\n"
 "Last-Translator: Vladimir Romanov <rirusha@altlinux.org>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -37,43 +37,55 @@ msgstr "Завершите настройку"
 msgid "Setting up the system…"
 msgstr "Настройка вашей системы…"
 
-#: data/ui/initial-setup-end-page.blp:53 data/ui/installer-end-page.blp:53
+#: data/ui/initial-setup-end-page.blp:53 data/ui/installer-end-page.blp:197
 msgid "All done!"
 msgstr "Всё готово!"
 
-#: data/ui/installer-end-page.blp:36 src/end-pages/installer.vala:63
+#: data/ui/installer-end-page.blp:55
 msgid "Installing system…"
 msgstr "Установка системы…"
+
+#: data/ui/installer-end-page.blp:56
+msgid "This could take a while. Don’t turn of a computer."
+msgstr "Это может занять некоторое время. Не выключайте компьютер."
+
+#: data/ui/installer-end-page.blp:126 data/ui/installer-end-page.blp:138
+msgid "Detailed information"
+msgstr "Подробная информация"
+
+#: data/ui/installer-end-page.blp:172 data/ui/installer-end-page.blp:182
+msgid "Hide logs"
+msgstr "Спрятать логи"
+
+#: data/ui/installer-end-page.blp:208
+msgid "Continue using live system"
+msgstr "Продолжить использование текущей системы"
+
+#: data/ui/installer-end-page.blp:223
+msgid "Reboot now"
+msgstr "Перезагрузиться"
 
 #: data/ui/nothing-to-show.blp:30 plugins/language/data/ui/box.blp:44
 msgid "Nothing to show"
 msgstr "Нечего показывать"
 
-#: data/ui/steps-main-page.blp:374 data/ui/steps-main-page.blp:597
-msgid "Go to previous page"
-msgstr "К предыдущей странице"
-
-#: data/ui/steps-main-page.blp:392 data/ui/steps-main-page.blp:616
-msgid "Next"
-msgstr "Дальше"
-
-#: data/ui/steps-main-page.blp:404 data/ui/steps-main-page.blp:629
-msgid "Extend/Retract keyboard"
-msgstr "Показать/Скрыть клавиатуру"
-
-#: data/ui/steps-main-page.blp:486 data/ui/steps-main-page.blp:664
+#: data/ui/steps-main-page.blp:321 data/ui/steps-main-page.blp:436
 msgid "Open Context menu"
 msgstr "Открыть меню Контекста"
 
-#: data/ui/steps-main-page.blp:524
-msgid "Go up"
-msgstr "Наверх"
+#: data/ui/steps-main-page.blp:365
+msgid "Next"
+msgstr "Дальше"
 
-#: data/ui/steps-main-page.blp:544 data/ui/steps-main-page.blp:550
-msgid "Go up to the beginning"
-msgstr "Вернуться к началу"
+#: data/ui/steps-main-page.blp:383
+msgid "Go to previous page"
+msgstr "К предыдущей странице"
 
-#: data/ui/steps-main-page.blp:651
+#: data/ui/steps-main-page.blp:403
+msgid "Extend/Retract keyboard"
+msgstr "Показать/Скрыть клавиатуру"
+
+#: data/ui/steps-main-page.blp:423
 msgid "Return to setup"
 msgstr "Назад к настройке"
 
@@ -96,20 +108,20 @@ msgstr "Главная"
 #. *
 #. * Title that will be shown at header or steps sidebar.
 #.
-#: lib/src/base/base-page.vala:65
+#: lib/src/base/base-page.vala:64
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: lib/src/base/base-page.vala:110
+#: lib/src/base/base-page.vala:101
 msgid "Unknown page"
 msgstr "Неизвестная страница"
 
-#: lib/src/base/base-page.vala:113
+#: lib/src/base/base-page.vala:104
 msgid "This page says that your distribution has made a mistake."
 msgstr "На этой странице указано, что в Вашем дистрибутиве произошла ошибка."
 
 #. It's not json string, just return message
-#: lib/src/lib-utils-internal.vala:47
+#: lib/src/lib-utils-internal.vala:47 src/end-pages/installer.vala:199
 msgid "Something went wrong"
 msgstr "Что-то пошло не так"
 
@@ -119,7 +131,7 @@ msgid "Apply"
 msgstr "Применить"
 
 #: plugins/date-and-time/data/ui/date-selector.blp:5
-#: plugins/date-and-time/data/ui/page.blp:68
+#: plugins/date-and-time/data/ui/page.blp:69
 msgid "Date"
 msgstr "Дата"
 
@@ -164,7 +176,7 @@ msgstr "Выбрать дату и время"
 msgid "Automatic setting of date and time"
 msgstr "Автоматическая настройка даты и времени"
 
-#: plugins/date-and-time/data/ui/page.blp:81
+#: plugins/date-and-time/data/ui/page.blp:82
 #: plugins/date-and-time/data/ui/time-selector.blp:5
 msgid "Time"
 msgstr "Время"
@@ -173,11 +185,11 @@ msgstr "Время"
 msgid "Nothing found"
 msgstr "Ничего не найдено"
 
-#: plugins/date-and-time/page.vala:141
+#: plugins/date-and-time/page.vala:149
 msgid "Failed to connect to timedate service: "
 msgstr "Не удалось подключиться к службе времени и даты: "
 
-#: plugins/date-and-time/page.vala:164
+#: plugins/date-and-time/page.vala:174
 msgid "Undefined"
 msgstr "Неопределён"
 
@@ -189,11 +201,11 @@ msgstr "Не удалось подключиться к службе време�
 msgid "Error when setting timezone"
 msgstr "Ошибка при настройке часового пояса"
 
-#: plugins/date-and-time/plugin.vala:80
+#: plugins/date-and-time/plugin.vala:81
 msgid "Error when setting NTP"
 msgstr "Ошибка при настройке NTP"
 
-#: plugins/date-and-time/plugin.vala:88
+#: plugins/date-and-time/plugin.vala:90
 msgid "Error when setting time"
 msgstr "Ошибка при настройке времени"
 
@@ -254,7 +266,7 @@ msgstr "Ничего"
 msgid "Additinal layout switch"
 msgstr "Дополнительное переключение раскладок"
 
-#: plugins/keyboard/plugin.vala:119
+#: plugins/keyboard/plugin.vala:120
 msgid "Error when setting keyboard layout"
 msgstr "Ошибка при настройке раскладки клавиатуры"
 
@@ -299,6 +311,11 @@ msgstr ""
 "Мы обновили наше Лицензионное соглашение. Пожалуйста, примите новые условия, "
 "чтобы продолжить."
 
+#: plugins/network/data/ui/access-point-row.blp:51
+#: plugins/network/data/ui/ethernet-connection-row.blp:39
+msgid "Configure…"
+msgstr "Настроить…"
+
 #: plugins/network/data/ui/ap-security-editor.blp:42
 #: plugins/user/data/ui/page-password.blp:24
 msgid "Security"
@@ -312,10 +329,6 @@ msgstr "Доступные подключения"
 msgid "Add a Connection…"
 msgstr "Добавить подключение…"
 
-#: plugins/network/data/ui/ethernet-connection-row.blp:39
-msgid "Configure…"
-msgstr "Настроить…"
-
 #: plugins/network/data/ui/page.blp:25 plugins/network/data/ui/page.blp:30
 msgid "Network"
 msgstr "Сеть"
@@ -328,104 +341,120 @@ msgstr "Настройте сетевые подключения."
 msgid "Host Name"
 msgstr "Имя устройства"
 
-#: plugins/network/data/ui/page.blp:75
+#: plugins/network/data/ui/page.blp:87
 msgid "SIM Cards and Mobile Network"
 msgstr "SIM-карты и мобильная сеть"
 
-#: plugins/network/data/ui/page.blp:79
+#: plugins/network/data/ui/page.blp:91
 msgid "Ethernet"
 msgstr "Проводное подключение"
 
-#: plugins/network/data/ui/page.blp:83
+#: plugins/network/data/ui/page.blp:95
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
-#: plugins/network/data/ui/page.blp:98
+#: plugins/network/data/ui/page.blp:110
 msgid "Wi-Fi adapter"
 msgstr "Адаптер Wi-Fi"
 
-#: plugins/network/plugin.vala:193
+#: plugins/network/data/ui/page.blp:133
+msgid "Starting up…"
+msgstr "Подготовка…"
+
+#: plugins/network/data/ui/page.blp:134
+msgid "Waiting for NetworkManager"
+msgstr "Ожидание запуска NetworkManager"
+
+#: plugins/network/data/ui/page.blp:143
+msgid "Networking is unavailable"
+msgstr "Настройка сети недоступна"
+
+#: plugins/network/data/ui/page.blp:144
+msgid "NetworkManager is not running"
+msgstr "NetworkManager не запущен"
+
+#: plugins/network/plugin.vala:214
 msgid "Failed to apply network settings"
 msgstr "Ошибка при сохранении настроек сети"
 
-#: plugins/network/utils.vala:58
-msgid "Leading hyphen is not allowed"
-msgstr "Имя устройства не может начинаться с дефиса"
-
-#: plugins/network/utils.vala:67
-msgid "Only Latin letters, digits and hyphens are allowed"
-msgstr "Допускаются только латинские буквы, цифры и дефисы"
-
-#: plugins/network/utils.vala:73
+#: plugins/network/utils.vala:65
 msgid "Host name is too short"
 msgstr "Имя устройства слишком короткое"
 
-#: plugins/network/utils.vala:78
-msgid "Trailing hyphen is not allowed"
-msgstr "Имя устройства не может оканчиваться дефисом"
+#: plugins/network/utils.vala:68
+msgid "Host name is too long"
+msgstr "Имя устройства слишком длинное"
 
-#: plugins/network/utils.vala:141
+#: plugins/network/utils.vala:74
+msgid "Empty host name sections are not allowed"
+msgstr "Пустые части в имени устройства недопустимы"
+
+#: plugins/network/utils.vala:80
+msgid "A host name section cannot start with a hyphen"
+msgstr "Части имени устройства не могут начинаться с дефиса"
+
+#: plugins/network/utils.vala:90
+msgid "Non-ASCII characters are not allowed"
+msgstr "Допускаются только символы ASCII"
+
+#: plugins/network/utils.vala:95
+msgid "Only letters, digits, hyphens and dots are allowed"
+msgstr "Допускаются только буквы, цифры, дефисы и точки"
+
+#: plugins/network/utils.vala:102
+msgid "A host name section cannot end with a hyphen"
+msgstr "Части имени устройства не могут оканчиваться дефисом"
+
+#: plugins/network/utils.vala:220
 #, c-format
 msgid "Wired connection %u"
 msgstr "Проводное подключение %u"
 
-#: plugins/network/wifi.vala:68
+#: plugins/network/wifi.vala:73
 msgid "Can't connect: undetermined security type"
 msgstr "Подключение невозможно: неизвестный тип защиты"
 
-#: plugins/network/wifi.vala:144
+#: plugins/network/wifi.vala:162
 msgid "Connection setup failed"
 msgstr "Не удалось настроить соединение"
 
-#: plugins/network/wifi.vala:155
+#: plugins/network/wifi.vala:174
 msgid "Connection failed"
 msgstr "Не удалось установить соединение"
 
-#: plugins/network/wifi.vala:191
+#: plugins/network/wifi.vala:202
 msgid "Connecting…"
 msgstr "Подключение…"
 
-#: plugins/network/wifi.vala:196
+#: plugins/network/wifi.vala:207
 msgid "Connected"
 msgstr "Подключено"
 
-#: plugins/network/wifi.vala:198
+#: plugins/network/wifi.vala:209
 msgid "Connected without internet"
 msgstr "Подключено без доступа в Интернет"
 
-#: plugins/network/wifi.vala:202
+#: plugins/network/wifi.vala:213
 msgid "Disconnecting…"
 msgstr "Отключение…"
 
-#: plugins/network/wifi.vala:274
+#: plugins/network/wifi.vala:327
 msgid "WPA/WPA2/WPA3 Enterprise"
 msgstr "WPA/WPA2/WPA3 Enterprise"
 
-#: plugins/network/wifi.vala:279
+#: plugins/network/wifi.vala:332
 msgid "WPA3 Personal"
 msgstr "WPA3 Personal"
 
-#: plugins/network/wifi.vala:284
+#: plugins/network/wifi.vala:337
 msgid "WPA/WPA2 Personal"
 msgstr "WPA/WPA2 Personal"
 
-#: plugins/network/wifi.vala:289
-msgid "WEP 40/104-bit Key (Hex/ASCII)"
-msgstr "40/104-битный ключ WEP (Hex или ASCII)"
-
-#: plugins/network/wifi.vala:293
-msgid "WEP 128-bit Passphrase"
-msgstr "128-битная парольная фраза WEP"
-
-#: plugins/network/wifi.vala:298
-msgid "Dynamic WEP (802.1x)"
-msgstr "Dynamic WEP (802.1x)"
-
-#: plugins/network/wifi.vala:303
+#: plugins/network/wifi.vala:342
 msgid "LEAP"
 msgstr "LEAP"
 
-#: plugins/network/wifi.vala:308
+#: plugins/network/wifi.vala:347
 msgid "Enhanced Open"
 msgstr "Enhanced Open"
 
@@ -433,11 +462,11 @@ msgstr "Enhanced Open"
 msgid "Privacy"
 msgstr "Приватность"
 
-#: plugins/privacy/data/ui/page.blp:30
+#: plugins/privacy/data/ui/page.blp:33
 msgid "Location Services"
 msgstr "Службы определения местоположения"
 
-#: plugins/privacy/data/ui/page.blp:39
+#: plugins/privacy/data/ui/page.blp:42
 msgid "Allows apps to determine your geographical location."
 msgstr "Позволяют приложениям определять ваше географическое местоположение."
 
@@ -499,23 +528,23 @@ msgstr ""
 msgid "Ok"
 msgstr "Ок"
 
-#: plugins/software/source.vala:121
+#: plugins/software/source.vala:135
 #, c-format
 msgid "Failed to add or enable '%s' flatpak remote with name %s: %s"
 msgstr ""
 "Ошибка при добавлении или включении flatpak репозитория '%s' с именем %s: %s"
 
-#: plugins/software/source.vala:166
+#: plugins/software/source.vala:176
 #, c-format
 msgid "Failed to add '%s' stplr repository with name %s: %s"
 msgstr "Ошибка при добавлении stplr репозитория '%s' с именем %s: %s"
 
-#: plugins/software/source.vala:232
+#: plugins/software/source.vala:242
 #, c-format
 msgid "Failed to add apt repository with repos: %s: %s"
 msgstr "Ошибка при добавлении apt репозитория: %s: %s"
 
-#: plugins/software/source.vala:308
+#: plugins/software/source.vala:318
 #, c-format
 msgid "Failed to exec: %s: %s"
 msgstr "Ошибка исполнения: %s: %s"
@@ -528,21 +557,21 @@ msgstr "Выбрать Аватар"
 msgid "Be careful not to lose your password."
 msgstr "Будьте внимательны, не потеряйте пароль."
 
-#: plugins/user/data/ui/page-password.blp:57
+#: plugins/user/data/ui/page-password.blp:59
 msgid "Your user’s password"
 msgstr "Пароль Вашего пользователя"
 
-#: plugins/user/data/ui/page-password.blp:66
+#: plugins/user/data/ui/page-password.blp:68
 msgid "Generate user password"
 msgstr "Сгенерировать пароль пользователя"
 
-#: plugins/user/data/ui/page-password.blp:81
-#: plugins/user/data/ui/page-root-password.blp:84
+#: plugins/user/data/ui/page-password.blp:83
+#: plugins/user/data/ui/page-root-password.blp:86
 msgid "Passwords do not match"
 msgstr "Пароли не совпадают"
 
-#: plugins/user/data/ui/page-password.blp:85
-#: plugins/user/data/ui/page-root-password.blp:88
+#: plugins/user/data/ui/page-password.blp:87
+#: plugins/user/data/ui/page-root-password.blp:90
 msgid "Repeat password"
 msgstr "Повторите пароль"
 
@@ -562,11 +591,11 @@ msgstr "Вы также можете назначить пароль админ�
 msgid "Set administrator same as user password"
 msgstr "Установить пароль администратора таким же, как и пароль пользователя"
 
-#: plugins/user/data/ui/page-root-password.blp:60
+#: plugins/user/data/ui/page-root-password.blp:62
 msgid "Administrator’s password"
 msgstr "Пароль администратора"
 
-#: plugins/user/data/ui/page-root-password.blp:69
+#: plugins/user/data/ui/page-root-password.blp:71
 msgid "Generate root password"
 msgstr "Сгенерировать пароль администратора"
 
@@ -603,20 +632,20 @@ msgstr ""
 "Имя пользователя будет использовано для имени Вашей домашней директории и не "
 "может быть изменено."
 
-#: plugins/user/page-password-common.vala:41
+#: plugins/user/page-password-common.vala:43
 msgid "Weak password"
 msgstr "Ненадёжный пароль"
 
-#: plugins/user/page-password-common.vala:42
+#: plugins/user/page-password-common.vala:44
 msgid "The entered password is not secure. Do you really want to use it?"
 msgstr ""
 "Введенный пароль небезопасен. Вы действительно хотите его использовать?"
 
-#: plugins/user/page-password-common.vala:44
+#: plugins/user/page-password-common.vala:46
 msgid "_No"
 msgstr "_Нет"
 
-#: plugins/user/page-password-common.vala:45
+#: plugins/user/page-password-common.vala:47
 msgid "_Yes"
 msgstr "_Да"
 
@@ -738,23 +767,23 @@ msgstr ""
 "Добавьте больше букв, цифр и символов пунктуации, чтобы сделать пароль "
 "сильнее."
 
-#: plugins/user/utils.vala:122
+#: plugins/user/utils.vala:134
 msgid "Name cannot be empty"
 msgstr "Имя не может быть пустым"
 
-#: plugins/user/utils.vala:210
+#: plugins/user/utils.vala:222
 msgid "That username isn't available. Please try another"
 msgstr "Это имя пользователя недоступно. Пожалуйста, попробуйте другое"
 
-#: plugins/user/utils.vala:212
+#: plugins/user/utils.vala:224
 msgid "The username is too long"
 msgstr "Имя пользователя слишком длинное"
 
-#: plugins/user/utils.vala:214
+#: plugins/user/utils.vala:226
 msgid "The username must start with a lower case letter from a-z"
 msgstr "Имя пользователя должно начинаться со строчной буквы от «a» до «z»"
 
-#: plugins/user/utils.vala:216
+#: plugins/user/utils.vala:228
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
@@ -762,7 +791,7 @@ msgstr ""
 "Имя пользователя может содержать только строчные буквы от «a» до «z», цифры "
 "и следущие символы: «-», «_»"
 
-#: plugins/user/utils.vala:219
+#: plugins/user/utils.vala:231
 msgid "Username cannot be empty"
 msgstr "Имя пользователя не может быть пустым"
 
@@ -788,91 +817,124 @@ msgid "Print 0 if nothing to do else 1 to stderr"
 msgstr "Вывести 0, если делать нечего, иначе 1 в stderr"
 
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/end-pages/initial-setup.vala:44 src/end-pages/installer.vala:44
+#: src/end-pages/initial-setup.vala:44
 #, c-format
 msgid "_Start Using %s"
 msgstr "_Начать работу с %s"
 
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/end-pages/initial-setup.vala:46 src/end-pages/installer.vala:46
+#: src/end-pages/initial-setup.vala:46
 #, c-format
 msgid "%s is ready to be used."
 msgstr "Дистрибутив %s готов к использованию."
 
-#: src/end-pages/initial-setup.vala:48 src/end-pages/installer.vala:48
+#: src/end-pages/initial-setup.vala:48
 msgid "_Start Using the System"
 msgstr "_Начать работу с системой"
 
-#: src/end-pages/initial-setup.vala:49 src/end-pages/installer.vala:49
+#: src/end-pages/initial-setup.vala:49
 msgid "System is ready to be used."
 msgstr "Система готова к использованию."
 
-#: src/end-pages/initial-setup.vala:63
+#: src/end-pages/initial-setup.vala:65
 msgid "Applying changes…"
 msgstr "Применение изменений…"
 
-#: src/end-pages/initial-setup.vala:85 src/end-pages/installer.vala:86
+#: src/end-pages/initial-setup.vala:87 src/end-pages/installer.vala:120
 #, c-format
 msgid "Error message: %s"
 msgstr "Сообщение об ошибке: %s"
 
-#: src/options-handler.vala:39
+#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
+#: src/end-pages/installer.vala:66
+#, c-format
+msgid "%s is installed on Your device."
+msgstr "Дистрибутив %s установлен на Ваше устройство."
+
+#: src/end-pages/installer.vala:68
+msgid "System is installed on Your device."
+msgstr "Система установлена на Ваше устройство."
+
+#: src/end-pages/installer.vala:102
+msgid "Preparing"
+msgstr "Подготовка"
+
+#: src/end-pages/installer.vala:103
+msgid "Installing"
+msgstr "Установка"
+
+#: src/end-pages/installer.vala:104
+msgid "Cleaning"
+msgstr "Очистка"
+
+#: src/end-pages/installer.vala:123
+msgid "Installation error"
+msgstr "Ошибка установки"
+
+#: src/end-pages/installer.vala:200
+msgid "Details"
+msgstr "Детали"
+
+#: src/options-handler.vala:42
 msgid "Context vars"
 msgstr "Переменные контекста"
 
-#: src/options-handler.vala:47
+#: src/options-handler.vala:50
 msgid "Force run with mode"
 msgstr "Запустить в определенном режиме"
 
-#: src/options-handler.vala:55
+#: src/options-handler.vala:58
 msgid "Make window closable always"
 msgstr "Сделать окно всегда закрываемым"
 
-#: src/options-handler.vala:62
+#: src/options-handler.vala:65
 msgid "Run window in fullscreen"
 msgstr "Запуск окна в полноэкранном режиме"
 
-#: src/options-handler.vala:69
+#: src/options-handler.vala:72
 msgid "Specify installer plugin"
 msgstr "Указать плагин-установщик"
 
-#: src/options-handler.vala:76
+#: src/options-handler.vala:79
 msgid "Sandbox run without doing anything in system"
 msgstr "Запуск в \"песочнице\" без изменения системы"
 
-#: src/options-handler.vala:83
+#: src/options-handler.vala:86
 msgid "Steps. E.g: `steps=language,keyboard`"
 msgstr "Шаги. К примеру: `steps=language,keyboard`"
 
-#: src/options-handler.vala:90
+#: src/options-handler.vala:93
 msgid "Window can be resized or not"
 msgstr "Может размер окна быть изменен или нет"
 
-#: src/options-handler.vala:97
+#: src/options-handler.vala:100
 msgid "Width of a window"
 msgstr "Ширина окна"
 
-#: src/options-handler.vala:104
+#: src/options-handler.vala:107
 msgid "Height of a window"
 msgstr "Высота окна"
 
-#: src/options-handler.vala:111
-msgid "Set layout for window: `big`, `small`, `vertical`, `horizontal`"
+#: src/options-handler.vala:114
+msgid "Set layout for window: `big`, `small`, `vertical`"
 msgstr ""
-"Назначить используемый внешний вид приложения: `big`, `small`, `vertical`, "
-"`horizontal`"
+"Назначить используемый внешний вид приложения: `big`, `small`, `vertical`"
 
-#: src/options-handler.vala:118
+#: src/options-handler.vala:121
 msgid "Print version information and exit"
 msgstr "Показать информацию о версии и выйти"
 
-#: src/options-handler.vala:125
+#: src/options-handler.vala:128
 msgid "Run apply from config without running GUI"
 msgstr ""
 "Запустить apply, используя конфигурационный файл без запуска графического "
 "интерфейса"
 
-#: src/options-handler.vala:132
+#: src/options-handler.vala:135
+msgid "Add css stylesheet for window"
+msgstr "Добавить таблицу стилей css к окну"
+
+#: src/options-handler.vala:142
 msgid "App config file"
 msgstr "Путь к файлу конфигурации приложения"
 
@@ -910,6 +972,18 @@ msgstr "Это установщик %s"
 msgid "After some choices, the system will be installed on Your device."
 msgstr "После выбора параметров система будет установлена на Ваше устройство."
 
+#: src/widgets/installer-stage-row.vala:46
+msgid "Finished"
+msgstr "Завершено"
+
+#: src/widgets/installer-stage-row.vala:49
+msgid "Waiting"
+msgstr "Ожидание"
+
+#: src/widgets/installer-stage-row.vala:53
+msgid "Processing…"
+msgstr "В процессе…"
+
 #: tests/plugins/test-common/data/ui/page.blp:23
 #: tests/plugins/test-common/data/ui/page.blp:32
 msgid "Test"
@@ -918,6 +992,24 @@ msgstr "Тест"
 #: tests/plugins/test-common/data/ui/page.blp:27
 msgid "Test page"
 msgstr "Тестовая страница"
+
+#~ msgid "<b>Ожидание</b>"
+#~ msgstr "<b>Ожидание</b>"
+
+#~ msgid "WEP 40/104-bit Key (Hex/ASCII)"
+#~ msgstr "40/104-битный ключ WEP (Hex или ASCII)"
+
+#~ msgid "WEP 128-bit Passphrase"
+#~ msgstr "128-битная парольная фраза WEP"
+
+#~ msgid "Dynamic WEP (802.1x)"
+#~ msgstr "Dynamic WEP (802.1x)"
+
+#~ msgid "Go up"
+#~ msgstr "Наверх"
+
+#~ msgid "Go up to the beginning"
+#~ msgstr "Вернуться к началу"
 
 #, fuzzy
 #~ msgid "802.1x _Security"
@@ -991,9 +1083,6 @@ msgstr "Тестовая страница"
 
 #~ msgid "Doing some stuff…"
 #~ msgstr "Делаем стаф…"
-
-#~ msgid "Finishing"
-#~ msgstr "Завершение"
 
 #~ msgid "Keyboard"
 #~ msgstr "Клавиатура"

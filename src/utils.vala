@@ -20,6 +20,34 @@
 
 namespace ReadySet {
 
+    [DBus (name = "org.freedesktop.login1.Manager")]
+    private interface Login1 : Object {
+        public abstract async void reboot (bool interactive) throws Error;
+        public abstract string can_reboot () throws Error;
+    }
+
+    Login1 get_proxy () throws Error {
+        var connection = Bus.get_sync (BusType.SYSTEM);
+
+        var login1 = connection.get_proxy_sync<Login1> (
+            "org.freedesktop.login1",
+            "/org/freedesktop/login1",
+            DBusProxyFlags.NONE
+        );
+
+        return login1;
+    }
+
+    public bool can_reboot_system () throws Error {
+        var proxy = get_proxy ();
+        return proxy.can_reboot () == "yes";
+    }
+
+    public async void reboot_system () throws Error {
+        var proxy = get_proxy ();
+        yield proxy.reboot (true);
+    }
+
     internal const string BUILTIN = "BuiltIn";
 
     public string context_key_to_env_key (string key) {
@@ -40,6 +68,8 @@ namespace ReadySet {
     }
 
     public delegate Gtk.Widget CreateFunc (PageInfo page);
+
+    public delegate void DisposeFunc (Gtk.Widget widget);
 
     public bool in_group (string group_name) {
         unowned Posix.Passwd? passwd = Posix.getpwuid (Posix.getuid ());
@@ -80,5 +110,9 @@ namespace ReadySet {
         }
 
         rs_settings.set_strv ("performed-steps", pp_set);
+    }
+
+    string errorify (string str) {
+        return "\x1b[31m%s\x1b[0m".printf (str);
     }
 }

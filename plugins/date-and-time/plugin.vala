@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2026 David Sultaniiazov <x1z53@alt-gnome.ru>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -51,7 +51,7 @@ public class DateAndTime.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         return vars;
     }
 
-    public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
+    public async override void apply (ReadySet.InitialSetupProgressData progress_data) throws ReadySet.ApplyError {
         DateAndTime.Timedate1 proxy;
         try {
             proxy = get_timedate_proxy ();
@@ -74,13 +74,15 @@ public class DateAndTime.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
             }
         }
 
-        try {
-            yield proxy.set_ntp (automatic_datetime);
-        } catch (Error e) {
-            throw ReadySet.ApplyError.build_error (_("Error when setting NTP"), e.message);
+        if (proxy.can_ntp) {
+            try {
+                yield proxy.set_ntp (automatic_datetime);
+            } catch (Error e) {
+                throw ReadySet.ApplyError.build_error (_("Error when setting NTP"), e.message);
+            }
         }
 
-        if (!automatic_datetime) {
+        if (!automatic_datetime || !proxy.can_ntp) {
             try {
                 var datetime = context.get_int ("date-and-time.datetime");
                 yield proxy.set_time ((int64) datetime * 1000000);

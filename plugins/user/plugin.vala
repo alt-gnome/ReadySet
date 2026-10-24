@@ -42,7 +42,7 @@ public class User.Addin : ReadySet.StepAddin {
         };
     }
 
-    public async override void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
+    public async override void apply (ReadySet.InitialSetupProgressData progres_data) throws ReadySet.ApplyError {
         try {
             var user = yield Act.UserManager.get_default ().create_user_async (
                 context.get_string ("user.username"),
@@ -108,7 +108,9 @@ public class User.Addin : ReadySet.StepAddin {
 
         //  Settings
         vars["with-root"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN) { setting = true };
-        vars["enforce-password-quality"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN) { setting = true };
+        vars["enforce-password-quality"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.BOOLEAN) {
+            setting = true
+        };
         vars["passwd-conf-path"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING) { setting = true };
         vars["avatar-directories"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRV) { setting = true };
 

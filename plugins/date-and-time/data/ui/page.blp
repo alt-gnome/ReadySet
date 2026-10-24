@@ -60,6 +60,7 @@ template $DateAndTimePage: $ReadySetBasePage {
           Adw.SwitchRow auto_date_and_time_switch {
             title: _("Automatic setting of date and time");
             active: bind template.manual-date-and-time bidirectional inverted;
+            visible: bind template.can-use-ntp;
           }
 
           Adw.ActionRow date_row {

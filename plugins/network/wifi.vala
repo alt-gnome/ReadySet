@@ -23,12 +23,13 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
 
     [GtkChild]
     unowned Gtk.Image icon;
+    [GtkChild]
+    unowned Gtk.Button settings;
 
     unowned NM.DeviceWifi device;
     unowned NM.AccessPoint point;
-
+    NM.Connection connection = null;
     NM.ActiveConnection? listener = null;
-    public string? status { get; private set; default = null; }
 
     NM.Utils.SecurityType[] security;
     public bool needs_secrets { get; private set; default = false; }
@@ -38,13 +39,15 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             NM.AccessPoint ap,
             Bytes? hidden_ssid = null
     ) {
+        var addin = Addin.get_instance ();
+
         device = wlan;
         device.add_weak_pointer (&device);
         point = ap;
         point.add_weak_pointer (&point);
         destroy.connect (() => {
-            device.remove_weak_pointer (&device);
-            point.remove_weak_pointer (&point);
+            device?.remove_weak_pointer (&device);
+            point?.remove_weak_pointer (&point);
         });
 
         Bytes ssid = NM.Utils.is_empty_ssid (ap.ssid?.get_data ())
@@ -62,6 +65,8 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             icon.icon_name = "radiowaves-4-symbolic";
         }
 
+        settings.sensitive = !addin.context.sandbox;
+
         security = get_available_ap_security (device, ap);
         if (security.length == 0) {
             activatable = false;
@@ -70,8 +75,19 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             needs_secrets = security[0] != OWE && security[0] != NONE;
         }
 
+        addin.client.connection_added.connect (connection_added);
+        addin.client.connection_removed.connect (connection_removed);
+        foreach (var known in addin.client.connections) {
+            if (connection != null) {
+                break;
+            }
+            connection_added (known);
+        }
+
         if (ap == device.active_access_point) {
-            activatable = false;
+            if (addin.context.sandbox) {
+                activatable = false;
+            }
             device.notify["active-connection"].connect (listen_to_active);
             listen_to_active ();
         }
@@ -92,76 +108,71 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
             return;
         }
 
-        NM.RemoteConnection? conn = null;
-        NM.Connection? tmp = null;
+        if (point == device.active_access_point) {
+            settings.activate ();
+            return;
+        }
 
-        foreach (var known in addin.client.connections) {
-            if (same_ssid (point.ssid, known.get_setting_wireless ()?.ssid)) {
-                if (device.interface == known.get_interface_name ()) {
-                    conn = known;
+        if (connection == null) {
+            connection = prepare_wireless_connection (device, point);
+            apply_security (connection, security[0]);
+
+            switch (security[0]) {
+            case WPA3_SUITE_B_192:
+            case WPA2_ENTERPRISE:
+            case WPA_ENTERPRISE:
+                if (addin.context.get_boolean ("network.simple")) {
+                    var editor = new ApSecurityEditor (connection, security);
+                    if ((yield editor.choose (get_native (), null)) != "apply"
+                            || !(yield add_connection ())) {
+                        return;
+                    }
                 } else {
-                    tmp = NM.SimpleConnection.new_clone (known);
-
-                    // Set new UUID and device
-                    var setting_c = tmp.get_setting_connection ();
-                    if (setting_c == null) {
-                        tmp.add_setting (new NM.SettingConnection ());
-                        setting_c = tmp.get_setting_connection ();
-                    }
-                    setting_c.uuid = NM.Utils.uuid_generate ();
-                    setting_c.interface_name = device.interface;
-
-                    // Copy Wi-Fi secrets if needed and possible
-                    var setting_ws = known.get_setting_wireless_security ();
-                    if (setting_ws != null) {
-                        try {
-                            tmp.update_secrets (setting_ws.name,
-                                yield known.get_secrets_async (
-                                    setting_ws.name, null
-                                )
-                            );
-                        } catch (Error e) {
-                            warning (e.message);
-                        }
-                    }
+                    var editor = create_editor ();
+                    editor.done.connect (on_editor_closed);
+                    editor.set_title (title);
+                    editor.present ();
+                    return;
+                }
+                break;
+            default:
+                if (!(yield add_connection ())) {
+                    return;
                 }
                 break;
             }
         }
 
-        bool need_new = conn == null;
-        if (need_new) {
-            if (tmp == null) {
-                tmp = prepare_wireless_connection (device, point);
-                apply_security (tmp, security[0]);
-            }
+        yield activate_connection ();
+    }
 
-            try {
-                conn = yield addin.client.add_connection_async (
-                    tmp, false, null
-                );
-            } catch (Error e) {
-                status = _("Connection setup failed");
-                warning (e.message);
-                return;
-            }
+    async void on_editor_closed (Net.ConnectionEditor editor, bool res) {
+        if (res) {
+            yield activate_connection ();
         }
+        editor.done.disconnect (on_editor_closed);
+    }
 
+    async bool add_connection () {
         try {
-            yield addin.client.activate_connection_async (
-                conn, device, null, null
+            return (yield Addin.get_instance ().client.add_connection_async (
+                connection, false, null
+            )) != null;
+        } catch (Error e) {
+            subtitle = _("Connection setup failed");
+            warning (e.message);
+            return false;
+        }
+    }
+
+    async void activate_connection () {
+        try {
+            yield Addin.get_instance ().client.activate_connection_async (
+                connection, device, null, null
             );
         } catch (Error e) {
-            status = _("Connection failed");
+            subtitle = _("Connection failed");
             warning (e.message);
-
-            if (need_new) {
-                try {
-                    yield conn.delete_async (null);
-                } catch (Error e) {
-                    error (e.message);
-                }
-            }
         }
     }
 
@@ -182,28 +193,60 @@ public sealed class Network.AccessPointRow : Adw.ActionRow {
 
     void update_status () {
         if (listener == null) {
-            status = null;
+            subtitle = null;
             return;
         }
 
         switch (listener.state) {
         case ACTIVATING:
-            status = _("Connecting…");
+            subtitle = _("Connecting…");
             break;
         case ACTIVATED:
             if (device.ip4_connectivity == FULL
                     || device.ip6_connectivity == FULL) {
-                status = _("Connected");
+                subtitle = _("Connected");
             } else {
-                status = _("Connected without internet");
+                subtitle = _("Connected without internet");
             }
             break;
         case DEACTIVATING:
-            status = _("Disconnecting…");
+            subtitle = _("Disconnecting…");
             break;
         default:
-            status = null;
+            subtitle = null;
             break;
+        }
+    }
+
+    void connection_added (NM.RemoteConnection conn) {
+        if (same_ssid (point.ssid, conn.get_setting_wireless ()?.ssid)
+                && device.connection_valid (conn)) {
+            connection = conn;
+            settings.visible = true;
+        }
+    }
+
+    void connection_removed (NM.RemoteConnection conn) {
+        if (connection?.get_uuid () == conn.get_uuid ()) {
+            connection = null;
+            settings.visible = false;
+        }
+    }
+
+    Net.ConnectionEditor create_editor () {
+        return new Net.ConnectionEditor (
+            connection, device, point, Addin.get_instance ().client
+        ) {
+            transient_for = get_native () as Gtk.Window,
+        };
+    }
+
+    [GtkCallback]
+    void edit_connection () {
+        if (Addin.get_instance ().context.get_boolean ("network.simple")) {
+            new ApSecurityEditor (connection, security).present (get_native ());
+        } else {
+            create_editor ().present ();
         }
     }
 }
@@ -216,8 +259,6 @@ public sealed class Network.ApSecurityEditor : Adw.AlertDialog {
         WS_WPA_EAP,
         WS_SAE,
         WS_WPA_PSK,
-        WS_WEP_KEY,
-        WS_DYNAMIC_WEP,
         WS_LEAP,
         WS_OWE;
     }
@@ -231,9 +272,27 @@ public sealed class Network.ApSecurityEditor : Adw.AlertDialog {
         connection = conn;
         connection.add_weak_pointer (&connection);
         destroy.connect (() => {
-            connection.remove_weak_pointer (&connection);
+            connection?.remove_weak_pointer (&connection);
         });
         heading = connection.get_id ();
+
+        var with_secrets = NM.SimpleConnection.new_clone (connection);
+        var ws = connection.get_setting_wireless_security ();
+        var remote = connection as NM.RemoteConnection;
+        if (remote != null) {
+            var setting_name = ws?.key_mgmt == "wpa-eap"
+                    ? NM.Setting8021x.SETTING_NAME
+                    : NM.SettingWirelessSecurity.SETTING_NAME;
+
+            try {
+                with_secrets.update_secrets (setting_name,
+                    remote.get_secrets (setting_name)
+                );
+            } catch (Error e) {
+                warning (e.message);
+                with_secrets = connection;
+            }
+        }
 
         AvailableWs mask = 0;
         foreach (var type in sec) {
@@ -251,12 +310,6 @@ public sealed class Network.ApSecurityEditor : Adw.AlertDialog {
             case WPA_PSK:
                 mask |= WS_WPA_PSK;
                 break;
-            case STATIC_WEP:
-                mask |= WS_WEP_KEY;
-                break;
-            case DYNAMIC_WEP:
-                mask |= WS_DYNAMIC_WEP;
-                break;
             case LEAP:
                 mask |= WS_LEAP;
                 break;
@@ -269,43 +322,49 @@ public sealed class Network.ApSecurityEditor : Adw.AlertDialog {
         }
 
         if (WS_WPA_EAP in mask) {
-            var page = new NMA.WsWpaEap (connection, true, false, null);
+            var page = new NMA.WsWpaEap (with_secrets, true, false, null);
             page.ws_changed.connect (validate);
-            stack.add_titled (page, null, _("WPA/WPA2/WPA3 Enterprise"));
+            stack.add_titled (page, "wpa-eap", _("WPA/WPA2/WPA3 Enterprise"));
         }
         if (WS_SAE in mask) {
-            var page = new NMA.WsSae (connection, false);
+            var page = new NMA.WsSae (with_secrets, false);
             page.ws_changed.connect (validate);
-            stack.add_titled (page, null, _("WPA3 Personal"));
+            stack.add_titled (page, "sae", _("WPA3 Personal"));
         }
         if (WS_WPA_PSK in mask) {
-            var page = new NMA.WsWpaPsk (connection, false);
+            var page = new NMA.WsWpaPsk (with_secrets, false);
             page.ws_changed.connect (validate);
-            stack.add_titled (page, null, _("WPA/WPA2 Personal"));
-        }
-        if (WS_WEP_KEY in mask) {
-            var page1 = new NMA.WsWepKey (connection, KEY, false, false);
-            page1.ws_changed.connect (validate);
-            stack.add_titled (page1, null, _("WEP 40/104-bit Key (Hex/ASCII)"));
-
-            var page2 = new NMA.WsWepKey (connection, PASSPHRASE, false, false);
-            page2.ws_changed.connect (validate);
-            stack.add_titled (page2, null, _("WEP 128-bit Passphrase"));
-        }
-        if (WS_DYNAMIC_WEP in mask) {
-            var page = new NMA.WsDynamicWep (connection, true, false);
-            page.ws_changed.connect (validate);
-            stack.add_titled (page, null, _("Dynamic WEP (802.1x)"));
+            stack.add_titled (page, "wpa-psk", _("WPA/WPA2 Personal"));
         }
         if (WS_LEAP in mask) {
-            var page = new NMA.WsLeap (connection, false);
+            var page = new NMA.WsLeap (with_secrets, false);
             page.ws_changed.connect (validate);
-            stack.add_titled (page, null, _("LEAP"));
+            stack.add_titled (page, "leap", _("LEAP"));
         }
         if (WS_OWE in mask) {
-            var page = new NMA.WsOwe (connection);
+            var page = new NMA.WsOwe (with_secrets);
             page.ws_changed.connect (validate);
-            stack.add_titled (page, null, _("Enhanced Open"));
+            stack.add_titled (page, "owe", _("Enhanced Open"));
+        }
+
+        switch (ws?.key_mgmt) {
+        case "wpa-eap":
+            stack.visible_child_name = "wpa-eap";
+            break;
+        case "sae":
+            stack.visible_child_name = "sae";
+            break;
+        case "wpa-psk":
+            stack.visible_child_name = "wpa-psk";
+            break;
+        case "ieee8021x":
+            if (ws?.auth_alg == "leap") {
+                stack.visible_child_name = "leap";
+            }
+            break;
+        case "owe":
+            stack.visible_child_name = "owe";
+            break;
         }
 
         stack.notify["visible-child"].connect_after (validate_current);
@@ -356,7 +415,7 @@ public sealed class Network.WiFiAdapterBox : Adw.Bin {
         device = wlan;
         device.add_weak_pointer (&device);
         destroy.connect (() => {
-            device.remove_weak_pointer (&device);
+            device?.remove_weak_pointer (&device);
         });
 
         box.bind_model (

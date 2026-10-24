@@ -18,10 +18,15 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/**
+ * Provides a textual representation of a page's current state.
+ */
 public interface ReadySet.HasStringRepr : BasePage {
 
     /**
-     * String representation of this page.
+     * Returns a textual representation of this page.
+     *
+     * @return the page representation
      */
     public abstract string get_string_repr ();
 }

@@ -18,7 +18,20 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/**
+ * Adds ordering constraints to a step plugin.
+ *
+ * Implement this interface when the step must be applied after specific
+ * other step modules.
+ */
 public interface ReadySet.ApplyAfter : StepAddin {
 
+    /**
+     * Returns module identifiers that must be applied before this step.
+     *
+     * Identifiers that do not refer to loaded step modules are ignored.
+     *
+     * @return the module identifiers this step depends on
+     */
     public abstract string[] get_apply_after ();
 }

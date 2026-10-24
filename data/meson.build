@@ -4,6 +4,7 @@ rs_app_blueprints = custom_target('blueprints',
     'ui/existing-user-end-page.blp',
     'ui/initial-setup-end-page.blp',
     'ui/installer-end-page.blp',
+    'ui/installer-stage-row.blp',
     'ui/nothing-to-show.blp',
     'ui/pages-indicator.blp',
     'ui/step-row.blp',
@@ -83,37 +84,6 @@ if compile_schemas.found()
 endif
 
 subdir('icons')
-
-unit_files = {
-  meson.project_name() + '-existing-user.service' : [ 'gnome-session.target.wants/' ],
-}
-
-if gdm_dep.found()
-  subdir('gnome-initial-setup')
-
-  unit_files += {
-    gis / gis + '.service' : [],
-  }
-endif
-
-if get_option('phrog').enabled()
-  subdir('phrog')
-endif
-
-foreach unit, wants: unit_files
-  configure_file(
-    input: unit + '.in',
-    output: fs.name (unit),
-    configuration: {
-      'LIBEXECDIR': libexecdir
-    },
-    install_dir: systemd_user_unit_dir
-  )
-
-  foreach target: wants
-    meson.add_install_script('meson-add-wants.sh', systemd_user_unit_dir, target, unit)
-  endforeach
-endforeach
 
 configure_file(
   input: 'completion' / 'bash.in',

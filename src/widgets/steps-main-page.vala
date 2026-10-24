@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -32,20 +32,16 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     [GtkChild]
     unowned Gtk.Label sandbox_label_left;
     [GtkChild]
-    unowned Gtk.CenterBox standalone_horizontal_bottom;
-    [GtkChild]
     unowned Gtk.Label sandbox_label_right;
     [GtkChild]
-    unowned Gtk.Revealer to_up_revealer;
+    unowned Gtk.Box button_box;
     [GtkChild]
-    unowned Gtk.CenterBox button_center_box;
+    unowned Gtk.CenterBox center_button_box;
     [GtkChild]
     unowned Gtk.Button osk_button;
     [GtkChild]
     unowned Gtk.Stack main_stack;
 
-    [GtkChild]
-    unowned Gtk.Button to_up_button;
     [GtkChild]
     unowned Gtk.Button go_prev_button;
     [GtkChild]
@@ -57,10 +53,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     unowned Adw.Breakpoint small_breakpoint;
     [GtkChild]
     unowned Adw.Breakpoint vertical_breakpoint;
-    [GtkChild]
-    unowned Adw.Breakpoint horizontal_breakpoint;
-    [GtkChild]
-    unowned Gtk.Revealer to_up_label_revealer;
 
     [GtkChild]
     unowned Adw.Bin top_bin;
@@ -71,31 +63,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     unowned Adw.ToolbarView page_toolbar;
     [GtkChild]
     unowned Gtk.Button end_page_back_button;
-
-    Gtk.ScrolledWindow _current_scrolled_window;
-    protected Gtk.ScrolledWindow current_scrolled_window {
-        get {
-            return _current_scrolled_window;
-        }
-        set {
-            if (_current_scrolled_window != null) {
-                //  Reset value of a previous scroll
-                _current_scrolled_window.vadjustment.value = 0;
-                _current_scrolled_window.vadjustment.notify["value"].disconnect (update_scroll);
-            }
-
-            _current_scrolled_window = value;
-
-            if (_current_scrolled_window != null) {
-                _current_scrolled_window.vadjustment.notify["value"].connect (update_scroll);
-                scroll_anim_target = new Adw.PropertyAnimationTarget (_current_scrolled_window.vadjustment, "value");
-            }
-            update_scroll ();
-        }
-    }
-
-    Adw.PropertyAnimationTarget scroll_anim_target;
-    Adw.TimedAnimation scroll_animation;
 
     public bool standalone { get; set; }
 
@@ -112,9 +79,9 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                     osk_button.height_request =
                     go_prev_button.height_request =
                     go_prev_button.width_request =
-                    to_up_button.height_request =
                     32;
-                button_center_box.margin_bottom = 6;
+                button_box.margin_bottom = 6;
+                center_button_box.margin_bottom = 6;
                 go_next_button.remove_css_class ("pill");
 
             } else {
@@ -122,19 +89,15 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                     osk_button.height_request =
                     go_prev_button.height_request =
                     go_prev_button.width_request =
-                    to_up_button.height_request =
                     48;
-                button_center_box.margin_bottom = 12;
+                button_box.margin_bottom = 12;
+                center_button_box.margin_bottom = 6;
                 go_next_button.add_css_class ("pill");
             }
-
-            update_go_up_button ();
         }
     }
 
     public bool is_ready_to_continue { get; set; }
-
-    public bool can_up { get; set; }
 
     static Gee.ArrayList<string> passed_pages = new Gee.ArrayList<string> ();
 
@@ -147,8 +110,6 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
             _layout_mode = value;
 
             update_model_binds ();
-            update_vertical_current_scroll ();
-            update_scroll ();
             update_standalone ();
         }
     }
@@ -161,16 +122,13 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         set {
             if (_last_current_page != null) {
                 _last_current_page.notify["is-ready"].disconnect (update_buttons);
-                _last_current_page.page.next.disconnect (continue_clicked);
-                notify["scroll-on-top"].disconnect (update_scroll);
+                _last_current_page.page.next.disconnect (next);
             }
 
             _last_current_page = value;
 
             _last_current_page.notify["is-ready"].connect (update_buttons);
-            _last_current_page.page.next.connect (continue_clicked);
-            notify["scroll-on-top"].connect (update_scroll);
-            update_scroll ();
+            _last_current_page.page.next.connect (next);
         }
     }
 
@@ -236,7 +194,8 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
             if (positioned_stack.model != null) {
                 positioned_stack.bind_model (
                     null,
-                    page_creation_func
+                    page_creation_func,
+                    page_creation_dispose
                 );
             }
             if (info_positioned_stack.model != null) {
@@ -248,20 +207,23 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
             if (vertical_stack.model == null) {
                 vertical_stack.bind_model (
                     _model,
-                    vertical_stack_creation_func
+                    vertical_stack_creation_func,
+                    vertical_stack_creation_dispose
                 );
             }
         } else {
             if (vertical_stack.model != null) {
                 vertical_stack.bind_model (
                     null,
-                    vertical_stack_creation_func
+                    vertical_stack_creation_func,
+                    vertical_stack_creation_dispose
                 );
             }
             if (positioned_stack.model == null) {
                 positioned_stack.bind_model (
                     _model,
-                    page_creation_func
+                    page_creation_func,
+                    page_creation_dispose
                 );
             }
             if (info_positioned_stack.model == null) {
@@ -289,13 +251,25 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     }
 
     Gtk.Widget page_creation_func (PageInfo page) {
+        var scrolled_window = new Gtk.ScrolledWindow () {
+            propagate_natural_height = true,
+            hscrollbar_policy = NEVER
+        };
+
         if (page.id in passed_pages) {
             page.passed = true;
         }
 
         bind_property ("layout-mode", page.page, "layout-mode", SYNC_CREATE);
 
-        return page.page;
+        scrolled_window.child = page.page;
+
+        return scrolled_window;
+    }
+
+    void page_creation_dispose (Gtk.Widget widget) {
+        var scrolled_window = (Gtk.ScrolledWindow) widget;
+        scrolled_window.child = null;
     }
 
     Gtk.Widget page_info_creation_func (PageInfo page) {
@@ -309,7 +283,7 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         };
 
         var box = new Gtk.Box (VERTICAL, 36) {
-            valign = CENTER
+            valign = page.page.valign
         };
         scrolled_window.child = box;
 
@@ -319,6 +293,11 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         box.append (page.page);
 
         return scrolled_window;
+    }
+
+    void vertical_stack_creation_dispose (Gtk.Widget widget) {
+        var scrolled_window = (Gtk.ScrolledWindow) widget;
+        scrolled_window.child = null;
     }
 
     async void setup () {
@@ -333,49 +312,10 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
 
         osk_button.visible = (proxy != null && a11y_settings.get_boolean ("screen-keyboard-enabled")) ||
              Environment.get_variable ("READY_SET_SHOW_OSK") == "always";
-
-        notify["can-up"].connect (update_go_up_button);
-    }
-
-    [GtkCallback]
-    void on_to_up_revealer_child_revealed (Object obj, ParamSpec param) {
-        var tur = (Gtk.Revealer) obj;
-
-        if (!tur.child_revealed) {
-            tur.visible = false;
-        }
-    }
-
-    void update_go_up_button () {
-        last_current_page.page.remove_css_class ("page-to-up-compact");
-        last_current_page.page.remove_css_class ("page-to-up-regular");
-        to_up_button.remove_css_class ("to-up-button-regular");
-        to_up_button.remove_css_class ("to-up-button-compact");
-
-        if (!last_current_page.page.need_go_up_button) {
-            to_up_revealer.visible = false;
-            to_up_revealer.reveal_child = false;
-            return;
-        }
-
-        if (can_up) {
-            to_up_revealer.visible = true;
-            to_up_revealer.reveal_child = true;
-            if (is_compact) {
-                last_current_page.page.add_css_class ("page-to-up-compact");
-                to_up_button.add_css_class ("to-up-button-compact");
-            } else {
-                last_current_page.page.add_css_class ("page-to-up-regular");
-                to_up_button.add_css_class ("to-up-button-regular");
-            }
-        } else {
-            to_up_revealer.reveal_child = false;
-        }
     }
 
     void selection_changed () {
         update_buttons ();
-        update_scroll ();
 
         last_current_page = model.get_selected_item ();
 
@@ -391,32 +331,12 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
         passed_pages.add (last_current_page.id);
         last_current_page.passed = true;
         standalone = base_page.info == null;
-        update_vertical_current_scroll ();
-        _current_scrolled_window.vadjustment.value = 0;
-        update_go_up_button ();
         update_standalone ();
     }
 
     void update_standalone () {
         standalone_sandbox_label.visible = sandbox &&
             Config.NIGHTLY && standalone;
-        standalone_horizontal_bottom.visible = layout_mode == HORIZONTAL && standalone;
-    }
-
-    void update_vertical_current_scroll () {
-        if (layout_mode == VERTICAL || layout_mode == SMALL) {
-            current_scrolled_window = (Gtk.ScrolledWindow) vertical_stack.visible_child;
-        }
-    }
-
-    void update_scroll () {
-        if (current_scrolled_window != null) {
-            if (current_scrolled_window.vadjustment != null) {
-                var v = current_scrolled_window.vadjustment;
-                can_up = !(v.value <= 360.0);
-                to_up_label_revealer.reveal_child = v.value >= v.upper - v.page_size;
-            }
-        }
     }
 
     void update_buttons () {
@@ -442,40 +362,16 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
     }
 
     [GtkCallback]
-    void up_clicked () {
-        current_scrolled_window.set_kinetic_scrolling (false);
-
-        if (scroll_anim_target == null) {
-            return;
-        }
-
-        if (scroll_animation != null) {
-            scroll_animation.reset ();
-        }
-
-        scroll_animation = new Adw.TimedAnimation (
-            current_scrolled_window,
-            current_scrolled_window.vadjustment.value,
-            0.0,
-            100,
-            scroll_anim_target
-        );
-
-        scroll_animation.play ();
-        current_scrolled_window.set_kinetic_scrolling (true);
-    }
-
-    [GtkCallback]
     void cancel_clicked () {
         model?.select_item (model.get_selected () - 1, true);
     }
 
     [GtkCallback]
     void continue_clicked () {
-        if (!model.get_selected_item ().page.try_continue ()) {
-            return;
-        }
+        model.get_selected_item ().page.try_continue ();
+    }
 
+    void next () {
         var position = model.get_selected ();
         var n_items = model.get_n_items ();
 
@@ -513,16 +409,12 @@ public sealed class ReadySet.StepsMainPage : Adw.BreakpointBin {
                 case VERTICAL:
                     force_breakpoint = vertical_breakpoint;
                     break;
-                case HORIZONTAL:
-                    force_breakpoint = horizontal_breakpoint;
-                    break;
             }
 
             Adw.Breakpoint[] all_breakpoints = {
                 big_breakpoint,
                 small_breakpoint,
                 vertical_breakpoint,
-                horizontal_breakpoint
             };
 
             foreach (var bp in all_breakpoints) {

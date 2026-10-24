@@ -63,12 +63,13 @@ public sealed class User.PageRootPassword : PagePasswordCommon {
                    root_password_entry.text == root_password_repeat_entry.text));
     }
 
-    public override bool try_continue () {
+    public override void try_continue () {
         if (equal_switch_row.active) {
-            return true;
+            next ();
+            return;
         }
 
-        return base.try_continue ();
+        base.try_continue ();
     }
 
     [GtkCallback]
@@ -86,7 +87,7 @@ public sealed class User.PageRootPassword : PagePasswordCommon {
         root_password_strength.label = strength.hint;
         update_css_by_strength (
             root_password_entry,
-            strength.level,
+            root_password_entry.text.length == 0 ? StrengthLevel.FATALBAD : strength.level,
             Addin.get_instance ().context.get_boolean ("user.enforce-password-quality")
         );
         root_password_strength.progress_bar_visible = strength.support_value;

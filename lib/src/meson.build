@@ -30,6 +30,8 @@ librs_vala_sources = files(
   'installer-addin.vala',
   'installer-step.vala',
   'lib-utils.vala',
+  'post-act-addin.vala',
+  'service-addin.vala',
   'step-addin.vala',
 )
 
@@ -39,7 +41,7 @@ librs_ext_base_sources_internal = files(
   'extension-base-internal.vala',
 )
 
-librs_context_sources_internal = librs_context_vars_sources_internal + librs_context_mode_sources_internal + librs_context_raw_sources_internal + librs_context_loader_sources_internal
+librs_context_sources_internal = librs_context_vars_sources_internal + librs_context_mode_sources_internal + librs_context_raw_sources_internal + librs_context_raw_get_sources_internal + librs_context_loader_sources_internal
 
 librs_utils_sources_internal = files(
   'lib-utils-internal.vala',
@@ -71,6 +73,7 @@ librs_dependencies = [
   libadwaita_dep,
   libpeas_dep,
   libserialize_dep,
+  polkit_dep,
 ]
 
 librs_deps_pkgs = []
@@ -148,6 +151,7 @@ pkgconfig.generate(
     'installer_pre_hooks=' + installer_pre_hooks.replace(pkgdata_dir, '${pkgdata_dir}'),
     'installer_post_hooks=' + installer_post_hooks.replace(pkgdata_dir, '${pkgdata_dir}'),
     'steps_plugins_dir=' + steps_plugins_dir.replace(pkglib_dir, '${pkglib_dir}'),
+    'post_act_plugins_dir=' + post_act_plugins_dir.replace(pkglib_dir, '${pkglib_dir}'),
     'installers_plugins_dir=' + installers_plugins_dir.replace(pkglib_dir, '${pkglib_dir}'),
   ],
   version: libversion,

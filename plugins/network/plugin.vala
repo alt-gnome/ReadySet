@@ -29,13 +29,17 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         }
     }
 
+    public string default_hostname {
+        get {
+            return Environment.get_host_name ();
+        }
+    }
+
     public NM.Client client { get; construct; }
 
     public ListStore modems { get; construct; }
     public ListStore ethers { get; construct; }
     public ListStore wlans { get; construct; }
-
-    public uint ether_devices_num { get; private set; default = 0; }
 
     bool simple;
 
@@ -61,7 +65,7 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         try {
             client = new NM.Client ();
         } catch (Error e) {
-            critical (e.message);
+            warning (e.message);
         }
 
         modems = new ListStore (typeof (NM.DeviceModem));
@@ -96,6 +100,17 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
     }
 
     public override void init_context () {
+        if (client == null) {
+            return;
+        }
+
+        if (client.nm_running) {
+            client.notify["nm-running"].disconnect (init_context);
+        } else {
+            client.notify["nm-running"].connect (init_context);
+            return;
+        }
+
         client.device_added.connect (add_device);
         client.device_removed.connect (remove_device);
 
@@ -112,10 +127,14 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         });
     }
 
-    static void update_category (ListStore category, NM.Device device) {
+    static void update_category (
+            ListStore category,
+            NM.Device device,
+            NM.DeviceState state = device.state
+    ) {
         uint pos;
-        bool ok = device.state != UNMANAGED
-            && (device.device_type == ETHERNET || device.state != UNAVAILABLE);
+        bool ok = state != UNKNOWN && state != UNMANAGED
+            && (device.device_type == ETHERNET || state != UNAVAILABLE);
 
         if (category.find_with_equal_func (device, same_devices, out pos)) {
             if (!ok) {
@@ -136,13 +155,13 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
     ) {
         switch (device.device_type) {
         case MODEM:
-            update_category (modems, device);
+            update_category (modems, device, new_state);
             break;
         case ETHERNET:
-            update_category (ethers, device);
+            update_category (ethers, device, new_state);
             break;
         case WIFI:
-            update_category (wlans, device);
+            update_category (wlans, device, new_state);
             break;
         default:
             break;
@@ -167,23 +186,25 @@ public class Network.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         case MODEM:
         case ETHERNET:
         case WIFI:
-            update_device (device);
             device.state_changed.disconnect (update_device);
+            update_device (device, NM.DeviceState.UNKNOWN);
             break;
         default:
             break;
         }
     }
 
-    public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
+    public async override void apply (ReadySet.InitialSetupProgressData progress_data) throws ReadySet.ApplyError {
         if (context.sandbox) {
             return;
         }
 
         try {
-            yield client.save_hostname_async (
-                context.get_string ("network.hostname"), null
-            );
+            string name = context.get_string ("network.hostname");
+            if (name == default_hostname) {
+                name = hostname_inject_machine_id (name);
+            }
+            yield set_hostname (name);
 
             foreach (var conn in client.connections) {
                 yield conn.commit_changes_async (true, null);

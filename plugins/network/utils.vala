@@ -21,6 +21,13 @@
 
 namespace Network {
 
+    errordomain HostnameError {
+        LENGTH,
+        PREFIX,
+        SUFFIX,
+        INVALID_CHAR
+    }
+
     bool same_devices (Object obj1, Object obj2) {
         var dev1 = (NM.Device) obj1;
         var dev2 = (NM.Device) obj2;
@@ -53,34 +60,108 @@ namespace Network {
         return true;
     }
 
-    bool validate_hostname (string hostname, out string? error) {
-        if (hostname.has_prefix ("-")) {
-            error = _("Leading hyphen is not allowed");
-            return false;
+    bool validate_hostname (string hostname) throws HostnameError {
+        if (hostname.length < 4) {
+            throw new HostnameError.LENGTH (_("Host name is too short"));
+        }
+        if (hostname.length > 64) {
+            throw new HostnameError.LENGTH (_("Host name is too long"));
         }
 
-        unichar cur;
-        int idx = 0;
+        foreach (var part in hostname.split (".", -1)) {
+            if (part.length == 0) {
+                throw new HostnameError.INVALID_CHAR (
+                    _("Empty host name sections are not allowed")
+                );
+            }
 
-        while (hostname.get_next_char (ref idx, out cur)) {
-            if ((cur >= 0x80 || !cur.isalnum ()) && cur != '-') {
-                error = _("Only Latin letters, digits and hyphens are allowed");
-                return false;
+            if (part.get_char (0) == '-') {
+                throw new HostnameError.PREFIX (
+                    _("A host name section cannot start with a hyphen")
+                );
+            }
+
+            unichar cur;
+            int idx = 0;
+
+            while (part.get_next_char (ref idx, out cur)) {
+                if (cur > 0x7f) {
+                    throw new HostnameError.INVALID_CHAR (
+                        _("Non-ASCII characters are not allowed")
+                    );
+                }
+                if (!cur.isalnum () && cur != '-') {
+                    throw new HostnameError.INVALID_CHAR (
+                        _("Only letters, digits, hyphens and dots are allowed")
+                    );
+                }
+            }
+
+            if (part.get_char (idx - 1) == '-') {
+                throw new HostnameError.SUFFIX (
+                    _("A host name section cannot end with a hyphen")
+                );
             }
         }
 
-        if (idx < 4) {
-            error = _("Host name is too short");
-            return false;
-        }
-
-        if (hostname[idx - 1] == '-') {
-            error = _("Trailing hyphen is not allowed");
-            return false;
-        }
-
-        error = null;
         return true;
+    }
+
+    async Hostname1 get_hostname_proxy () throws Error {
+        var con = yield Bus.get (SYSTEM, null);
+        if (con == null) {
+            error ("Failed to connect to bus");
+        }
+
+        return yield con.get_proxy<Hostname1> (
+            "org.freedesktop.hostname1",
+            "/org/freedesktop/hostname1",
+            NONE,
+            null
+        );
+    }
+
+    Hostname1 get_hostname_proxy_sync () throws Error {
+        var con = Bus.get_sync (SYSTEM);
+        if (con == null) {
+            error ("Failed to connect to bus");
+        }
+
+        return con.get_proxy_sync<Hostname1> (
+            "org.freedesktop.hostname1",
+            "/org/freedesktop/hostname1",
+            NONE,
+            null
+        );
+    }
+
+    string hostname_inject_machine_id (string name) {
+        // we should fit a hyphen and at least one hex digit
+        int chars_left = 63 - name.length;
+        if (chars_left <= 0) {
+            return name;
+        }
+
+        string suffix;
+        try {
+            suffix = "-" + Checksum.compute_for_data (
+                SHA256, get_hostname_proxy_sync ().machine_id
+            )[0 : int.min (8, chars_left)];
+        } catch (Error e) {
+            warning (e.message);
+            return name;
+        }
+
+        int first_dot = name.index_of_char ('.');
+        if (first_dot < 0) {
+            return name + suffix;
+        }
+        return name.splice (first_dot, first_dot, suffix);
+    }
+
+    async void set_hostname (string hostname) throws Error {
+        Hostname1 proxy = yield get_hostname_proxy ();
+        yield proxy.set_static_hostname (hostname);
     }
 
     bool same_ssid (Bytes? ssid1, Bytes? ssid2) {
@@ -100,8 +181,6 @@ namespace Network {
             WPA2_PSK,
             WPA_ENTERPRISE,
             WPA_PSK,
-            STATIC_WEP,
-            DYNAMIC_WEP,
             LEAP,
             OWE,
             NONE,
@@ -244,16 +323,6 @@ namespace Network {
                 key_mgmt = "wpa-psk",
             });
             break;
-        case STATIC_WEP:
-            conn.add_setting (new NM.SettingWirelessSecurity () {
-                key_mgmt = "none",
-            });
-            break;
-        case DYNAMIC_WEP:
-            conn.add_setting (new NM.SettingWirelessSecurity () {
-                key_mgmt = "ieee8021x",
-            });
-            break;
         case LEAP:
             conn.add_setting (new NM.SettingWirelessSecurity () {
                 key_mgmt = "ieee8021x",
@@ -271,6 +340,19 @@ namespace Network {
             break;
         }
     }
+}
+
+[DBus (name = "org.freedesktop.hostname1")]
+public interface Network.Hostname1 : Object {
+
+    public abstract string default_hostname { owned get; }
+    [DBus (name = "MachineID")]
+    public abstract uint8[] machine_id { owned get; }
+
+    public abstract async void set_static_hostname (
+            string hostname,
+            bool interactive = true
+    ) throws Error;
 }
 
 public sealed class Network.AccessPointSorter : Gtk.Sorter {

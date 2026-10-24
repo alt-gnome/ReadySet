@@ -120,7 +120,7 @@ public sealed class ReadySet.Application: Adw.Application {
 
         var finalizer = app_service.finalizer_factory.build ();
         try {
-            yield finalizer.run ();
+            yield finalizer.run (new ProgressData ());
             print ("Done!\n");
 
         } catch (ApplyError e) {
@@ -170,7 +170,7 @@ public sealed class ReadySet.Application: Adw.Application {
     }
 
     void show_devel_window () {
-        new Devel.Window (app_service.context, app_service.options_handler).present ();
+        Devel.Window.show (app_service.context, app_service.options_handler);
     }
 
     void finish (SimpleAction action, Variant? parameter) {
@@ -183,15 +183,18 @@ public sealed class ReadySet.Application: Adw.Application {
                     active_window.hide ();
                 }
                 if (!app_service.context.sandbox) {
-                    app_service.post_act.do.begin ((obj, res) => {
-                        if (!app_service.post_act.do.end (res)) {
+                    app_service.post_act.run.begin ((obj, res) => {
+                        var status = app_service.post_act.run.end (res);
+
+                        if ((status & PostActStatusFlags.STAY_OPEN) == 0) {
                             quit ();
                         }
                     });
                 }
+
                 break;
             case "reboot":
-                quit ();
+                reboot_system.begin ();
                 break;
         }
     }

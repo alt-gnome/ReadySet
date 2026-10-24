@@ -30,6 +30,8 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
 
     public OptionsHandler opt_handler { get; construct; }
 
+    static Window? instance;
+
     public Window (Context context, OptionsHandler opt_handler) {
         Object (context: context, opt_handler: opt_handler);
     }
@@ -39,8 +41,22 @@ public sealed class ReadySet.Devel.Window : Adw.Window {
         fill_context ();
 
         fill_options ();
+        close_request.connect (on_close);
 
         list_box_context.set_placeholder (new Gtk.Label ("No Context?"));
+    }
+
+    public static new void show (Context context, OptionsHandler opt_handler) {
+        if (instance == null) {
+            instance = new Devel.Window (context, opt_handler);
+        }
+
+        instance.present ();
+    }
+
+    public bool on_close () {
+        instance = null;
+        return false;
     }
 
     void on_data_changed () {

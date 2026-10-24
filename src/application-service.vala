@@ -114,6 +114,16 @@ public sealed class ReadySet.ApplicationService : Object {
         if (!options_handler.apply_only) {
             init_lib_css ();
         }
+
+        if (options_handler.style != null) {
+            var provider = new Gtk.CssProvider ();
+            provider.load_from_path (options_handler.style);
+            Gtk.StyleContext.add_provider_for_display (
+                Gdk.Display.get_default (),
+                provider,
+                Gtk.STYLE_PROVIDER_PRIORITY_USER
+            );
+        }
     }
 
     void exec_pre_hooks () {
@@ -152,7 +162,7 @@ public sealed class ReadySet.ApplicationService : Object {
     }
 
     async bool build_model (bool ntd_only, bool quite) {
-        var pages = new Gee.ArrayList<PageInfo> ();
+        var new_model = new PagesModel ();
 
         var initial_position = model == null ? 0 : model.get_selected ();
 
@@ -165,14 +175,14 @@ public sealed class ReadySet.ApplicationService : Object {
             if (addin != null) {
                 var addin_pages = yield addin.build_pages ();
                 if (addin_pages.length == 0) {
-                    pages.add (new PageInfo (
+                    new_model.append (new PageInfo (
                         null,
                         addin
                     ));
 
                 } else {
                     foreach (var page in addin_pages) {
-                        pages.add (new PageInfo (
+                        new_model.append (new PageInfo (
                             page,
                             addin
                         ));
@@ -184,7 +194,7 @@ public sealed class ReadySet.ApplicationService : Object {
                 var installer_step = installer_plugin.steps[PluginManager.get_real_page_id (steps[i])];
                 var installer_page = installer_step.build_page ();
                 if (installer_page != null) {
-                    pages.add (new PageInfo.pluginless (
+                    new_model.append (new PageInfo.pluginless (
                         installer_page,
                         installer_plugin.get_type ().name ()
                     ));
@@ -205,49 +215,36 @@ public sealed class ReadySet.ApplicationService : Object {
             yield;
         }
 
-        var ntd = context.mode == EXISTING_USER && check_nothing_to_do (pages.to_array ());
-        if (ntd) {
-            if (ntd_only) {
-                stderr.printf ("%i\n", ntd ? 0 : 1);
-            } else {
-                print ("There is nothing to do\n");
-            }
+
+        var is_empty = new_model.get_n_items () == 0;
+        var ntd = context.mode == EXISTING_USER && is_empty;
+        if (ntd_only) {
+            stderr.printf ("%i\n", ntd ? 0 : 1);
+            return false;
+        } else if (ntd) {
+            print ("There is nothing to do\n");
             return false;
         }
 
-        if (pages[0].plugin == null || !(pages[0].plugin is Welcome) || context.mode == EXISTING_USER) {
-            pages.insert (0, new PageInfo.builtin (
-                new WelcomePage (context.mode)
-            ));
-        }
-
-        if (context.mode == INSTALLER) {
-            pages.add (new PageInfo.builtin (
-                new SummaryPage (context)
-            ));
-        }
-
-        model = new PagesModel (pages);
-        model.select_item (initial_position, true);
-
-        return true;
-    }
-
-    bool check_nothing_to_do (PageInfo[] pages) {
-        var settings = new Settings ("org.altlinux.ReadySet");
-        if (!settings.get_boolean ("existing-user-mode-enabled")) {
-            return true;
-        }
-
-        PageInfo[] layout_pages = {};
-
-        foreach (var p in pages) {
-            if (p.should_layout) {
-                layout_pages += p;
+        if (!is_empty) {
+            if (!(((PageInfo) new_model.get_item (0)).plugin is Welcome)) {
+                new_model.insert (0, new PageInfo.builtin (
+                    new WelcomePage (context.mode)
+                ));
             }
         }
 
-        return layout_pages.length == 0;
+        if (context.mode == INSTALLER) {
+            new_model.append (new PageInfo.builtin (
+                new SummaryPage (context, this)
+            ));
+        }
+
+        new_model.select_item (initial_position, true);
+
+        model = new_model;
+
+        return true;
     }
 
     public async void is_ntd () requires (context.mode == EXISTING_USER) {

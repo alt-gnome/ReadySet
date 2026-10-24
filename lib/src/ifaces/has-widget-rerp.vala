@@ -18,10 +18,15 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/**
+ * Provides a widget representation of a page's current state.
+ */
 public interface ReadySet.HasWidgetRepr : BasePage {
 
     /**
-     * Widget representation of this page.
+     * Returns a widget representing this page.
+     *
+     * @return the page representation widget
      */
     public abstract Gtk.Widget get_widget_repr ();
 }

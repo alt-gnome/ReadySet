@@ -13,24 +13,23 @@
     background-color: var(--view-bg-color);
 }
 
-.page-to-up-regular {
-    padding: 0 0 66px 0;
+.welcome-header-box {
+    padding: 30px;
+    background: linear-gradient(to bottom, #e3ecf8, #c4cdd8);
 }
 
-.page-to-up-compact {
-    padding: 0 0 50px 0;
+list.stages-box {
+    background: none;
 }
 
-.to-up-button-regular {
-    /* min-width: 34px;
-    min-height: 34px; */
-    padding: 12px;
-    border-radius: 9999px;
+list.stages-box > row {
+    padding: 3px;
 }
 
-.to-up-button-compact {
-    /* min-width: 34px;
-    min-height: 34px; */
+list.stages-box row:hover {
+    background: none;
+}
+
+vte-terminal.log-view {
     padding: 6px;
-    border-radius: 9999px;
 }

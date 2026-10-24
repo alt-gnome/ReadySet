@@ -62,13 +62,13 @@ public class Software.Addin : ReadySet.StepAddin, ReadySet.ApplyAfter {
         return vars;
     }
 
-    public async override void apply (ReadySet.ProgressData progres_data) throws ReadySet.ApplyError {
+    public async override void apply (ReadySet.InitialSetupProgressData progres_data) throws ReadySet.ApplyError {
         foreach (var s in get_sources ()) {
             if (s.id in context.get_strv ("software.enabled-sources")) {
                 try {
                     yield s.apply ();
                 } catch (Error e) {
-                    throw ReadySet.ApplyError.build_error (
+                    warning (
                         _("Failed to add a software source"),
                         e.message
                     );

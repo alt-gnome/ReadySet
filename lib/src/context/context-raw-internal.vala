@@ -20,39 +20,6 @@
 
 public partial class ReadySet.Context {
 
-    internal HashTable<string, string> get_raw_string () {
-        var raw_data = new HashTable<string, string> (str_hash, str_equal);
-
-        foreach (var key in get_keys ()) {
-            string str;
-            switch (data[key].value_type) {
-                case ContextType.STRING:
-                    str = get_string (key);
-                    break;
-                case ContextType.STRV:
-                    str = string.joinv (",", get_strv (key));
-                    break;
-                case ContextType.INT:
-                    str = get_int (key).to_string ();
-                    break;
-                case ContextType.DOUBLE:
-                    str = get_double (key).to_string ();
-                    break;
-                case ContextType.BOOLEAN:
-                    str = get_boolean (key).to_string ();
-                    break;
-                case ContextType.OBJECT:
-                    str = get_object (key).string_format;
-                    break;
-                default:
-                    assert_not_reached ();
-            }
-            raw_data[key] = str;
-        }
-
-        return raw_data;
-    }
-
     internal void set_raw (string key, string value, bool with_lock = false) {
         if (!has_key (key)) {
             return;

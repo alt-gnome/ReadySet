@@ -45,3 +45,5 @@ subdir('dconf')
 install_emptydir(localstatedir/ 'run' / gis)
 install_emptydir(localstatedir/ 'lib' / gis)
 install_emptydir(datadir / gis)
+
+subdir('post-act')

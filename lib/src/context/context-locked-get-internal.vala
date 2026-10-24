@@ -1,39 +1,26 @@
 /*
- * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ * Copyright (C) 2025-2026 David Sultaniiazov <x1z53@alt-gnome.ru>
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public abstract class ReadySetService.Addin : Peas.ExtensionBase {
+public partial class ReadySet.Context {
 
-    construct {
-        var object_path = get_object_path ();
-        assert (object_path.has_prefix ("/"));
-        debug ("Path `/org/altlinux/ReadySet%s` will be used", object_path);
+    internal bool get_locked (string key) {
+        return data[key].locked;
     }
-
-    /**
-     * Object path. Prefix `/org/altlinux/ReadySet` will be added.
-     * Must be started from `/`.
-     */
-    public abstract string get_object_path ();
-
-    /**
-     * Must be a valid DBus class.
-     */
-    public abstract void register_service (DBusConnection conn, string path) throws GLib.IOError;
 }

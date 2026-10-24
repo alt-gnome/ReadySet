@@ -18,10 +18,19 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/**
+ * Describes an optional page supplied by an installer plugin.
+ *
+ * Instances are exposed through {@link ReadySet.InstallerAddin.steps}; the
+ * application uses them to construct the pages selected by its `steps`
+ * option.
+ */
 public abstract class ReadySet.InstallerStep : Object {
 
     /**
-     * Pretty name of step. Will be shown at cli.
+     * Human-readable name of the step shown by command-line interfaces.
+     *
+     * The default value is `null`.
      */
     public virtual string? name {
         get {
@@ -30,8 +39,12 @@ public abstract class ReadySet.InstallerStep : Object {
     }
 
     /**
-     * Build page. It will be added to window if this step
-     * specified in `steps` application option.
+     * Builds the page for this installer step.
+     *
+     * The application adds the returned page when this step is selected by
+     * its `steps` option.
+     *
+     * @return a newly constructed installer page
      */
     public abstract BasePage build_page ();
 }

@@ -61,7 +61,19 @@ public partial class Software.Source : Serialize.DataObject, Serialize.YamlTypeF
     public bool good_type () {
         switch (type_) {
             case "flatpak":
-                //  libflatpak used
+                var flatpak_source = (SourceFlatpak) this;
+                if (flatpak_source.body == null ||
+                    flatpak_source.body.url == null ||
+                    flatpak_source.body.repo_url == null ||
+                    flatpak_source.body.remote_name == null
+                ) {
+                    warning (
+                        "Invalid flatpak software source '%s': body requires url, repo-url and remote-name",
+                        id
+                    );
+                    return false;
+                }
+
                 return true;
             case "stplr":
                 return Program.exists ("stplr");
@@ -103,6 +115,8 @@ public class Software.SourceRemote : Source {
     public sealed class Body : Object {
         public string url { get; set; }
 
+        public string repo_url { get; set; }
+
         public string remote_name { get; set; }
     }
 
@@ -113,7 +127,7 @@ public partial sealed class Software.SourceFlatpak : SourceRemote {
     public async override void apply () throws Error {
         try {
             var proxy = yield get_proxy ();
-            yield proxy.add_flatpak_repo (body.remote_name, body.url);
+            yield proxy.add_flatpak_repo (body.remote_name, body.url, body.repo_url);
 
         } catch (Flatpak.Error e) {
             throw source_error_from_error (
@@ -130,17 +144,13 @@ public partial sealed class Software.SourceFlatpak : SourceRemote {
     public override bool check () {
         try {
             var inst = new Flatpak.Installation.system ();
-
-            Flatpak.Remote? remote = null;
-            try {
-                remote = inst.get_remote_by_name (body.remote_name);
-            } catch (Flatpak.Error e) {
-                if (e.code != Flatpak.Error.REMOTE_NOT_FOUND) {
-                    throw e;
+            foreach (var remote in inst.list_remotes ()) {
+                if (remote.get_url () == body.repo_url && !remote.get_disabled ()) {
+                    return true;
                 }
             }
 
-            return remote != null && !remote.get_disabled ();
+            return false;
 
         } catch (Error e) {
             warning ("Check error: %s", e.message);

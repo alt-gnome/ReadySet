@@ -10,8 +10,8 @@ The plugin is built in two variants with different password quality backends: `u
 
 | Variable | Description | Default value |
 | -------- | ----------- | ------------- |
-| `user.with-root` | Enable the root password page | — |
-| `user.enforce-password-quality` | Prevent proceeding if the password is weak | — |
+| `user.with-root` | Enable the root password page | `false` |
+| `user.enforce-password-quality` | Prevent proceeding if the password is weak | `false` |
 | `user.passwd-conf-path` | Path to the password quality library configuration | — |
 | `user.avatar-directories` | Directories to search for avatar files. If no avatars are found, the `org.gnome.desktop.interface` `avatar-directories` setting is used as a fallback | — |
 
@@ -23,4 +23,10 @@ The plugin is built in two variants with different password quality backends: `u
 | `user.username` | User login name |
 | `user.fullname` | User full name |
 | `user.password` | User password |
+| `user.password-hash` | Hash derived from `user.password` for AccountsService users |
 | `user.root-password` | Root password |
+| `user.root-password-hash` | Hash derived from `user.root-password` |
+
+`user.password` and `user.root-password` are transformed into the corresponding
+hash values when they change. For `systemd-homed` accounts, the plugin uses the
+plain user password through `org.freedesktop.home1` instead.

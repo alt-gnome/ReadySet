@@ -28,14 +28,13 @@ public partial sealed class Software.SourceFlatpak {
     public async override void undo () throws Error {
         try {
             var proxy = yield get_proxy ();
-            yield proxy.remove_flatpak_repo (body.remote_name);
+            yield proxy.remove_flatpak_repo (body.repo_url);
 
         } catch (Error e) {
             throw source_error_from_error (
                 e,
-                _("Failed to disable '%s' flatpak remote with name %s: %s").printf (
-                    body.url,
-                    body.remote_name,
+                _("Failed to disable '%s' flatpak remote: %s").printf (
+                    body.repo_url,
                     e.message
                 )
             );

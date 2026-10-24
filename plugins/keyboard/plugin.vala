@@ -52,7 +52,8 @@ public class Keyboard.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
     public override void init_context () {
         if (!context.sandbox && context.mode == INITIAL_SETUP) {
             try {
-                enabled = new Polkit.Permission.sync ("org.freedesktop.locale1.set-keyboard", null, null).allowed;
+                enabled = new Polkit.Permission.sync ("org.freedesktop.locale1.set-keyboard", null, null).allowed &&
+                    context.get_boolean ("steps.keyboard.enabled");
             } catch (Error e) {
                 error (e.message);
             }
@@ -92,7 +93,7 @@ public class Keyboard.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
         return inputs;
     }
 
-    public async override void apply (ReadySet.ProgressData progress_data) throws ReadySet.ApplyError {
+    public async override void apply (ReadySet.InitialSetupProgressData progress_data) throws ReadySet.ApplyError {
         try {
             var proxy = get_locale_proxy ();
             var settings = get_input_sources_settings ();

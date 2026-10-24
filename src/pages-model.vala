@@ -48,25 +48,19 @@ public sealed class ReadySet.PageInfo : Object {
 
     public bool is_compact {
         get {
-            if (page.info == null) {
-                return page.content.has_css_class ("compact");
-            } else {
-                return page.info.has_css_class ("compact");
-            }
+            return page.has_css_class ("compact");
         }
         set {
             if (value) {
-                if (page.info == null) {
-                    page.content.add_css_class ("compact");
-                } else {
+                if (page.info != null) {
                     page.info.add_css_class ("compact");
                 }
+                page.add_css_class ("compact");
             } else {
-                if (page.info == null) {
-                    page.content.remove_css_class ("compact");
-                } else {
+                if (page.info != null) {
                     page.info.remove_css_class ("compact");
                 }
+                page.remove_css_class ("compact");
             }
         }
     }
@@ -172,20 +166,7 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
         "should-layout"
     ));
 
-    public Gee.ArrayList<PageInfo> pages { get; construct; }
-
-    public PagesModel (Gee.ArrayList<PageInfo> pages) {
-        Object (
-            pages: pages
-        );
-    }
-
     construct {
-        foreach (var page in pages) {
-            store.append (page);
-
-            page.notify["should-layout"].connect (page_should_layout_changed);
-        }
         real_model = new Gtk.SingleSelection (new Gtk.FilterListModel (
             store, filter
         ));
@@ -194,6 +175,16 @@ public sealed class ReadySet.PagesModel : Object, ListModel, Gtk.SelectionModel 
         real_model.items_changed.connect (on_real_model_items_changed);
 
         unselect_all ();
+    }
+
+    public void insert (int position, PageInfo page) {
+        page.notify["should-layout"].connect (page_should_layout_changed);
+        store.insert (position, page);
+    }
+
+    public void append (PageInfo page) {
+        page.notify["should-layout"].connect (page_should_layout_changed);
+        store.append (page);
     }
 
     void page_should_layout_changed () {

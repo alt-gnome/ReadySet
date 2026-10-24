@@ -1,7 +1,7 @@
 plugin_software_service_deps = [
   api_base_dep,
   flatpak_dep,
-  librss_dep,
+  librs_dep,
 ]
 
 plugin_software_service_sources = files(

@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -26,15 +26,17 @@ public abstract class User.PagePasswordCommon : ReadySet.BasePage {
 
     protected abstract void update_is_ready ();
 
-    public override bool try_continue () {
+    public override void try_continue () {
         var password_good = password_is_correct (get_password ());
 
         if (password_good) {
-            return true;
+            next ();
+            return;
         }
 
         if (force_true) {
-            return true;
+            next ();
+            return;
         }
 
         var dialog = new Adw.AlertDialog (
@@ -48,8 +50,6 @@ public abstract class User.PagePasswordCommon : ReadySet.BasePage {
 
         dialog.response.connect (on_bad_passwd_dialog_response);
         dialog.present (this);
-
-        return false;
     }
 
     void on_bad_passwd_dialog_response (string response) {

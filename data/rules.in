@@ -3,7 +3,8 @@ polkit.addRule(function(action, subject) {
         return;
 
     var actionMatches =
-        action.id.indexOf("@SERVICE_NAME@.") === 0;
+        action.id.indexOf("@SERVICE_NAME@.") === 0 ||
+        action.id.indexOf("org.freedesktop.login1.") === 0;
 
     if (actionMatches) {
         if (subject.local)

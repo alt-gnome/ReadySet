@@ -21,9 +21,13 @@
 [DBus (name = "org.altlinux.ReadySet.SoftwareSources")]
 public interface Software.Service : Object {
 
-    public async abstract void add_flatpak_repo (string remote_name, string url) throws Error;
+    public async abstract void add_flatpak_repo (
+        string remote_name,
+        string flatpakrepo_url,
+        string repo_url
+    ) throws Error;
 
-    public async abstract void remove_flatpak_repo (string remote_name) throws Error;
+    public async abstract void remove_flatpak_repo (string repo_url) throws Error;
 
     public async abstract void add_stplr_repo (string remote_name, string url) throws Error;
 

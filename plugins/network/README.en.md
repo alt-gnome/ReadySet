@@ -1,10 +1,17 @@
 # Network plugin
 
-Configure network connections (Ethernet, Wi-Fi) and set the system hostname.
+Configures Ethernet, Wi-Fi, and modem connections through NetworkManager and
+sets the system hostname when changes are applied.
+
+## Settings
+
+| Variable | Description | Default value |
+| -------- | ----------- | ------------- |
+| `network.simple` | Show the step only when NetworkManager does not report full connectivity | `false` |
+| `network.required` | Require an active network connection before continuing | `false` |
 
 ## Stored context variables
 
 | Variable | Description |
 | -------- | ----------- |
 | `network.hostname` | System hostname |
-| `network.required` | Whether an active network connection is required to proceed |

@@ -1,0 +1,30 @@
+using Gtk 4.0;
+
+template $ReadySetInstallerStageRow: ListBoxRow {
+  accessibility {
+    labelled-by: name_label;
+  }
+
+  Box {
+    spacing: 12;
+
+    Label name_label {
+      styles [
+        "dimmed",
+      ]
+
+      hexpand: true;
+      halign: start;
+      ellipsize: end;
+    }
+
+    Label state_label {
+      styles [
+        "dimmed",
+      ]
+
+      halign: end;
+      use-markup: true;
+    }
+  }
+}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ready-set\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-06 20:29+0000\n"
+"POT-Creation-Date: 2026-10-24 13:22+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,43 +33,55 @@ msgstr ""
 msgid "Setting up the system…"
 msgstr ""
 
-#: data/ui/initial-setup-end-page.blp:53 data/ui/installer-end-page.blp:53
+#: data/ui/initial-setup-end-page.blp:53 data/ui/installer-end-page.blp:197
 msgid "All done!"
 msgstr ""
 
-#: data/ui/installer-end-page.blp:36 src/end-pages/installer.vala:63
+#: data/ui/installer-end-page.blp:55
 msgid "Installing system…"
+msgstr ""
+
+#: data/ui/installer-end-page.blp:56
+msgid "This could take a while. Don’t turn of a computer."
+msgstr ""
+
+#: data/ui/installer-end-page.blp:126 data/ui/installer-end-page.blp:138
+msgid "Detailed information"
+msgstr ""
+
+#: data/ui/installer-end-page.blp:172 data/ui/installer-end-page.blp:182
+msgid "Hide logs"
+msgstr ""
+
+#: data/ui/installer-end-page.blp:208
+msgid "Continue using live system"
+msgstr ""
+
+#: data/ui/installer-end-page.blp:223
+msgid "Reboot now"
 msgstr ""
 
 #: data/ui/nothing-to-show.blp:30 plugins/language/data/ui/box.blp:44
 msgid "Nothing to show"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:374 data/ui/steps-main-page.blp:597
-msgid "Go to previous page"
-msgstr ""
-
-#: data/ui/steps-main-page.blp:392 data/ui/steps-main-page.blp:616
-msgid "Next"
-msgstr ""
-
-#: data/ui/steps-main-page.blp:404 data/ui/steps-main-page.blp:629
-msgid "Extend/Retract keyboard"
-msgstr ""
-
-#: data/ui/steps-main-page.blp:486 data/ui/steps-main-page.blp:664
+#: data/ui/steps-main-page.blp:321 data/ui/steps-main-page.blp:436
 msgid "Open Context menu"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:524
-msgid "Go up"
+#: data/ui/steps-main-page.blp:365
+msgid "Next"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:544 data/ui/steps-main-page.blp:550
-msgid "Go up to the beginning"
+#: data/ui/steps-main-page.blp:383
+msgid "Go to previous page"
 msgstr ""
 
-#: data/ui/steps-main-page.blp:651
+#: data/ui/steps-main-page.blp:403
+msgid "Extend/Retract keyboard"
+msgstr ""
+
+#: data/ui/steps-main-page.blp:423
 msgid "Return to setup"
 msgstr ""
 
@@ -92,20 +104,20 @@ msgstr ""
 #. *
 #. * Title that will be shown at header or steps sidebar.
 #.
-#: lib/src/base/base-page.vala:65
+#: lib/src/base/base-page.vala:64
 msgid "Unknown"
 msgstr ""
 
-#: lib/src/base/base-page.vala:110
+#: lib/src/base/base-page.vala:101
 msgid "Unknown page"
 msgstr ""
 
-#: lib/src/base/base-page.vala:113
+#: lib/src/base/base-page.vala:104
 msgid "This page says that your distribution has made a mistake."
 msgstr ""
 
 #. It's not json string, just return message
-#: lib/src/lib-utils-internal.vala:47
+#: lib/src/lib-utils-internal.vala:47 src/end-pages/installer.vala:199
 msgid "Something went wrong"
 msgstr ""
 
@@ -115,7 +127,7 @@ msgid "Apply"
 msgstr ""
 
 #: plugins/date-and-time/data/ui/date-selector.blp:5
-#: plugins/date-and-time/data/ui/page.blp:68
+#: plugins/date-and-time/data/ui/page.blp:69
 msgid "Date"
 msgstr ""
 
@@ -160,7 +172,7 @@ msgstr ""
 msgid "Automatic setting of date and time"
 msgstr ""
 
-#: plugins/date-and-time/data/ui/page.blp:81
+#: plugins/date-and-time/data/ui/page.blp:82
 #: plugins/date-and-time/data/ui/time-selector.blp:5
 msgid "Time"
 msgstr ""
@@ -169,11 +181,11 @@ msgstr ""
 msgid "Nothing found"
 msgstr ""
 
-#: plugins/date-and-time/page.vala:141
+#: plugins/date-and-time/page.vala:149
 msgid "Failed to connect to timedate service: "
 msgstr ""
 
-#: plugins/date-and-time/page.vala:164
+#: plugins/date-and-time/page.vala:174
 msgid "Undefined"
 msgstr ""
 
@@ -185,11 +197,11 @@ msgstr ""
 msgid "Error when setting timezone"
 msgstr ""
 
-#: plugins/date-and-time/plugin.vala:80
+#: plugins/date-and-time/plugin.vala:81
 msgid "Error when setting NTP"
 msgstr ""
 
-#: plugins/date-and-time/plugin.vala:88
+#: plugins/date-and-time/plugin.vala:90
 msgid "Error when setting time"
 msgstr ""
 
@@ -249,7 +261,7 @@ msgstr ""
 msgid "Additinal layout switch"
 msgstr ""
 
-#: plugins/keyboard/plugin.vala:119
+#: plugins/keyboard/plugin.vala:120
 msgid "Error when setting keyboard layout"
 msgstr ""
 
@@ -292,6 +304,11 @@ msgid ""
 "continue."
 msgstr ""
 
+#: plugins/network/data/ui/access-point-row.blp:51
+#: plugins/network/data/ui/ethernet-connection-row.blp:39
+msgid "Configure…"
+msgstr ""
+
 #: plugins/network/data/ui/ap-security-editor.blp:42
 #: plugins/user/data/ui/page-password.blp:24
 msgid "Security"
@@ -303,10 +320,6 @@ msgstr ""
 
 #: plugins/network/data/ui/ethernet-adapter-window.blp:55
 msgid "Add a Connection…"
-msgstr ""
-
-#: plugins/network/data/ui/ethernet-connection-row.blp:39
-msgid "Configure…"
 msgstr ""
 
 #: plugins/network/data/ui/page.blp:25 plugins/network/data/ui/page.blp:30
@@ -321,104 +334,120 @@ msgstr ""
 msgid "Host Name"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:75
+#: plugins/network/data/ui/page.blp:87
 msgid "SIM Cards and Mobile Network"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:79
+#: plugins/network/data/ui/page.blp:91
 msgid "Ethernet"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:83
+#: plugins/network/data/ui/page.blp:95
 msgid "Wi-Fi"
 msgstr ""
 
-#: plugins/network/data/ui/page.blp:98
+#: plugins/network/data/ui/page.blp:110
 msgid "Wi-Fi adapter"
 msgstr ""
 
-#: plugins/network/plugin.vala:193
+#: plugins/network/data/ui/page.blp:133
+msgid "Starting up…"
+msgstr ""
+
+#: plugins/network/data/ui/page.blp:134
+msgid "Waiting for NetworkManager"
+msgstr ""
+
+#: plugins/network/data/ui/page.blp:143
+msgid "Networking is unavailable"
+msgstr ""
+
+#: plugins/network/data/ui/page.blp:144
+msgid "NetworkManager is not running"
+msgstr ""
+
+#: plugins/network/plugin.vala:214
 msgid "Failed to apply network settings"
 msgstr ""
 
-#: plugins/network/utils.vala:58
-msgid "Leading hyphen is not allowed"
-msgstr ""
-
-#: plugins/network/utils.vala:67
-msgid "Only Latin letters, digits and hyphens are allowed"
-msgstr ""
-
-#: plugins/network/utils.vala:73
+#: plugins/network/utils.vala:65
 msgid "Host name is too short"
 msgstr ""
 
-#: plugins/network/utils.vala:78
-msgid "Trailing hyphen is not allowed"
+#: plugins/network/utils.vala:68
+msgid "Host name is too long"
 msgstr ""
 
-#: plugins/network/utils.vala:141
+#: plugins/network/utils.vala:74
+msgid "Empty host name sections are not allowed"
+msgstr ""
+
+#: plugins/network/utils.vala:80
+msgid "A host name section cannot start with a hyphen"
+msgstr ""
+
+#: plugins/network/utils.vala:90
+msgid "Non-ASCII characters are not allowed"
+msgstr ""
+
+#: plugins/network/utils.vala:95
+msgid "Only letters, digits, hyphens and dots are allowed"
+msgstr ""
+
+#: plugins/network/utils.vala:102
+msgid "A host name section cannot end with a hyphen"
+msgstr ""
+
+#: plugins/network/utils.vala:220
 #, c-format
 msgid "Wired connection %u"
 msgstr ""
 
-#: plugins/network/wifi.vala:68
+#: plugins/network/wifi.vala:73
 msgid "Can't connect: undetermined security type"
 msgstr ""
 
-#: plugins/network/wifi.vala:144
+#: plugins/network/wifi.vala:162
 msgid "Connection setup failed"
 msgstr ""
 
-#: plugins/network/wifi.vala:155
+#: plugins/network/wifi.vala:174
 msgid "Connection failed"
 msgstr ""
 
-#: plugins/network/wifi.vala:191
+#: plugins/network/wifi.vala:202
 msgid "Connecting…"
 msgstr ""
 
-#: plugins/network/wifi.vala:196
+#: plugins/network/wifi.vala:207
 msgid "Connected"
 msgstr ""
 
-#: plugins/network/wifi.vala:198
+#: plugins/network/wifi.vala:209
 msgid "Connected without internet"
 msgstr ""
 
-#: plugins/network/wifi.vala:202
+#: plugins/network/wifi.vala:213
 msgid "Disconnecting…"
 msgstr ""
 
-#: plugins/network/wifi.vala:274
+#: plugins/network/wifi.vala:327
 msgid "WPA/WPA2/WPA3 Enterprise"
 msgstr ""
 
-#: plugins/network/wifi.vala:279
+#: plugins/network/wifi.vala:332
 msgid "WPA3 Personal"
 msgstr ""
 
-#: plugins/network/wifi.vala:284
+#: plugins/network/wifi.vala:337
 msgid "WPA/WPA2 Personal"
 msgstr ""
 
-#: plugins/network/wifi.vala:289
-msgid "WEP 40/104-bit Key (Hex/ASCII)"
-msgstr ""
-
-#: plugins/network/wifi.vala:293
-msgid "WEP 128-bit Passphrase"
-msgstr ""
-
-#: plugins/network/wifi.vala:298
-msgid "Dynamic WEP (802.1x)"
-msgstr ""
-
-#: plugins/network/wifi.vala:303
+#: plugins/network/wifi.vala:342
 msgid "LEAP"
 msgstr ""
 
-#: plugins/network/wifi.vala:308
+#: plugins/network/wifi.vala:347
 msgid "Enhanced Open"
 msgstr ""
 
@@ -426,11 +455,11 @@ msgstr ""
 msgid "Privacy"
 msgstr ""
 
-#: plugins/privacy/data/ui/page.blp:30
+#: plugins/privacy/data/ui/page.blp:33
 msgid "Location Services"
 msgstr ""
 
-#: plugins/privacy/data/ui/page.blp:39
+#: plugins/privacy/data/ui/page.blp:42
 msgid "Allows apps to determine your geographical location."
 msgstr ""
 
@@ -485,22 +514,22 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: plugins/software/source.vala:121
+#: plugins/software/source.vala:135
 #, c-format
 msgid "Failed to add or enable '%s' flatpak remote with name %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:166
+#: plugins/software/source.vala:176
 #, c-format
 msgid "Failed to add '%s' stplr repository with name %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:232
+#: plugins/software/source.vala:242
 #, c-format
 msgid "Failed to add apt repository with repos: %s: %s"
 msgstr ""
 
-#: plugins/software/source.vala:308
+#: plugins/software/source.vala:318
 #, c-format
 msgid "Failed to exec: %s: %s"
 msgstr ""
@@ -513,21 +542,21 @@ msgstr ""
 msgid "Be careful not to lose your password."
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:57
+#: plugins/user/data/ui/page-password.blp:59
 msgid "Your user’s password"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:66
+#: plugins/user/data/ui/page-password.blp:68
 msgid "Generate user password"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:81
-#: plugins/user/data/ui/page-root-password.blp:84
+#: plugins/user/data/ui/page-password.blp:83
+#: plugins/user/data/ui/page-root-password.blp:86
 msgid "Passwords do not match"
 msgstr ""
 
-#: plugins/user/data/ui/page-password.blp:85
-#: plugins/user/data/ui/page-root-password.blp:88
+#: plugins/user/data/ui/page-password.blp:87
+#: plugins/user/data/ui/page-root-password.blp:90
 msgid "Repeat password"
 msgstr ""
 
@@ -547,11 +576,11 @@ msgstr ""
 msgid "Set administrator same as user password"
 msgstr ""
 
-#: plugins/user/data/ui/page-root-password.blp:60
+#: plugins/user/data/ui/page-root-password.blp:62
 msgid "Administrator’s password"
 msgstr ""
 
-#: plugins/user/data/ui/page-root-password.blp:69
+#: plugins/user/data/ui/page-root-password.blp:71
 msgid "Generate root password"
 msgstr ""
 
@@ -586,19 +615,19 @@ msgstr ""
 msgid "Username will be used to name your home folder and can't be changed."
 msgstr ""
 
-#: plugins/user/page-password-common.vala:41
+#: plugins/user/page-password-common.vala:43
 msgid "Weak password"
 msgstr ""
 
-#: plugins/user/page-password-common.vala:42
+#: plugins/user/page-password-common.vala:44
 msgid "The entered password is not secure. Do you really want to use it?"
 msgstr ""
 
-#: plugins/user/page-password-common.vala:44
+#: plugins/user/page-password-common.vala:46
 msgid "_No"
 msgstr ""
 
-#: plugins/user/page-password-common.vala:45
+#: plugins/user/page-password-common.vala:47
 msgid "_Yes"
 msgstr ""
 
@@ -697,29 +726,29 @@ msgid ""
 "Adding more letters, numbers and punctuation will make the password stronger."
 msgstr ""
 
-#: plugins/user/utils.vala:122
+#: plugins/user/utils.vala:134
 msgid "Name cannot be empty"
 msgstr ""
 
-#: plugins/user/utils.vala:210
+#: plugins/user/utils.vala:222
 msgid "That username isn't available. Please try another"
 msgstr ""
 
-#: plugins/user/utils.vala:212
+#: plugins/user/utils.vala:224
 msgid "The username is too long"
 msgstr ""
 
-#: plugins/user/utils.vala:214
+#: plugins/user/utils.vala:226
 msgid "The username must start with a lower case letter from a-z"
 msgstr ""
 
-#: plugins/user/utils.vala:216
+#: plugins/user/utils.vala:228
 msgid ""
 "The username should only consist of lower case letters from a-z, digits, and "
 "the following characters: '-', '_'"
 msgstr ""
 
-#: plugins/user/utils.vala:219
+#: plugins/user/utils.vala:231
 msgid "Username cannot be empty"
 msgstr ""
 
@@ -745,87 +774,121 @@ msgid "Print 0 if nothing to do else 1 to stderr"
 msgstr ""
 
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/end-pages/initial-setup.vala:44 src/end-pages/installer.vala:44
+#: src/end-pages/initial-setup.vala:44
 #, c-format
 msgid "_Start Using %s"
 msgstr ""
 
 #. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
-#: src/end-pages/initial-setup.vala:46 src/end-pages/installer.vala:46
+#: src/end-pages/initial-setup.vala:46
 #, c-format
 msgid "%s is ready to be used."
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:48 src/end-pages/installer.vala:48
+#: src/end-pages/initial-setup.vala:48
 msgid "_Start Using the System"
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:49 src/end-pages/installer.vala:49
+#: src/end-pages/initial-setup.vala:49
 msgid "System is ready to be used."
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:63
+#: src/end-pages/initial-setup.vala:65
 msgid "Applying changes…"
 msgstr ""
 
-#: src/end-pages/initial-setup.vala:85 src/end-pages/installer.vala:86
+#: src/end-pages/initial-setup.vala:87 src/end-pages/installer.vala:120
 #, c-format
 msgid "Error message: %s"
 msgstr ""
 
-#: src/options-handler.vala:39
+#. Translators: %s here is os distribution name: ALT, Fedora, Ubuntu
+#: src/end-pages/installer.vala:66
+#, c-format
+msgid "%s is installed on Your device."
+msgstr ""
+
+#: src/end-pages/installer.vala:68
+msgid "System is installed on Your device."
+msgstr ""
+
+#: src/end-pages/installer.vala:102
+msgid "Preparing"
+msgstr ""
+
+#: src/end-pages/installer.vala:103
+msgid "Installing"
+msgstr ""
+
+#: src/end-pages/installer.vala:104
+msgid "Cleaning"
+msgstr ""
+
+#: src/end-pages/installer.vala:123
+msgid "Installation error"
+msgstr ""
+
+#: src/end-pages/installer.vala:200
+msgid "Details"
+msgstr ""
+
+#: src/options-handler.vala:42
 msgid "Context vars"
 msgstr ""
 
-#: src/options-handler.vala:47
+#: src/options-handler.vala:50
 msgid "Force run with mode"
 msgstr ""
 
-#: src/options-handler.vala:55
+#: src/options-handler.vala:58
 msgid "Make window closable always"
 msgstr ""
 
-#: src/options-handler.vala:62
+#: src/options-handler.vala:65
 msgid "Run window in fullscreen"
 msgstr ""
 
-#: src/options-handler.vala:69
+#: src/options-handler.vala:72
 msgid "Specify installer plugin"
 msgstr ""
 
-#: src/options-handler.vala:76
+#: src/options-handler.vala:79
 msgid "Sandbox run without doing anything in system"
 msgstr ""
 
-#: src/options-handler.vala:83
+#: src/options-handler.vala:86
 msgid "Steps. E.g: `steps=language,keyboard`"
 msgstr ""
 
-#: src/options-handler.vala:90
+#: src/options-handler.vala:93
 msgid "Window can be resized or not"
 msgstr ""
 
-#: src/options-handler.vala:97
+#: src/options-handler.vala:100
 msgid "Width of a window"
 msgstr ""
 
-#: src/options-handler.vala:104
+#: src/options-handler.vala:107
 msgid "Height of a window"
 msgstr ""
 
-#: src/options-handler.vala:111
-msgid "Set layout for window: `big`, `small`, `vertical`, `horizontal`"
+#: src/options-handler.vala:114
+msgid "Set layout for window: `big`, `small`, `vertical`"
 msgstr ""
 
-#: src/options-handler.vala:118
+#: src/options-handler.vala:121
 msgid "Print version information and exit"
 msgstr ""
 
-#: src/options-handler.vala:125
+#: src/options-handler.vala:128
 msgid "Run apply from config without running GUI"
 msgstr ""
 
-#: src/options-handler.vala:132
+#: src/options-handler.vala:135
+msgid "Add css stylesheet for window"
+msgstr ""
+
+#: src/options-handler.vala:142
 msgid "App config file"
 msgstr ""
 
@@ -859,6 +922,18 @@ msgstr ""
 
 #: src/pages/welcome.vala:53
 msgid "After some choices, the system will be installed on Your device."
+msgstr ""
+
+#: src/widgets/installer-stage-row.vala:46
+msgid "Finished"
+msgstr ""
+
+#: src/widgets/installer-stage-row.vala:49
+msgid "Waiting"
+msgstr ""
+
+#: src/widgets/installer-stage-row.vala:53
+msgid "Processing…"
 msgstr ""
 
 #: tests/plugins/test-common/data/ui/page.blp:23

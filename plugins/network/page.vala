@@ -23,6 +23,9 @@ public sealed class Network.Page : ReadySet.BasePage {
     [GtkChild]
     unowned Adw.EntryRow hostname_entry;
     [GtkChild]
+    unowned Gtk.Stack networking;
+
+    [GtkChild]
     unowned Adw.PreferencesGroup simcard_group;
 
     [GtkChild]
@@ -33,7 +36,7 @@ public sealed class Network.Page : ReadySet.BasePage {
     [GtkChild]
     unowned ModeledStack wifi_adapters;
 
-    string _hostname = Environment.get_host_name ();
+    string _hostname = Addin.get_instance ().default_hostname;
     public string hostname {
         get {
             return _hostname;
@@ -55,6 +58,10 @@ public sealed class Network.Page : ReadySet.BasePage {
             "network.hostname",
             SYNC_CREATE
         );
+
+        addin.client.notify["nm-running"].connect (set_networking_page);
+        addin.client.notify["startup"].connect (set_networking_page);
+        set_networking_page ();
 
 #if 0
         addin.modems.bind_property ("n-items",
@@ -93,16 +100,27 @@ public sealed class Network.Page : ReadySet.BasePage {
     }
 
     void update_is_ready () {
-        string? error;
-        good_hostname = validate_hostname (_hostname, out error);
-        hostname_error = error;
+        try {
+            good_hostname = validate_hostname (_hostname);
+            hostname_error = null;
+            hostname_entry.remove_css_class ("error");
+        } catch (HostnameError e) {
+            good_hostname = false;
+            hostname_error = e.message;
+            hostname_entry.add_css_class ("error");
+        }
 
         is_ready = good_hostname && validate_network ();
+    }
 
-        if (good_hostname) {
-            hostname_entry.remove_css_class ("error");
+    void set_networking_page () {
+        NM.Client nmc = Addin.get_instance ().client;
+        if (nmc.nm_running) {
+            networking.visible_child_name = "running";
+        } else if (nmc.startup) {
+            networking.visible_child_name = "waiting";
         } else {
-            hostname_entry.add_css_class ("error");
+            networking.visible_child_name = "fail";
         }
     }
 
