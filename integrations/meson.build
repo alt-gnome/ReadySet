@@ -29,6 +29,6 @@ foreach unit, wants: unit_files
   )
 
   foreach target: wants
-    meson.add_install_script(meson.project_source_root() / 'tools' / 'meson-add-wants.sh', systemd_user_unit_dir, target, unit)
+    meson.add_install_script(meson.project_source_root() / 'tools' / 'meson-add-wants.sh', systemd_user_unit_dir, target, fs.name (unit))
   endforeach
 endforeach
