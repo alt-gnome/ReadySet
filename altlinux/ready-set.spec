@@ -8,7 +8,7 @@
 %define libname lib%name
 %define girname ReadySet
 %define soversion 0.15
-%define minor_version 0
+%define minor_version 1
 %define gis_name gnome-initial-setup
 
 Name: ready-set
@@ -417,6 +417,11 @@ install -Dpm 0644 %SOURCE1 %buildroot%_rpmmacrosdir/%name
 %_rpmmacrosdir/%name
 
 %changelog
+* Sun Oct 25 2026 Vladimir Romanov <rirusha@altlinux.org> 0.15.1-alt1
+- New version: 0.15.1.
+- Full release note here:
+  https://altlinux.space/alt-gnome/ReadySet/releases/tag/v0.15.1
+
 * Sat Oct 24 2026 Vladimir Romanov <rirusha@altlinux.org> 0.15.0-alt1
 - New version: 0.15.0 (closes #60735, #60683).
 - Added dedicated post-act plugins for GNOME Initial Setup and Phrog,
