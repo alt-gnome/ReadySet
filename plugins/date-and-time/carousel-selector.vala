@@ -30,11 +30,11 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
     public string separator { get; construct set; default = ""; }
     public bool carousel_separator { get; construct set; default = true; }
 
-    public Serialize.Array<Gtk.Adjustment> adjustments =
-        new Serialize.Array<Gtk.Adjustment> ();
+    public Gee.ArrayList<Gtk.Adjustment> adjustments =
+        new Gee.ArrayList<Gtk.Adjustment> ();
 
-    Serialize.Array<DateAndTime.InfinityCarousel> carousels =
-        new Serialize.Array<DateAndTime.InfinityCarousel> ();
+    Gee.ArrayList<DateAndTime.InfinityCarousel> carousels =
+        new Gee.ArrayList<DateAndTime.InfinityCarousel> ();
 
     string current_text;
 

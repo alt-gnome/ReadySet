@@ -31,7 +31,7 @@ test('plugin-manager',
       gio_dep,
       libadwaita_dep,
       libpeas_dep,
-      libserialize_dep,
+      libdeser_dep,
       polkit_dep,
     ],
   )

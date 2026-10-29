@@ -116,7 +116,7 @@ namespace ReadySet {
      *
      * @see ApplyError
      */
-    public class ApplyErrorData : Serialize.DataObject {
+    public class ApplyErrorData : Deser.DataObject {
 
         /**
          * Error message. Will be used as title on error page.
@@ -346,7 +346,13 @@ namespace ReadySet {
          * @see ApplyErrorData
          */
         public static ApplyError build_error (string message, string description) {
-            return new ApplyError.BASE (new ApplyErrorData (message, description).to_json ());
+            try {
+                return new ApplyError.BASE (Deser.JsonWorker.serialize (
+                    new ApplyErrorData (message, description),
+                    new Deser.ObjectCodec<ApplyErrorData> ()));
+            } catch (Deser.Error e) {
+                return new ApplyError.BASE (description);
+            }
         }
 
     }

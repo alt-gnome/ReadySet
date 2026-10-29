@@ -33,7 +33,7 @@ public sealed class Keyboard.InputSourcesManager : Object {
     Cancellable ibus_cancellable;
 #endif
 
-    Serialize.Array<SteviaLayoutData>? stevia_layouts = null;
+    GLib.GenericArray<SteviaLayoutData>? stevia_layouts = null;
 
     public ListStore sources_model { get; default = new ListStore (typeof (InputInfo)); }
 
@@ -62,13 +62,7 @@ public sealed class Keyboard.InputSourcesManager : Object {
             string content;
             FileUtils.get_contents ("/usr/share/phosh-osk-stevia/layouts.json", out content);
 
-            stevia_layouts = Serialize.JsonWorker.simple_array_from_json<SteviaLayoutData> (
-                content,
-                { "layouts" },
-                new Serialize.Settings () {
-                    names_case = Serialize.Case.KEBAB
-                }
-            );
+            stevia_layouts = new Deser.JsonWorker (content).deserialize_object<SteviaLayoutsData> ().layouts;
         } catch (Error e) {}
     }
 

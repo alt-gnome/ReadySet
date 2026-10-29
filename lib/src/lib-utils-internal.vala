@@ -41,8 +41,8 @@ namespace ReadySet {
 
     internal ApplyErrorData apply_error_to_data (ApplyError error) {
         try {
-            return Serialize.JsonWorker.simple_from_json<ApplyErrorData> (error.message);
-        } catch (Serialize.Error e) {
+            return new Deser.JsonWorker (error.message).deserialize_object<ApplyErrorData> ();
+        } catch (Deser.Error e) {
             //  It's not json string, just return message
             return new ApplyErrorData (_("Something went wrong"), error.message);
         }

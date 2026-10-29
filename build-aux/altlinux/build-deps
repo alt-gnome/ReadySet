@@ -30,8 +30,7 @@ libpeas2-devel
 libpeas2-gir-devel
 libpolkit-devel
 libpwquality-devel
-libserialize-devel
-libserialize-gir-devel
+
 libsystemd-devel
 libtuner-devel
 libtuner-gir-devel

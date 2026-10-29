@@ -27,9 +27,9 @@ public class DateAndTime.DateSelector : Adw.PreferencesDialog {
     public int month { get; set; }
     public int year { get; set; }
 
-    public Serialize.Array<Gtk.Adjustment> adjustments {
+    public Gee.ArrayList<Gtk.Adjustment> adjustments {
         get; set;
-        default = new Serialize.Array<Gtk.Adjustment> ();
+        default = new Gee.ArrayList<Gtk.Adjustment> ();
     }
 
     public int day_limit { get; set; }

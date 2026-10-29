@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Software.Group : Serialize.DataObject {
+public class Software.Group : Deser.DataObject {
 
     public string name { get; set; }
 

@@ -19,7 +19,7 @@
  */
 
 namespace DateAndTime {
-    Serialize.Dict<string>? default_timezones = null;
+    GLib.HashTable<string, string>? default_timezones = null;
 
     int clamp_value (int value, int min, int max) {
         var delta = max - min;
@@ -65,7 +65,8 @@ namespace DateAndTime {
             file.load_contents (null, out data, null);
             var content = (string) data;
 
-            default_timezones = Serialize.JsonWorker.simple_dict_from_json<string> (content);
+            default_timezones = new Deser.JsonWorker (content).deserialize_with_codec (
+                Deser.create_codec_for_map<string> ());
         } catch (Error error) {
             warning (error.message);
         }
@@ -80,11 +81,7 @@ namespace DateAndTime {
             }
         }
 
-        if (default_timezones.has_key (identifier)) {
-            return default_timezones[identifier];
-        }
-
-        return null;
+        return default_timezones.lookup (identifier);
     }
 
     public string? get_locale_country (string full_locale) {

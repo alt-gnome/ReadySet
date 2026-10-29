@@ -13,7 +13,7 @@ foreach pwcheck_backend : password_check_backend
     crypt_dep,
     gnome_desktop_dep,
     librs_dep,
-    libserialize_dep,
+    libdeser_dep,
     posix_dep,
     dependency(pwcheck_backend)
   ]

@@ -1,7 +1,7 @@
 deps = [
   api_base_dep,
   flatpak_dep,
-  libserialize_dep,
+  libdeser_dep,
   tuner_dep,
 ]
 
