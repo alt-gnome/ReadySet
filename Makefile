@@ -3,7 +3,7 @@
 ifeq ($(shell id -u), 0)
 	SUDO :=
 else
-	SUDO := sudo
+	SUDO = $(shell command -v sudo run0 2>/dev/null | head -n 1)
 endif
 
 PM := $(shell if command -v apm >/dev/null 2>&1; then echo 'apm s'; elif command -v apt-get >/dev/null 2>&1; then echo apt-get; fi)
