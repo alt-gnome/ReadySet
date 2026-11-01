@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2024-2026 Vladimir Romanov <rirusha@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -36,8 +36,6 @@ public sealed class Keyboard.InputSourcesManager : Object {
     Serialize.Array<SteviaLayoutData>? stevia_layouts = null;
 
     public ListStore sources_model { get; default = new ListStore (typeof (InputInfo)); }
-
-    public signal void changed ();
 
     construct {
         xkb_info = get_xkb_info ();
@@ -80,7 +78,11 @@ public sealed class Keyboard.InputSourcesManager : Object {
 #if HAVE_IBUS
             yield get_ibus_locale_infos ();
 #endif
+            yield get_locale_auto (false);
+        } else {
+            yield get_locale_auto (true);
         }
+
     }
 
     public string? get_humanity_name (InputInfo input_info) {
@@ -133,22 +135,9 @@ public sealed class Keyboard.InputSourcesManager : Object {
     }
 
     async void get_locale_infos () {
-        string type = null;
         string id = null;
         string lang = null;
         string country = null;
-
-        var inputs = get_current_inputs ();
-        inputs.clear_automatically_added ();
-
-        if (Gnome.Languages.get_input_source_from_locale (ReadySet.get_current_lang (), out type, out id)) {
-            inputs.add (new InputInfo (type, id) {
-                added_automatically = true
-            });
-            set_current_inputs (inputs);
-
-            yield add_source_to_model (type, id, true);
-        }
 
         if (!Gnome.Languages.parse_locale (ReadySet.get_current_lang (), out lang, out country, null, null)) {
             return;
@@ -168,8 +157,35 @@ public sealed class Keyboard.InputSourcesManager : Object {
 
         list = xkb_info.get_all_layouts ();
         yield add_sources_to_model (list, INPUT_SOURCE_TYPE_XKB, id, true);
+    }
 
-        changed ();
+    async void get_locale_auto (bool with_stevia) {
+        string type = null;
+        string id = null;
+
+        var inputs = get_current_inputs ();
+        inputs.clear_automatically_added ();
+
+        if (Gnome.Languages.get_input_source_from_locale (ReadySet.get_current_lang (), out type, out id)) {
+            bool found = false;
+            if (with_stevia) {
+                foreach (var l in stevia_layouts) {
+                    if (l.layout_id == id && l.type_ == type) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (found) {
+                inputs.add (new InputInfo (type, id) {
+                    added_automatically = true
+                });
+                set_current_inputs (inputs);
+
+                yield add_source_to_model (type, id, true);
+            }
+        }
     }
 
     public bool get_layout (string type, string id, out string layout, out string variant) {
@@ -245,11 +261,7 @@ public sealed class Keyboard.InputSourcesManager : Object {
             }
         }
 
-        get_ibus_locale_infos.begin (on_get_ibus_locale_infos_callback);
-    }
-
-    void on_get_ibus_locale_infos_callback () {
-        changed ();
+        get_ibus_locale_infos.begin ();
     }
 
     void maybe_start_ibus () {
