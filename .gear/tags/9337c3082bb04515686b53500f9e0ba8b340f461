@@ -1,0 +1,8 @@
+object fee6434a0d689035a5d8a7bbfa984f1786b9617c
+type commit
+tag v0.15.2
+tagger Gitea <gitea@fake.local> 1793535977 +0300
+
+Fix 0.15.2
+
+- Fixed adding locale-depending input source if stevia present
