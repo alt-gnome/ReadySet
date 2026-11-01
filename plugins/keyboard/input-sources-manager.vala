@@ -73,16 +73,16 @@ public sealed class Keyboard.InputSourcesManager : Object {
     public async void init () {
         sources_model.remove_all ();
 
-        if (!(yield get_stevia_infos ())) {
+        yield add_auto ();
+
+        if (stevia_layouts == null) {
             yield get_locale_infos ();
 #if HAVE_IBUS
             yield get_ibus_locale_infos ();
 #endif
-            yield get_locale_auto (false);
         } else {
-            yield get_locale_auto (true);
+            yield get_stevia_infos ();
         }
-
     }
 
     public string? get_humanity_name (InputInfo input_info) {
@@ -113,9 +113,9 @@ public sealed class Keyboard.InputSourcesManager : Object {
         return null;
     }
 
-    async bool get_stevia_infos () {
+    async void get_stevia_infos () {
         if (stevia_layouts == null) {
-            return false;
+            return;
         }
 
         foreach (var mid in MAIN_SOURCES) {
@@ -130,8 +130,6 @@ public sealed class Keyboard.InputSourcesManager : Object {
         foreach (var layout in stevia_layouts) {
             yield add_source_to_model (layout.type_, layout.layout_id, true);
         }
-
-        return true;
     }
 
     async void get_locale_infos () {
@@ -159,7 +157,7 @@ public sealed class Keyboard.InputSourcesManager : Object {
         yield add_sources_to_model (list, INPUT_SOURCE_TYPE_XKB, id, true);
     }
 
-    async void get_locale_auto (bool with_stevia) {
+    async void add_auto () {
         string type = null;
         string id = null;
 
@@ -167,8 +165,10 @@ public sealed class Keyboard.InputSourcesManager : Object {
         inputs.clear_automatically_added ();
 
         if (Gnome.Languages.get_input_source_from_locale (ReadySet.get_current_lang (), out type, out id)) {
-            bool found = false;
-            if (with_stevia) {
+            bool found = true;
+
+            if (stevia_layouts != null) {
+                found = false;
                 foreach (var l in stevia_layouts) {
                     if (l.layout_id == id && l.type_ == type) {
                         found = true;
@@ -181,11 +181,12 @@ public sealed class Keyboard.InputSourcesManager : Object {
                 inputs.add (new InputInfo (type, id) {
                     added_automatically = true
                 });
-                set_current_inputs (inputs);
 
-                yield add_source_to_model (type, id, true);
+                yield add_source_to_model (type, id, false);
             }
         }
+
+        set_current_inputs (inputs);
     }
 
     public bool get_layout (string type, string id, out string layout, out string variant) {
