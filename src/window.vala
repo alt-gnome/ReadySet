@@ -75,7 +75,7 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
         resizable = app_service.options_handler.resizable;
         deletable = Config.NIGHTLY ||
             app_service.options_handler.can_close ||
-            app_service.context.mode == EXISTING_USER;
+            app_service.context.mode == INSTALLER;
 
         set_window_content ();
     }
