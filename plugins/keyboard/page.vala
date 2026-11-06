@@ -27,10 +27,26 @@ public sealed class Keyboard.Page : ReadySet.BasePage, ReadySet.HasStringRepr {
     unowned Gtk.ListBox switch_box;
     [GtkChild]
     unowned LayoutSwitchRow switch_row;
+    [GtkChild]
+    unowned Adw.ShortcutLabel current_switch_label;
 
     bool has_hw_keybaord = try_to_detect_hw_keyboatd ();
 
     construct {
+        var settings = new Settings ("org.gnome.desktop.wm.keybindings");
+        var current_switch = settings.get_strv ("switch-input-source");
+
+        bool has_valid_current_accel;
+        foreach (var accel in current_switch) {
+            if (Gtk.accelerator_parse (accel, null, null)) {
+                has_valid_current_accel = true;
+                current_switch_label.accelerator = accel;
+            }
+        }
+        if (!has_valid_current_accel) {
+            warning ("No valid default layout switch combination");
+        }
+
         Addin.get_instance ().context.data_changed.connect (on_context_data_changed);
         update_is_ready ();
         update_has_hw ();

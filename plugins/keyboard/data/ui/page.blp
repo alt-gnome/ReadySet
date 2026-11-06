@@ -56,8 +56,17 @@ template $KeyboardPage: $ReadySetBasePage {
 
         selection-mode: none;
 
+        Adw.ActionRow current_row {
+          title: _("Use this keyboard shortcut to switch the layout");
+
+          [suffix]
+          Adw.ShortcutLabel current_switch_label {
+            valign: center;
+          }
+        }
+
         $KeyboardLayoutSwitchRow switch_row {
-          title: _("You can specify additional layout switch combination");
+          title: _("You can also specify additional layout switch combination");
         }
       }
     }
