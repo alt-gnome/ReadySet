@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public sealed class Keyboard.SteviaLayoutData : Serialize.DataObject {
+public sealed class Keyboard.SteviaLayoutData : Deser.DataObject {
 
     [Description (nick = "type")]
     public string type_ { get; set; }
@@ -30,4 +30,15 @@ public sealed class Keyboard.SteviaLayoutData : Serialize.DataObject {
     public string language { get; set; }
 
     public string flavor { get; set; }
+}
+
+public sealed class Keyboard.SteviaLayoutsData : Deser.DataObject {
+    public GLib.GenericArray<SteviaLayoutData> layouts { get; set; }
+
+    public override Deser.ValueCodec get_property_codec (GLib.ParamSpec property)
+        throws Deser.Error {
+        if (property.name == "layouts")
+            return Deser.create_codec_for_array<SteviaLayoutData> ();
+        return base.get_property_codec (property);
+    }
 }

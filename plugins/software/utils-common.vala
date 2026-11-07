@@ -40,16 +40,31 @@ public interface Software.Service : Object {
     public async abstract void exec_custom (string cmd) throws Error;
 }
 
-public sealed class Software.StplrRepo : Serialize.DataObject {
+public sealed class Software.StplrRepo : Deser.DataObject {
 
     public string name { get; set; }
 
     public string url { get; set; }
 }
 
-public sealed class Software.ApmRepo : Serialize.DataObject {
+public sealed class Software.ApmRepo : Deser.DataObject {
 
     public string entry { get; set; }
+}
+
+public sealed class Software.ApmRepoData : Deser.DataObject {
+    public GLib.GenericArray<ApmRepo> repositories { get; set; }
+
+    public override Deser.ValueCodec get_property_codec (GLib.ParamSpec property)
+        throws Deser.Error {
+        if (property.name == "repositories")
+            return Deser.create_codec_for_array<ApmRepo> ();
+        return base.get_property_codec (property);
+    }
+}
+
+public sealed class Software.ApmRepoResponse : Deser.DataObject {
+    public ApmRepoData data { get; set; }
 }
 
 namespace Software {
@@ -90,9 +105,11 @@ namespace Software {
                         string content;
                         FileUtils.get_contents (file, out content);
 
-                        var tsources_data = Serialize.YamlWorker.simple_from_yaml<SourcesData> (content);
-                        sources_data.groups.add_all (tsources_data.groups);
-                        sources_data.sources.add_all (tsources_data.sources);
+                        var tsources_data = new Deser.YamlWorker (content).deserialize_object<SourcesData> ();
+                        foreach (var group in tsources_data.groups)
+                            sources_data.groups.add (group);
+                        foreach (var source in tsources_data.sources)
+                            sources_data.sources.add (source);
 
                     } catch (Error e) {
                         warning (

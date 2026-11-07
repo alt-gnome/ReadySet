@@ -28,9 +28,9 @@ public class DateAndTime.TimeSelector : Adw.PreferencesDialog {
 
     public signal void apply ();
 
-    public Serialize.Array<Gtk.Adjustment> adjustments {
+    public Gee.ArrayList<Gtk.Adjustment> adjustments {
         get; set;
-        default = new Serialize.Array<Gtk.Adjustment> ();
+        default = new Gee.ArrayList<Gtk.Adjustment> ();
     }
 
     construct {

@@ -18,11 +18,46 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public sealed class Software.SourcesData : Serialize.DataObject {
+public sealed class Software.SourcesData : Deser.DataObject {
 
-    public Serialize.Array<Group> groups { get; set; default = new Serialize.Array<Group> (); }
+    static GLib.Type resolve_source_type (
+        GLib.Type declared_type, Deser.ValueView node, Deser.DecodeContext context
+    ) throws Deser.Error {
+        var entries = node.open_map ();
+        string key;
+        Deser.ValueView value;
+        while (entries.next (out key, out value)) {
+            if (key != "type") continue;
+            switch (value.get_text ()) {
+                case "flatpak": return typeof (SourceFlatpak);
+                case "stplr": return typeof (SourceStplr);
+                case "alt-repo": return typeof (SourceAltRepo);
+                case "custom": return typeof (SourceCustom);
+                default:
+                    throw new Deser.Error.INVALID_CONCRETE_TYPE (
+                        "%s: unknown source type", context.path ());
+            }
+        }
+        throw new Deser.Error.MISSING_REQUIRED ("%s: missing type", context.path ());
+    }
 
-    public Serialize.Array<Source> sources { get; set; default = new Serialize.Array<Source> (); }
+    public GLib.GenericArray<Group> groups { get; set; default = new GLib.GenericArray<Group> (); }
+
+    public GLib.GenericArray<Source> sources { get; set; default = new GLib.GenericArray<Source> (); }
+
+    public override Deser.ValueCodec get_property_codec (GLib.ParamSpec property)
+        throws Deser.Error {
+        switch (property.name) {
+            case "groups":
+                return Deser.create_codec_for_array<Group> ();
+            case "sources":
+                return new Deser.GenericArrayCodec<Source> (
+                    new Deser.ObjectCodec<Source> (
+                        new Deser.ObjectCodecOptions ().with_resolver (resolve_source_type)));
+            default:
+                return base.get_property_codec (property);
+        }
+    }
 }
 
 [SingleInstance]

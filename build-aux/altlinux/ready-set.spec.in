@@ -41,7 +41,7 @@ BuildRequires: gir(Gdm) = 1.0
 BuildRequires: gir(Gtk) = 4.0
 BuildRequires: gir(NM) = 1.0
 BuildRequires: gir(Peas) = 2
-BuildRequires: gir(Serialize) = 7
+BuildRequires: gir(Deser) = 0.1
 BuildRequires: gir(Tuner) = 1
 BuildRequires: gir(Vte) = 2.91
 BuildRequires: typelib(Case) = 0
@@ -57,14 +57,14 @@ BuildRequires: pkgconfig(libcase-0)
 BuildRequires: pkgconfig(libnm)
 BuildRequires: pkgconfig(libnma-gtk4)
 BuildRequires: pkgconfig(libpeas-2)
-BuildRequires: pkgconfig(libserialize-7) >= 7.5
+BuildRequires: pkgconfig(libdeser-0.1) >= 0.1
 BuildRequires: pkgconfig(passwdqc)
 BuildRequires: pkgconfig(polkit-gobject-1)
 BuildRequires: pkgconfig(pwquality)
 BuildRequires: pkgconfig(systemd)
 BuildRequires: pkgconfig(tuner-1)
 BuildRequires: pkgconfig(xkbcommon)
-BuildRequires: pkgconfig(libapi-base-7)
+BuildRequires: pkgconfig(libsession-0.1)
 BuildRequires: pkgconfig(vte-2.91-gtk4)
 
 %description

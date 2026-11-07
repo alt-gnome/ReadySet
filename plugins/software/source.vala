@@ -31,32 +31,7 @@ public Software.SourceError source_error_from_error (Error e, string common_mess
     return new Software.SourceError.COMMON (common_message);
 }
 
-public partial class Software.Source : Serialize.DataObject, Serialize.YamlTypeFamily {
-
-    public GLib.Type match_type_yaml (Serialize.YamlValue node) {
-        foreach (var pair in node.mapping_pairs) {
-            if (pair.key.node_type == Yaml.NodeType.SCALAR && pair.key.scalar == "type") {
-                if (pair.value.node_type != Yaml.NodeType.SCALAR) {
-                    continue;
-                }
-
-                switch (pair.value.scalar) {
-                    case "flatpak":
-                        return typeof (SourceFlatpak);
-                    case "stplr":
-                        return typeof (SourceStplr);
-                    case "alt-repo":
-                        return typeof (SourceAltRepo);
-                    case "custom":
-                        return typeof (SourceCustom);
-                    default:
-                        error ("Unknown type: %s", pair.value.scalar);
-                }
-            }
-        }
-
-        error ("Type must be present");
-    }
+public partial class Software.Source : Deser.DataObject {
 
     public bool good_type () {
         switch (type_) {
@@ -189,8 +164,8 @@ public partial sealed class Software.SourceStplr : SourceRemote {
             }, STDOUT_PIPE | STDERR_SILENCE);
             Bytes? buf;
             if (sp.communicate (null, null, out buf, null)) {
-                var worker = new Serialize.JsonWorker.from_bytes (buf);
-                var repos = worker.deserialize_array<StplrRepo> ();
+                var worker = new Deser.JsonWorker.from_bytes (buf);
+                var repos = worker.deserialize_with_codec (Deser.create_codec_for_array<StplrRepo> ());
 
                 foreach (var r in repos) {
                     if (r.name == body.remote_name) {
@@ -255,8 +230,8 @@ public partial class Software.SourceAltRepo : Source {
                 }, STDOUT_PIPE | STDERR_SILENCE);
                 Bytes? buf;
                 if (sp.communicate (null, null, out buf, null)) {
-                    var worker = new Serialize.JsonWorker.from_bytes (buf, { "data", "repositories" });
-                    var repos = worker.deserialize_array<ApmRepo> ();
+                    var worker = new Deser.JsonWorker.from_bytes (buf);
+                    var repos = worker.deserialize_object<ApmRepoResponse> ().data.repositories;
 
                     uint checked = 0;
                     foreach (var r in repos) {

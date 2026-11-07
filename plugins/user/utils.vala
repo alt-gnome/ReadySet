@@ -238,14 +238,16 @@ namespace User {
         return Password.strength (password).level != BAD;
     }
 
-    string build_homed_password_record (string password) {
-        var passwords = new Serialize.Array<string> ();
+    string build_homed_password_record (string password) throws Deser.Error {
+        var passwords = new GLib.GenericArray<string> ();
         passwords.add (password);
 
-        var record = new Serialize.Dict<Serialize.Array<string>> ();
-        record.set ("password", passwords);
+        var record = new GLib.HashTable<string, GLib.GenericArray<string>> (str_hash, str_equal);
+        record.insert ("password", passwords);
 
-        return Serialize.JsonWorker.serialize (record);
+        return Deser.JsonWorker.serialize (record,
+            new Deser.HashTableCodec<GLib.GenericArray<string>> (
+                Deser.create_codec_for_array<string> ()));
     }
 
     async void set_homed_password (string username, string password) throws Error {

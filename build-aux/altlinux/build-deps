@@ -13,7 +13,7 @@ gtk-doc
 libaccountsservice-devel
 libadwaita-devel
 libadwaita-gir-devel
-libapi-base-devel
+libsession-devel
 libcase-devel
 libcase-gir-devel
 libflatpak-devel
@@ -30,8 +30,7 @@ libpeas2-devel
 libpeas2-gir-devel
 libpolkit-devel
 libpwquality-devel
-libserialize-devel
-libserialize-gir-devel
+
 libsystemd-devel
 libtuner-devel
 libtuner-gir-devel

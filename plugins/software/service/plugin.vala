@@ -40,8 +40,8 @@ public sealed class SoftwareSources.Service : Object {
             }
         }
 
-        var session = new ApiBase.Session ();
-        var request = new ApiBase.Request.GET (flatpakrepo_url);
+        var session = new Session.Session ();
+        var request = new Session.Request.GET (flatpakrepo_url);
         var data = yield session.send_and_read_async (request);
         if (data == null) {
             throw new IOError.INVALID_DATA (
