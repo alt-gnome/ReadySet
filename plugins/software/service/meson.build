@@ -1,5 +1,5 @@
 plugin_software_service_deps = [
-  api_base_dep,
+  libsession_dep,
   flatpak_dep,
   librs_dep,
 ]

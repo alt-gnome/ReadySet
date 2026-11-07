@@ -1,5 +1,5 @@
 deps = [
-  api_base_dep,
+  libsession_dep,
   flatpak_dep,
   libdeser_dep,
   tuner_dep,
