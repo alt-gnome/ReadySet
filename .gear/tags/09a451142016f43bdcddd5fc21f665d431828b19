@@ -1,0 +1,9 @@
+object 4dca3a54f22de14846524949a92e2e5774838f36
+type commit
+tag v0.15.4
+tagger Gitea <gitea@fake.local> 1794249553 +0300
+
+Fix 0.15.4
+
+- Fixed `existing-user-mode-enabled` behaivor.
+- Fixed `nothing-to-do` command with `apply-only` option.

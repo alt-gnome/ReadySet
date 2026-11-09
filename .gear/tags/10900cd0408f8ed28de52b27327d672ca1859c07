@@ -1,8 +1,0 @@
-object 16be8d8bdae863380210026f3d5005a5a711984f
-type commit
-tag v0.15.3
-tagger Gitea <gitea@fake.local> 1793540721 +0300
-
-Fix 0.15.3
-
-- Fixed auto input source without stevia.
