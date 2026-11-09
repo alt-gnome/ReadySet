@@ -133,18 +133,18 @@ public sealed class ReadySet.Application: Adw.Application {
     public override void activate () {
         base.activate ();
 
-        if (app_service.options_handler.apply_only) {
+        if (command == CommandHandler.NTD) {
             hold ();
-            apply_only.begin (() => {
+            app_service.is_ntd.begin ((obj, res) => {
                 release ();
             });
 
             return;
         }
 
-        if (command == CommandHandler.NTD) {
+        if (app_service.options_handler.apply_only) {
             hold ();
-            app_service.is_ntd.begin ((obj, res) => {
+            apply_only.begin (() => {
                 release ();
             });
 
