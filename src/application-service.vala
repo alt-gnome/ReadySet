@@ -217,7 +217,8 @@ public sealed class ReadySet.ApplicationService : Object {
 
 
         var is_empty = new_model.get_n_items () == 0;
-        var ntd = context.mode == EXISTING_USER && is_empty;
+        var ntd = context.mode == EXISTING_USER &&
+            (!new Settings ("org.altlinux.ReadySet").get_boolean ("existing-user-mode-enabled") || is_empty);
         if (ntd_only) {
             stderr.printf ("%i\n", ntd ? 0 : 1);
             return false;
