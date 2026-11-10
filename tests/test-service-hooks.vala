@@ -218,6 +218,25 @@ void test_exec_hooks_with_env_vars () {
     }
 }
 
+void test_get_all_hooks_sorted () {
+    try {
+        var hooks_dir = Path.build_filename (temp_root, "sorted_hooks");
+        DirUtils.create_with_parents (hooks_dir, 0755);
+
+        string[] names = { "02-second", "10-last", "01-first", "03-third" };
+        foreach (var name in names) {
+            create_executable_script (Path.build_filename (hooks_dir, name), "#!/bin/sh\n");
+        }
+
+        var res = string.joinv (",", ReadySet.get_all_hooks_from_dir (File.new_for_path (hooks_dir)));
+        if (res != "01-first,02-second,03-third,10-last") {
+            Test.fail_printf ("Expected hooks in alphabetical order, got %s", res);
+        }
+    } catch (Error e) {
+        Test.fail_printf ("Expected get_all_hooks_from_dir to succeed, got error: %s", e.message);
+    }
+}
+
 public static int main (string[] args) {
     Test.init (ref args);
 
@@ -230,6 +249,7 @@ public static int main (string[] args) {
     Test.add_func ("/hooks/skips-non-executable", test_exec_hooks_skips_non_executable);
     Test.add_func ("/hooks/skips-directories", test_exec_hooks_skips_directories);
     Test.add_func ("/hooks/with-env-vars", test_exec_hooks_with_env_vars);
+    Test.add_func ("/hooks/sorted", test_get_all_hooks_sorted);
 
     return Test.run ();
 }
