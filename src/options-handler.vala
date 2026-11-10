@@ -288,7 +288,8 @@ public sealed class ReadySet.OptionsHandler : Object {
     public void fill_context (Context ctx) {
         if (conf_keyfile.has_group (CTX_GROUP_NAME)) {
             try {
-                ctx.load_from_keyfile (conf_keyfile, CTX_GROUP_NAME, true);
+                //  Settings are locked after `--context` is applied, so it can override them
+                ctx.load_from_keyfile (conf_keyfile, CTX_GROUP_NAME);
             } catch (Error e) {
                 error ("Error in working with config file: %s", e.message);
             }
@@ -297,7 +298,7 @@ public sealed class ReadySet.OptionsHandler : Object {
         foreach (var context_var in context) {
             var context_var_parts = context_var.split ("=", 2);
             if (context_var_parts.length == 2) {
-                ctx.set_raw (context_var_parts[0], context_var_parts[1], true);
+                ctx.set_raw (context_var_parts[0], context_var_parts[1]);
             } else {
                 error ("Invalid context var: %s", context_var);
             }
