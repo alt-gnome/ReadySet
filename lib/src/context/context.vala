@@ -518,6 +518,10 @@ public partial class ReadySet.Context : Object {
      * @param value the new value
      */
     public void set_value (string key, owned Value value) {
+        if (!check_key (key)) {
+            return;
+        }
+
         bool res;
         if (data[key].value_type == OBJECT) {
             res = data[key].object_type == value.get_object ().get_type ();
