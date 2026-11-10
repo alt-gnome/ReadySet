@@ -54,11 +54,12 @@ hash_password (const gchar *plain)
 static const gchar
 salt_char (GRand *rand)
 {
-        const gchar salt[] = "ABCDEFGHIJKLMNOPQRSTUVXYZ"
-                             "abcdefghijklmnopqrstuvxyz"
+        const gchar salt[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                             "abcdefghijklmnopqrstuvwxyz"
                              "./0123456789";
 
-        return salt[g_rand_int_range (rand, 0, G_N_ELEMENTS (salt))];
+        /* Don't pick the trailing NUL, it truncates the salt */
+        return salt[g_rand_int_range (rand, 0, G_N_ELEMENTS (salt) - 1)];
 }
 
 static gchar *
