@@ -43,6 +43,28 @@ public sealed class ReadySet.Service : Object {
     public void copy_to_user (string src, string dest, string username, BusName sender) throws Error {
         ReadySet.polkit_check (sender, "org.altlinux.ReadySet.CopyToUser");
 
-        ReadySet.copy_to_user (src, dest, username);
+        var sender_uid = get_sender_uid (sender);
+
+        //  Don't let the caller copy files it can't read itself
+        ReadySet.copy_to_user (src, dest, username, sender_uid == 0 ? -1 : sender_uid);
+    }
+
+    uint32 get_sender_uid (BusName sender) throws Error {
+        var conn = Bus.get_sync (BusType.SYSTEM);
+        var reply = conn.call_sync (
+            "org.freedesktop.DBus",
+            "/org/freedesktop/DBus",
+            "org.freedesktop.DBus",
+            "GetConnectionUnixUser",
+            new Variant ("(s)", sender),
+            new VariantType ("(u)"),
+            DBusCallFlags.NONE,
+            -1
+        );
+
+        uint32 uid;
+        reply.get ("(u)", out uid);
+
+        return uid;
     }
 }
