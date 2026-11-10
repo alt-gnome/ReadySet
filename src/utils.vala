@@ -86,7 +86,7 @@ namespace ReadySet {
 
         foreach (var gid in all_group_ids) {
             unowned Posix.Group? gr = Posix.getgrgid (gid);
-            if (gr.gr_name == group_name) {
+            if (gr != null && gr.gr_name == group_name) {
                 return true;
             }
         }
