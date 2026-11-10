@@ -118,6 +118,11 @@ public sealed class ReadySet.Application: Adw.Application {
     async void apply_only () {
         yield app_service.init_model ();
 
+        if (app_service.context.sandbox) {
+            print ("Sandbox mode: nothing will be applied\n");
+            return;
+        }
+
         var finalizer = app_service.finalizer_factory.build ();
         try {
             yield finalizer.run (new ProgressData ());
