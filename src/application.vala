@@ -190,6 +190,8 @@ public sealed class ReadySet.Application: Adw.Application {
                             quit ();
                         }
                     });
+                } else {
+                    quit ();
                 }
 
                 break;
