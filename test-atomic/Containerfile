@@ -1,9 +1,0 @@
-ARG IMAGE
-
-FROM $IMAGE
-
-COPY ./ /src
-
-RUN --mount=type=bind,source=./test-atomic/image.yml,target=/etc/apm/image.yml \
-    --mount=type=bind,source=./test-atomic/resources,target=/etc/apm/resources \
-    apm system image build
