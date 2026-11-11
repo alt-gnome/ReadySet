@@ -113,7 +113,15 @@ namespace ReadySet {
         return real_exec_hook_from_dir (hooks_dir, name, env);
     }
 
+    void check_hook_name (string name) throws Error {
+        if (name == "" || name == "." || name == ".." || "/" in name) {
+            throw new DBusError.INVALID_ARGS ("Wrong hook name: %s", name);
+        }
+    }
+
     bool real_exec_hook_from_dir (File dir, string name, string[] env = {}) throws Error {
+        check_hook_name (name);
+
         var script = Path.build_filename (dir.get_path (), name);
 
         var rs_env = new string[env.length];
