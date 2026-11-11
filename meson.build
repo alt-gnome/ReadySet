@@ -100,6 +100,10 @@ post_act_plugins_dir = pkglib_dir / 'plugins' / 'post-act'
 service_plugins_dir = pkglib_dir / 'plugins' / 'service'
 
 global_conf = configuration_data()
+cc = meson.get_compiler('c')
+global_conf.set('HAVE_CRYPT_H', cc.has_header('crypt.h'))
+global_conf.set('HAVE_CRYPT_R', cc.has_function('crypt_r', dependencies: crypt_dep))
+global_conf.set('HAVE_LIBXCRYPT', cc.has_function('crypt_gensalt_rn', dependencies: crypt_dep))
 global_conf.set_quoted('NAME', meson.project_name())
 global_conf.set_quoted('APP_ID', app_id)
 global_conf.set_quoted('APP_ID_DYN', app_id_dyn)
