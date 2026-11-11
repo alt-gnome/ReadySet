@@ -218,6 +218,37 @@ void test_exec_hooks_with_env_vars () {
     }
 }
 
+void test_exec_hook_rejects_path_traversal () {
+    var hooks_dir = Path.build_filename (temp_root, "traversal_hooks");
+    var marker_file = Path.build_filename (temp_root, "marker_traversal");
+
+    try {
+        DirUtils.create_with_parents (hooks_dir, 0755);
+        create_executable_script (
+            Path.build_filename (temp_root, "outside.sh"),
+            "#!/bin/sh\ntouch " + marker_file
+        );
+    } catch (Error e) {
+        Test.fail_printf ("Failed to set up test: %s", e.message);
+        return;
+    }
+
+    string[] bad_names = { "../outside.sh", "sub/../../outside.sh", "..", ".", "" };
+
+    foreach (var name in bad_names) {
+        try {
+            ReadySet.real_exec_hook_from_dir (File.new_for_path (hooks_dir), name);
+            Test.fail_printf ("Expected hook name '%s' to be rejected", name);
+        } catch (Error e) {
+            // Expected
+        }
+    }
+
+    if (File.new_for_path (marker_file).query_exists ()) {
+        Test.fail_printf ("Script outside of hooks dir was executed");
+    }
+}
+
 public static int main (string[] args) {
     Test.init (ref args);
 
@@ -230,6 +261,7 @@ public static int main (string[] args) {
     Test.add_func ("/hooks/skips-non-executable", test_exec_hooks_skips_non_executable);
     Test.add_func ("/hooks/skips-directories", test_exec_hooks_skips_directories);
     Test.add_func ("/hooks/with-env-vars", test_exec_hooks_with_env_vars);
+    Test.add_func ("/hooks/rejects-path-traversal", test_exec_hook_rejects_path_traversal);
 
     return Test.run ();
 }
