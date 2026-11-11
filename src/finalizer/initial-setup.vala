@@ -132,12 +132,16 @@ public sealed class ReadySet.InitialSetupFinalizer : Finalizer {
 
             var pre_hooks_dir = get_user_hooks_dir (hooks_type, hooks_target);
 
-            foreach (var name in ReadySet.get_all_hooks_from_dir (pre_hooks_dir)) {
-                try {
-                    ReadySet.real_exec_hook_from_dir (pre_hooks_dir, name, env.to_array ());
-                } catch (Error e) {
-                    warning ("Error on executing post hook %s: %s", name, e.message);
+            try {
+                foreach (var name in ReadySet.get_all_hooks_from_dir (pre_hooks_dir)) {
+                    try {
+                        ReadySet.real_exec_hook_from_dir (pre_hooks_dir, name, env.to_array ());
+                    } catch (Error e) {
+                        warning ("Error on executing post hook %s: %s", name, e.message);
+                    }
                 }
+            } catch (Error e) {
+                warning ("Error on executing user post hooks: %s", e.message);
             }
 
             foreach (var name in yield get_ready_set_proxy ().get_all_hooks (hooks_type, hooks_target)) {

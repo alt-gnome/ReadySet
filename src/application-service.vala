@@ -136,8 +136,16 @@ public sealed class ReadySet.ApplicationService : Object {
 
                 var pre_hooks_dir = get_user_hooks_dir (hooks_type, hooks_target);
 
-                foreach (var name in ReadySet.get_all_hooks_from_dir (pre_hooks_dir)) {
-                    ReadySet.real_exec_hook_from_dir (pre_hooks_dir, name);
+                try {
+                    foreach (var name in ReadySet.get_all_hooks_from_dir (pre_hooks_dir)) {
+                        try {
+                            ReadySet.real_exec_hook_from_dir (pre_hooks_dir, name);
+                        } catch (Error e) {
+                            warning ("Error on executing pre hook %s: %s", name, e.message);
+                        }
+                    }
+                } catch (Error e) {
+                    warning ("Error on executing user pre hooks: %s", e.message);
                 }
 
             } else if (context.mode == Mode.INSTALLER) {
@@ -149,7 +157,11 @@ public sealed class ReadySet.ApplicationService : Object {
             var service = get_ready_set_proxy_sync ();
 
             foreach (var name in service.get_all_hooks (hooks_type, hooks_target)) {
-                service.exec_hook (hooks_type, hooks_target, name);
+                try {
+                    service.exec_hook (hooks_type, hooks_target, name);
+                } catch (Error e) {
+                    warning ("Error on executing pre hook %s: %s", name, e.message);
+                }
             }
 
         } catch (Error e) {
