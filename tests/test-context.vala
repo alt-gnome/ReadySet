@@ -588,6 +588,18 @@ void test_load_from_keyfile_unknown_key () {
     }
 }
 
+void test_set_unknown_key () {
+    var ctx = create_test_context ();
+
+    Test.expect_message (null, LogLevelFlags.LEVEL_WARNING, "*Key unknown.key not found in context");
+    ctx.set_string ("unknown.key", "value");
+    Test.assert_expected_messages ();
+
+    if (ctx.has_key ("unknown.key")) {
+        Test.fail_printf ("Unknown key must not be added");
+    }
+}
+
 void test_get_raw_string () {
     var ctx = create_test_context ();
     ctx.set_string (KEY_STRING, "hello");
@@ -813,6 +825,7 @@ public static int main (string[] args) {
     Test.add_func ("/context/load-from-keyfile/missing-group", test_load_from_keyfile_missing_group);
     Test.add_func ("/context/load-from-keyfile/unknown-key", test_load_from_keyfile_unknown_key);
 
+    Test.add_func ("/context/set-unknown-key", test_set_unknown_key);
     Test.add_func ("/context/get-raw-string", test_get_raw_string);
 
     Test.add_func ("/context/var-info/creation", test_context_var_info_creation);
