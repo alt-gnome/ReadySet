@@ -215,6 +215,39 @@ void test_empty_dir () {
     cleanup_dir (dir);
 }
 
+void test_cli_context_overrides_config () {
+    var dir = create_temp_dir ();
+    write_conf_file (dir, "config", "[Context]\ntest.setting=from-config\ntest.value=from-config\n");
+
+    var ctx = new ReadySet.Context (true);
+    var vars = new HashTable<string, ReadySet.ContextVarInfo> (str_hash, str_equal);
+    vars["setting"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING) { setting = true };
+    vars["value"] = new ReadySet.ContextVarInfo (ReadySet.ContextType.STRING);
+    ctx.register_vars ("test", vars);
+
+    var options = new VariantDict ();
+    options.insert_value (
+        ReadySet.OptionsHandler.OPT_CONF_FILE,
+        new Variant.bytestring (dir.get_child ("config").get_path ())
+    );
+    options.insert_value ("context", new Variant.strv ({ "test.setting=from-cli", "test.value=from-cli" }));
+
+    var handler = new ReadySet.OptionsHandler.from_options (options);
+    handler.fill_context (ctx);
+
+    if (ctx.get_string ("test.setting") != "from-cli") {
+        Test.fail_printf ("Expected setting from --context, got '%s'", ctx.get_string ("test.setting"));
+    }
+    if (ctx.get_string ("test.value") != "from-cli") {
+        Test.fail_printf ("Expected value from --context, got '%s'", ctx.get_string ("test.value"));
+    }
+    if (!ctx.get_locked ("test.setting")) {
+        Test.fail_printf ("Expected setting to be locked");
+    }
+
+    cleanup_dir (dir);
+}
+
 public static int main (string[] args) {
     Test.init (ref args);
 
@@ -223,6 +256,7 @@ public static int main (string[] args) {
     Test.add_func ("/options-handler/load-conf-files-from-dir/string-list", test_string_list_merge);
     Test.add_func ("/options-handler/load-conf-files-from-dir/missing-dir", test_missing_dir);
     Test.add_func ("/options-handler/load-conf-files-from-dir/empty-dir", test_empty_dir);
+    Test.add_func ("/options-handler/fill-context/cli-overrides-config", test_cli_context_overrides_config);
 
     return Test.run ();
 }
