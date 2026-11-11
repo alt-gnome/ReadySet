@@ -118,9 +118,22 @@ public sealed class ReadySet.Application: Adw.Application {
     async void apply_only () {
         yield app_service.init_model ();
 
+        ProgressData progress_data;
+        switch (app_service.context.mode) {
+            case INSTALLER:
+                progress_data = new InstallerProgressData ();
+                break;
+            case INITIAL_SETUP:
+                progress_data = new InitialSetupProgressData ();
+                break;
+            default:
+                progress_data = new ProgressData ();
+                break;
+        }
+
         var finalizer = app_service.finalizer_factory.build ();
         try {
-            yield finalizer.run (new ProgressData ());
+            yield finalizer.run (progress_data);
             print ("Done!\n");
 
         } catch (ApplyError e) {
