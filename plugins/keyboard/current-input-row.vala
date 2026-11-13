@@ -87,7 +87,7 @@ public sealed class Keyboard.CurrentInputRow : Adw.ActionRow {
         var what = (InputInfo) value.get_object ();
 
         var cu = get_current_inputs ();
-        cu.insert_before (what, where);
+        cu.move (what, where);
 
         set_current_inputs (cu);
         return true;
