@@ -175,7 +175,7 @@ public sealed class ReadySet.PluginManager : Object {
     }
 
     public void check_steps (string[] in_steps) {
-        if (steps_plugins.length == 0) {
+        if (steps_plugins.length == 0 && installers_plugins.length == 0) {
             error ("\nNo plugins found\n");
         }
 
