@@ -37,9 +37,13 @@ librs_vala_sources = files(
 
 subdir('context')
 
+librs_ext_icons_sources_internal = files(
+  'extension-base-icons-internal.vala',
+)
+
 librs_ext_base_sources_internal = files(
   'extension-base-internal.vala',
-)
+) + librs_ext_icons_sources_internal
 
 librs_context_sources_internal = librs_context_vars_sources_internal + librs_context_mode_sources_internal + librs_context_raw_sources_internal + librs_context_raw_get_sources_internal + librs_context_loader_sources_internal
 

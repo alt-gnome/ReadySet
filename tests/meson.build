@@ -134,3 +134,19 @@ test('options-handler',
     dependencies: [gee_dep] + librs_dependencies,
   )
 )
+
+extension_icons_bundle = gnome.compile_resources(
+  'extension-icons',
+  'data/extension-icons.gresource.xml',
+  source_dir: 'data',
+  gresource_bundle: true,
+)
+
+test('extension-resources',
+  executable('test-extension-resources',
+    sources: files('test-extension-resources.vala') + librs_sources_with_resources + librs_ext_icons_sources_internal,
+    include_directories: include_directories('../lib/src'),
+    dependencies: librs_dependencies,
+  ),
+  args: [extension_icons_bundle],
+)
