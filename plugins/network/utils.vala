@@ -1,21 +1,21 @@
 /*
  * Copyright (C) 2025 Vladimir Romanov <rirusha@altlinux.org>
  * Copyright (C) 2026 Valery Zabrovsky <brow@altlinux.org>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see
  * <https://www.gnu.org/licenses/gpl-3.0-standalone.html>.
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -364,6 +364,10 @@ public sealed class Network.AccessPointSorter : Gtk.Sorter {
         wlan.add_weak_pointer (&device);
     }
 
+    ~AccessPointSorter () {
+        device?.remove_weak_pointer (&device);
+    }
+
     public override Gtk.Ordering compare (Object? obj1, Object? obj2) {
         if (obj1 == null) {
             return obj2 == null ? Gtk.Ordering.EQUAL : Gtk.Ordering.LARGER;
@@ -374,10 +378,11 @@ public sealed class Network.AccessPointSorter : Gtk.Sorter {
 
         var ap1 = (NM.AccessPoint) obj1;
         var ap2 = (NM.AccessPoint) obj2;
-        if (ap1 == device.active_access_point) {
+        var active = device?.active_access_point;
+        if (ap1 == active) {
             return Gtk.Ordering.SMALLER;
         }
-        if (ap2 == device.active_access_point) {
+        if (ap2 == active) {
             return Gtk.Ordering.LARGER;
         }
         return Gtk.Ordering.from_cmpfunc (ap2.strength - ap1.strength);

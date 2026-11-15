@@ -52,8 +52,8 @@ public sealed class Keyboard.InputSourcesDialog : Adw.Dialog {
         search_button.notify["active"].connect (search_mode_changed);
 
         current_filter = new Gtk.CustomFilter (current_match_func);
-        search_filter = new Gtk.CustomFilter (search_match_func);
-        extra_filter = new Gtk.CustomFilter (extra_match_func);
+        search_filter = build_search_filter (search_entry);
+        extra_filter = build_extra_filter (this);
 
         Addin.get_instance ().context.data_changed.connect (on_context_data_changed);
         update ();
@@ -93,33 +93,25 @@ public sealed class Keyboard.InputSourcesDialog : Adw.Dialog {
         }
     }
 
-    bool current_match_func (Object el) {
+    static bool current_match_func (Object el) {
         var info = (InputInfo) el;
 
         return !(info in get_current_inputs ());
     }
 
-    bool search_match_func (Object el) {
-        var info = (InputInfo) el;
-
-        var name = Addin.get_instance ().is_manager.get_humanity_name (info);
-
-        if (name == null) {
-            return false;
-        }
-
-        var search_query = search_entry.text;
-        if (search_query == null && search_query == "") {
-            return true;
-        }
-
-        return search_query.match_string (name, true);
+    static Gtk.Filter build_search_filter (Gtk.SearchEntry entry) {
+        return new Gtk.CustomFilter ((el) => {
+            var name = Addin.get_instance ().is_manager.get_humanity_name ((InputInfo) el);
+            return name != null && entry.text.match_string (name, true);
+        });
     }
 
-    bool extra_match_func (Object el) {
-        var info = (InputInfo) el;
-
-        return show_more || !info.is_extra;
+    static Gtk.Filter build_extra_filter (InputSourcesDialog dialog) {
+        var reference = WeakRef (dialog);
+        return new Gtk.CustomFilter ((el) => {
+            var owner = (InputSourcesDialog) reference.get ();
+            return owner != null && (owner.show_more || !((InputInfo) el).is_extra);
+        });
     }
 
     Gtk.Filter build_filter () {

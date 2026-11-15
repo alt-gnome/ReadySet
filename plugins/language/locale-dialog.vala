@@ -48,7 +48,7 @@ public sealed class Language.LocaleDialog : Adw.Dialog {
         search_entry.grab_focus ();
     }
 
-    bool current_match_func (Object el) {
+    static bool current_match_func (Object el) {
         var locale_data = (LocaleData) el;
 
         return locale_data.locale != Addin.get_instance ().current_locale;
