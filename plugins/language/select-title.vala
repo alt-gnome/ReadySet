@@ -21,6 +21,7 @@
 public class Language.SelectTitle : Adw.Bin {
 
     Gtk.Stack stack;
+    uint timeout_id;
 
     construct {
         stack = new Gtk.Stack () {
@@ -42,7 +43,19 @@ public class Language.SelectTitle : Adw.Bin {
 
         Intl.setlocale (LocaleCategory.MESSAGES, cur_locale);
 
-        Timeout.add_seconds (5, next_func);
+        map.connect (start_animation);
+        unmap.connect (stop_animation);
+    }
+
+    void start_animation () {
+        timeout_id = Timeout.add_seconds (5, next_func);
+    }
+
+    void stop_animation () {
+        if (timeout_id != 0) {
+            Source.remove (timeout_id);
+            timeout_id = 0;
+        }
     }
 
     bool next_func () {
