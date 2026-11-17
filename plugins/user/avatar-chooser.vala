@@ -98,7 +98,7 @@ public sealed class User.AvatarChooser : Adw.Dialog {
         return added_faces;
     }
 
-    Gtk.Widget create_face_widget (Object item) {
+    static Gtk.Widget create_face_widget (Object item) {
         var file = (File) item;
         var path = file.get_path ();
 

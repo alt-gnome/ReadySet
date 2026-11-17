@@ -89,10 +89,6 @@ public sealed class ReadySet.CommandHandler : Object {
         if (in.length >= width) {
             return in;
         }
-        var add = new char[width - in.length];
-        for (int i = 0; i < add.length; i++) {
-            add[i] = ' ';
-        }
-        return in + (string) add;
+        return in + string.nfill (width - in.length, ' ');
     }
 }

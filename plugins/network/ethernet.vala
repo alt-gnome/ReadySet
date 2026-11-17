@@ -84,11 +84,16 @@ public sealed class Network.EthernetAdapterWindow : Adw.Dialog {
         }
 
         title = device.get_description ();
-        connections.bind_model (conn_list,
-            (conn) => { return new EthernetConnectionRow (
-                (NM.Connection) conn, device, radio_group
-            ); }
-        );
+        connections.bind_model (conn_list, create_connection_factory (eth, radio_group));
+    }
+
+    static Gtk.ListBoxCreateWidgetFunc create_connection_factory (
+        NM.DeviceEthernet device,
+        Gtk.CheckButton radio_group
+    ) {
+        return (conn) => {
+            return new EthernetConnectionRow ((NM.Connection) conn, device, radio_group);
+        };
     }
 
     void connection_added (NM.RemoteConnection conn) {
@@ -172,11 +177,12 @@ public sealed class Network.EthernetConnectionRow : Adw.ActionRow {
         title = connection.get_id ();
     }
 
-    bool set_primary_action (Binding bind, Value active, ref Value widget) {
+    static bool set_primary_action (Binding bind, Value active, ref Value widget) {
+        var row = (EthernetConnectionRow) bind.dup_target ();
         if (active.get_boolean () && !Addin.get_instance ().context.sandbox) {
-            widget.set_object (settings);
+            widget.set_object (row.settings);
         } else {
-            widget.set_object (radio);
+            widget.set_object (row.radio);
         }
         return true;
     }

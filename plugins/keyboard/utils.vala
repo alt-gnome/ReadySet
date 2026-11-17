@@ -180,9 +180,12 @@ namespace Keyboard {
             return false;
         }
 
+        // RulesNames borrows its strings; keep the settings value alive
+        // until xkb_keymap_new_from_names() has consumed it.
+        var model = get_input_sources_settings ().get_string ("xkb-model");
         Xkb.RulesNames names = {
             rules: "evdev",
-            model: get_input_sources_settings ().get_string ("xkb-model"),
+            model: model,
             layout: layout,
             variant: variant,
             options: null

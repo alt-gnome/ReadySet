@@ -175,7 +175,7 @@ public sealed class ReadySet.PluginManager : Object {
     }
 
     public void check_steps (string[] in_steps) {
-        if (steps_plugins.length == 0) {
+        if (steps_plugins.length == 0 && installers_plugins.length == 0) {
             error ("\nNo plugins found\n");
         }
 
@@ -209,7 +209,7 @@ public sealed class ReadySet.PluginManager : Object {
                 addin.context = context;
                 var display = Gdk.Display.get_default ();
                 if (display != null) {
-                    addin.load_css_for_display (display);
+                    addin.load_resources_for_display (display);
                 }
             }
         }
@@ -264,7 +264,7 @@ public sealed class ReadySet.PluginManager : Object {
 
         var display = Gdk.Display.get_default ();
         if (display != null) {
-            get_installer_plugin ().load_css_for_display (display);
+            get_installer_plugin ().load_resources_for_display (display);
         }
     }
 

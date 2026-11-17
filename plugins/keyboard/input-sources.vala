@@ -74,14 +74,15 @@ public sealed class Keyboard.InputSources : ReadySet.ContextObject {
         return data.to_array ();
     }
 
-    public void insert_before (InputInfo what, InputInfo where) {
-        if (!(where in this) || what == where) {
+    public void move (InputInfo what, InputInfo where) {
+        var from = data.index_of (what);
+        var to = data.index_of (where);
+        if (from < 0 || to < 0 || from == to) {
             return;
         }
 
-        remove (what);
-
-        data.insert (data.index_of (where), what);
+        data.remove_at (from);
+        data.insert (to, what);
     }
 
     public void clear_automatically_added () {

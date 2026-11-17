@@ -89,6 +89,10 @@ template $ReadySetInstallerEndPage: $ReadySetEndPage {
                             ) as <bool>;
                           hexpand: true;
                           xalign: 0.0;
+                          wrap: true;
+                          wrap-mode: word_char;
+                          lines: 4;
+                          ellipsize: end;
                         }
 
                         Label global_percentage_label {

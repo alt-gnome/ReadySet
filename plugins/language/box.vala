@@ -52,7 +52,7 @@ public sealed class Language.Box : Adw.Bin {
     void set_languages (string[] language_locales) {
         var model = build_model_from (language_locales);
 
-        var filter_current_model = new Gtk.FilterListModel (model, get_current_filter ());
+        var filter_current_model = new Gtk.FilterListModel (model, get_current_filter (current_locale));
 
         filter_current_model.notify["n-items"].connect (model_n_items_changed);
         model_n_items_changed (filter_current_model, filter_current_model.get_class ().find_property ("n-items"));
@@ -60,7 +60,7 @@ public sealed class Language.Box : Adw.Bin {
         languages_listbox.bind_model (filter_current_model, create_row_func);
     }
 
-    Gtk.Widget create_row_func (Object item) {
+    static Gtk.Widget create_row_func (Object item) {
         return new Row ((LocaleData) item);
     }
 
@@ -72,12 +72,10 @@ public sealed class Language.Box : Adw.Bin {
         }
     }
 
-    Gtk.Filter get_current_filter () {
-        return new Gtk.CustomFilter (filter_func);
-    }
-
-    bool filter_func (Object item) {
-        return ((LocaleData) item).locale != current_locale.locale;
+    static Gtk.Filter get_current_filter (LocaleData current_locale) {
+        return new Gtk.CustomFilter ((item) => {
+            return ((LocaleData) item).locale != current_locale.locale;
+        });
     }
 
     [GtkCallback]

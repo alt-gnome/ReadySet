@@ -423,7 +423,7 @@ public sealed class Network.WiFiAdapterBox : Adw.Bin {
                 new Gtk.SortListModel (all_aps, new AccessPointSorter (device)),
                 unique_filter
             ),
-            (ap) => { return new AccessPointRow (device, (NM.AccessPoint) ap); }
+            create_access_point_factory (wlan)
         );
 
         realize.connect (() => {
@@ -437,6 +437,12 @@ public sealed class Network.WiFiAdapterBox : Adw.Bin {
             device.access_point_removed.disconnect (remove_ap);
         });
         device.notify["active-access-point"].connect (refresh_and_schedule);
+    }
+
+    static Gtk.ListBoxCreateWidgetFunc create_access_point_factory (NM.DeviceWifi device) {
+        return (ap) => {
+            return new AccessPointRow (device, (NM.AccessPoint) ap);
+        };
     }
 
     void append_ap (NM.DeviceWifi device, Object ap) {

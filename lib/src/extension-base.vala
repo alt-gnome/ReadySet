@@ -30,7 +30,8 @@ public partial abstract class ReadySet.ExtensionBase : Peas.ExtensionBase {
      *
      * Override this property when the extension ships a gresource bundle.
      * The application uses the path to load extension resources, including a
-     * `style.css` file when one is present. The default value is `null`, which
+     * `style.css` file when one is present or its `icons` directory
+     * to the icon theme before building pages. The default value is `null`, which
      * means that the extension does not provide a resource base path.
      */
     public virtual string? resource_base_path {

@@ -121,7 +121,13 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
             set_error ();
             progress_data.icon_name = "dialog-error-symbolic";
             main_status_page.title = _("Installation error");
-            main_status_page.description = error_data.message;
+
+            if (error_data.message.length > 500) {
+                main_status_page.description = _("See the detailed information");
+
+            } else {
+                main_status_page.description = error_data.message;
+            }
         }
     }
 

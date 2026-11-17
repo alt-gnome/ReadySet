@@ -1,7 +1,7 @@
 project(
   'ready-set',
   'vala',
-  version: '0.15.4',
+  version: '0.15.6',
   meson_version: '>= 1.9',
   license: 'GPL-3.0-or-later',
 )
@@ -100,6 +100,10 @@ post_act_plugins_dir = pkglib_dir / 'plugins' / 'post-act'
 service_plugins_dir = pkglib_dir / 'plugins' / 'service'
 
 global_conf = configuration_data()
+cc = meson.get_compiler('c')
+global_conf.set('HAVE_CRYPT_H', cc.has_header('crypt.h'))
+global_conf.set('HAVE_CRYPT_R', cc.has_function('crypt_r', dependencies: crypt_dep))
+global_conf.set('HAVE_LIBXCRYPT', cc.has_function('crypt_gensalt_rn', dependencies: crypt_dep))
 global_conf.set_quoted('NAME', meson.project_name())
 global_conf.set_quoted('APP_ID', app_id)
 global_conf.set_quoted('APP_ID_DYN', app_id_dyn)
@@ -127,6 +131,14 @@ subdir('integrations')
 subdir('service')
 subdir('src')
 subdir('plugins')
+
+ui_test_sources = []
+foreach source : rs_app_vala_sources
+  if not source.full_path().endswith('/main.vala')
+    ui_test_sources += source
+  endif
+endforeach
+
 subdir('tests')
 
 install_emptydir(sysconfdir / meson.project_name())

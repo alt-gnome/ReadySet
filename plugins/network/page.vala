@@ -73,11 +73,7 @@ public sealed class Network.Page : ReadySet.BasePage {
         simcard_group.visible = false;
 #endif
 
-        ethernet_group.bind_model (addin.ethers,
-            (ether) => {
-                return new EthernetAdapterRow ((NM.DeviceEthernet) ether);
-            }
-        );
+        ethernet_group.bind_model (addin.ethers, create_ethernet_adapter);
         addin.ethers.bind_property ("n-items",
             ethernet_group, "visible",
             SYNC_CREATE,
@@ -85,9 +81,9 @@ public sealed class Network.Page : ReadySet.BasePage {
         );
 
         wifi_adapters.bind_model (addin.wlans,
-            (wlan) => { return new WiFiAdapterBox ((NM.DeviceWifi) wlan); },
+            create_wifi_adapter,
             null,
-            (wlan) => { return ((NM.DeviceWifi) wlan).get_description (); }
+            wifi_adapter_title
         );
         addin.wlans.bind_property ("n-items",
             wifi_group, "visible",
@@ -124,7 +120,19 @@ public sealed class Network.Page : ReadySet.BasePage {
         }
     }
 
-    bool set_visibility (Binding bind, Value n_items, ref Value visible) {
+    static Gtk.Widget create_ethernet_adapter (Object ether) {
+        return new EthernetAdapterRow ((NM.DeviceEthernet) ether);
+    }
+
+    static Gtk.Widget create_wifi_adapter (Object wlan) {
+        return new WiFiAdapterBox ((NM.DeviceWifi) wlan);
+    }
+
+    static string wifi_adapter_title (Object wlan) {
+        return ((NM.DeviceWifi) wlan).get_description ();
+    }
+
+    static bool set_visibility (Binding bind, Value n_items, ref Value visible) {
         visible.set_boolean (n_items.get_uint () > 0);
         return true;
     }
