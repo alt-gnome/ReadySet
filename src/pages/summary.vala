@@ -24,7 +24,7 @@ public sealed class ReadySet.SummaryPage : ReadySet.BasePage {
     [GtkChild]
     unowned Gtk.ListBox list_box;
 
-    PagesModel _model;
+    weak PagesModel _model;
     public PagesModel model {
         get {
             return _model;
@@ -45,7 +45,7 @@ public sealed class ReadySet.SummaryPage : ReadySet.BasePage {
 
     public Context context { get; construct; }
 
-    public ApplicationService app_service { get; construct; }
+    public weak ApplicationService app_service { get; construct; }
 
     public SummaryPage (Context context, ApplicationService app_service) {
         Object (context: context, app_service: app_service);

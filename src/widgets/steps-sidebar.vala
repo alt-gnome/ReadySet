@@ -49,11 +49,7 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
 
     public signal void request_close ();
 
-    construct {
-        menu_list_box.selected_rows_changed.connect (selected_rows_changed);
-    }
-
-    Gtk.Widget box_create_func (Object item) {
+    static Gtk.Widget box_create_func (Object item) {
         var page = (PageInfo) item;
 
         var row = new StepRow (
@@ -73,6 +69,10 @@ public sealed class ReadySet.StepsSidebar : Adw.Bin {
 
     [GtkCallback]
     void selected_rows_changed () {
+        if (menu_list_box == null || in_destruction ()) {
+            return;
+        }
+
         var row = menu_list_box.get_selected_row ();
         if (row != null) {
             model.select_item (row.get_index (), true);

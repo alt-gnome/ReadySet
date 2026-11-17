@@ -99,6 +99,13 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
     }
 
     void set_window_content () {
+        bool restore_focus = get_focus () != null;
+        // GTK defers moving focus from an unparented widget until after paint.
+        // Clear it before hiding the old tree so the window cannot retain it.
+        if (restore_focus) {
+            set_focus (null);
+        }
+
         if (a_child == null) {
             active = A_NAME;
         } else if (b_child == null) {
@@ -116,6 +123,9 @@ public sealed class ReadySet.Window: Adw.ApplicationWindow {
             active
         );
         stack.set_visible_child_name (active);
+        if (restore_focus) {
+            stack.visible_child.child_focus (Gtk.DirectionType.TAB_FORWARD);
+        }
         Timeout.add_once (stack.transition_duration, on_transition_ended);
     }
 

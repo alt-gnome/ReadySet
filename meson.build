@@ -131,6 +131,14 @@ subdir('integrations')
 subdir('service')
 subdir('src')
 subdir('plugins')
+
+ui_test_sources = []
+foreach source : rs_app_vala_sources
+  if not source.full_path().endswith('/main.vala')
+    ui_test_sources += source
+  endif
+endforeach
+
 subdir('tests')
 
 install_emptydir(sysconfdir / meson.project_name())

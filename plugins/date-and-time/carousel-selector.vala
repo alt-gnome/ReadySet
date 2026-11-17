@@ -75,27 +75,10 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
                 selected = (uint) (adjustment.value - adjustment.lower)
             };
 
-            carousel.create.connect ((item) => {
-                var string_object = (Gtk.StringObject) item;
-                var label = new Gtk.Label (string_object.string);
-                label.add_css_class ("title-1");
-
-                var text_attributes = new Pango.AttrList ();
-                text_attributes.insert (new Pango.AttrFontFeatures ("tnum"));
-                label.set_attributes (text_attributes);
-
-                return label;
-            });
-
+            carousel.create.connect (create_item);
             carousel.model = selection;
-
-            carousel.page_changed.connect ((index) => {
-                adjustment.value = (double) (index + (int) adjustment.lower);
-            });
-
-            carousel.item_pressed.connect (() => {
-                on_gesture_click_pressed ();
-            });
+            bind_adjustment (carousel, adjustment);
+            carousel.item_pressed.connect (on_gesture_click_pressed);
 
             carousels_box.append (carousel);
             carousels.add (carousel);
@@ -108,6 +91,21 @@ public class DateAndTime.CarouselSelector : Adw.Bin {
         }
 
         update_text ();
+    }
+
+    static Gtk.Widget create_item (Object item) {
+        var label = new Gtk.Label (((Gtk.StringObject) item).string);
+        label.add_css_class ("title-1");
+        var attributes = new Pango.AttrList ();
+        attributes.insert (new Pango.AttrFontFeatures ("tnum"));
+        label.set_attributes (attributes);
+        return label;
+    }
+
+    static void bind_adjustment (InfinityCarousel carousel, Gtk.Adjustment adjustment) {
+        carousel.page_changed.connect ((index) => {
+            adjustment.value = (double) (index + (int) adjustment.lower);
+        });
     }
 
     void update_text () {
