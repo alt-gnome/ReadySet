@@ -13,7 +13,7 @@
 
 Name: ready-set
 Version: %soversion.%minor_version
-Release: alt1
+Release: alt0.p11.1
 
 Summary: Modular (System Installer | Initial Setup Wizard)
 License: GPL-3.0-or-later
@@ -417,6 +417,9 @@ install -Dpm 0644 %SOURCE1 %buildroot%_rpmmacrosdir/%name
 %_rpmmacrosdir/%name
 
 %changelog
+* Tue Nov 17 2026 Vladimir Romanov <rirusha@altlinux.org> 0.15.6-alt0.p11.1
+- Backport to p11 for support GNOME 48.
+
 * Tue Nov 17 2026 Vladimir Romanov <rirusha@altlinux.org> 0.15.6-alt1
 - New version: 0.15.6.
 - Fixed a lot of bugs.
