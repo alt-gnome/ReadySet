@@ -40,6 +40,16 @@ jobs:
       - name: Build
         run: make compile
 
+      - name: Post build check files
+        uses: alt-gnome/coding-style-actions/check@main
+        with:
+          vala: false
+          blueprint: false
+          translations: false
+          metainfo: true
+          desktop: true
+          gschema: true
+
       - name: Test
         run: make test
 
