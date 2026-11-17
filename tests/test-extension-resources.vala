@@ -22,7 +22,8 @@ int main (string[] args) {
             var resource = Resource.load (bundle_path);
             resources_register (resource);
             assert (resources_lookup_data (
-                "/org/altlinux/ReadySet/Tests/LateExtension/icons/scalable/actions/ready-set-late-extension-symbolic.svg",
+                "/org/altlinux/ReadySet/Tests/LateExtension/icons/scalable/actions/" +
+                "ready-set-late-extension-symbolic.svg",
                 ResourceLookupFlags.NONE
             ).get_size () > 0);
             assert (!theme.has_icon ("ready-set-late-extension-symbolic"));

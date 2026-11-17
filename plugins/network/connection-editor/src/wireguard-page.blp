@@ -1,6 +1,5 @@
 using Gtk 4.0;
 using Adw 1;
-
 translation-domain "gnome-control-center-2.0";
 
 template $CEPageWireguard: Box {
@@ -104,7 +103,9 @@ template $CEPageWireguard: Box {
 
         SpinButton spin_listen_port {
           width-request: 5;
-          tooltip-text: _("A port to listen on. If set to 'automatic', the port will be chosen randomly when the interface comes up.");
+          tooltip-text: _(
+            "A port to listen on. If set to 'automatic', the port will be chosen randomly when the interface comes up."
+          );
 
           adjustment: Adjustment {
             upper: 65535;
