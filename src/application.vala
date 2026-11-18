@@ -107,7 +107,7 @@ public sealed class ReadySet.Application: Adw.Application {
     protected override void startup () {
         base.startup ();
 
-        app_service.init ();
+        app_service.init (command == CommandHandler.NTD);
     }
 
     void reload_window () {
@@ -173,7 +173,7 @@ public sealed class ReadySet.Application: Adw.Application {
             window_initializing = true;
 
             hold ();
-            app_service.init_model.begin (true, (obj, res) => {
+            app_service.init_model.begin (false, (obj, res) => {
                 if (app_service.init_model.end (res)) {
                     new Window (this, app_service).present ();
                 }
