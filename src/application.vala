@@ -39,6 +39,7 @@ public sealed class ReadySet.Application: Adw.Application {
     public Application (string? command) {
         Object (
             application_id: Config.APP_ID_DYN,
+            flags: command == CommandHandler.NTD ? ApplicationFlags.NON_UNIQUE : ApplicationFlags.DEFAULT_FLAGS,
             resource_base_path: "/org/altlinux/ReadySet/",
             command: command
         );
