@@ -20,6 +20,12 @@
 
 namespace ReadySet {
 
+    [PrintfFormat]
+    public void print_status (string format, ...) {
+        var args = va_list ();
+        stderr.vprintf (format, args);
+    }
+
     [DBus (name = "org.freedesktop.login1.Manager")]
     private interface Login1 : Object {
         public abstract async void reboot (bool interactive) throws Error;
