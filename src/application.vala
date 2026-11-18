@@ -136,11 +136,11 @@ public sealed class ReadySet.Application: Adw.Application {
         var finalizer = app_service.finalizer_factory.build ();
         try {
             yield finalizer.run (progress_data);
-            print ("Done!\n");
+            print_status ("Done!\n");
 
         } catch (ApplyError e) {
             var error_data = apply_error_to_data (e);
-            print ("Failed: %s. %s\n", error_data.message, error_data.description);
+            print_status ("Failed: %s. %s\n", error_data.message, error_data.description);
             Process.exit (-1);
         }
     }
