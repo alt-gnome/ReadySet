@@ -10,8 +10,11 @@
     <url type="homepage">https://altlinux.space/alt-gnome/ReadySet</url>
 
     <extends>org.altlinux.Tuner</extends>
+    <developer id="org.altlinux">
+      <name>ALT Linux Team</name>
+    </developer>
 
     <description>
-        <p>Management of third-party software sources.</p>
+        <p>Management of third-party software sources. Equal to ReadySet software plugin behaivor.</p>
     </description>
 </component>
