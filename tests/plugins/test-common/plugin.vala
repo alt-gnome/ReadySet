@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Test.Addin : ReadySet.StepAddin {
+public class Test.Addin : ReadySet.StepAddin, ReadySet.ExistingUser {
 
     static Addin instance;
 
