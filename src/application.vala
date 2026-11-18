@@ -35,6 +35,7 @@ public sealed class ReadySet.Application: Adw.Application {
     public string? command { get; construct; }
 
     ApplicationService app_service;
+    bool window_initializing;
 
     public Application (string? command) {
         Object (
@@ -166,11 +167,17 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         if (active_window == null) {
+            if (window_initializing) {
+                return;
+            }
+            window_initializing = true;
+
             hold ();
             app_service.init_model.begin (true, (obj, res) => {
                 if (app_service.init_model.end (res)) {
                     new Window (this, app_service).present ();
                 }
+                window_initializing = false;
                 release ();
             });
 
