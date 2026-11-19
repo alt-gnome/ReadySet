@@ -87,6 +87,9 @@ namespace ReadySet {
             output += info.get_name ();
         }
 
+        //  Hooks are executed in alphabetical order, as `run-parts` does
+        qsort_with_data<string> (output, sizeof (string), (a, b) => strcmp (a, b));
+
         return output;
     }
 
