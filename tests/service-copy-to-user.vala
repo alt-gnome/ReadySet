@@ -71,7 +71,7 @@ private static void verify_content (File file, string expected) throws Error {
 
 public static void test_src_not_exists () {
     try {
-        ReadySet.copy_to_user ("/nonexistent/path", "dest/file", "root");
+        ReadySet.copy_to_user ("/nonexistent/path", "dest/file", Environment.get_user_name ());
     } catch (Error e) {
         GLib.assert_not_reached ();
     }
@@ -218,6 +218,73 @@ public static void test_dir_replaces_file () {
     }
 }
 
+public static void test_rejects_wrong_dest () {
+    string[] bad_dests = { "", "/etc/passwd", "../file", "a/../../file", ".." };
+
+    foreach (var dest in bad_dests) {
+        try {
+            ReadySet.copy_to_user ("/nonexistent/path", dest, Environment.get_user_name ());
+            GLib.assert_not_reached ();
+        } catch (FileError.INVAL e) {
+        } catch (Error e) {
+            GLib.assert_not_reached ();
+        }
+    }
+}
+
+public static void test_rejects_relative_src () {
+    try {
+        ReadySet.copy_to_user ("relative/path", "dest", Environment.get_user_name ());
+        GLib.assert_not_reached ();
+    } catch (FileError.INVAL e) {
+    } catch (Error e) {
+        GLib.assert_not_reached ();
+    }
+}
+
+public static void test_rejects_root () {
+    try {
+        ReadySet.copy_to_user ("/nonexistent/path", "dest", "root");
+        GLib.assert_not_reached ();
+    } catch (FileError.PERM e) {
+    } catch (Error e) {
+        GLib.assert_not_reached ();
+    }
+}
+
+public static void test_symlink_not_followed () {
+    try {
+        var secret = create_test_file (Path.build_filename (temp_root, "secret.txt"), "secret", 0600);
+        var src_dir = Path.build_filename (temp_root, "symlink_src");
+        create_test_dir (src_dir, 0755);
+        var link = File.new_build_filename (src_dir, "link");
+        link.make_symbolic_link (secret.get_path ());
+
+        var dest_dir = File.new_build_filename (test_user_home, "symlink_dest");
+        ReadySet.copy_with_chown (File.new_for_path (src_dir), dest_dir, test_uid, test_gid);
+
+        var dest_link = dest_dir.get_child ("link");
+        GLib.assert (dest_link.query_file_type (FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null) == FileType.SYMBOLIC_LINK);
+    } catch (Error e) {
+        error (e.message);
+    }
+}
+
+public static void test_skips_foreign_files () {
+    try {
+        var src = create_test_file (Path.build_filename (temp_root, "foreign.txt"), "x", 0644);
+        var dest = File.new_build_filename (test_user_home, "foreign.txt");
+
+        Test.expect_message (null, LogLevelFlags.LEVEL_WARNING, "*not owned by the caller*");
+        ReadySet.copy_with_chown (src, dest, test_uid, test_gid, (int64) test_uid + 1);
+        Test.assert_expected_messages ();
+
+        GLib.assert (!dest.query_exists ());
+    } catch (Error e) {
+        error (e.message);
+    }
+}
+
 public static int main (string[] args) {
     Test.init (ref args);
 
@@ -231,7 +298,11 @@ public static int main (string[] args) {
     Test.add_func ("/copy/dir_replaces_file", test_dir_replaces_file);
     Test.add_func ("/copy/src_not_exists", test_src_not_exists);
     Test.add_func ("/copy/user_not_found", test_user_not_found);
+    Test.add_func ("/copy/rejects_wrong_dest", test_rejects_wrong_dest);
+    Test.add_func ("/copy/rejects_relative_src", test_rejects_relative_src);
+    Test.add_func ("/copy/rejects_root", test_rejects_root);
+    Test.add_func ("/copy/symlink_not_followed", test_symlink_not_followed);
+    Test.add_func ("/copy/skips_foreign_files", test_skips_foreign_files);
 
-    Test.run ();
-    return 0;
+    return Test.run ();
 }

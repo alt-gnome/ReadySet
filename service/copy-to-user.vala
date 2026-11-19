@@ -22,10 +22,23 @@ namespace ReadySet {
 
     //  src should be an absolute path
     //  dest should be an relative to user home dir path
-    public void copy_to_user (string src, string dest, string username) throws Error {
+    //  src_owner - if not -1, only files owned by this uid are copied
+    public void copy_to_user (string src, string dest, string username, int64 src_owner = -1) throws Error {
+        if (!Path.is_absolute (src)) {
+            throw new FileError.INVAL ("Source path should be absolute: '%s'", src);
+        }
+
+        if (dest == "" || Path.is_absolute (dest) || ".." in dest.split ("/")) {
+            throw new FileError.INVAL ("Wrong destination path: '%s'", dest);
+        }
+
         unowned Posix.Passwd? pwd = Posix.getpwnam (username);
         if (pwd == null) {
             throw new FileError.FAILED ("User '%s' not found", username);
+        }
+
+        if (pwd.pw_uid == 0) {
+            throw new FileError.PERM ("Copying to user '%s' is not allowed", username);
         }
 
         var src_file = File.new_build_filename (src);
@@ -44,27 +57,40 @@ namespace ReadySet {
         var uid = pwd.pw_uid;
         var gid = pwd.pw_gid;
 
-        copy_with_chown (src_file, dest_file, uid, gid);
+        copy_with_chown (src_file, dest_file, uid, gid, src_owner);
     }
 
-    internal void copy_with_chown (File src, File dest, Posix.uid_t uid, Posix.gid_t gid) throws Error {
+    internal void copy_with_chown (
+        File src,
+        File dest,
+        Posix.uid_t uid,
+        Posix.gid_t gid,
+        int64 src_owner = -1
+    ) throws Error {
         var src_info = src.query_info (
-            FileAttribute.STANDARD_TYPE + "," + FileAttribute.UNIX_MODE,
+            FileAttribute.STANDARD_TYPE + "," + FileAttribute.UNIX_MODE + "," + FileAttribute.UNIX_UID,
             FileQueryInfoFlags.NOFOLLOW_SYMLINKS
         );
+
+        if (src_owner >= 0 && src_info.get_attribute_uint32 (FileAttribute.UNIX_UID) != src_owner) {
+            warning ("Skip '%s': it is not owned by the caller", src.get_path ());
+            return;
+        }
+
         FileInfo? dest_info = null;
 
         bool src_is_dir = src_info.get_file_type () == FileType.DIRECTORY;
+        bool src_is_symlink = src_info.get_file_type () == FileType.SYMBOLIC_LINK;
         bool dest_is_dir = false;
 
-        if (dest.query_exists ()) {
+        try {
             dest_info = dest.query_info (
                 FileAttribute.STANDARD_TYPE + "," + FileAttribute.UNIX_MODE,
                 FileQueryInfoFlags.NOFOLLOW_SYMLINKS
             );
 
             dest_is_dir = dest_info.get_file_type () == FileType.DIRECTORY;
-        }
+        } catch (IOError.NOT_FOUND e) {}
 
         if (src_is_dir) {
             if (dest_info != null) {
@@ -88,17 +114,19 @@ namespace ReadySet {
                 ensure_dir_exist (dest_parent, uid, gid);
             }
 
-            src.copy (dest, FileCopyFlags.OVERWRITE, null);
+            src.copy (dest, FileCopyFlags.OVERWRITE | FileCopyFlags.NOFOLLOW_SYMLINKS, null);
         }
 
-        dest.set_attribute_uint32 (
-            "unix::mode",
-            src_info.get_attribute_uint32 (FileAttribute.UNIX_MODE),
-            FileQueryInfoFlags.NONE,
-            null
-        );
+        if (!src_is_symlink) {
+            dest.set_attribute_uint32 (
+                "unix::mode",
+                src_info.get_attribute_uint32 (FileAttribute.UNIX_MODE),
+                FileQueryInfoFlags.NOFOLLOW_SYMLINKS,
+                null
+            );
+        }
 
-        Posix.chown (dest.get_path (), uid, gid);
+        Posix.lchown (dest.get_path (), uid, gid);
 
         if (src_is_dir) {
             var en = src.enumerate_children (
@@ -108,7 +136,13 @@ namespace ReadySet {
             );
             FileInfo? child;
             while ((child = en.next_file (null)) != null) {
-                copy_with_chown (src.get_child (child.get_name ()), dest.get_child (child.get_name ()), uid, gid);
+                copy_with_chown (
+                    src.get_child (child.get_name ()),
+                    dest.get_child (child.get_name ()),
+                    uid,
+                    gid,
+                    src_owner
+                );
             }
         }
     }
