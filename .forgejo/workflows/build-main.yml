@@ -59,6 +59,14 @@ jobs:
         with:
           directory: ./_build/lib/doc/ready-set-vala
 
+      - name: Upload meson test log
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: meson-logs.txt
+          path: _build/meson-logs/testlog.txt
+          if-no-files-found: error
+
   get-release:
     name: Get release for RPM package
     runs-on: als-tiny
