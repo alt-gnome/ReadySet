@@ -219,13 +219,6 @@ public sealed class ReadySet.InstallerEndPage : EndPage {
         log_revealer.reveal_child = true;
     }
 
-    async void wait_async (uint sec) {
-        Timeout.add_seconds_once (sec, () => {
-            Idle.add (wait_async.callback);
-        });
-        yield;
-    }
-
     async void fake_install (InstallerProgressData progress_data) throws ApplyError {
         progress_data.pulse_step = 0.6;
 

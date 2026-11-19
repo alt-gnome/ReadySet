@@ -53,48 +53,54 @@ public sealed class ReadySet.InitialSetupEndPage : EndPage {
     public override async void start_action () {
         stack.visible_child_name = "applying";
 
-        progress_data.bind_property ("description", apply_status_page, "description");
-        progress_data.bind_property ("value", progress_bar, "fraction");
-        progress_data.bind_property ("pulse-step", progress_bar, "pulse-step");
+        progress_data.bind_property ("description", apply_status_page, "description", SYNC_CREATE);
+        progress_data.bind_property ("value", progress_bar, "fraction", SYNC_CREATE);
+        progress_data.bind_property ("pulse-step", progress_bar, "pulse-step", SYNC_CREATE);
         progress_data.pulse.connect (on_pulse);
 
-        progress_data.notify["value"].connect (enable_progress_visible);
-        progress_data.pulse.connect (enable_progress_visible);
+        progress_data.bind_property ("visibility", progress_bar, "visible", SYNC_CREATE);
 
-        if (sandbox) {
-            progress_data.description = _("Applying changes…");
+        try {
+            if (sandbox) {
+                progress_data.description = _("Applying changes…");
 
-            Timeout.add_seconds (1, () => {
-                progress_data.value += 0.2;
+                yield fake_initial_setup (progress_data);
 
-                if (progress_data.value >= 1.0) {
-                    Idle.add (start_action.callback);
-                    return false;
-                }
-
-                return true;
-            });
-            yield;
-
-            stack.visible_child_name = "ready";
-        } else {
-            try {
+                stack.visible_child_name = "ready";
+            } else {
                 yield finalizer.run (progress_data);
                 stack.visible_child_name = "ready";
-            } catch (ApplyError e) {
-                var error_data = apply_error_to_data (e);
-                error_status_page.title = error_data.message;
-                error_status_page.description = _("Error message: %s").printf (error_data.description);
-                stack.visible_child_name = "error";
             }
+
+        } catch (ApplyError e) {
+            var error_data = apply_error_to_data (e);
+            error_status_page.title = error_data.message;
+            error_status_page.description = _("Error message: %s").printf (error_data.description);
+            stack.visible_child_name = "error";
         }
     }
 
     void on_pulse () {
-        progress_data.pulse ();
+        progress_bar.pulse ();
     }
 
-    void enable_progress_visible () {
-        progress_bar.visible = 1.0 > progress_data.value > 0;
+    async void fake_initial_setup (InitialSetupProgressData progress_data) throws ApplyError {
+        progress_data.pulse_step = 0.6;
+
+        for (uint i = 0; i < 5; i++) {
+            progress_data.description = "Doing stuff %u with pulse".printf (i);
+            yield wait_async (1);
+            progress_data.pulse ();
+        }
+
+        double val = 0;
+        for (uint i = 0; i < 5; i++) {
+            progress_data.description = "Doing stuff %u".printf (i);
+            progress_data.value = val;
+            yield wait_async (1);
+            val += 0.2;
+        }
+
+        yield wait_async (1);
     }
 }

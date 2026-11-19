@@ -121,4 +121,11 @@ namespace ReadySet {
     string errorify (string str) {
         return "\x1b[31m%s\x1b[0m".printf (str);
     }
+
+    async void wait_async (uint sec) {
+        Timeout.add_seconds_once (sec, () => {
+            Idle.add (wait_async.callback);
+        });
+        yield;
+    }
 }
