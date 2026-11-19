@@ -77,6 +77,12 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         set {
             _manual_timezone = value;
             Addin.get_instance ().context.set_boolean ("date-and-time.automatic-timezone", !_manual_timezone);
+            if (!value) {
+                var system_timezone = get_system_timezone ();
+                if (system_timezone != null) {
+                    update_timezone (system_timezone);
+                }
+            }
             update_is_ready ();
         }
     }
@@ -138,6 +144,7 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
 
         try {
             var proxy = get_timedate_proxy ();
+            ((DBusProxy) proxy).g_properties_changed.connect (on_timedate_properties_changed);
             can_use_ntp = proxy.can_ntp;
 
             if (can_use_ntp) {
@@ -184,6 +191,38 @@ public sealed class DateAndTime.Page : ReadySet.BasePage {
         time_selected = true;
 
         update_is_ready ();
+    }
+
+    void on_timedate_properties_changed (Variant changed, string[] invalidated) {
+        if (manual_timezone) {
+            return;
+        }
+
+        var timezone = changed.lookup_value ("Timezone", VariantType.STRING);
+        if (timezone == null) {
+            return;
+        }
+
+        try {
+            var system_timezone = new TimeZone.identifier (timezone.get_string ());
+            if (system_timezone != null) {
+                update_timezone (system_timezone);
+            }
+        } catch (Error e) {
+            warning ("Failed to read system timezone: %s", e.message);
+        }
+    }
+
+    void update_timezone (TimeZone timezone) {
+        var identifier = timezone.get_identifier ();
+        var item = TimezoneListItem.from_identifier (identifier);
+        if (item != null) {
+            var abbreviation = new DateTime.now (timezone).get_timezone_abbreviation ();
+            timezone_label = @"<b>$(item.country)</b> / $(item.city) ($abbreviation)";
+        } else {
+            timezone_label = Markup.escape_text (identifier);
+        }
+        selected_timezone = timezone;
     }
 
     [GtkCallback]
