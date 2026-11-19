@@ -1,8 +1,0 @@
-object 1b0d9404b7368aca33b6d22748705a64e99feaad
-type commit
-tag v0.15.6
-tagger Gitea <gitea@fake.local> 1794921613 +0300
-
-Fix 0.15.6
-
-- Fixed version at root `meson.build`

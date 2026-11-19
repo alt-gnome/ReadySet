@@ -1,0 +1,8 @@
+object ad21e2feeb1535deda2976d6cd0838e3721b019f
+type commit
+tag v0.15.7
+tagger Gitea <gitea@fake.local> 1795081560 +0300
+
+0.15.7
+
+- Bag of fixes.
