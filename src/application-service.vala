@@ -60,7 +60,7 @@ public sealed class ReadySet.ApplicationService : Object {
         );
     }
 
-    public void init () {
+    public void init (bool quiet = false) {
         plugin_manager.init (options_handler.installer, options_handler.steps);
 
 #if DEVEL
@@ -83,13 +83,15 @@ public sealed class ReadySet.ApplicationService : Object {
             error ("`finalize` can not be used in existing-user mode");
         }
 
-        print ("\nApplication mode: %s\n\n", context.mode.to_string ());
-        if (has_installer) {
-            print (
-                "Installer:\n  %s - %s\n\n",
-                installer_plugin.plugin_info.module_name,
-                installer_plugin.plugin_info.name
-            );
+        if (!quiet) {
+            print_status ("\nApplication mode: %s\n\n", context.mode.to_string ());
+            if (has_installer) {
+                print_status (
+                    "Installer:\n  %s - %s\n\n",
+                    installer_plugin.plugin_info.module_name,
+                    installer_plugin.plugin_info.name
+                );
+            }
         }
 
         plugin_manager.check_steps (options_handler.steps);
@@ -180,7 +182,7 @@ public sealed class ReadySet.ApplicationService : Object {
 
         var steps = plugin_manager.steps;
 
-        if (!quite) print ("Loaded steps:\n");
+        if (!quite) print_status ("Loaded steps:\n");
         for (int i = 0; i < steps.length; i++) {
             var addin = plugin_manager.get_step_addin (steps[i]);
 
@@ -200,7 +202,7 @@ public sealed class ReadySet.ApplicationService : Object {
                         ));
                     }
                 }
-                if (!quite) print ("  %s - %s\n", addin.plugin_info.module_name, addin.plugin_info.name);
+                if (!quite) print_status ("  %s - %s\n", addin.plugin_info.module_name, addin.plugin_info.name);
 
             } else if (steps[i].has_prefix (PluginManager.INSTALLER_STEP_PREFIX)) {
                 var installer_step = installer_plugin.steps[PluginManager.get_real_page_id (steps[i])];
@@ -210,14 +212,14 @@ public sealed class ReadySet.ApplicationService : Object {
                         installer_page,
                         installer_plugin.get_type ().name ()
                     ));
-                    if (!quite) print (
+                    if (!quite) print_status (
                         "  %s%s (from `%s`)\n",
                         PluginManager.get_real_page_id (steps[i]),
                         installer_step.name != null ? " - %s".printf (installer_step.name) : "",
                         installer_plugin.plugin_info.module_name
                     );
                 } else {
-                    if (!quite) print ("  %s (skipped: failed to build installer page)\n", steps[i]);
+                    if (!quite) print_status ("  %s (skipped: failed to build installer page)\n", steps[i]);
                 }
             } else {
                 error ("Unknown step `%s`", steps[i]);
@@ -232,10 +234,10 @@ public sealed class ReadySet.ApplicationService : Object {
         var ntd = context.mode == EXISTING_USER &&
             (!new Settings ("org.altlinux.ReadySet").get_boolean ("existing-user-mode-enabled") || is_empty);
         if (ntd_only) {
-            stderr.printf ("%i\n", ntd ? 0 : 1);
+            print ("%i\n", ntd ? 0 : 1);
             return false;
         } else if (ntd) {
-            print ("There is nothing to do\n");
+            print_status ("There is nothing to do\n");
             return false;
         }
 

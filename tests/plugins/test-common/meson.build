@@ -20,7 +20,7 @@ plugin_test_c_args = [
   '-DG_LOG_DOMAIN="Tests"',
 ]
 
-shared_module(
+test_common_plugin = shared_module(
   plugin_test_name,
   plugin_test_resources,
   plugin_test_sources,

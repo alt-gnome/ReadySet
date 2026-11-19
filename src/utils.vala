@@ -20,6 +20,12 @@
 
 namespace ReadySet {
 
+    [PrintfFormat]
+    public void print_status (string format, ...) {
+        var args = va_list ();
+        stderr.vprintf (format, args);
+    }
+
     [DBus (name = "org.freedesktop.login1.Manager")]
     private interface Login1 : Object {
         public abstract async void reboot (bool interactive) throws Error;
@@ -114,5 +120,12 @@ namespace ReadySet {
 
     string errorify (string str) {
         return "\x1b[31m%s\x1b[0m".printf (str);
+    }
+
+    async void wait_async (uint sec) {
+        Timeout.add_seconds_once (sec, () => {
+            Idle.add (wait_async.callback);
+        });
+        yield;
     }
 }

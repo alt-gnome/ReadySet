@@ -35,10 +35,12 @@ public sealed class ReadySet.Application: Adw.Application {
     public string? command { get; construct; }
 
     ApplicationService app_service;
+    bool window_initializing;
 
     public Application (string? command) {
         Object (
             application_id: Config.APP_ID_DYN,
+            flags: command == CommandHandler.NTD ? ApplicationFlags.NON_UNIQUE : ApplicationFlags.DEFAULT_FLAGS,
             resource_base_path: "/org/altlinux/ReadySet/",
             command: command
         );
@@ -105,7 +107,7 @@ public sealed class ReadySet.Application: Adw.Application {
     protected override void startup () {
         base.startup ();
 
-        app_service.init ();
+        app_service.init (command == CommandHandler.NTD);
     }
 
     void reload_window () {
@@ -117,6 +119,11 @@ public sealed class ReadySet.Application: Adw.Application {
 
     async void apply_only () {
         yield app_service.init_model ();
+
+        if (app_service.context.sandbox) {
+            print ("Sandbox mode: nothing will be applied\n");
+            return;
+        }
 
         ProgressData progress_data;
         switch (app_service.context.mode) {
@@ -134,11 +141,11 @@ public sealed class ReadySet.Application: Adw.Application {
         var finalizer = app_service.finalizer_factory.build ();
         try {
             yield finalizer.run (progress_data);
-            print ("Done!\n");
+            print_status ("Done!\n");
 
         } catch (ApplyError e) {
             var error_data = apply_error_to_data (e);
-            print ("Failed: %s. %s\n", error_data.message, error_data.description);
+            print_status ("Failed: %s. %s\n", error_data.message, error_data.description);
             Process.exit (-1);
         }
     }
@@ -165,11 +172,17 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         if (active_window == null) {
+            if (window_initializing) {
+                return;
+            }
+            window_initializing = true;
+
             hold ();
-            app_service.init_model.begin (true, (obj, res) => {
+            app_service.init_model.begin (false, (obj, res) => {
                 if (app_service.init_model.end (res)) {
                     new Window (this, app_service).present ();
                 }
+                window_initializing = false;
                 release ();
             });
 
