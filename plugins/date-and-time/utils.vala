@@ -19,8 +19,6 @@
  */
 
 namespace DateAndTime {
-    Timedate1? timedate_proxy = null;
-
     GLib.HashTable<string, string>? default_timezones = null;
 
     int clamp_value (int value, int min, int max) {
@@ -100,32 +98,18 @@ namespace DateAndTime {
         return null;
     }
 
-    TimeZone? get_system_timezone () {
-        try {
-            return new TimeZone.identifier (get_timedate_proxy ().timezone);
-        } catch (Error e) {
-            warning ("Failed to read system timezone: %s", e.message);
-            return null;
-        }
-    }
-
     DateAndTime.Timedate1 get_timedate_proxy () throws Error {
-        if (timedate_proxy != null) {
-            return timedate_proxy;
-        }
-
         var con = Bus.get_sync (BusType.SYSTEM);
 
         if (con == null) {
             error ("Failed to connect to bus");
         }
 
-        timedate_proxy = con.get_proxy_sync<DateAndTime.Timedate1> (
+        return con.get_proxy_sync<DateAndTime.Timedate1> (
             "org.freedesktop.timedate1",
             "/org/freedesktop/timedate1",
             DBusProxyFlags.NONE
         );
-        return timedate_proxy;
     }
 }
 
