@@ -1,5 +1,0 @@
-<gresources>
-  <gresource prefix="/org/altlinux/ReadySet/Tests/LateExtension/icons/scalable/actions">
-    <file alias="ready-set-late-extension-symbolic.svg">extension-icon.svg</file>
-  </gresource>
-</gresources>
