@@ -63,6 +63,7 @@ plugins/user/page-username.vala
 plugins/user/plugin.vala
 plugins/user/pwquality-utils.vala
 plugins/user/utils.vala
+service/copy-to-user.vala
 src/about.vala
 src/application-service.vala
 src/command-handler.vala
@@ -79,3 +80,4 @@ src/widgets/positioned-stack.vala
 src/widgets/steps-main-page.vala
 src/widgets/steps-sidebar.vala
 tests/plugins/test-common/data/ui/page.blp
+tests/service-copy-to-user.vala
