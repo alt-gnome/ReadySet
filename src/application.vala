@@ -100,14 +100,11 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         app_service = new ApplicationService (options);
+        if (!app_service.init (command == CommandHandler.NTD)) {
+            return 0;
+        }
 
         return -1;
-    }
-
-    protected override void startup () {
-        base.startup ();
-
-        app_service.init (command == CommandHandler.NTD);
     }
 
     void reload_window () {
