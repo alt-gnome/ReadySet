@@ -100,11 +100,20 @@ public sealed class ReadySet.Application: Adw.Application {
         }
 
         app_service = new ApplicationService (options);
-        if (!app_service.init (command == CommandHandler.NTD)) {
+        app_service.init_context_mode ();
+
+        var settings = new Settings ("org.altlinux.ReadySet");
+        if (!settings.get_boolean ("existing-user-mode-enabled") && app_service.context.mode == EXISTING_USER) {
             return 0;
         }
 
         return -1;
+    }
+
+    protected override void startup () {
+        base.startup ();
+
+        app_service.init (command == CommandHandler.NTD);
     }
 
     void reload_window () {

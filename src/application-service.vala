@@ -60,8 +60,7 @@ public sealed class ReadySet.ApplicationService : Object {
         );
     }
 
-    // Returns false if nothing-to-do
-    public bool init (bool quiet = false) {
+    public void init_context_mode () {
         plugin_manager.init (options_handler.installer, options_handler.steps);
 
 #if DEVEL
@@ -79,12 +78,9 @@ public sealed class ReadySet.ApplicationService : Object {
             context.init_mode (Mode.from_string (options_handler.force_mode));
         }
 #endif
+    }
 
-        var settings = new Settings ("org.altlinux.ReadySet");
-        if (!settings.get_boolean ("existing-user-mode-enabled") && context.mode == EXISTING_USER) {
-            return false;
-        }
-
+    public void init (bool quiet = false) {
         if (options_handler.apply_only && context.mode == EXISTING_USER) {
             error ("`finalize` can not be used in existing-user mode");
         }
@@ -132,8 +128,6 @@ public sealed class ReadySet.ApplicationService : Object {
                 Gtk.STYLE_PROVIDER_PRIORITY_USER
             );
         }
-
-        return true;
     }
 
     void exec_pre_hooks () {
